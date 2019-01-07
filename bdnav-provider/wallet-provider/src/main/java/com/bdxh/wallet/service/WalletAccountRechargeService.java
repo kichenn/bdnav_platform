@@ -3,7 +3,6 @@ package com.bdxh.wallet.service;
 import com.bdxh.common.web.support.IService;
 import com.bdxh.wallet.entity.WalletAccountRecharge;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.Map;
 
@@ -29,4 +28,10 @@ public interface WalletAccountRechargeService extends IService<WalletAccountRech
      * @return
      */
     PageInfo<WalletAccountRecharge> getRechargeLogPage(Map<String,Object> param, int pageNum, int pageSize);
+
+    /**
+     * 支付成功后更改状态为支付中
+     * @param status
+     */
+    void updatePaying(Byte status);
 }

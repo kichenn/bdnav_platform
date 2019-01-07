@@ -22,4 +22,10 @@ public interface WalletAccountRechargeMapper extends Mapper<WalletAccountRecharg
      * @return
      */
     List<WalletAccountRecharge> getByCondition(Map<String,Object> param);
+    /**
+     * 支付成功后更改状态为支付中
+     * @param status
+     * @return
+     */
+    int updatePaying(@Param("status") Byte status);
 }

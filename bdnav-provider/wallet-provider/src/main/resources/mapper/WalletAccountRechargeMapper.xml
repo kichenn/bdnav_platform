@@ -41,4 +41,8 @@
       </if>
     </where>
   </select>
+
+  <update id="updatePaying">
+    <![CDATA[update wallet_account_recharge set status=#{status} where status<2]]>
+  </update>
 </mapper>

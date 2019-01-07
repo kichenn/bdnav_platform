@@ -13,6 +13,7 @@ import com.bdxh.common.wechatpay.app.domain.AppNoticeReturn;
 import com.bdxh.common.wechatpay.app.domain.AppOrderRequest;
 import com.bdxh.common.wechatpay.app.domain.AppOrderResponse;
 import com.bdxh.wallet.feign.WalletControllerClient;
+import com.bdxh.web.wechatpay.dto.WxPayAppOkDto;
 import com.bdxh.web.wechatpay.dto.WxPayAppOrderDto;
 import com.bdxh.web.wechatpay.vo.WxPayAppOrderVo;
 import com.google.common.base.Preconditions;
@@ -133,6 +134,28 @@ public class WechatAppPayController {
             }
         }
         return WrapMapper.error("订单接口异常");
+    }
+
+    @RequestMapping("/ok")
+    @ResponseBody
+    public Object wechatAppPayOk(@Valid WxPayAppOkDto wxPayAppOkDto,BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        //更新订单状态
+        Byte status=wxPayAppOkDto.getStaus();
+        Wrapper wrapper=null;
+        if(status.intValue()==1){
+            wrapper=walletControllerClient.updatePaying(WxPayStatusEnum.PAYING.getCode());
+        }else if (status.intValue()==2){
+            wrapper=walletControllerClient.updatePaying(WxPayStatusEnum.PAY_FAIL.getCode());
+        }
+        if (wrapper!=null&&wrapper.getCode()==200){
+            return WrapMapper.ok("更新支付中状态成功");
+        }
+        return WrapMapper.error("更新支付中状态失败");
     }
 
 

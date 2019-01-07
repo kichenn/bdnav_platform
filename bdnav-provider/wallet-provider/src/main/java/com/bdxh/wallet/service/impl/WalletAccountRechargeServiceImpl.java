@@ -6,6 +6,7 @@ import com.bdxh.wallet.persistence.WalletAccountRechargeMapper;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -41,6 +42,12 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         List<WalletAccountRecharge> rechargeLogs = walletAccountRechargeMapper.getByCondition(param);
         PageInfo<WalletAccountRecharge> pageInfo=new PageInfo<>(rechargeLogs);
         return pageInfo;
+    }
+
+    @Override
+    public void updatePaying(Byte status) {
+        int result = walletAccountRechargeMapper.updatePaying(status);
+        Preconditions.checkArgument(result>=1,"更新支付中状态失败");
     }
 
 }

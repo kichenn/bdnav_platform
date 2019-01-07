@@ -28,4 +28,10 @@ public class WalletControllerFallback implements WalletControllerClient {
     public Wrapper changeRechargeLog(Long orderNo, Byte status, String thirdOrderNo) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper updatePaying(Byte status) {
+        return WrapMapper.error();
+    }
+
 }

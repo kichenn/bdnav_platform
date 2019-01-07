@@ -1,5 +1,6 @@
 package com.bdxh.wallet.feign;
 
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.fallback.WalletControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -51,5 +52,14 @@ public interface WalletControllerClient {
     @ResponseBody
     Wrapper changeRechargeLog(@RequestParam(name="orderNo") Long orderNo,@RequestParam(name="status") Byte status,
                                     @RequestParam(name="thirdOrderNo") String thirdOrderNo);
+
+    /**
+     * 根据订单号查询充值记录
+     * @param
+     * @return
+     */
+    @RequestMapping("/updatePaying")
+    @ResponseBody
+    Wrapper updatePaying(@RequestParam("status") Byte status);
 
 }

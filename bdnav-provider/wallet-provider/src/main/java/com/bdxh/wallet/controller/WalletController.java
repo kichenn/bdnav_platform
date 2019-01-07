@@ -8,7 +8,6 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -90,7 +89,7 @@ public class WalletController {
 
 
     /**
-     * 用户回调时更改用户充值记录状态及第三方支付号
+     * 微信回调时更改用户充值记录状态及第三方支付号
      * @param orderNo
      * @return
      */
@@ -152,10 +151,27 @@ public class WalletController {
      */
     @RequestMapping("/getLogByOrderNo")
     @ResponseBody
-    public Object getLogByOrderNo(@Param("orderNo") Long orderNo){
+    public Object getLogByOrderNo(@RequestParam("orderNo") Long orderNo){
         try {
             WalletAccountRecharge walletAccountRecharge = walletAccountRechargeService.getByOrderNO(orderNo);
             return WrapMapper.ok(walletAccountRecharge);
+        }catch (Exception e){
+            log.error(e.getMessage());
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 根据订单号查询充值记录
+     * @param
+     * @return
+     */
+    @RequestMapping("/updatePaying")
+    @ResponseBody
+    public Object updatePaying(@RequestParam("status") Byte status){
+        try {
+            walletAccountRechargeService.updatePaying(status);
+            return WrapMapper.ok();
         }catch (Exception e){
             log.error(e.getMessage());
             return WrapMapper.error(e.getMessage());
