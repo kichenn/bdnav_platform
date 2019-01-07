@@ -1,0 +1,7 @@
+server:
+  port: 9010
+spring:
+  application:
+    name: wallet-provider-cluster
+  profiles:
+    active: dev

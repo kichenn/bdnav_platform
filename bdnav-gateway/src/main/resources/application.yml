@@ -1,0 +1,7 @@
+server:
+  port: 9005
+spring:
+  application:
+    name: gateway-server-cluster
+  profiles:
+    active: dev
