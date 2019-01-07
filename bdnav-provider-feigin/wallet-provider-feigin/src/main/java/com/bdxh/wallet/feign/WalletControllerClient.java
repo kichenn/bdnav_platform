@@ -1,6 +1,5 @@
 package com.bdxh.wallet.feign;
 
-import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.fallback.WalletControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
