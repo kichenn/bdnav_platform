@@ -1,4 +1,4 @@
-package com.bdxh.web.wechat.vo;
+package com.bdxh.web.wechatpay.vo;
 
 
 import com.google.gson.annotations.SerializedName;

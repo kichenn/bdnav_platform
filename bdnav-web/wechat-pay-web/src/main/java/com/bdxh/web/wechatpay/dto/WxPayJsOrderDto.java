@@ -1,4 +1,4 @@
-package com.bdxh.web.wechat.dto;
+package com.bdxh.web.wechatpay.dto;
 
 import lombok.Data;
 

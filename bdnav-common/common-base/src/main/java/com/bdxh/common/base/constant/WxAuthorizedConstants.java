@@ -10,7 +10,6 @@ public class WxAuthorizedConstants {
          * 公众账号ID
          */
         String appid="wxb5d90dcdscdsfcv316";
-
         /**
          * 秘钥
          */
@@ -19,7 +18,6 @@ public class WxAuthorizedConstants {
          * 通过code换取access_token地址
          */
         String urlList="https://api.weixin.qq.com/sns/oa";
-
         /**
          * 授权默认参数url
          */
