@@ -45,7 +45,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/wechatJsPay")
 @Slf4j
-public class WechatJsApiPayController {
+public class WechatJsPayController {
 
     @Autowired
     private WalletControllerClient walletControllerClient;

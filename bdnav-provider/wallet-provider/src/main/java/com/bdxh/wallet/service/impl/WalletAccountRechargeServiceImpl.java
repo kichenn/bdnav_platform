@@ -45,8 +45,8 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
     }
 
     @Override
-    public void updatePaying(Byte status) {
-        int result = walletAccountRechargeMapper.updatePaying(status);
+    public void updatePaying(Long orderNo,Byte status) {
+        int result = walletAccountRechargeMapper.updatePaying(orderNo,status);
         Preconditions.checkArgument(result>=1,"更新支付中状态失败");
     }
 

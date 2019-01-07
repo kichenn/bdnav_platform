@@ -59,6 +59,6 @@ public interface WalletControllerClient {
      */
     @RequestMapping("/updatePaying")
     @ResponseBody
-    Wrapper updatePaying(@RequestParam("status") Byte status);
+    Wrapper updatePaying(@RequestParam("orderNo") Long orderNo,@RequestParam("status") Byte status);
 
 }

@@ -25,6 +25,6 @@ public class WxPayAppOkDto implements Serializable {
      * 支付结果 1 成功 2 失败
      */
     @NotNull(message = "支付结果不能为空")
-    private byte staus;
+    private Byte status;
 
 }

@@ -20,6 +20,11 @@ public class WxPayAppOrderVo implements Serializable {
     private String tradeType;
 
     /**
+     * 订单号
+     */
+    private Long orderNo;
+
+    /**
      * 预支付会话标识
      */
     private String prepayId;

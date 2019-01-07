@@ -33,5 +33,5 @@ public interface WalletAccountRechargeService extends IService<WalletAccountRech
      * 支付成功后更改状态为支付中
      * @param status
      */
-    void updatePaying(Byte status);
+    void updatePaying(Long orderNo,Byte status);
 }

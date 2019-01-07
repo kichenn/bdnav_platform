@@ -127,6 +127,7 @@ public class WechatAppPayController {
                 //返回下单结果
                 WxPayAppOrderVo wxPayAppOrderVo=new WxPayAppOrderVo();
                 wxPayAppOrderVo.setTradeType(appOrderResponse.getTrade_type());
+                wxPayAppOrderVo.setOrderNo((Long)wrapper.getResult());
                 wxPayAppOrderVo.setPrepayId(appOrderResponse.getPrepay_id());
                 return WrapMapper.ok(wxPayAppOrderVo);
             }else{
@@ -145,12 +146,12 @@ public class WechatAppPayController {
             return WrapMapper.error(errors);
         }
         //更新订单状态
-        Byte status=wxPayAppOkDto.getStaus();
+        Byte status=wxPayAppOkDto.getStatus();
         Wrapper wrapper=null;
         if(status.intValue()==1){
-            wrapper=walletControllerClient.updatePaying(WxPayStatusEnum.PAYING.getCode());
+            wrapper=walletControllerClient.updatePaying(wxPayAppOkDto.getOrderNo(),WxPayStatusEnum.PAYING.getCode());
         }else if (status.intValue()==2){
-            wrapper=walletControllerClient.updatePaying(WxPayStatusEnum.PAY_FAIL.getCode());
+            wrapper=walletControllerClient.updatePaying(wxPayAppOkDto.getOrderNo(),WxPayStatusEnum.PAY_FAIL.getCode());
         }
         if (wrapper!=null&&wrapper.getCode()==200){
             return WrapMapper.ok("更新支付中状态成功");

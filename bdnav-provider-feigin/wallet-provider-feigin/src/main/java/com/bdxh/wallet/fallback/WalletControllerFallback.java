@@ -30,7 +30,7 @@ public class WalletControllerFallback implements WalletControllerClient {
     }
 
     @Override
-    public Wrapper updatePaying(Byte status) {
+    public Wrapper updatePaying(Long orderNo, Byte status) {
         return WrapMapper.error();
     }
 

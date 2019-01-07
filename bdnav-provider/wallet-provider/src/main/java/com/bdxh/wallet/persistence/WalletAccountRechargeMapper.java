@@ -27,5 +27,5 @@ public interface WalletAccountRechargeMapper extends Mapper<WalletAccountRecharg
      * @param status
      * @return
      */
-    int updatePaying(@Param("status") Byte status);
+    int updatePaying(@Param("orderNo") Long orderNo, @Param("status") Byte status);
 }

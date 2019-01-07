@@ -43,6 +43,6 @@
   </select>
 
   <update id="updatePaying">
-    <![CDATA[update wallet_account_recharge set status=#{status} where status<2]]>
+    <![CDATA[update wallet_account_recharge set status=#{status} where order_no=#{orderNo} and status<2]]>
   </update>
 </mapper>

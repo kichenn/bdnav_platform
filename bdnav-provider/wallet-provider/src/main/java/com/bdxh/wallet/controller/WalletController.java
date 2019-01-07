@@ -168,9 +168,11 @@ public class WalletController {
      */
     @RequestMapping("/updatePaying")
     @ResponseBody
-    public Object updatePaying(@RequestParam("status") Byte status){
+    public Object updatePaying(@RequestParam("orderNo") Long orderNo,@RequestParam("status") Byte status){
         try {
-            walletAccountRechargeService.updatePaying(status);
+            Preconditions.checkNotNull(orderNo,"订单号不能为空");
+            Preconditions.checkNotNull(status,"订单状态不能为空");
+            walletAccountRechargeService.updatePaying(orderNo,status);
             return WrapMapper.ok();
         }catch (Exception e){
             log.error(e.getMessage());
