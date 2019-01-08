@@ -70,7 +70,7 @@ public class JsOrderRequest implements Serializable {
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)
     private String detail;
 
-    /**
+     /**
      * 附加数据
      */
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)
@@ -82,7 +82,7 @@ public class JsOrderRequest implements Serializable {
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)
     private String out_trade_no;
 
-    /**
+     /**
      * 货币类型
      */
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)
@@ -112,7 +112,7 @@ public class JsOrderRequest implements Serializable {
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)
     private String time_expire;
 
-    /**
+     /**
      * 代金券优惠标记
      */
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)
@@ -136,13 +136,13 @@ public class JsOrderRequest implements Serializable {
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)
     private String openid;
 
-    /**
+     /**
      * 指定支付方式
      */
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)
     private String limit_pay;
 
-    /**
+     /**
      * 开发票入口开放标识
      */
     @XmlJavaTypeAdapter(CDATASectionAdapter.class)

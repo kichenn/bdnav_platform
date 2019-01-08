@@ -1,0 +1,7 @@
+server:
+  port: 9012
+spring:
+  application:
+    name: backend-provider-cluster
+  profiles:
+    active: dev
