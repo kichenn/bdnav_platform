@@ -10,8 +10,13 @@ public class WalletAccountRecharge {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * 学校编码
+     */
+    @Column(name = "school_code")
+    private String schoolCode;
 
     /**
      * 用户id
@@ -32,6 +37,12 @@ public class WalletAccountRecharge {
     private Long orderNo;
 
     /**
+     * 订单类型
+     */
+    @Column(name = "order_type")
+    private String orderType;
+
+    /**
      * 第三方支付订单号
      */
     @Column(name = "third_order_no")
@@ -43,7 +54,7 @@ public class WalletAccountRecharge {
     private String acceptseq;
 
     /**
-     * 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 充值中 6 充值成功 7充值失败
+     * 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 未充值 6 充值中 7充值成功 8 充值失败
      */
     private Byte status;
 
@@ -87,6 +98,24 @@ public class WalletAccountRecharge {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * 获取学校编码
+     *
+     * @return school_code - 学校编码
+     */
+    public String getSchoolCode() {
+        return schoolCode;
+    }
+
+    /**
+     * 设置学校编码
+     *
+     * @param schoolCode 学校编码
+     */
+    public void setSchoolCode(String schoolCode) {
+        this.schoolCode = schoolCode == null ? null : schoolCode.trim();
     }
 
     /**
@@ -144,6 +173,24 @@ public class WalletAccountRecharge {
     }
 
     /**
+     * 获取订单类型
+     *
+     * @return order_type - 订单类型
+     */
+    public String getOrderType() {
+        return orderType;
+    }
+
+    /**
+     * 设置订单类型
+     *
+     * @param orderType 订单类型
+     */
+    public void setOrderType(String orderType) {
+        this.orderType = orderType == null ? null : orderType.trim();
+    }
+
+    /**
      * 获取第三方支付订单号
      *
      * @return third_order_no - 第三方支付订单号
@@ -180,18 +227,18 @@ public class WalletAccountRecharge {
     }
 
     /**
-     * 获取状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 充值中 6 充值成功 7充值失败
+     * 获取状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 未充值 6 充值中 7充值成功 8 充值失败
      *
-     * @return status - 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 充值中 6 充值成功 7充值失败
+     * @return status - 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 未充值 6 充值中 7充值成功 8 充值失败
      */
     public Byte getStatus() {
         return status;
     }
 
     /**
-     * 设置状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 充值中 6 充值成功 7充值失败
+     * 设置状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 未充值 6 充值中 7充值成功 8 充值失败
      *
-     * @param status 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 充值中 6 充值成功 7充值失败
+     * @param status 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 未充值 6 充值中 7充值成功 8 充值失败
      */
     public void setStatus(Byte status) {
         this.status = status;

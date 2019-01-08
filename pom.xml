@@ -39,6 +39,7 @@
         <zk.version>4.0.0</zk.version>
         <swagger2.version>2.9.2</swagger2.version>
         <aspectjweaver.version>1.9.2</aspectjweaver.version>
+        <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
     </properties>
     
     <modules>
@@ -206,6 +207,12 @@
                 <groupId>org.aspectj</groupId>
                 <artifactId>aspectjweaver</artifactId>
                 <version>${aspectjweaver.version}</version>
+            </dependency>
+            <!-- hibernate-validator依赖 -->
+            <dependency>
+                <groupId>org.hibernate.validator</groupId>
+                <artifactId>hibernate-validator</artifactId>
+                <version>${hibernate-validator.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

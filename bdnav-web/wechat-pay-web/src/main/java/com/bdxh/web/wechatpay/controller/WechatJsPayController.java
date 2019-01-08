@@ -26,6 +26,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -60,7 +61,7 @@ public class WechatJsPayController {
      */
     @RequestMapping("/order")
     @ResponseBody
-    public Object wechatJsPayOrder(WxPayJsOrderDto wxPayJsOrderDto, BindingResult bindingResult) throws Exception {
+    public Object wechatJsPayOrder(@Valid WxPayJsOrderDto wxPayJsOrderDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -81,14 +82,14 @@ public class WechatJsPayController {
             jsOrderRequest.setNonce_str(ObjectUtil.generateNonceStr());
             //商品描述
             jsOrderRequest.setBody(wxPayJsOrderDto.getProductDetail());
-            // 订单号
+            //订单号
             jsOrderRequest.setOut_trade_no(String.valueOf(wrapper.getResult()));
             //金额
             String sumfigure = WxPayUtil.getMoney(String.valueOf(wxPayJsOrderDto.getMoney()));
             jsOrderRequest.setTotal_fee(sumfigure);
             //终端ip
             jsOrderRequest.setSpbill_create_ip(wxPayJsOrderDto.getIp());
-            // 此路径是微信服务器调用支付结果通知路
+            //此路径是微信服务器调用支付结果通知路
             jsOrderRequest.setNotify_url(WechatPayConstants.JS.notice_url);
             //支付场景JSAPI
             jsOrderRequest.setTrade_type(WechatPayConstants.JS.trade_type);
@@ -102,13 +103,9 @@ public class WechatJsPayController {
             String paramStr = BeanToMapUtil.mapToString(paramMap);
             String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.JS.app_key);
             jsOrderRequest.setSign(sign);
-
-            System.out.println(jsOrderRequest.toString());//打印统一下单拼接参数是否齐全
-
             //发送微信下单请求
             String requestStr = XmlUtils.toXML(jsOrderRequest);
             RestTemplate restTemplate = new RestTemplate();
-
             HttpHeaders headers = new HttpHeaders();
             headers.set("Accept-Charset", "utf-8");
             headers.set("Content-type", "application/xml; charset=utf-8");
@@ -148,17 +145,19 @@ public class WechatJsPayController {
                 }
             }
             return WrapMapper.error("支付订单接口异常");
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return WrapMapper.error("支付订单接口异常");
-
     }
 
-
-    @RequestMapping("/OrderOstatusChange")
+    /**
+     * 用户支付完成请求接口
+     * @param wxPayJsOkDto
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping("/ok")
     @ResponseBody
     public Object WechatJsPayOk(@Valid WxPayJsOkDto wxPayJsOkDto, BindingResult bindingResult){
         //检验参数
@@ -180,13 +179,13 @@ public class WechatJsPayController {
         return WrapMapper.error("更新支付中状态失败");
     }
 
-
-
-
-
-    //微信支付成功后回调方法
+    /**
+     * 用户充值js回调接口
+     * @param jsNoticeResponse
+     * @param response
+     */
     @RequestMapping("/notice")
-    public void wechatJsPayNotice(JSNoticeResponse jsNoticeResponse, HttpServletResponse response) {
+    public void wechatJsPayNotice(@RequestBody JSNoticeResponse jsNoticeResponse, HttpServletResponse response) {
         try {
             Preconditions.checkNotNull(jsNoticeResponse,"回调内容为空");
             Preconditions.checkArgument(StringUtils.equals("SUCCESS",jsNoticeResponse.getReturn_code()),"回调状态为失败");
@@ -213,7 +212,6 @@ public class WechatJsPayController {
             Long orderNo = Long.valueOf(jsNoticeResponse.getOut_trade_no());
             Wrapper wrapper = walletControllerClient.changeRechargeLog(orderNo, status, jsNoticeResponse.getTransaction_id());
             Preconditions.checkArgument(wrapper.getCode()==200,"更新支付结果失败");
-
             //返回微信结果
             JSNoticeReturn jsNoticeReturn=new JSNoticeReturn();
             jsNoticeReturn.setReturn_code("SUCCESS");
@@ -221,7 +219,6 @@ public class WechatJsPayController {
             String returnXml = XmlUtils.toXML(jsNoticeReturn);
             response.getOutputStream().write(returnXml.getBytes("utf-8"));
         }catch (Exception e){
-
             JSNoticeReturn jsNoticeReturn=new JSNoticeReturn();
             jsNoticeReturn.setReturn_code("FAIL");
             jsNoticeReturn.setReturn_msg("no");
@@ -235,39 +232,28 @@ public class WechatJsPayController {
 
     }
 
-
-    //JSAPI支付拉取微信进行授权
+    /**
+     * 微信授权接口
+     * @param code
+     * @return
+     */
     @RequestMapping("/auth")
     public Object auto(@RequestParam("code") String code) {
-
-        if (StringUtils.isNotEmpty(code)) {
-
+        try {
+            Preconditions.checkArgument(StringUtils.isNotEmpty(code),"code不能为空");
             String url = WxAuthorizedConstants.Letter.urlList+"?appid="+ WxAuthorizedConstants.Letter.appid+"&secret="+WxAuthorizedConstants.Letter.secret+"&code=" + code + "&grant_type="+WxAuthorizedConstants.Letter.grant_type;
-            System.out.println(url.toString());//打印授权接口
             RestTemplate restTemplate = new RestTemplate();
-            String getAuth = restTemplate.getForObject(url, String.class);
-            System.out.println(getAuth.toString());//打印授权接口
-            JSONObject jsonList = JSON.parseObject(getAuth);
-            if (jsonList != null) {
-                try {
-                    String openid = jsonList.getString("openid");
-                    if (StringUtils.isNotEmpty(openid)) {
-                        return WrapMapper.ok(openid);
-                        /* model.addAttribute("openid", openid);*/
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-
+            String auth = restTemplate.getForObject(url, String.class);
+            Preconditions.checkArgument(StringUtils.isNotEmpty(auth),"拉取授权信息异常");
+            JSONObject jsonObject = JSON.parseObject(auth);
+            Preconditions.checkNotNull(jsonObject,"拉取授权信息异常");
+            String openid = jsonObject.getString("openid");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(openid),"拉取授权信息异常");
+            return WrapMapper.ok(openid);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
         }
-
-        return WrapMapper.error("拉取授权信息异常");
     }
-
-
-
-
 
 }

@@ -137,6 +137,12 @@ public class WechatAppPayController {
         return WrapMapper.error("订单接口异常");
     }
 
+    /**
+     * 用户支付完成请求接口
+     * @param wxPayAppOkDto
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping("/ok")
     @ResponseBody
     public Object wechatAppPayOk(@Valid WxPayAppOkDto wxPayAppOkDto,BindingResult bindingResult){

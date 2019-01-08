@@ -10,8 +10,13 @@ public class WalletAccount {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * 学校编码
+     */
+    @Column(name = "school_code")
+    private String schoolCode;
 
     /**
      * 用户id
@@ -68,6 +73,24 @@ public class WalletAccount {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * 获取学校编码
+     *
+     * @return school_code - 学校编码
+     */
+    public String getSchoolCode() {
+        return schoolCode;
+    }
+
+    /**
+     * 设置学校编码
+     *
+     * @param schoolCode 学校编码
+     */
+    public void setSchoolCode(String schoolCode) {
+        this.schoolCode = schoolCode == null ? null : schoolCode.trim();
     }
 
     /**

@@ -6,9 +6,11 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="account_id" jdbcType="BIGINT" property="accountId" />
     <result column="order_no" jdbcType="BIGINT" property="orderNo" />
+    <result column="order_type" jdbcType="VARCHAR" property="orderType" />
     <result column="third_order_no" jdbcType="VARCHAR" property="thirdOrderNo" />
     <result column="acceptseq" jdbcType="VARCHAR" property="acceptseq" />
     <result column="status" jdbcType="TINYINT" property="status" />
