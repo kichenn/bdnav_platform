@@ -1,0 +1,6 @@
+eureka:
+  client:
+    register-with-eureka: false #不向注册中心注册实例
+    fetch-registry: true #表明自己是消费者，只需要检索服务
+    serviceUrl:
+      defaultZone: http://eureka-server1:9001/eureka/,http://eureka-server2:9002/eureka/,http://eureka-server3:9003/eureka/

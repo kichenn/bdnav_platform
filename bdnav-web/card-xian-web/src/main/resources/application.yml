@@ -1,0 +1,7 @@
+server:
+  port: 9013
+spring:
+  application:
+    name: xian-card-cluster
+  profiles:
+    active: dev

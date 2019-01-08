@@ -1,7 +1,5 @@
 package com.bdxh.web.wechatpay.vo;
 
-
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 import java.io.Serializable;
 
@@ -26,8 +24,5 @@ public class WxPayJsOrderVo implements Serializable {
     private String packages;
     //签名
     private String paySign;
-
-
-
 
 }
