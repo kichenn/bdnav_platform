@@ -13,8 +13,5 @@ eureka:
 zuul:
   routes:
     api-a:
-      path: /demo/** #网关地址
-      serviceId: demo-provider #代理到对应的服务
-    api-b:
       path: /wallet/** #网关地址
       serviceId: wallet-provider-cluster #代理到对应的服务

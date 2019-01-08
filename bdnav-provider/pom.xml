@@ -14,6 +14,7 @@
     <modules>
         <module>wallet-provider</module>
         <module>backend-provider</module>
+        <module>order-provider</module>
     </modules>
 
     <dependencies>
@@ -52,7 +53,7 @@
         </dependency>
         <dependency>
             <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
         </dependency>
         <dependency>
             <groupId>tk.mybatis</groupId>

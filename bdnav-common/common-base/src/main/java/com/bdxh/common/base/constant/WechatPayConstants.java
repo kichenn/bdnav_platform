@@ -59,7 +59,7 @@ public class WechatPayConstants {
         /**
          * 回调地址
          */
-        String notice_url="http://wechatpay.dxht.com/wechatAppPay:9011/notice";
+        String notice_url="http://wechatpay.dxht.com/wechatAppPay/notice";
 
         /**
          * 支付类型

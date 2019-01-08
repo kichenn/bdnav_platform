@@ -40,13 +40,15 @@ public class WalletController {
      */
     @RequestMapping("/addRechargeLog")
     @ResponseBody
-    public Object addRechargeLog(@RequestParam(name="userId") Long userId,@RequestParam(name="amount") BigDecimal amount,
-                                @RequestParam("orderType") String orderType,@RequestParam(name = "orderStatus",defaultValue = "0") Byte orderStatus){
+    public Object addRechargeLog(@RequestParam(name="schoolCode") String schoolCode, @RequestParam(name="userId") Long userId,
+                                 @RequestParam(name="amount") BigDecimal amount, @RequestParam("orderType") String orderType,
+                                 @RequestParam(name = "orderStatus",defaultValue = "0") Byte orderStatus){
         try {
             Preconditions.checkArgument(userId!=null,"用户信息不能为空");
             Preconditions.checkArgument(amount!=null&&amount.doubleValue()>0,"金额输入不正确");
             Preconditions.checkArgument(StringUtils.isNotEmpty(orderType),"订单类型不能为空");
             WalletAccountRecharge recharge=new WalletAccountRecharge();
+            recharge.setSchoolCode(schoolCode);
             recharge.setUserId(userId);
             Long orderNo = snowflakeIdWorker.nextId();
             recharge.setOrderNo(orderNo);
@@ -71,7 +73,7 @@ public class WalletController {
      */
     @RequestMapping("/changeRechargeLogStatus")
     @ResponseBody
-    public Object changeRechargeLog(@RequestParam(name="orderNo") Long orderNo,@RequestParam(name="status") Byte status){
+    public Object changeRechargeLog(@RequestParam(name="orderNo") Long orderNo, @RequestParam(name="status") Byte status){
         try {
             Preconditions.checkArgument(orderNo!=null,"订单号不能为空");
             Preconditions.checkArgument(status!=null,"充值状态不能为空");
@@ -115,7 +117,7 @@ public class WalletController {
     }
 
     /**
-     * 根据用户id查询充值记录
+     * 根据用户条件查询充值记录
      * @param
      * @return
      */
@@ -123,6 +125,7 @@ public class WalletController {
     @ResponseBody
     public Object changeRechargeLog(HttpServletRequest request){
         try {
+            String schoolCode=request.getParameter("schoolCode");
             String userId=request.getParameter("userId");
             Preconditions.checkArgument(StringUtils.isNotEmpty(userId),"用户id不能为空");
             String pageNum = request.getParameter("pageNum");
@@ -136,6 +139,7 @@ public class WalletController {
             //调用service
             Map<String,Object> param=new HashMap<>();
             param.put("userId",Long.valueOf(userId));
+            param.put("schoolCode",schoolCode);
             PageInfo<WalletAccountRecharge> rechargeLogPage = walletAccountRechargeService.getRechargeLogPage(param, Integer.valueOf(pageNum), Integer.valueOf(pageSize));
             return WrapMapper.ok(rechargeLogPage);
         }catch (Exception e){

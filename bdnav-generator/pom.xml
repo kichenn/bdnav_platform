@@ -14,6 +14,7 @@
     <modules>
         <module>wallet-generator</module>
         <module>backend-generator</module>
+        <module>order-generator</module>
     </modules>
 
     <dependencies>

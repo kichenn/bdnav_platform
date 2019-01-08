@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="account_id" jdbcType="BIGINT" property="accountId" />
     <result column="order_no" jdbcType="BIGINT" property="orderNo" />
@@ -33,6 +34,9 @@
     select <include refid="BaseColums"/>
     from wallet_account_recharge
     <where>
+      <if test="schoolCode !=null">
+        school_code=#{schoolCode}
+      </if>
       <if test="userId != null">
         user_id=#{userId}
       </if>

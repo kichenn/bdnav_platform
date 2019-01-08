@@ -67,7 +67,7 @@ public class WechatJsPayController {
             return WrapMapper.error(errors);
         }
         //下单
-        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayJsOrderDto.getUserId(), wxPayJsOrderDto.getMoney(), WechatPayConstants.JS.trade_type,WxPayStatusEnum.NO_PAY.getCode());
+        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayJsOrderDto.getSchoolCode(),wxPayJsOrderDto.getUserId(), wxPayJsOrderDto.getMoney(), WechatPayConstants.JS.trade_type,WxPayStatusEnum.NO_PAY.getCode());
         if (wrapper == null || wrapper.getCode() != 200) {
             return WrapMapper.error("生成订单失败");
         }

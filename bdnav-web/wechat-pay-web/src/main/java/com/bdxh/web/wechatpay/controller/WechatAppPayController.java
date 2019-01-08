@@ -60,14 +60,14 @@ public class WechatAppPayController {
      */
     @RequestMapping("/order")
     @ResponseBody
-    public Object wechatAppPayOrder(@Valid WxPayAppOrderDto wxPayAppOrderDto, BindingResult bindingResult) throws Exception {
+    public Object wechatAppPayOrder(@Valid WxPayAppOrderDto wxPayAppOrderDto, BindingResult bindingResult) {
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         //生成下单记录
-        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayAppOrderDto.getUserId(), wxPayAppOrderDto.getMoney(), WechatPayConstants.APP.trade_type,WxPayStatusEnum.NO_PAY.getCode());
+        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayAppOrderDto.getSchoolCode(),wxPayAppOrderDto.getUserId(), wxPayAppOrderDto.getMoney(), WechatPayConstants.APP.trade_type,WxPayStatusEnum.NO_PAY.getCode());
         if (wrapper==null||wrapper.getCode()!=200){
             return WrapMapper.error("生成订单失败");
         }

@@ -15,6 +15,7 @@
     <modules>
         <module>wallet-provider-feigin</module>
         <module>backend-provider-feigin</module>
+        <module>order-provider-feigin</module>
     </modules>
 
     <dependencies>

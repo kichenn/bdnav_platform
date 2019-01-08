@@ -18,6 +18,12 @@ public class WalletAccount implements Serializable {
     private Long id;
 
     /**
+     * 学校编码
+     */
+    @Column(name = "school_code")
+    private String schoolCode;
+
+    /**
      * 用户id
      */
     @Column(name = "user_id")
@@ -72,6 +78,22 @@ public class WalletAccount implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * 获取学校编码
+     * @return
+     */
+    public String getSchoolCode() {
+        return schoolCode;
+    }
+
+    /**
+     * 设置学校编码
+     * @param schoolCode
+     */
+    public void setSchoolCode(String schoolCode) {
+        this.schoolCode = schoolCode;
     }
 
     /**

@@ -13,9 +13,8 @@ import java.math.BigDecimal;
  **/
 public class WalletControllerFallback implements WalletControllerClient {
 
-
     @Override
-    public Wrapper addRechargeLog(Long userId, BigDecimal amount, String orderType, Byte orderStatus) {
+    public Wrapper addRechargeLog(String schoolCode, Long userId, BigDecimal amount, String orderType, Byte orderStatus) {
         return WrapMapper.error();
     }
 
@@ -26,6 +25,11 @@ public class WalletControllerFallback implements WalletControllerClient {
 
     @Override
     public Wrapper changeRechargeLog(Long orderNo, Byte status, String thirdOrderNo) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper getLogByOrderNo(Long orderNo) {
         return WrapMapper.error();
     }
 

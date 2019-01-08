@@ -18,6 +18,11 @@ public class WxPayAppOrderDto implements Serializable {
     private static final long serialVersionUID = -6622403700115132981L;
 
     /**
+     * 学校编码
+     */
+    private String schoolCode;
+
+    /**
      * 用户id
      */
     @NotNull(message = "用户id不能为空")

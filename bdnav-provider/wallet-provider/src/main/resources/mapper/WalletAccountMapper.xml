@@ -6,6 +6,7 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="account" jdbcType="BIGINT" property="account" />
     <result column="money" jdbcType="DECIMAL" property="money" />
