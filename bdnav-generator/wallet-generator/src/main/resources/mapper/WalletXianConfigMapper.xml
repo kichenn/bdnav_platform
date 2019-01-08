@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.wallet.persistence.WalletXianConfigMapper">
+  <resultMap id="BaseResultMap" type="com.bdxh.wallet.entity.WalletXianConfig">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="app_id" jdbcType="VARCHAR" property="appId" />
+    <result column="secret" jdbcType="VARCHAR" property="secret" />
+    <result column="version" jdbcType="VARCHAR" property="version" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+</mapper>
