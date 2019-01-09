@@ -25,6 +25,7 @@
         <pagehelper.version>1.2.10</pagehelper.version>
         <mapper.version>3.5.2</mapper.version>
         <jdbc.version>5.1.47</jdbc.version>
+        <sharding-jdbc.vsersion>3.1.0</sharding-jdbc.vsersion>
         <lombok.version>1.18.4</lombok.version>
         <guava.version>23.0</guava.version>
         <rocketmq.version>4.3.2</rocketmq.version>
@@ -113,6 +114,23 @@
                 <groupId>mysql</groupId>
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${jdbc.version}</version>
+            </dependency>
+            <!-- sharding-jdbc依赖 -->
+            <dependency>
+                <groupId>io.shardingsphere</groupId>
+                <artifactId>sharding-jdbc</artifactId>
+                <version>${sharding-jdbc.vsersion}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>io.shardingsphere</groupId>
+                <artifactId>sharding-core</artifactId>
+                <version>${sharding-jdbc.vsersion}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.shardingsphere</groupId>
+                <artifactId>sharding-jdbc-orchestration</artifactId>
+                <version>${sharding-jdbc.vsersion}</version>
             </dependency>
             <!-- lombok依赖 -->
             <dependency>

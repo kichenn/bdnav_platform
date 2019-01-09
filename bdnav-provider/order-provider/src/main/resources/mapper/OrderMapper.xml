@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.order.persistence.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.bdxh.order.entity.Order">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="order_no" jdbcType="BIGINT" property="orderNo" />
+    <result column="third_order_no" jdbcType="VARCHAR" property="thirdOrderNo" />
+    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
+    <result column="order_money" jdbcType="DECIMAL" property="orderMoney" />
+    <result column="pay_money" jdbcType="DECIMAL" property="payMoney" />
+    <result column="trade_status" jdbcType="TINYINT" property="tradeStatus" />
+    <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
+    <result column="business_status" jdbcType="TINYINT" property="businessStatus" />
+    <result column="channel_type" jdbcType="TINYINT" property="channelType" />
+    <result column="business_type" jdbcType="TINYINT" property="businessType" />
+    <result column="pay_type" jdbcType="TINYINT" property="payType" />
+    <result column="trade_type" jdbcType="TINYINT" property="tradeType" />
+    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
+    <result column="pay_end_time" jdbcType="TIMESTAMP" property="payEndTime" />
+    <result column="product_ids" jdbcType="VARCHAR" property="productIds" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+
+  <sql id="BaseColums">
+    order_no, third_order_no, school_code, user_id, open_id, total_money, order_money, pay_money, trade_status, pay_status,
+    business_status, channel_type, business_type, pay_type, trade_type, pay_time, pay_end_time, create_date, update_date, remark
+  </sql>
+
+  <select id="getOrderByOrderNo" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="BaseColums"/>
+    from order
+    where order_no=#{orderNo} and school_code=#{schoolCode} and user_id=#{userId}
+  </select>
+
+  <select id="getOrderByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="BaseColums"/>
+    from order
+    <where>
+      school_code=#{schoolCode} and user_id=#{userId}
+    </where>
+  </select>
+
+</mapper>

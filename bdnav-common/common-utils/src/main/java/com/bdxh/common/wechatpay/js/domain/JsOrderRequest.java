@@ -1,4 +1,4 @@
-package com.bdxh.common.wechatpay.js.JSentity;
+package com.bdxh.common.wechatpay.js.domain;
 
 import com.bdxh.common.utils.CDATASectionAdapter;
 import com.bdxh.common.utils.XmlUtils;

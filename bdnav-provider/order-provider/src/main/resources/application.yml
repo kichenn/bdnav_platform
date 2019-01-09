@@ -1,0 +1,7 @@
+server:
+  port: 9014
+spring:
+  application:
+    name: Order-provider-cluster
+  profiles:
+    active: dev

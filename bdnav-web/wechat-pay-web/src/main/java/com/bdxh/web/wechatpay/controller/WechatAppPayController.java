@@ -1,7 +1,7 @@
 package com.bdxh.web.wechatpay.controller;
 
 import com.bdxh.common.base.constant.WechatPayConstants;
-import com.bdxh.common.base.enums.WxPayStatusEnum;
+import com.bdxh.common.base.enums.WxPayCardStatusEnum;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.ObjectUtil;
@@ -67,7 +67,7 @@ public class WechatAppPayController {
             return WrapMapper.error(errors);
         }
         //生成下单记录
-        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayAppOrderDto.getSchoolCode(),wxPayAppOrderDto.getUserId(), wxPayAppOrderDto.getMoney(), WechatPayConstants.APP.trade_type,WxPayStatusEnum.NO_PAY.getCode());
+        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayAppOrderDto.getSchoolCode(),wxPayAppOrderDto.getUserId(), wxPayAppOrderDto.getMoney(), WechatPayConstants.APP.trade_type, WxPayCardStatusEnum.NO_PAY.getCode());
         if (wrapper==null||wrapper.getCode()!=200){
             return WrapMapper.error("生成订单失败");
         }
@@ -155,9 +155,9 @@ public class WechatAppPayController {
         Byte status=wxPayAppOkDto.getStatus();
         Wrapper wrapper=null;
         if(status.intValue()==1){
-            wrapper=walletControllerClient.updatePaying(wxPayAppOkDto.getOrderNo(),WxPayStatusEnum.PAYING.getCode());
+            wrapper=walletControllerClient.updatePaying(wxPayAppOkDto.getOrderNo(), WxPayCardStatusEnum.PAYING.getCode());
         }else if (status.intValue()==2){
-            wrapper=walletControllerClient.updatePaying(wxPayAppOkDto.getOrderNo(),WxPayStatusEnum.PAY_FAIL.getCode());
+            wrapper=walletControllerClient.updatePaying(wxPayAppOkDto.getOrderNo(), WxPayCardStatusEnum.PAY_FAIL.getCode());
         }
         if (wrapper!=null&&wrapper.getCode()==200){
             return WrapMapper.ok("更新支付中状态成功");
@@ -190,10 +190,10 @@ public class WechatAppPayController {
             //处理业务结果
             Byte status=null;
             if (StringUtils.equals("SUCCESS",resultCode)){
-               status= WxPayStatusEnum.PAY_SUCCESS.getCode();
+               status= WxPayCardStatusEnum.PAY_SUCCESS.getCode();
             }
             if (StringUtils.equals("FAIL",resultCode)){
-                status=WxPayStatusEnum.PAY_FAIL.getCode();
+                status= WxPayCardStatusEnum.PAY_FAIL.getCode();
             }
             //更新业务表
             Long orderNo = Long.valueOf(appNoticeResponse.getOut_trade_no());

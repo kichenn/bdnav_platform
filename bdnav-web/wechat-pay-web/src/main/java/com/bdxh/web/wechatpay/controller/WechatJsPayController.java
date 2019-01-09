@@ -4,14 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.constant.WxAuthorizedConstants;
-import com.bdxh.common.base.enums.WxPayStatusEnum;
+import com.bdxh.common.base.enums.WxPayCardStatusEnum;
 import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.common.wechatpay.js.JSentity.JSNoticeResponse;
-import com.bdxh.common.wechatpay.js.JSentity.JSNoticeReturn;
-import com.bdxh.common.wechatpay.js.JSentity.JsOrderRequest;
-import com.bdxh.common.wechatpay.js.JSentity.JsOrderResponse;
+import com.bdxh.common.wechatpay.js.domain.JSNoticeResponse;
+import com.bdxh.common.wechatpay.js.domain.JSNoticeReturn;
+import com.bdxh.common.wechatpay.js.domain.JsOrderRequest;
+import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.wallet.feign.WalletControllerClient;
 import com.bdxh.web.wechatpay.dto.WxPayJsOkDto;
 import com.bdxh.web.wechatpay.dto.WxPayJsOrderDto;
@@ -68,7 +68,7 @@ public class WechatJsPayController {
             return WrapMapper.error(errors);
         }
         //下单
-        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayJsOrderDto.getSchoolCode(),wxPayJsOrderDto.getUserId(), wxPayJsOrderDto.getMoney(), WechatPayConstants.JS.trade_type,WxPayStatusEnum.NO_PAY.getCode());
+        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayJsOrderDto.getSchoolCode(),wxPayJsOrderDto.getUserId(), wxPayJsOrderDto.getMoney(), WechatPayConstants.JS.trade_type, WxPayCardStatusEnum.NO_PAY.getCode());
         if (wrapper == null || wrapper.getCode() != 200) {
             return WrapMapper.error("生成订单失败");
         }
@@ -169,9 +169,9 @@ public class WechatJsPayController {
         Byte status=wxPayJsOkDto.getStatus();
         Wrapper wrapper=null;
         if(status.intValue()==1){
-            wrapper=walletControllerClient.updatePaying(wxPayJsOkDto.getOrderNo(),WxPayStatusEnum.PAYING.getCode());
+            wrapper=walletControllerClient.updatePaying(wxPayJsOkDto.getOrderNo(), WxPayCardStatusEnum.PAYING.getCode());
         }else if (status.intValue()==2){
-            wrapper=walletControllerClient.updatePaying(wxPayJsOkDto.getOrderNo(),WxPayStatusEnum.PAY_FAIL.getCode());
+            wrapper=walletControllerClient.updatePaying(wxPayJsOkDto.getOrderNo(), WxPayCardStatusEnum.PAY_FAIL.getCode());
         }
         if (wrapper!=null&&wrapper.getCode()==200){
             return WrapMapper.ok("更新支付中状态成功");
@@ -203,10 +203,10 @@ public class WechatJsPayController {
             //处理业务结果
             Byte status=null;
             if (StringUtils.equals("SUCCESS",resultCode)){
-                status= WxPayStatusEnum.PAY_SUCCESS.getCode();
+                status= WxPayCardStatusEnum.PAY_SUCCESS.getCode();
             }
             if (StringUtils.equals("FAIL",resultCode)){
-                status=WxPayStatusEnum.PAY_FAIL.getCode();
+                status= WxPayCardStatusEnum.PAY_FAIL.getCode();
             }
             //更新业务表
             Long orderNo = Long.valueOf(jsNoticeResponse.getOut_trade_no());

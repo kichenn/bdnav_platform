@@ -12,12 +12,12 @@
     <artifactId>wallet-provider</artifactId>
 
     <dependencies>
-    <dependency>
-        <groupId>com.bdxh</groupId>
-        <artifactId>wallet-provider-entity</artifactId>
-        <version>1.0-SNAPSHOT</version>
-    </dependency>
-</dependencies>
+        <dependency>
+            <groupId>com.bdxh</groupId>
+            <artifactId>wallet-provider-entity</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>
