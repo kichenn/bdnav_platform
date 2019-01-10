@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Table(name = "order")
+@Table(name = "t_order")
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 2871016506957216726L;
@@ -14,7 +14,6 @@ public class Order implements Serializable {
      * 订单号
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "order_no")
     private Long orderNo;
 
@@ -45,7 +44,8 @@ public class Order implements Serializable {
     /**
      * 姓名
      */
-    private String name;
+    @Column(name = "user_name")
+    private String userName;
 
     /**
      * 学号
@@ -243,17 +243,17 @@ public class Order implements Serializable {
      *
      * @return name - 姓名
      */
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
     /**
      * 设置姓名
      *
-     * @param name 姓名
+     * @param userName 姓名
      */
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     /**

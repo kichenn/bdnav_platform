@@ -2,7 +2,9 @@ package com.bdxh.order.dto;
 
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -21,7 +23,7 @@ public class OrderDto implements Serializable {
     /**
      * 学校编码
      */
-    @NotNull(message = "学校编码不能为空")
+    @NotEmpty(message = "学校编码不能为空")
     private String schoolCode;
 
     /**
@@ -29,6 +31,20 @@ public class OrderDto implements Serializable {
      */
     @NotNull(message = "用户id不能为空")
     private Long userId;
+
+    /**
+     * 姓名
+     */
+    @NotEmpty(message = "姓名不能为空")
+    @Column(name = "user_name")
+    private String userName;
+
+    /**
+     * 学号
+     */
+    @Column(name = "card_number")
+    @NotEmpty(message = "学号不能为空")
+    private String cardNumber;
 
     /**
      * 订单总金额
@@ -56,7 +72,7 @@ public class OrderDto implements Serializable {
      * 业务类型 1 微校付费服务
      */
     @NotNull(message = "业务类型不能为空")
-    private Byte businesType;
+    private Byte businessType;
 
     /**
      * 支付渠道 1 微信支付
@@ -75,6 +91,7 @@ public class OrderDto implements Serializable {
      */
     private String remark;
 
+    @NotNull(message = "交易明细不能为空")
     @Valid
     List<OrderItemDto> items;
 }

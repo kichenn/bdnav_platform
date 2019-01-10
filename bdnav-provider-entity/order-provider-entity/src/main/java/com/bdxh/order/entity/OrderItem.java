@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-@Table(name = "order_item")
+@Table(name = "t_order_item")
 public class OrderItem implements Serializable {
 
     private static final long serialVersionUID = -4996582832745282975L;
@@ -14,7 +14,6 @@ public class OrderItem implements Serializable {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "item_no")
     private Long itemNo;
 

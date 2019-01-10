@@ -1,6 +1,8 @@
 package com.bdxh.order.service.impl;
 
 import com.bdxh.common.base.enums.OrderBusinessStatusEnum;
+import com.bdxh.common.base.enums.OrderPayStatusEnum;
+import com.bdxh.common.base.enums.OrderTradeStatusEnum;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.web.support.BaseService;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description: 订单服务
@@ -43,7 +46,11 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         Order order = BeanMapUtils.map(orderDto, Order.class);
         order.setOrderNo(orderNo);
         order.setBusinessStatus(OrderBusinessStatusEnum.NO_PROCESS.getCode());
+        order.setTradeStatus(OrderTradeStatusEnum.TRADING.getCode());
+        order.setPayStatus(OrderPayStatusEnum.NO_PAY.getCode());
         List<OrderItem> orderItems = BeanMapUtils.mapList(orderDto.getItems(), OrderItem.class);
+        String productIds = orderItems.stream().map(u -> u.getProductItem()).collect(Collectors.joining(","));
+        order.setProductIds(productIds);
         orderMapper.insertSelective(order);
         for (int i=0;i<orderItems.size();i++){
             //明细主键
@@ -75,6 +82,5 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         PageInfo<Order> pageInfo = new PageInfo<>(orders);
         return pageInfo;
     }
-
 
 }

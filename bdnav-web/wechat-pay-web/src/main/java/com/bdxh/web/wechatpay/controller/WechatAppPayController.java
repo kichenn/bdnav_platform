@@ -34,6 +34,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
@@ -60,14 +61,15 @@ public class WechatAppPayController {
      */
     @RequestMapping("/order")
     @ResponseBody
-    public Object wechatAppPayOrder(@Valid WxPayAppOrderDto wxPayAppOrderDto, BindingResult bindingResult) {
+    public Object wechatAppPayOrder(@Valid WxPayAppOrderDto wxPayAppOrderDto, BindingResult bindingResult) throws Exception {
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         //生成下单记录
-        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayAppOrderDto.getSchoolCode(),wxPayAppOrderDto.getUserId(), wxPayAppOrderDto.getMoney(), WechatPayConstants.APP.trade_type, WxPayCardStatusEnum.NO_PAY.getCode());
+        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayAppOrderDto.getSchoolCode(),wxPayAppOrderDto.getUserId(), wxPayAppOrderDto.getUserName(),
+                wxPayAppOrderDto.getCardNumber(), wxPayAppOrderDto.getMoney(), WechatPayConstants.APP.trade_type, WxPayCardStatusEnum.NO_PAY.getCode());
         if (wrapper==null||wrapper.getCode()!=200){
             return WrapMapper.error("生成订单失败");
         }
@@ -104,7 +106,7 @@ public class WechatAppPayController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Charset", "utf-8");
         headers.set("Content-type", "application/xml; charset=utf-8");
-        HttpEntity<String> httpEntity=new HttpEntity<>(requestStr,headers);
+        HttpEntity<byte[]> httpEntity=new HttpEntity<>(requestStr.getBytes("utf-8"),headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange(WechatPayConstants.APP.order_url, HttpMethod.POST, httpEntity, String.class);
         if (!(responseEntity.getStatusCode().value()==200&&responseEntity.hasBody())){
             return WrapMapper.error("微信下单接口调用失败");

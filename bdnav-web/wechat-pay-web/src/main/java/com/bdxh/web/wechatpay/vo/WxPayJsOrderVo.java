@@ -12,17 +12,34 @@ public class WxPayJsOrderVo implements Serializable {
 
     private static final long serialVersionUID = -772080883439371393L;
 
-    //公众账号id
+    /**
+     * 应用id
+     */
     private String appId;
-    //时间戳
+
+    /**
+     * 时间戳
+     */
     private String timeStamp;
-    //订单号
+
+    /**
+     * 随机字符串
+     */
     private String nonceStr;
-    //加密类型
+
+    /**
+     * 加密类型 默认MD5
+     */
     private String signType="MD5";
-    //下单唯一标识
+
+    /**
+     * 下单唯一标识
+     */
     private String packages;
-    //签名
+
+    /**
+     * 签名
+     */
     private String paySign;
 
 }

@@ -40,7 +40,7 @@ public class WalletConfigController {
      * @param bindingResult
      * @return
      */
-    @RequestMapping("saveWalletConfig")
+    @RequestMapping("/saveWalletConfig")
     @ResponseBody
     public Object saveWalletConfig(@Valid WalletConfigDto walletConfigDto, BindingResult bindingResult){
         //检验参数
@@ -64,7 +64,7 @@ public class WalletConfigController {
      * @param schoolCode
      * @return
      */
-    @RequestMapping("queryWalletConfigBySchoolCode")
+    @RequestMapping("/queryWalletConfigBySchoolCode")
     @ResponseBody
     public Object queryWalletConfigBySchoolCode(@RequestParam(name = "schoolCode") String schoolCode){
         try {
@@ -84,7 +84,7 @@ public class WalletConfigController {
      * 分页查询一卡通配置信息
      * @return
      */
-    @RequestMapping("queryWalletConfigPage")
+    @RequestMapping("/queryWalletConfigPage")
     @ResponseBody
     public Object queryWalletConfigPage(@RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
                                         @RequestParam(name = "pageSize", defaultValue = "15") Integer pageSize){

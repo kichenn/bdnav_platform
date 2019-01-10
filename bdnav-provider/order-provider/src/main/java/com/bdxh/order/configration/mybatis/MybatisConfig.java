@@ -52,7 +52,7 @@ public class MybatisConfig {
 		shardingRuleConfig.getTableRuleConfigs().add(getOrderTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getOrderItemTableRuleConfiguration());
 		//级联绑定表，用于优化查询
-		shardingRuleConfig.getBindingTableGroups().add("Order,order_item");
+		shardingRuleConfig.getBindingTableGroups().add("t_order,t_order_item");
 		Map<String, DataSource> dataSourceMap = new HashMap<>();
 		dataSourceMap.put("ds_0", dataSource0);
 		dataSourceMap.put("ds_1", dataSource1);
@@ -80,7 +80,7 @@ public class MybatisConfig {
 		try {
 			ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 			//指定mapper文件的位置
-			sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:com/xy/system/dao/*.xml"));
+			sqlSessionFactoryBean.setMapperLocations(resolver.getResources("classpath:mapper/*.xml"));
 			return sqlSessionFactoryBean.getObject();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,8 +103,8 @@ public class MybatisConfig {
 	@Bean
 	public TableRuleConfiguration getOrderTableRuleConfiguration() {
 		TableRuleConfiguration result = new TableRuleConfiguration();
-		result.setLogicTable("Order");
-		result.setActualDataNodes("ds_${0..1}.t_order_${0..1}");
+		result.setLogicTable("t_order");
+		result.setActualDataNodes("ds_${0..1}.t_order${0..1}");
 		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
 		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("user_id", new TablePreciseShardingAlgorithm(),new TableRangeShardingAlgorithm()));
 		return result;
@@ -113,8 +113,8 @@ public class MybatisConfig {
 	@Bean
 	public TableRuleConfiguration getOrderItemTableRuleConfiguration() {
 		TableRuleConfiguration result = new TableRuleConfiguration();
-		result.setLogicTable("order_item");
-		result.setActualDataNodes("ds_${0..1}.t_order_item_${0..1}");
+		result.setLogicTable("t_order_item");
+		result.setActualDataNodes("ds_${0..1}.t_order_item${0..1}");
 		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
 		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("user_id", new TablePreciseShardingAlgorithm(),new TableRangeShardingAlgorithm()));
 		return result;

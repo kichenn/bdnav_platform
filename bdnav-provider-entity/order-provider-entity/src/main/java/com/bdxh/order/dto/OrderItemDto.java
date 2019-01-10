@@ -2,6 +2,7 @@ package com.bdxh.order.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -46,7 +47,7 @@ public class OrderItemDto implements Serializable {
     /**
      * 单品传本身id 套餐传所有id使用逗号分隔
      */
-    @NotNull(message = "商品条目不能为空")
+    @NotEmpty(message = "商品条目不能为空")
     private String productItem;
 
     /**

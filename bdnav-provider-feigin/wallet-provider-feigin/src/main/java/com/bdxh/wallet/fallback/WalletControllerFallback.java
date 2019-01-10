@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 public class WalletControllerFallback implements WalletControllerClient {
 
     @Override
-    public Wrapper addRechargeLog(String schoolCode, Long userId, BigDecimal amount, String orderType, Byte orderStatus) {
+    public Wrapper addRechargeLog(String schoolCode, Long userId, String userName, String cardNumber ,BigDecimal amount, String orderType, Byte orderStatus) {
         return WrapMapper.error();
     }
 

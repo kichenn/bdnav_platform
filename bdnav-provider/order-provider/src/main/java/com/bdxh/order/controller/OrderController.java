@@ -11,12 +11,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +32,7 @@ import java.util.stream.Collectors;
 @Controller
 @RequestMapping("/order")
 @Slf4j
+@Validated
 public class OrderController {
 
     @Autowired
@@ -60,15 +63,9 @@ public class OrderController {
 
     @RequestMapping("/queryOrder")
     @ResponseBody
-    public Object queryOrder(@RequestParam(name = "schoolCode") @NotNull(message = "学校编码不能为空") String schoolCode,
+    public Object queryOrder(@RequestParam(name = "schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
                              @RequestParam(name = "userId") @NotNull(message = "用户id不能为空") Long userId,
-                             @RequestParam(name = "orderNo") @NotNull(message = "订单号不能为空") Long orderNo,
-                             BindingResult bindingResult){
-        //检验参数
-        if(bindingResult.hasErrors()){
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
+                             @RequestParam(name = "orderNo") @NotNull(message = "订单号不能为空") Long orderNo){
         Map<String,Object> param = new HashMap<>();
         param.put("schoolCode",schoolCode);
         param.put("userId",userId);
@@ -84,8 +81,7 @@ public class OrderController {
 
     @RequestMapping("/queryUserOrder")
     @ResponseBody
-    public Object queryUserOrder(@Valid OrderQueryDto orderDto, BindingResult bindingResult){
-        //检验参数
+    public Object queryUserOrder(@Valid OrderQueryDto orderDto,BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);

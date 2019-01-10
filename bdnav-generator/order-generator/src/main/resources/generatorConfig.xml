@@ -36,8 +36,8 @@
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table tableName="order0" domainObjectName="Order"></table>
-        <table tableName="order_item0" domainObjectName="OrderItem"></table>
+        <table tableName="t_order0" domainObjectName="Order"></table>
+        <table tableName="t_order_item0" domainObjectName="OrderItem"></table>
 
     </context>
 </generatorConfiguration>

@@ -4,8 +4,8 @@ info:
   version: @project.version@
 eureka:
   instance:
-    hostname: wallet-provider1
-    instance-id: wallet-provider:${server.port}
+    hostname: order-provider1
+    instance-id: order-provider:${server.port}
     prefer-ip-address: false
   client:
     serviceUrl:
@@ -23,7 +23,7 @@ spring:
   datasource:
     ds0:
       name : dataSource
-      url : jdbc:mysql://119.23.185.109:3306/bdxh_wallet?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_order0?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
       username : admin
       password : Abc_123456
       type : com.alibaba.druid.pool.DruidDataSource
@@ -44,7 +44,7 @@ spring:
       connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
     ds1:
       name : dataSource
-      url : jdbc:mysql://119.23.185.109:3306/bdxh_wallet?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_order1?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
       username : admin
       password : Abc_123456
       type : com.alibaba.druid.pool.DruidDataSource

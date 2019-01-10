@@ -10,7 +10,7 @@
     <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
     <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
     <result column="order_money" jdbcType="DECIMAL" property="orderMoney" />

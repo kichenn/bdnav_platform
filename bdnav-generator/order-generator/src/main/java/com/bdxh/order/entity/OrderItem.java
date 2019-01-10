@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "order_item")
+@Table(name = "t_order_item")
 public class OrderItem {
     /**
      * 主键

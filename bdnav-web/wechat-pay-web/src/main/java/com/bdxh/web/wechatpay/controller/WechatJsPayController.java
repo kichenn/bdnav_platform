@@ -35,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
@@ -61,92 +62,88 @@ public class WechatJsPayController {
      */
     @RequestMapping("/order")
     @ResponseBody
-    public Object wechatJsPayOrder(@Valid WxPayJsOrderDto wxPayJsOrderDto, BindingResult bindingResult) {
+    public Object wechatJsPayOrder(@Valid WxPayJsOrderDto wxPayJsOrderDto, BindingResult bindingResult) throws Exception {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         //下单
-        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayJsOrderDto.getSchoolCode(),wxPayJsOrderDto.getUserId(), wxPayJsOrderDto.getMoney(), WechatPayConstants.JS.trade_type, WxPayCardStatusEnum.NO_PAY.getCode());
+        Wrapper wrapper = walletControllerClient.addRechargeLog(wxPayJsOrderDto.getSchoolCode(),wxPayJsOrderDto.getUserId(), wxPayJsOrderDto.getUserName(), wxPayJsOrderDto.getCardNumber(),
+                wxPayJsOrderDto.getMoney(), WechatPayConstants.JS.trade_type, WxPayCardStatusEnum.NO_PAY.getCode());
         if (wrapper == null || wrapper.getCode() != 200) {
             return WrapMapper.error("生成订单失败");
         }
-        try {
-            JsOrderRequest jsOrderRequest = new JsOrderRequest();
-            //公众账号id
-            jsOrderRequest.setAppid(WechatPayConstants.JS.app_id);
-            //商户号
-            jsOrderRequest.setMch_id(WechatPayConstants.JS.mch_id);
-            //随机32位字符串
-            jsOrderRequest.setNonce_str(ObjectUtil.generateNonceStr());
-            //商品描述
-            jsOrderRequest.setBody(wxPayJsOrderDto.getProductDetail());
-            //订单号
-            jsOrderRequest.setOut_trade_no(String.valueOf(wrapper.getResult()));
-            //金额
-            String sumfigure = WxPayUtil.getMoney(String.valueOf(wxPayJsOrderDto.getMoney()));
-            jsOrderRequest.setTotal_fee(sumfigure);
-            //终端ip
-            jsOrderRequest.setSpbill_create_ip(wxPayJsOrderDto.getIp());
-            //此路径是微信服务器调用支付结果通知路
-            jsOrderRequest.setNotify_url(WechatPayConstants.JS.notice_url);
-            //支付场景JSAPI
-            jsOrderRequest.setTrade_type(WechatPayConstants.JS.trade_type);
-            //微信唯一标识
-            jsOrderRequest.setOpenid(wxPayJsOrderDto.getOpenid());
-            //生成签名
-            SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(jsOrderRequest);
-            if (paramMap.containsKey("sign")) {
-                paramMap.remove("sign");
-            }
-            String paramStr = BeanToMapUtil.mapToString(paramMap);
-            String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.JS.app_key);
-            jsOrderRequest.setSign(sign);
-            //发送微信下单请求
-            String requestStr = XmlUtils.toXML(jsOrderRequest);
-            RestTemplate restTemplate = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Accept-Charset", "utf-8");
-            headers.set("Content-type", "application/xml; charset=utf-8");
-            HttpEntity<String> httpEntity = new HttpEntity<>(requestStr,headers);
-            ResponseEntity<String> responseEntity = restTemplate.exchange(WechatPayConstants.JS.order_url, HttpMethod.POST, httpEntity, String.class);
-            if (!(responseEntity.getStatusCode().value() == 200 && responseEntity.hasBody())) {
-                return WrapMapper.error("微信下单接口调用失败");
-            }
-            String responseEntityStr =responseEntity.getBody();
-            if (StringUtils.isNotEmpty(responseEntityStr)) {
-                JsOrderResponse jsOrderResponse = XmlUtils.fromXML(responseEntityStr, JsOrderResponse.class);
-                //下单成功
-                if (StringUtils.equals("SUCCESS", jsOrderResponse.getReturn_code()) && StringUtils.equals("SUCCESS", jsOrderResponse.getResult_code())) {
-                    //验签
-                    SortedMap<String, String> responseMap = BeanToMapUtil.objectToTreeMap(jsOrderResponse);
-                    if (responseMap.containsKey("sign")) {
-                        responseMap.remove("sign");
-                    }
-                    String responseStr = BeanToMapUtil.mapToString(responseMap);
-                    String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.JS.app_key);
-                    if (!StringUtils.equalsIgnoreCase(responseSign, jsOrderResponse.getSign())) {
-                        return WrapMapper.error("微信返回数据验签失败");
-                    }
-                    //返回下单结果返给前台(获取JsApi支付所需的参数)
-                    WxPayJsOrderVo wxPayJsOrderVo = new WxPayJsOrderVo();
-                    wxPayJsOrderVo.setAppId(jsOrderResponse.getAppid());
-                    String timeStamp = String.valueOf(new Date().getTime()).substring(0, 10);
-                    wxPayJsOrderVo.setTimeStamp(timeStamp);
-                    wxPayJsOrderVo.setNonceStr(jsOrderResponse.getNonce_str());
-                    wxPayJsOrderVo.setPackages("prepay_id=" + jsOrderResponse.getPrepay_id());
-                    SortedMap<String, String> sortedMap = BeanToMapUtil.objectToTreeMap(wxPayJsOrderVo);
-                    String sing = MD5.md5(BeanToMapUtil.mapToString(sortedMap)+"&key="+WechatPayConstants.JS.app_key);
-                    wxPayJsOrderVo.setPaySign(sing);
-                    return WrapMapper.ok(wxPayJsOrderVo);
-                } else {
-                    return WrapMapper.error("微信下单接口返回失败");
+        JsOrderRequest jsOrderRequest = new JsOrderRequest();
+        //公众账号id
+        jsOrderRequest.setAppid(WechatPayConstants.JS.app_id);
+        //商户号
+        jsOrderRequest.setMch_id(WechatPayConstants.JS.mch_id);
+        //随机32位字符串
+        jsOrderRequest.setNonce_str(ObjectUtil.generateNonceStr());
+        //商品描述
+        jsOrderRequest.setBody(wxPayJsOrderDto.getProductDetail());
+        //订单号
+        jsOrderRequest.setOut_trade_no(String.valueOf(wrapper.getResult()));
+        //金额
+        String sumfigure = WxPayUtil.getMoney(String.valueOf(wxPayJsOrderDto.getMoney()));
+        jsOrderRequest.setTotal_fee(sumfigure);
+        //终端ip
+        jsOrderRequest.setSpbill_create_ip(wxPayJsOrderDto.getIp());
+        //此路径是微信服务器调用支付结果通知路
+        jsOrderRequest.setNotify_url(WechatPayConstants.JS.notice_url);
+        //支付场景JSAPI
+        jsOrderRequest.setTrade_type(WechatPayConstants.JS.trade_type);
+        //微信唯一标识
+        jsOrderRequest.setOpenid(wxPayJsOrderDto.getOpenid());
+        //生成签名
+        SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(jsOrderRequest);
+        if (paramMap.containsKey("sign")) {
+            paramMap.remove("sign");
+        }
+        String paramStr = BeanToMapUtil.mapToString(paramMap);
+        String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.JS.app_key);
+        jsOrderRequest.setSign(sign);
+        //发送微信下单请求
+        String requestStr = XmlUtils.toXML(jsOrderRequest);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Accept-Charset", "utf-8");
+        headers.set("Content-type", "application/xml; charset=utf-8");
+        HttpEntity<byte[]> httpEntity = new HttpEntity<>(requestStr.getBytes("utf-8"),headers);
+        ResponseEntity<String> responseEntity = restTemplate.exchange(WechatPayConstants.JS.order_url, HttpMethod.POST, httpEntity, String.class);
+        if (!(responseEntity.getStatusCode().value() == 200 && responseEntity.hasBody())) {
+            return WrapMapper.error("微信下单接口调用失败");
+        }
+        String responseEntityStr =responseEntity.getBody();
+        if (StringUtils.isNotEmpty(responseEntityStr)) {
+            JsOrderResponse jsOrderResponse = XmlUtils.fromXML(responseEntityStr, JsOrderResponse.class);
+            //下单成功
+            if (StringUtils.equals("SUCCESS", jsOrderResponse.getReturn_code()) && StringUtils.equals("SUCCESS", jsOrderResponse.getResult_code())) {
+                //验签
+                SortedMap<String, String> responseMap = BeanToMapUtil.objectToTreeMap(jsOrderResponse);
+                if (responseMap.containsKey("sign")) {
+                    responseMap.remove("sign");
                 }
+                String responseStr = BeanToMapUtil.mapToString(responseMap);
+                String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.JS.app_key);
+                if (!StringUtils.equalsIgnoreCase(responseSign, jsOrderResponse.getSign())) {
+                    return WrapMapper.error("微信返回数据验签失败");
+                }
+                //返回下单结果返给前台(获取JsApi支付所需的参数)
+                WxPayJsOrderVo wxPayJsOrderVo = new WxPayJsOrderVo();
+                wxPayJsOrderVo.setAppId(jsOrderResponse.getAppid());
+                String timeStamp = String.valueOf(new Date().getTime()).substring(0, 10);
+                wxPayJsOrderVo.setTimeStamp(timeStamp);
+                wxPayJsOrderVo.setNonceStr(jsOrderResponse.getNonce_str());
+                wxPayJsOrderVo.setPackages("prepay_id=" + jsOrderResponse.getPrepay_id());
+                SortedMap<String, String> sortedMap = BeanToMapUtil.objectToTreeMap(wxPayJsOrderVo);
+                String sing = MD5.md5(BeanToMapUtil.mapToString(sortedMap)+"&key="+WechatPayConstants.JS.app_key);
+                wxPayJsOrderVo.setPaySign(sing);
+                return WrapMapper.ok(wxPayJsOrderVo);
+            } else {
+                return WrapMapper.error("微信下单接口返回失败");
             }
-            return WrapMapper.error("支付订单接口异常");
-        } catch (Exception e) {
-            e.printStackTrace();
         }
         return WrapMapper.error("支付订单接口异常");
     }

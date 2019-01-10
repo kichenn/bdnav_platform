@@ -3,6 +3,7 @@ package com.bdxh.order.dto;
 import com.bdxh.common.base.page.Query;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -16,13 +17,13 @@ public class OrderQueryDto extends Query {
     /**
      * 学校编码
      */
-    @NotNull(message = "学校编码不能为空")
+    @NotEmpty(message = "学校编码不能为空")
     private String schoolCode;
 
     /**
      * 用户id
      */
     @NotNull(message = "用户id不能为空")
-    private String userId;
+    private Long userId;
 
 }

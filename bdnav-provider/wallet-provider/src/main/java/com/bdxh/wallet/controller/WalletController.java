@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +22,6 @@ import java.util.Map;
 @Controller
 @RequestMapping("/wallet")
 @Slf4j
-@Valid
 public class WalletController {
 
     @Autowired
@@ -41,15 +39,21 @@ public class WalletController {
     @RequestMapping("/addRechargeLog")
     @ResponseBody
     public Object addRechargeLog(@RequestParam(name="schoolCode") String schoolCode, @RequestParam(name="userId") Long userId,
+                                 @RequestParam(name="userName") String userName, @RequestParam(name="cardNumber") String cardNumber,
                                  @RequestParam(name="amount") BigDecimal amount, @RequestParam("orderType") String orderType,
-                                 @RequestParam(name = "orderStatus",defaultValue = "0") Byte orderStatus){
+                                 @RequestParam(name = "orderStatus",defaultValue = "1") Byte orderStatus){
         try {
-            Preconditions.checkArgument(userId!=null,"用户信息不能为空");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(schoolCode),"学校编码不能为空");
+            Preconditions.checkArgument(userId!=null,"用户id不能为空");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(userName),"姓名不能为空");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(cardNumber),"学号不能为空");
             Preconditions.checkArgument(amount!=null&&amount.doubleValue()>0,"金额输入不正确");
             Preconditions.checkArgument(StringUtils.isNotEmpty(orderType),"订单类型不能为空");
             WalletAccountRecharge recharge=new WalletAccountRecharge();
             recharge.setSchoolCode(schoolCode);
             recharge.setUserId(userId);
+            recharge.setUserName(userName);
+            recharge.setCardNumber(cardNumber);
             Long orderNo = snowflakeIdWorker.nextId();
             recharge.setOrderNo(orderNo);
             recharge.setRechargeMoney(amount);
@@ -127,6 +131,7 @@ public class WalletController {
         try {
             String schoolCode=request.getParameter("schoolCode");
             String userId=request.getParameter("userId");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(schoolCode),"学校编码不能为空");
             Preconditions.checkArgument(StringUtils.isNotEmpty(userId),"用户id不能为空");
             String pageNum = request.getParameter("pageNum");
             String pageSize = request.getParameter("pageSize");
@@ -166,7 +171,7 @@ public class WalletController {
     }
 
     /**
-     * 根据订单号查询充值记录
+     * 根据订单号修改支付状态中
      * @param
      * @return
      */

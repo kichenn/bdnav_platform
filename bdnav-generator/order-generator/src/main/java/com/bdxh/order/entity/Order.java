@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import javax.persistence.*;
 
-@Table(name = "order")
+@Table(name = "t_order")
 public class Order {
     /**
      * 订单号
@@ -40,7 +40,8 @@ public class Order {
     /**
      * 姓名
      */
-    private String name;
+    @Column(name = "user_name")
+    private String userName;
 
     /**
      * 学号
@@ -236,19 +237,19 @@ public class Order {
     /**
      * 获取姓名
      *
-     * @return name - 姓名
+     * @return user_name - 姓名
      */
-    public String getName() {
-        return name;
+    public String getUserName() {
+        return userName;
     }
 
     /**
      * 设置姓名
      *
-     * @param name 姓名
+     * @param userName 姓名
      */
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setUserName(String userName) {
+        this.userName = userName == null ? null : userName.trim();
     }
 
     /**

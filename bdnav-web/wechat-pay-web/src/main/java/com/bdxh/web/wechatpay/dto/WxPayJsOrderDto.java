@@ -3,6 +3,7 @@ package com.bdxh.web.wechatpay.dto;
 import lombok.Data;
 
 import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -19,6 +20,7 @@ public class WxPayJsOrderDto implements Serializable {
     /**
      * 学校编码
      */
+    @NotEmpty(message = "学校编码不能为空")
     private String schoolCode;
 
     /**
@@ -26,6 +28,18 @@ public class WxPayJsOrderDto implements Serializable {
      */
     @NotNull(message = "用户id不能为空")
     private Long userId;
+
+    /**
+     * 姓名
+     */
+    @NotEmpty(message = "姓名不能为空")
+    private String userName;
+
+    /**
+     * 学号
+     */
+    @NotEmpty(message = "学号不能为空")
+    private String cardNumber;
 
     /**
      * 充值金额
@@ -37,19 +51,19 @@ public class WxPayJsOrderDto implements Serializable {
     /**
      * 商品描述
      */
-    @NotNull(message = "商品描述不能为空")
+    @NotEmpty(message = "商品描述不能为空")
     private String productDetail;
 
     /**
      * 终端ip
      */
-    @NotNull(message = "客户端ip不能为空")
+    @NotEmpty(message = "客户端ip不能为空")
     private String ip;
 
     /**
      * 微信唯一标识
      */
-    @NotNull(message = "微信openid不能为空")
+    @NotEmpty(message = "微信openid不能为空")
     private String openid;
 
     /**

@@ -30,8 +30,9 @@ public interface WalletControllerClient {
     @RequestMapping("/addRechargeLog")
     @ResponseBody
     Wrapper addRechargeLog(@RequestParam(name="schoolCode") String schoolCode, @RequestParam(name = "userId") Long userId,
+                           @RequestParam(name="userName") String userName, @RequestParam(name="cardNumber") String cardNumber,
                            @RequestParam(name = "amount") BigDecimal amount, @RequestParam("orderType") String orderType,
-                           @RequestParam(name = "orderStatus",defaultValue = "0") Byte orderStatus);
+                           @RequestParam(name = "orderStatus",defaultValue = "1") Byte orderStatus);
 
     /**
      * 更改用户充值记录状态
