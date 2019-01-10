@@ -2,6 +2,7 @@ package com.bdxh.wallet.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.wallet.entity.WalletXianConfig;
 import com.bdxh.wallet.feign.WalletConfigControllerClient;
 import java.util.Map;
 
@@ -18,7 +19,7 @@ public class WalletConfigControllerFallback implements WalletConfigControllerCli
     }
 
     @Override
-    public Wrapper queryWalletConfigBySchoolCode(String schoolCode) {
+    public Wrapper<WalletXianConfig> queryWalletConfigBySchoolCode(String schoolCode) {
         return WrapMapper.error();
     }
 

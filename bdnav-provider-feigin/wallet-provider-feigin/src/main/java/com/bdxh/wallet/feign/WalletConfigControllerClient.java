@@ -2,6 +2,7 @@ package com.bdxh.wallet.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.WalletConfigDto;
+import com.bdxh.wallet.entity.WalletXianConfig;
 import com.bdxh.wallet.fallback.WalletConfigControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public interface WalletConfigControllerClient {
      */
     @RequestMapping("queryWalletConfigBySchoolCode")
     @ResponseBody
-    Wrapper queryWalletConfigBySchoolCode(@RequestParam(name = "schoolCode") String schoolCode);
+    Wrapper<WalletXianConfig> queryWalletConfigBySchoolCode(@RequestParam(name = "schoolCode") String schoolCode);
 
     /**
      * 分页查询一卡通配置信息
