@@ -8,6 +8,8 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
     <result column="account_id" jdbcType="BIGINT" property="accountId" />
     <result column="order_no" jdbcType="BIGINT" property="orderNo" />
     <result column="order_type" jdbcType="VARCHAR" property="orderType" />
@@ -21,7 +23,7 @@
   </resultMap>
 
   <sql id="BaseColums">
-    id, user_id, account_id, order_no, order_type, third_order_no, acceptseq, status, recharge_money, pay_time, create_date, update_date
+    id, school_code, user_id, name, card_number, account_id, order_no, order_type, third_order_no, acceptseq, status, recharge_money, pay_time, create_date, update_date
   </sql>
 
   <select id="getByOrderNo" parameterType="java.lang.Long" resultMap="BaseResultMap">

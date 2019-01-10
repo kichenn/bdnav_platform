@@ -10,6 +10,8 @@
     <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
     <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
     <result column="order_money" jdbcType="DECIMAL" property="orderMoney" />
     <result column="pay_money" jdbcType="DECIMAL" property="payMoney" />
@@ -29,8 +31,8 @@
   </resultMap>
 
   <sql id="BaseColums">
-    order_no, third_order_no, school_code, user_id, open_id, total_money, order_money, pay_money, trade_status, pay_status,
-    business_status, channel_type, business_type, pay_type, trade_type, pay_time, pay_end_time, create_date, update_date, remark
+    order_no, third_order_no, school_code, user_id, open_id, name, card_number, total_money, order_money, pay_money, trade_status,
+    pay_status, business_status, channel_type, business_type, pay_type, trade_type, pay_time, pay_end_time, product_ids, create_date, update_date, remark
   </sql>
 
   <select id="getOrderByOrderNo" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -45,6 +47,7 @@
     <where>
       school_code=#{schoolCode} and user_id=#{userId}
     </where>
+    order by create_date desc
   </select>
 
 </mapper>

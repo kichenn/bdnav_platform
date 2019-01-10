@@ -8,6 +8,8 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
     <result column="account" jdbcType="BIGINT" property="account" />
     <result column="money" jdbcType="DECIMAL" property="money" />
     <result column="avalible_money" jdbcType="DECIMAL" property="avalibleMoney" />

@@ -25,6 +25,17 @@ public class WalletAccount {
     private Long userId;
 
     /**
+     * 姓名
+     */
+    private String name;
+
+    /**
+     * 学号
+     */
+    @Column(name = "card_number")
+    private String cardNumber;
+
+    /**
      * 钱包账户
      */
     private Long account;
@@ -109,6 +120,42 @@ public class WalletAccount {
      */
     public void setUserId(Long userId) {
         this.userId = userId;
+    }
+
+    /**
+     * 获取姓名
+     *
+     * @return name - 姓名
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置姓名
+     *
+     * @param name 姓名
+     */
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取学号
+     *
+     * @return card_number - 学号
+     */
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    /**
+     * 设置学号
+     *
+     * @param cardNumber 学号
+     */
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber == null ? null : cardNumber.trim();
     }
 
     /**

@@ -8,7 +8,7 @@ import java.util.Date;
 @Table(name = "order")
 public class Order implements Serializable {
 
-    private static final long serialVersionUID = 3703007792332878294L;
+    private static final long serialVersionUID = 2871016506957216726L;
 
     /**
      * 订单号
@@ -41,6 +41,17 @@ public class Order implements Serializable {
      */
     @Column(name = "open_id")
     private String openId;
+
+    /**
+     * 姓名
+     */
+    private String name;
+
+    /**
+     * 学号
+     */
+    @Column(name = "card_number")
+    private String cardNumber;
 
     /**
      * 订单总金额
@@ -225,6 +236,42 @@ public class Order implements Serializable {
      */
     public void setOpenId(String openId) {
         this.openId = openId == null ? null : openId.trim();
+    }
+
+    /**
+     * 获取姓名
+     *
+     * @return name - 姓名
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * 设置姓名
+     *
+     * @param name 姓名
+     */
+    public void setName(String name) {
+        this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取学号
+     *
+     * @return card_number - 学号
+     */
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    /**
+     * 设置学号
+     *
+     * @param cardNumber 学号
+     */
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber == null ? null : cardNumber.trim();
     }
 
     /**
