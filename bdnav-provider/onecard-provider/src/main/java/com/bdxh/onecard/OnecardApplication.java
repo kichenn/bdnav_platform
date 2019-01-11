@@ -1,4 +1,4 @@
-package com.bdxh.xiancard;
+package com.bdxh.onecard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -9,9 +9,9 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * @description: 西安一卡通启动类
+ * @description: 一卡通服务启动类
  * @author: xuyuan
- * @create: 2019-01-08 17:22
+ * @create: 2019-01-10 19:14
  **/
 @SpringBootApplication
 @ServletComponentScan
@@ -19,8 +19,8 @@ import org.springframework.context.annotation.ComponentScan;
 @ComponentScan(basePackages = {"com.bdxh"})
 @EnableFeignClients(basePackages = {"com.bdxh"})
 @EnableCircuitBreaker
-public class XianCardApplication {
+public class OnecardApplication {
     public static void main(String[] args) {
-        SpringApplication.run(XianCardApplication.class,args);
+        SpringApplication.run(OnecardApplication.class,args);
     }
 }

@@ -13,7 +13,6 @@
     <packaging>pom</packaging>
     <modules>
         <module>wechat-pay-web</module>
-        <module>card-xian-web</module>
     </modules>
 
     <dependencies>

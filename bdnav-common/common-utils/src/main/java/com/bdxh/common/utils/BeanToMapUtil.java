@@ -124,6 +124,25 @@ public class BeanToMapUtil {
 		return result;
 	}
 
+	/**
+	 * 将map转换成排序参数
+	 * @param map
+	 * @return
+	 */
+	public static String mapToValueString(SortedMap<String, String> map){
+		if (map==null||map.isEmpty()){
+			return null;
+		}
+		StringBuilder sb=new StringBuilder();
+		Set<String> keys = map.keySet();
+		for (String key:keys){
+			String value=map.get(key);
+			sb.append(value);
+		}
+		String result=sb.toString();
+		return result;
+	}
+
 	 public static Object mapToObjectIns(Map<String, Object> map, Class<?> beanClass) throws Exception {
         if (map == null)   
             return null;

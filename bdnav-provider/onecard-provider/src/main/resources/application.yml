@@ -1,7 +1,7 @@
 server:
-  port: 9013
+  port: 9015
 spring:
   application:
-    name: xian-card-cluster
+    name: onecard-provider-cluster
   profiles:
     active: dev
