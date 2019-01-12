@@ -4,3 +4,27 @@ eureka:
     fetch-registry: true #表明自己是消费者，只需要检索服务
     serviceUrl:
       defaultZone: http://eureka-server1:9001/eureka/,http://eureka-server2:9002/eureka/,http://eureka-server3:9003/eureka/
+#使用httpclient作为feign连接池
+feign:
+  hystrix:
+    enabled: false
+  httpclient:
+    enabled: true
+    connection-timeout: 10000
+    connection-timer-repeat: 20000
+    max-connections: 5000
+    max-connections-per-route: 500
+  okhttp:
+    enabled: false
+  compression:
+    request:
+      enabled: true
+      min-request-size: 512
+    response:
+      enabled: true
+#关闭懒加载
+ribbon:
+  eager-load:
+    enabled: true
+  ReadTimeout: 5000
+  ConnectTimeout: 15000
