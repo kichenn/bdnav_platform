@@ -15,6 +15,7 @@ import java.math.BigDecimal;
  * @author: xuyuan
  * @create: 2018-12-27 17:18
  **/
+@Service
 @FeignClient(value = "wallet-provider-cluster",fallback= WalletControllerFallback.class)
 public interface WalletControllerClient {
 

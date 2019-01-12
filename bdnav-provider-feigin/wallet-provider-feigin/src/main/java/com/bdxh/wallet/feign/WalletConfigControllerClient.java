@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.entity.WalletXianConfig;
 import com.bdxh.wallet.fallback.WalletConfigControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -14,6 +15,7 @@ import java.util.Map;
  * @author: xuyuan
  * @create: 2019-01-08 14:43
  **/
+@Service
 @FeignClient(value = "wallet-provider-cluster",fallback= WalletConfigControllerFallback.class)
 public interface WalletConfigControllerClient {
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
  * @author: xuyuan
  * @create: 2019-01-11 18:42
  **/
+@Service
 @FeignClient(value = "onecard-provider-cluster",fallback= XianCardControllerFallback.class)
 public interface XianCardControllerClient {
 

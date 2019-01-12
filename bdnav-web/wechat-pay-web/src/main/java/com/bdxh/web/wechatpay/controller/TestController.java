@@ -70,6 +70,7 @@ public class TestController {
             return WrapMapper.error(errors);
         }
         try {
+            Thread.sleep(2000);
             Wrapper wrapper = xianCardControllerClient.queryBalance(xianQueryBlanceDto);
             Preconditions.checkArgument(wrapper.getCode() == 200, wrapper.getMessage());
             return WrapMapper.ok(wrapper.getResult());
