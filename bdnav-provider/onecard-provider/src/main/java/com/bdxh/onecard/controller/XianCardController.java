@@ -45,7 +45,7 @@ public class XianCardController {
 
 
     /**
-     * 一卡通身份验证余额查询接口
+     * 一卡通用户同步接口
      * @return
      */
     @RequestMapping(value = "/syscUser", method = RequestMethod.POST)
@@ -148,7 +148,7 @@ public class XianCardController {
     /**
      * 一卡通充值接口
      */
-    @RequestMapping("/addBalance")
+    @RequestMapping(value = "/addBalance", method = RequestMethod.POST)
     @ResponseBody
     public Object addBalance(@Valid @RequestBody XianAddBlanceDto xianAddBlanceDto, BindingResult bindingResult) {
         //检验参数
