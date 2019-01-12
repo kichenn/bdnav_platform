@@ -13,6 +13,7 @@ import java.util.Map;
  * @author: xuyuan
  * @create: 2019-01-08 15:09
  **/
+@Component
 public class WalletConfigControllerFallback implements WalletConfigControllerClient {
 
     @Override

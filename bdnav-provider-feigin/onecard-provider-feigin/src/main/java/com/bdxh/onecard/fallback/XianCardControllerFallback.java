@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
  * @author: xuyuan
  * @create: 2019-01-11 18:42
  **/
+@Component
 public class XianCardControllerFallback implements XianCardControllerClient {
 
     @Override

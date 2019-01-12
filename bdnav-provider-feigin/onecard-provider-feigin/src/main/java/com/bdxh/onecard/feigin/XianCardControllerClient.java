@@ -15,16 +15,14 @@ import org.springframework.web.bind.annotation.*;
  * @author: xuyuan
  * @create: 2019-01-11 18:42
  **/
-@Service
 @FeignClient(value = "onecard-provider-cluster",fallback= XianCardControllerFallback.class)
-@RequestMapping("/xianCard")
 public interface XianCardControllerClient {
 
     /**
      * 一卡通用户同步接口
      * @return
      */
-    @RequestMapping(value = "/syscUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/xianCard/syscUser", method = RequestMethod.POST)
     @ResponseBody
     Wrapper syscUser(@RequestBody XianSyscDataDto xianSyscDataDto);
 
@@ -32,28 +30,28 @@ public interface XianCardControllerClient {
      * 一卡通身份验证余额查询接口
      * @return
      */
-    @RequestMapping(value = "/queryBalance", method = RequestMethod.POST)
+    @RequestMapping(value = "/xianCard/queryBalance", method = RequestMethod.POST)
     @ResponseBody
     Wrapper queryBalance(@RequestBody XianQueryBlanceDto xianQueryBlanceDto);
 
     /**
      * 一卡通充值接口
      */
-    @RequestMapping(value = "/addBalance", method = RequestMethod.POST)
+    @RequestMapping(value = "/xianCard/addBalance", method = RequestMethod.POST)
     @ResponseBody
     Wrapper addBalance(@RequestBody XianAddBlanceDto xianAddBlanceDto);
 
     /**
      * 消费记录查询
      */
-    @RequestMapping(value = "/queryTradeList", method = RequestMethod.POST)
+    @RequestMapping(value = "/xianCard/queryTradeList", method = RequestMethod.POST)
     @ResponseBody
     Wrapper queryTradeList(@RequestBody XianQueryConsListDto xianQueryConsListDto);
 
     /**
      * 充值结果查询
      */
-    @RequestMapping(value = "/queryAddResult", method = RequestMethod.POST)
+    @RequestMapping(value = "/xianCard/queryAddResult", method = RequestMethod.POST)
     @ResponseBody
     Wrapper queryAddResult(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam(name = "orderNo") String orderNo);
 

@@ -15,9 +15,7 @@ import java.math.BigDecimal;
  * @author: xuyuan
  * @create: 2018-12-27 17:18
  **/
-@Service
 @FeignClient(value = "wallet-provider-cluster",fallback= WalletControllerFallback.class)
-@RequestMapping("/wallet")
 public interface WalletControllerClient {
 
     /**
@@ -27,7 +25,7 @@ public interface WalletControllerClient {
      * @param amount
      * @return
      */
-    @RequestMapping("/addRechargeLog")
+    @RequestMapping("/wallet/addRechargeLog")
     @ResponseBody
     Wrapper addRechargeLog(@RequestParam(name="schoolCode") String schoolCode, @RequestParam(name = "userId") Long userId,
                            @RequestParam(name="userName") String userName, @RequestParam(name="cardNumber") String cardNumber,
@@ -40,7 +38,7 @@ public interface WalletControllerClient {
      * @param orderNo
      * @return
      */
-    @RequestMapping("/changeRechargeLogStatus")
+    @RequestMapping("/wallet/changeRechargeLogStatus")
     @ResponseBody
     Wrapper changeRechargeLog(@RequestParam(name = "orderNo") Long orderNo, @RequestParam(name = "status") Byte status);
 
@@ -49,7 +47,7 @@ public interface WalletControllerClient {
      * @param orderNo
      * @return
      */
-    @RequestMapping("/changeRechargeLog")
+    @RequestMapping("/wallet/changeRechargeLog")
     @ResponseBody
     Wrapper changeRechargeLog(@RequestParam(name="orderNo") Long orderNo,@RequestParam(name="status") Byte status,
                                     @RequestParam(name="thirdOrderNo") String thirdOrderNo);
@@ -59,7 +57,7 @@ public interface WalletControllerClient {
      * @param
      * @return
      */
-    @RequestMapping("/getLogByOrderNo")
+    @RequestMapping("/wallet/getLogByOrderNo")
     @ResponseBody
     Wrapper getLogByOrderNo(@RequestParam("orderNo") Long orderNo);
 
@@ -68,7 +66,7 @@ public interface WalletControllerClient {
      * @param
      * @return
      */
-    @RequestMapping("/updatePaying")
+    @RequestMapping("/wallet/updatePaying")
     @ResponseBody
     Wrapper updatePaying(@RequestParam("orderNo") Long orderNo,@RequestParam("status") Byte status);
 

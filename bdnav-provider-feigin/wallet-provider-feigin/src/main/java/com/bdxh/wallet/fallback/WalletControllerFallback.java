@@ -12,6 +12,7 @@ import java.math.BigDecimal;
  * @author: xuyuan
  * @create: 2018-12-27 17:22
  **/
+@Component
 public class WalletControllerFallback implements WalletControllerClient {
 
     @Override
