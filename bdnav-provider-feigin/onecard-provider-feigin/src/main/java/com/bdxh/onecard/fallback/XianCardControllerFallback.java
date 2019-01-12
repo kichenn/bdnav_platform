@@ -7,6 +7,7 @@ import com.bdxh.onecard.dto.XianQueryBlanceDto;
 import com.bdxh.onecard.dto.XianQueryConsListDto;
 import com.bdxh.onecard.dto.XianSyscDataDto;
 import com.bdxh.onecard.feigin.XianCardControllerClient;
+import org.springframework.stereotype.Component;
 
 /**
  * @description: 西安一卡通feigin客户端

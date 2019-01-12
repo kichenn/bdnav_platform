@@ -3,6 +3,7 @@ package com.bdxh.wallet.fallback;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.feign.WalletControllerClient;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 

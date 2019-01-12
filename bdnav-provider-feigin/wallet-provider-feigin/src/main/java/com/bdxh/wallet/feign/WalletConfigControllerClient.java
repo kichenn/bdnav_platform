@@ -1,7 +1,6 @@
 package com.bdxh.wallet.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.wallet.dto.WalletConfigDto;
 import com.bdxh.wallet.entity.WalletXianConfig;
 import com.bdxh.wallet.fallback.WalletConfigControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import java.util.Map;
 
 /**
@@ -27,7 +25,7 @@ public interface WalletConfigControllerClient {
      * @param param
      * @return
      */
-    @RequestMapping("saveWalletConfig")
+    @RequestMapping("/saveWalletConfig")
     @ResponseBody
     Wrapper saveWalletConfig(@RequestParam Map<String,Object> param);
 
@@ -36,7 +34,7 @@ public interface WalletConfigControllerClient {
      * @param schoolCode
      * @return
      */
-    @RequestMapping("queryWalletConfigBySchoolCode")
+    @RequestMapping("/queryWalletConfigBySchoolCode")
     @ResponseBody
     Wrapper<WalletXianConfig> queryWalletConfigBySchoolCode(@RequestParam(name = "schoolCode") String schoolCode);
 
@@ -44,7 +42,7 @@ public interface WalletConfigControllerClient {
      * 分页查询一卡通配置信息
      * @return
      */
-    @RequestMapping("queryWalletConfigPage")
+    @RequestMapping("/queryWalletConfigPage")
     @ResponseBody
     Wrapper queryWalletConfigPage(@RequestParam(name = "pageNum") Integer pageNum, @RequestParam(name = "pageSize") Integer pageSize);
 
