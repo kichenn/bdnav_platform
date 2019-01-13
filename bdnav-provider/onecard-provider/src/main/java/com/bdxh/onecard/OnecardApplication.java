@@ -16,7 +16,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ServletComponentScan
 @EnableEurekaClient
-@ComponentScan(basePackages = {"com.bdxh"})
 @EnableFeignClients(basePackages = {"com.bdxh"})
 @EnableCircuitBreaker
 public class OnecardApplication {
