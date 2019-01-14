@@ -6,7 +6,7 @@ import com.bdxh.onecard.dto.XianAddBlanceDto;
 import com.bdxh.onecard.dto.XianQueryBlanceDto;
 import com.bdxh.onecard.dto.XianQueryConsListDto;
 import com.bdxh.onecard.dto.XianSyscDataDto;
-import com.bdxh.onecard.feigin.XianCardControllerClient;
+import com.bdxh.onecard.feign.XianCardControllerClient;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

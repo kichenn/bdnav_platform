@@ -6,7 +6,6 @@ import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.constant.WxAuthorizedConstants;
 import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.wechatpay.js.domain.JSNoticeResponse;
 import com.bdxh.common.wechatpay.js.domain.JSNoticeReturn;
 import com.bdxh.common.wechatpay.js.domain.JsOrderRequest;
 import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
@@ -20,12 +19,13 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -44,8 +44,7 @@ import java.util.stream.Collectors;
 public class WechatJsPayController {
 
     /**
-     * JSAPI统一下单接口
-     *
+     * JS统一下单接口
      * @param wxPayJsOrderDto
      * @return
      * @throws Exception
@@ -89,6 +88,8 @@ public class WechatJsPayController {
         jsOrderRequest.setSign(sign);
         //发送微信下单请求
         String requestStr = XmlUtils.toXML(jsOrderRequest);
+        //输出微信请求串
+        log.info(requestStr);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Charset", "utf-8");
@@ -123,28 +124,30 @@ public class WechatJsPayController {
     }
 
     /**
-     * 用户充值js回调接口
-     * @param jsNoticeResponse
+     * 用户充值JS回调接口
+     * @param request
      * @param response
      */
     @RequestMapping("/notice")
-    public void wechatJsPayNotice(@RequestBody JSNoticeResponse jsNoticeResponse, HttpServletResponse response) {
+    public void wechatJsPayNotice(HttpServletRequest request, HttpServletResponse response) {
         try {
-            Preconditions.checkNotNull(jsNoticeResponse,"回调内容为空");
-            Preconditions.checkArgument(StringUtils.equals("SUCCESS",jsNoticeResponse.getReturn_code()),"回调状态为失败");
-            //获取业务结果
-            String resultCode=jsNoticeResponse.getResult_code();
-            Preconditions.checkArgument(StringUtils.equals("SUCCESS",resultCode)||StringUtils.equals("FAIL",resultCode),"业务状态不正确");
-            //验证签名
-            SortedMap<String, String> returnMap = BeanToMapUtil.objectToTreeMap(jsNoticeResponse);
-            if (returnMap.containsKey("sign")){
-                returnMap.remove("sign");
+            int len = request.getContentLength();
+            ServletInputStream inputStream = request.getInputStream();
+            byte[] buffer = new byte[len];
+            inputStream.read(buffer, 0, len);
+            String appNoticeResponseStr=new String(buffer,"utf-8");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(appNoticeResponseStr),"回调内容为空");
+            SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(appNoticeResponseStr);
+            //验签
+            String resultSign=resultMap.get("sign");
+            if (resultMap.containsKey("sign")) {
+                resultMap.remove("sign");
             }
-            String returnStr = BeanToMapUtil.mapToString(returnMap);
-            String sign = MD5.md5(returnStr + "&key=" + WechatPayConstants.JS.app_key);
-            Preconditions.checkArgument(StringUtils.equals(sign,jsNoticeResponse.getSign()),"验签不通过");
+            String responseStr = BeanToMapUtil.mapToString((resultMap));
+            String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.JS.app_key);
+            Preconditions.checkArgument(StringUtils.equalsIgnoreCase(responseSign, resultSign),"微信返回数据验签失败");
+            //做幂等性处理
             //发送至mq做异步处理
-
             //返回微信结果
             JSNoticeReturn jsNoticeReturn=new JSNoticeReturn();
             jsNoticeReturn.setReturn_code("SUCCESS");
@@ -171,7 +174,8 @@ public class WechatJsPayController {
      * @return
      */
     @RequestMapping("/auth")
-    public Object auto(@RequestParam("code") String code) {
+    @ResponseBody
+    public Object auth(@RequestParam("code") String code) {
         try {
             Preconditions.checkArgument(StringUtils.isNotEmpty(code),"code不能为空");
             String url = WxAuthorizedConstants.Letter.urlList+"?appid="+ WxAuthorizedConstants.Letter.appid+"&secret="+WxAuthorizedConstants.Letter.secret+"&code=" + code + "&grant_type="+WxAuthorizedConstants.Letter.grant_type;

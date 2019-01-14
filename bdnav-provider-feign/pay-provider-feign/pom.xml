@@ -3,31 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>bdnav-platform</artifactId>
+        <artifactId>bdnav-provider-feigin</artifactId>
         <groupId>com.bdxh</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bdnav-provider-feigin</artifactId>
-    <packaging>pom</packaging>
-
-    <modules>
-        <module>wallet-provider-feigin</module>
-        <module>backend-provider-feigin</module>
-        <module>order-provider-feigin</module>
-        <module>onecard-provider-feigin</module>
-    </modules>
+    <artifactId>pay-provider-feign</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.bdxh</groupId>
-            <artifactId>common-utils</artifactId>
+            <artifactId>pay-provider-entity</artifactId>
             <version>1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
         </dependency>
     </dependencies>
 

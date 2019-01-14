@@ -43,9 +43,4 @@ public class WxPayAppOrderDto implements Serializable {
     @NotEmpty(message = "客户端ip不能为空")
     private String ip;
 
-    /**
-     * 签名
-     */
-    private String sign;
-
 }

@@ -52,6 +52,8 @@ public class WechatCommonController {
         orderQueryRequest.setSign(sign);
         //发送微信下单请求
         String requestStr = XmlUtils.toXML(orderQueryRequest);
+        //输出微信请求串
+        log.info(requestStr);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Charset", "utf-8");
@@ -62,6 +64,8 @@ public class WechatCommonController {
             return WrapMapper.error("微信订单查询接口调用失败");
         }
         String responseEntityStr = responseEntity.getBody();
+        //输出微信返回结果
+        log.info(responseEntityStr);
         if (StringUtils.isNotEmpty(responseEntityStr)) {
             SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(responseEntityStr);
             //查询

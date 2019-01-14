@@ -23,6 +23,7 @@ public class WechatPayConstants {
          * 应用id
          */
         String app_id="wxb5d9031684f864e4";
+
         /**
          * 回调地址
          */

@@ -52,7 +52,7 @@
         <module>bdnav-config-server</module>
         <module>bdnav-eureka-server</module>
         <module>bdnav-gateway</module>
-        <module>bdnav-provider-feigin</module>
+        <module>bdnav-provider-feign</module>
         <module>bdnav-web</module>
     </modules>
 

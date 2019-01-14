@@ -1,12 +1,8 @@
 package com.bdxh.pay.controller;
 
 import com.bdxh.common.base.constant.WechatPayConstants;
-import com.bdxh.common.utils.BeanToMapUtil;
-import com.bdxh.common.utils.MD5;
-import com.bdxh.common.utils.ObjectUtil;
-import com.bdxh.common.utils.XmlUtils;
+import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.wechatpay.app.domain.AppNoticeResponse;
 import com.bdxh.common.wechatpay.app.domain.AppNoticeReturn;
 import com.bdxh.common.wechatpay.app.domain.AppOrderRequest;
 import com.bdxh.common.wechatpay.app.domain.AppOrderResponse;
@@ -21,11 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -89,6 +86,8 @@ public class WechatAppPayController {
         appOrderRequest.setSign(sign);
         //发送微信下单请求
         String requestStr = XmlUtils.toXML(appOrderRequest);
+        //输出微信请求串
+        log.info(requestStr);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Charset", "utf-8");
@@ -99,6 +98,8 @@ public class WechatAppPayController {
             return WrapMapper.error("微信下单接口调用失败");
         }
         String responseEntityStr = responseEntity.getBody();
+        //输出微信返回结果
+        log.info(responseEntityStr);
         if (StringUtils.isNotEmpty(responseEntityStr)) {
             AppOrderResponse appOrderResponse = XmlUtils.fromXML(responseEntityStr, AppOrderResponse.class);
             //下单成功
@@ -124,26 +125,28 @@ public class WechatAppPayController {
 
     /**
      * 微信APP支付回调接口
-     *
-     * @param appNoticeResponse
+     * @param request
      * @param response
      */
     @RequestMapping("/notice")
-    public void wechatAppPayNotice(@RequestBody AppNoticeResponse appNoticeResponse, HttpServletResponse response) {
+    public void wechatAppPayNotice(HttpServletRequest request, HttpServletResponse response) {
         try {
-            Preconditions.checkNotNull(appNoticeResponse, "回调内容为空");
-            Preconditions.checkArgument(StringUtils.equals("SUCCESS", appNoticeResponse.getReturn_code()), "回调状态不正确");
-            //获取业务结果
-            String resultCode = appNoticeResponse.getResult_code();
-            Preconditions.checkArgument(StringUtils.equals("SUCCESS", resultCode) || StringUtils.equals("FAIL", resultCode), "业务状态不正确");
-            //验证签名
-            SortedMap<String, String> returnMap = BeanToMapUtil.objectToTreeMap(appNoticeResponse);
-            if (returnMap.containsKey("sign")) {
-                returnMap.remove("sign");
+            int len = request.getContentLength();
+            ServletInputStream inputStream = request.getInputStream();
+            byte[] buffer = new byte[len];
+            inputStream.read(buffer, 0, len);
+            String appNoticeResponseStr=new String(buffer,"utf-8");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(appNoticeResponseStr),"回调内容为空");
+            SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(appNoticeResponseStr);
+            //验签
+            String resultSign=resultMap.get("sign");
+            if (resultMap.containsKey("sign")) {
+                resultMap.remove("sign");
             }
-            String returnStr = BeanToMapUtil.mapToString(returnMap);
-            String sign = MD5.md5(returnStr + "&key=" + WechatPayConstants.APP.app_key);
-            Preconditions.checkArgument(StringUtils.equalsIgnoreCase(sign, appNoticeResponse.getSign()), "验签不通过");
+            String responseStr = BeanToMapUtil.mapToString((resultMap));
+            String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.APP.app_key);
+            Preconditions.checkArgument(StringUtils.equalsIgnoreCase(responseSign, resultSign),"微信返回数据验签失败");
+            //做幂等性处理
             //发送至mq做异步处理
             //返回微信结果
             AppNoticeReturn appNoticeReturn = new AppNoticeReturn();

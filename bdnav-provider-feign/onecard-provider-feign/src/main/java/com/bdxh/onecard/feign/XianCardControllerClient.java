@@ -1,4 +1,4 @@
-package com.bdxh.onecard.feigin;
+package com.bdxh.onecard.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.onecard.dto.XianAddBlanceDto;
