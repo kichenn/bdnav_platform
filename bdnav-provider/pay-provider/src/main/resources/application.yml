@@ -1,0 +1,7 @@
+server:
+  port: 9016
+spring:
+  application:
+    name: pay-provider-cluster
+  profiles:
+    active: dev

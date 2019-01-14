@@ -8,6 +8,7 @@ package com.bdxh.common.base.constant;
 public class WechatPayConstants {
 
     public interface JS {
+
         /**
          * 商户号
          */
@@ -70,6 +71,15 @@ public class WechatPayConstants {
          * 统一下单接口url
          */
         String order_url="https://api.mch.weixin.qq.com/pay/unifiedorder";
+
+    }
+
+    public interface COMMON {
+
+        /**
+         * 订单查询接口url
+         */
+        String order_query_url="https://api.mch.weixin.qq.com/pay/orderquery";
 
     }
 }
