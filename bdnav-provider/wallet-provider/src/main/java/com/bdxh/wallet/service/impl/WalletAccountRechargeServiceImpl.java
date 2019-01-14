@@ -139,6 +139,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         SortedMap<String, String> sortedMap = BeanToMapUtil.objectToTreeMap(walletJsOrderVo);
         String sing = MD5.md5(BeanToMapUtil.mapToString(sortedMap)+"&key="+WechatPayConstants.JS.app_key);
         walletJsOrderVo.setPaySign(sing);
+        walletJsOrderVo.setOrderNo(String.valueOf(orderNo));
         return walletJsOrderVo;
     }
 

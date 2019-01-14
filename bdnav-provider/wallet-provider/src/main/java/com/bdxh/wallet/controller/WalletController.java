@@ -194,35 +194,5 @@ public class WalletController {
         }
     }
 
-    /**
-     * 用户支付完成请求接口
-     * @param wxPayOkDto
-     * @param bindingResult
-     * @return
-     */
-    @RequestMapping("/ok")
-    @ResponseBody
-    public Object wechatAppPayOk(@Valid WalletPayOkDto wxPayOkDto, BindingResult bindingResult){
-        //检验参数
-        if(bindingResult.hasErrors()){
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
-        //更新订单状态
-        try {
-            Byte status=wxPayOkDto.getStatus();
-            if(status.intValue()==1){
-                walletAccountRechargeService.updatePaying(wxPayOkDto.getOrderNo(), WxPayCardStatusEnum.PAYING.getCode());
-            }else if (status.intValue()==2){
-                walletAccountRechargeService.updatePaying(wxPayOkDto.getOrderNo(), WxPayCardStatusEnum.PAY_FAIL.getCode());
-            }
-            return WrapMapper.ok("更新支付中状态成功");
-        }catch (Exception e){
-            e.printStackTrace();
-            log.error(e.getMessage(),e.getStackTrace());
-            return WrapMapper.error(e.getMessage());
-        }
-    }
-
 }
 

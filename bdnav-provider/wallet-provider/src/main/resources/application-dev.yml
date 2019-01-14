@@ -42,6 +42,48 @@ spring:
       poolPreparedStatements : true
       maxOpenPreparedStatements : 50
       connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
+  #开启ribbon重试机制
+  cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+#feigin配置 开启熔断降级
+feign:
+  hystrix:
+    enabled: true
+  #使用httpclient连接池
+  httpclient:
+    enabled: true
+    connection-timeout: 2000
+    connection-timer-repeat: 5000
+    #最大连接数
+    max-connections: 1000
+    #并发数
+    max-connections-per-route: 100
+  okhttp:
+    enabled: false
+  #启用压缩
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 1024
+    response:
+      enabled: true
+#ribbon超时配置 调用第三方比较耗时，配置较大的值以防超时
+ribbon:
+  eureka:
+    enabled: true
+  eager-load:
+    enabled: true
+  #3秒刷新服务列表
+  ServerListRefreshInterval: 3000
+  #只对GET方法进行重试 POST接口重复执行会造成严重后果，需要对接口做幂等性
+  OkToRetryOnAllOperations: false
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 2
+  ConnectTimeout: 3000
+  ReadTimeout: 6000
 #ID生成器
 id-generator:
   workerId: 0

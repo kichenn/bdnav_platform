@@ -16,7 +16,7 @@ hystrix:
 #feigin配置 开启熔断降级
 feign:
   hystrix:
-    enabled: false
+    enabled: true
   #使用httpclient连接池
   httpclient:
     enabled: true

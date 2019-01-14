@@ -39,6 +39,11 @@ public class WalletJsOrderVo implements Serializable {
     private String packages;
 
     /**
+     * 订单号
+     */
+    private String orderNo;
+
+    /**
      * 签名
      */
     private String paySign;
