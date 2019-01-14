@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 import javax.validation.constraints.NotEmpty;
 import java.util.SortedMap;
@@ -35,6 +36,7 @@ public class WechatCommonController {
      * @param orderNo
      */
     @RequestMapping("/query")
+    @ResponseBody
     public Object wechatAppPayOrderQuery(@RequestParam(name = "orderNo") @NotEmpty(message = "订单号不能为空") String orderNo) throws Exception{
         //准备参数
         OrderQueryRequest orderQueryRequest = new OrderQueryRequest();
@@ -68,22 +70,11 @@ public class WechatCommonController {
         log.info(responseEntityStr);
         if (StringUtils.isNotEmpty(responseEntityStr)) {
             SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(responseEntityStr);
-            //查询
             if (StringUtils.equals("SUCCESS", resultMap.get("return_code")) && StringUtils.equals("SUCCESS", resultMap.get("result_code"))) {
-                //验签
-                String resultSign=resultMap.get("sign");
-                if (resultMap.containsKey("sign")) {
-                    resultMap.remove("sign");
-                }
-                String responseStr = BeanToMapUtil.mapToString((resultMap));
-                String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.APP.app_key);
-                if (!StringUtils.equalsIgnoreCase(responseSign, resultSign)) {
-                    return WrapMapper.error("微信返回数据验签失败");
-                }
                 //返回下单结果
-                return WrapMapper.ok(resultMap.get("result_code"));
+                return WrapMapper.ok(resultMap.get("trade_state"));
             } else {
-                return WrapMapper.error("微信下单接口返回失败");
+                return WrapMapper.error("微信订单查询接口返回失败");
             }
         }
         return WrapMapper.error();

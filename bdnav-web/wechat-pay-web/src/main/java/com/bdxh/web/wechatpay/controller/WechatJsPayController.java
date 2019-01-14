@@ -35,6 +35,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
@@ -85,8 +86,7 @@ public class WechatJsPayController {
         //订单号
         jsOrderRequest.setOut_trade_no(String.valueOf(wrapper.getResult()));
         //金额
-        String sumfigure = WxPayUtil.getMoney(String.valueOf(wxPayJsOrderDto.getMoney()));
-        jsOrderRequest.setTotal_fee(sumfigure);
+        jsOrderRequest.setTotal_fee(String.valueOf(wxPayJsOrderDto .getMoney().multiply(new BigDecimal(100)).longValue()));
         //终端ip
         jsOrderRequest.setSpbill_create_ip(wxPayJsOrderDto.getIp());
         //此路径是微信服务器调用支付结果通知路

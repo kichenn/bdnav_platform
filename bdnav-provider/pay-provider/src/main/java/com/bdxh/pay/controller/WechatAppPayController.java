@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
@@ -51,7 +52,7 @@ public class WechatAppPayController {
      */
     @RequestMapping("/order")
     @ResponseBody
-    public Object wechatAppPayOrder(@Valid WxPayAppOrderDto wxPayAppOrderDto, BindingResult bindingResult) throws Exception {
+    public Object wechatAppPayOrder(@Valid @RequestBody WxPayAppOrderDto wxPayAppOrderDto, BindingResult bindingResult) throws Exception {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));

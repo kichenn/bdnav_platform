@@ -1,4 +1,4 @@
-package com.bdxh.pay.dto;
+package com.bdxh.wallet.dto;
 
 import lombok.Data;
 
@@ -9,16 +9,38 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * @description: 前台微信APP支付下单类
+ * @description: 微信APP支付下单类
+ * @author: xuyuan
  * @create: 2019-01-03 16:48
  **/
 @Data
-public class WxPayJsOrderDto implements Serializable {
+public class WalletPayAppOrderDto implements Serializable {
 
-    private static final long serialVersionUID = -6622403700115132981L;
+    private static final long serialVersionUID = -7607447468261216863L;
 
-    @NotEmpty(message = "订单号不能为空")
-    private String orderNo;
+    /**
+     * 学校编码
+     */
+    @NotEmpty(message = "学校编码不能为空")
+    private String schoolCode;
+
+    /**
+     * 用户id
+     */
+    @NotNull(message = "用户id不能为空")
+    private Long userId;
+
+    /**
+     * 姓名
+     */
+    @NotEmpty(message = "姓名不能为空")
+    private String userName;
+
+    /**
+     * 学号
+     */
+    @NotEmpty(message = "学号不能为空")
+    private String cardNumber;
 
     /**
      * 充值金额
@@ -40,9 +62,8 @@ public class WxPayJsOrderDto implements Serializable {
     private String ip;
 
     /**
-     * 微信唯一标识
+     * 签名
      */
-    @NotEmpty(message = "微信openid不能为空")
-    private String openid;
+    private String sign;
 
 }

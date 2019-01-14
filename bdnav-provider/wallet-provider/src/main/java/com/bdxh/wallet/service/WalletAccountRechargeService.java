@@ -1,7 +1,11 @@
 package com.bdxh.wallet.service;
 
 import com.bdxh.common.web.support.IService;
+import com.bdxh.wallet.dto.WalletPayAppOrderDto;
+import com.bdxh.wallet.dto.WalletPayJsOrderDto;
 import com.bdxh.wallet.entity.WalletAccountRecharge;
+import com.bdxh.wallet.vo.WalletAppOrderVo;
+import com.bdxh.wallet.vo.WalletJsOrderVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Map;
@@ -34,4 +38,16 @@ public interface WalletAccountRechargeService extends IService<WalletAccountRech
      * @param status
      */
     void updatePaying(Long orderNo,Byte status);
+
+    /**
+     * APP支付下单
+     * @param walletPayAppOrderDto
+     */
+    WalletAppOrderVo appOrder(WalletPayAppOrderDto walletPayAppOrderDto);
+
+    /**
+     * JS支付下单
+     * @param walletPayJsOrderDto
+     */
+    WalletJsOrderVo jsOrder(WalletPayJsOrderDto walletPayJsOrderDto);
 }

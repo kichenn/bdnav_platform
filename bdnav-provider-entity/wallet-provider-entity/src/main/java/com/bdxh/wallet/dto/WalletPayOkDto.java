@@ -11,9 +11,9 @@ import java.io.Serializable;
  * @create: 2019-01-07 12:09
  **/
 @Data
-public class WxPayOkDto implements Serializable {
+public class WalletPayOkDto implements Serializable {
 
-    private static final long serialVersionUID = -6780829862401561198L;
+    private static final long serialVersionUID = -1396085932327893783L;
 
     /**
      * 订单号

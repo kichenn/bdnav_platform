@@ -3,6 +3,9 @@ package com.bdxh.common.wechatpay.common.domain;
 import com.bdxh.common.utils.CDATASectionAdapter;
 import lombok.Data;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 
@@ -12,6 +15,8 @@ import java.io.Serializable;
  * @create: 2019-01-14 12:11
  **/
 @Data
+@XmlRootElement(name = "xml")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class OrderQueryRequest implements Serializable {
 
     private static final long serialVersionUID = 6970436863386413416L;

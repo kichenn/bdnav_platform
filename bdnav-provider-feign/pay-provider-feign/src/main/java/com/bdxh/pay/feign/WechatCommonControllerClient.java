@@ -6,6 +6,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @description: 微信支付公共feign客户端
@@ -21,6 +22,7 @@ public interface WechatCommonControllerClient {
      * @param orderNo
      */
     @RequestMapping("/wechatCommonPay/query")
+    @ResponseBody
     Wrapper wechatAppPayOrderQuery(@RequestParam(name = "orderNo") String orderNo);
 
 }

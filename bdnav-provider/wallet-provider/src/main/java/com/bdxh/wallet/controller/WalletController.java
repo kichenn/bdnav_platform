@@ -3,8 +3,7 @@ package com.bdxh.wallet.controller;
 import com.bdxh.common.base.enums.WxPayCardStatusEnum;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.wallet.dto.WxPayOkDto;
+import com.bdxh.wallet.dto.WalletPayOkDto;
 import com.bdxh.wallet.entity.WalletAccountRecharge;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
 import com.github.pagehelper.PageInfo;
@@ -203,7 +202,7 @@ public class WalletController {
      */
     @RequestMapping("/ok")
     @ResponseBody
-    public Object wechatAppPayOk(@Valid WxPayOkDto wxPayOkDto, BindingResult bindingResult){
+    public Object wechatAppPayOk(@Valid WalletPayOkDto wxPayOkDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
