@@ -14,6 +14,8 @@ public class XianQueryBlanceDto implements Serializable {
 
     private static final long serialVersionUID = 3723722877549314308L;
 
+
+
     /**
      * 学校编码
      */
