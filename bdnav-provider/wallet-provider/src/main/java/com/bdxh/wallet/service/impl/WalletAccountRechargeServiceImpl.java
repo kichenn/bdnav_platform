@@ -23,8 +23,6 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -125,14 +123,15 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         wxPayJsOrderDto.setIp(walletPayJsOrderDto.getIp());
         wxPayJsOrderDto.setMoney(walletPayJsOrderDto.getMoney());
         wxPayJsOrderDto.setOrderNo(String.valueOf(orderNo));
-        wxPayJsOrderDto.setProductDetail(walletPayJsOrderDto.getProductDetail());
+        wxPayJsOrderDto.setProductDetail(walletPayJsOrderDto.getBody());
         wxPayJsOrderDto.setOpenid(walletPayJsOrderDto.getOpenid());
         Wrapper wrapper = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto);
         Preconditions.checkArgument(wrapper.getCode()==200,"调用微信JS支付统一下单失败");
         String prepayId = (String) wrapper.getResult();
         WalletJsOrderVo walletJsOrderVo = new WalletJsOrderVo();
         walletJsOrderVo.setAppId(WechatPayConstants.JS.app_id);
-        String timeStamp = String.valueOf(new Date().getTime()).substring(0, 10);
+        String timeStamp =String.valueOf(System.currentTimeMillis()).substring(0, 10);
+                /*String.valueOf(new Date().getTime()).substring(0, 10) ;*/
         walletJsOrderVo.setTimeStamp(timeStamp);
         walletJsOrderVo.setNonceStr(ObjectUtil.getUuid());
         walletJsOrderVo.setPackages("prepay_id=" + prepayId);
