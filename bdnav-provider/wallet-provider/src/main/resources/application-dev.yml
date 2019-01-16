@@ -93,7 +93,7 @@ rocketmq:
   producer:
     defaultName: default-wallet-provider
     transName: trans-wallet-provider
-    transEnable: true
+    transEnable: false
 #hystrix配置
 hystrix:
   command:

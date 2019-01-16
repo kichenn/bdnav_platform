@@ -27,7 +27,7 @@ public class WechatPayConstants {
         /**
          * 回调地址
          */
-        String notice_url="http://wechatpay.dxht.com/wechatJsPay/notice/";
+        String notice_url="http://zuulproxy.bdxht.com/pay/wechatNotice/walletJsRecharge";
 
         /**
          * 支付类型
@@ -61,7 +61,7 @@ public class WechatPayConstants {
         /**
          * 回调地址
          */
-        String notice_url="http://wechatpay.dxht.com/wechatAppPay/notice";
+        String notice_url="http://zuulproxy.bdxht.com/pay/wechatNotice/walletAppRecharge";
 
         /**
          * 支付类型

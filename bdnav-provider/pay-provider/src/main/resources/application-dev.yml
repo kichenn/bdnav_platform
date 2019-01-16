@@ -29,21 +29,6 @@ spring:
       rocketmq:
         binder:
           namesrv-addr: 47.107.253.90:9876;47.107.255.252:9876
-        bindings:
-          input002:
-            consumer:
-              orderly: true
-      bindings:
-        input001:
-          destination: test-topic
-          contentType: text/plain
-          group: test-topic
-          consumer:
-            concurrency: 20
-        input002:
-          destination: test-topic001
-          contentType: text/plain
-          group: test-topic001
 #rocketmq producer配置
 rocketmq:
   producer:

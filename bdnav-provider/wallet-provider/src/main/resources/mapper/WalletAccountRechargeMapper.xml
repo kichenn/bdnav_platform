@@ -40,10 +40,10 @@
         school_code=#{schoolCode}
       </if>
       <if test="userId != null">
-        user_id=#{userId}
+        and user_id=#{userId}
       </if>
       <if test="orderNo !=null">
-        order_no=#{orderNo}
+        and order_no=#{orderNo}
       </if>
     </where>
   </select>

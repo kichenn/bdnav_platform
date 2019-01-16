@@ -15,3 +15,13 @@ zuul:
     api-a:
       path: /wallet/** #网关地址
       serviceId: wallet-provider-cluster #代理到对应的服务
+    api-b:
+      path: /pay/** #网关地址
+      serviceId: pay-provider-cluster #代理到对应的服务
+hystrix:
+  command:        
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 15000

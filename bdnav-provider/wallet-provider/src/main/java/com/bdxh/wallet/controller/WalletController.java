@@ -1,9 +1,7 @@
 package com.bdxh.wallet.controller;
 
-import com.bdxh.common.base.enums.WxPayCardStatusEnum;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.wallet.dto.WalletPayOkDto;
 import com.bdxh.wallet.entity.WalletAccountRecharge;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
 import com.github.pagehelper.PageInfo;
@@ -12,17 +10,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/wallet")
