@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Data
 @ConfigurationProperties(prefix = "id-generator")
-@ConditionalOnProperty(prefix = "id-generator",value = {"workerId","datacenterId"})
+@ConditionalOnProperty(prefix = "id-generator",name = {"workerId","datacenterId"})
 @Configuration
 public class IdGeneratorProperties {
 

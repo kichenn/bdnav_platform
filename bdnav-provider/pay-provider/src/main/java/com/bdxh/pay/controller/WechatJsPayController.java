@@ -125,51 +125,6 @@ public class WechatJsPayController {
     }
 
     /**
-     * 用户充值JS回调接口
-     * @param request
-     * @param response
-     */
-    @RequestMapping("/notice")
-    public void wechatJsPayNotice(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            int len = request.getContentLength();
-            ServletInputStream inputStream = request.getInputStream();
-            byte[] buffer = new byte[len];
-            inputStream.read(buffer, 0, len);
-            String appNoticeResponseStr=new String(buffer,"utf-8");
-            Preconditions.checkArgument(StringUtils.isNotEmpty(appNoticeResponseStr),"回调内容为空");
-            SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(appNoticeResponseStr);
-            //验签
-            String resultSign=resultMap.get("sign");
-            if (resultMap.containsKey("sign")) {
-                resultMap.remove("sign");
-            }
-            String responseStr = BeanToMapUtil.mapToString((resultMap));
-            String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.JS.app_key);
-            Preconditions.checkArgument(StringUtils.equalsIgnoreCase(responseSign, resultSign),"微信返回数据验签失败");
-            //做幂等性处理
-            //发送至mq做异步处理
-            //返回微信结果
-            JSNoticeReturn jsNoticeReturn=new JSNoticeReturn();
-            jsNoticeReturn.setReturn_code("SUCCESS");
-            jsNoticeReturn.setReturn_msg("ok");
-            String returnXml = XmlUtils.toXML(jsNoticeReturn);
-            response.getOutputStream().write(returnXml.getBytes("utf-8"));
-        }catch (Exception e){
-            JSNoticeReturn jsNoticeReturn=new JSNoticeReturn();
-            jsNoticeReturn.setReturn_code("FAIL");
-            jsNoticeReturn.setReturn_msg("no");
-            String returnXml = XmlUtils.toXML(jsNoticeReturn);
-            try {
-                response.getOutputStream().write(returnXml.getBytes("utf-8"));
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-
-    }
-
-    /**
      * 微信授权接口
      * @param code
      * @return

@@ -42,11 +42,68 @@ spring:
       poolPreparedStatements : true
       maxOpenPreparedStatements : 50
       connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
-  #开启ribbon重试机制
+  #redis配置
+  redis:
+    cluster:
+      nodes: 119.23.185.109:8001,47.107.253.90:8003,47.107.255.252:8005,119.23.185.109:8002,47.107.253.90:8004,47.107.255.252:8006
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 20
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 2
+    database: 0
   cloud:
     loadbalancer:
       retry:
+        #开启ribbon重试机制
         enabled: true
+    stream:
+      #rocketmq配置
+      rocketmq:
+        binder:
+          namesrv-addr: 47.107.253.90:9876;47.107.255.252:9876
+        bindings:
+          walletNotice:
+            consumer:
+              orderly: false
+              tags: app||js
+          walletRecharge:
+            consumer:
+              orderly: false
+              tags: add
+      bindings:
+        walletNotice:
+          destination: wechatPayWalletNotice
+          contentType: text/plain
+          group: wechatPayWalletNotice-group
+          consumer:
+            #并发消费数量
+            concurrency: 50
+        walletRecharge:
+          destination: xiancardWalletRecharge
+          contentType: text/plain
+          group: xiancardWalletRecharge-group
+          consumer:
+            #并发消费数量
+            concurrency: 50
+#rocketmq producer配置
+rocketmq:
+  producer:
+    defaultName: default-wallet-provider
+    transName: trans-wallet-provider
+    transEnable: true
+#hystrix配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 12000
 #feigin配置 开启熔断降级
 feign:
   hystrix:

@@ -50,4 +50,9 @@ public interface WalletAccountRechargeService extends IService<WalletAccountRech
      * @param walletPayJsOrderDto
      */
     WalletJsOrderVo jsOrder(WalletPayJsOrderDto walletPayJsOrderDto);
+
+    /**
+     * 充值一卡通
+     */
+    void rechargeWallet(Long orderNo,String thirdOrderNo,Byte status);
 }

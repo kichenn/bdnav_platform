@@ -1,6 +1,6 @@
 package com.bdxh.common.base.enums;
 
-public class WxPayEnum {
+public class WxPaySignEnum {
 
    //签名类型
     public enum SignType {

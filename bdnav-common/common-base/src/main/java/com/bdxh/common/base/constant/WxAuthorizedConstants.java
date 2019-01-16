@@ -26,5 +26,7 @@ public class WxAuthorizedConstants {
          * 授权默认参数url
          */
         String grant_type="authorization_code";
+
     }
+
 }

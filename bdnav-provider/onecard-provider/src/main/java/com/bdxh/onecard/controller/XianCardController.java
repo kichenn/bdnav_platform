@@ -187,7 +187,7 @@ public class XianCardController {
             }
             JSONObject result = responseEntity.getBody();
             Preconditions.checkNotNull(result,"充值一卡通失败");
-            Preconditions.checkArgument(StringUtils.equalsAnyIgnoreCase(result.getString("code"),"000000"), "充值一卡通失败");
+            Preconditions.checkArgument(StringUtils.equalsAnyIgnoreCase(result.getString("code"),"000000"), result.getString("code"));
             //返回流水号
             return WrapMapper.ok(result.getString("acceptseq"));
         } catch (Exception e) {

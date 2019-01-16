@@ -10,6 +10,46 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://eureka-server1:9001/eureka/,http://eureka-server2:9002/eureka/,http://eureka-server3:9003/eureka/
+spring:
+  #redis配置
+  redis:
+    cluster:
+      nodes: 119.23.185.109:8001,47.107.253.90:8003,47.107.255.252:8005,119.23.185.109:8002,47.107.253.90:8004,47.107.255.252:8006
+    timeout: 5000ms
+    lettuce:
+      pool:
+        max-active: 20
+        max-wait: -1ms
+        max-idle: 10
+        min-idle: 2
+    database: 0
+  #rocketmq配置
+  cloud:
+    stream:
+      rocketmq:
+        binder:
+          namesrv-addr: 47.107.253.90:9876;47.107.255.252:9876
+        bindings:
+          input002:
+            consumer:
+              orderly: true
+      bindings:
+        input001:
+          destination: test-topic
+          contentType: text/plain
+          group: test-topic
+          consumer:
+            concurrency: 20
+        input002:
+          destination: test-topic001
+          contentType: text/plain
+          group: test-topic001
+#rocketmq producer配置
+rocketmq:
+  producer:
+    defaultName: default-pay-provider
+    transName: trans-pay-provider
+    transEnable: false
 management:
   endpoints:
     web:
