@@ -31,7 +31,7 @@ public class WxPayJsOrderDto implements Serializable {
      * 商品描述
      */
     @NotEmpty(message = "商品描述不能为空")
-    private String productDetail;
+    private String body;
 
     /**
      * 终端ip
