@@ -66,7 +66,7 @@ public class WechatJsPayController {
         //随机32位字符串
         jsOrderRequest.setNonce_str(ObjectUtil.generateNonceStr());
         //商品描述
-        jsOrderRequest.setBody(wxPayJsOrderDto.getProductDetail());
+        jsOrderRequest.setBody(wxPayJsOrderDto.getBody());
         //订单号
         jsOrderRequest.setOut_trade_no(wxPayJsOrderDto.getOrderNo());
         //金额

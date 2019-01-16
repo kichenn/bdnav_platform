@@ -67,7 +67,7 @@ public class WechatAppPayController {
         //随机字符串，使用uuid
         appOrderRequest.setNonce_str(ObjectUtil.getUuid());
         //商品描述
-        appOrderRequest.setBody(wxPayAppOrderDto.getProductDetail());
+        appOrderRequest.setBody(wxPayAppOrderDto.getBody());
         //订单号
         appOrderRequest.setOut_trade_no(wxPayAppOrderDto.getOrderNo());
         //总金额

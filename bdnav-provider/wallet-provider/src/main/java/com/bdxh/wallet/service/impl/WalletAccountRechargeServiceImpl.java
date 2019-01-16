@@ -1,6 +1,9 @@
 package com.bdxh.wallet.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.base.constant.WechatPayConstants;
+import com.bdxh.common.base.enums.WxPayCardStatusEnum;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.ObjectUtil;
@@ -21,8 +24,14 @@ import com.bdxh.wallet.vo.WalletJsOrderVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.nio.charset.Charset;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -33,6 +42,7 @@ import java.util.SortedMap;
  * @create: 2018-12-30 19:24
  **/
 @Service
+@Slf4j
 public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccountRecharge> implements WalletAccountRechargeService{
 
     @Autowired
@@ -47,6 +57,8 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
     @Autowired
     private WechatJsPayControllerClient wechatJsPayControllerClient;
 
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
 
     @Override
     public WalletAccountRecharge getByOrderNO(Long orderNo) {
@@ -93,7 +105,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         wxPayAppOrderDto.setIp(walletPayAppOrderDto.getIp());
         wxPayAppOrderDto.setMoney(walletPayAppOrderDto.getMoney());
         wxPayAppOrderDto.setOrderNo(String.valueOf(orderNo));
-        wxPayAppOrderDto.setProductDetail(walletPayAppOrderDto.getProductDetail());
+        wxPayAppOrderDto.setBody(walletPayAppOrderDto.getBody());
         Wrapper wrapper = wechatAppPayControllerClient.wechatAppPayOrder(wxPayAppOrderDto);
         Preconditions.checkArgument(wrapper.getCode()==200,"调用微信APP支付统一下单失败");
         String prepayId = (String) wrapper.getResult();
@@ -130,8 +142,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         String prepayId = (String) wrapper.getResult();
         WalletJsOrderVo walletJsOrderVo = new WalletJsOrderVo();
         walletJsOrderVo.setAppId(WechatPayConstants.JS.app_id);
-        String timeStamp =String.valueOf(System.currentTimeMillis()).substring(0, 10);
-                /*String.valueOf(new Date().getTime()).substring(0, 10) ;*/
+        String timeStamp = String.valueOf(new Date().getTime()).substring(0, 10);
         walletJsOrderVo.setTimeStamp(timeStamp);
         walletJsOrderVo.setNonceStr(ObjectUtil.getUuid());
         walletJsOrderVo.setPackages("prepay_id=" + prepayId);
@@ -140,6 +151,31 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         walletJsOrderVo.setPaySign(sing);
         walletJsOrderVo.setOrderNo(String.valueOf(orderNo));
         return walletJsOrderVo;
+    }
+
+    @Override
+    public void rechargeWallet(Long orderNo, String thirdOrderNo, Byte status) {
+        WalletAccountRecharge walletAccountRecharge = walletAccountRechargeMapper.getByOrderNo(orderNo);
+        if (walletAccountRecharge!=null&&walletAccountRecharge.getStatus().intValue()< WxPayCardStatusEnum.RECHARGE_SUCCESS.getCode()){
+            //设置充值状态
+            walletAccountRecharge.setStatus(status);
+            //设置微信订单号
+            walletAccountRecharge.setThirdOrderNo(thirdOrderNo);
+            //更新充值状态
+            walletAccountRechargeMapper.updateByPrimaryKeySelective(walletAccountRecharge);
+            //支付成功，发起一卡通充值
+            if (WxPayCardStatusEnum.RECHARGE_SUCCESS.getCode().intValue()==status.intValue()){
+                //发送消息异步处理
+                String messageStr = JSON.toJSONString(walletAccountRecharge);
+                Message message = new Message(RocketMqConstrants.Topic.xiancardWalletRecharge,RocketMqConstrants.Tags.xiancardWalletRecharge_add,messageStr.getBytes(Charset.forName("utf-8")));
+                try {
+                    defaultMQProducer.send(message);
+                }catch (Exception e){
+                    log.error("钱包服务充值一卡通消息发送失败："+orderNo);
+                    throw new RuntimeException(e.getMessage());
+                }
+            }
+        }
     }
 
 }

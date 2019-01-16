@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.enums.WxPayCardStatusEnum;
 import com.bdxh.common.base.enums.WxPayNoticeResultEnum;
-import com.bdxh.wallet.entity.WalletAccountRecharge;
 import com.bdxh.wallet.message.stream.WalletNoticeSink;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
 import lombok.extern.slf4j.Slf4j;
