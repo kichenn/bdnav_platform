@@ -40,9 +40,8 @@ import java.util.stream.Collectors;
 @Validated
 public class XianCardController {
 
-    @Autowired
+   @Autowired
     private WalletConfigControllerClient walletConfigControllerClient;
-
 
     /**
      * 一卡通用户同步接口
