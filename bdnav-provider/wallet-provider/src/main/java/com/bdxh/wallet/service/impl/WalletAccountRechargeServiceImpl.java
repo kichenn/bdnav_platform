@@ -123,7 +123,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         wxPayJsOrderDto.setIp(walletPayJsOrderDto.getIp());
         wxPayJsOrderDto.setMoney(walletPayJsOrderDto.getMoney());
         wxPayJsOrderDto.setOrderNo(String.valueOf(orderNo));
-        wxPayJsOrderDto.setProductDetail(walletPayJsOrderDto.getBody());
+        wxPayJsOrderDto.setBody(walletPayJsOrderDto.getBody());
         wxPayJsOrderDto.setOpenid(walletPayJsOrderDto.getOpenid());
         Wrapper wrapper = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto);
         Preconditions.checkArgument(wrapper.getCode()==200,"调用微信JS支付统一下单失败");
