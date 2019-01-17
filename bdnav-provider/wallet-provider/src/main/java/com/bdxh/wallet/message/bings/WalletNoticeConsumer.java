@@ -28,7 +28,7 @@ public class WalletNoticeConsumer {
     @StreamListener(WalletNoticeSink.INPUT)
     public void reciveWalletNotice(Message<String> message){
         String notice=message.getPayload();
-        log.info("收到消息：s%",notice);
+        log.info("收到消息："+notice);
         JSONObject jsonObject = JSON.parseObject(notice);
         Long orderNo = jsonObject.getLong("orderNo");
         String thirdOrderNo=jsonObject.getString("thirdOrderNo");

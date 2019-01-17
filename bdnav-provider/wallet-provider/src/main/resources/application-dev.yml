@@ -94,6 +94,11 @@ rocketmq:
     defaultName: default-wallet-provider
     transName: trans-wallet-provider
     transEnable: false
+#分布式任务配置
+elastic-job:
+  registry:
+    zklist: 119.23.185.109:2181,47.107.253.90:2181,47.107.255.252:2181
+    namespace: wallet-elastic-job
 #hystrix配置
 hystrix:
   command:

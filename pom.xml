@@ -27,7 +27,7 @@
         <jdbc.version>5.1.47</jdbc.version>
         <sharding-jdbc.vsersion>3.1.0</sharding-jdbc.vsersion>
         <lombok.version>1.18.4</lombok.version>
-        <guava.version>23.0</guava.version>
+        <guava.version>20.0</guava.version>
         <rocketmq.version>4.3.2</rocketmq.version>
         <httpclientutil.version>1.0</httpclientutil.version>
         <jjwt.version>0.9.0</jjwt.version>
@@ -37,7 +37,7 @@
         <aliyun-sms.version>1.0.0</aliyun-sms.version>
         <fastson.version>1.2.54</fastson.version>
         <dozer.version>5.5.1</dozer.version>
-        <zk.version>4.0.0</zk.version>
+        <zk.version>2.10.0</zk.version>
         <swagger2.version>2.9.2</swagger2.version>
         <aspectjweaver.version>1.9.2</aspectjweaver.version>
         <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>

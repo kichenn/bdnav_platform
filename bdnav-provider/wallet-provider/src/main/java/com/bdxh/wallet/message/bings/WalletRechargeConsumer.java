@@ -33,7 +33,7 @@ public class WalletRechargeConsumer {
     @StreamListener(WalletRechargeSink.INPUT)
     public void reciveWalletRecharge(Message<String> message){
         String recharge=message.getPayload();
-        log.info("收到消息：s%",recharge);
+        log.info("收到消息："+recharge);
         WalletAccountRecharge walletAccountRecharge = JSON.parseObject(recharge, WalletAccountRecharge.class);
         //一卡通充值
         XianAddBlanceDto xianAddBlanceDto = new XianAddBlanceDto();
@@ -43,6 +43,7 @@ public class WalletRechargeConsumer {
         xianAddBlanceDto.setOrderNo(String.valueOf(walletAccountRecharge.getOrderNo()));
         xianAddBlanceDto.setUserName(walletAccountRecharge.getUserName());
         Wrapper wrapper = xianCardControllerClient.addBalance(xianAddBlanceDto);
+        log.info("一卡通返回结果："+JSON.toJSON(wrapper));
         //状态500时 100009代表订单号重复，表示已经充值过
         Preconditions.checkArgument(wrapper.getCode()==200|| (wrapper.getCode()==500&&StringUtils.equals(String.valueOf(wrapper.getMessage()),"100009")),"一卡通充值失败");
         //更新流水号
