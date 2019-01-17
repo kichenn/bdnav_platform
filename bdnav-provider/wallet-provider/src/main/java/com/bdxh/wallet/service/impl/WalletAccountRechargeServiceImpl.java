@@ -142,13 +142,14 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         String prepayId = (String) wrapper.getResult();
         WalletJsOrderVo walletJsOrderVo = new WalletJsOrderVo();
         walletJsOrderVo.setAppId(WechatPayConstants.JS.app_id);
-        String timeStamp = String.valueOf(new Date().getTime()).substring(0, 10);
+        String timeStamp = String.valueOf(System.currentTimeMillis()).substring(0, 10);
         walletJsOrderVo.setTimeStamp(timeStamp);
         walletJsOrderVo.setNonceStr(ObjectUtil.getUuid());
-        walletJsOrderVo.setPackages("prepay_id=" + prepayId);
         SortedMap<String, String> sortedMap = BeanToMapUtil.objectToTreeMap(walletJsOrderVo);
+        sortedMap.put("package","prepay_id=" + prepayId);
         String sing = MD5.md5(BeanToMapUtil.mapToString(sortedMap)+"&key="+WechatPayConstants.JS.app_key);
         walletJsOrderVo.setPaySign(sing);
+        walletJsOrderVo.setPackages("prepay_id=" + prepayId);
         walletJsOrderVo.setOrderNo(String.valueOf(orderNo));
         return walletJsOrderVo;
     }
