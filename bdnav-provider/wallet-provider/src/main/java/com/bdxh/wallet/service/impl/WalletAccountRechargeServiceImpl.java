@@ -127,7 +127,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         Long orderNo = snowflakeIdWorker.nextId();
         recharge.setOrderNo(orderNo);
         recharge.setRechargeMoney(walletPayJsOrderDto.getMoney());
-        recharge.setOrderType(WechatPayConstants.APP.trade_type);
+        recharge.setOrderType(WechatPayConstants.JS.trade_type);
         recharge.setStatus(new Byte("1"));
         walletAccountRechargeMapper.insert(recharge);
         //调用微信统一下单接口
