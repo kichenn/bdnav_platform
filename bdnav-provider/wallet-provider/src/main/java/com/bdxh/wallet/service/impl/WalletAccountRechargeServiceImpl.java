@@ -29,9 +29,9 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
@@ -86,6 +86,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         Preconditions.checkArgument(result>=1,"更新支付中状态失败");
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public WalletAppOrderVo appOrder(WalletPayAppOrderDto walletPayAppOrderDto) {
         //插入充值记录
@@ -116,6 +117,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         return walletAppOrderVo;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public WalletJsOrderVo jsOrder(WalletPayJsOrderDto walletPayJsOrderDto) {
         //插入充值记录
@@ -154,6 +156,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
         return walletJsOrderVo;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void rechargeWallet(Long orderNo, String thirdOrderNo, Byte status) {
         WalletAccountRecharge walletAccountRecharge = walletAccountRechargeMapper.getByOrderNo(orderNo);
@@ -177,6 +180,23 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
                 }
             }
         }
+    }
+
+    @Override
+    public List<WalletAccountRecharge> queryPayingDataForTask(Map<String, Object> param) {
+        List<WalletAccountRecharge> walletAccountRecharges = walletAccountRechargeMapper.getPayingDataForTask(param);
+        return walletAccountRecharges;
+    }
+
+    @Override
+    public List<WalletAccountRecharge> querySerailNoNullForTask(Map<String, Object> param) {
+        List<WalletAccountRecharge> walletAccountRecharges = walletAccountRechargeMapper.getSerailNoNullForTask(param);
+        return walletAccountRecharges;
+    }
+
+    @Override
+    public void clearRechargeLog() {
+        walletAccountRechargeMapper.clearRechargeLog();
     }
 
 }

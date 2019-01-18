@@ -31,9 +31,11 @@ public class RocketMqConstrants {
      */
     public interface Tags {
 
-        String wechatPayWalletNotice_APP="app";
+        String wechatPayWalletNotice_app ="app";
 
-        String wechatPayWalletNotice_JS="js";
+        String wechatPayWalletNotice_js ="js";
+
+        String wechatPayWalletNotice_query="query";
 
         String xiancardWalletRecharge_add="add";
 

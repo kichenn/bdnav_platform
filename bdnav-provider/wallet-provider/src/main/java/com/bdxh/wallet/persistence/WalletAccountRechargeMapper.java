@@ -28,4 +28,24 @@ public interface WalletAccountRechargeMapper extends Mapper<WalletAccountRecharg
      * @return
      */
     int updatePaying(@Param("orderNo") Long orderNo, @Param("status") Byte status);
+
+    /**
+     * 查询通知超时的数据
+     * @param param
+     * @return
+     */
+    List<WalletAccountRecharge> getPayingDataForTask(Map<String,Object> param);
+
+    /**
+     * 查询一卡通充值超时的数据
+     * @param param
+     * @return
+     */
+    List<WalletAccountRecharge> getSerailNoNullForTask(Map<String,Object> param);
+
+    /**
+     * 定时清理12小时未支付的订单
+     */
+    void clearRechargeLog();
+
 }

@@ -25,6 +25,10 @@ public class JobRegistryCenterConfig {
     public ZookeeperRegistryCenter zookeeperRegistryCenter(@Autowired JobRegistryCenterProperties jobRegistryCenterProperties){
         log.info("任务注册中心配置开始--------------------------------------");
         ZookeeperConfiguration zookeeperConfiguration = new ZookeeperConfiguration(jobRegistryCenterProperties.getZklist(),jobRegistryCenterProperties.getNamespace());
+        //连接超时时间 默认15秒
+        zookeeperConfiguration.setConnectionTimeoutMilliseconds(10000);
+        //会话超时时间 默认60秒
+        zookeeperConfiguration.setSessionTimeoutMilliseconds(30000);
         ZookeeperRegistryCenter zookeeperRegistryCenter = new ZookeeperRegistryCenter(zookeeperConfiguration);
         return zookeeperRegistryCenter;
     }

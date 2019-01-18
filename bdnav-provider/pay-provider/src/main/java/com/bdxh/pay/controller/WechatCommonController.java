@@ -4,6 +4,7 @@ import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.wechatpay.common.domain.OrderQueryRequest;
+import com.bdxh.pay.vo.WechatOrderQueryVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
@@ -72,7 +73,11 @@ public class WechatCommonController {
             SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(responseEntityStr);
             if (StringUtils.equals("SUCCESS", resultMap.get("return_code")) && StringUtils.equals("SUCCESS", resultMap.get("result_code"))) {
                 //返回下单结果
-                return WrapMapper.ok(resultMap.get("trade_state"));
+                WechatOrderQueryVo wechatOrderQueryVo = new WechatOrderQueryVo();
+                wechatOrderQueryVo.setOrderNo(orderNo);
+                wechatOrderQueryVo.setThirdOrderNo(resultMap.get("transaction_id"));
+                wechatOrderQueryVo.setPayResult(resultMap.get("trade_state"));
+                return WrapMapper.ok(wechatOrderQueryVo);
             } else {
                 return WrapMapper.error("微信订单查询接口返回失败");
             }

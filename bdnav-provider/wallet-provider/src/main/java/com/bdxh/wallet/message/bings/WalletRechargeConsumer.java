@@ -44,7 +44,7 @@ public class WalletRechargeConsumer {
         xianAddBlanceDto.setUserName(walletAccountRecharge.getUserName());
         Wrapper wrapper = xianCardControllerClient.addBalance(xianAddBlanceDto);
         log.info("一卡通返回结果："+JSON.toJSON(wrapper));
-        //状态500时 100009代表订单号重复，表示已经充值过
+        //状态500时 100009代表订单号重复，表示已经充值过 貌似没有同步数据时对方也是返回此code值，挺6的
         Preconditions.checkArgument(wrapper.getCode()==200|| (wrapper.getCode()==500&&StringUtils.equals(String.valueOf(wrapper.getMessage()),"100009")),"一卡通充值失败");
         //更新流水号
         if (wrapper.getCode()==200){

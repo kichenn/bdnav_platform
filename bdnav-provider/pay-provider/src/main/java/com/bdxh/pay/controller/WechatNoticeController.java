@@ -79,7 +79,7 @@ public class WechatNoticeController {
                 jsonObject.put("orderNo",orderNo);
                 jsonObject.put("resultCode",resultCode);
                 jsonObject.put("thirdOrderNo",thirdOrderNo);
-                Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice,RocketMqConstrants.Tags.wechatPayWalletNotice_APP,jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+                Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice,RocketMqConstrants.Tags.wechatPayWalletNotice_app,jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 defaultMQProducer.send(message);
             }
             //返回微信结果
@@ -87,7 +87,7 @@ public class WechatNoticeController {
             appNoticeReturn.setReturn_code("SUCCESS");
             appNoticeReturn.setReturn_msg("ok");
             String returnXml = XmlUtils.toXML(appNoticeReturn);
-            redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_app_notice+orderNo,"1",3, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_app_notice+orderNo,"1",60, TimeUnit.MINUTES);
             response.getOutputStream().write(returnXml.getBytes("utf-8"));
         } catch (Exception e) {
             AppNoticeReturn appNoticeReturn = new AppNoticeReturn();
@@ -137,7 +137,7 @@ public class WechatNoticeController {
                 jsonObject.put("orderNo",orderNo);
                 jsonObject.put("resultCode",resultCode);
                 jsonObject.put("thirdOrderNo",thirdOrderNo);
-                Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice,RocketMqConstrants.Tags.wechatPayWalletNotice_JS,jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+                Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice,RocketMqConstrants.Tags.wechatPayWalletNotice_js,jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 defaultMQProducer.send(message);
             }
             //返回微信结果
@@ -145,7 +145,7 @@ public class WechatNoticeController {
             jsNoticeReturn.setReturn_code("SUCCESS");
             jsNoticeReturn.setReturn_msg("ok");
             String returnXml = XmlUtils.toXML(jsNoticeReturn);
-            redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_js_notice+orderNo,"1",3, TimeUnit.DAYS);
+            redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_js_notice+orderNo,"1",60, TimeUnit.MINUTES);
             response.getOutputStream().write(returnXml.getBytes("utf-8"));
         }catch (Exception e){
             JSNoticeReturn jsNoticeReturn=new JSNoticeReturn();

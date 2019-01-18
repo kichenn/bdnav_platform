@@ -2,6 +2,7 @@ package com.bdxh.pay.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.pay.fallback.WechatCommonControllerFallback;
+import com.bdxh.pay.vo.WechatOrderQueryVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,6 @@ public interface WechatCommonControllerClient {
      */
     @RequestMapping("/wechatCommonPay/query")
     @ResponseBody
-    Wrapper wechatAppPayOrderQuery(@RequestParam(name = "orderNo") String orderNo);
+    Wrapper<WechatOrderQueryVo> wechatAppPayOrderQuery(@RequestParam(name = "orderNo") String orderNo);
 
 }

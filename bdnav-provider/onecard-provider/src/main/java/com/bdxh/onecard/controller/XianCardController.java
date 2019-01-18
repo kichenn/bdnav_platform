@@ -278,7 +278,7 @@ public class XianCardController {
             }
             JSONObject result = responseEntity.getBody();
             Preconditions.checkNotNull(result,"查询一卡通充值结果失败");
-            return WrapMapper.ok(result);
+            return WrapMapper.ok(result.toJSONString());
         } catch (Exception e) {
 
             return WrapMapper.error(e.getMessage());
