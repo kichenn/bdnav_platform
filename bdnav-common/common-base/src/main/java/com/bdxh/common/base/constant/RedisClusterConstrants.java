@@ -12,9 +12,14 @@ public class RedisClusterConstrants {
      */
     public interface KeyPrefix {
 
-        String wechatpay_wallet_app_notice="wechatpaywalletappnotice";
+        String wechatpay_wallet_app_notice="wechatpaywalletappnotice:";
 
-        String wechatpay_wallet_js_notice="wechatpaywalletjsnotice";
+        String wechatpay_wallet_js_notice="wechatpaywalletjsnotice:";
+
+        String wechatpay_wallet_query_wechart_result="wechatpaywalletquerywechartresult:";
+
+        String wechatpay_wallet_query_xiancard_result="wechatpaywalletqueryxiancardresult:";
         
     }
+
 }

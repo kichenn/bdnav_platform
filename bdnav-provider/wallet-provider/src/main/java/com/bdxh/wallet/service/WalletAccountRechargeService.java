@@ -8,6 +8,7 @@ import com.bdxh.wallet.vo.WalletAppOrderVo;
 import com.bdxh.wallet.vo.WalletJsOrderVo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,6 +54,28 @@ public interface WalletAccountRechargeService extends IService<WalletAccountRech
 
     /**
      * 充值一卡通
+     * @param orderNo
+     * @param thirdOrderNo
+     * @param status
      */
     void rechargeWallet(Long orderNo,String thirdOrderNo,Byte status);
+
+    /**
+     * 查询通知超时的数据
+     * @param param
+     */
+    List<WalletAccountRecharge> queryPayingDataForTask(Map<String,Object> param);
+
+    /**
+     * 查询一卡通充值超时的数据
+     * @param param
+     * @return
+     */
+    List<WalletAccountRecharge> querySerailNoNullForTask(Map<String,Object> param);
+
+    /**
+     * 定时清理12小时未支付的订单
+     */
+    void clearRechargeLog();
+
 }

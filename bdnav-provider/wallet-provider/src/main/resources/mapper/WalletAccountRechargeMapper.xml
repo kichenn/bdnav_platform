@@ -60,4 +60,21 @@
   <update id="updatePaying">
     <![CDATA[update wallet_account_recharge set status=#{status} where order_no=#{orderNo} and status=1]]>
   </update>
+
+  <select id="getPayingDataForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="BaseColums"/>
+    from wallet_account_recharge
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=2 and create_date < date_sub(now(), interval #{timeTnterval} minute)]]>
+  </select>
+
+  <select id="getSerailNoNullForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="BaseColums"/>
+    from wallet_account_recharge
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=7 and create_date < date_sub(now(), interval #{timeTnterval} minute) and (acceptseq is null or acceptseq='')]]>
+  </select>
+
+  <delete id="clearRechargeLog">
+    <![CDATA[delete from wallet_account_recharge where status=1 and create_date < date_sub(now(), interval 12 HOUR)]]>
+  </delete>
+
 </mapper>
