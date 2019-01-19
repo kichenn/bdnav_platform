@@ -45,6 +45,15 @@
       <if test="orderNo !=null">
         and order_no=#{orderNo}
       </if>
+      <if test="startTime != null and startTime != ''">
+        AND pay_time<![CDATA[>=]]> #{startTime}
+      </if>
+      <if test="endTime != null and endTime != ''">
+        AND pay_time <![CDATA[<=]]>#{endTime}
+      </if>
+      <if test="status != null and status != ''">
+        AND status=#{status}
+      </if>
     </where>
   </select>
 

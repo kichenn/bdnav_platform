@@ -2,6 +2,7 @@ package com.bdxh.wallet.controller;
 
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.wallet.dto.RechargeConditionsDto;
 import com.bdxh.wallet.entity.WalletAccountRecharge;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
 import com.github.pagehelper.PageInfo;
@@ -10,14 +11,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/wallet")
@@ -125,27 +130,23 @@ public class WalletController {
      * @param
      * @return
      */
-    @RequestMapping("/rechargeLogPage")
+    @RequestMapping(value = "/rechargeLogPage",method = RequestMethod.POST )
     @ResponseBody
-    public Object changeRechargeLog(HttpServletRequest request){
+    public Object changeRechargeLog(@Valid RechargeConditionsDto rechargeConditionsDto, BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
-            String schoolCode=request.getParameter("schoolCode");
-            String userId=request.getParameter("userId");
-            Preconditions.checkArgument(StringUtils.isNotEmpty(schoolCode),"学校编码不能为空");
-            Preconditions.checkArgument(StringUtils.isNotEmpty(userId),"用户id不能为空");
-            String pageNum = request.getParameter("pageNum");
-            String pageSize = request.getParameter("pageSize");
-            if (StringUtils.isEmpty(pageNum)){
-                pageNum="1";
-            }
-            if (StringUtils.isEmpty(pageSize)){
-                pageSize="15";
-            }
             //调用service
             Map<String,Object> param=new HashMap<>();
-            param.put("userId",Long.valueOf(userId));
-            param.put("schoolCode",schoolCode);
-            PageInfo<WalletAccountRecharge> rechargeLogPage = walletAccountRechargeService.getRechargeLogPage(param, Integer.valueOf(pageNum), Integer.valueOf(pageSize));
+            param.put("schoolCode",rechargeConditionsDto.getSchoolCode());
+            param.put("userId",Long.valueOf(rechargeConditionsDto.getUserId()));
+            param.put("startTime",rechargeConditionsDto.getStartTime());
+            param.put("endTime",rechargeConditionsDto.getEndTime());
+            param.put("status", rechargeConditionsDto.getStatus());
+            PageInfo<WalletAccountRecharge> rechargeLogPage = walletAccountRechargeService.getRechargeLogPage(param, rechargeConditionsDto.getPageNum(),rechargeConditionsDto.getPageSize());
             return WrapMapper.ok(rechargeLogPage);
         }catch (Exception e){
             log.error(e.getMessage());
