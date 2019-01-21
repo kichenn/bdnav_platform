@@ -17,6 +17,7 @@
         <module>order-provider</module>
         <module>onecard-provider</module>
         <module>pay-provider</module>
+        <module>product-provider</module>
     </modules>
 
     <dependencies>

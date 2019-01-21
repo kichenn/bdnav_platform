@@ -1,18 +1,16 @@
 package com.bdxh.wallet.dto;
 
+import com.bdxh.common.base.page.Query;
 import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 充值记录查询条件类
  */
 @Data
-public class RechargeConditionsDto implements Serializable {
-
-    private static final long serialVersionUID = 6970436863386413416L;
+public class WalletRechargeQueryDto extends Query {
 
     /**
      * 学校唯一标识
@@ -36,12 +34,5 @@ public class RechargeConditionsDto implements Serializable {
      * 查询状态
      */
     private Integer status;
-    /**
-     * 首页
-     */
-    private Integer pageNum=1;
-    /**
-     * 大小
-     */
-    private Integer pageSize=3;
+
 }

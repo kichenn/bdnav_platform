@@ -2,7 +2,7 @@ package com.bdxh.wallet.controller;
 
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.wallet.dto.RechargeConditionsDto;
+import com.bdxh.wallet.dto.WalletRechargeQueryDto;
 import com.bdxh.wallet.entity.WalletAccountRecharge;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
 import com.github.pagehelper.PageInfo;
@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -134,7 +133,7 @@ public class WalletController {
      */
     @RequestMapping(value = "/rechargeLogPage",method = RequestMethod.POST )
     @ResponseBody
-    public Object changeRechargeLog(@Valid RechargeConditionsDto rechargeConditionsDto, BindingResult bindingResult){
+    public Object changeRechargeLog(@Valid WalletRechargeQueryDto rechargeConditionsDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
