@@ -19,7 +19,9 @@ import java.util.List;
 @Component
 @Slf4j
 public class DateConverterConfig implements Converter<String, Date> {
+
     private static final List<String> formarts = new ArrayList<>(4);
+
     static{
         formarts.add("yyyy-MM-dd");
         formarts.add("yyyy-MM-dd HH:mm:ss");
@@ -32,10 +34,10 @@ public class DateConverterConfig implements Converter<String, Date> {
         }
         source = source.trim();
         if(source.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
-            return parseDate(source, formarts.get(1));
+            return parseDate(source, formarts.get(0));
         }
-        else if(source.matches("^\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}$")){
-            return parseDate(source, formarts.get(3));
+        else if(source.matches("^\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}$")){
+            return parseDate(source, formarts.get(1));
         }else {
             log.error("Invalid date value '" + source + "'");
             throw new IllegalArgumentException("Invalid date value '" + source + "'");

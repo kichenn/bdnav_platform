@@ -45,11 +45,11 @@
       <if test="orderNo !=null">
         and order_no=#{orderNo}
       </if>
-      <if test="startTime != null and startTime != ''">
-        AND pay_time<![CDATA[>=]]> #{startTime}
+      <if test="startTime != null">
+        <![CDATA[AND create_date >= #{startTime}]]>
       </if>
-      <if test="endTime != null and endTime != ''">
-        AND pay_time <![CDATA[<=]]>#{endTime}
+      <if test="endTime != null">
+        <![CDATA[AND create_date <= #{endTime}]]>
       </if>
       <if test="status != null and status != ''">
         AND status=#{status}
