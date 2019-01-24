@@ -8,32 +8,31 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 @Data
-public class ProductDto implements Serializable {
+public class ProductUpdateDto implements Serializable {
 
     private static final long serialVersionUID = 1295579643785690138L;
+
+    @NotNull(message = "商品主键不能为空")
+    private Long id;
 
     /**
      * 商品名称
      */
-    @NotEmpty(message = "商品名称不能为空")
     private String productName;
 
     /**
      * 商品展示名称
      */
-    @NotEmpty(message = "商品展示名称")
     private String productShowName;
 
     /**
      * 商品定价
      */
-    @NotNull(message = "商品定价不能为空")
     private BigDecimal productPrice;
 
     /**
      * 商品售价
      */
-    @NotNull(message = "商品售价不能为空")
     private BigDecimal productSellPrice;
 
     /**
@@ -54,7 +53,6 @@ public class ProductDto implements Serializable {
     /**
      * 商品图片地址
      */
-    @NotEmpty(message = "商品图片地址不能为空")
     private String imgUrl;
 
     /**

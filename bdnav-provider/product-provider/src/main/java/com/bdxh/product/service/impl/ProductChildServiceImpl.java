@@ -1,8 +1,8 @@
-package com.bdxh.service.impl;
+package com.bdxh.product.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.product.entity.ProductChild;
-import com.bdxh.service.ProductChildService;
+import com.bdxh.product.service.ProductChildService;
 import org.springframework.stereotype.Service;
 
 /**

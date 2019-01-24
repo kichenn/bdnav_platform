@@ -22,18 +22,18 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
 
-  <sql id="BaseColums">
+  <sql id="BaseColumns">
     id, school_code, user_id, user_name, card_number, account_id, order_no, order_type, third_order_no, acceptseq, status, recharge_money, pay_time, create_date, update_date
   </sql>
 
   <select id="getByOrderNo" parameterType="java.lang.Long" resultMap="BaseResultMap">
-    select <include refid="BaseColums"/>
+    select <include refid="BaseColumns"/>
     from wallet_account_recharge
     where order_no=#{orderNo}
   </select>
 
   <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColums"/>
+    select <include refid="BaseColumns"/>
     from wallet_account_recharge
     <where>
       <if test="schoolCode !=null">
@@ -55,6 +55,7 @@
         AND status=#{status}
       </if>
     </where>
+    order by create_date desc
   </select>
 
   <update id="updatePaying">
@@ -62,13 +63,13 @@
   </update>
 
   <select id="getPayingDataForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColums"/>
+    select <include refid="BaseColumns"/>
     from wallet_account_recharge
     <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=2 and create_date < date_sub(now(), interval #{timeTnterval} minute)]]>
   </select>
 
   <select id="getSerailNoNullForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColums"/>
+    select <include refid="BaseColumns"/>
     from wallet_account_recharge
     <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=7 and create_date < date_sub(now(), interval #{timeTnterval} minute) and (acceptseq is null or acceptseq='')]]>
   </select>

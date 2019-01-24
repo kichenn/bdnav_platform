@@ -1,0 +1,7 @@
+server:
+  port: 9018
+spring:
+  application:
+    name: product-provider-cluster
+  profiles:
+    active: dev

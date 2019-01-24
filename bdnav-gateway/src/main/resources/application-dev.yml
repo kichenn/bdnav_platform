@@ -26,11 +26,15 @@ zuul:
     api-b:
       path: /pay/** #网关地址
       serviceId: pay-provider-cluster #代理到对应的服务
-
+    api-c:
+      path: /product/** #网关地址
+      serviceId: product-provider-cluster #代理到对应的服务
 hystrix:
   command:        
     default:
       execution:
+        timeout:
+          enabled: true
         isolation:
           thread:
             timeoutInMilliseconds: 15000

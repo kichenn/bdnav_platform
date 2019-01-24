@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.product.persistence.ProductChildMapper">
+  <resultMap id="BaseResultMap" type="com.bdxh.product.entity.ProductChild">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="product_child_id" jdbcType="BIGINT" property="productChildId" />
+  </resultMap>
+
+  <select id="exists" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    select  count(1) from product_child where product_child_id=#{productId} limit 1
+  </select>
+
+</mapper>

@@ -30,19 +30,19 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 
-  <sql id="BaseColums">
+  <sql id="BaseColumns">
     order_no, third_order_no, school_code, user_id, open_id, user_name, card_number, total_money, order_money, pay_money, trade_status,
     pay_status, business_status, channel_type, business_type, pay_type, trade_type, pay_time, pay_end_time, product_ids, create_date, update_date, remark
   </sql>
 
   <select id="getOrderByOrderNo" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColums"/>
+    select <include refid="BaseColumns"/>
     from t_order
     where order_no=#{orderNo} and school_code=#{schoolCode} and user_id=#{userId}
   </select>
 
   <select id="getOrderByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColums"/>
+    select <include refid="BaseColumns"/>
     from t_order
     <where>
       school_code=#{schoolCode} and user_id=#{userId}
