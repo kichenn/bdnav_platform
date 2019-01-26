@@ -2,7 +2,7 @@ package com.bdxh.wallet.message.bings;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bdxh.common.base.enums.WxPayCardStatusEnum;
+import com.bdxh.common.base.enums.PayCardStatusEnum;
 import com.bdxh.common.base.enums.WxPayNoticeResultEnum;
 import com.bdxh.wallet.message.stream.WalletNoticeSink;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
@@ -28,17 +28,17 @@ public class WalletNoticeConsumer {
     @StreamListener(WalletNoticeSink.INPUT)
     public void reciveWalletNotice(Message<String> message){
         String notice=message.getPayload();
-        log.info("收到消息："+notice);
+        log.info("收到一卡通充值消息：{}",notice);
         JSONObject jsonObject = JSON.parseObject(notice);
         Long orderNo = jsonObject.getLong("orderNo");
         String thirdOrderNo=jsonObject.getString("thirdOrderNo");
         String resultCode = jsonObject.getString("resultCode");
         if (orderNo!=null&&StringUtils.isNotEmpty(resultCode)){
             if (StringUtils.equals(resultCode, WxPayNoticeResultEnum.SUCCESS.name())){
-                walletAccountRechargeService.rechargeWallet(orderNo,thirdOrderNo, WxPayCardStatusEnum.RECHARGE_SUCCESS.getCode());
+                walletAccountRechargeService.rechargeWallet(orderNo,thirdOrderNo, PayCardStatusEnum.RECHARGE_SUCCESS.getCode());
             }
             if (StringUtils.equals(resultCode, WxPayNoticeResultEnum.FAIL.name())){
-                walletAccountRechargeService.rechargeWallet(orderNo,thirdOrderNo, WxPayCardStatusEnum.RECHARGE_FAIL.getCode());
+                walletAccountRechargeService.rechargeWallet(orderNo,thirdOrderNo, PayCardStatusEnum.RECHARGE_FAIL.getCode());
             }
         }
     }

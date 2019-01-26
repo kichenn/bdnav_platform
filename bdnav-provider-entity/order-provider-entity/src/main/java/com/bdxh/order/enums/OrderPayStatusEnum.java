@@ -1,22 +1,22 @@
-package com.bdxh.common.base.enums;
+package com.bdxh.order.enums;
 
 /**
- * @description: 订单交易状态枚举类
+ * @description: 订单支付状态枚举类
  * @author: xuyuan
- * @create: 2019-01-09 16:25
+ * @create: 2019-01-09 16:26
  **/
-public enum OrderTradeStatusEnum {
+public enum OrderPayStatusEnum {
 
-    TRADING(new Byte("1"),"交易中"),
-    CANCLE(new Byte("2"),"已取消"),
-    DELETE(new Byte("3"),"已删除"),
-    SUCCESS(new Byte("4"),"交易成功");
+    NO_PAY(new Byte("1"),"未支付"),
+    PAYING(new Byte("2"),"支付中"),
+    PAY_FAIL(new Byte("3"),"支付失败"),
+    PAY_SUCCESS(new Byte("4"),"支付成功");
 
     private Byte code;
 
     private String desc;
 
-    OrderTradeStatusEnum(Byte code, String desc){
+    OrderPayStatusEnum(Byte code, String desc){
         this.code=code;
         this.desc=desc;
     }
@@ -36,5 +36,4 @@ public enum OrderTradeStatusEnum {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-
 }

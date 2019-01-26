@@ -2,10 +2,7 @@ package com.bdxh.onecard.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.onecard.dto.XianAddBlanceDto;
-import com.bdxh.onecard.dto.XianQueryBlanceDto;
-import com.bdxh.onecard.dto.XianQueryConsListDto;
-import com.bdxh.onecard.dto.XianSyscDataDto;
+import com.bdxh.onecard.dto.*;
 import com.bdxh.onecard.feign.XianCardControllerClient;
 import org.springframework.stereotype.Component;
 
@@ -29,6 +26,11 @@ public class XianCardControllerFallback implements XianCardControllerClient {
 
     @Override
     public Wrapper addBalance(XianAddBlanceDto xianAddBlanceDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper subBalance(XianSubBlanceDto xianSubBlanceDto) {
         return WrapMapper.error();
     }
 

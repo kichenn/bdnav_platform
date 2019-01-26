@@ -3,11 +3,8 @@ package com.bdxh.wallet.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.base.constant.WechatPayConstants;
-import com.bdxh.common.base.enums.WxPayCardStatusEnum;
-import com.bdxh.common.utils.BeanToMapUtil;
-import com.bdxh.common.utils.MD5;
-import com.bdxh.common.utils.ObjectUtil;
-import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.common.base.enums.PayCardStatusEnum;
+import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.pay.dto.WxPayAppOrderDto;
@@ -160,7 +157,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
     @Override
     public void rechargeWallet(Long orderNo, String thirdOrderNo, Byte status) {
         WalletAccountRecharge walletAccountRecharge = walletAccountRechargeMapper.getByOrderNo(orderNo);
-        if (walletAccountRecharge!=null&&walletAccountRecharge.getStatus().intValue()< WxPayCardStatusEnum.RECHARGE_SUCCESS.getCode()){
+        if (walletAccountRecharge!=null&&walletAccountRecharge.getStatus().intValue()< PayCardStatusEnum.RECHARGE_SUCCESS.getCode()){
             //设置充值状态
             walletAccountRecharge.setStatus(status);
             //设置微信订单号
@@ -168,7 +165,7 @@ public class WalletAccountRechargeServiceImpl  extends BaseService<WalletAccount
             //更新充值状态
             walletAccountRechargeMapper.updateByPrimaryKeySelective(walletAccountRecharge);
             //支付成功，发起一卡通充值
-            if (WxPayCardStatusEnum.RECHARGE_SUCCESS.getCode().intValue()==status.intValue()){
+            if (PayCardStatusEnum.RECHARGE_SUCCESS.getCode().intValue()==status.intValue()){
                 //发送消息异步处理
                 String messageStr = JSON.toJSONString(walletAccountRecharge);
                 Message message = new Message(RocketMqConstrants.Topic.xiancardWalletRecharge,RocketMqConstrants.Tags.xiancardWalletRecharge_add,messageStr.getBytes(Charset.forName("utf-8")));

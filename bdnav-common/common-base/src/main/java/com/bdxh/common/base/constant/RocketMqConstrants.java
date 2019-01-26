@@ -10,8 +10,11 @@ public class RocketMqConstrants {
     /**
      * rocketmq事务回查redis前缀
      */
-    public static final String TRANSACTION_REDIS_PREFIX="transaction:";
+    public static final String TRANSACTION_REDIS_PREFIX="rocketmqtransaction:";
 
+    /**
+     * rocketmq topics
+     */
     public interface Topic {
 
         /**
@@ -24,10 +27,20 @@ public class RocketMqConstrants {
          */
         String xiancardWalletRecharge="xiancardWalletRecharge";
 
+        /**
+         * 凯路订单支付topic
+         */
+        String xiancardWalletKailu="xiancardWalletKailu";
+
+        /**
+         * 凯路订单支付更新topic
+         */
+        String xiancardWalletKailuUpdate="xiancardWalletKailuUpdate";
+
     }
 
     /**
-     *
+     * rocketmq tags
      */
     public interface Tags {
 
@@ -38,6 +51,10 @@ public class RocketMqConstrants {
         String wechatPayWalletNotice_query="query";
 
         String xiancardWalletRecharge_add="add";
+
+        String xiancardWalletKailu_consumer="consumer";
+
+        String xiancardWalletKailuUpdate_update="update";
 
     }
 

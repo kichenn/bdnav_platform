@@ -23,6 +23,11 @@ public class XianCardConstants {
     public static final String RECHARGE_URI="/ocs/air/recharge";
 
     /**
+     * 一卡通充值接口uri
+     */
+    public static final String TRADE_URI="/ocs/air/trade";
+
+    /**
      * 充值结果uri
      */
     public static final String RECHARGE_RESULT_URI="/ocs/air/recharge/check";

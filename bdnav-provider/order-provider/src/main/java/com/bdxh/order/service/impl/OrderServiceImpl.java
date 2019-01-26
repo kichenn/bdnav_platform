@@ -1,8 +1,8 @@
 package com.bdxh.order.service.impl;
 
-import com.bdxh.common.base.enums.OrderBusinessStatusEnum;
-import com.bdxh.common.base.enums.OrderPayStatusEnum;
-import com.bdxh.common.base.enums.OrderTradeStatusEnum;
+import com.bdxh.common.base.enums.BusinessStatusEnum;
+import com.bdxh.order.enums.OrderPayStatusEnum;
+import com.bdxh.order.enums.OrderTradeStatusEnum;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.web.support.BaseService;
@@ -45,7 +45,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         Long orderNo=snowflakeIdWorker.nextId();
         Order order = BeanMapUtils.map(orderDto, Order.class);
         order.setOrderNo(orderNo);
-        order.setBusinessStatus(OrderBusinessStatusEnum.NO_PROCESS.getCode());
+        order.setBusinessStatus(BusinessStatusEnum.NO_PROCESS.getCode());
         order.setTradeStatus(OrderTradeStatusEnum.TRADING.getCode());
         order.setPayStatus(OrderPayStatusEnum.NO_PAY.getCode());
         List<OrderItem> orderItems = BeanMapUtils.mapList(orderDto.getItems(), OrderItem.class);

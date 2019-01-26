@@ -8,10 +8,7 @@ import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.common.xiancard.domain.*;
-import com.bdxh.onecard.dto.XianAddBlanceDto;
-import com.bdxh.onecard.dto.XianQueryBlanceDto;
-import com.bdxh.onecard.dto.XianQueryConsListDto;
-import com.bdxh.onecard.dto.XianSyscDataDto;
+import com.bdxh.onecard.dto.*;
 import com.bdxh.wallet.entity.WalletXianConfig;
 import com.bdxh.wallet.feign.WalletConfigControllerClient;
 import com.google.common.base.Preconditions;
@@ -83,6 +80,7 @@ public class XianCardController {
                 return WrapMapper.error("一卡通用户同步失败");
             }
             JSONObject result = responseEntity.getBody();
+            log.info("syscUser请求参数：{}，返回结果：{}",requestStr,result.toJSONString());
             Preconditions.checkNotNull(result,"一卡通用户同步失败");
             Preconditions.checkArgument(StringUtils.equalsAnyIgnoreCase(result.getString("code"),"000000"), "一卡通用户同步失败");
             return WrapMapper.ok();
@@ -132,6 +130,7 @@ public class XianCardController {
                 return WrapMapper.error("查询一卡通余额失败");
             }
             JSONObject result = responseEntity.getBody();
+            log.info("queryBalance请求参数：{}，返回结果：{}",requestStr,result.toJSONString());
             Preconditions.checkNotNull(result,"查询一卡通余额失败");
             Preconditions.checkArgument(StringUtils.equalsAnyIgnoreCase(result.getString("code"),"000000"), "查询一卡通余额失败");
             //返回余额
@@ -185,8 +184,61 @@ public class XianCardController {
                 return WrapMapper.error("充值一卡通失败");
             }
             JSONObject result = responseEntity.getBody();
+            log.info("addBalance请求参数：{}，返回结果：{}",requestStr,result.toJSONString());
             Preconditions.checkNotNull(result,"充值一卡通失败");
-            Preconditions.checkArgument(StringUtils.equalsAnyIgnoreCase(result.getString("code"),"000000"), result.getString("code"));
+            Preconditions.checkArgument(StringUtils.equalsAnyIgnoreCase(result.getString("code"),"000000"), result.getString("msg"));
+            //返回流水号
+            return WrapMapper.ok(result.getString("acceptseq"));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 一卡通消费接口
+     */
+    @RequestMapping(value = "/subBalance", method = RequestMethod.POST)
+    @ResponseBody
+    public Object subBalance(@Valid @RequestBody XianSubBlanceDto xianSubBlanceDto, BindingResult bindingResult) {
+        //检验参数
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            Wrapper wrapper = walletConfigControllerClient.queryWalletConfigBySchoolCode(xianSubBlanceDto.getSchoolCode());
+            Preconditions.checkArgument(wrapper.getCode() == 200, "获取学校一卡通信息失败");
+            WalletXianConfig walletXianConfig = (WalletXianConfig) wrapper.getResult();
+            //准备参数
+            SubBalanceRequest subBalanceRequest=new SubBalanceRequest();
+            subBalanceRequest.setAmount(String.valueOf(xianSubBlanceDto.getMoney().multiply(new BigDecimal("100")).intValue()));
+            subBalanceRequest.setIccid(xianSubBlanceDto.getCardNumber());
+            subBalanceRequest.setIdtype(XianCardConstants.IdentityType.CARD_XUEHAO.getCode());
+            subBalanceRequest.setMerchant(walletXianConfig.getAppId());
+            subBalanceRequest.setOrderid(xianSubBlanceDto.getOrderNo());
+            subBalanceRequest.setName(xianSubBlanceDto.getUserName());
+            subBalanceRequest.setAccount("");
+            SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(subBalanceRequest);
+            String valueString = BeanToMapUtil.mapToValueString(paramMap);
+            String sign = MD5.md5(valueString + walletXianConfig.getSecret());
+            subBalanceRequest.setMac(sign);
+            String requestStr = JSON.toJSONString(subBalanceRequest);
+            //发起http请求
+            RestTemplate restTemplate = new RestTemplate();
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Accept-Charset", "utf-8");
+            headers.set("Content-type", "application/json; charset=utf-8");
+            HttpEntity<String> httpEntity = new HttpEntity<>(requestStr,headers);
+            String url = walletXianConfig.getUrl() + XianCardConstants.TRADE_URI;
+            ResponseEntity<JSONObject> responseEntity = restTemplate.exchange(url, HttpMethod.POST, httpEntity, JSONObject.class);
+            if (!(responseEntity.getStatusCode().value() == 200 && responseEntity.hasBody())) {
+                return WrapMapper.error("消费一卡通失败");
+            }
+            JSONObject result = responseEntity.getBody();
+            log.info("subBalance请求参数：{}，返回结果：{}",requestStr,result.toJSONString());
+            Preconditions.checkNotNull(result,"消费一卡通失败");
+            Preconditions.checkArgument(StringUtils.equalsAnyIgnoreCase(result.getString("code"),"000000"), result.getString("msg"));
             //返回流水号
             return WrapMapper.ok(result.getString("acceptseq"));
         } catch (Exception e) {
@@ -235,6 +287,7 @@ public class XianCardController {
                 return WrapMapper.error("查询一卡通消费记录失败");
             }
             JSONObject result = responseEntity.getBody();
+            log.info("queryTradeList请求参数：{}，返回结果：{}",requestStr,result.toJSONString());
             Preconditions.checkNotNull(result,"查询一卡通消费记录失败");
             Preconditions.checkArgument(StringUtils.equalsAnyIgnoreCase(result.getString("code"),"000000"), "查询一卡通消费记录失败");
             //返回消费记录
@@ -277,10 +330,10 @@ public class XianCardController {
                 return WrapMapper.error("查询一卡通充值结果失败");
             }
             JSONObject result = responseEntity.getBody();
+            log.info("queryAddResult请求参数：{}，返回结果：{}",requestStr,result.toJSONString());
             Preconditions.checkNotNull(result,"查询一卡通充值结果失败");
             return WrapMapper.ok(result.toJSONString());
         } catch (Exception e) {
-
             return WrapMapper.error(e.getMessage());
         }
     }

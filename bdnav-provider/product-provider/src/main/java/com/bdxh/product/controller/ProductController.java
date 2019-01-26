@@ -6,6 +6,7 @@ import com.bdxh.product.dto.ProductAddDto;
 import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
+import com.bdxh.product.enums.ProductTypeEnum;
 import com.bdxh.product.service.ProductService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -38,6 +40,11 @@ public class ProductController {
     @Autowired
     public ProductService productService;
 
+    /**
+     * 根据id查询商品
+     * @param id
+     * @return
+     */
     @RequestMapping(value = "/queryProduct",method = RequestMethod.GET)
     @ResponseBody
     public Object queryProduct(@RequestParam(name = "id") @NotNull(message = "商品id不能为空") Long id){
@@ -51,6 +58,12 @@ public class ProductController {
         }
     }
 
+    /**
+     * 增加商品
+     * @param productAddDto
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping(value = "/addProduct",method = RequestMethod.POST)
     @ResponseBody
     public Object addProduct(@Valid @RequestBody ProductAddDto productAddDto, BindingResult bindingResult){
@@ -69,6 +82,12 @@ public class ProductController {
         }
     }
 
+    /**
+     * 更新商品
+     * @param productUpdateDto
+     * @param bindingResult
+     * @return
+     */
     @RequestMapping(value = "/updateProduct",method = RequestMethod.POST)
     @ResponseBody
     public Object updateProduct(@Valid @RequestBody ProductUpdateDto productUpdateDto, BindingResult bindingResult){
@@ -87,6 +106,11 @@ public class ProductController {
         }
     }
 
+    /**
+     * 删除商品
+     * @param productId
+     * @return
+     */
     @RequestMapping(value = "/deleteProduct",method = RequestMethod.POST)
     @ResponseBody
     public Object deleteProduct(@RequestParam(name = "productId") @NotNull(message = "商品id不能为空") Long productId){
@@ -100,6 +124,11 @@ public class ProductController {
         }
     }
 
+    /**
+     * 商品列表查询
+     * @param productQueryDto
+     * @return
+     */
     @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
     @ResponseBody
     public Object queryListPage(@Valid @RequestBody ProductQueryDto productQueryDto){
@@ -114,6 +143,11 @@ public class ProductController {
         }
     }
 
+    /**
+     * 根据条件查询商品
+     * @param productQueryDto
+     * @return
+     */
     @RequestMapping(value = "/queryList",method = RequestMethod.POST)
     @ResponseBody
     public Object queryList(@Valid @RequestBody ProductQueryDto productQueryDto){
@@ -128,6 +162,11 @@ public class ProductController {
         }
     }
 
+    /**
+     * 判断商品展示名称是否重复
+     * @param productShowName
+     * @return
+     */
     @RequestMapping(value = "/exists",method = RequestMethod.GET)
     @ResponseBody
     public Object exists(@RequestParam(name = "productShowName") @NotEmpty(message = "商品展示名称不能为空") String productShowName){
@@ -137,6 +176,32 @@ public class ProductController {
             Product productData = productService.selectOne(product);
             Preconditions.checkArgument(productData==null,"商品展示名称重复");
             return WrapMapper.ok();
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error(e.getMessage(),e.getStackTrace());
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 商品购买展示
+     * @param businessType
+     * @return
+     */
+    @RequestMapping(value = "/buyShow",method = RequestMethod.GET)
+    @ResponseBody
+    public Object buyShow(@RequestParam(name = "businessType") @NotNull(message = "业务类型不能为空") Byte businessType){
+        try {
+            Map<String,Object> param = new HashMap<>();
+            param.put("businessType",businessType);
+            param.put("productType",ProductTypeEnum.GROUP.getCode().byteValue());
+            List<Product> productsGroup = productService.queryList(param);
+            param.put("productType", ProductTypeEnum.SINGLE.getCode().byteValue());
+            List<Product> productsSingle = productService.queryList(param);
+            param.clear();
+            param.put(ProductTypeEnum.GROUP.name(),productsGroup);
+            param.put(ProductTypeEnum.SINGLE.name(),productsSingle);
+            return WrapMapper.ok(param);
         }catch (Exception e){
             e.printStackTrace();
             log.error(e.getMessage(),e.getStackTrace());

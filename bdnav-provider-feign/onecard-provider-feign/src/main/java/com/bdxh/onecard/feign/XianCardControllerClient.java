@@ -1,14 +1,14 @@
 package com.bdxh.onecard.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.onecard.dto.XianAddBlanceDto;
-import com.bdxh.onecard.dto.XianQueryBlanceDto;
-import com.bdxh.onecard.dto.XianQueryConsListDto;
-import com.bdxh.onecard.dto.XianSyscDataDto;
+import com.bdxh.onecard.dto.*;
 import com.bdxh.onecard.fallback.XianCardControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @description: 西安一卡通feigin客户端
@@ -41,6 +41,13 @@ public interface XianCardControllerClient {
     @RequestMapping(value = "/xianCard/addBalance", method = RequestMethod.POST)
     @ResponseBody
     Wrapper addBalance(@RequestBody XianAddBlanceDto xianAddBlanceDto);
+
+    /**
+     * 一卡通消费接口
+     */
+    @RequestMapping(value = "/subBalance", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper subBalance(@RequestBody XianSubBlanceDto xianSubBlanceDto);
 
     /**
      * 消费记录查询

@@ -77,6 +77,14 @@ spring:
             consumer:
               orderly: false
               tags: add
+          walletKailuPay:
+            consumer:
+              orderly: false
+              tags: consumer
+          walletKailuPayUpdate:
+            consumer:
+              orderly: false
+              tags: update
       bindings:
         walletNotice:
           destination: wechatPayWalletNotice
@@ -85,6 +93,8 @@ spring:
           consumer:
             #并发消费数量
             concurrency: 50
+            #重试次数
+            max-attempts: 1
         walletRecharge:
           destination: xiancardWalletRecharge
           contentType: text/plain
@@ -92,12 +102,32 @@ spring:
           consumer:
             #并发消费数量
             concurrency: 50
+            #重试次数
+            max-attempts: 1
+        walletKailuPay:
+          destination: xiancardWalletKailu
+          contentType: text/plain
+          group: xiancardWalletKailu-group
+          consumer:
+            #并发消费数量
+            concurrency: 50
+            #重试次数
+            max-attempts: 1
+        walletKailuPayUpdate:
+          destination: xiancardWalletKailuUpdate
+          contentType: text/plain
+          group: xiancardWalletKailu-group
+          consumer:
+            #并发消费数量
+            concurrency: 50
+            #重试次数
+            max-attempts: 1
 #rocketmq producer配置
 rocketmq:
   producer:
     defaultName: default-wallet-provider
     transName: trans-wallet-provider
-    transEnable: false
+    transEnable: true
 #分布式任务配置
 elastic-job:
   registry:

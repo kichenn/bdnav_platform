@@ -1,18 +1,22 @@
 package com.bdxh.wallet.controller;
 
-import com.bdxh.common.base.enums.WxPayCardStatusEnum;
+import com.bdxh.common.base.enums.PayCardStatusEnum;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.wallet.dto.WalletKailuOrderDto;
 import com.bdxh.wallet.dto.WalletPayAppOrderDto;
 import com.bdxh.wallet.dto.WalletPayJsOrderDto;
 import com.bdxh.wallet.dto.WalletPayOkDto;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
+import com.bdxh.wallet.service.WalletKailuConsumerService;
 import com.bdxh.wallet.vo.WalletAppOrderVo;
 import com.bdxh.wallet.vo.WalletJsOrderVo;
+import com.bdxh.wallet.vo.WalletKailuOrderVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
@@ -31,7 +35,16 @@ public class WalletPayController {
     @Autowired
     private WalletAccountRechargeService walletAccountRechargeService;
 
-    @RequestMapping("/appOrder")
+    @Autowired
+    private WalletKailuConsumerService walletKailuConsumerService;
+
+    /**
+     * app钱包充值
+     * @param walletPayAppOrderDto
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value = "/appOrder",method = RequestMethod.POST)
     @ResponseBody
     public Object appOrder(@Valid WalletPayAppOrderDto walletPayAppOrderDto, BindingResult bindingResult){
         //检验参数
@@ -49,7 +62,13 @@ public class WalletPayController {
         }
     }
 
-    @RequestMapping("/jsOrder")
+    /**
+     * js钱包充值
+     * @param walletPayJsOrderDto
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value = "/jsOrder",method = RequestMethod.POST)
     @ResponseBody
     public Object jsOrder(@Valid WalletPayJsOrderDto walletPayJsOrderDto, BindingResult bindingResult){
         //检验参数
@@ -68,12 +87,36 @@ public class WalletPayController {
     }
 
     /**
+     * 凯路消费
+     * @param walletKailuOrderDto
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value = "/kailuOrder",method = RequestMethod.POST)
+    @ResponseBody
+    public Object kailuOrder(@Valid WalletKailuOrderDto walletKailuOrderDto, BindingResult bindingResult){
+        //检验参数
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            WalletKailuOrderVo walletKailuOrderVo = walletKailuConsumerService.kailuOrder(walletKailuOrderDto);
+            return WrapMapper.ok(walletKailuOrderVo);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error(e.getMessage(),e.getStackTrace());
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
      * 用户支付完成请求接口
      * @param wxPayOkDto
      * @param bindingResult
      * @return
      */
-    @RequestMapping("/ok")
+    @RequestMapping(value = "/ok",method = RequestMethod.POST)
     @ResponseBody
     public Object wechatAppPayOk(@Valid WalletPayOkDto wxPayOkDto, BindingResult bindingResult){
         //检验参数
@@ -85,9 +128,9 @@ public class WalletPayController {
         try {
             Byte status=wxPayOkDto.getStatus();
             if(status.intValue()==1){
-                walletAccountRechargeService.updatePaying(wxPayOkDto.getOrderNo(), WxPayCardStatusEnum.PAYING.getCode());
+                walletAccountRechargeService.updatePaying(wxPayOkDto.getOrderNo(), PayCardStatusEnum.PAYING.getCode());
             }else if (status.intValue()==2){
-                walletAccountRechargeService.updatePaying(wxPayOkDto.getOrderNo(), WxPayCardStatusEnum.PAY_FAIL.getCode());
+                walletAccountRechargeService.updatePaying(wxPayOkDto.getOrderNo(), PayCardStatusEnum.PAY_FAIL.getCode());
             }
             return WrapMapper.ok("更新支付中状态成功");
         }catch (Exception e){

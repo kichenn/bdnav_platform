@@ -1,4 +1,4 @@
-package com.bdxh.common.base.enums;
+package com.bdxh.order.enums;
 
 /**
  * @description: 微信支付状态枚举类

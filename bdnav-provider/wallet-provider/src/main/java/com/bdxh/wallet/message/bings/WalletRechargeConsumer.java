@@ -9,7 +9,6 @@ import com.bdxh.wallet.message.stream.WalletRechargeSink;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -33,7 +32,7 @@ public class WalletRechargeConsumer {
     @StreamListener(WalletRechargeSink.INPUT)
     public void reciveWalletRecharge(Message<String> message){
         String recharge=message.getPayload();
-        log.info("收到消息："+recharge);
+        log.info("收到一卡通充值消息：{}",recharge);
         WalletAccountRecharge walletAccountRecharge = JSON.parseObject(recharge, WalletAccountRecharge.class);
         //一卡通充值
         XianAddBlanceDto xianAddBlanceDto = new XianAddBlanceDto();
@@ -43,22 +42,17 @@ public class WalletRechargeConsumer {
         xianAddBlanceDto.setOrderNo(String.valueOf(walletAccountRecharge.getOrderNo()));
         xianAddBlanceDto.setUserName(walletAccountRecharge.getUserName());
         Wrapper wrapper = xianCardControllerClient.addBalance(xianAddBlanceDto);
-        log.info("一卡通返回结果："+JSON.toJSON(wrapper));
-        //状态500时 100009代表订单号重复，表示已经充值过 貌似没有同步数据时对方也是返回此code值，挺6的
-        Preconditions.checkArgument(wrapper.getCode()==200|| (wrapper.getCode()==500&&StringUtils.equals(String.valueOf(wrapper.getMessage()),"100009")),"一卡通充值失败");
-        //更新流水号
-        if (wrapper.getCode()==200){
-            try {
-                String acceptseq = (String) wrapper.getResult();
-                WalletAccountRecharge walletAccountRechargeNew = new WalletAccountRecharge();
-                walletAccountRechargeNew.setId(walletAccountRecharge.getId());
-                walletAccountRechargeNew.setAcceptseq(acceptseq);
-                walletAccountRechargeService.update(walletAccountRechargeNew);
-            }catch (Exception e){
-                e.printStackTrace();
-                log.error("订单号："+xianAddBlanceDto.getOrderNo()+"更新流水号失败",e.getStackTrace());
-            }
-
+        log.info("订单号{}一卡通充值返回结果：",walletAccountRecharge.getOrderNo(),JSON.toJSON(wrapper));
+        Preconditions.checkArgument(wrapper.getCode()==200,"一卡通充值失败");
+        try {
+            String acceptseq = (String) wrapper.getResult();
+            WalletAccountRecharge walletAccountRechargeNew = new WalletAccountRecharge();
+            walletAccountRechargeNew.setId(walletAccountRecharge.getId());
+            walletAccountRechargeNew.setAcceptseq(acceptseq);
+            walletAccountRechargeService.update(walletAccountRechargeNew);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.error("订单号："+xianAddBlanceDto.getOrderNo()+"更新流水号失败",e.getStackTrace());
         }
     }
 

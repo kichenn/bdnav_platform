@@ -5,15 +5,17 @@ package com.bdxh.common.base.enums;
  * @author: xuyuan
  * @create: 2019-01-04 11:02
  **/
-public enum OrderChanelTypeEnum {
+public enum BusinessStatusEnum {
 
-    BDXH_SELF(new Byte("1"),"自有渠道");
+    NO_PROCESS(new Byte("1"),"未处理"),
+    PROCESSING(new Byte("2"),"处理中"),
+    HASE_PROCESS(new Byte("3"),"已处理");
 
     private Byte code;
 
     private String desc;
 
-    OrderChanelTypeEnum(Byte code, String desc){
+    BusinessStatusEnum(Byte code, String desc){
         this.code=code;
         this.desc=desc;
     }

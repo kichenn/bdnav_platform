@@ -1,21 +1,19 @@
-package com.bdxh.common.base.enums;
+package com.bdxh.order.enums;
 
 /**
  * @description: 微信支付状态枚举类
  * @author: xuyuan
  * @create: 2019-01-04 11:02
  **/
-public enum OrderBusinessStatusEnum {
+public enum OrderChanelTypeEnum {
 
-    NO_PROCESS(new Byte("1"),"未处理"),
-    PROCESSING(new Byte("2"),"处理中"),
-    HASE_PROCESS(new Byte("3"),"已处理");
+    BDXH_SELF(new Byte("1"),"自有渠道");
 
     private Byte code;
 
     private String desc;
 
-    OrderBusinessStatusEnum(Byte code, String desc){
+    OrderChanelTypeEnum(Byte code, String desc){
         this.code=code;
         this.desc=desc;
     }

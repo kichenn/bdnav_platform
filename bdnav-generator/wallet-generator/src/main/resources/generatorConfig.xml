@@ -39,6 +39,7 @@
         <table tableName="wallet_account" domainObjectName="WalletAccount"></table>
         <table tableName="wallet_account_recharge" domainObjectName="WalletAccountRecharge"></table>
         <table tableName="wallet_xian_config" domainObjectName="WalletXianConfig"></table>
+        <table tableName="wallet_kailu_consumer" domainObjectName="WalletKailuConsumer"></table>
 
     </context>
 </generatorConfiguration>

@@ -1,19 +1,23 @@
-package com.bdxh.common.base.enums;
+package com.bdxh.order.enums;
 
 /**
- * @description: 微信支付状态枚举类
+ * @description: 订单交易状态枚举类
  * @author: xuyuan
- * @create: 2019-01-04 11:02
+ * @create: 2019-01-09 16:25
  **/
-public enum OrderPayTypeEnum {
+public enum OrderTradeStatusEnum {
 
-    WECHAT_PAY(new Byte("1"),"微信支付");
+    TRADING(new Byte("1"),"交易中"),
+    SUCCESS(new Byte("2"),"交易成功"),
+    CANCLE(new Byte("3"),"已取消"),
+    DELETE(new Byte("4"),"已删除");
+
 
     private Byte code;
 
     private String desc;
 
-    OrderPayTypeEnum(Byte code, String desc){
+    OrderTradeStatusEnum(Byte code, String desc){
         this.code=code;
         this.desc=desc;
     }
