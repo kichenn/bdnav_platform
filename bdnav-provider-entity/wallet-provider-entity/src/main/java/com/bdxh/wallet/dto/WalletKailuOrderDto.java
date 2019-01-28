@@ -81,4 +81,7 @@ public class WalletKailuOrderDto implements Serializable {
     @NotNull(message = "消费时间不能为空")
     private Date consumptionTime;
 
+    @NotEmpty(message = "签名不能为空")
+    private String sign;
+
 }
