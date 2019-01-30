@@ -2,7 +2,6 @@ package com.bdxh.wallet.dto;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -81,6 +80,33 @@ public class WalletKailuOrderDto implements Serializable {
     @NotNull(message = "消费时间不能为空")
     private Date consumptionTime;
 
+    /**
+     * 应用id
+     */
+    @NotEmpty(message = "应用id不能为空")
+    private String appId;
+
+    /**
+     * 商户号
+     */
+    @NotEmpty(message = "商户号不能为空")
+    private String mchId;
+
+    /**
+     * 随机字符串
+     */
+    @NotEmpty(message = "随机字符串不能为空")
+    private String noticeStr;
+
+    /**
+     * 时间戳
+     */
+    @NotNull(message = "时间戳不能为空")
+    private Date timeStamp;
+
+    /**
+     * 签名
+     */
     @NotEmpty(message = "签名不能为空")
     private String sign;
 

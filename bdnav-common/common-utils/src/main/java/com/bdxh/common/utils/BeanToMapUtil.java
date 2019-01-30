@@ -8,6 +8,8 @@ import java.lang.reflect.Method;
 import java.util.*;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,10 +58,13 @@ public class BeanToMapUtil {
 				Field[] declaredFields = clazz.getDeclaredFields();
 				for (Field field : declaredFields) {
 					field.setAccessible(true);
-					map.put(field.getName(), field.get(obj));
+					String name = field.getName();
+					if("serialVersionUID".equals(name)) {
+						continue;
+					}
+					map.put(name, field.get(obj));
 				}
 			}
-
 		} catch (Exception e) {
 			logger.error("将对象转换成map时出现异常: " + e.getLocalizedMessage());
 		}
@@ -92,12 +97,14 @@ public class BeanToMapUtil {
 					}
 					Object value = field.get(obj);
 					if (value!=null) {
-						map.put(name,String.valueOf(value));
+						if (value instanceof Date){
+							map.put(name, DateFormatUtils.format((Date) value,"yyyy-MM-dd HH:mm:ss"));
+						}else {
+							map.put(name,String.valueOf(value));
+						}
 					}
-					
 				}
 			}
-
 		} catch (Exception e) {
 			logger.error("将对象转换成map时出现异常: " + e.getLocalizedMessage());
 		}

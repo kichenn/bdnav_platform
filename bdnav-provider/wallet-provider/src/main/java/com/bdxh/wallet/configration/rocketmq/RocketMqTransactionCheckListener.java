@@ -2,25 +2,25 @@ package com.bdxh.wallet.configration.rocketmq;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.LocalTransactionState;
-import org.apache.rocketmq.client.producer.TransactionListener;
+import org.apache.rocketmq.client.producer.TransactionCheckListener;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * @description: rocketmq本地事务执行类
+ * @description: rocketmq本地事务回查类
  * @author: xuyuan
- * @create: 2019-01-15 14:58
+ * @create: 2019-01-29 15:47
  **/
 @Component
 @Slf4j
-public abstract class RocketMqTransactionListener implements TransactionListener {
+public class RocketMqTransactionCheckListener implements TransactionCheckListener {
 
     @Autowired
-    protected RocketMqTransUtil rocketMqTransUtil;
+    private RocketMqTransUtil rocketMqTransUtil;
 
     @Override
-    public LocalTransactionState checkLocalTransaction(MessageExt messageExt) {
+    public LocalTransactionState checkLocalTransactionState(MessageExt messageExt) {
         String transactionId = messageExt.getTransactionId();
         //查询事务执行结果
         LocalTransactionState transState = rocketMqTransUtil.getTransState(transactionId);
@@ -28,5 +28,4 @@ public abstract class RocketMqTransactionListener implements TransactionListener
         log.info("事务回查："+transactionId+" 结果 "+transState.name());
         return transState;
     }
-
 }

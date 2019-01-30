@@ -1,9 +1,17 @@
 package com.bdxh.common.utils;
 
+import com.bdxh.common.base.enums.PayStatusEnum;
+import org.apache.commons.lang3.ClassUtils;
+
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.security.SecureRandom;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.locks.Lock;
@@ -65,10 +73,20 @@ public class ObjectUtil {
 		return uuid;
 	}
 
+	/**
+	 * 判断是否简单类型
+	 * @param clazz
+	 * @return
+	 */
+	public static boolean isSimpleValueType(Class<?> clazz) {
+		return (ClassUtils.isPrimitiveOrWrapper(clazz) || clazz.isEnum() || CharSequence.class.isAssignableFrom(clazz)
+				|| Number.class.isAssignableFrom(clazz) || Date.class.isAssignableFrom(clazz) || URI.class == clazz
+				|| URL.class == clazz || Locale.class == clazz || Class.class == clazz);
+	}
+
 
 	/**
 	 * 获取随机字符串 Nonce Str
-	 *
 	 * @return String 随机字符串
 	 */
 	public static String generateNonceStr() {
@@ -78,6 +96,5 @@ public class ObjectUtil {
 		}
 		return new String(nonceChars);
 	}
-
 
 }

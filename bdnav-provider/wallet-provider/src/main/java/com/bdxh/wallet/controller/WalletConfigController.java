@@ -11,6 +11,8 @@ import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,7 @@ import java.util.stream.Collectors;
  **/
 @Controller
 @RequestMapping("/walletConfig")
+@CacheConfig(cacheNames = "walletConfigController")
 @Slf4j
 public class WalletConfigController {
 
@@ -66,6 +69,7 @@ public class WalletConfigController {
      */
     @RequestMapping("/queryWalletConfigBySchoolCode")
     @ResponseBody
+    @Cacheable
     public Object queryWalletConfigBySchoolCode(@RequestParam(name = "schoolCode") String schoolCode){
         try {
             Preconditions.checkArgument(StringUtils.isNotEmpty(schoolCode),"学校编码不能为空");
@@ -86,6 +90,7 @@ public class WalletConfigController {
      */
     @RequestMapping("/queryWalletConfigPage")
     @ResponseBody
+    @Cacheable
     public Object queryWalletConfigPage(@RequestParam(name = "pageNum", defaultValue = "1") Integer pageNum,
                                         @RequestParam(name = "pageSize", defaultValue = "15") Integer pageSize){
         try {
