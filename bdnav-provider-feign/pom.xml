@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bdnav-provider-feigin</artifactId>
+    <artifactId>bdnav-provider-feign</artifactId>
     <packaging>pom</packaging>
 
     <modules>
