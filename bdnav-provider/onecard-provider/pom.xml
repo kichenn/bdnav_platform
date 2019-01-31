@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>com.bdxh</groupId>
-            <artifactId>wallet-provider-feigin</artifactId>
+            <artifactId>wallet-provider-feign</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
