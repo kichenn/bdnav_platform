@@ -21,10 +21,20 @@ public class RocketMqTransUtil {
     @Autowired
     private RedisTemplate<String,Object> redisTemplate;
 
+    /**
+     * 设置本地事务状态
+     * @param transactionId
+     * @param rocketMqTransStatusEnum
+     */
     public void putTransState(String transactionId, RocketMqTransStatusEnum rocketMqTransStatusEnum){
         redisTemplate.opsForValue().set(RocketMqConstrants.TRANSACTION_REDIS_PREFIX+transactionId,rocketMqTransStatusEnum.getCode(),1, TimeUnit.DAYS);
     }
 
+    /**
+     * 获取本地事务状态
+     * @param transactionId
+     * @return
+     */
     public LocalTransactionState getTransState(String transactionId){
         String status=(String) redisTemplate.opsForValue().get(RocketMqConstrants.TRANSACTION_REDIS_PREFIX+transactionId);
         if (StringUtils.equals(status, RocketMqTransStatusEnum.COMMIT_MESSAGE.getCode())){
