@@ -62,20 +62,23 @@
     <![CDATA[update wallet_account_recharge set status=#{status} where order_no=#{orderNo} and status=1]]>
   </update>
 
+  <!-- 查询支付结果超时订单 -->
   <select id="getPayingDataForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
     from wallet_account_recharge
-    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=2 and create_date < date_sub(now(), interval #{timeTnterval} minute)]]>
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=2 and create_date < date_sub(now(), interval #{timeTnterval} minute) and create_date > date_sub(now(), interval 12 HOUR)]]>
   </select>
 
+  <!-- 查询一卡通扣款超时订单 -->
   <select id="getSerailNoNullForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
     from wallet_account_recharge
-    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=8 and create_date < date_sub(now(), interval #{timeTnterval} minute) and (acceptseq is null or acceptseq='')]]>
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=7 and create_date < date_sub(now(), interval #{timeTnterval} minute) and create_date > date_sub(now(), interval 12 HOUR) and (acceptseq is null or acceptseq='')]]>
   </select>
 
+  <!-- 清理掉超过12小时支付的订单或者支付失败的订单-->
   <delete id="clearRechargeLog">
-    <![CDATA[delete from wallet_account_recharge where status=1 and create_date < date_sub(now(), interval 12 HOUR)]]>
+    <![CDATA[delete from wallet_account_recharge where (status=1 or status=3) and create_date < date_sub(now(), interval 12 HOUR) and create_date > date_sub(now(), interval 24 HOUR)]]>
   </delete>
 
 </mapper>
