@@ -1,2 +1,2 @@
 # bdnav-platform
-springcloud脚手架
+springcloud北斗星航业务系统

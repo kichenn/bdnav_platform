@@ -5,3 +5,6 @@ spring:
     name: backend-provider-cluster
   profiles:
     active: dev
+logging:
+  config: classpath:logback-spring.xml
+  path: /opt/logs/backend-provider
