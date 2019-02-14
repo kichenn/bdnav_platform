@@ -25,6 +25,7 @@ public class DateConverterConfig implements Converter<String, Date> {
     static{
         formarts.add("yyyy-MM-dd");
         formarts.add("yyyy-MM-dd HH:mm:ss");
+        formarts.add("yyyyMMddHHmmss");
     }
 
     @Override
@@ -38,6 +39,9 @@ public class DateConverterConfig implements Converter<String, Date> {
         }
         else if(source.matches("^\\d{4}-\\d{2}-\\d{2}\\s\\d{2}:\\d{2}:\\d{2}$")){
             return parseDate(source, formarts.get(1));
+        }
+        else if(source.matches("^\\d{14}$")){
+            return parseDate(source, formarts.get(2));
         }else {
             log.error("Invalid date value '" + source + "'");
             throw new IllegalArgumentException("Invalid date value '" + source + "'");

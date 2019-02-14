@@ -31,6 +31,4 @@ public class WalletKailuOrderVo implements Serializable {
      */
     private String sign;
 
-    private WalletKailuOrderVo walletKailuOrderVo;
-
 }

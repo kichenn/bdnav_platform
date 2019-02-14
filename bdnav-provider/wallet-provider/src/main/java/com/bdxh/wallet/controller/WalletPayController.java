@@ -112,8 +112,8 @@ public class WalletPayController {
             return WrapMapper.error(errors);
         }
         try {
-            //判断接口时效性 默认一分钟分钟
-            Date timeStamp = DateUtils.addMinutes(walletKailuOrderDto.getTimeStamp(), 1);
+            //判断接口时效性 默认15秒
+            Date timeStamp = DateUtils.addSeconds(walletKailuOrderDto.getTimeStamp(), 15);
             Preconditions.checkArgument(timeStamp.getTime()>=System.currentTimeMillis(),"接口时效性超时");
             //验证身份
             String appKey = AppKeyConfig.getAppKey(walletKailuOrderDto.getAppId(), walletKailuOrderDto.getMchId());
