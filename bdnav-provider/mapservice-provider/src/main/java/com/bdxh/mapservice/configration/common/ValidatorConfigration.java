@@ -1,8 +1,7 @@
-package com.bdxh.onecard.configration.common;
+package com.bdxh.mapservice.configration.common;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpRequest;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 /**
@@ -12,7 +11,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
  **/
 @Configuration
 public class ValidatorConfigration {
-
+    
     @Bean
     public MethodValidationPostProcessor methodValidationPostProcessor(){
         return new MethodValidationPostProcessor();
