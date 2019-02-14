@@ -18,6 +18,7 @@
         <module>onecard-provider</module>
         <module>pay-provider</module>
         <module>product-provider</module>
+        <module>mapservice-provider</module>
     </modules>
 
     <dependencies>
