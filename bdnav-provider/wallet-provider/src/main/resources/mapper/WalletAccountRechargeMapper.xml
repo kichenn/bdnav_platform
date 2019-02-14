@@ -73,7 +73,7 @@
   <select id="getSerailNoNullForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
     from wallet_account_recharge
-    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=7 and create_date < date_sub(now(), interval #{timeTnterval} minute) and create_date > date_sub(now(), interval 12 HOUR) and (acceptseq is null or acceptseq='')]]>
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=8 and create_date < date_sub(now(), interval #{timeTnterval} minute) and create_date > date_sub(now(), interval 12 HOUR) and (acceptseq is null or acceptseq='')]]>
   </select>
 
   <!-- 清理掉超过12小时支付的订单或者支付失败的订单-->

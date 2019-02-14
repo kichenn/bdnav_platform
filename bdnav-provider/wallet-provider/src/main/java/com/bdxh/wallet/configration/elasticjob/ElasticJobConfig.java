@@ -76,7 +76,7 @@ public class ElasticJobConfig {
     }
 
     /**
-     * 钱包充值微信通知超时定时任务
+     * 钱包充值超时订单清理定时任务
      * @param walletClearSimpleJob
      * @return
      */
@@ -102,7 +102,7 @@ public class ElasticJobConfig {
     }
 
     /**
-     * 钱包一卡通充值超时定时任务
+     * 钱包一卡通钱包充值超时定时任务
      * @param walletRechargeDataflowJob
      * @return
      */
