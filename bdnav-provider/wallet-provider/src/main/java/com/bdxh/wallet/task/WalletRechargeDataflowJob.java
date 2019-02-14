@@ -69,7 +69,7 @@ public class WalletRechargeDataflowJob implements DataflowJob<WalletAccountRecha
                     JSONObject queryResult = JSON.parseObject(queryResultStr);
                     String code = queryResult.getString("code");
                     //未找到充值记录，直接发起充值 ps返回0000000代表充值成功，我们可以更新流水号，但是对方并没有返回，故不做处理
-                    if (StringUtils.equals(code,"100009")){
+                    if (!StringUtils.equals(code,"000000")){
                         //做幂等性处理
                         String notice = (String)redisTemplate.opsForValue().get(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_query_xiancard_result+orderNo);
                         if (!StringUtils.equals(notice,"1")){

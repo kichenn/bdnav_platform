@@ -83,7 +83,7 @@ public class ElasticJobConfig {
     @Bean(initMethod = "init")
     @ConditionalOnBean(WalletClearSimpleJob.class)
     public JobScheduler walletClearScheduler(@Autowired WalletClearSimpleJob walletClearSimpleJob) {
-        LiteJobConfiguration simpleLiteJobConfiguration = getSimpleLiteJobConfiguration(walletClearSimpleJob.getClass(), "0/15 * * * * ?", 1, "", false);
+        LiteJobConfiguration simpleLiteJobConfiguration = getSimpleLiteJobConfiguration(walletClearSimpleJob.getClass(), "0/59 * * * * ?", 1, "", false);
         SpringJobScheduler simpleJobScheduler = new SpringJobScheduler(walletClearSimpleJob, zookeeperRegistryCenter, simpleLiteJobConfiguration, elasticJobListener);
         return simpleJobScheduler;
     }
@@ -96,7 +96,7 @@ public class ElasticJobConfig {
     @Bean(initMethod = "init")
     @ConditionalOnBean(WechatNoticeDataflowJob.class)
     public JobScheduler wechatNoticeScheduler(@Autowired WechatNoticeDataflowJob wechatNoticeDataflowJob) {
-        LiteJobConfiguration dataflowJobConfiguration = getDataflowLiteJobConfiguration(wechatNoticeDataflowJob.getClass(), "0/10 * * * * ?", 9, "", false, false);
+        LiteJobConfiguration dataflowJobConfiguration = getDataflowLiteJobConfiguration(wechatNoticeDataflowJob.getClass(), "0/59 * * * * ?", 9, "", false, false);
         SpringJobScheduler dataflowJobScheduler = new SpringJobScheduler(wechatNoticeDataflowJob, zookeeperRegistryCenter, dataflowJobConfiguration, elasticJobListener);
         return dataflowJobScheduler;
     }
@@ -109,7 +109,7 @@ public class ElasticJobConfig {
     @Bean(initMethod = "init")
     @ConditionalOnBean(WalletRechargeDataflowJob.class)
     public JobScheduler xianCardRechargeScheduler(@Autowired WalletRechargeDataflowJob walletRechargeDataflowJob) {
-        LiteJobConfiguration dataflowJobConfiguration = getDataflowLiteJobConfiguration(walletRechargeDataflowJob.getClass(), "0/10 * * * * ?", 9, "", false, false);
+        LiteJobConfiguration dataflowJobConfiguration = getDataflowLiteJobConfiguration(walletRechargeDataflowJob.getClass(), "0/59 * * * * ?", 9, "", false, false);
         SpringJobScheduler dataflowJobScheduler = new SpringJobScheduler(walletRechargeDataflowJob, zookeeperRegistryCenter, dataflowJobConfiguration, elasticJobListener);
         return dataflowJobScheduler;
     }
