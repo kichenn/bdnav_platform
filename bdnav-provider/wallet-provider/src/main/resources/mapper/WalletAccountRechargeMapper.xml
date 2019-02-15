@@ -66,19 +66,19 @@
   <select id="getPayingDataForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
     from wallet_account_recharge
-    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=2 and create_date < date_sub(now(), interval #{timeTnterval} minute) and create_date > date_sub(now(), interval 15 minute) limit 50]]>
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=2 and create_date <= date_sub(now(), interval #{timeTntervalStart} minute) and create_date > date_sub(now(), interval #{timeTntervalEnd} minute) limit 200]]>
   </select>
 
   <!-- 查询一卡通扣款超时订单 有可能充值成功但流水号为空-->
   <select id="getSerailNoNullForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
     from wallet_account_recharge
-    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=8 and create_date < date_sub(now(), interval #{timeTnterval} minute) and create_date > date_sub(now(), interval 30 minute) and (acceptseq is null or acceptseq='') limit 50]]>
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and status=8 and create_date <= date_sub(now(), interval #{timeTntervalStart} minute) and create_date > date_sub(now(), interval #{timeTntervalEnd} minute) and (acceptseq is null or acceptseq='') limit 200]]>
   </select>
 
   <!-- 清理掉超过3小时未支付的订单或者支付失败的订单-->
   <delete id="clearRechargeLog">
-    <![CDATA[delete from wallet_account_recharge where (status=1 or status=3) and create_date < date_sub(now(), interval 3 HOUR) and create_date > date_sub(now(), interval 6 HOUR) limit 50]]>
+    <![CDATA[delete from wallet_account_recharge where (status=1 or status=3) and create_date < date_sub(now(), interval 3 HOUR) and create_date > date_sub(now(), interval 6 HOUR)]]>
   </delete>
 
 </mapper>

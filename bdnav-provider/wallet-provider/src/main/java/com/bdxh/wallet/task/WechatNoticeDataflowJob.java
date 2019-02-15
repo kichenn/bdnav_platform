@@ -51,7 +51,8 @@ public class WechatNoticeDataflowJob implements DataflowJob<WalletAccountRecharg
         param.put("shardCount",shardingContext.getShardingTotalCount());
         param.put("shard",shardingContext.getShardingItem());
         //状态为2支付中，超过3分钟状态未更改视为超时，主动发起查询根据结果进行一卡通扣款
-        param.put("timeTnterval",3);
+        param.put("timeTntervalStart",3);
+        param.put("timeTntervalEnd",5);
         List<WalletAccountRecharge> walletAccountRecharges = walletAccountRechargeService.queryPayingDataForTask(param);
         return walletAccountRecharges;
     }
@@ -80,7 +81,7 @@ public class WechatNoticeDataflowJob implements DataflowJob<WalletAccountRecharg
                             Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice,RocketMqConstrants.Tags.wechatPayWalletNotice_query,jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                             try {
                                 defaultMQProducer.send(message);
-                                redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_query_wechart_result+orderNo,"1",5, TimeUnit.MINUTES);
+                                redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_query_wechart_result+orderNo,"1",2, TimeUnit.HOURS);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 log.error("钱包充值订单查询任务：订单号{}发送消息失败",orderNo,e.getStackTrace());
