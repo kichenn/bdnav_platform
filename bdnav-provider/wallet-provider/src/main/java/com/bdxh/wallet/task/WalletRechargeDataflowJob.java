@@ -50,9 +50,9 @@ public class WalletRechargeDataflowJob implements DataflowJob<WalletAccountRecha
         Map<String,Object> param = new HashMap<>();
         param.put("shardCount",shardingContext.getShardingTotalCount());
         param.put("shard",shardingContext.getShardingItem());
-        //状态为8充值成功，订单时间超过6分钟没有得到一卡通返回结果视为超时，主动发起一卡通扣款
-        param.put("timeTntervalStart",6);
-        param.put("timeTntervalEnd",8);
+        //状态为8充值成功，订单时间超过10分钟没有得到一卡通返回结果视为超时，主动发起一卡通扣款
+        param.put("timeTntervalStart",10);
+        param.put("timeTntervalEnd",12);
         List<WalletAccountRecharge> walletAccountRecharges = walletAccountRechargeService.querySerailNoNullForTask(param);
         return walletAccountRecharges;
     }

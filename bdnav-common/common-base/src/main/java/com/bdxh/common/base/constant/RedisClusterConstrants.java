@@ -20,8 +20,6 @@ public class RedisClusterConstrants {
 
         String wechatpay_wallet_query_xiancard_result="wechatpaywalletqueryxiancardresult:";
 
-        String kailu_wallet_sub_xiancard_acceptseq="kailuwalletsubxiancardacceptseq:";
-
         String kailu_wallet_sub_xiancard_fail_update="kailuwalletsubxiancardfailupdate:";
         
     }

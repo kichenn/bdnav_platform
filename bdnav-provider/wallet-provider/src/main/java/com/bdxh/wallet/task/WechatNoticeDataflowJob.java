@@ -50,9 +50,9 @@ public class WechatNoticeDataflowJob implements DataflowJob<WalletAccountRecharg
         Map<String,Object> param = new HashMap<>();
         param.put("shardCount",shardingContext.getShardingTotalCount());
         param.put("shard",shardingContext.getShardingItem());
-        //状态为2支付中，超过3分钟状态未更改视为超时，主动发起查询根据结果进行一卡通扣款
-        param.put("timeTntervalStart",3);
-        param.put("timeTntervalEnd",5);
+        //状态为2支付中，超过5分钟状态未更改视为超时，主动发起查询根据结果进行一卡通扣款
+        param.put("timeTntervalStart",5);
+        param.put("timeTntervalEnd",7);
         List<WalletAccountRecharge> walletAccountRecharges = walletAccountRechargeService.queryPayingDataForTask(param);
         return walletAccountRecharges;
     }
