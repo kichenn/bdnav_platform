@@ -5,6 +5,7 @@ import com.bdxh.wallet.entity.WalletKailuConsumer;
 import com.bdxh.wallet.message.stream.WalletKailuPayUpdateSink;
 import com.bdxh.wallet.service.WalletKailuConsumerService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -26,9 +27,10 @@ public class WalletKailuPayUpdateConsumer {
     @StreamListener(WalletKailuPayUpdateSink.INPUT)
     public void reciveWalletKailuUpdate(Message<String> message){
         MessageHeaders headers = message.getHeaders();
-        Integer reconsumeTimes = headers.get("reconsumeTimes",Integer.class);
+        MessageExt messageExt = headers.get("ORIGINAL_ROCKETMQ_MESSAGE", MessageExt.class);
+        int reconsumeTimes = messageExt.getReconsumeTimes();
         //4次之后不再处理 定时任务补偿
-        if (reconsumeTimes==null||reconsumeTimes.intValue()<5){
+        if (reconsumeTimes<5){
             String consumer = message.getPayload();
             log.info("收到凯路订单更新消息："+consumer);
             //更新订单状态

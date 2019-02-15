@@ -1,5 +1,6 @@
 package com.bdxh.wallet.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.bdxh.common.base.enums.PayCardStatusEnum;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
@@ -112,6 +113,8 @@ public class WalletPayController {
             return WrapMapper.error(errors);
         }
         try {
+            //打印请求参数
+            log.info(JSON.toJSONString(walletKailuOrderDto));
             //判断接口时效性 默认15秒
             Date timeStamp = DateUtils.addSeconds(walletKailuOrderDto.getTimeStamp(), 15);
             Preconditions.checkArgument(timeStamp.getTime()>=System.currentTimeMillis(),"接口时效性超时");

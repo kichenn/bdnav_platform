@@ -9,6 +9,7 @@ import com.bdxh.wallet.message.stream.WalletRechargeSink;
 import com.bdxh.wallet.service.WalletAccountRechargeService;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.common.message.MessageExt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
@@ -33,9 +34,10 @@ public class WalletRechargeConsumer {
     @StreamListener(WalletRechargeSink.INPUT)
     public void reciveWalletRecharge(Message<String> message){
         MessageHeaders headers = message.getHeaders();
-        Integer reconsumeTimes = headers.get("reconsumeTimes",Integer.class);
+        MessageExt messageExt = headers.get("ORIGINAL_ROCKETMQ_MESSAGE", MessageExt.class);
+        int reconsumeTimes = messageExt.getReconsumeTimes();
         //4次之后不再处理 定时任务补偿
-        if (reconsumeTimes==null||reconsumeTimes.intValue()<5){
+        if (reconsumeTimes<5){
             log.info(JSON.toJSONString(message));
             String recharge=message.getPayload();
             log.info("收到一卡通充值消息：{}",recharge);
