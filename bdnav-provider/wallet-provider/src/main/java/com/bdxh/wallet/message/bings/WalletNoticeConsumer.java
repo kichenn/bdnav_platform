@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 
 /**
  * @description: 微信支付回调消费者
@@ -27,18 +28,23 @@ public class WalletNoticeConsumer {
 
     @StreamListener(WalletNoticeSink.INPUT)
     public void reciveWalletNotice(Message<String> message){
-        String notice=message.getPayload();
-        log.info("收到一卡通充值消息：{}",notice);
-        JSONObject jsonObject = JSON.parseObject(notice);
-        Long orderNo = jsonObject.getLong("orderNo");
-        String thirdOrderNo=jsonObject.getString("thirdOrderNo");
-        String resultCode = jsonObject.getString("resultCode");
-        if (orderNo!=null&&StringUtils.isNotEmpty(resultCode)){
-            if (StringUtils.equals(resultCode, WxPayNoticeResultEnum.SUCCESS.name())){
-                walletAccountRechargeService.rechargeWallet(orderNo,thirdOrderNo, PayCardStatusEnum.RECHARGE_SUCCESS.getCode());
-            }
-            if (StringUtils.equals(resultCode, WxPayNoticeResultEnum.FAIL.name())){
-                walletAccountRechargeService.rechargeWallet(orderNo,thirdOrderNo, PayCardStatusEnum.RECHARGE_FAIL.getCode());
+        MessageHeaders headers = message.getHeaders();
+        Integer reconsumeTimes = headers.get("reconsumeTimes",Integer.class);
+        //4次之后不再处理 定时任务补偿
+        if (reconsumeTimes==null||reconsumeTimes.intValue()<5){
+            String notice=message.getPayload();
+            log.info("收到一卡通充值消息：{}",notice);
+            JSONObject jsonObject = JSON.parseObject(notice);
+            Long orderNo = jsonObject.getLong("orderNo");
+            String thirdOrderNo=jsonObject.getString("thirdOrderNo");
+            String resultCode = jsonObject.getString("resultCode");
+            if (orderNo!=null&&StringUtils.isNotEmpty(resultCode)){
+                if (StringUtils.equals(resultCode, WxPayNoticeResultEnum.SUCCESS.name())){
+                    walletAccountRechargeService.rechargeWallet(orderNo,thirdOrderNo, PayCardStatusEnum.RECHARGE_SUCCESS.getCode());
+                }
+                if (StringUtils.equals(resultCode, WxPayNoticeResultEnum.FAIL.name())){
+                    walletAccountRechargeService.rechargeWallet(orderNo,thirdOrderNo, PayCardStatusEnum.RECHARGE_FAIL.getCode());
+                }
             }
         }
     }

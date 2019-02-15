@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 
 /**
  * @description: 微信支付回调消费者
@@ -31,28 +32,34 @@ public class WalletRechargeConsumer {
 
     @StreamListener(WalletRechargeSink.INPUT)
     public void reciveWalletRecharge(Message<String> message){
-        String recharge=message.getPayload();
-        log.info("收到一卡通充值消息：{}",recharge);
-        WalletAccountRecharge walletAccountRecharge = JSON.parseObject(recharge, WalletAccountRecharge.class);
-        //一卡通充值
-        XianAddBlanceDto xianAddBlanceDto = new XianAddBlanceDto();
-        xianAddBlanceDto.setSchoolCode(walletAccountRecharge.getSchoolCode());
-        xianAddBlanceDto.setCardNumber(walletAccountRecharge.getCardNumber());
-        xianAddBlanceDto.setMoney(walletAccountRecharge.getRechargeMoney());
-        xianAddBlanceDto.setOrderNo(String.valueOf(walletAccountRecharge.getOrderNo()));
-        xianAddBlanceDto.setUserName(walletAccountRecharge.getUserName());
-        Wrapper wrapper = xianCardControllerClient.addBalance(xianAddBlanceDto);
-        log.info("订单号{}一卡通充值返回结果：",walletAccountRecharge.getOrderNo(),JSON.toJSON(wrapper));
-        Preconditions.checkArgument(wrapper.getCode()==200,"一卡通充值失败");
-        try {
-            String acceptseq = (String) wrapper.getResult();
-            WalletAccountRecharge walletAccountRechargeNew = new WalletAccountRecharge();
-            walletAccountRechargeNew.setId(walletAccountRecharge.getId());
-            walletAccountRechargeNew.setAcceptseq(acceptseq);
-            walletAccountRechargeService.update(walletAccountRechargeNew);
-        }catch (Exception e){
-            e.printStackTrace();
-            log.error("订单号："+xianAddBlanceDto.getOrderNo()+"更新流水号失败",e.getStackTrace());
+        MessageHeaders headers = message.getHeaders();
+        Integer reconsumeTimes = headers.get("reconsumeTimes",Integer.class);
+        //4次之后不再处理 定时任务补偿
+        if (reconsumeTimes==null||reconsumeTimes.intValue()<5){
+            log.info(JSON.toJSONString(message));
+            String recharge=message.getPayload();
+            log.info("收到一卡通充值消息：{}",recharge);
+            WalletAccountRecharge walletAccountRecharge = JSON.parseObject(recharge, WalletAccountRecharge.class);
+            //一卡通充值
+            XianAddBlanceDto xianAddBlanceDto = new XianAddBlanceDto();
+            xianAddBlanceDto.setSchoolCode(walletAccountRecharge.getSchoolCode());
+            xianAddBlanceDto.setCardNumber(walletAccountRecharge.getCardNumber());
+            xianAddBlanceDto.setMoney(walletAccountRecharge.getRechargeMoney());
+            xianAddBlanceDto.setOrderNo(String.valueOf(walletAccountRecharge.getOrderNo()));
+            xianAddBlanceDto.setUserName(walletAccountRecharge.getUserName());
+            Wrapper wrapper = xianCardControllerClient.addBalance(xianAddBlanceDto);
+            log.info("订单号{}一卡通充值返回结果：",walletAccountRecharge.getOrderNo(),JSON.toJSON(wrapper));
+            Preconditions.checkArgument(wrapper.getCode()==200,"一卡通充值失败");
+            try {
+                String acceptseq = (String) wrapper.getResult();
+                WalletAccountRecharge walletAccountRechargeNew = new WalletAccountRecharge();
+                walletAccountRechargeNew.setId(walletAccountRecharge.getId());
+                walletAccountRechargeNew.setAcceptseq(acceptseq);
+                walletAccountRechargeService.update(walletAccountRechargeNew);
+            }catch (Exception e){
+                e.printStackTrace();
+                log.error("订单号："+xianAddBlanceDto.getOrderNo()+"更新流水号失败",e.getStackTrace());
+            }
         }
     }
 

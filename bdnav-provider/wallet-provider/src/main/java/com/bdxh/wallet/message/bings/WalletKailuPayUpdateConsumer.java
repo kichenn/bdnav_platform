@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.cloud.stream.annotation.StreamListener;
 import org.springframework.messaging.Message;
+import org.springframework.messaging.MessageHeaders;
 
 /**
  * @description: 凯路消息消费者
@@ -24,11 +25,16 @@ public class WalletKailuPayUpdateConsumer {
 
     @StreamListener(WalletKailuPayUpdateSink.INPUT)
     public void reciveWalletKailuUpdate(Message<String> message){
-        String consumer = message.getPayload();
-        log.info("收到凯路订单更新消息："+consumer);
-        //更新订单状态
-        WalletKailuConsumer walletKailuConsumer = JSON.parseObject(consumer, WalletKailuConsumer.class);
-        walletKailuConsumerService.update(walletKailuConsumer);
+        MessageHeaders headers = message.getHeaders();
+        Integer reconsumeTimes = headers.get("reconsumeTimes",Integer.class);
+        //4次之后不再处理 定时任务补偿
+        if (reconsumeTimes==null||reconsumeTimes.intValue()<5){
+            String consumer = message.getPayload();
+            log.info("收到凯路订单更新消息："+consumer);
+            //更新订单状态
+            WalletKailuConsumer walletKailuConsumer = JSON.parseObject(consumer, WalletKailuConsumer.class);
+            walletKailuConsumerService.update(walletKailuConsumer);
+        }
     }
 
 }

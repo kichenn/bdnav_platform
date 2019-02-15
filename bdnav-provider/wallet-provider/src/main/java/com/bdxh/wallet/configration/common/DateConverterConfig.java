@@ -20,7 +20,7 @@ import java.util.List;
 @Slf4j
 public class DateConverterConfig implements Converter<String, Date> {
 
-    private static final List<String> formarts = new ArrayList<>(4);
+    private static final List<String> formarts = new ArrayList<>(3);
 
     static{
         formarts.add("yyyy-MM-dd");
