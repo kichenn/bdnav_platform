@@ -17,11 +17,9 @@ public class MD5 {
 	public static String md5(String str) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.update(str.getBytes());
+			md.update(str.getBytes("utf-8"));
 			byte b[] = md.digest();
-
 			int i;
-
 			StringBuffer buf = new StringBuffer("");
 			for (int offset = 0; offset < b.length; offset++) {
 				i = b[offset];

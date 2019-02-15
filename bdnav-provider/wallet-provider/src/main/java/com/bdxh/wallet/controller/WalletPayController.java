@@ -2,7 +2,6 @@ package com.bdxh.wallet.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.bdxh.common.base.enums.PayCardStatusEnum;
-import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -17,7 +16,6 @@ import com.bdxh.wallet.vo.WalletAppOrderVo;
 import com.bdxh.wallet.vo.WalletJsOrderVo;
 import com.bdxh.wallet.vo.WalletKailuOrderVo;
 import com.google.common.base.Preconditions;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
@@ -125,7 +122,9 @@ public class WalletPayController {
             SortedMap<String, String> sortedMap = BeanToMapUtil.objectToTreeMap(walletKailuOrderDto);
             sortedMap.remove("sign");
             String mapToString = BeanToMapUtil.mapToString(sortedMap);
+            log.info("凯路订单号{}参数排序：{}",walletKailuOrderDto.getOutOrderNo(),mapToString);
             String sign = MD5.md5(mapToString + "&key=" + appKey);
+            log.info("凯路订单号{}签名：{}",walletKailuOrderDto.getOutOrderNo(),sign);
             Preconditions.checkArgument(StringUtils.equalsIgnoreCase(sign,walletKailuOrderDto.getSign()),"验证签名不通过");
             WalletKailuOrderVo walletKailuOrderVo = walletKailuConsumerService.kailuOrder(walletKailuOrderDto);
             sortedMap = BeanToMapUtil.objectToTreeMap(walletKailuOrderDto);

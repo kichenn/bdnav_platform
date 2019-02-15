@@ -29,7 +29,7 @@ public class WalletKailuPayUpdateConsumer {
         MessageHeaders headers = message.getHeaders();
         MessageExt messageExt = headers.get("ORIGINAL_ROCKETMQ_MESSAGE", MessageExt.class);
         int reconsumeTimes = messageExt.getReconsumeTimes();
-        //4次之后不再处理 定时任务补偿
+        //默认重试16次 4次之后不再处理 定时任务补偿
         if (reconsumeTimes<5){
             String consumer = message.getPayload();
             log.info("收到凯路订单更新消息："+consumer);

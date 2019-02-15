@@ -32,7 +32,7 @@ public class WalletNoticeConsumer {
         MessageHeaders headers = message.getHeaders();
         MessageExt messageExt = headers.get("ORIGINAL_ROCKETMQ_MESSAGE", MessageExt.class);
         int reconsumeTimes = messageExt.getReconsumeTimes();
-        //4次之后不再处理 定时任务补偿
+        //默认重试16次 4次之后不再处理 定时任务补偿
         if (reconsumeTimes<5){
             String notice=message.getPayload();
             log.info("收到一卡通充值消息：{}",notice);

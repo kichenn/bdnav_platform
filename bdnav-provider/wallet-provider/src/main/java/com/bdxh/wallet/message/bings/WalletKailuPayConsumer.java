@@ -51,7 +51,7 @@ public class WalletKailuPayConsumer {
         MessageHeaders headers = message.getHeaders();
         MessageExt messageExt = headers.get("ORIGINAL_ROCKETMQ_MESSAGE", MessageExt.class);
         int reconsumeTimes = messageExt.getReconsumeTimes();
-        //4次之后不再处理 定时任务补偿
+        //默认重试16次 4次之后不再处理 定时任务补偿
         if (reconsumeTimes<5){
             String consumer = message.getPayload();
             log.info("收到凯路消费消息："+consumer);
@@ -72,7 +72,7 @@ public class WalletKailuPayConsumer {
                     walletKailuConsumer.setUpdateDate(new Date());
                     walletKailuConsumer.setMessage((String) wrapper.getResult());
                     walletKailuConsumerService.update(walletKailuConsumer);
-                    redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.kailu_wallet_sub_xiancard_fail_update+walletKailuConsumer.getOutOrderNo(),"1",2, TimeUnit.HOURS);
+                    redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.kailu_wallet_sub_xiancard_fail_update+walletKailuConsumer.getOutOrderNo(),"1",5, TimeUnit.MINUTES);
                 }
                 throw new RuntimeException("一卡通消费失败");
             }

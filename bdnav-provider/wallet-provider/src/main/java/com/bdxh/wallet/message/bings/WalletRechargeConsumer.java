@@ -36,7 +36,7 @@ public class WalletRechargeConsumer {
         MessageHeaders headers = message.getHeaders();
         MessageExt messageExt = headers.get("ORIGINAL_ROCKETMQ_MESSAGE", MessageExt.class);
         int reconsumeTimes = messageExt.getReconsumeTimes();
-        //4次之后不再处理 定时任务补偿
+        //默认重试16次 4次之后不再处理 定时任务补偿
         if (reconsumeTimes<5){
             log.info(JSON.toJSONString(message));
             String recharge=message.getPayload();

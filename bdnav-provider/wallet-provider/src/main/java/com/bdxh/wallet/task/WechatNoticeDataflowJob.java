@@ -81,7 +81,7 @@ public class WechatNoticeDataflowJob implements DataflowJob<WalletAccountRecharg
                             Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice,RocketMqConstrants.Tags.wechatPayWalletNotice_query,jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                             try {
                                 defaultMQProducer.send(message);
-                                redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_query_wechart_result+orderNo,"1",2, TimeUnit.HOURS);
+                                redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_query_wechart_result+orderNo,"1",2, TimeUnit.MINUTES);
                             } catch (Exception e) {
                                 e.printStackTrace();
                                 log.error("钱包充值订单查询任务：订单号{}发送消息失败",orderNo,e.getStackTrace());

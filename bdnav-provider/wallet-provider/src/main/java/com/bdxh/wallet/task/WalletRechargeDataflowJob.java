@@ -79,7 +79,7 @@ public class WalletRechargeDataflowJob implements DataflowJob<WalletAccountRecha
                             Message message = new Message(RocketMqConstrants.Topic.xiancardWalletRecharge,RocketMqConstrants.Tags.xiancardWalletRecharge_add,messageStr.getBytes(Charset.forName("utf-8")));
                             try {
                                 defaultMQProducer.send(message);
-                                redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_query_xiancard_result+orderNo,"1",2, TimeUnit.HOURS);
+                                redisTemplate.opsForValue().set(RedisClusterConstrants.KeyPrefix.wechatpay_wallet_query_xiancard_result+orderNo,"1",2, TimeUnit.MINUTES);
                             }catch (Exception e){
                                 log.error("钱包服务充值一卡通消息发送失败："+orderNo);
                                 throw new RuntimeException(e.getMessage());
