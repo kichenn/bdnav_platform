@@ -38,7 +38,6 @@ public class WalletRechargeConsumer {
         int reconsumeTimes = messageExt.getReconsumeTimes();
         //默认重试16次 4次之后不再处理 定时任务补偿
         if (reconsumeTimes<5){
-            log.info(JSON.toJSONString(message));
             String recharge=message.getPayload();
             log.info("收到一卡通充值消息：{}",recharge);
             WalletAccountRecharge walletAccountRecharge = JSON.parseObject(recharge, WalletAccountRecharge.class);

@@ -1,8 +1,6 @@
 package com.bdxh.wallet.configration.elasticjob;
 
-import com.bdxh.wallet.task.WalletClearSimpleJob;
-import com.bdxh.wallet.task.WalletRechargeDataflowJob;
-import com.bdxh.wallet.task.WechatNoticeDataflowJob;
+import com.bdxh.wallet.task.*;
 import com.dangdang.ddframe.job.api.dataflow.DataflowJob;
 import com.dangdang.ddframe.job.api.simple.SimpleJob;
 import com.dangdang.ddframe.job.config.JobCoreConfiguration;
@@ -112,6 +110,32 @@ public class ElasticJobConfig {
         LiteJobConfiguration dataflowJobConfiguration = getDataflowLiteJobConfiguration(walletRechargeDataflowJob.getClass(), "0 0/2 * * * ?", 9, "", false, false);
         SpringJobScheduler dataflowJobScheduler = new SpringJobScheduler(walletRechargeDataflowJob, zookeeperRegistryCenter, dataflowJobConfiguration, elasticJobListener);
         return dataflowJobScheduler;
+    }
+
+    /**
+     * 凯路消费失败重试定时任务 10分钟运行一次
+     * @param kailuConsumerRetryJob
+     * @return
+     */
+    @Bean(initMethod = "init")
+    @ConditionalOnBean(KailuConsumerRetryJob.class)
+    public JobScheduler KailuRetryScheduler(@Autowired KailuConsumerRetryJob kailuConsumerRetryJob) {
+        LiteJobConfiguration simpleLiteJobConfiguration = getSimpleLiteJobConfiguration(kailuConsumerRetryJob.getClass(), "0 0/10 * * * ?", 9, "", false);
+        SpringJobScheduler simpleJobScheduler = new SpringJobScheduler(kailuConsumerRetryJob, zookeeperRegistryCenter, simpleLiteJobConfiguration, elasticJobListener);
+        return simpleJobScheduler;
+    }
+
+    /**
+     * 凯路消费超时定时任务 2分钟运行一次
+     * @param kailuConsumerTimeOutJob
+     * @return
+     */
+    @Bean(initMethod = "init")
+    @ConditionalOnBean(KailuConsumerTimeOutJob.class)
+    public JobScheduler KailuTimeOutScheduler(@Autowired KailuConsumerTimeOutJob kailuConsumerTimeOutJob) {
+        LiteJobConfiguration simpleLiteJobConfiguration = getSimpleLiteJobConfiguration(kailuConsumerTimeOutJob.getClass(), "0 0/2 * * * ?", 9, "", false);
+        SpringJobScheduler simpleJobScheduler = new SpringJobScheduler(kailuConsumerTimeOutJob, zookeeperRegistryCenter, simpleLiteJobConfiguration, elasticJobListener);
+        return simpleJobScheduler;
     }
 
 }

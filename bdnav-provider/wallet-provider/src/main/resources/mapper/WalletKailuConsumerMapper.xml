@@ -25,4 +25,23 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="message" jdbcType="VARCHAR" property="message" />
   </resultMap>
+
+  <sql id="BaseColumns">
+    id, order_no, out_order_no, third_order_no, acceptseq, pay_money, pay_status, business_status, school_code, school_name, name, card_number, device_type, device_id, device_name, consumption_time, create_date, update_date, message
+  </sql>
+
+  <!-- 查询支付失败的订单重新发起扣款 -->
+  <select id="getFailForTask" parameterType="java.util.Map" resultMap="BaseResultMap">
+    SELECT <include refid="BaseColumns"/>
+    from wallet_kailu_consumer
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and pay_status = 3 and create_date >= #{startDate} and create_date < #{endDate} limit 200]]>
+  </select>
+
+  <!-- 查询支付超时的订单 -->
+  <select id="getTimeOutForTask">
+    SELECT <include refid="BaseColumns"/>
+    from wallet_kailu_consumer
+    <![CDATA[where MOD(id, #{shardCount})=#{shard} and pay_status = 2 and create_date <= date_sub(now(), interval #{timeTntervalStart} minute) and create_date > date_sub(now(), interval #{timeTntervalEnd} minute) limit 200]]>
+  </select>
+
 </mapper>

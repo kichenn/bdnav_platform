@@ -21,6 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 凯路消费service实现类
@@ -70,6 +72,18 @@ public class WalletKailuConsumerServiceImpl extends BaseService<WalletKailuConsu
         walletKailuOrderVo.setOrderNo(orderNo);
         walletKailuOrderVo.setOutOrderNo(walletKailuOrderDto.getOutOrderNo());
         return walletKailuOrderVo;
+    }
+
+    @Override
+    public List<WalletKailuConsumer> getFailForTask(Map<String, Object> param) {
+        List<WalletKailuConsumer> walletKailuConsumers = walletKailuConsumerMapper.getFailForTask(param);
+        return walletKailuConsumers;
+    }
+
+    @Override
+    public List<WalletKailuConsumer> getTimeOutForTask(Map<String, Object> param) {
+        List<WalletKailuConsumer> walletKailuConsumers = walletKailuConsumerMapper.getTimeOutForTask(param);
+        return walletKailuConsumers;
     }
 
 }
