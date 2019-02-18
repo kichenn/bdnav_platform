@@ -30,7 +30,7 @@
         <lombok.version>1.18.4</lombok.version>
         <guava.version>20.0</guava.version>
         <rocketmq.version>4.3.2</rocketmq.version>
-        <httpclientutil.version>1.0</httpclientutil.version>
+        <httpclient.version>4.5.6</httpclient.version>
         <jjwt.version>0.9.0</jjwt.version>
         <jackson-databind.version>2.9.7</jackson-databind.version>
         <jackson-smile.version>1.9.13</jackson-smile.version>
@@ -43,6 +43,7 @@
         <aspectjweaver.version>1.9.2</aspectjweaver.version>
         <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
         <commons-codec.version>1.11</commons-codec.version>
+        <project ></project>
     </properties>
     
     <modules>
@@ -185,12 +186,6 @@
                 <artifactId>rocketmq-client</artifactId>
                 <version>${rocketmq.version}</version>
             </dependency>
-            <!-- httpclient依赖 -->
-            <dependency>
-                <groupId>com.arronlong.httpclientutil</groupId>
-                <artifactId>httpclientutil</artifactId>
-                <version>${httpclientutil.version}</version>
-            </dependency>
             <!-- jwt依赖 -->
             <dependency>
                 <groupId>io.jsonwebtoken</groupId>
@@ -271,6 +266,12 @@
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons-codec.version}</version>
+            </dependency>
+            <!-- httpclient依赖 -->
+            <dependency>
+                <groupId>org.apache.httpcomponents</groupId>
+                <artifactId>httpclient</artifactId>
+                <version>${httpclient.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

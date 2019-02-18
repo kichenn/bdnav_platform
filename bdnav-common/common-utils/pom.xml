@@ -54,6 +54,10 @@
             <artifactId>dozer</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.aliyun</groupId>
             <artifactId>systemsms</artifactId>
             <version>1.0.0</version>

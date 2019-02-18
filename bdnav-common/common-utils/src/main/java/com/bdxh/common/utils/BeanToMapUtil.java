@@ -9,7 +9,6 @@ import java.util.*;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -112,18 +111,18 @@ public class BeanToMapUtil {
 	}
 
 	/**
-	 * 将map转换成排序参数
+	 * 将map转换成键值对参数
 	 * @param map
 	 * @return
 	 */
-	public static String mapToString(SortedMap<String, String> map){
+	public static String mapToString(Map<String, Object> map){
 		if (map==null||map.isEmpty()){
 			return null;
 		}
 		StringBuilder sb=new StringBuilder();
 		Set<String> keys = map.keySet();
 		for (String key:keys){
-			String value=map.get(key);
+			Object value=map.get(key);
 			sb.append(key).append("=").append(value).append("&");
 		}
 		sb.setLength(sb.length()-1);
