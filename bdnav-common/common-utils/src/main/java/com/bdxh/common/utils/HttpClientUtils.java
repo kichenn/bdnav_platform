@@ -1,260 +1,156 @@
 package com.bdxh.common.utils;
 
 import org.apache.http.HttpEntity;
-import org.apache.http.HttpStatus;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.config.Registry;
-import org.apache.http.config.RegistryBuilder;
-import org.apache.http.conn.HttpClientConnectionManager;
-import org.apache.http.conn.socket.ConnectionSocketFactory;
-import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 /**
- * @description: HttpClient工具类
+ * @description:
  * @author: xuyuan
- * @create: 2019-02-18 20:03
+ * @create: 2019-02-18 23:17
  **/
 public class HttpClientUtils {
 
-    private static final int DEFAULT_POOL_MAX_TOTAL = 2000;
-    private static final int DEFAULT_POOL_MAX_PER_ROUTE = 200;
-    private static final int DEFAULT_CONNECT_TIMEOUT = 5000;
-    private static final int DEFAULT_CONNECT_REQUEST_TIMEOUT = 10000;
-    private static final int DEFAULT_SOCKET_TIMEOUT = 5000;
+    private static RequestConfig requestConfig = RequestConfig.custom()
+            .setSocketTimeout(15000)
+            .setConnectTimeout(15000)
+            .setConnectionRequestTimeout(15000)
+            .build();
 
-    private PoolingHttpClientConnectionManager gcm;
 
-    private CloseableHttpClient httpClient;
-
-    private IdleConnectionMonitorThread idleThread;
-
-    // 连接池的最大连接数
-    private final int maxTotal;
-    // 连接池按route配置的最大连接数
-    private final int maxPerRoute;
-
-    // tcp connect的超时时间
-    private final int connectTimeout;
-    // 从连接池获取连接的超时时间
-    private final int connectRequestTimeout;
-    // tcp io的读写超时时间
-    private final int socketTimeout;
-
-    public HttpClientUtils() {
-        this(
-                HttpClientUtils.DEFAULT_POOL_MAX_TOTAL,
-                HttpClientUtils.DEFAULT_POOL_MAX_PER_ROUTE,
-                HttpClientUtils.DEFAULT_CONNECT_TIMEOUT,
-                HttpClientUtils.DEFAULT_CONNECT_REQUEST_TIMEOUT,
-                HttpClientUtils.DEFAULT_SOCKET_TIMEOUT
-        );
-    }
-
-    public HttpClientUtils(int maxTotal, int maxPerRoute, int connectTimeout, int connectRequestTimeout, int socketTimeout) {
-        this.maxTotal = maxTotal;
-        this.maxPerRoute = maxPerRoute;
-        this.connectTimeout = connectTimeout;
-        this.connectRequestTimeout = connectRequestTimeout;
-        this.socketTimeout = socketTimeout;
-        Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
-                .register("http", PlainConnectionSocketFactory.getSocketFactory())
-                .register("https", SSLConnectionSocketFactory.getSocketFactory())
-                .build();
-        this.gcm = new PoolingHttpClientConnectionManager(registry);
-        this.gcm.setMaxTotal(this.maxTotal);
-        this.gcm.setDefaultMaxPerRoute(this.maxPerRoute);
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setConnectTimeout(this.connectTimeout)                     // 设置连接超时
-                .setSocketTimeout(this.socketTimeout)                       // 设置读取超时
-                .setConnectionRequestTimeout(this.connectRequestTimeout)    // 设置从连接池获取连接实例的超时
-                .build();
-        HttpClientBuilder httpClientBuilder = HttpClients.custom();
-        httpClient = httpClientBuilder
-                .setConnectionManager(this.gcm)
-                .setDefaultRequestConfig(requestConfig)
-                .build();
-        idleThread = new IdleConnectionMonitorThread(this.gcm);
-        idleThread.start();
-    }
-
-    public String doGet(String url) {
-        return this.doGet(url, Collections.EMPTY_MAP, Collections.EMPTY_MAP);
-    }
-
-    public String doGet(String url, Map<String, Object> params) {
-        return this.doGet(url, Collections.EMPTY_MAP, params);
-    }
-
-    public String doGet(String url, Map<String, String> headers, Map<String, Object> params) {
-        //设置请求参数
-        String paramUrl = getUrlWithParams(url, params);
-        HttpGet httpGet = new HttpGet(paramUrl);
-        //设置headers
-        if (headers != null && headers.size() > 0) {
-            for (Map.Entry<String, String> entry : headers.entrySet()) {
-                httpGet.addHeader(entry.getKey(), entry.getValue());
-            }
-        }
+    /**
+     * 发送get请求
+     * @param url
+     * @return
+     */
+    public String sendGet(String url) {
+        HttpGet httpGet = new HttpGet(url);
+        CloseableHttpClient httpClient = null;
         CloseableHttpResponse response = null;
+        String result = null;
         try {
+            // 创建默认的httpClient实例.
+            httpClient = HttpClients.createDefault();
+            httpGet.setConfig(requestConfig);
+            // 执行请求
             response = httpClient.execute(httpGet);
-            if (response != null && response.getStatusLine() != null) {
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == HttpStatus.SC_OK) {
-                    HttpEntity entityRes = response.getEntity();
-                    if (entityRes != null) {
-                        return EntityUtils.toString(entityRes, "UTF-8");
-                    }
-                }
-            }
-        } catch (IOException e) {
+            HttpEntity entity =  response.getEntity();
+            result = EntityUtils.toString(entity, "UTF-8");
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            if (response != null) {
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-
-    public String doPost(String url, Map<String, Object> params) {
-        return this.doPost(url, Collections.EMPTY_MAP, params);
-    }
-
-    public String doPost(String url, Map<String, String> headers, Map<String, Object> params) {
-        HttpPost httpPost = new HttpPost(url);
-        //设置headers
-        if (headers != null && headers.size() > 0) {
-            for (Map.Entry<String, String> entry : headers.entrySet()) {
-                httpPost.addHeader(entry.getKey(), entry.getValue());
-            }
-        }
-        //设置请求参数
-        if (params != null && params.size() > 0) {
-            HttpEntity entityReq = getUrlEncodedFormEntity(params);
-            httpPost.setEntity(entityReq);
-        }
-        CloseableHttpResponse response = null;
-        try {
-            response = httpClient.execute(httpPost);
-            if (response != null && response.getStatusLine() != null) {
-                int statusCode = response.getStatusLine().getStatusCode();
-                if (statusCode == HttpStatus.SC_OK) {
-                    HttpEntity httpEntity = response.getEntity();
-                    if (httpEntity != null) {
-                        return EntityUtils.toString(httpEntity, "UTF-8");
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (response != null) {
-                try {
-                    response.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return null;
-    }
-
-    private HttpEntity getUrlEncodedFormEntity(Map<String, Object> params) {
-        List<NameValuePair> pairList = new ArrayList<>(params.size());
-        for (Map.Entry<String, Object> entry : params.entrySet()) {
-            NameValuePair pair = new BasicNameValuePair(entry.getKey(), entry
-                    .getValue().toString());
-            pairList.add(pair);
-        }
-        return new UrlEncodedFormEntity(pairList, Charset.forName("UTF-8"));
-    }
-
-    private String getUrlWithParams(String url, Map<String, Object> params) {
-        boolean first = true;
-        StringBuilder sb = new StringBuilder(url);
-        for (String key : params.keySet()) {
-            char ch = '&';
-            if (first == true) {
-                ch = '?';
-                first = false;
-            }
-            String value = params.get(key).toString();
             try {
-                String encoderValue = URLEncoder.encode(value, "UTF-8");
-                sb.append(ch).append(key).append("=").append(encoderValue);
-            } catch (UnsupportedEncodingException e) {
+                // 关闭连接,释放资源
+                if (response != null) {
+                    response.close();
+                }
+                if (httpClient != null) {
+                    httpClient.close();
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        return sb.toString();
+        return result;
     }
 
-    public void shutdown() {
-        idleThread.shutdown();
-    }
-
-    //监控异常连接
-    private class IdleConnectionMonitorThread extends Thread {
-
-        private final HttpClientConnectionManager connMgr;
-
-        private volatile boolean exitFlag = false;
-
-        public IdleConnectionMonitorThread(HttpClientConnectionManager connMgr) {
-            this.connMgr = connMgr;
-            setDaemon(true);
+    /**
+     * 发送post请求
+     * @param url
+     * @param params
+     * @return key1=value1&key2=
+     */
+    public String sendPost(String url, String params) {
+        HttpPost httpPost = new HttpPost(url);
+        try {
+            //设置参数
+            StringEntity stringEntity = new StringEntity(params, "UTF-8");
+            stringEntity.setContentType("application/x-www-form-urlencoded");
+            httpPost.setEntity(stringEntity);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        @Override
-        public void run() {
-            while (!this.exitFlag) {
-                synchronized (this) {
-                    try {
-                        this.wait(2000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
+        CloseableHttpClient httpClient = null;
+        CloseableHttpResponse response = null;
+        String result = null;
+        try {
+            httpClient = HttpClients.createDefault();
+            httpPost.setConfig(requestConfig);
+            response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            result = EntityUtils.toString(entity, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
                 }
-                //关闭失效的连接
-                connMgr.closeExpiredConnections();
-                //关闭30秒内不活动的连接
-                connMgr.closeIdleConnections(30, TimeUnit.SECONDS);
+                if (httpClient != null) {
+                    httpClient.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-
-        public void shutdown() {
-            this.exitFlag = true;
-            synchronized (this) {
-                notify();
-            }
-        }
-
+        return result;
     }
+
+    /**
+     * 发送post请求
+     * @param url
+     * @param params
+     * @return
+     */
+    public String sendPost(String url, Map<String, String> params) {
+        HttpPost httpPost = new HttpPost(url);
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        for (String key : params.keySet()) {
+            nameValuePairs.add(new BasicNameValuePair(key, params.get(key)));
+        }
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs, "UTF-8"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        CloseableHttpClient httpClient = null;
+        CloseableHttpResponse response = null;
+        String result = null;
+        try {
+            httpClient = HttpClients.createDefault();
+            httpPost.setConfig(requestConfig);
+            response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            result = EntityUtils.toString(entity, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (response != null) {
+                    response.close();
+                }
+                if (httpClient != null) {
+                    httpClient.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
 }
