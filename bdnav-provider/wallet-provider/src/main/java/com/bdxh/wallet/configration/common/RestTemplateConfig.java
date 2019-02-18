@@ -58,7 +58,7 @@ public class RestTemplateConfig {
             }
         }
         //解决String乱码
-        messageConverters.add(new StringHttpMessageConverter(Charset.forName("UTF-8")));
+        messageConverters.add(0,new StringHttpMessageConverter(Charset.forName("UTF-8")));
         //解决微信返回text/plain的解析
         restTemplate.getMessageConverters().add(new WxMappingJackson2HttpMessageConverter());
         return restTemplate;
