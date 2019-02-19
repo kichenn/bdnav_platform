@@ -111,11 +111,11 @@ public class BeanToMapUtil {
 	}
 
 	/**
-	 * 将map转换成键值对参数
+	 * 将map转换成排序参数
 	 * @param map
 	 * @return
 	 */
-	public static String mapToString(Map<String, Object> map){
+	public static String mapToString(SortedMap<String, String> map){
 		if (map==null||map.isEmpty()){
 			return null;
 		}
