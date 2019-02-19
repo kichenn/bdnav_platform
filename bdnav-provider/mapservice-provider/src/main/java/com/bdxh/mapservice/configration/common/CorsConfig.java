@@ -1,4 +1,7 @@
 package com.bdxh.mapservice.configration.common;
+/**
+ * 处理跨域问题
+ */
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
