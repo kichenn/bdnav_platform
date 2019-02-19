@@ -98,7 +98,7 @@ public class RestTemplateConfig {
                 };
                 SSLContext sslContext = SSLContext.getInstance("TLS");
                 sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-                httpsConnection.setSSLSocketFactory(new MyCustomSSLSocketFactory(sslContext.getSocketFactory()));
+                httpsConnection.setSSLSocketFactory(new SSLSocketCustomFactory(sslContext.getSocketFactory()));
                 httpsConnection.setHostnameVerifier((str,sslSession)->true);
                 super.prepareConnection(httpsConnection, httpMethod);
             } catch (Exception e) {
@@ -108,11 +108,11 @@ public class RestTemplateConfig {
 
     }
 
-    public class MyCustomSSLSocketFactory extends SSLSocketFactory {
+    public class SSLSocketCustomFactory extends SSLSocketFactory {
 
         private final SSLSocketFactory delegate;
 
-        public MyCustomSSLSocketFactory(SSLSocketFactory delegate) {
+        public SSLSocketCustomFactory(SSLSocketFactory delegate) {
             this.delegate = delegate;
         }
 

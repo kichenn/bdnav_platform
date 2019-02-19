@@ -9,18 +9,21 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 
+import javax.net.ssl.SSLContext;
 import java.util.*;
 
 /**
- * @description: url禁止携带参数，使用map传递
+ * @description: HttpClient工具类 url禁止携带参数，请使用map传递
  * @author: xuyuan
  * @create: 2019-02-18 23:17
  **/
@@ -52,8 +55,11 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static String doGet(String url, Map<String, Object> headers, Map<String, Object> params) throws Exception{
+        //https支持
+        SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (chain,authType)->true).build();
+        SSLConnectionSocketFactory ssl = new SSLConnectionSocketFactory(sslContext);
         //创建httpClient对象
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(ssl).build();
         //设置请求参数
         URIBuilder uriBuilder = new URIBuilder(url);
         if (params != null) {
@@ -121,8 +127,11 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static String doPost(String url, Map<String, Object> headers, Map<String, Object> params) throws Exception{
+        //https支持
+        SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (chain,authType)->true).build();
+        SSLConnectionSocketFactory ssl = new SSLConnectionSocketFactory(sslContext);
         //创建httpClient对象
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(ssl).build();
         //创建http对象
         HttpPost httpPost = new HttpPost(url);
         //设置超时时间
@@ -180,21 +189,25 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static String doPostJson(String url,String param) throws Exception{
+        long start = System.currentTimeMillis();
+        //https支持
+        SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (chain,authType)->true).build();
+        SSLConnectionSocketFactory ssl = new SSLConnectionSocketFactory(sslContext);
         //创建httpClient对象
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(ssl).build();
         //创建http对象
         HttpPost httpPost = new HttpPost(url);
         //设置超时时间
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPost.setConfig(requestConfig);
-        //设置请求参数
+        //设置请求参数Content-Type: application/json; charset=UTF-8
         StringEntity stringEntity = new StringEntity(param,ENCODING);
         stringEntity.setContentEncoding(ENCODING);
         stringEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,"application/json; charset=UTF-8"));
         httpPost.setEntity(stringEntity);
         String result = null;
         //执行请求
-        //响应结果Content-Type: application/json; charset=UTF-8
+        //响应结果Content-Type: application/json; charset=UTF-8 String时Content-Type: text/plain;charset=UTF-8
         CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
         if (httpResponse != null && httpResponse.getStatusLine() != null) {
             int statusCode = httpResponse.getStatusLine().getStatusCode();
@@ -216,6 +229,7 @@ public class HttpClientUtils {
         }catch (Exception e){
             e.printStackTrace();
         }
+        System.out.println(System.currentTimeMillis()-start);
         return result;
     }
 
@@ -227,21 +241,24 @@ public class HttpClientUtils {
      * @throws Exception
      */
     public static String doPostXml(String url,String param) throws Exception{
+        //https支持
+        SSLContext sslContext = new SSLContextBuilder().loadTrustMaterial(null, (chain,authType)->true).build();
+        SSLConnectionSocketFactory ssl = new SSLConnectionSocketFactory(sslContext);
         //创建httpClient对象
-        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(ssl).build();
         //创建http对象
         HttpPost httpPost = new HttpPost(url);
         //设置超时时间
         RequestConfig requestConfig = RequestConfig.custom().setConnectTimeout(CONNECT_TIMEOUT).setSocketTimeout(SOCKET_TIMEOUT).build();
         httpPost.setConfig(requestConfig);
-        //设置请求参数
+        //设置请求参数Content-Type: application/xml; charset=UTF-8
         StringEntity stringEntity = new StringEntity(param,ENCODING);
         stringEntity.setContentEncoding(ENCODING);
         stringEntity.setContentType(new BasicHeader(HTTP.CONTENT_TYPE,"application/xml; charset=UTF-8"));
         httpPost.setEntity(stringEntity);
         String result = null;
         //执行请求
-        //响应结果Content-Type: application/xml; charset=UTF-8
+        //响应结果Content-Type: application/json; charset=UTF-8 String时Content-Type: text/plain;charset=UTF-8
         CloseableHttpResponse httpResponse = httpClient.execute(httpPost);
         if (httpResponse != null && httpResponse.getStatusLine() != null) {
             int statusCode = httpResponse.getStatusLine().getStatusCode();
@@ -264,20 +281,6 @@ public class HttpClientUtils {
             e.printStackTrace();
         }
         return result;
-    }
-
-    public static void main(String[] args) throws Exception {
-        Map<String,Object> param = new HashMap<>();
-        param.put("name","呵呵");
-        param.put("pass","1256");
-        param.put("xc","fdsdadfs反倒是");
-        Map<String,Object> headers = new HashMap<>();
-        headers.put("xxxs","大萨达");
-        String json = "{\"userName\":\"许愿\",\"password\":\"978675765\"}";
-        String xml = "<myUser><userName>许愿</userName><password>978675765<password/></myUser>";
-        param.put("myUser",json);
-        String s = HttpClientUtils.doPostXml("http://localhost:9018/xy/demo1",xml);
-        System.out.println(s);
     }
 
 }
