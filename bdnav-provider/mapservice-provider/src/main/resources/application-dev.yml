@@ -18,3 +18,11 @@ management:
   endpoint:
       health:
         show-details: ALWAYS
+#httpPoolClient配置
+httpPool:
+  maxTotal: 3000
+  maxPerRoute: 100
+  connectRequestTimeout: 3000
+  connectTimeout: 5000
+  socketTimeout: 10000
+  enable: false

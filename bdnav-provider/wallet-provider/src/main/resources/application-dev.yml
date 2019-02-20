@@ -191,4 +191,4 @@ httpPool:
   connectRequestTimeout: 3000
   connectTimeout: 5000
   socketTimeout: 10000
-  enable: true
+  enable: false

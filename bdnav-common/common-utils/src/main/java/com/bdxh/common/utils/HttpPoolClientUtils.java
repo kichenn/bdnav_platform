@@ -262,7 +262,7 @@ public class HttpPoolClientUtils {
     }
 
     /**
-     * 发送post请求 JSON数据
+     * 发送post请求 xml数据
      *
      * @param url   请求地址
      * @param param 请求参数

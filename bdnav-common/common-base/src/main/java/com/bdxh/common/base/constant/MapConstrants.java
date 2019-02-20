@@ -4,8 +4,9 @@ package com.bdxh.common.base.constant;
 /**
  * 百度地图使用常量
  */
-public class BaiduConstrants {
-    public interface BaiDu {
+public class MapConstrants {
+
+    public interface BaiDuMap {
         /**
          * 用户的AK，授权使用
          */
@@ -43,4 +44,5 @@ public class BaiduConstrants {
          */
         String addMonitoredPersonURL="http://yingyan.baidu.com/api/v3/fence/addmonitoredperson";
     }
+
 }
