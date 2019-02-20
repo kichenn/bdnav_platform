@@ -52,6 +52,7 @@ public class MapConstrants {
          * 增加围栏监控对象
          */
         String addMonitoredPersonURL="http://yingyan.baidu.com/api/v3/fence/addmonitoredperson";
+
     }
 
 }
