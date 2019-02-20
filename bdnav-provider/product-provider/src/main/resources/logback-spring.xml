@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  scan="true" scanPeriod="60 seconds">
     <contextName>logback</contextName>
-    <springProperty scope="context" name="log.path" source="logging.path"/>
+    <property name="log.path" value="/opt/logs/product-provider"/>
     <!-- spring框架日志 -->
     <logger name="org.springframework" level="WARN" />
     <!-- apache组件日志 -->

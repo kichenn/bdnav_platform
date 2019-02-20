@@ -7,4 +7,3 @@ spring:
     active: dev
 logging:
   config: classpath:logback-spring.xml
-  path: /opt/logs/mapservice-provider
