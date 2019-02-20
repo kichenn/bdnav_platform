@@ -61,8 +61,7 @@ public class BaiduMapController {
     */
    @RequestMapping("/getTrack")
    @ResponseBody
-   public Object getTrack(@RequestParam("entityName") String entityName,@RequestParam("startTime") String startTime,
-                          @RequestParam("endTime") String endTime) {
+   public Object getTrack(@RequestParam("entityName") String entityName,@RequestParam("startTime") String startTime, @RequestParam("endTime") String endTime) {
       try {
          Preconditions.checkArgument(StringUtils.isNotEmpty(entityName), "监控名称不能为空");
          Preconditions.checkArgument(StringUtils.isNotEmpty(startTime), "起始时间不能为空");
