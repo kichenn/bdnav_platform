@@ -184,3 +184,11 @@ ribbon:
 id-generator:
   workerId: 0
   datacenterId: 0
+#httpPoolClient配置
+httpPool:
+  maxTotal: 3000
+  maxPerRoute: 100
+  connectRequestTimeout: 3000
+  connectTimeout: 5000
+  socketTimeout: 10000
+  enable: true
