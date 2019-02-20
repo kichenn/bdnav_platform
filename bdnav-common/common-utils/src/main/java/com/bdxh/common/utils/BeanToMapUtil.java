@@ -61,7 +61,10 @@ public class BeanToMapUtil {
 					if("serialVersionUID".equals(name)) {
 						continue;
 					}
-					map.put(name, field.get(obj));
+					Object value = field.get(obj);
+					if (value!=null){
+						map.put(name, field.get(obj));
+					}
 				}
 			}
 		} catch (Exception e) {

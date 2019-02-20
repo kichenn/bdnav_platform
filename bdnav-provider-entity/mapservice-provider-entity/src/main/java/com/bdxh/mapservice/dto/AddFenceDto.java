@@ -14,8 +14,7 @@ public class AddFenceDto implements Serializable {
     /**
      * 监控对象
      */
-    @NotEmpty(message = "监控对象不能为空")
-    private String monitoredPerson;
+    private String monitored_person;
 
     /**
      * 围栏圆心经度
@@ -38,6 +37,6 @@ public class AddFenceDto implements Serializable {
     /**
      * 坐标类型
      */
-    private String coordType = "bd09ll";
+    private String coord_type = "bd09ll";
 
 }
