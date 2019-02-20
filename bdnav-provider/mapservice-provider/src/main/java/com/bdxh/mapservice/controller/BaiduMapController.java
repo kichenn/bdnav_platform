@@ -112,9 +112,9 @@ public class BaiduMapController {
     */
    @RequestMapping(value = "/delFence", method = RequestMethod.POST)
    @ResponseBody
-   public Object delFence(@RequestParam("fenceId") String fenceId, @RequestParam(value = "monitoredPerson",required = false) String monitoredPerson) {
+   public Object delFence(@RequestParam(value = "fenceId",required = false) String fenceId, @RequestParam(value = "monitoredPerson",required = false) String monitoredPerson) {
       try {
-         Preconditions.checkArgument(StringUtils.isNotEmpty(monitoredPerson), "监控对象不能为空");
+         Preconditions.checkArgument(!(StringUtils.isEmpty(fenceId)&&StringUtils.isEmpty(monitoredPerson)), "围栏ID或者监控对象不能为空");
          Map<String,Object> param = new HashMap<>();
          param.put("ak",MapConstrants.BaiDuMap.AK);
          param.put("service_id",MapConstrants.BaiDuMap.SERVICE_ID);
@@ -144,7 +144,7 @@ public class BaiduMapController {
          param.put("mcode",MapConstrants.BaiDuMap.MCODE);
          param.put("monitored_person",monitoredPerson);
          param.put("fence_ids",fenceId);
-         String result=HttpClientUtils.doPost(MapConstrants.BaiDuMap.queryStatusURl,param);
+         String result=HttpClientUtils.doGet(MapConstrants.BaiDuMap.queryStatusURl,param);
          return WrapMapper.ok(result);
       } catch (Exception e) {
          return WrapMapper.error(e.getMessage());

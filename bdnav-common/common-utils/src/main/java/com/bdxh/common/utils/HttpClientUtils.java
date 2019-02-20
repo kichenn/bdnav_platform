@@ -23,7 +23,7 @@ import javax.net.ssl.SSLContext;
 import java.util.*;
 
 /**
- * @description: HttpClient工具类 url禁止携带参数，请使用map传递
+ * @description: HttpClient工具类
  * @author: xuyuan
  * @create: 2019-02-18 23:17
  **/
@@ -34,6 +34,16 @@ public class HttpClientUtils {
     private static final int CONNECT_TIMEOUT = 3000;
 
     private static final int SOCKET_TIMEOUT = 6000;
+
+    /**
+     * 发送get请求
+     * @param url 请求地址 参数?key1=value1&key2=value2 此时参数不会编码
+     * @return
+     * @throws Exception
+     */
+    public static String doGet(String url) throws Exception {
+        return doGet(url,null);
+    }
 
     /**
      * 发送get请求

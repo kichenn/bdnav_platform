@@ -36,7 +36,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description: HttpPoolClient工具类 url禁止携带参数，请使用map传递
+ * @description: HttpPoolClient工具类
  * @author: xuyuan
  * @create: 2019-02-18 20:03
  **/
@@ -91,6 +91,16 @@ public class HttpPoolClientUtils {
         this.connectRequestTimeout = connectRequestTimeout;
         this.connectTimeout = connectTimeout;
         this.socketTimeout = socketTimeout;
+    }
+
+    /**
+     * 发送get请求
+     * @param url 请求地址 参数?key1=value1&key2=value2 此时参数不会编码
+     * @return
+     * @throws Exception
+     */
+    public String doGet(String url) throws Exception {
+        return doGet(url,null);
     }
 
     /**
