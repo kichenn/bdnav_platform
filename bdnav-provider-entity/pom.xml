@@ -20,6 +20,7 @@
         <module>product-provider-entity</module>
         <module>mapservice-provider-entity</module>
         <module>applecontrol-provider-entity</module>
+        <module>system-provider-entity</module>
     </modules>
 
     <dependencies>
