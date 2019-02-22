@@ -7,10 +7,10 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="type" jdbcType="VARBINARY" property="type" />
   </resultMap>
 </mapper>

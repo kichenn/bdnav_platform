@@ -10,8 +10,18 @@ import java.util.Map;
 @Repository
 public interface WalletKailuConsumerMapper extends Mapper<WalletKailuConsumer> {
 
+    /**
+     * 查询支付失败的订单
+     * @param param
+     * @return
+     */
     List<WalletKailuConsumer> getFailForTask(Map<String,Object> param);
 
+    /**
+     * 查询支付超时的订单
+     * @param param
+     * @return
+     */
     List<WalletKailuConsumer> getTimeOutForTask(Map<String,Object> param);
 
 }

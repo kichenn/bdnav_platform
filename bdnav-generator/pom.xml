@@ -17,7 +17,6 @@
         <module>order-generator</module>
         <module>product-generator</module>
         <module>system-generator</module>
-        <module>user-generator</module>
     </modules>
 
     <dependencies>
