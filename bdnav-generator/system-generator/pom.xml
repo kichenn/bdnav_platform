@@ -39,7 +39,7 @@
                 </dependencies>
             </plugin>
         </plugins>
-        <finalName>wallet-generator</finalName>
+        <finalName>system-generator</finalName>
     </build>
 
 </project>
