@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.system.persistence.DeptMapper">
+  <resultMap id="BaseResultMap" type="com.bdxh.system.entity.Dept">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="parent_ids" jdbcType="VARCHAR" property="parentIds" />
+    <result column="dept_name" jdbcType="BIGINT" property="deptName" />
+    <result column="dept_full_name" jdbcType="VARCHAR" property="deptFullName" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
+    <result column="level" jdbcType="TINYINT" property="level" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="operator" jdbcType="BIGINT" property="operator" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+</mapper>
