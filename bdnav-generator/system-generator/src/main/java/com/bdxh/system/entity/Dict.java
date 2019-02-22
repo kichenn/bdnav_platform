@@ -12,9 +12,14 @@ public class Dict {
     private Long id;
 
     /**
-     * 字典名称
+     * 字典类型名称
      */
     private String name;
+
+    /**
+     * 字典类型
+     */
+    private String type;
 
     /**
      * 创建时间
@@ -39,11 +44,6 @@ public class Dict {
     private String remark;
 
     /**
-     * 字典类型
-     */
-    private byte[] type;
-
-    /**
      * 获取主键
      *
      * @return id - 主键
@@ -62,21 +62,39 @@ public class Dict {
     }
 
     /**
-     * 获取字典名称
+     * 获取字典类型名称
      *
-     * @return name - 字典名称
+     * @return name - 字典类型名称
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置字典名称
+     * 设置字典类型名称
      *
-     * @param name 字典名称
+     * @param name 字典类型名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取字典类型
+     *
+     * @return type - 字典类型
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * 设置字典类型
+     *
+     * @param type 字典类型
+     */
+    public void setType(String type) {
+        this.type = type == null ? null : type.trim();
     }
 
     /**
@@ -149,23 +167,5 @@ public class Dict {
      */
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
-    }
-
-    /**
-     * 获取字典类型
-     *
-     * @return type - 字典类型
-     */
-    public byte[] getType() {
-        return type;
-    }
-
-    /**
-     * 设置字典类型
-     *
-     * @param type 字典类型
-     */
-    public void setType(byte[] type) {
-        this.type = type;
     }
 }
