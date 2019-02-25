@@ -22,6 +22,7 @@
         <module>applecontrol-provider</module>
         <module>system_provider</module>
         <module>school-provider</module>
+        <module>user-provider</module>
     </modules>
 
     <dependencies>

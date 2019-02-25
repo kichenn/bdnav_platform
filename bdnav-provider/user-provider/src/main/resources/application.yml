@@ -1,8 +1,8 @@
 server:
-  port: 9022
+  port: 9023
 spring:
   application:
-    name: school-provider-cluster
+    name: user-provider-cluster
   profiles:
     active: dev
 logging:
