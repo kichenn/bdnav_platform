@@ -37,6 +37,8 @@
         </javaClientGenerator>
 
         <table tableName="t_school" domainObjectName="School"></table>
+        <table tableName="t_school_class" domainObjectName="SchoolClass"></table>
+        <table tableName="t_school_dept" domainObjectName="SchoolDept"></table>
 
     </context>
 </generatorConfiguration>
