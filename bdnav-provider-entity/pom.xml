@@ -21,6 +21,7 @@
         <module>mapservice-provider-entity</module>
         <module>applecontrol-provider-entity</module>
         <module>system-provider-entity</module>
+        <module>school-provider-entity</module>
     </modules>
 
     <dependencies>

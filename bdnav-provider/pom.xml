@@ -21,6 +21,7 @@
         <module>mapservice-provider</module>
         <module>applecontrol-provider</module>
         <module>system_provider</module>
+        <module>school-provider</module>
     </modules>
 
     <dependencies>

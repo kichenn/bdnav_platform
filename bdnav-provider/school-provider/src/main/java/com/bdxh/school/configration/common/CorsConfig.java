@@ -1,4 +1,4 @@
-package com.bdxh.system.configration.common;
+package com.bdxh.school.configration.common;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

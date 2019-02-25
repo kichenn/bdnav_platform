@@ -1,4 +1,4 @@
-package com.bdxh.system.configration.mybatis;
+package com.bdxh.school.configration.mybatis;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.github.pagehelper.PageHelper;
@@ -45,7 +45,7 @@ public class MybatisConfig {
 	public SqlSessionFactory getSqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) {
 		SqlSessionFactoryBean sqlSessionFactoryBean=new SqlSessionFactoryBean();
 		//指定别名包
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.bdxh.system.entity");
+		sqlSessionFactoryBean.setTypeAliasesPackage("com.bdxh.school.entity");
 		sqlSessionFactoryBean.setDataSource(dataSource);
 		try {
 			ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

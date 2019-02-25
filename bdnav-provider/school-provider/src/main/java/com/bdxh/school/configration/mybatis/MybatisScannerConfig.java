@@ -1,4 +1,4 @@
-package com.bdxh.system.configration.mybatis;
+package com.bdxh.school.configration.mybatis;
 
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
@@ -15,7 +15,7 @@ public class MybatisScannerConfig {
 	public MapperScannerConfigurer getMapperScannerConfigurer() {
 		MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
 		mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactory");
-		mapperScannerConfigurer.setBasePackage("com.bdxh.system.persistence");
+		mapperScannerConfigurer.setBasePackage("com.bdxh.school.persistence");
 		//配置通用mapper
 		Properties properties = new Properties();
 		properties.setProperty("notEmpty", "false");
