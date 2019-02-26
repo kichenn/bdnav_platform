@@ -9,4 +9,6 @@ import com.bdxh.system.entity.Role;
  * @create: 2019-02-22 17:05
  **/
 public interface RoleService extends IService<Role> {
+
+
 }
