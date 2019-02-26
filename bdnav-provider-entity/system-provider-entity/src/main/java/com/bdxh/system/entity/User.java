@@ -1,8 +1,6 @@
 package com.bdxh.system.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "sys_user")
@@ -11,6 +9,7 @@ public class User {
      * 主键id
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

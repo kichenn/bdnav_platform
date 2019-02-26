@@ -1,0 +1,187 @@
+info:
+  groupId: @project.groupId@
+  artifactId: @project.artifactId@
+  version: @project.version@
+eureka:
+  instance:
+    hostname: user-provider1
+    instance-id: user-provider:${server.port}
+    prefer-ip-address: false
+  client:
+    serviceUrl:
+      defaultZone: http://eureka-server1:9001/eureka/,http://eureka-server2:9002/eureka/,http://eureka-server3:9003/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+      health:
+        show-details: ALWAYS
+#数据源配置
+spring:
+  datasource:
+    ds0:
+      name : dataSource
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_user0?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      username : admin
+      password : Abc_123456
+      type : com.alibaba.druid.pool.DruidDataSource
+      driver-class-name : com.mysql.jdbc.Driver
+      filters :  stat
+      maxActive : 20
+      initialSize : 1
+      minIdle : 3
+      maxWait : 60000
+      timeBetweenEvictionRunsMillis : 60000
+      minEvictableIdleTimeMillis : 300000
+      validationQuery : select 'x' from dual
+      testWhileIdle : true
+      testOnBorrow : false
+      testOnReturn : false
+      poolPreparedStatements : true
+      maxOpenPreparedStatements : 50
+      connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
+    ds1:
+      name : dataSource
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_user1?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      username : admin
+      password : Abc_123456
+      type : com.alibaba.druid.pool.DruidDataSource
+      driver-class-name : com.mysql.jdbc.Driver
+      filters :  stat
+      maxActive : 20
+      initialSize : 1
+      minIdle : 3
+      maxWait : 60000
+      timeBetweenEvictionRunsMillis : 60000
+      minEvictableIdleTimeMillis : 300000
+      validationQuery : select 'x' from dual
+      testWhileIdle : true
+      testOnBorrow : false
+      testOnReturn : false
+      poolPreparedStatements : true
+      maxOpenPreparedStatements : 50
+      connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
+    ds2:
+      name : dataSource
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_user2?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      username : admin
+      password : Abc_123456
+      type : com.alibaba.druid.pool.DruidDataSource
+      driver-class-name : com.mysql.jdbc.Driver
+      filters :  stat
+      maxActive : 20
+      initialSize : 1
+      minIdle : 3
+      maxWait : 60000
+      timeBetweenEvictionRunsMillis : 60000
+      minEvictableIdleTimeMillis : 300000
+      validationQuery : select 'x' from dual
+      testWhileIdle : true
+      testOnBorrow : false
+      testOnReturn : false
+      poolPreparedStatements : true
+      maxOpenPreparedStatements : 50
+      connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
+    ds3:
+      name : dataSource
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_user3?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      username : admin
+      password : Abc_123456
+      type : com.alibaba.druid.pool.DruidDataSource
+      driver-class-name : com.mysql.jdbc.Driver
+      filters :  stat
+      maxActive : 20
+      initialSize : 1
+      minIdle : 3
+      maxWait : 60000
+      timeBetweenEvictionRunsMillis : 60000
+      minEvictableIdleTimeMillis : 300000
+      validationQuery : select 'x' from dual
+      testWhileIdle : true
+      testOnBorrow : false
+      testOnReturn : false
+      poolPreparedStatements : true
+      maxOpenPreparedStatements : 50
+      connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
+  #jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #redis配置
+  redis:
+    cluster:
+      nodes: 119.23.185.109:8001,47.107.253.90:8003,47.107.255.252:8005,119.23.185.109:8002,47.107.253.90:8004,47.107.255.252:8006
+    timeout: 5000
+    lettuce:
+      pool:
+        min-idle: 2
+        max-idle: 10
+        max-active: 20
+        max-wait: -1
+    database: 0
+  cloud:
+    loadbalancer:
+      retry:
+        #开启ribbon重试机制
+        enabled: true
+#hystrix配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 12000
+#feigin配置 开启熔断降级
+feign:
+  hystrix:
+    enabled: true
+  #使用httpclient连接池
+  httpclient:
+    enabled: true
+    connection-timeout: 2000
+    connection-timer-repeat: 5000
+    #最大连接数
+    max-connections: 1000
+    #并发数
+    max-connections-per-route: 100
+  okhttp:
+    enabled: false
+  #启用压缩
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 1024
+    response:
+      enabled: true
+#ribbon超时配置
+ribbon:
+  eureka:
+    enabled: true
+  eager-load:
+    enabled: true
+  #3秒刷新服务列表
+  ServerListRefreshInterval: 3000
+  #只对GET方法进行重试 POST接口重复执行会造成严重后果，需要对接口做幂等性
+  OkToRetryOnAllOperations: false
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 2
+  ConnectTimeout: 3000
+  ReadTimeout: 6000
+#httpPoolClient配置
+httpPool:
+  maxTotal: 3000
+  maxPerRoute: 100
+  connectRequestTimeout: 3000
+  connectTimeout: 5000
+  socketTimeout: 10000
+  enable: false
+#ID生成器
+id-generator:
+  workerId: 0
+  datacenterId: 3

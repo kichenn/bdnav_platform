@@ -18,6 +18,7 @@
         <module>product-generator</module>
         <module>system-generator</module>
         <module>school-generator</module>
+        <module>user-generator</module>
     </modules>
 
     <dependencies>

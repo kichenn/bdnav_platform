@@ -1,5 +1,5 @@
 server:
-  port: 9021
+  port: 9022
 spring:
   application:
     name: school-provider-cluster
