@@ -7,16 +7,19 @@ import com.bdxh.system.dto.RoleDto;
 import com.bdxh.system.dto.RoleQueryDto;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.service.RoleService;
-import com.bdxh.system.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,9 +35,6 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
-
-    @Autowired
-    private UserRoleService userRoleService;
 
     /**
      * 增加角色
@@ -60,25 +60,14 @@ public class RoleController {
     }
 
     /**
-     * 根据单个id删除角色
-     * @param roleId
+     * 根据id删除角色
+     * @param id
      * @return
      */
     @RequestMapping(value = "/delRole",method = RequestMethod.POST)
-    @Transactional
-    public Object delRole(@RequestParam(name = "roleId") @NotNull(message = "角色id不能为空") Long roleId){
+    public Object delRole(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
         try {
-            //1.查找当前角色id的用户信息
-            List<Role> Rolelist=userRoleService.findUserRole(roleId);
-            //2.删除关系表中当前角色id下的数据
-            for (int i = 0; i <Rolelist.size() ; i++) {
-                System.out.print(i);
-                int result=userRoleService.deleteByKey(i);
-                if(result>0){
-                    //3.删除当前角色
-                    roleService.deleteByKey(roleId);
-                }
-            }
+            roleService.delRole(id);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,30 +76,25 @@ public class RoleController {
     }
 
     /**
-     * 批量删除角色
-     * @param idsinfo
+     * 根据ids批量删除角色
+     * @param ids
      * @return
      */
     @RequestMapping(value = "/delBatchRole",method = RequestMethod.POST)
     @Transactional
-    public Object delBatchRole(@RequestParam(name = "idsinfo")String idsinfo){
+    public Object delBatchRole(@RequestParam(name = "ids") @NotEmpty(message = "角色id不能为空") String ids){
         try {
-            String[] idsArr =idsinfo.split(",");
-            Integer[] ids=new Integer[idsArr.length];
-            for(int i=0;i<ids.length;i++){
-                int a = Integer.parseInt(idsArr[i]);
-                /*ids[i]=Integer.parseInt(idsArr[i]);*/
-                //1.查找当前角色id的用户信息
-                List<Role> Rolelist=userRoleService.findUserRole(Long.valueOf(a));
-                for (int j = 0; j <Rolelist.size() ; j++) {
-                    int result=userRoleService.deleteByKey(j);
-                    if(result>0){
-                        //3.删除当前角色
-                        roleService.batchDelete(Rolelist);
+            String[] idsArr = StringUtils.split(ids,",");
+            List<Long> idsLongArr = new ArrayList<>(15);
+            if (idsArr!=null&&idsArr.length>0){
+                for (int i=0;i<idsArr.length;i++){
+                    String id = idsArr[i];
+                    if (StringUtils.isNotEmpty(id)){
+                        idsLongArr.add(Long.valueOf(id));
                     }
                 }
-
             }
+            roleService.delBatchRole(idsLongArr);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,13 +127,47 @@ public class RoleController {
     }
 
     /**
-     * 根据条件分页查找
+     * 根据id查询对象
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/queryRoleById",method = RequestMethod.GET)
+    public Object queryRole(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
+        try {
+            Role role = roleService.selectByKey(id);
+            return WrapMapper.ok(role);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 根据条件查询列表
      * @param roleQueryDto
      * @param rowBounds
      * @return
      */
     @RequestMapping(value = "/queryList",method = RequestMethod.GET)
     public Object queryList(@Valid @RequestBody RoleQueryDto roleQueryDto, RowBounds rowBounds){
+        try {
+            Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
+            List<Role> Roles = roleService.selectByExampleAndRowBounds(param,rowBounds);
+            return WrapMapper.ok(Roles);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 根据条件分页查找
+     * @param roleQueryDto
+     * @param rowBounds
+     * @return
+     */
+    @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
+    public Object queryListPage(@Valid @RequestBody RoleQueryDto roleQueryDto, RowBounds rowBounds){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
             List<Role> Roles = roleService.selectByExampleAndRowBounds(param,rowBounds);
