@@ -21,12 +21,15 @@ zuul:
     socket-timeout-millis: 15000
   routes:
     api-a:
+      path: /school/** #网关地址
+      serviceId: school-provider-cluster #代理到对应的服务
+    api-b:
       path: /wallet/** #网关地址
       serviceId: wallet-provider-cluster #代理到对应的服务
-    api-b:
+    api-c:
       path: /pay/** #网关地址
       serviceId: pay-provider-cluster #代理到对应的服务
-    api-c:
+    api-d:
       path: /product/** #网关地址
       serviceId: product-provider-cluster #代理到对应的服务
 hystrix:

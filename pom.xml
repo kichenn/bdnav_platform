@@ -43,7 +43,7 @@
         <aspectjweaver.version>1.9.2</aspectjweaver.version>
         <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
         <commons-codec.version>1.11</commons-codec.version>
-        <project ></project>
+        <swagger2.version>2.9.2</swagger2.version>
     </properties>
     
     <modules>
@@ -272,6 +272,17 @@
                 <groupId>org.apache.httpcomponents</groupId>
                 <artifactId>httpclient</artifactId>
                 <version>${httpclient.version}</version>
+            </dependency>
+            <!-- swagger2依赖 -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger2.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
