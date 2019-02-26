@@ -1,5 +1,6 @@
 package com.bdxh.school.configration.redis;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.ibatis.cache.CacheException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -224,5 +225,18 @@ public class RedisCache<T> {
 
     public void setRedisTemplate(RedisTemplate<String, T> redisTemplate) {
         this.redisTemplate = redisTemplate;
+    }
+
+    /**
+     * @Description: 前缀删除key
+     * @Author: Kang
+     * @Date: 2019/2/26 14:02
+     */
+    public void deleteByPrex(String prex) {
+        prex = prex + "**";
+        Set<String> keys = redisTemplate.keys(prex);
+        if (CollectionUtils.isNotEmpty(keys)) {
+            redisTemplate.delete(keys);
+        }
     }
 }

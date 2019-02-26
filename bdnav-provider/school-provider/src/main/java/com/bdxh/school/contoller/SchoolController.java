@@ -1,7 +1,7 @@
 package com.bdxh.school.contoller;
 
-import com.alibaba.fastjson.JSON;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.configration.redis.RedisCache;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.entity.School;
@@ -10,7 +10,6 @@ import com.bdxh.school.vo.SchoolVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -36,6 +35,8 @@ public class SchoolController {
 
     @Autowired
     private SchoolService schoolService;
+
+
 
     /**
      * @Description: 增加学校
@@ -76,6 +77,7 @@ public class SchoolController {
         }
         try {
             Boolean result = schoolService.modifySchool(school);
+            //。。。。。更新缓存
             return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -93,6 +95,7 @@ public class SchoolController {
     @ResponseBody
     public Object delSchool(@RequestParam("id") Long id) {
         Boolean result = schoolService.delSchool(id);
+        //。。。。更新缓存
         return WrapMapper.ok(result);
     }
 

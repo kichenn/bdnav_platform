@@ -3,6 +3,7 @@ package com.bdxh.school.service.impl;
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.school.configration.anno.GetWithRedis;
 import com.bdxh.school.configration.bean.PageVo;
+import com.bdxh.school.configration.redis.RedisCache;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.entity.School;
@@ -31,6 +32,8 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     @Autowired
     private SchoolMapper schoolMapper;
 
+    @Autowired
+    private RedisCache redisCache;
 
     //添加学校信息
     @Override
@@ -40,10 +43,14 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
 //        school.setId(snowflakeIdWorker.nextId());
         //school.setAppKey();
         //school.setAppSecret();
-        Integer result = schoolMapper.insertSelective(school);
+        Boolean result = schoolMapper.insertSelective(school) > 0;
 //        SchoolVo schoolvo = new SchoolVo();
 //        BeanUtils.copyProperties(school, schoolvo);
-        return result > 0;
+        if (result) {
+            //删除列表缓存
+            redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
+        }
+        return result;
     }
 
     //修改学校信息
@@ -51,15 +58,27 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     public Boolean modifySchool(ModifySchoolDto schoolDto) {
         School school = new School();
         BeanUtils.copyProperties(schoolDto, school);
-        Integer result = schoolMapper.updateByPrimaryKey(school);
-        return result > 0;
+        Boolean result = schoolMapper.updateByPrimaryKey(school) > 0;
+        if (result) {
+            //删除列表缓存
+            redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
+            //删除详情缓存
+            redisCache.delete(SCHOOL_LIST_PREFIX + "_" + school.getId());
+        }
+        return result;
     }
 
     //删除学校信息
     @Override
     public Boolean delSchool(Long id) {
-        Integer result = schoolMapper.deleteByPrimaryKey(id);
-        return result > 0;
+        Boolean result = schoolMapper.deleteByPrimaryKey(id) > 0;
+        if (result) {
+            //删除列表缓存
+            redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
+            //删除详情缓存
+            redisCache.delete(SCHOOL_LIST_PREFIX + "_" + id);
+        }
+        return result;
     }
 
     //id查询学校信息
