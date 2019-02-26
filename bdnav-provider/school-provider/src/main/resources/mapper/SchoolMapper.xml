@@ -35,7 +35,7 @@
         school_key,school_secret,app_key,app_secret,create_date,update_date,operator,operator_name,remark
     </sql>
 
-    <select id="findIdsInCondition" resultType="com.bdxh.school.entity.School">
+    <select id="findIdsInCondition" resultMap="BaseResultMap">
         SELECT
         <include refid="Base_Column_List"/>
         FROM

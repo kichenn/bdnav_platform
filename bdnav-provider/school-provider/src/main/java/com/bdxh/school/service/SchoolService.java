@@ -3,6 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.web.support.IService;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
+import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.vo.SchoolVo;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,22 +24,19 @@ public interface SchoolService extends IService<School> {
     String SCHOOL_LIST_PREFIX = "SCHOOL_LIST";
 
     //增加学校信息
-    @Transactional(rollbackFor = Exception.class)
     Boolean addSchool(SchoolDto schoolDto);
 
     //修改学校信息
-    @Transactional(rollbackFor = Exception.class)
     Boolean modifySchool(ModifySchoolDto school);
 
     //删除学校信息
-    @Transactional(rollbackFor = Exception.class)
     Boolean delSchool(Long id);
 
     //id查询学校信息
     Optional<School> findSchoolById(Long id);
 
     //筛选条件查询学校列表
-    Optional<List<School>> findSchools(String schoolCode, String schoolName, Integer page, Integer limit);
+    Optional<List<School>> findSchools(SchoolQueryDto schoolQueryDto);
 
     //ids查询学校列表
 //    Optional<List<School>> findSchoolsByIds(List<String> ids);

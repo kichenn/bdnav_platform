@@ -1,15 +1,18 @@
 package com.bdxh.school.contoller;
 
+import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.configration.redis.RedisCache;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
+import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.vo.SchoolVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -117,18 +121,13 @@ public class SchoolController {
      * @Author: Kang
      * @Date: 2019/2/26 10:18
      */
-    @RequestMapping(value = "/findSchoolList", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSchoolList", method = RequestMethod.POST)
     @ApiOperation(value = "查询学校", response = SchoolVo.class)
     @ResponseBody
-    public Object findSchoolList(
-            @RequestParam(required = false) String schooleCode,
-            @RequestParam(required = false) String schooleName,
-            @RequestParam(required = false, defaultValue = "0") Integer page,
-            @RequestParam(required = false, defaultValue = "10") Integer limit) {
-
+    public Object findSchoolList(@Valid @RequestBody SchoolQueryDto schoolQueryDto) {
         //符合条件的学校信息
-        List<School> schools = schoolService.findSchools(schooleCode, schooleName, page, limit).orElse(new ArrayList<>());
-        return WrapMapper.ok(schools);
+        List<School> Roles = schoolService.findSchools(schoolQueryDto).orElse(new ArrayList<>());
+        return WrapMapper.ok(Roles);
     }
 
 

@@ -6,6 +6,7 @@ import com.bdxh.school.configration.bean.PageVo;
 import com.bdxh.school.configration.redis.RedisCache;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
+import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.persistence.SchoolMapper;
 import com.bdxh.school.service.SchoolService;
@@ -16,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -91,10 +93,10 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
 
     //筛选条件查询学校信息
     @Override
-//    @GetWithRedis(key = SCHOOL_LIST_PREFIX)
-    public Optional<List<School>> findSchools(String schoolCode, String schoolName, Integer page, Integer limit) {
-        Page<School> result = PageHelper.startPage(page + 1, limit).setOrderBy(" Id DESC").doSelectPage(() -> {
-            schoolMapper.findIdsInCondition(schoolCode, schoolName);
+    @GetWithRedis(key = SCHOOL_LIST_PREFIX)
+    public Optional<List<School>> findSchools(SchoolQueryDto schoolQueryDto) {
+        Page<School> result = PageHelper.startPage(schoolQueryDto.getPageNum(), schoolQueryDto.getPageSize()).setOrderBy(" Id DESC").doSelectPage(() -> {
+            schoolMapper.findIdsInCondition(schoolQueryDto.getSchooleCode(), schoolQueryDto.getSchooleName());
         });
         return Optional.ofNullable(new PageVo<School>().init(result).getList());
     }
