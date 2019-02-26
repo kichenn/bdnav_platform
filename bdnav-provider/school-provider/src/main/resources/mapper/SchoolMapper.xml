@@ -1,32 +1,56 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.school.persistence.SchoolMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.school.entity.School">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_code" jdbcType="CHAR" property="schoolCode" />
-    <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
-    <result column="school_area_code" jdbcType="VARCHAR" property="schoolAreaCode" />
-    <result column="school_area" jdbcType="VARCHAR" property="schoolArea" />
-    <result column="school_address" jdbcType="VARCHAR" property="schoolAddress" />
-    <result column="school_logo" jdbcType="VARCHAR" property="schoolLogo" />
-    <result column="school_type" jdbcType="TINYINT" property="schoolType" />
-    <result column="school_nature" jdbcType="VARCHAR" property="schoolNature" />
-    <result column="teacher_nums" jdbcType="INTEGER" property="teacherNums" />
-    <result column="student_nums" jdbcType="INTEGER" property="studentNums" />
-    <result column="school_contact" jdbcType="VARCHAR" property="schoolContact" />
-    <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone" />
-    <result column="contact_position" jdbcType="VARCHAR" property="contactPosition" />
-    <result column="school_key" jdbcType="VARCHAR" property="schoolKey" />
-    <result column="school_secret" jdbcType="VARCHAR" property="schoolSecret" />
-    <result column="app_key" jdbcType="VARCHAR" property="appKey" />
-    <result column="app_secret" jdbcType="VARCHAR" property="appSecret" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.School">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="school_area_code" jdbcType="VARCHAR" property="schoolAreaCode"/>
+        <result column="school_area" jdbcType="VARCHAR" property="schoolArea"/>
+        <result column="school_address" jdbcType="VARCHAR" property="schoolAddress"/>
+        <result column="school_logo" jdbcType="VARCHAR" property="schoolLogo"/>
+        <result column="school_type" jdbcType="TINYINT" property="schoolType"/>
+        <result column="school_nature" jdbcType="VARCHAR" property="schoolNature"/>
+        <result column="teacher_nums" jdbcType="INTEGER" property="teacherNums"/>
+        <result column="student_nums" jdbcType="INTEGER" property="studentNums"/>
+        <result column="school_contact" jdbcType="VARCHAR" property="schoolContact"/>
+        <result column="contact_phone" jdbcType="VARCHAR" property="contactPhone"/>
+        <result column="contact_position" jdbcType="VARCHAR" property="contactPosition"/>
+        <result column="school_key" jdbcType="VARCHAR" property="schoolKey"/>
+        <result column="school_secret" jdbcType="VARCHAR" property="schoolSecret"/>
+        <result column="app_key" jdbcType="VARCHAR" property="appKey"/>
+        <result column="app_secret" jdbcType="VARCHAR" property="appSecret"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <select id="findIdsInCondition" resultType="java.lang.String">
+        SELECT
+        id
+        FROM
+        t_school
+        <where>
+            <if test="school_code !=null and school_code!=''">
+                `school_code` = #{school_code,jdbcType=VARCHAR}
+            </if>
+            <if test="school_name !=null and school_name!=''">
+                AND `school_name` = #{school_name,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+    <select id="findInfoInIds" resultType="com.bdxh.school.entity.School">
+        SELECT
+        *
+        FROM t_school
+        WHERE id IN
+        <foreach collection="ids" item="empId" separator="," open="(" close=")">
+            #{empId}
+        </foreach>
+    </select>
 </mapper>

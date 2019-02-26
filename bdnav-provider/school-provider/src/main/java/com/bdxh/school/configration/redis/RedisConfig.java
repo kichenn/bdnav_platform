@@ -30,10 +30,10 @@ import java.util.SortedMap;
  * @author: xuyuan
  * @create: 2019-01-15 10:19
  **/
-@Configuration
-@AutoConfigureAfter(RedisAutoConfiguration.class)
+//@Configuration
+//@AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisConfig extends CachingConfigurerSupport {
-
+/*
     @Bean
     public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory redisConnectionFactory) {
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
@@ -94,5 +94,5 @@ public class RedisConfig extends CachingConfigurerSupport {
             return sb.toString();
         };
     }
-
+*/
 }
