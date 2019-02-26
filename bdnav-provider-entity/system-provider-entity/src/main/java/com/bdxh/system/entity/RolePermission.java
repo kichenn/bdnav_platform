@@ -1,8 +1,6 @@
 package com.bdxh.system.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "sys_role_permission")
 public class RolePermission {
@@ -10,6 +8,7 @@ public class RolePermission {
      * 主键
      */
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**

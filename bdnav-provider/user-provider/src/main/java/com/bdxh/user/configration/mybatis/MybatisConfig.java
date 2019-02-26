@@ -69,7 +69,8 @@ public class MybatisConfig {
 		shardingRuleConfig.getTableRuleConfigs().add(geStudentFamilyTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getTeacherDeptTableRuleConfiguration());
 		//级联绑定表，用于优化查询
-		shardingRuleConfig.getBindingTableGroups().add("t_student,t_teacher,t_family,t_student_family,t_teacher_dept");
+		shardingRuleConfig.getBindingTableGroups().add("t_student,t_student_family");
+		shardingRuleConfig.getBindingTableGroups().add("t_teacher,t_teacher_dept");
 		Map<String, DataSource> dataSourceMap = new HashMap<>();
 		dataSourceMap.put("ds_0", dataSource0);
 		dataSourceMap.put("ds_1", dataSource1);
@@ -94,7 +95,7 @@ public class MybatisConfig {
 	public SqlSessionFactory getSqlSessionFactory(@Qualifier("shardingDataSource") DataSource dataSource) {
 		SqlSessionFactoryBean sqlSessionFactoryBean=new SqlSessionFactoryBean();
 		//指定别名包
-		sqlSessionFactoryBean.setTypeAliasesPackage("com.bdxh.order.entity");
+		sqlSessionFactoryBean.setTypeAliasesPackage("com.bdxh.user.entity");
 		sqlSessionFactoryBean.setDataSource(dataSource);
 		try {
 			ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();

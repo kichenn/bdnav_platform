@@ -6,8 +6,11 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="school_code" jdbcType="CHAR" property="schoolCode" />
+    <result column="card_number" jdbcType="CHAR" property="cardNumber" />
     <result column="teacher_id" jdbcType="BIGINT" property="teacherId" />
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
     <result column="dept_ids" jdbcType="VARCHAR" property="deptIds" />
     <result column="dept_names" jdbcType="VARCHAR" property="deptNames" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />

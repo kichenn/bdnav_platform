@@ -9,13 +9,25 @@ import java.util.Date;
 @Table(name = "t_teacher_dept")
 public class TeacherDept implements Serializable {
 
-    private static final long serialVersionUID = 1026887596609634844L;
+    private static final long serialVersionUID = 6769383748212626201L;
 
     /**
      * 主键
      */
     @Id
     private Long id;
+
+    /**
+     * 学校编码
+     */
+    @Column(name = "school_code")
+    private String schoolCode;
+
+    /**
+     * 老师工号
+     */
+    @Column(name = "card_number")
+    private String cardNumber;
 
     /**
      * 老师id
@@ -28,6 +40,12 @@ public class TeacherDept implements Serializable {
      */
     @Column(name = "dept_id")
     private Long deptId;
+
+    /**
+     * 组织架构名称
+     */
+    @Column(name = "dept_name")
+    private String deptName;
 
     /**
      * 组织架构ids
@@ -88,6 +106,42 @@ public class TeacherDept implements Serializable {
     }
 
     /**
+     * 获取学校编码
+     *
+     * @return school_code - 学校编码
+     */
+    public String getSchoolCode() {
+        return schoolCode;
+    }
+
+    /**
+     * 设置学校编码
+     *
+     * @param schoolCode 学校编码
+     */
+    public void setSchoolCode(String schoolCode) {
+        this.schoolCode = schoolCode == null ? null : schoolCode.trim();
+    }
+
+    /**
+     * 获取老师工号
+     *
+     * @return card_number - 老师工号
+     */
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    /**
+     * 设置老师工号
+     *
+     * @param cardNumber 老师工号
+     */
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber == null ? null : cardNumber.trim();
+    }
+
+    /**
      * 获取老师id
      *
      * @return teacher_id - 老师id
@@ -121,6 +175,24 @@ public class TeacherDept implements Serializable {
      */
     public void setDeptId(Long deptId) {
         this.deptId = deptId;
+    }
+
+    /**
+     * 获取组织架构名称
+     *
+     * @return dept_name - 组织架构名称
+     */
+    public String getDeptName() {
+        return deptName;
+    }
+
+    /**
+     * 设置组织架构名称
+     *
+     * @param deptName 组织架构名称
+     */
+    public void setDeptName(String deptName) {
+        this.deptName = deptName == null ? null : deptName.trim();
     }
 
     /**

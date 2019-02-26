@@ -9,13 +9,25 @@ import java.util.Date;
 @Table(name = "t_student_family")
 public class StudentFamily implements Serializable {
 
-    private static final long serialVersionUID = -848994530190428470L;
+    private static final long serialVersionUID = -397945746308496398L;
 
     /**
      * 主键
      */
     @Id
     private Long id;
+
+    /**
+     * 学校编码
+     */
+    @Column(name = "school_code")
+    private String schoolCode;
+
+    /**
+     * 学生学号
+     */
+    @Column(name = "card_number")
+    private String cardNumber;
 
     /**
      * 学生id
@@ -26,8 +38,20 @@ public class StudentFamily implements Serializable {
     /**
      * 家长id
      */
-    @Column(name = "famliy_id")
-    private Long famliyId;
+    @Column(name = "family_id")
+    private Long familyId;
+
+    /**
+     * 家长姓名
+     */
+    @Column(name = "family_name")
+    private String familyName;
+
+    /**
+     * 家长号
+     */
+    @Column(name = "family_number")
+    private String familyNumber;
 
     /**
      * 关系 父亲 母亲 等等
@@ -81,6 +105,42 @@ public class StudentFamily implements Serializable {
     }
 
     /**
+     * 获取学校编码
+     *
+     * @return school_code - 学校编码
+     */
+    public String getSchoolCode() {
+        return schoolCode;
+    }
+
+    /**
+     * 设置学校编码
+     *
+     * @param schoolCode 学校编码
+     */
+    public void setSchoolCode(String schoolCode) {
+        this.schoolCode = schoolCode == null ? null : schoolCode.trim();
+    }
+
+    /**
+     * 获取学生学号
+     *
+     * @return card_number - 学生学号
+     */
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    /**
+     * 设置学生学号
+     *
+     * @param cardNumber 学生学号
+     */
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber == null ? null : cardNumber.trim();
+    }
+
+    /**
      * 获取学生id
      *
      * @return student_id - 学生id
@@ -101,19 +161,55 @@ public class StudentFamily implements Serializable {
     /**
      * 获取家长id
      *
-     * @return famliy_id - 家长id
+     * @return family_id - 家长id
      */
-    public Long getFamliyId() {
-        return famliyId;
+    public Long getFamilyId() {
+        return familyId;
     }
 
     /**
      * 设置家长id
      *
-     * @param famliyId 家长id
+     * @param familyId 家长id
      */
-    public void setFamliyId(Long famliyId) {
-        this.famliyId = famliyId;
+    public void setFamilyId(Long familyId) {
+        this.familyId = familyId;
+    }
+
+    /**
+     * 获取家长姓名
+     *
+     * @return family_name - 家长姓名
+     */
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    /**
+     * 设置家长姓名
+     *
+     * @param familyName 家长姓名
+     */
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName == null ? null : familyName.trim();
+    }
+
+    /**
+     * 获取家长号
+     *
+     * @return family_number - 家长号
+     */
+    public String getFamilyNumber() {
+        return familyNumber;
+    }
+
+    /**
+     * 设置家长号
+     *
+     * @param familyNumber 家长号
+     */
+    public void setFamilyNumber(String familyNumber) {
+        this.familyNumber = familyNumber == null ? null : familyNumber.trim();
     }
 
     /**
