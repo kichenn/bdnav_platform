@@ -1,0 +1,80 @@
+package com.bdxh.system.controller;
+
+import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.system.dto.DictDataDto;
+import com.bdxh.system.entity.DictData;
+import com.bdxh.system.service.DictDataService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.stream.Collectors;
+
+/**
+ * 字典数据控制器
+ */
+@RestController
+@RequestMapping("/dictData")
+@Validated
+@Slf4j
+public class DictDataController {
+
+
+    @Autowired
+    private  DictDataService dictDataService;
+
+    /**
+     * 添加字典目录数据
+     * @param dictDataDto
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value = "/addDictData",method = RequestMethod.POST)
+    public Object addDictData(@Valid @RequestBody DictDataDto dictDataDto, BindingResult bindingResult){   //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            DictData dictData = BeanMapUtils.map(dictDataDto, DictData.class);
+            dictDataService.save(dictData);
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 修改字典信息
+     * @param dictDataDto
+     * @param bindingResult
+     * @return
+     */
+    @RequestMapping(value = "/updateDictData",method = RequestMethod.POST)
+    public Object updateDictData(@Valid @RequestBody DictDataDto dictDataDto, BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            DictData dictData= BeanMapUtils.map(dictDataDto, DictData .class);
+            dictDataService.update(dictData);
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+
+}

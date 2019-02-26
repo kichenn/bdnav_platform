@@ -1,7 +1,10 @@
 package com.bdxh.system.service;
 
 import com.bdxh.common.web.support.IService;
+import com.bdxh.system.entity.Role;
 import com.bdxh.system.entity.UserRole;
+
+import java.util.List;
 
 /**
  * @description: 用户角色管理service
@@ -9,4 +12,6 @@ import com.bdxh.system.entity.UserRole;
  * @create: 2019-02-22 17:04
  **/
 public interface UserRoleService extends IService<UserRole> {
+
+      List<Role> findUserRole(Long RoleId);
 }

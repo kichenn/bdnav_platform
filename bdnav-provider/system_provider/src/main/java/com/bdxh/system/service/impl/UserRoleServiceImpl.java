@@ -2,10 +2,15 @@ package com.bdxh.system.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.common.web.support.IService;
+import com.bdxh.system.entity.Role;
 import com.bdxh.system.entity.UserRole;
+import com.bdxh.system.persistence.UserRoleMapper;
 import com.bdxh.system.service.UserRoleService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * @description: 用户角色管理service实现
@@ -15,4 +20,12 @@ import org.springframework.stereotype.Service;
 @Service
 @Slf4j
 public class UserRoleServiceImpl extends BaseService<UserRole> implements UserRoleService {
+
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+
+    @Override
+    public List<Role> findUserRole(Long RoleId) {
+        return userRoleMapper.findUserRole(RoleId);
+    }
 }

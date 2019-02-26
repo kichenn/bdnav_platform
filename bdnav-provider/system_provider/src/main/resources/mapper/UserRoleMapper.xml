@@ -9,4 +9,10 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="role_id" jdbcType="BIGINT" property="roleId" />
   </resultMap>
+
+
+  <select id="findUserRole" resultMap="BaseResultMap" parameterType="long">
+	select * from sys_user_role where  role_id= #{roleId}
+	</select>
+
 </mapper>
