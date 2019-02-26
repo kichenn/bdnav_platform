@@ -89,21 +89,23 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         return Optional.ofNullable(school);
     }
 
-    //筛选条件查询学校id
+    //筛选条件查询学校信息
     @Override
-    @GetWithRedis(key = SCHOOL_LIST_PREFIX)
-    public Optional<List<String>> findSchoolIds(String schoolCode, String schoolName, Integer page, Integer limit) {
-        Page<String> result = PageHelper.startPage(page + 1, limit).setOrderBy(" Id DESC").doSelectPage(() -> {
+//    @GetWithRedis(key = SCHOOL_LIST_PREFIX)
+    public Optional<List<School>> findSchools(String schoolCode, String schoolName, Integer page, Integer limit) {
+        Page<School> result = PageHelper.startPage(page + 1, limit).setOrderBy(" Id DESC").doSelectPage(() -> {
             schoolMapper.findIdsInCondition(schoolCode, schoolName);
         });
-        return Optional.ofNullable(new PageVo<String>().init(result).getList());
+        return Optional.ofNullable(new PageVo<School>().init(result).getList());
     }
 
+    /*
     //ids查询学校列表
     @Override
     public Optional<List<School>> findSchoolsByIds(List<String> ids) {
         return Optional.ofNullable(schoolMapper.findInfoInIds(ids));
     }
+    */
 
 
 }

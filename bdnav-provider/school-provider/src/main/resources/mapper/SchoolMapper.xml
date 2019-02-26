@@ -29,19 +29,35 @@
         <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
+    <sql id="Base_Column_List">
+        id,school_code,school_name,school_area_code,school_area,school_address,school_logo,school_type,
+        school_nature,teacher_nums,student_nums,school_contact,contact_phone,contact_position,
+        school_key,school_secret,app_key,app_secret,create_date,update_date,operator,operator_name,remark
+    </sql>
 
-    <select id="findIdsInCondition" resultType="java.lang.String">
+    <select id="findIdsInCondition" resultType="com.bdxh.school.entity.School">
         SELECT
-        *
+        <include refid="Base_Column_List"/>
         FROM
         t_school
         <where>
             <if test="school_code !=null and school_code!=''">
-                AND school_code = #{school_code,jdbcType=VARCHAR}
+                `school_code` = #{school_code,jdbcType=VARCHAR}
             </if>
             <if test="school_name !=null and school_name!=''">
-                AND school_name = #{school_name,jdbcType=VARCHAR}
+                AND `school_name` = #{school_name,jdbcType=VARCHAR}
             </if>
         </where>
     </select>
+    <!--
+    <select id="findInfoInIds" resultType="com.bdxh.school.entity.School">
+        SELECT
+        *
+        FROM t_school
+        WHERE id IN
+        <foreach collection="ids" item="empId" separator="," open="(" close=")">
+            #{empId}
+        </foreach>
+    </select>
+    -->
 </mapper>

@@ -37,9 +37,9 @@ public interface SchoolService extends IService<School> {
     //id查询学校信息
     Optional<School> findSchoolById(Long id);
 
-    //筛选条件查询学校id
-    Optional<List<String>> findSchoolIds(String schoolCode, String schoolName, Integer page, Integer limit);
+    //筛选条件查询学校列表
+    Optional<List<School>> findSchools(String schoolCode, String schoolName, Integer page, Integer limit);
 
     //ids查询学校列表
-    Optional<List<School>> findSchoolsByIds(List<String> ids);
+//    Optional<List<School>> findSchoolsByIds(List<String> ids);
 }

@@ -37,7 +37,6 @@ public class SchoolController {
     private SchoolService schoolService;
 
 
-
     /**
      * @Description: 增加学校
      * @Author: Kang
@@ -127,9 +126,9 @@ public class SchoolController {
             @RequestParam(required = false, defaultValue = "0") Integer page,
             @RequestParam(required = false, defaultValue = "10") Integer limit) {
 
-        //符合条件的id
-        List<String> ids = schoolService.findSchoolIds(schooleCode, schooleName, page, limit).orElse(new ArrayList<>());
-        return WrapMapper.ok(schoolService.findSchoolsByIds(ids).orElse(new ArrayList<>()));
+        //符合条件的学校信息
+        List<School> schools = schoolService.findSchools(schooleCode, schooleName, page, limit).orElse(new ArrayList<>());
+        return WrapMapper.ok(schools);
     }
 
 
