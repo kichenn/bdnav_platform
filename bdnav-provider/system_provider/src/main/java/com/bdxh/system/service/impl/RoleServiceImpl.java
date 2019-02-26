@@ -6,12 +6,15 @@ import com.bdxh.system.persistence.RoleMapper;
 import com.bdxh.system.persistence.RolePermissionMapper;
 import com.bdxh.system.persistence.UserRoleMapper;
 import com.bdxh.system.service.RoleService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 角色管理service实现
@@ -51,5 +54,22 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
             }
         }
     }
+
+
+    @Override
+    public List<Role> findList(Map<String, Object> param) {
+        return roleMapper.getByCondition(param);
+    }
+
+    @Override
+    public PageInfo<Role> findRoleList(Map<String, Object> param, int pageNum, int pageSize) {
+            PageHelper.startPage(pageNum,pageSize);
+            List<Role> roleLogs = roleMapper.getByCondition(param);
+            PageInfo<Role> pageInfo=new PageInfo<>(roleLogs);
+            return pageInfo;
+    }
+
+
+
 
 }

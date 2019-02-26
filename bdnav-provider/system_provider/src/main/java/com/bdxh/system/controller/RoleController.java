@@ -7,9 +7,9 @@ import com.bdxh.system.dto.RoleDto;
 import com.bdxh.system.dto.RoleQueryDto;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.service.RoleService;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -145,14 +145,13 @@ public class RoleController {
     /**
      * 根据条件查询列表
      * @param roleQueryDto
-     * @param rowBounds
      * @return
      */
     @RequestMapping(value = "/queryList",method = RequestMethod.GET)
-    public Object queryList(@Valid @RequestBody RoleQueryDto roleQueryDto, RowBounds rowBounds){
+    public Object queryList(@Valid @RequestBody RoleQueryDto roleQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
-            List<Role> Roles = roleService.selectByExampleAndRowBounds(param,rowBounds);
+            List<Role> Roles = roleService.findList(param);
             return WrapMapper.ok(Roles);
         }catch (Exception e){
             e.printStackTrace();
@@ -163,14 +162,13 @@ public class RoleController {
     /**
      * 根据条件分页查找
      * @param roleQueryDto
-     * @param rowBounds
      * @return
      */
     @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
-    public Object queryListPage(@Valid @RequestBody RoleQueryDto roleQueryDto, RowBounds rowBounds){
+    public Object queryListPage(@Valid @RequestBody RoleQueryDto roleQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
-            List<Role> Roles = roleService.selectByExampleAndRowBounds(param,rowBounds);
+            PageInfo<Role> Roles = roleService.findRoleList(param, roleQueryDto.getPageNum(),roleQueryDto.getPageSize());
             return WrapMapper.ok(Roles);
         }catch (Exception e){
             e.printStackTrace();

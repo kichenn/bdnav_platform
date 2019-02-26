@@ -13,4 +13,31 @@
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+
+  <sql id="BaseColumns">
+    id,role,role_name,create_date,update_date,operator,remark
+  </sql>
+
+
+  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="BaseColumns"/>
+    from sys_user_role
+    <where>
+      <if test="role !=null">
+        role=#{role}
+      </if>
+      <if test="roleName != null">
+        and role_name=#{roleName}
+      </if>
+      <if test="createDate != null">
+        <![CDATA[AND create_date >= #{createDate}]]>
+      </if>
+      <if test="updateDate != null">
+        <![CDATA[AND update_date <= #{updateDate}]]>
+      </if>
+    </where>
+    order by create_date desc
+  </select>
+
+
 </mapper>
