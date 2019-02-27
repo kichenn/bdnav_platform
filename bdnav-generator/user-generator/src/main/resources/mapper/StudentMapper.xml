@@ -33,6 +33,7 @@
     <result column="adress" jdbcType="VARCHAR" property="adress" />
     <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber" />
     <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber" />
+    <result column="activate" jdbcType="TINYINT" property="activate" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />

@@ -9,7 +9,7 @@ import java.util.Date;
 @Table(name = "t_family")
 public class Family implements Serializable {
 
-    private static final long serialVersionUID = 4689025000586634221L;
+    private static final long serialVersionUID = 2342455005199240692L;
 
     /**
      * 主键
@@ -110,6 +110,11 @@ public class Family implements Serializable {
      */
     @Column(name = "physical_chip_number")
     private String physicalChipNumber;
+
+    /**
+     * 是否激活 1 未激活 2 激活
+     */
+    private Byte activate;
 
     /**
      * 创建日期
@@ -461,6 +466,24 @@ public class Family implements Serializable {
      */
     public void setPhysicalChipNumber(String physicalChipNumber) {
         this.physicalChipNumber = physicalChipNumber == null ? null : physicalChipNumber.trim();
+    }
+
+    /**
+     * 获取是否激活 1 未激活 2 激活
+     *
+     * @return activate - 是否激活 1 未激活 2 激活
+     */
+    public Byte getActivate() {
+        return activate;
+    }
+
+    /**
+     * 设置是否激活 1 未激活 2 激活
+     *
+     * @param activate 是否激活 1 未激活 2 激活
+     */
+    public void setActivate(Byte activate) {
+        this.activate = activate;
     }
 
     /**

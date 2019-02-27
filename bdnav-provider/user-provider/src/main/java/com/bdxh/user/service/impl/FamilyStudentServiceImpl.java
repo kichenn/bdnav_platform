@@ -1,9 +1,8 @@
 package com.bdxh.user.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
-import com.bdxh.common.web.support.IService;
-import com.bdxh.user.entity.StudentFamily;
-import com.bdxh.user.service.StudentFamilyService;
+import com.bdxh.user.entity.FamilyStudent;
+import com.bdxh.user.service.FamilyStudentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -14,5 +13,5 @@ import org.springframework.stereotype.Service;
  **/
 @Service
 @Slf4j
-public class StudentFamilyServiceImpl extends BaseService<StudentFamily> implements StudentFamilyService {
+public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> implements FamilyStudentService {
 }

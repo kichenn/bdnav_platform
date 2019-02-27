@@ -166,6 +166,11 @@ public class Student {
     private String physicalChipNumber;
 
     /**
+     * 是否激活 1 未激活 2 激活
+     */
+    private Byte activate;
+
+    /**
      * 创建日期
      */
     @Column(name = "create_date")
@@ -695,6 +700,24 @@ public class Student {
      */
     public void setPhysicalChipNumber(String physicalChipNumber) {
         this.physicalChipNumber = physicalChipNumber == null ? null : physicalChipNumber.trim();
+    }
+
+    /**
+     * 获取是否激活 1 未激活 2 激活
+     *
+     * @return activate - 是否激活 1 未激活 2 激活
+     */
+    public Byte getActivate() {
+        return activate;
+    }
+
+    /**
+     * 设置是否激活 1 未激活 2 激活
+     *
+     * @param activate 是否激活 1 未激活 2 激活
+     */
+    public void setActivate(Byte activate) {
+        this.activate = activate;
     }
 
     /**
