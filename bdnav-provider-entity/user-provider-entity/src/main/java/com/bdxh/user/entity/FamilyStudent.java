@@ -6,10 +6,10 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table(name = "t_student_family")
-public class StudentFamily implements Serializable {
+@Table(name = "t_family_student")
+public class FamilyStudent implements Serializable {
 
-    private static final long serialVersionUID = -397945746308496398L;
+    private static final long serialVersionUID = 3231869906680207572L;
 
     /**
      * 主键
@@ -18,22 +18,22 @@ public class StudentFamily implements Serializable {
     private Long id;
 
     /**
+     * 学校id
+     */
+    @Column(name = "school_id")
+    private Long schoolId;
+
+    /**
      * 学校编码
      */
     @Column(name = "school_code")
     private String schoolCode;
 
     /**
-     * 学生学号
+     * 家长号
      */
     @Column(name = "card_number")
     private String cardNumber;
-
-    /**
-     * 学生id
-     */
-    @Column(name = "student_id")
-    private Long studentId;
 
     /**
      * 家长id
@@ -42,16 +42,22 @@ public class StudentFamily implements Serializable {
     private Long familyId;
 
     /**
-     * 家长姓名
+     * 学生id
      */
-    @Column(name = "family_name")
-    private String familyName;
+    @Column(name = "student_id")
+    private Long studentId;
 
     /**
-     * 家长号
+     * 学生姓名
      */
-    @Column(name = "family_number")
-    private String familyNumber;
+    @Column(name = "student_name")
+    private String studentName;
+
+    /**
+     * 学生学号
+     */
+    @Column(name = "student_number")
+    private String studentNumber;
 
     /**
      * 关系 父亲 母亲 等等
@@ -105,6 +111,24 @@ public class StudentFamily implements Serializable {
     }
 
     /**
+     * 获取学校id
+     *
+     * @return school_id - 学校id
+     */
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    /**
+     * 设置学校id
+     *
+     * @param schoolId 学校id
+     */
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    /**
      * 获取学校编码
      *
      * @return school_code - 学校编码
@@ -123,39 +147,21 @@ public class StudentFamily implements Serializable {
     }
 
     /**
-     * 获取学生学号
+     * 获取家长号
      *
-     * @return card_number - 学生学号
+     * @return card_number - 家长号
      */
     public String getCardNumber() {
         return cardNumber;
     }
 
     /**
-     * 设置学生学号
+     * 设置家长号
      *
-     * @param cardNumber 学生学号
+     * @param cardNumber 家长号
      */
     public void setCardNumber(String cardNumber) {
         this.cardNumber = cardNumber == null ? null : cardNumber.trim();
-    }
-
-    /**
-     * 获取学生id
-     *
-     * @return student_id - 学生id
-     */
-    public Long getStudentId() {
-        return studentId;
-    }
-
-    /**
-     * 设置学生id
-     *
-     * @param studentId 学生id
-     */
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
     }
 
     /**
@@ -177,39 +183,57 @@ public class StudentFamily implements Serializable {
     }
 
     /**
-     * 获取家长姓名
+     * 获取学生id
      *
-     * @return family_name - 家长姓名
+     * @return student_id - 学生id
      */
-    public String getFamilyName() {
-        return familyName;
+    public Long getStudentId() {
+        return studentId;
     }
 
     /**
-     * 设置家长姓名
+     * 设置学生id
      *
-     * @param familyName 家长姓名
+     * @param studentId 学生id
      */
-    public void setFamilyName(String familyName) {
-        this.familyName = familyName == null ? null : familyName.trim();
+    public void setStudentId(Long studentId) {
+        this.studentId = studentId;
     }
 
     /**
-     * 获取家长号
+     * 获取学生姓名
      *
-     * @return family_number - 家长号
+     * @return student_name - 学生姓名
      */
-    public String getFamilyNumber() {
-        return familyNumber;
+    public String getStudentName() {
+        return studentName;
     }
 
     /**
-     * 设置家长号
+     * 设置学生姓名
      *
-     * @param familyNumber 家长号
+     * @param studentName 学生姓名
      */
-    public void setFamilyNumber(String familyNumber) {
-        this.familyNumber = familyNumber == null ? null : familyNumber.trim();
+    public void setStudentName(String studentName) {
+        this.studentName = studentName == null ? null : studentName.trim();
+    }
+
+    /**
+     * 获取学生学号
+     *
+     * @return student_number - 学生学号
+     */
+    public String getStudentNumber() {
+        return studentNumber;
+    }
+
+    /**
+     * 设置学生学号
+     *
+     * @param studentNumber 学生学号
+     */
+    public void setStudentNumber(String studentNumber) {
+        this.studentNumber = studentNumber == null ? null : studentNumber.trim();
     }
 
     /**

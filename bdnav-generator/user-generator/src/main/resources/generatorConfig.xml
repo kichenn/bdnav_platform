@@ -40,7 +40,7 @@
         <table tableName="t_student" domainObjectName="Student"></table>
         <table tableName="t_family" domainObjectName="Family"></table>
         <table tableName="t_teacher_dept" domainObjectName="TeacherDept"></table>
-        <table tableName="t_student_family" domainObjectName="StudentFamily"></table>
+        <table tableName="t_family_student" domainObjectName="FamilyStudent"></table>
 
     </context>
 </generatorConfiguration>
