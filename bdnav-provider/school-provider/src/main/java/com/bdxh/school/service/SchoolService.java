@@ -6,6 +6,7 @@ import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.vo.SchoolVo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
@@ -32,12 +33,15 @@ public interface SchoolService extends IService<School> {
     //删除学校信息
     Boolean delSchool(Long id);
 
+    //批量删除学校信息
+    Boolean batchDelSchool(List<Long> id);
+
     //id查询学校信息
     Optional<School> findSchoolById(Long id);
 
     //筛选条件查询学校列表
-    Optional<List<School>> findSchools(SchoolQueryDto schoolQueryDto);
+    PageInfo<School> findSchoolsInCondition(SchoolQueryDto schoolQueryDto);
 
-    //ids查询学校列表
-//    Optional<List<School>> findSchoolsByIds(List<String> ids);
+    //查询学校列表（全部，无条件）
+    List<School> findSchools();
 }

@@ -2,7 +2,6 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.school.configration.anno.GetWithRedis;
-import com.bdxh.school.configration.bean.PageVo;
 import com.bdxh.school.configration.redis.RedisCache;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
@@ -10,9 +9,7 @@ import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.persistence.SchoolMapper;
 import com.bdxh.school.service.SchoolService;
-import com.bdxh.school.vo.SchoolVo;
-import com.github.pagehelper.Page;
-import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * @description: 学校信息service实现
- * @author: xuyuan
- * @create: 2019-02-25 11:00
- **/
 @Service
 @Slf4j
 public class SchoolServiceImpl extends BaseService<School> implements SchoolService {
@@ -42,16 +34,15 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     public Boolean addSchool(SchoolDto schoolDto) {
         School school = new School();
         BeanUtils.copyProperties(schoolDto, school);
-//        school.setId(snowflakeIdWorker.nextId());
         //school.setAppKey();
         //school.setAppSecret();
         Boolean result = schoolMapper.insertSelective(school) > 0;
 //        SchoolVo schoolvo = new SchoolVo();
 //        BeanUtils.copyProperties(school, schoolvo);
-        if (result) {
+       /* if (result) {
             //删除列表缓存
             redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
-        }
+        }*/
         return result;
     }
 
@@ -61,12 +52,12 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         School school = new School();
         BeanUtils.copyProperties(schoolDto, school);
         Boolean result = schoolMapper.updateByPrimaryKey(school) > 0;
-        if (result) {
+        /*if (result) {
             //删除列表缓存
             redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
             //删除详情缓存
             redisCache.delete(SCHOOL_LIST_PREFIX + "_" + school.getId());
-        }
+        }*/
         return result;
     }
 
@@ -83,31 +74,42 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         return result;
     }
 
+    //批量删除学校信息
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean batchDelSchool(List<Long> id) {
+        Boolean result = schoolMapper.batchDelSchool(id) > 0;
+       /* if (result) {
+            //删除列表缓存
+            redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
+            //删除详情缓存
+            redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
+        }*/
+        return result;
+    }
+
     //id查询学校信息
     @Override
-    @GetWithRedis(key = SCHOOL_INFO_PREFIX)
+//    @GetWithRedis(key = SCHOOL_INFO_PREFIX)
     public Optional<School> findSchoolById(Long id) {
         School school = schoolMapper.selectByPrimaryKey(id);
         return Optional.ofNullable(school);
     }
 
-    //筛选条件查询学校信息
+    //筛选条件查询学校信息(分页)
     @Override
-    @GetWithRedis(key = SCHOOL_LIST_PREFIX)
-    public Optional<List<School>> findSchools(SchoolQueryDto schoolQueryDto) {
-        Page<School> result = PageHelper.startPage(schoolQueryDto.getPageNum(), schoolQueryDto.getPageSize()).setOrderBy(" Id DESC").doSelectPage(() -> {
-            schoolMapper.findIdsInCondition(schoolQueryDto.getSchooleCode(), schoolQueryDto.getSchooleName());
-        });
-        return Optional.ofNullable(new PageVo<School>().init(result).getList());
+//    @GetWithRedis(key = SCHOOL_LIST_PREFIX)
+    public PageInfo<School> findSchoolsInCondition(SchoolQueryDto schoolQueryDto) {
+        List<School> schools = schoolMapper.findIdsInCondition(schoolQueryDto.getSchooleCode(), schoolQueryDto.getSchooleName());
+        return new PageInfo(schools);
     }
 
-    /*
-    //ids查询学校列表
+    //查询学校列表（全部，无条件）
     @Override
-    public Optional<List<School>> findSchoolsByIds(List<String> ids) {
-        return Optional.ofNullable(schoolMapper.findInfoInIds(ids));
+    public List<School> findSchools() {
+        List<School> schools = schoolMapper.selectAll();
+        return schools;
     }
-    */
 
 
 }

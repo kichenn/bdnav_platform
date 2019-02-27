@@ -1,12 +1,42 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.web.support.IService;
+import com.bdxh.school.dto.SchoolClassDto;
 import com.bdxh.school.entity.SchoolClass;
+import com.bdxh.school.vo.SchoolClassVo;
+
+import java.util.List;
 
 /**
- * @description: 班级管理service
- * @author: xuyuan
- * @create: 2019-02-25 14:29
- **/
+ * @Description: 学校院校关系信息
+ * @Author: Kang
+ * @Date: 2019/2/26 17:41
+ */
 public interface SchoolClassService extends IService<SchoolClass> {
+
+
+    //增加院校关系
+    Boolean addSchoolClass(SchoolClassDto schoolClassDto);
+
+    //修改院校关系
+    Boolean modifySchoolClass(SchoolClassDto schoolClassDto);
+
+    //id删除院校关系
+    Boolean delSchoolClassById(Long id);
+
+    //批id量删除院校关系
+    Boolean batchDelSchoolClassInIds(List<Long> ids);
+
+    //删除院校底下信息
+    Boolean delSchoolClassBySchoolId(Long schoolId);
+
+    //递归查询关系节点
+    List<SchoolClassVo> findSchoolClassRelation(SchoolClassVo schoolClassVo);
+
+    //学校id查询等级节点列表（一级节点为父节点）
+    List<SchoolClass> findSchoolParentClassBySchoolId(Long schoolId, Byte level);
+
+    //关系id查询等级信息
+    List<SchoolClassVo> findSchoolClassByParentId(Long id);
+
 }

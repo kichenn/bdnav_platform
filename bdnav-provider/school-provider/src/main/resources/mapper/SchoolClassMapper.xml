@@ -1,26 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.school.persistence.SchoolClassMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolClass">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
-    <result column="parent_ids" jdbcType="VARCHAR" property="parentIds" />
-    <result column="parent_names" jdbcType="VARCHAR" property="parentNames" />
-    <result column="school_id" jdbcType="BIGINT" property="schoolId" />
-    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="level" jdbcType="TINYINT" property="level" />
-    <result column="sort" jdbcType="INTEGER" property="sort" />
-    <result column="manager_id" jdbcType="BIGINT" property="managerId" />
-    <result column="manager_name" jdbcType="VARCHAR" property="managerName" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolClass">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
+        <result column="parent_names" jdbcType="VARCHAR" property="parentNames"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="level" jdbcType="TINYINT" property="level"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="manager_id" jdbcType="BIGINT" property="managerId"/>
+        <result column="manager_name" jdbcType="VARCHAR" property="managerName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+    id,parent_id,parent_ids,parent_names,school_id,school_code,`name`,`type`,
+    `level`,sort,manager_id,manager_name,create_date,update_date,operator,operator_name,remark
+    </sql>
+
+    <select id="findSchoolClassByParentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        t_school_class
+        WHERE parent_id=#{parentId,jdbcType=BIGINT}
+    </select>
+
+    <delete id="batchDelSchoolClassInIds">
+        DELETE
+        FROM
+        t_school_class
+        WHERE
+        id IN
+        <foreach collection="ids" item="empId" separator="," open="(" close=")">
+            #{empId,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+    <delete id="delSchoolClassBySchoolId">
+        DELETE
+        FROM
+        t_school_class
+        WHERE
+        school_id=#{schoolId,jdbcType=BIGINT}
+    </delete>
 </mapper>

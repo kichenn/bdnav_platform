@@ -9,6 +9,8 @@ import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.vo.SchoolVo;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -80,7 +82,6 @@ public class SchoolController {
         }
         try {
             Boolean result = schoolService.modifySchool(school);
-            //。。。。。更新缓存
             return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -98,7 +99,19 @@ public class SchoolController {
     @ResponseBody
     public Object delSchool(@RequestParam("id") Long id) {
         Boolean result = schoolService.delSchool(id);
-        //。。。。更新缓存
+        return WrapMapper.ok(result);
+    }
+
+    /**
+    * @Description:   批量删除学校信息
+    * @Author: Kang
+    * @Date: 2019/2/26 17:08
+    */
+    @RequestMapping(value = "/batchDelSchool", method = RequestMethod.DELETE)
+    @ApiOperation(value = "批量删除学校信息", response = Boolean.class)
+    @ResponseBody
+    public Object batchDelSchool(@RequestBody List<Long> ids) {
+        Boolean result = schoolService.batchDelSchool(ids);
         return WrapMapper.ok(result);
     }
 
@@ -121,13 +134,25 @@ public class SchoolController {
      * @Author: Kang
      * @Date: 2019/2/26 10:18
      */
-    @RequestMapping(value = "/findSchoolList", method = RequestMethod.POST)
-    @ApiOperation(value = "查询学校", response = SchoolVo.class)
+    @RequestMapping(value = "/findSchoolsInCondition", method = RequestMethod.POST)
+    @ApiOperation(value = "分页查询学校列表", response = SchoolVo.class)
     @ResponseBody
-    public Object findSchoolList(@Valid @RequestBody SchoolQueryDto schoolQueryDto) {
+    public Object findSchoolsInCondition(@Valid @RequestBody SchoolQueryDto schoolQueryDto) {
         //符合条件的学校信息
-        List<School> Roles = schoolService.findSchools(schoolQueryDto).orElse(new ArrayList<>());
+        PageInfo<School> Roles = schoolService.findSchoolsInCondition(schoolQueryDto);
         return WrapMapper.ok(Roles);
+    }
+
+    /**
+     * @Description: 查询所有学校列表信息
+     * @Author: Kang
+     * @Date: 2019/2/26 16:52
+     */
+    @RequestMapping(value = "/findSchools", method = RequestMethod.GET)
+    @ApiOperation(value = "查询所有学校列表", response = SchoolVo.class)
+    @ResponseBody
+    public Object findSchools() {
+        return WrapMapper.ok(schoolService.findSchools());
     }
 
 
