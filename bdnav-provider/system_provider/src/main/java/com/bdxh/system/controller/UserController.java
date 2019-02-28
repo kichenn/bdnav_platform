@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 public class UserController {
 
       @Autowired
-      private UserService UserService;
+      private UserService userService;
 
 
     /**
@@ -48,7 +48,7 @@ public class UserController {
           }
           try {
               User user = BeanMapUtils.map(userDto, User.class);
-              UserService.save(user);
+              userService.save(user);
               return WrapMapper.ok();
           } catch (Exception e) {
               e.printStackTrace();
@@ -72,7 +72,7 @@ public class UserController {
         }
         try {
             User user = BeanMapUtils.map(userDto, User.class);
-            UserService.update(user);
+            userService.update(user);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,7 +90,7 @@ public class UserController {
     @RequestMapping(value = "/queryUserById",method = RequestMethod.GET)
     public Object queryUser(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
         try {
-            User user = UserService.selectByKey(id);
+            User user = userService.selectByKey(id);
             return WrapMapper.ok(user);
         }catch (Exception e){
             e.printStackTrace();
@@ -107,7 +107,7 @@ public class UserController {
     public Object queryList(@Valid @RequestBody UserQueryDto userQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
-            List<User> Users = UserService.findList(param);
+            List<User> Users = userService.findList(param);
             return WrapMapper.ok(Users);
         }catch (Exception e){
             e.printStackTrace();
@@ -125,7 +125,7 @@ public class UserController {
     public Object queryListPage(@Valid @RequestBody UserQueryDto userQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
-            PageInfo<User> Users = UserService.findListPage(param, userQueryDto.getPageNum(),userQueryDto.getPageSize());
+            PageInfo<User> Users = userService.findListPage(param, userQueryDto.getPageNum(),userQueryDto.getPageSize());
             return WrapMapper.ok(Users);
         }catch (Exception e){
             e.printStackTrace();

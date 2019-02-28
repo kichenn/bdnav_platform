@@ -13,16 +13,19 @@
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  <sql id="BaseColumns">
+    id,`name`,`type`,create_date,update_date,operator,remark
+  </sql>
 
   <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
     from sys_dict
     <where>
       <if test="name !=null">
-        name=#{name}
+        `name`=#{name}
       </if>
       <if test="type !=null">
-        name=#{type}
+        `type`=#{type}
       </if>
     </where>
   </select>
