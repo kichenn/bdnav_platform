@@ -63,7 +63,6 @@ public class FamilyController {
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
     @Transactional
     public Object removeFamily(@RequestParam(name = "id") @NotNull(message = "家长id不能为空") String id){
-       String fid[]=id.split(",");
         try{
             familyService.deleteFamilys(id);
              return WrapMapper.ok();
@@ -100,7 +99,6 @@ public class FamilyController {
      @RequestMapping(value ="/queryFamilyById",method = RequestMethod.POST)
      public Object queryFamilyListPage(@Valid @RequestBody  Long id) {
          try {
-
              return familyService.selectByKey(id);
          } catch (Exception e) {
              e.printStackTrace();
