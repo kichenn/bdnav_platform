@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;

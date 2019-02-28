@@ -13,10 +13,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @create: 2019-02-26 10:41
  **/
 public interface FamilyService extends IService<Family> {
+    //根据条件分页查询家长信息
      PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto);
 
-    void deleteFamilyByKeys(String id[]);
+    //根据id批量删除家长信息以及学生家长绑定信息
+    void deleteBatchesFamilyInfo(String id[]);
 
-    void deleteFamilyByKey(String id);
+    //根据id删除家长信息以及学生家长绑定信息
+    void deleteFamilyInfo(String id);
 
 }

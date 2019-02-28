@@ -20,19 +20,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 
-@Api(value ="家长Controller类")
+@Api(value ="家长信息模块接口API", tags = "家长信息模块接口API")
 @RestController
 @RequestMapping("/family")
 @Validated
@@ -64,7 +61,7 @@ public class FamilyController {
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
     public Object removeFamily(@RequestParam(name = "id") @NotNull(message = "家长id不能为空") String id){
         try{
-            familyService.deleteFamilyByKey(id);
+            familyService.deleteFamilyInfo(id);
              return WrapMapper.ok();
         }catch (Exception e){
              e.printStackTrace();
@@ -75,13 +72,9 @@ public class FamilyController {
     @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
     public Object removeFamilys(@RequestParam(name = "id") @NotNull(message = "家长id不能为空") String id){
         try{
-            if(null!=id&&!("").equals(id)){
                 String fid[]=id.split(",");
-                familyService.deleteFamilyByKeys(fid);
+                familyService.deleteBatchesFamilyInfo(fid);
                 return WrapMapper.ok();
-            }else {
-                return WrapMapper.error();
-            }
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -112,8 +105,8 @@ public class FamilyController {
     * @return family
     */
      @ApiOperation(value="修改时根据Id查询单个家长信息")
-     @RequestMapping(value ="/queryFamilyById",method = RequestMethod.POST)
-     public Object queryFamilyListPage(@Valid @RequestBody  Long id) {
+     @RequestMapping(value ="/queryFamilyInfo",method = RequestMethod.POST)
+     public Object queryFamilyInfo(@RequestParam(name = "id") @NotNull(message = "家长id不能为空")  Long id) {
          try {
              return familyService.selectByKey(id);
          } catch (Exception e) {
@@ -128,7 +121,7 @@ public class FamilyController {
      */
     @ApiOperation(value="根据条件分页查询家长数据")
     @RequestMapping(value = "/queryFamilyListPage",method = RequestMethod.GET)
-    public Object queryFamilyListPage(@Valid @RequestBody  FamilyQueryDto familyQueryDto) {
+    public Object queryFamilyListPage(@ModelAttribute  FamilyQueryDto familyQueryDto) {
         try {
             // 封装分页之后的数据
             return familyService.getFamilyList(familyQueryDto);

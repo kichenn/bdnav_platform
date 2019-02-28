@@ -38,8 +38,7 @@ private FamilyStudentMapper familyStudentMapper;
     //分页查询家长单表用户信息
     @Override
     public PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto) {
-        Map<String,Object> map = BeanToMapUtil.objectToMap(familyQueryDto);
-        Family family = BeanMapUtils.map(map, Family.class);
+        Family family = BeanMapUtils.map(familyQueryDto, Family.class);
         PageHelper.startPage(familyQueryDto.getPageNum(), familyQueryDto.getPageSize());
         List<Family> listFamily = familyMapper.select(family);
         PageInfo<Family> pageInfoFamily = new PageInfo<Family>(listFamily);
@@ -50,7 +49,7 @@ private FamilyStudentMapper familyStudentMapper;
     //根据ID删除家长信息和家长学生绑定关系信息
     @Override
     @Transactional
-    public void deleteFamilyByKey(String id) {
+    public void deleteFamilyInfo(String id) {
             familyMapper.deleteByPrimaryKey(id);
             FamilyStudent familyStudent=new FamilyStudent();
             familyStudent.setFamilyId(Long.parseLong(id));
@@ -61,7 +60,7 @@ private FamilyStudentMapper familyStudentMapper;
     //根据ID批量删除家长信息和家长学生绑定关系信息
     @Override
     @Transactional
-    public void deleteFamilyByKeys(String id[]) {
+    public void deleteBatchesFamilyInfo(String id[]) {
         for (int i = 0; i < id.length; i++) {
             familyMapper.deleteByPrimaryKey(id[i]);
             FamilyStudent familyStudent=new FamilyStudent();
