@@ -42,8 +42,17 @@
         FROM
         t_school
         <where>
-            <if test="school_code !=null and school_code!=''">
-                `school_code` = #{school_code,jdbcType=VARCHAR}
+            <if test="schoolCode !=null and schoolCode!=''">
+                `school_code` = #{schoolCode,jdbcType=VARCHAR}
+            </if>
+            <if test="schoolName !=null and schoolName!=''">
+                AND `school_name` = #{schoolName,jdbcType=VARCHAR}
+            </if>
+            <if test="school_name !=null and school_name!=''">
+                AND `school_name` = #{school_name,jdbcType=VARCHAR}
+            </if>
+            <if test="school_name !=null and school_name!=''">
+                AND `school_name` = #{school_name,jdbcType=VARCHAR}
             </if>
             <if test="school_name !=null and school_name!=''">
                 AND `school_name` = #{school_name,jdbcType=VARCHAR}

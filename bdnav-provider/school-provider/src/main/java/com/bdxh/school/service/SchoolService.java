@@ -46,5 +46,5 @@ public interface SchoolService extends IService<School> {
     List<School> findSchoolAll();
 
     //学校列表信息导出
-    void downloadReportItemsExcel(List<School> schools);
+//    void downloadReportItemsExcel(List<School> schools);
 }
