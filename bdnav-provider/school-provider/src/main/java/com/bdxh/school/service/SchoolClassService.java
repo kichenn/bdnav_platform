@@ -2,6 +2,7 @@ package com.bdxh.school.service;
 
 import com.bdxh.common.web.support.IService;
 import com.bdxh.school.dto.SchoolClassDto;
+import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.vo.SchoolClassVo;
 
@@ -19,7 +20,7 @@ public interface SchoolClassService extends IService<SchoolClass> {
     Boolean addSchoolClass(SchoolClassDto schoolClassDto);
 
     //修改院校关系
-    Boolean modifySchoolClass(SchoolClassDto schoolClassDto);
+    Boolean modifySchoolClass(SchoolClassModifyDto schoolClassDto);
 
     //id删除院校关系
     Boolean delSchoolClassById(Long id);
@@ -37,6 +38,11 @@ public interface SchoolClassService extends IService<SchoolClass> {
     List<SchoolClass> findSchoolParentClassBySchoolId(Long schoolId, Byte level);
 
     //关系id查询等级信息
-    List<SchoolClassVo> findSchoolClassByParentId(Long id);
+    List<SchoolClassVo> findSchoolClassByParentId(Long parentId);
 
+    //id查询信息
+    SchoolClass findSchoolClassById(Long id);
+
+    //查询所有信息
+    List<SchoolClass> findSchoolClassAll();
 }

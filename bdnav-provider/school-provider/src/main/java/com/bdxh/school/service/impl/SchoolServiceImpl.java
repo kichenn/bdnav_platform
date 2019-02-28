@@ -106,7 +106,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
 
     //查询学校列表（全部，无条件）
     @Override
-    public List<School> findSchools() {
+    public List<School> findSchoolAll() {
         List<School> schools = schoolMapper.selectAll();
         return schools;
     }

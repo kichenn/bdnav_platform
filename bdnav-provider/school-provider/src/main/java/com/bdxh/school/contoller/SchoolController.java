@@ -21,7 +21,10 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.OutputStream;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -103,10 +106,10 @@ public class SchoolController {
     }
 
     /**
-    * @Description:   批量删除学校信息
-    * @Author: Kang
-    * @Date: 2019/2/26 17:08
-    */
+     * @Description: 批量删除学校信息
+     * @Author: Kang
+     * @Date: 2019/2/26 17:08
+     */
     @RequestMapping(value = "/batchDelSchool", method = RequestMethod.DELETE)
     @ApiOperation(value = "批量删除学校信息", response = Boolean.class)
     @ResponseBody
@@ -152,7 +155,27 @@ public class SchoolController {
     @ApiOperation(value = "查询所有学校列表", response = SchoolVo.class)
     @ResponseBody
     public Object findSchools() {
-        return WrapMapper.ok(schoolService.findSchools());
+        return WrapMapper.ok(schoolService.findSchoolAll());
+    }
+
+
+    /**
+     * @Description: 学校信息导出
+     * @Author: Kang
+     * @Date: 2019/2/27 18:31
+     */
+    @RequestMapping(value = "/downloadReportSchoolExcel", method = RequestMethod.GET)
+    @ApiOperation(value = "学校信息导出")
+    @ResponseBody
+    public Object downloadReportSchoolExcel(HttpServletResponse response) {
+        String title = "学校列表报表信息.xlsx";
+        try (OutputStream out = response.getOutputStream()) {
+            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(title, "UTF-8"));
+//            ReportItemsService.me.downloadReportItemsExcel(pageSize, pageNumber, companyList, itemsList, itemsStagesList, startTime, endTime, user, out);
+        } catch (Exception e) {
+            log.error("导出失败：" + e.getMessage());
+        }
+        return WrapMapper.ok(true);
     }
 
 

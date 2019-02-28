@@ -1,4 +1,4 @@
-package com.bdxh.school.util;
+package com.bdxh.school.helper.utils;
 
 /**
  * @Description: Long 工具类
