@@ -16,6 +16,8 @@ import com.bdxh.user.dto.FamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.service.FamilyService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,10 +31,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/**
- *家庭成员控制Controller类
- */
 
+@Api(value ="家长Controller类")
 @RestController
 @RequestMapping("/family")
 @Validated
@@ -40,7 +40,8 @@ import java.util.stream.Collectors;
 public class FamilyController {
     @Autowired
     private FamilyService familyService;
-    //新增家庭成员信息
+
+    @ApiOperation(value="新增家庭成员信息")
     @RequestMapping(value = "/addFamily",method = RequestMethod.POST)
     public Object addFamily(@Valid @RequestBody FamilyDto familyDto, BindingResult bindingResult){
         //检验参数
@@ -59,9 +60,9 @@ public class FamilyController {
     }
 
 
-    //根据ID删除家庭成员信息
+    @ApiOperation(value="根据ID删除家长信息")
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
-    @Transactional
+
     public Object removeFamily(@RequestParam(name = "id") @NotNull(message = "家长id不能为空") String id){
         try{
             familyService.deleteFamilys(id);
@@ -72,9 +73,8 @@ public class FamilyController {
         }
     }
 
-
-
     //修改家庭成员信息
+    @ApiOperation(value="修改家长信息")
     @RequestMapping(value = "/updateFamily",method = RequestMethod.POST)
     public Object updateFamily(@Valid @RequestBody FamilyDto familyDto, BindingResult bindingResult){
         //检验参数
@@ -96,6 +96,7 @@ public class FamilyController {
     * @param id
     * @return family
     */
+     @ApiOperation(value="修改时根据Id查询单个家长信息")
      @RequestMapping(value ="/queryFamilyById",method = RequestMethod.POST)
      public Object queryFamilyListPage(@Valid @RequestBody  Long id) {
          try {
@@ -110,6 +111,7 @@ public class FamilyController {
      * @param familyQueryDto
      * @return PageInfo<Family>
      */
+    @ApiOperation(value="根据条件分页查询家长数据")
     @RequestMapping(value = "/queryFamilyListPage",method = RequestMethod.GET)
     public Object queryFamilyListPage(@Valid @RequestBody  FamilyQueryDto familyQueryDto) {
         try {
