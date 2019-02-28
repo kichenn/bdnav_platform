@@ -18,7 +18,6 @@
     id,role,role_name,create_date,update_date,operator,remark
   </sql>
 
-
   <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
     from sys_user_role
@@ -38,6 +37,5 @@
     </where>
     order by create_date desc
   </select>
-
 
 </mapper>

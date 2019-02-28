@@ -15,7 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 public interface FamilyService extends IService<Family> {
      PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto);
 
-    void deleteFamilys(String id);
+    void deleteFamilyByKeys(String id[]);
 
+    void deleteFamilyByKey(String id);
 
 }

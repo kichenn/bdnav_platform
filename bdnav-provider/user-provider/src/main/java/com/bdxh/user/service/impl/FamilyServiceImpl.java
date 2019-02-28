@@ -6,6 +6,7 @@ import com.bdxh.common.web.support.BaseService;
 import com.bdxh.common.web.support.IService;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.entity.Family;
+import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.service.FamilyService;
@@ -45,16 +46,29 @@ private FamilyStudentMapper familyStudentMapper;
         return pageInfoFamily;
     }
 
+
+    //根据ID删除家长信息和家长学生绑定关系信息
     @Override
     @Transactional
-    public void deleteFamilys(String id) {
-        String fid[]=id.split(",");
-        if(fid.length>0||fid.length==1){
-            familyMapper.deleteByPrimaryKey(fid);
-        }else{
-            for (int i = 0; i < fid.length; i++) {
-                familyMapper.deleteByPrimaryKey(fid[i]);
-            }
+    public void deleteFamilyByKey(String id) {
+            familyMapper.deleteByPrimaryKey(id);
+            FamilyStudent familyStudent=new FamilyStudent();
+            familyStudent.setFamilyId(Long.parseLong(id));
+            familyStudentMapper.delete(familyStudent);
+    }
+
+
+    //根据ID批量删除家长信息和家长学生绑定关系信息
+    @Override
+    @Transactional
+    public void deleteFamilyByKeys(String id[]) {
+        for (int i = 0; i < id.length; i++) {
+            familyMapper.deleteByPrimaryKey(id[i]);
+            FamilyStudent familyStudent=new FamilyStudent();
+            familyStudent.setFamilyId(Long.parseLong(id[i]));
+            familyStudentMapper.delete(familyStudent);
         }
     }
+
+
 }
