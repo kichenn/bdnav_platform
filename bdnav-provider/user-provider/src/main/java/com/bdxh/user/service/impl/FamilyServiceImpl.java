@@ -46,22 +46,29 @@ private FamilyStudentMapper familyStudentMapper;
         return pageInfoFamily;
     }
 
+
+    //根据ID删除家长信息和家长学生绑定关系信息
     @Override
     @Transactional
-    public void deleteFamilys(String id) {
-        String fid[]=id.split(",");
-        if(fid.length>0&&fid.length==1){
+    public void deleteFamilyByKey(String id) {
             familyMapper.deleteByPrimaryKey(id);
             FamilyStudent familyStudent=new FamilyStudent();
             familyStudent.setFamilyId(Long.parseLong(id));
             familyStudentMapper.delete(familyStudent);
-        }else{
-            for (int i = 0; i < fid.length; i++) {
-                familyMapper.deleteByPrimaryKey(fid[i]);
-                FamilyStudent familyStudent=new FamilyStudent();
-                familyStudent.setFamilyId(Long.parseLong(fid[i]));
-                familyStudentMapper.delete(familyStudent);
-            }
+    }
+
+
+    //根据ID批量删除家长信息和家长学生绑定关系信息
+    @Override
+    @Transactional
+    public void deleteFamilyByKeys(String id[]) {
+        for (int i = 0; i < id.length; i++) {
+            familyMapper.deleteByPrimaryKey(id[i]);
+            FamilyStudent familyStudent=new FamilyStudent();
+            familyStudent.setFamilyId(Long.parseLong(id[i]));
+            familyStudentMapper.delete(familyStudent);
         }
     }
+
+
 }

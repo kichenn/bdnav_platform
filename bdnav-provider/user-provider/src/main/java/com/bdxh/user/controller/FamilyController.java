@@ -62,14 +62,29 @@ public class FamilyController {
 
     @ApiOperation(value="根据ID删除家长信息")
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
-
     public Object removeFamily(@RequestParam(name = "id") @NotNull(message = "家长id不能为空") String id){
         try{
-            familyService.deleteFamilys(id);
+            familyService.deleteFamilyByKey(id);
              return WrapMapper.ok();
         }catch (Exception e){
              e.printStackTrace();
              return WrapMapper.error(e.getMessage());
+        }
+    }
+    @ApiOperation(value="根据ID批量删除家长信息")
+    @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
+    public Object removeFamilys(@RequestParam(name = "id") @NotNull(message = "家长id不能为空") String id){
+        try{
+            if(null!=id&&!("").equals(id)){
+                String fid[]=id.split(",");
+                familyService.deleteFamilyByKeys(fid);
+                return WrapMapper.ok();
+            }else {
+                return WrapMapper.error();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
         }
     }
 
