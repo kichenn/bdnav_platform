@@ -43,5 +43,8 @@ public interface SchoolService extends IService<School> {
     PageInfo<School> findSchoolsInCondition(SchoolQueryDto schoolQueryDto);
 
     //查询学校列表（全部，无条件）
-    List<School> findSchools();
+    List<School> findSchoolAll();
+
+    //学校列表信息导出
+    void downloadReportItemsExcel(List<School> schools);
 }

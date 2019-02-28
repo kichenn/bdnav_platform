@@ -35,6 +35,7 @@
         FROM
         t_school_class
         WHERE parent_id=#{parentId,jdbcType=BIGINT}
+        ORDER BY sort ASC
     </select>
 
     <delete id="batchDelSchoolClassInIds">

@@ -2,10 +2,11 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.school.dto.SchoolClassDto;
+import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.persistence.SchoolClassMapper;
 import com.bdxh.school.service.SchoolClassService;
-import com.bdxh.school.util.LongUtils;
+import com.bdxh.school.helper.utils.LongUtils;
 import com.bdxh.school.vo.SchoolClassVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -39,7 +40,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
 
     //修改院校关系
     @Override
-    public Boolean modifySchoolClass(SchoolClassDto schoolClassDto) {
+    public Boolean modifySchoolClass(SchoolClassModifyDto schoolClassDto) {
         SchoolClass schoolClass = new SchoolClass();
         BeanUtils.copyProperties(schoolClassDto, schoolClass);
         return schoolClassMapper.updateByPrimaryKeySelective(schoolClass) > 0;
@@ -103,6 +104,18 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             });
         }
         return schoolClassVos;
+    }
+
+    //id查询信息
+    @Override
+    public SchoolClass findSchoolClassById(Long id) {
+        return schoolClassMapper.selectByPrimaryKey(id);
+    }
+
+    //查询所有信息
+    @Override
+    public List<SchoolClass> findSchoolClassAll() {
+        return schoolClassMapper.selectAll();
     }
 
 }

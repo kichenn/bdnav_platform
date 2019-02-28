@@ -18,6 +18,9 @@
         <module>order-provider-feign</module>
         <module>onecard-provider-feign</module>
         <module>pay-provider-feign</module>
+        <module>system-provider-feign</module>
+        <module>school-provider-feign</module>
+        <module>user-provider-feign</module>
     </modules>
 
     <dependencies>

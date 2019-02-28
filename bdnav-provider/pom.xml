@@ -13,7 +13,6 @@
 
     <modules>
         <module>wallet-provider</module>
-        <module>backend-provider</module>
         <module>order-provider</module>
         <module>onecard-provider</module>
         <module>pay-provider</module>

@@ -1,0 +1,9 @@
+server:
+  port: 9024
+spring:
+  application:
+    name: backend-web
+  profiles:
+    active: dev
+logging:
+  config: classpath:logback-spring.xml

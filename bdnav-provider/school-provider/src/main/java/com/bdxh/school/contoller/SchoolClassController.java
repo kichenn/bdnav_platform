@@ -3,6 +3,7 @@ package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.SchoolClassDto;
+import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.service.SchoolClassService;
 import com.bdxh.school.vo.SchoolClassVo;
@@ -25,7 +26,7 @@ import java.util.stream.Collectors;
  * @Date: 2019/2/26 17:24
  */
 @Controller
-@RequestMapping("/school")
+@RequestMapping("/schoolClass")
 @Slf4j
 @Validated
 @Api(value = "学校专业院校关系", tags = "学校专业院校关系")
@@ -42,11 +43,11 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/26 17:26
      */
-    @RequestMapping(value = "/findSchoolClass", method = RequestMethod.GET)
-    @ApiOperation(value = "院校树形结构关系", response = Boolean.class)
+    @RequestMapping(value = "/findSchoolClassTreeBySchoolId", method = RequestMethod.GET)
+    @ApiOperation(value = "院校树形结构关系", response = List.class)
     @ResponseBody
-    public Object findSchoolClassById(@RequestParam Long id) {
-        List<SchoolClass> schoolClassesParents = schoolClassService.findSchoolParentClassBySchoolId(id, LEVEL);
+    public Object findSchoolClassTreeBySchoolId(@RequestParam Long schoolId) {
+        List<SchoolClass> schoolClassesParents = schoolClassService.findSchoolParentClassBySchoolId(schoolId, LEVEL);
         if (CollectionUtils.isEmpty(schoolClassesParents)) {
             return WrapMapper.error("该学校不存在院系关系，请检查！！！");
         }
@@ -57,6 +58,30 @@ public class SchoolClassController {
             return tempDto;
         }).collect(Collectors.toList());
         return WrapMapper.ok(schoolClassDtos);
+    }
+
+    /**
+     * @Description: 根据id查询院系关系信息
+     * @Author: Kang
+     * @Date: 2019/2/27 17:07
+     */
+    @RequestMapping(value = "/findSchoolClassById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据id查询部门关系信息", response = List.class)
+    @ResponseBody
+    public Object findSchoolClassById(@RequestParam Long id) {
+        return WrapMapper.ok(schoolClassService.findSchoolClassById(id));
+    }
+
+    /**
+     * @Description: 所有学校院系关系信息（全部无条件）
+     * @Author: Kang
+     * @Date: 2019/2/27 17:02
+     */
+    @RequestMapping(value = "/findSchoolClassAll", method = RequestMethod.GET)
+    @ApiOperation(value = "所有学校院系关系信息（全部无条件）", response = List.class)
+    @ResponseBody
+    public Object findSchoolClassAll() {
+        return WrapMapper.ok(schoolClassService.findSchoolClassAll());
     }
 
     /**
@@ -76,10 +101,10 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/27 10:59
      */
-    @RequestMapping(value = "/modifySchoolClass", method = RequestMethod.POST)
+    @RequestMapping(value = "/modifySchoolClass", method = RequestMethod.PATCH)
     @ApiOperation(value = "修改院校结构关系", response = Boolean.class)
     @ResponseBody
-    public Object modifySchoolClass(@Validated @RequestBody SchoolClassDto schoolClassDto) {
+    public Object modifySchoolClass(@Validated @RequestBody SchoolClassModifyDto schoolClassDto) {
         return WrapMapper.ok(schoolClassService.modifySchoolClass(schoolClassDto));
     }
 
@@ -88,7 +113,7 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/27 12:00
      */
-    @RequestMapping(value = "/delSchoolClassById", method = RequestMethod.POST)
+    @RequestMapping(value = "/delSchoolClassById", method = RequestMethod.DELETE)
     @ApiOperation(value = "删除院校关系", response = Boolean.class)
     @ResponseBody
     public Object delSchoolClassById(@RequestParam("id") Long id) {
@@ -100,7 +125,7 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/27 12:01
      */
-    @RequestMapping(value = "/batchDelSchoolClassInIds", method = RequestMethod.POST)
+    @RequestMapping(value = "/batchDelSchoolClassInIds", method = RequestMethod.DELETE)
     @ApiOperation(value = "批量删除院校关系", response = Boolean.class)
     @ResponseBody
     public Object batchDelSchoolClassInIds(@RequestBody List<Long> ids) {
@@ -112,7 +137,7 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/27 12:01
      */
-    @RequestMapping(value = "/delSchoolClassBySchoolId", method = RequestMethod.POST)
+    @RequestMapping(value = "/delSchoolClassBySchoolId", method = RequestMethod.DELETE)
     @ApiOperation(value = "删除院校底下信息", response = Boolean.class)
     @ResponseBody
     public Object delSchoolClassBySchoolId(@RequestParam("shcoolId") Long shcoolId) {
