@@ -20,7 +20,7 @@ public interface RoleService extends IService<Role> {
 
     List<Role> findList(Map<String,Object> param);
 
-    PageInfo<Role> findRoleList(Map<String,Object> param, int pageNum, int pageSize);
+    PageInfo<Role> findListPage(Map<String,Object> param, int pageNum, int pageSize);
 
 
 }

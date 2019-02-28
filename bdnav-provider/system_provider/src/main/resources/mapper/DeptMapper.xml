@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdxh.system.persistence.DeptMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.system.entity.Dept">
+    <mapper namespace="com.bdxh.system.persistence.DeptMapper">
+      <resultMap id="BaseResultMap" type="com.bdxh.system.entity.Dept">
     <!--
       WARNING - @mbg.generated
     -->
@@ -17,4 +17,14 @@
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+
+  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="BaseColumns"/>
+    from sys_dept
+    <where>
+      <if test="deptFullName !=null">
+        dept_full_name=#{deptFullName}
+      </if>
+    </where>
+  </select>
 </mapper>
