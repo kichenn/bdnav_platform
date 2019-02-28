@@ -1,12 +1,50 @@
 package com.bdxh.system.dto;
 
+import com.bdxh.common.base.page.Query;
 import lombok.Data;
 
-import java.io.Serializable;
 
 @Data
-public class DeptQueryDto implements Serializable {
+public class DeptQueryDto extends Query {
 
-    private static final long serialVersionUID = -7518248909884846284L;
 
+    /**
+     * 父级部门id
+     */
+    private Long parentId;
+
+    /**
+     * 父级部门ids
+     */
+    private String parentIds;
+
+    /**
+     * 部门名称
+     */
+    private Long deptName;
+
+    /**
+     * 部门全称
+     */
+    private String deptFullName;
+
+    /**
+     * 排序
+     */
+    private Integer sort;
+
+    /**
+     * 部门层级
+     */
+    private Byte level;
+
+    /**
+     * 操作人
+     */
+    private Long operator;
+
+    /**
+     * 备注
+     */
+    private String remark;
 }

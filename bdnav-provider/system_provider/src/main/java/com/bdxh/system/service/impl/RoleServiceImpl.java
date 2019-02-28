@@ -62,7 +62,7 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     }
 
     @Override
-    public PageInfo<Role> findRoleList(Map<String, Object> param, int pageNum, int pageSize) {
+    public PageInfo<Role> findListPage(Map<String, Object> param, int pageNum, int pageSize) {
             PageHelper.startPage(pageNum,pageSize);
             List<Role> roleLogs = roleMapper.getByCondition(param);
             PageInfo<Role> pageInfo=new PageInfo<>(roleLogs);

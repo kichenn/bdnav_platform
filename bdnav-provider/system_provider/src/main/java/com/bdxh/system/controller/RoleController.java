@@ -8,10 +8,11 @@ import com.bdxh.system.dto.RoleQueryDto;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.service.RoleService;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +32,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/role")
 @Validated
 @Slf4j
+@Api(value = "系统角色相关API", tags = "系统角色管理")
 public class RoleController {
 
     @Autowired
@@ -42,6 +44,7 @@ public class RoleController {
      * @param bindingResult
      * @return
      */
+    @ApiOperation("添加角色信息")
     @RequestMapping(value = "/addRole",method = RequestMethod.POST)
     public Object addRole(@Valid @RequestBody RoleDto roleDto, BindingResult bindingResult){
         //检验参数
@@ -64,6 +67,7 @@ public class RoleController {
      * @param id
      * @return
      */
+    @ApiOperation("根据id删除角色")
     @RequestMapping(value = "/delRole",method = RequestMethod.POST)
     public Object delRole(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
         try {
@@ -80,8 +84,8 @@ public class RoleController {
      * @param ids
      * @return
      */
+    @ApiOperation("根据ids批量删除角色")
     @RequestMapping(value = "/delBatchRole",method = RequestMethod.POST)
-    @Transactional
     public Object delBatchRole(@RequestParam(name = "ids") @NotEmpty(message = "角色id不能为空") String ids){
         try {
             String[] idsArr = StringUtils.split(ids,",");
@@ -109,6 +113,7 @@ public class RoleController {
      * @param bindingResult
      * @return
      */
+    @ApiOperation("修改角色信息")
     @RequestMapping(value = "/updateRole",method = RequestMethod.POST)
     public Object updateRole(@Valid @RequestBody RoleDto roleDto,BindingResult bindingResult){
         //检验参数
@@ -131,6 +136,7 @@ public class RoleController {
      * @param id
      * @return
      */
+    @ApiOperation("根据id查询对象")
     @RequestMapping(value = "/queryRoleById",method = RequestMethod.GET)
     public Object queryRole(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
         try {
@@ -147,6 +153,7 @@ public class RoleController {
      * @param roleQueryDto
      * @return
      */
+    @ApiOperation("根据条件查询列表")
     @RequestMapping(value = "/queryList",method = RequestMethod.GET)
     public Object queryList(@Valid @RequestBody RoleQueryDto roleQueryDto){
         try {
@@ -164,11 +171,12 @@ public class RoleController {
      * @param roleQueryDto
      * @return
      */
+    @ApiOperation("根据条件分页查找")
     @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
     public Object queryListPage(@Valid @RequestBody RoleQueryDto roleQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
-            PageInfo<Role> Roles = roleService.findRoleList(param, roleQueryDto.getPageNum(),roleQueryDto.getPageSize());
+            PageInfo<Role> Roles = roleService.findListPage(param, roleQueryDto.getPageNum(),roleQueryDto.getPageSize());
             return WrapMapper.ok(Roles);
         }catch (Exception e){
             e.printStackTrace();
