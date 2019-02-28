@@ -6,6 +6,7 @@ import com.bdxh.common.web.support.BaseService;
 import com.bdxh.common.web.support.IService;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.entity.Family;
+import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.service.FamilyService;
@@ -49,11 +50,17 @@ private FamilyStudentMapper familyStudentMapper;
     @Transactional
     public void deleteFamilys(String id) {
         String fid[]=id.split(",");
-        if(fid.length>0||fid.length==1){
-            familyMapper.deleteByPrimaryKey(fid);
+        if(fid.length==1){
+            familyMapper.deleteByPrimaryKey(id);
+            FamilyStudent familyStudent=new FamilyStudent();
+            familyStudent.setFamilyId(Long.parseLong(id));
+            familyStudentMapper.delete(familyStudent);
         }else{
             for (int i = 0; i < fid.length; i++) {
                 familyMapper.deleteByPrimaryKey(fid[i]);
+                FamilyStudent familyStudent=new FamilyStudent();
+                familyStudent.setFamilyId(Long.parseLong(fid[i]));
+                familyStudentMapper.delete(familyStudent);
             }
         }
     }
