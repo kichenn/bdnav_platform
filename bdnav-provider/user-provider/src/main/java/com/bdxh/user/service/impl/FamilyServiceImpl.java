@@ -50,7 +50,7 @@ private FamilyStudentMapper familyStudentMapper;
     @Transactional
     public void deleteFamilys(String id) {
         String fid[]=id.split(",");
-        if(fid.length==1){
+        if(fid.length>0&&fid.length==1){
             familyMapper.deleteByPrimaryKey(id);
             FamilyStudent familyStudent=new FamilyStudent();
             familyStudent.setFamilyId(Long.parseLong(id));
