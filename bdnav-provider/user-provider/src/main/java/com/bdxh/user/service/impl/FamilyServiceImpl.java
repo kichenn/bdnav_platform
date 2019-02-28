@@ -7,6 +7,7 @@ import com.bdxh.common.web.support.IService;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.persistence.FamilyMapper;
+import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.service.FamilyService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -27,7 +28,11 @@ import java.util.Map;
 @Slf4j
 public class FamilyServiceImpl extends BaseService<Family> implements FamilyService {
 
+@Autowired
+private FamilyMapper familyMapper;
 
+@Autowired
+private FamilyStudentMapper familyStudentMapper;
 
     //分页查询家长单表用户信息
     @Override
@@ -35,7 +40,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
         Map<String,Object> map = BeanToMapUtil.objectToMap(familyQueryDto);
         Family family = BeanMapUtils.map(map, Family.class);
         PageHelper.startPage(familyQueryDto.getPageNum(), familyQueryDto.getPageSize());
-        List<Family> listFamily = mapper.select(family);
+        List<Family> listFamily = familyMapper.select(family);
         PageInfo<Family> pageInfoFamily = new PageInfo<Family>(listFamily);
         return pageInfoFamily;
     }
@@ -45,10 +50,10 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     public void deleteFamilys(String id) {
         String fid[]=id.split(",");
         if(fid.length>0||fid.length==1){
-               mapper.deleteByPrimaryKey(fid);
+            familyMapper.deleteByPrimaryKey(fid);
         }else{
             for (int i = 0; i < fid.length; i++) {
-                mapper.deleteByPrimaryKey(fid[i]);
+                familyMapper.deleteByPrimaryKey(fid[i]);
             }
         }
     }
