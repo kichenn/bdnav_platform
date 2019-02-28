@@ -14,6 +14,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,7 +70,7 @@ public class SchoolClassController {
     @ApiOperation(value = "根据id查询部门关系信息", response = List.class)
     @ResponseBody
     public Object findSchoolClassById(@RequestParam Long id) {
-        return WrapMapper.ok(schoolClassService.findSchoolClassById(id));
+        return WrapMapper.ok(schoolClassService.findSchoolClassById(id).orElse(new SchoolClass()));
     }
 
     /**

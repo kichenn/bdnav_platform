@@ -1,5 +1,7 @@
 package com.bdxh.school.persistence;
 
+import com.bdxh.school.dto.SchoolDto;
+import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -10,7 +12,12 @@ import java.util.List;
 @Repository
 public interface SchoolMapper extends Mapper<School> {
 
-    List<School> findIdsInCondition(@Param("schoolCode") String schoolCode, @Param("schoolName") String schoolName);
+    //条件查询
+    List<School> findIdsInCondition(@Param("schoolDto") SchoolQueryDto schoolDto);
 
+    //批量查询
+    List<School> findSchoolInIds(@Param("ids") List<Long> ids);
+
+    //批量删除
     Integer batchDelSchool(@Param("ids") List<Long> ids);
 }

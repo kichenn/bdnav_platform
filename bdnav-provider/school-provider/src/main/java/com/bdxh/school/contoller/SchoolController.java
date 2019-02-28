@@ -1,23 +1,30 @@
 package com.bdxh.school.contoller;
 
-import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.school.configration.redis.RedisCache;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
+import com.bdxh.school.dto.SchoolExcelDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
+import com.bdxh.school.enums.SchoolNatureEnum;
+import com.bdxh.school.enums.SchoolTypeEnum;
+import com.bdxh.school.helper.excel.bean.SchoolExcelReportBean;
+import com.bdxh.school.helper.excel.utils.DateUtils;
+import com.bdxh.school.helper.excel.utils.StringUtils;
+import com.bdxh.school.helper.utils.PageVo;
 import com.bdxh.school.service.SchoolService;
-import com.bdxh.school.vo.SchoolVo;
+import com.bdxh.school.vo.SchoolInfoVo;
+import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.RowBounds;
+import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,9 +32,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.OutputStream;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -45,6 +52,10 @@ public class SchoolController {
     @Autowired
     private SchoolService schoolService;
 
+    /**
+     * @Description: 导出报表名称
+     */
+    private static final String title = "学校列表报表信息.xlsx";
 
     /**
      * @Description: 增加学校
@@ -54,19 +65,9 @@ public class SchoolController {
     @RequestMapping(value = "/addSchool", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校", response = Boolean.class)
     @ResponseBody
-    public Object addSchool(@Valid @RequestBody SchoolDto schoolDto, BindingResult bindingResult) {
-        //检验参数
-        if (bindingResult.hasErrors()) {
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
-        try {
-            Boolean result = schoolService.addSchool(schoolDto);
-            return WrapMapper.ok(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
+    public Object addSchool(@Valid @RequestBody SchoolDto schoolDto) {
+        Boolean result = schoolService.addSchool(schoolDto);
+        return WrapMapper.ok(result);
     }
 
     /**
@@ -77,19 +78,9 @@ public class SchoolController {
     @RequestMapping(value = "/modifySchoolInfo", method = RequestMethod.PATCH)
     @ApiOperation(value = "修改学校信息", response = Boolean.class)
     @ResponseBody
-    public Object modifySchoolInfo(@Valid @RequestBody ModifySchoolDto school, BindingResult bindingResult) {
-        //检验参数
-        if (bindingResult.hasErrors()) {
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
-        try {
-            Boolean result = schoolService.modifySchool(school);
-            return WrapMapper.ok(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
+    public Object modifySchoolInfo(@Valid @RequestBody ModifySchoolDto school) {
+        Boolean result = schoolService.modifySchool(school);
+        return WrapMapper.ok(result);
     }
 
     /**
@@ -125,25 +116,59 @@ public class SchoolController {
      * @Date: 2019/2/26 10:04
      */
     @RequestMapping(value = "/findSchoolById", method = RequestMethod.GET)
-    @ApiOperation(value = "查询学校详情", response = School.class)
+    @ApiOperation(value = "查询学校详情", response = SchoolInfoVo.class)
     @ResponseBody
     public Object findSchoolById(@RequestParam("schoolId") Long id) {
         School school = schoolService.findSchoolById(id).orElse(new School());
+        SchoolInfoVo schoolInfoVo = new SchoolInfoVo();
+        BeanUtils.copyProperties(school, schoolInfoVo);
+        schoolInfoVo.setSchoolNatureValue(SchoolNatureEnum.getValue(school.getSchoolNature()));
+        schoolInfoVo.setSchoolTypeValue(SchoolTypeEnum.getValue(schoolInfoVo.getSchoolType()));
+        schoolInfoVo.setCreateDate(DateUtils.date2Str(school.getCreateDate(), "yyyyMMdd"));
         return WrapMapper.ok(school);
     }
 
     /**
-     * @Description: 分页查询学校信息
+     * @Description: 分页查询学校信息 (筛选条件并分页)
      * @Author: Kang
      * @Date: 2019/2/26 10:18
      */
+    @RequestMapping(value = "/findSchoolsInConditionPaging", method = RequestMethod.POST)
+    @ApiOperation(value = "分页查询学校列表", response = SchoolShowVo.class)
+    @ResponseBody
+    public Object findSchoolsInConditionPaging(@Valid @RequestBody SchoolQueryDto schoolQueryDto) {
+        //符合条件的学校信息
+        return WrapMapper.ok(schoolService.findSchoolShowVoInConditionPaging(schoolQueryDto));
+    }
+
+
+    /**
+     * @Description: 查询学校信息 (筛选条件无分页)
+     * @Author: Kang
+     * @Date: 2019/2/28 15:30
+     */
     @RequestMapping(value = "/findSchoolsInCondition", method = RequestMethod.POST)
-    @ApiOperation(value = "分页查询学校列表", response = SchoolVo.class)
+    @ApiOperation(value = "查询学校列表", response = SchoolShowVo.class)
     @ResponseBody
     public Object findSchoolsInCondition(@Valid @RequestBody SchoolQueryDto schoolQueryDto) {
-        //符合条件的学校信息
-        PageInfo<School> Roles = schoolService.findSchoolsInCondition(schoolQueryDto);
-        return WrapMapper.ok(Roles);
+        List<School> schools = schoolService.findSchoolsInCondition(schoolQueryDto);
+        List<SchoolShowVo> showVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(schools)) {
+            schools.stream().forEach(e -> {
+                SchoolShowVo schoolShowVo = new SchoolShowVo();
+                BeanUtils.copyProperties(e, schoolShowVo);
+                schoolShowVo.setSchoolTypeValue(SchoolTypeEnum.getValue(e.getSchoolType()));
+                schoolShowVo.setCreateDate(DateUtils.date2Str(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
+                //分割省市县
+                if (StringUtils.isNotBlank(e.getSchoolArea()) && e.getSchoolArea().contains("/")) {
+                    schoolShowVo.setProvince(e.getSchoolArea().substring(0, e.getSchoolArea().indexOf("/")));
+                    schoolShowVo.setCity(e.getSchoolArea().substring(e.getSchoolArea().indexOf("/") + 1, e.getSchoolArea().lastIndexOf("/")));
+                    schoolShowVo.setAreaOrcounty(e.getSchoolArea().substring(e.getSchoolArea().lastIndexOf("/") + 1));
+                }
+                showVos.add(schoolShowVo);
+            });
+        }
+        return WrapMapper.ok(showVos);
     }
 
     /**
@@ -152,10 +177,27 @@ public class SchoolController {
      * @Date: 2019/2/26 16:52
      */
     @RequestMapping(value = "/findSchools", method = RequestMethod.GET)
-    @ApiOperation(value = "查询所有学校列表", response = SchoolVo.class)
+    @ApiOperation(value = "查询所有学校列表", response = SchoolShowVo.class)
     @ResponseBody
     public Object findSchools() {
-        return WrapMapper.ok(schoolService.findSchoolAll());
+        List<School> schools = schoolService.findSchoolAll();
+        List<SchoolShowVo> showVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(schools)) {
+            schools.stream().forEach(e -> {
+                SchoolShowVo schoolShowVo = new SchoolShowVo();
+                BeanUtils.copyProperties(e, schoolShowVo);
+                schoolShowVo.setSchoolTypeValue(SchoolTypeEnum.getValue(e.getSchoolType()));
+                schoolShowVo.setCreateDate(DateUtils.date2Str(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
+                //分割省市县
+                if (StringUtils.isNotBlank(e.getSchoolArea()) && e.getSchoolArea().contains("/")) {
+                    schoolShowVo.setProvince(e.getSchoolArea().substring(0, e.getSchoolArea().indexOf("/")));
+                    schoolShowVo.setCity(e.getSchoolArea().substring(e.getSchoolArea().indexOf("/") + 1, e.getSchoolArea().lastIndexOf("/")));
+                    schoolShowVo.setAreaOrcounty(e.getSchoolArea().substring(e.getSchoolArea().lastIndexOf("/") + 1));
+                }
+                showVos.add(schoolShowVo);
+            });
+        }
+        return WrapMapper.ok(showVos);
     }
 
 
@@ -164,14 +206,54 @@ public class SchoolController {
      * @Author: Kang
      * @Date: 2019/2/27 18:31
      */
-    @RequestMapping(value = "/downloadReportSchoolExcel", method = RequestMethod.GET)
+    @RequestMapping(value = "/downloadReportSchoolExcel", method = RequestMethod.POST)
     @ApiOperation(value = "学校信息导出")
     @ResponseBody
-    public Object downloadReportSchoolExcel(HttpServletResponse response) {
-        String title = "学校列表报表信息.xlsx";
+    public Object downloadReportSchoolExcel(@Validated @RequestBody SchoolExcelDto schoolExcelDto, HttpServletResponse response) {
+
+        List<School> schools = new ArrayList<>();
+        switch (schoolExcelDto.getIsBy()) {
+            case 0:
+                //全部，满足条件的学校信息导出
+                schools.addAll(schoolService.findSchoolsInCondition(schoolExcelDto));
+                break;
+            case 1:
+                //全部，无条件，所有学校
+                schools.addAll(schoolService.findSchoolAll());
+                break;
+            case 2:
+                //分页学校信息导出
+                schools.addAll(schoolService.findSchoolsInConditionPaging(schoolExcelDto).getList());
+                break;
+            case 3:
+                //id选择信息导出
+                schools.addAll(schoolService.findSchoolInIds(schoolExcelDto.getIds()));
+                break;
+            default:
+                return WrapMapper.error("不存在的选项，请检查");
+        }
+        if (CollectionUtils.isEmpty(schools)) {
+            return WrapMapper.error("抱歉，相关学校不存在。。");
+        }
+
+        List<SchoolExcelReportBean> schoolExcelReportBeans = schools.stream().map(e -> {
+            SchoolExcelReportBean tempBean = new SchoolExcelReportBean();
+            BeanUtils.copyProperties(e, tempBean);
+            tempBean.setSchoolTypeValue(SchoolTypeEnum.getValue(e.getSchoolType()));
+            tempBean.setCreateDate(DateUtils.date2Str(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
+            //分割省市县
+            if (StringUtils.isNotBlank(e.getSchoolArea()) && e.getSchoolArea().contains("/")) {
+                tempBean.setProvince(e.getSchoolArea().substring(0, e.getSchoolArea().indexOf("/")));
+                tempBean.setCity(e.getSchoolArea().substring(e.getSchoolArea().indexOf("/") + 1, e.getSchoolArea().lastIndexOf("/")));
+                tempBean.setAreaOrcounty(e.getSchoolArea().substring(e.getSchoolArea().lastIndexOf("/") + 1));
+            }
+            return tempBean;
+        }).collect(Collectors.toList());
+
         try (OutputStream out = response.getOutputStream()) {
-            response.setHeader("content-disposition", "attachment;filename=" + URLEncoder.encode(title, "UTF-8"));
-//            ReportItemsService.me.downloadReportItemsExcel(pageSize, pageNumber, companyList, itemsList, itemsStagesList, startTime, endTime, user, out);
+            String fileName = URLEncoder.encode(title, StandardCharsets.UTF_8.toString());
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
+            schoolService.downloadReportItemsExcel(schoolExcelReportBeans, out);
         } catch (Exception e) {
             log.error("导出失败：" + e.getMessage());
         }

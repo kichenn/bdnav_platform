@@ -7,6 +7,7 @@ import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.vo.SchoolClassVo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 学校院校关系信息
@@ -41,7 +42,7 @@ public interface SchoolClassService extends IService<SchoolClass> {
     List<SchoolClassVo> findSchoolClassByParentId(Long parentId);
 
     //id查询信息
-    SchoolClass findSchoolClassById(Long id);
+    Optional<SchoolClass> findSchoolClassById(Long id);
 
     //查询所有信息
     List<SchoolClass> findSchoolClassAll();

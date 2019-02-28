@@ -3,6 +3,8 @@ package com.bdxh.school.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.io.Serializable;
+
 
 /**
  * @Description: 学校部门新增 dto
@@ -10,7 +12,7 @@ import lombok.Data;
  * @Date: 2019/2/27 16:09
  */
 @Data
-public class SchoolDeptDto {
+public class SchoolDeptDto  {
 
 
     @ApiModelProperty("父级部门id")

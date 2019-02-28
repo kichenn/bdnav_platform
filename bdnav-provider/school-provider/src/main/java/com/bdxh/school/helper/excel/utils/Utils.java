@@ -1,5 +1,6 @@
 package com.bdxh.school.helper.excel.utils;
 
+import com.bdxh.school.helper.excel.annotation.ExcelField;
 import com.bdxh.school.helper.excel.converter.DefaultConvertible;
 import com.bdxh.school.helper.excel.converter.WriteConvertible;
 import com.bdxh.school.helper.excel.handler.ExcelHeader;
@@ -56,14 +57,14 @@ public class Utils {
         for (Class<?> clazz = clz; clazz != Object.class; clazz = clazz.getSuperclass()) {
             fields.addAll(Arrays.asList(clazz.getDeclaredFields()));
         }
-       /* for (Field field : fields) {
+        for (Field field : fields) {
             // 是否使用ExcelField注解
             if (field.isAnnotationPresent(ExcelField.class)) {
                 ExcelField er = field.getAnnotation(ExcelField.class);
                 headers.add(new ExcelHeader(er.title(), er.order(), er.writeConverter().newInstance(),
                         er.readConverter().newInstance(), field.getName(), field.getType()));
             }
-        }*/
+        }
         Collections.sort(headers);
         return headers;
     }

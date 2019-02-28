@@ -63,7 +63,7 @@ public class SchoolDeptController {
     @ApiOperation(value = "根据id查询部门关系信息", response = List.class)
     @ResponseBody
     public Object findSchoolDeptById(@RequestParam Long id) {
-        return WrapMapper.ok(schoolDeptService.findSchoolDeptById(id));
+        return WrapMapper.ok(schoolDeptService.findSchoolDeptById(id).orElse(new SchoolDept()));
     }
 
     /**

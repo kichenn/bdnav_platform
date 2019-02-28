@@ -36,36 +36,54 @@
         school_key,school_secret,app_key,app_secret,create_date,update_date,operator,operator_name,remark
     </sql>
 
-    <select id="findIdsInCondition" resultMap="BaseResultMap">
+    <select id="findIdsInCondition" resultMap="BaseResultMap" parameterType="com.bdxh.school.dto.SchoolQueryDto">
         SELECT
         <include refid="Base_Column_List"/>
         FROM
         t_school
         <where>
-            <if test="schoolCode !=null and schoolCode!=''">
-                `school_code` = #{schoolCode,jdbcType=VARCHAR}
+            <if test="schoolDto.schoolCode !=null and schoolDto.schoolCode!=''">
+                `school_code` LIKE CONCAT(CONCAT('%',#{schoolDto.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
-            <if test="schoolName !=null and schoolName!=''">
-                AND `school_name` = #{schoolName,jdbcType=VARCHAR}
+            <if test="schoolDto.schoolName !=null and schoolDto.schoolName!=''">
+                AND `school_name` LIKE CONCAT(CONCAT('%',#{schoolDto.schoolName,jdbcType=VARCHAR}),'%')
             </if>
-            <if test="school_name !=null and school_name!=''">
-                AND `school_name` = #{school_name,jdbcType=VARCHAR}
+            <if test="schoolDto.schoolType !=null and schoolDto.schoolType!=0">
+                AND `school_type` = #{schoolDto.schoolType,jdbcType=TINYINT}
             </if>
-            <if test="school_name !=null and school_name!=''">
-                AND `school_name` = #{school_name,jdbcType=VARCHAR}
+            <if test="schoolDto.schoolNature !=null and schoolDto.schoolNature!=''">
+                AND `school_nature` = #{schoolDto.schoolNature,jdbcType=VARCHAR}
             </if>
-            <if test="school_name !=null and school_name!=''">
-                AND `school_name` = #{school_name,jdbcType=VARCHAR}
+            <if test="schoolDto.text !=null and schoolDto.text!=''">
+                AND
+                (
+                `school_area` LIKE CONCAT(CONCAT('%',#{schoolDto.text,jdbcType=VARCHAR}),'%')
+                OR
+                `school_address` LIKE CONCAT(CONCAT('%',#{schoolDto.text,jdbcType=VARCHAR}),'%')
+                )
             </if>
         </where>
+    </select>
+
+    <select id="findSchoolInIds" resultMap="BaseResultMap">
+
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        t_school
+        WHERE
+        id IN
+        <foreach collection="ids" item="empId" separator="," open="(" close=")">
+            #{empId,jdbcType=BIGINT}
+        </foreach>
     </select>
 
     <delete id="batchDelSchool">
         DELETE
         FROM
-            t_school
+        t_school
         WHERE
-            id IN
+        id IN
         <foreach collection="ids" item="empId" separator="," open="(" close=")">
             #{empId,jdbcType=BIGINT}
         </foreach>

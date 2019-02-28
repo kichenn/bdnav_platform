@@ -10,6 +10,7 @@ import com.bdxh.school.vo.SchoolDeptVo;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.List;
+import java.util.Optional;
 
 
 /**
@@ -44,7 +45,7 @@ public interface SchoolDeptService extends IService<SchoolDept> {
     List<SchoolDeptVo> findSchoolDeptByParentId(Long parentId);
 
     //id查询信息
-    SchoolDept findSchoolDeptById(Long id);
+    Optional<SchoolDept> findSchoolDeptById(Long id);
 
     //查询所有信息
     List<SchoolDept> findSchoolDeptAll();

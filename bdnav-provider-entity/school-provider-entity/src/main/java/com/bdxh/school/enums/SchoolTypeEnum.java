@@ -13,22 +13,22 @@ import java.util.Map;
  * @Date: 2019/2/27 11:02
  */
 public enum SchoolTypeEnum {
-    PRIMARYSCHOOL("1", "小学"),
-    JUNIORMIDDLESCHOOL("2", "初中"),
-    HIGHSCHOOL("3", "高中"),
-    SECONDARYSPECIALIZEDSCHOOL("4", "中专"),
-    JUNIORCOLLEGE("5", "大专"),
-    COLLEAGESANDUNIVERSITIES("6", "高校");
+    PRIMARYSCHOOL(new Byte("1"), "小学"),
+    JUNIORMIDDLESCHOOL(new Byte("2"), "初中"),
+    HIGHSCHOOL(new Byte("3"), "高中"),
+    SECONDARYSPECIALIZEDSCHOOL(new Byte("4"), "中专"),
+    JUNIORCOLLEGE(new Byte("4"), "大专"),
+    COLLEAGESANDUNIVERSITIES(new Byte("5"), "高校");
 
-    private final String key;
+    private final Byte key;
     private final String value;
 
-    public final static String PRIMARYSCHOOL_KEY = "1";
-    public final static String JUNIORMIDDLESCHOOL_KEY = "2";
-    public final static String HIGHSCHOOL_KEY = "3";
-    public final static String SECONDARYSPECIALIZEDSCHOOL_KEY = "4";
-    public final static String JUNIORCOLLEGE_KEY = "5";
-    public final static String COLLEAGESANDUNIVERSITIES_KEY = "6";
+    public final static Byte PRIMARYSCHOOL_KEY = 1;
+    public final static Byte JUNIORMIDDLESCHOOL_KEY = 2;
+    public final static Byte HIGHSCHOOL_KEY = 3;
+    public final static Byte SECONDARYSPECIALIZEDSCHOOL_KEY = 4;
+    public final static Byte JUNIORCOLLEGE_KEY = 5;
+    public final static Byte COLLEAGESANDUNIVERSITIES_KEY = 6;
     public final static String PRIMARYSCHOOL_VALUE = "小学";
     public final static String JUNIORMIDDLESCHOOL_VALUE = "初中";
     public final static String HIGHSCHOOL_VALUE = "高中";
@@ -36,12 +36,12 @@ public enum SchoolTypeEnum {
     public final static String JUNIORCOLLEGE_VALUE = "大专";
     public final static String COLLEAGESANDUNIVERSITIES_VALUE = "高校";
 
-    private SchoolTypeEnum(String key, String value) {
+    private SchoolTypeEnum(Byte key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public String getKey() {
+    public Byte getKey() {
         return key;
     }
 
@@ -49,19 +49,19 @@ public enum SchoolTypeEnum {
         return value;
     }
 
-    public static String getKey(String value) {
+    public static Byte getKey(String value) {
         if (null == value) {
-            return StringUtils.EMPTY;
+            return null;
         }
         for (SchoolTypeEnum c : SchoolTypeEnum.values()) {
             if (c.getValue().equals(value)) {
                 return c.key;
             }
         }
-        return StringUtils.EMPTY;
+        return null;
     }
 
-    public static String getValue(String key) {
+    public static String getValue(Byte key) {
         if (null == key) {
             return StringUtils.EMPTY;
         }

@@ -6,6 +6,7 @@ import com.bdxh.school.helper.excel.handler.ExcelHeader;
 import com.bdxh.school.helper.excel.handler.ExcelTemplate;
 import com.bdxh.school.helper.excel.utils.Utils;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -412,6 +413,11 @@ public class ExcelUtils {
         } else {
             sheet = workbook.createSheet();
         }
+        //设置样式(i:第几列，i1:宽度)
+        sheet.setColumnWidth(1, 5000);
+        sheet.setColumnWidth(2, 4000);
+        sheet.setColumnWidth(3, 5000);
+
         Row row = sheet.createRow(0);
         List<ExcelHeader> headers = Utils.getHeaderList(clazz);
         if (isWriteHeader) {

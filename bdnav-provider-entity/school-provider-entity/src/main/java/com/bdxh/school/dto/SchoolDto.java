@@ -9,9 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
-public class SchoolDto implements Serializable {
-
-    private static final long serialVersionUID = -1318972415253518657L;
+public class SchoolDto  {
 
     @ApiModelProperty("学校编码")
     @NotEmpty(message = "学校编码不能为空")

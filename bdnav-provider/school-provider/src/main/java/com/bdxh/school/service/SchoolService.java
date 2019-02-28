@@ -5,11 +5,12 @@ import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
-import com.bdxh.school.vo.SchoolVo;
+import com.bdxh.school.helper.excel.bean.SchoolExcelReportBean;
+import com.bdxh.school.helper.utils.PageVo;
+import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.PageInfo;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,12 +40,21 @@ public interface SchoolService extends IService<School> {
     //id查询学校信息
     Optional<School> findSchoolById(Long id);
 
-    //筛选条件查询学校列表
-    PageInfo<School> findSchoolsInCondition(SchoolQueryDto schoolQueryDto);
+    //分页筛选条件查询学校列表
+    PageInfo<SchoolShowVo> findSchoolShowVoInConditionPaging(SchoolQueryDto schoolQueryDto);
+
+    //分页筛选条件查询学校列表
+    PageInfo<School> findSchoolsInConditionPaging(SchoolQueryDto schoolQueryDto);
+
+    //条件筛选条件查询学校列表
+    List<School> findSchoolsInCondition(SchoolQueryDto schoolQueryDto);
 
     //查询学校列表（全部，无条件）
     List<School> findSchoolAll();
 
+    //根据id批量查询信息
+    List<School> findSchoolInIds(List<Long> ids);
+
     //学校列表信息导出
-//    void downloadReportItemsExcel(List<School> schools);
+    void downloadReportItemsExcel(List<SchoolExcelReportBean> schoolExcelReportBeans, OutputStream out) throws Exception;
 }

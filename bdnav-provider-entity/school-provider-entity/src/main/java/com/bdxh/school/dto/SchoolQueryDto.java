@@ -9,10 +9,10 @@ public class SchoolQueryDto extends Query {
 
 
     @ApiModelProperty("学校编码")
-    private String schooleCode;
+    private String schoolCode;
 
     @ApiModelProperty("学校名称")
-    private String schooleName;
+    private String schoolName;
 
     @ApiModelProperty("学校类型 1 小学 2 初中 3 高中 4 中专 5 大专 6 高校")
     private Byte schoolType;

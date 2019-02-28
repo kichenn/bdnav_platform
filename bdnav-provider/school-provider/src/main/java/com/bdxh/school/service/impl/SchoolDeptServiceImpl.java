@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @Description: 学校组织Service
@@ -108,8 +109,8 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
 
     //id查询信息
     @Override
-    public SchoolDept findSchoolDeptById(Long id) {
-        return schoolDeptMapper.selectByPrimaryKey(id);
+    public Optional<SchoolDept> findSchoolDeptById(Long id) {
+        return Optional.ofNullable(schoolDeptMapper.selectByPrimaryKey(id));
     }
 
     //查询所有信息
