@@ -1,11 +1,16 @@
 package com.bdxh.system.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.system.service.PermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 /**
@@ -19,6 +24,9 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @Api(value = "权限操作菜单管理", tags = "权限操作菜单管理")
 public class PermissionController {
+
+    @Autowired
+    private PermissionService permissionService;
 
     /**
      * @Description: 角色id查询用户菜单or按钮权限
@@ -67,4 +75,22 @@ public class PermissionController {
     public Object delPermission() {
         return WrapMapper.ok();
     }
+
+    /**
+     * 根据用户id查询角色列表
+     * @param userId
+     * @return
+     */
+    @ApiOperation("根据用户id查询角色列表")
+    @RequestMapping(value = "/queryPermissionListByUserId",method = RequestMethod.GET)
+    public Object queryPermissionListByUserId(@RequestParam(name = "userId") @NotNull(message = "用户id不能为空") Long userId){
+        try {
+            List<String> permissions = permissionService.getPermissionListByUserId(userId);
+            return WrapMapper.ok(permissions);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 }

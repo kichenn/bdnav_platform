@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * @description:
  * @author: xuyuan
- * @create: 2019-02-27 23:00
+ * @create: 2019-02-28 14:21
  **/
 @Component
 @Slf4j
@@ -39,7 +39,6 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = httpServletRequest.getHeader(SecurityConstant.TOKEN_HEADER);
-        authHeader = httpServletRequest.getParameter("token");
         if (authHeader != null && authHeader.startsWith(SecurityConstant.TOKEN_SPLIT)) {
             String token = authHeader.substring(SecurityConstant.TOKEN_SPLIT.length());
             try {

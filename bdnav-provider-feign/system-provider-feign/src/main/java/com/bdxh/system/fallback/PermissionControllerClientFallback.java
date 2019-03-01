@@ -16,7 +16,7 @@ import java.util.List;
 public class PermissionControllerClientFallback implements PermissionControllerClient {
 
     @Override
-    public Wrapper<List<String>> queryRoleListByUserId(Long userId) {
+    public Wrapper<List<String>> queryPermissionListByUserId(Long userId) {
         return WrapMapper.error();
     }
 

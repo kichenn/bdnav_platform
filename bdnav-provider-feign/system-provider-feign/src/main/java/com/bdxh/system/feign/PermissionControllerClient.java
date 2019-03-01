@@ -25,8 +25,8 @@ public interface PermissionControllerClient {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/queryRoleListByUserId",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryPermissionListByUserId",method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<String>> queryRoleListByUserId(Long userId);
+    Wrapper<List<String>> queryPermissionListByUserId(Long userId);
 
 }

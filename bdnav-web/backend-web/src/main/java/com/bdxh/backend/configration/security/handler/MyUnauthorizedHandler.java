@@ -3,14 +3,10 @@ package com.bdxh.backend.configration.security.handler;
 import com.alibaba.fastjson.JSON;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -18,7 +14,7 @@ import java.io.IOException;
 /**
  * @description:
  * @author: xuyuan
- * @create: 2019-02-27 22:24
+ * @create: 2019-02-28 11:44
  **/
 @Component
 public class MyUnauthorizedHandler implements AuthenticationEntryPoint{

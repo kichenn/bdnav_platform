@@ -49,7 +49,7 @@ public class MyUserDetailsService implements UserDetailsService {
             roles.forEach(role->authorities.add(new SimpleGrantedAuthority(role)));
         }
         //根据用户id查询权限列表
-        Wrapper<List<String>> permissionWrapper = permissionControllerClient.queryRoleListByUserId(user.getId());
+        Wrapper<List<String>> permissionWrapper = permissionControllerClient.queryPermissionListByUserId(user.getId());
         List<String> permissions = permissionWrapper.getResult();
         if (permissions!=null && !permissions.isEmpty()){
             permissions.forEach(permission->authorities.add(new SimpleGrantedAuthority(permission)));
