@@ -18,4 +18,12 @@ public interface UserService extends IService<User> {
     List<User> findList(Map<String,Object> param);
 
     PageInfo<User> findListPage(Map<String,Object> param, int pageNum, int pageSize);
+
+    /**
+     * 根据用户名查询用户对象
+     * @param userName
+     * @return
+     */
+    User getByUserName(String userName);
+
 }

@@ -111,7 +111,6 @@ public class WrapMapper {
 		return wrap(Wrapper.ERROR_CODE, Wrapper.ERROR_MESSAGE);
 	}
 
-
 	/**
 	 * Error wrapper.
 	 *

@@ -1,7 +1,6 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
-import com.bdxh.common.web.support.IService;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.system.persistence.PermissionMapper;
 import com.bdxh.system.service.PermissionService;
@@ -21,6 +20,7 @@ import java.util.List;
 public class PermissionServiceImpl extends BaseService<Permission> implements PermissionService {
 
     @Autowired
+<<<<<<< HEAD
     private PermissionMapper permissionMapper;
 
 
@@ -35,4 +35,14 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     public List<Permission> findPermissionByParentId(Long id) {
         return null;
     }
+=======
+    private PermissionService permissionService;
+
+    @Override
+    public List<String> getPermissionListByUserId(Long userId) {
+        List<String> permissions = permissionService.getPermissionListByUserId(userId);
+        return permissions;
+    }
+
+>>>>>>> b879fcd9e0f1969a63c90cc2d853ab080a5d1477
 }

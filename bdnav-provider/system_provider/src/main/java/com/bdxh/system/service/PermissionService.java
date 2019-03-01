@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface PermissionService extends IService<Permission> {
 
+<<<<<<< HEAD
     //角色id查询父节点
     Permission findPermissionByRoleId(Long roleId, Byte type, Integer level);
 
@@ -19,4 +20,13 @@ public interface PermissionService extends IService<Permission> {
     List<Permission> findPermissionByParentId(Long id);
 
 //    List<Permission>
+=======
+    /**
+     * 根据用户id查询权限列表
+     * @param userId
+     * @return
+     */
+    List<String> getPermissionListByUserId(Long userId);
+
+>>>>>>> b879fcd9e0f1969a63c90cc2d853ab080a5d1477
 }

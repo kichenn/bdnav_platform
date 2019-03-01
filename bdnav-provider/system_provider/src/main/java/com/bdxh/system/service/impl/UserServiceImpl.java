@@ -42,4 +42,11 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         PageInfo<User> pageInfo=new PageInfo<>(roleLogs);
         return pageInfo;
     }
+
+    @Override
+    public User getByUserName(String userName) {
+        User user = userMapper.getByUserName(userName);
+        return user;
+    }
+
 }

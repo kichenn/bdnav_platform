@@ -20,4 +20,15 @@
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+
+  <sql id="BaseColumns">
+    id, parent_id, parent_ids, name, path, icon, component, sort, level, type, create_date, update_date, operator, remark
+  </sql>
+
+  <select id="getPermissionListByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+    select permission.path from sys_user user, sys_user_role user_role, sys_role role, sys_role_permission role_permission,
+    sys_permission permission where user.id = user_role.user_id and role.id = user_role.role_id and role.id = role_permission.role_id
+    and permission.id = role_permission.permission_id and permission.type = 2 and user.id = #{userId}
+  </select>
+
 </mapper>
