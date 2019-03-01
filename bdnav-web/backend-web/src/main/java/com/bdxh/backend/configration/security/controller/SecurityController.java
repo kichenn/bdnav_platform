@@ -46,10 +46,8 @@ public class SecurityController {
     private AuthenticationManager authenticationManager;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public void login(@RequestParam("username") String username,@RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void login(@RequestParam("username") String username,@RequestParam("password") String password, HttpServletResponse response) throws IOException {
         try {
-//            String username = request.getParameter("username");
-//            String password = request.getParameter("password");
             Preconditions.checkArgument(StringUtils.isNotEmpty(username), "用户名不能为空");
             Preconditions.checkArgument(StringUtils.isNotEmpty(password), "密码不能为空");
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
