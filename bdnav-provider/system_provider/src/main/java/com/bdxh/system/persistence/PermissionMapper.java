@@ -10,11 +10,7 @@ import java.util.List;
 @Repository
 public interface PermissionMapper extends Mapper<Permission> {
 
-    /**
-     * 根据用户id查询权限列表
-     * @param userId
-     * @return
-     */
-    List<String> getPermissionListByUserId(@Param("userId") Long userId);
+    //角色id查询父节点
+    List<Permission> findPermissionByRoleId(@Param("roleId") Long roleId, @Param("type") Byte type);
 
 }

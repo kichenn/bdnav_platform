@@ -6,7 +6,6 @@ import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.helper.excel.bean.SchoolExcelReportBean;
-import com.bdxh.school.helper.utils.PageVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.PageInfo;
 

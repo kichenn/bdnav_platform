@@ -1,10 +1,6 @@
 package com.bdxh.school.service.impl;
 
-import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.web.support.BaseService;
-import com.bdxh.school.configration.anno.GetWithRedis;
-import com.bdxh.school.configration.redis.RedisCache;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
@@ -14,11 +10,9 @@ import com.bdxh.school.helper.excel.ExcelUtils;
 import com.bdxh.school.helper.excel.bean.SchoolExcelReportBean;
 import com.bdxh.school.helper.excel.utils.DateUtils;
 import com.bdxh.school.helper.excel.utils.StringUtils;
-import com.bdxh.school.helper.utils.PageVo;
 import com.bdxh.school.persistence.SchoolMapper;
 import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.vo.SchoolShowVo;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +25,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
