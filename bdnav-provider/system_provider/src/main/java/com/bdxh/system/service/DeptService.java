@@ -1,7 +1,7 @@
 package com.bdxh.system.service;
 
 import com.bdxh.common.web.support.IService;
-import com.bdxh.system.Vo.DeptVo;
+import com.bdxh.system.vo.DeptVo;
 import com.bdxh.system.entity.Dept;
 import com.github.pagehelper.PageInfo;
 

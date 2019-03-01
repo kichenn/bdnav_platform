@@ -1,4 +1,4 @@
-package com.bdxh.system.Vo;
+package com.bdxh.system.vo;
 
 import lombok.Data;
 

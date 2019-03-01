@@ -11,6 +11,6 @@ public interface RolePermissionMapper extends Mapper<RolePermission> {
      * 根据角色id删除关联表
      * @param roleId
      */
-    void deleteByRoleId(@Param("roleId") Long roleId);
+    Integer deleteByRoleId(@Param("roleId") Long roleId);
 
 }

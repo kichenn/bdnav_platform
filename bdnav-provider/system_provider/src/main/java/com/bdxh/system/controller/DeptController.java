@@ -3,7 +3,7 @@ package com.bdxh.system.controller;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.system.Vo.DeptVo;
+import com.bdxh.system.vo.DeptVo;
 import com.bdxh.system.dto.DeptDto;
 import com.bdxh.system.dto.DeptQueryDto;
 import com.bdxh.system.entity.Dept;
