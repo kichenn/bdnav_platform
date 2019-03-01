@@ -66,7 +66,9 @@ public class MyUserDetailsService implements UserDetailsService {
         user.setPassword(new BCryptPasswordEncoder().encode("123"));
         user.setPhone("13946");
         user.setRealName("徐圆");
-        MyUserDetails myUserDetails = new MyUserDetails(username,user.getPassword(),true,null,user);
+        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        MyUserDetails myUserDetails = new MyUserDetails(username,user.getPassword(),true,authorities,user);
         return myUserDetails;
     }
 

@@ -27,11 +27,11 @@ public interface SecurityConstant {
      */
     String TOKEN_HEADER = "Authorization";
 
+
     /**
      * 用户信息参数头
      */
     String USER = "user";
-
     /**
      * 权限参数头
      */
