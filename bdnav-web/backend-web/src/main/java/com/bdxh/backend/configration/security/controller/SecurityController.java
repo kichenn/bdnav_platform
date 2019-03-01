@@ -1,8 +1,8 @@
 package com.bdxh.backend.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.bdxh.backend.configration.security.userdetail.MyUserDetails;
 import com.bdxh.backend.configration.security.properties.SecurityConstant;
+import com.bdxh.backend.configration.security.userdetail.MyUserDetails;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -14,6 +14,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
@@ -26,11 +27,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.security.DenyAll;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @description:
@@ -44,9 +44,12 @@ public class SecurityController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public void login(@RequestParam("username") String username,@RequestParam("password") String password, HttpServletResponse response) throws IOException {
+    public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) throws IOException {
         try {
             Preconditions.checkArgument(StringUtils.isNotEmpty(username), "用户名不能为空");
             Preconditions.checkArgument(StringUtils.isNotEmpty(password), "密码不能为空");
@@ -65,9 +68,11 @@ public class SecurityController {
             claims.put(SecurityConstant.USER, JSON.toJSONString(userTemp));
             claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorityList));
             //登录成功生成token
+            long currentTimeMillis = System.currentTimeMillis();
+            redisTemplate.opsForValue().set(SecurityConstant.TOKEN_IS_REFRESH + username, new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME * 60 * 1000), SecurityConstant.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(user.getUserName())
                     .addClaims(claims)
-                    .setExpiration(new Date(System.currentTimeMillis() + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))
+                    .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))
                     .signWith(SignatureAlgorithm.HS512, SecurityConstant.TOKEN_SIGN_KEY)
                     .compressWith(CompressionCodecs.GZIP).compact();
             Wrapper wrapper = WrapMapper.ok(token);

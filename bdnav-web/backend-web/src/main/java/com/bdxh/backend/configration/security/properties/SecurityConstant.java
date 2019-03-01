@@ -18,14 +18,24 @@ public interface SecurityConstant {
     String TOKEN_SIGN_KEY = "bdnav-platform";
 
     /**
-     * token过期时间60分钟
+     * token过期时间120分钟
      */
-    int TOKEN_EXPIRE_TIME = 60;
+    int TOKEN_EXPIRE_TIME = 120;
+
+    /**
+     * token刷新时间60分钟
+     */
+    int TOKEN_REFRESH_TIME = 60;
 
     /**
      * token请求header
      */
-    String TOKEN_HEADER = "Authorization";
+    String TOKEN_REQUEST_HEADER = "Authorization";
+
+    /**
+     * token响应header
+     */
+    String TOKEN_RESPONSE_HEADER = "Token";
 
 
     /**
@@ -36,5 +46,10 @@ public interface SecurityConstant {
      * 权限参数头
      */
     String AUTHORITIES = "authorities";
+
+    /**
+     * token是否失效前缀
+     */
+    String TOKEN_IS_REFRESH = "token_is_refresh:";
 
 }
