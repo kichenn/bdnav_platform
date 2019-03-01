@@ -171,7 +171,7 @@ public class RoleController {
      * @return
      */
     @ApiOperation("根据条件查询列表")
-    @RequestMapping(value = "/queryList",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryList",method = RequestMethod.POST)
     public Object queryList(@Valid @RequestBody RoleQueryDto roleQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
@@ -189,7 +189,7 @@ public class RoleController {
      * @return
      */
     @ApiOperation("根据条件分页查找")
-    @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
     public Object queryListPage(@Valid @RequestBody RoleQueryDto roleQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);

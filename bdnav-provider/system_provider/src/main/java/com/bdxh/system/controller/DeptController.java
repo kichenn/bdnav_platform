@@ -56,13 +56,13 @@ public class DeptController {
             if (CollectionUtils.isEmpty(depts)) {
                 return WrapMapper.error("该部门下无其他部门，请检查！");
             }
-            List<DeptVo> schoolClassDtos = depts.stream().map(e -> {
+            List<DeptVo> DeptDtos = depts.stream().map(e -> {
                 DeptVo tempDto = new DeptVo();
                 BeanUtils.copyProperties(e, tempDto);
                 tempDto.setDeptVos(deptService.findDeptRelation(tempDto));
                 return tempDto;
             }).collect(Collectors.toList());
-            return WrapMapper.ok(schoolClassDtos);
+            return WrapMapper.ok(DeptDtos);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -78,6 +78,7 @@ public class DeptController {
      * @return
      */
     @RequestMapping(value = "/addDept",method = RequestMethod.POST)
+    @ApiOperation("增加部门信息")
     public Object addDept(@Valid @RequestBody DeptDto deptDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -102,6 +103,7 @@ public class DeptController {
      * @return
      */
     @RequestMapping(value = "/updateDept",method = RequestMethod.POST)
+    @ApiOperation("修改部门信息")
     public Object updateDept(@Valid @RequestBody DeptDto deptDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -127,6 +129,7 @@ public class DeptController {
      * @return
      */
     @RequestMapping(value = "/delDept",method = RequestMethod.POST)
+    @ApiOperation("删除单个部门")
     public Object delDept(@RequestParam(name = "deptId") @NotNull(message = "部门id不能为空") Long deptId){
         try {
             deptService.deleteByKey(deptId);
@@ -162,7 +165,7 @@ public class DeptController {
      * @return
      */
     @ApiOperation("根据条件查询列表")
-    @RequestMapping(value = "/queryList",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryList",method = RequestMethod.POST)
     public Object queryList(@Valid @RequestBody DeptQueryDto deptQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(deptQueryDto);
@@ -180,7 +183,7 @@ public class DeptController {
      * @return
      */
     @ApiOperation("根据条件分页查找字典")
-    @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
     public Object queryListPage(@Valid @RequestBody DeptQueryDto deptQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(deptQueryDto);

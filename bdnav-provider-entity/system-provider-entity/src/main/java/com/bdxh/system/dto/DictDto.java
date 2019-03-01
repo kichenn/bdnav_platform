@@ -1,9 +1,11 @@
 package com.bdxh.system.dto;
 
 
+import lombok.Data;
+
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-
+@Data
 public class DictDto implements Serializable {
 
     private static final long serialVersionUID = 811259837532613258L;

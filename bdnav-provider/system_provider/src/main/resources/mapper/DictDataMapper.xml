@@ -25,7 +25,7 @@
     from sys_dict_data
     <where>
       <if test="name !=null">
-        name=#{name}
+        `name`=#{name}
       </if>
     </where>
   </select>
