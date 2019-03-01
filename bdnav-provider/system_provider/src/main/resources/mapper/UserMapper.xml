@@ -29,7 +29,7 @@
 
   <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
-    from sys_user where user_name = #{userName}
+    from sys_user where user_name = #{userName} limit 1;
   </select>
 
 </mapper>

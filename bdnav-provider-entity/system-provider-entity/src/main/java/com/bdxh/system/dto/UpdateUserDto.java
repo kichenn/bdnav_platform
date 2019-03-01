@@ -1,22 +1,33 @@
 package com.bdxh.system.dto;
 
-import com.bdxh.common.base.page.Query;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class UserQueryDto extends Query {
+public class UpdateUserDto implements Serializable {
+
+    private static final long serialVersionUID = 566703849379026270L;
 
     @ApiModelProperty("用户id")
+    @NotNull(message = "用户id不能为空")
     private Long id;
 
     /**
-     * 用户名
+     * 头像
      */
-    @ApiModelProperty("用户名")
-    private String userName;
+    @ApiModelProperty("用户头像")
+    private String image;
+
+    /**
+     * 密码
+     */
+    @ApiModelProperty("密码")
+    private String password;
 
     /**
      * 姓名
@@ -58,13 +69,13 @@ public class UserQueryDto extends Query {
      * 状态 1 正常 2 锁定
      */
     @ApiModelProperty("状态 1 正常 2 锁定")
-    private Byte status;
+    private Byte status = 1;
 
     /**
      * 类型 1 普通用户 2 管理员
      */
     @ApiModelProperty("类型 1 普通用户 2 管理员")
-    private Byte type;
+    private Byte type = 1;
 
     /**
      * 创建时间
@@ -83,5 +94,11 @@ public class UserQueryDto extends Query {
      */
     @ApiModelProperty("操作人")
     private Long operator;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty("备注")
+    private String remark;
 
 }

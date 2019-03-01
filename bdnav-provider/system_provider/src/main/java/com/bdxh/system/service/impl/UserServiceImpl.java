@@ -1,14 +1,13 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
-import com.bdxh.common.web.support.IService;
-import com.bdxh.system.entity.Role;
 import com.bdxh.system.entity.User;
+import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.persistence.UserMapper;
+import com.bdxh.system.persistence.UserRoleMapper;
 import com.bdxh.system.service.UserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.netflix.discovery.converters.Auto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +27,9 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-
-
+    @Autowired
+    private UserRoleMapper userRoleMapper;
+    
     @Override
     public List<User> findList(Map<String, Object> param) {
         return userMapper.getByCondition(param);
@@ -47,6 +47,26 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     public User getByUserName(String userName) {
         User user = userMapper.getByUserName(userName);
         return user;
+    }
+
+    @Override
+    public void delUser(Long id) {
+        userMapper.deleteByPrimaryKey(id);
+        UserRole userRole = new UserRole();
+        userRole.setUserId(id);
+        userRoleMapper.delete(userRole);
+    }
+
+    @Override
+    public void delBatchUser(List<Long> ids) {
+        if (ids != null&&!ids.isEmpty()){
+            ids.forEach(id->{
+                userMapper.deleteByPrimaryKey(id);
+                UserRole userRole = new UserRole();
+                userRole.setUserId(id);
+                userRoleMapper.delete(userRole);
+            });
+        }
     }
 
 }
