@@ -293,4 +293,11 @@ public class HttpClientUtils {
         return result;
     }
 
+    public static void main(String[] args) throws Exception {
+        Map<String,Object> param = new HashMap<>();
+        param.put("token","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ4dXl1YW4iLCJuYW1lIjoi5b6Q5ZyGIiwidXNlcklkIjoxLCJleHAiOjE1NTEzNTIxNTZ9.4CTYcYuCtb1IBYFsMiz5JmpotgfLHxWKON7pLNUritYrgvyKckz21-rlZiQA187dYG-7yCMt1FNpqV-5TWlmwQ");
+        String s = doPost("http://localhost:9024", param);
+        System.out.println(s);
+    }
+
 }

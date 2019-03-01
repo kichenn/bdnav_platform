@@ -22,5 +22,11 @@ public interface RoleService extends IService<Role> {
 
     PageInfo<Role> findListPage(Map<String,Object> param, int pageNum, int pageSize);
 
+    /**
+     * 根据用户id查询角色列表
+     * @param userId
+     * @return
+     */
+    List<String> getRoleListByUserId(Long userId);
 
 }

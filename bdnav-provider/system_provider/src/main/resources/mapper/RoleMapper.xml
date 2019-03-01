@@ -38,4 +38,9 @@
     order by create_date desc
   </select>
 
+  <!-- 根据用户id查询角色列表 -->
+  <select id="getRoleListByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+    select role.role from sys_user user, sys_user_role user_role, sys_role role where user.id = user_role.user_id and role.id = user_role.role_id and user.id = #{userId}
+  </select>
+
 </mapper>

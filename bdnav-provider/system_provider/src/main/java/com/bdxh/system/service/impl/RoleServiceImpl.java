@@ -69,7 +69,10 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
             return pageInfo;
     }
 
-
-
+    @Override
+    public List<String> getRoleListByUserId(Long userId) {
+        List<String> roles = roleMapper.getRoleListByUserId(userId);
+        return roles;
+    }
 
 }

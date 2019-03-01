@@ -149,6 +149,23 @@ public class RoleController {
     }
 
     /**
+     * 根据用户id查询角色列表
+     * @param userId
+     * @return
+     */
+    @ApiOperation("根据用户id查询角色列表")
+    @RequestMapping(value = "/queryRoleListByUserId",method = RequestMethod.GET)
+    public Object queryRoleListByUserId(@RequestParam(name = "userId") @NotNull(message = "用户id不能为空") Long userId){
+        try {
+            List<String> roles = roleService.getRoleListByUserId(userId);
+            return WrapMapper.ok(roles);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
      * 根据条件查询列表
      * @param roleQueryDto
      * @return

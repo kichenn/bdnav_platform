@@ -22,4 +22,14 @@
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  
+  <sql id="BaseColumns">
+    id, image, user_name, password, real_name, sex, birthday, phone, email, dept_id, status, type, create_date, update_date, operator, remark
+  </sql>
+
+  <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="BaseColumns"/>
+    from sys_user where user_name = #{userName}
+  </select>
+
 </mapper>
