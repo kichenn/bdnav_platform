@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
@@ -39,10 +40,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAccessDeniedHandler myAccessDeniedHandler;
 
     @Autowired
-    private MyAuthenticationFilter myAuthenticationFilter;
+    private MyUserDetailsService myUserDetailsService;
 
     @Autowired
-    private MyUserDetailsService myUserDetailsService;
+    private MyAuthenticationFilter myAuthenticationFilter;
 
     @Bean
     static BCryptPasswordEncoder getBCryptPasswordEncoder(){
@@ -73,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                .antMatchers("/swagger-ui.html/**","/webjars/springfox-swagger-ui/**","/swagger-resources/**","/v2/api-docs/**").permitAll()
+                .antMatchers("/swagger-ui.html","/webjars/springfox-swagger-ui/**","/swagger-resources/**","/v2/api-docs/**").permitAll()
                 .antMatchers("/authentication/**").permitAll()
                 .anyRequest().authenticated()
                 .and().headers().cacheControl();
