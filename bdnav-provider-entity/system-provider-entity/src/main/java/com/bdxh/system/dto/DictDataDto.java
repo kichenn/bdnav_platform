@@ -1,10 +1,11 @@
 package com.bdxh.system.dto;
 
-import java.io.Serializable;
+import com.bdxh.common.base.page.Query;
+import lombok.Data;
 
-public class DictDataDto implements Serializable {
+@Data
+public class DictDataDto extends Query {
 
-    private static final long serialVersionUID = 3988319613265251497L;
 
     /**
      * 字典类型id

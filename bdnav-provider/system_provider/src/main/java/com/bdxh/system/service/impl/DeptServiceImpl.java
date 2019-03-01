@@ -47,7 +47,7 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
     public List<DeptVo> findDeptRelation(DeptVo deptVo) {
         List<DeptVo> deptVos = new ArrayList<>();
         if (deptVo.getId()!=null&&deptVo.getId()!=0) {
-            deptVos.addAll(findDeptByParentId(deptVo.getParentId()));
+            deptVos.addAll(findDeptByParentId(deptVo.getId()));
             if (CollectionUtils.isNotEmpty(deptVos)) {
                 deptVos.stream().forEach(e -> {
                     if (e.getId()!=null&&e.getId()!=0) {
@@ -64,7 +64,6 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
     public List<Dept> findParentDeptById(Long deptId, Byte level) {
         Dept dept=new Dept();
         dept.setLevel(level);
-        dept.setParentId(deptId);
         return deptMapper.select(dept);
     }
 

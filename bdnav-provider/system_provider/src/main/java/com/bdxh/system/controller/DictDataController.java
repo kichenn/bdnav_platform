@@ -110,7 +110,7 @@ public class DictDataController {
      * @return
      */
     @ApiOperation("根据条件查询列表")
-    @RequestMapping(value = "/queryList",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryList",method = RequestMethod.POST)
     public Object queryList(@Valid @RequestBody DictDataQueryDto dictDataQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(dictDataQueryDto);
@@ -128,7 +128,7 @@ public class DictDataController {
      * @return
      */
     @ApiOperation("根据条件分页查找字典数据")
-    @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
     public Object queryListPage(@Valid @RequestBody DictDataQueryDto dictDataQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(dictDataQueryDto);
