@@ -22,6 +22,7 @@
         <module>system-provider-entity</module>
         <module>school-provider-entity</module>
         <module>user-provider-entity</module>
+        <module>appmarket-provider-entity</module>
     </modules>
 
     <dependencies>

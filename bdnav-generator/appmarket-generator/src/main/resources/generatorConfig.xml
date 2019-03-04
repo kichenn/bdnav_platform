@@ -15,11 +15,11 @@
         </commentGenerator>
 
         <jdbcConnection driverClass="com.mysql.jdbc.Driver"
-                        connectionURL="jdbc:mysql://119.23.185.109:3306/bdxh_backend"
+                        connectionURL="jdbc:mysql://119.23.185.109:3306/bdxh_app"
                         userId="admin"
                         password="Abc_123456"/>
 
-        <javaModelGenerator targetPackage="com.bdxh.backend.entity"
+        <javaModelGenerator targetPackage="com.bdxh.appmarket.entity"
                             targetProject="src/main/java">
             <property name="enableSubPackages" value="false"/>
             <property name="trimStrings" value="true"/>
@@ -30,13 +30,15 @@
             <property name="enableSubPackages" value="false"/>
         </sqlMapGenerator>
 
-        <javaClientGenerator targetPackage="com.bdxh.backend.persistence"
+        <javaClientGenerator targetPackage="com.bdxh.appmarket.persistence"
                              targetProject="src/main/java"
                              type="XMLMAPPER">
             <property name="enableSubPackages" value="false"/>
         </javaClientGenerator>
 
-        <table tableName="t_school_base_config" domainObjectName="SchoolBaseConfig"></table>
+        <table tableName="t_app_category" domainObjectName="AppCategory"></table>
+        <table tableName="t_app" domainObjectName="App"></table>
+        <table tableName="t_app_version" domainObjectName="AppVersion"></table>
 
     </context>
 </generatorConfiguration>

@@ -4,8 +4,8 @@ info:
   version: @project.version@
 eureka:
   instance:
-    hostname: wallet-provider1
-    instance-id: wallet-provider:${server.port}
+    hostname: appmarket-provider1
+    instance-id: appmarket-provider:${server.port}
     prefer-ip-address: false
   client:
     serviceUrl:
@@ -23,7 +23,7 @@ spring:
   datasource:
     ds0:
       name : dataSource
-      url : jdbc:mysql://119.23.185.109:3306/bdxh_wallet?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_system?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
       username : admin
       password : Abc_123456
       type : com.alibaba.druid.pool.DruidDataSource
@@ -63,76 +63,6 @@ spring:
       retry:
         #开启ribbon重试机制
         enabled: true
-    stream:
-      #rocketmq配置
-      rocketmq:
-        binder:
-          namesrv-addr: 47.107.253.90:9876;47.107.255.252:9876
-        bindings:
-          walletNotice:
-            consumer:
-              orderly: false
-              tags: appmarket||js||query
-          walletRecharge:
-            consumer:
-              orderly: false
-              tags: add
-          walletKailuPay:
-            consumer:
-              orderly: false
-              tags: consumer
-          walletKailuPayUpdate:
-            consumer:
-              orderly: false
-              tags: update
-      bindings:
-        walletNotice:
-          destination: wechatPayWalletNotice
-          contentType: text/plain
-          group: wechatPayWalletNotice-group
-          consumer:
-            #并发消费数量
-            concurrency: 50
-            #重试次数
-            max-attempts: 1
-        walletRecharge:
-          destination: xiancardWalletRecharge
-          contentType: text/plain
-          group: xiancardWalletRecharge-group
-          consumer:
-            #并发消费数量
-            concurrency: 50
-            #重试次数
-            max-attempts: 1
-        walletKailuPay:
-          destination: xiancardWalletKailu
-          contentType: text/plain
-          group: xiancardWalletKailu-group
-          consumer:
-            #并发消费数量
-            concurrency: 50
-            #重试次数
-            max-attempts: 1
-        walletKailuPayUpdate:
-          destination: xiancardWalletKailuUpdate
-          contentType: text/plain
-          group: xiancardWalletKailu-group
-          consumer:
-            #并发消费数量
-            concurrency: 50
-            #重试次数
-            max-attempts: 1
-#rocketmq producer配置
-rocketmq:
-  producer:
-    defaultName: default-wallet-provider
-    transName: trans-wallet-provider
-    transEnable: true
-#分布式任务配置
-elastic-job:
-  registry:
-    zklist: 119.23.185.109:2181,47.107.253.90:2181,47.107.255.252:2181
-    namespace: wallet-elastic-job
 #hystrix配置
 hystrix:
   command:
@@ -166,7 +96,7 @@ feign:
       min-request-size: 1024
     response:
       enabled: true
-#ribbon超时配置 调用第三方比较耗时，配置较大的值以防超时
+#ribbon超时配置
 ribbon:
   eureka:
     enabled: true
@@ -180,10 +110,6 @@ ribbon:
   MaxAutoRetriesNextServer: 2
   ConnectTimeout: 3000
   ReadTimeout: 6000
-#ID生成器
-id-generator:
-  workerId: 0
-  datacenterId: 0
 #httpPoolClient配置
 httpPool:
   maxTotal: 3000

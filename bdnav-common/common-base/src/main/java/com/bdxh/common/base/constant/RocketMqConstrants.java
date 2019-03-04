@@ -44,7 +44,7 @@ public class RocketMqConstrants {
      */
     public interface Tags {
 
-        String wechatPayWalletNotice_app ="app";
+        String wechatPayWalletNotice_app ="appmarket";
 
         String wechatPayWalletNotice_js ="js";
 

@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>backend-generator</artifactId>
+    <artifactId>appmarket-generator</artifactId>
 
     <build>
         <plugins>
@@ -39,7 +39,7 @@
                 </dependencies>
             </plugin>
         </plugins>
-        <finalName>backend-generator</finalName>
+        <finalName>appmarket-generator</finalName>
     </build>
 
 </project>
