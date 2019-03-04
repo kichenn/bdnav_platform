@@ -8,6 +8,7 @@ import com.bdxh.system.dto.DictDataQueryDto;
 import com.bdxh.system.entity.DictData;
 import com.bdxh.system.service.DictDataService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +56,7 @@ public class DictDataController {
         }
         try {
             DictData dictData = BeanMapUtils.map(dictDataDto, DictData.class);
+            Preconditions.checkArgument(dictData == null, "字典数据已经存在");
             dictDataService.save(dictData);
             return WrapMapper.ok();
         } catch (Exception e) {

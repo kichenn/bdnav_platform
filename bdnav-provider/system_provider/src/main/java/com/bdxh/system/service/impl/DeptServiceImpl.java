@@ -1,19 +1,14 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
-import com.bdxh.system.vo.DeptVo;
 import com.bdxh.system.entity.Dept;
 import com.bdxh.system.persistence.DeptMapper;
 import com.bdxh.system.service.DeptService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +37,7 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
         return pageInfo;
     }
 
-    //递归查询关系节点
+   /* //递归查询关系节点
     @Override
     public List<DeptVo> findDeptRelation(DeptVo deptVo) {
         List<DeptVo> deptVos = new ArrayList<>();
@@ -57,8 +52,9 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
             }
         }
         return deptVos;
-    }
+    }*/
 
+/*
     //部门id查询等级节点列表（一级节点为父节点）
     @Override
     public List<Dept> findParentDeptById(Long deptId, Byte level) {
@@ -66,8 +62,16 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
         dept.setLevel(level);
         return deptMapper.select(dept);
     }
+*/
 
-    //根据父级部门id查询部门信息
+    //部门id查询等级节点列表（一级节点为父节点）
+    @Override
+    public List<Dept> findParentDeptById(Long deptId) {
+        Dept dept=new Dept();
+        return deptMapper.select(dept);
+    }
+
+   /* //根据父级部门id查询部门信息
     @Override
     public List<DeptVo> findDeptByParentId(Long parentId) {
         List<DeptVo> deptVos = new ArrayList<>();
@@ -80,5 +84,5 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
             });
         }
         return deptVos;
-    }
+    }*/
 }
