@@ -1,8 +1,8 @@
 server:
-  port: 9025
+  port: 9026
 spring:
   application:
-    name: appmarket-provider-cluster
+    name: account-provider-cluster
   profiles:
     active: dev
 logging:

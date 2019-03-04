@@ -23,6 +23,7 @@
         <module>school-provider</module>
         <module>user-provider</module>
         <module>appmarket-provider</module>
+        <module>account-provider</module>
     </modules>
 
     <dependencies>

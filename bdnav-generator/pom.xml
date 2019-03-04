@@ -19,6 +19,7 @@
         <module>school-generator</module>
         <module>user-generator</module>
         <module>appmarket-generator</module>
+        <module>account-generator</module>
     </modules>
 
     <dependencies>
