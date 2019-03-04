@@ -42,5 +42,16 @@
         perm.type=#{type,jdbcType=TINYINT}
     </select>
 
+    <delete id="batchDelPermissionInIds">
+        DELETE
+        FROM
+        sys_permission
+        WHERE
+        id IN
+        <foreach collection="ids" item="empId" separator="," open="(" close=")">
+            #{empId,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+
 
 </mapper>

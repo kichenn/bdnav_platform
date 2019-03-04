@@ -7,6 +7,7 @@ import com.bdxh.system.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -29,16 +30,31 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         return permissionMapper.findPermissionByRoleId(roleId, type);
     }
 
-    //父id查询节点信息
+    //增加权限列表信息
     @Override
-    public List<Permission> findPermissionByParentId(Long id) {
-        return null;
+    public Boolean addPermission(Permission permission) {
+        return permissionMapper.insertSelective(permission) > 0;
     }
 
-    //根据用户id查询权限列表
+    //修改权限列表信息
     @Override
-    public List<String> getPermissionListByUserId(Long userId) {
-        return null;
+    public Boolean modifyPermission(Permission permission) {
+        return permissionMapper.updateByPrimaryKeySelective(permission) > 0;
     }
+
+    //Id删除权限列表信息
+    @Override
+    public Boolean delPermissionById(Long id) {
+        return permissionMapper.deleteByPrimaryKey(id) > 0;
+    }
+
+
+    //批量删除权限列表信息
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean batchDelPermission(List<Long> ids) {
+        return permissionMapper.batchDelPermissionInIds(ids) > 0;
+    }
+
 
 }

@@ -1,6 +1,8 @@
 package com.bdxh.system.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.system.dto.AddPermissionDto;
+import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.system.helper.tree.vo.PermissionTreeVo;
@@ -65,8 +67,10 @@ public class PermissionController {
     @RequestMapping(value = "/addPermission", method = RequestMethod.POST)
     @ApiOperation(value = "新增用户权限", response = Boolean.class)
     @ResponseBody
-    public Object addPermission() {
-        return WrapMapper.ok();
+    public Object addPermission(@RequestBody AddPermissionDto dto) {
+        Permission permission = new Permission();
+        BeanUtils.copyProperties(dto, permission);
+        return WrapMapper.ok(permissionService.addPermission(permission));
     }
 
     /**
@@ -77,8 +81,10 @@ public class PermissionController {
     @RequestMapping(value = "/modifyPermission", method = RequestMethod.POST)
     @ApiOperation(value = "修改用户权限", response = Boolean.class)
     @ResponseBody
-    public Object modifyPermission() {
-        return WrapMapper.ok();
+    public Object modifyPermission(@RequestBody ModifyPermissionDto dto) {
+        Permission permission = new Permission();
+        BeanUtils.copyProperties(dto, permission);
+        return WrapMapper.ok(permissionService.modifyPermission(permission));
     }
 
     /**
