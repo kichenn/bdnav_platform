@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
  * 功能描述:
  *
  * @auther: Kang
- * @date: 2018/12/3 11:57
+ * @date: 2019/3/4 15:57
  */
 @Slf4j
 public class SmsUtil {
@@ -63,7 +63,7 @@ public class SmsUtil {
      * 功能描述: 添加短信入参
      *
      * @auther: Kang
-     * @date: 2018/8/7 10:28
+     * @date: 2019/03/04 14:28
      */
     private static SendSmsRequest addRequestParam(String signName, String templateCode, String phones, String params) {
         // 组装请求对象-具体描述见控制台-文档部分内容
@@ -96,4 +96,8 @@ public class SmsUtil {
         return sendSmsResponse;
     }
 
+    public static void main(String[] args) {
+        SmsUtil smsUtil=new SmsUtil();
+        smsUtil.sendMsgHelper(SmsTempletEnum.VERIFICATION_CODE,"13168718611","1111");
+    }
 }
