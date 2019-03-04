@@ -69,7 +69,7 @@ public class MybatisConfig {
 		shardingRuleConfig.getTableRuleConfigs().add(geStudentFamilyTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getTeacherDeptTableRuleConfiguration());
 		//级联绑定表，用于优化查询
-		shardingRuleConfig.getBindingTableGroups().add("t_student,t_student_family");
+		shardingRuleConfig.getBindingTableGroups().add("t_student,t_family_student");
 		shardingRuleConfig.getBindingTableGroups().add("t_teacher,t_teacher_dept");
 		Map<String, DataSource> dataSourceMap = new HashMap<>();
 		dataSourceMap.put("ds_0", dataSource0);
@@ -154,8 +154,8 @@ public class MybatisConfig {
 	@Bean
 	public TableRuleConfiguration geStudentFamilyTableRuleConfiguration() {
 		TableRuleConfiguration result = new TableRuleConfiguration();
-		result.setLogicTable("t_student_family");
-		result.setActualDataNodes("ds_${0..1}.t_student_family${0..1}");
+		result.setLogicTable("t_family_student");
+		result.setActualDataNodes("ds_${0..3}.t_family_student${0..3}");
 		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
 		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
 		return result;

@@ -11,12 +11,11 @@
 package com.bdxh.user.controller;
 
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.user.dto.FamilyDto;
-import com.bdxh.user.dto.FamilyQueryDto;
+import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.user.dto.StudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
-import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.service.StudentService;
 import io.swagger.annotations.Api;
@@ -51,7 +50,9 @@ public class StudentController {
         }
         try {
             Student student = BeanMapUtils.map(studentDto, Student.class);
-            Boolean result = studentService.save(student) > 0 ;
+            IdGeneratorProperties idGeneratorProperties=new IdGeneratorProperties();
+            student.setId(new SnowflakeIdWorker(idGeneratorProperties.getWorkerId(),idGeneratorProperties.getDatacenterId()).nextId());
+            Boolean result = studentService.saveStudentInfo(student) ;
             return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,7 +62,7 @@ public class StudentController {
 
     @ApiOperation(value="根据ID删除学生信息")
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
-    public Object removeFamily(@RequestParam(name = "id") @NotNull(message = "家长id不能为空") String id){
+    public Object removeFamily(@RequestParam(name = "id") @NotNull(message = "学生id不能为空") String id){
         try{
             studentService.deleteStudentInfo(id);
             return WrapMapper.ok();
@@ -72,7 +73,7 @@ public class StudentController {
     }
     @ApiOperation(value="根据ID批量删除学生信息")
     @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
-    public Object removeFamilys(@RequestParam(name = "id") @NotNull(message = "家长id不能为空") String id){
+    public Object removeFamilys(@RequestParam(name = "id") @NotNull(message = "学生id不能为空") String id){
         try{
             String fid[]=id.split(",");
             studentService.deleteBatchesStudentInfo(fid);
@@ -109,7 +110,7 @@ public class StudentController {
      */
     @ApiOperation(value="修改时根据Id查询单个学生信息")
     @RequestMapping(value ="/queryStudentInfo",method = RequestMethod.POST)
-    public Object queryStudentInfo(@RequestParam(name = "id") @NotNull(message = "家长id不能为空")  Long id) {
+    public Object queryStudentInfo(@RequestParam(name = "id") @NotNull(message = "学生id不能为空")  Long id) {
         try {
                 return studentService.selectByKey(id);
         } catch (Exception e) {

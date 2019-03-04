@@ -11,7 +11,9 @@
 package com.bdxh.user.controller;
 
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.user.dto.FamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.entity.Family;
@@ -48,6 +50,8 @@ public class FamilyController {
         }
         try {
             Family family = BeanMapUtils.map(familyDto, Family.class);
+            IdGeneratorProperties idGeneratorProperties=new IdGeneratorProperties();
+            family.setId(new SnowflakeIdWorker(idGeneratorProperties.getWorkerId(),idGeneratorProperties.getDatacenterId()).nextId());
             familyService.save(family);
             return WrapMapper.ok();
         } catch (Exception e) {
