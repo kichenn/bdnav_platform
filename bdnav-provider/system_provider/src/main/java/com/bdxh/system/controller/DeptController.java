@@ -1,14 +1,16 @@
 package com.bdxh.system.controller;
 
+import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.system.vo.DeptVo;
+import com.bdxh.system.helper.tree.vo.DeptTreeVo;
 import com.bdxh.system.dto.DeptDto;
 import com.bdxh.system.dto.DeptQueryDto;
 import com.bdxh.system.entity.Dept;
 import com.bdxh.system.service.DeptService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -35,13 +38,9 @@ import java.util.stream.Collectors;
 @Api(value = "系统部门相关API", tags = "系统部门管理")
 public class DeptController {
 
-    //当前为父级等级节点（1为当前第一级节点，也就是父级节点）
-    private static final Byte LEVEL = 1;
-
 
     @Autowired
     private DeptService deptService;
-
 
     /**
      * 部门id递归查询
@@ -52,23 +51,27 @@ public class DeptController {
     @ApiOperation("部门树形结构关系")
     public Object findDeptTreeById(@RequestParam(name="deptId") Long deptId) {
         try {
-            List<Dept> depts = deptService.findParentDeptById(deptId,LEVEL);
-            if (CollectionUtils.isEmpty(depts)) {
-                return WrapMapper.error("该部门下无其他部门，请检查！");
+            //根据部门查询所有部门
+            List<Dept> depts = deptService.findParentDeptById(deptId);
+            List<DeptTreeVo> treeVos = new ArrayList<>();
+            if (CollectionUtils.isNotEmpty(depts)) {
+                depts.stream().forEach(e -> {
+                    DeptTreeVo treeVo= new DeptTreeVo();
+                    treeVo.setTitle(e.getDeptFullName());
+                    BeanUtils.copyProperties(e, treeVo);
+                    treeVos.add(treeVo);
+                });
             }
-            List<DeptVo> DeptDtos = depts.stream().map(e -> {
-                DeptVo tempDto = new DeptVo();
-                BeanUtils.copyProperties(e, tempDto);
-                tempDto.setDeptVos(deptService.findDeptRelation(tempDto));
-                return tempDto;
-            }).collect(Collectors.toList());
-            return WrapMapper.ok(DeptDtos);
+                TreeLoopUtils<DeptTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+                List<DeptTreeVo> result = treeLoopUtils.getChild(new Long("1"), treeVos);
+            return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
 
     }
+
 
 
     /**
@@ -86,7 +89,8 @@ public class DeptController {
             return WrapMapper.error(errors);
         }
         try {
-         Dept dept = BeanMapUtils.map(deptDto, Dept.class);
+            Dept dept = BeanMapUtils.map(deptDto, Dept.class);
+            Preconditions.checkArgument(dept == null, "部门已经存在");
             deptService.save(dept);
             return WrapMapper.ok();
         } catch (Exception e) {

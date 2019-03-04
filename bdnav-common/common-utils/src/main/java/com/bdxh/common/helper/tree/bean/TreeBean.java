@@ -15,11 +15,26 @@ public class TreeBean {
     private Long parentId;
 
     @ApiModelProperty("节点名")
-    private String name;
+    private String title;
 
     @ApiModelProperty("节点层级")
     private String level;
 
+    @ApiModelProperty("是否展开直子节点")
+    private Boolean expand=Boolean.FALSE;
+
+    @ApiModelProperty("禁掉响应")
+    private Boolean disabled=Boolean.FALSE;
+
+    @ApiModelProperty("禁掉 checkbox")
+    private Boolean disableCheckbox=Boolean.FALSE;
+
+    @ApiModelProperty("是否选中子节点")
+    private Boolean selected=Boolean.FALSE;
+
+    @ApiModelProperty("是否勾选(如果勾选，子节点也会全部勾选)")
+    private Boolean checked=Boolean.FALSE;
+
     @ApiModelProperty("子节点")
-    private List<? extends TreeBean> treeLists;
+    private List<? extends TreeBean> children;
 }

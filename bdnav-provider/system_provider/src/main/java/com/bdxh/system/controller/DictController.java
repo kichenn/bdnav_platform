@@ -9,6 +9,7 @@ import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.service.DictService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -52,6 +53,7 @@ public class DictController {
         }
         try {
             Dict dict = BeanMapUtils.map(dictDto, Dict.class);
+            Preconditions.checkArgument(dict == null, "字典已经存在");
             dictService.save(dict);
             return WrapMapper.ok();
         } catch (Exception e) {

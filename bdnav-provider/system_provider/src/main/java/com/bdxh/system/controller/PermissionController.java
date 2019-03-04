@@ -50,6 +50,7 @@ public class PermissionController {
         if (CollectionUtils.isNotEmpty(permissions)) {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
+                treeVo.setTitle(e.getName());
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
             });

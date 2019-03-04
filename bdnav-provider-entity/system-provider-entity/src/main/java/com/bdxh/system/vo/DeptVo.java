@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class DeptVo {
+public class DeptVo{
     /**
      * 主键id
      */
