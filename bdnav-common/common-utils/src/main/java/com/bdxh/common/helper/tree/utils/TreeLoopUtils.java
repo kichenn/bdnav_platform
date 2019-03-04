@@ -1,6 +1,7 @@
 package com.bdxh.common.helper.tree.utils;
 
 import com.bdxh.common.helper.tree.bean.TreeBean;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class TreeLoopUtils<E extends TreeBean> {
             }
         } // 递归退出条件
         if (childList.size() == 0) {
-            return null;
+            return new ArrayList<E>();
         }
         return childList;
     }
