@@ -35,7 +35,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        /*//根据用户名查询用户
+        //根据用户名查询用户
         Wrapper<User> userWrapper = userControllerClient.queryUserByUserName(username);
         User user = userWrapper.getResult();
         if (user == null){
@@ -60,8 +60,10 @@ public class MyUserDetailsService implements UserDetailsService {
             isAccountNonLocked = false;
         }
         MyUserDetails myUserDetails = new MyUserDetails(username,user.getPassword(),isAccountNonLocked,authorities,user);
-        return myUserDetails;*/
-        User user = new User();
+        return myUserDetails;
+
+
+      /*  User user = new User();
         user.setUserName("xuyuan");
         user.setPassword(new BCryptPasswordEncoder().encode("123"));
         user.setPhone("13946");
@@ -69,7 +71,7 @@ public class MyUserDetailsService implements UserDetailsService {
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
         MyUserDetails myUserDetails = new MyUserDetails(username,user.getPassword(),true,authorities,user);
-        return myUserDetails;
+        return myUserDetails;*/
     }
 
 }

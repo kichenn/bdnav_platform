@@ -11,7 +11,13 @@
   </resultMap>
 
   <delete id="deleteByRoleId" parameterType="java.lang.Long">
-    delete from sys_role_permission where role_id = #{roleId}
+    delete from sys_role_permission where role_id = #{roleId,jdbcType=BIGINT}
   </delete>
+
+    <select id="findPermissionIdByRoleId" resultType="java.lang.Long">
+      SELECT
+      permission_id
+      FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
+    </select>
 
 </mapper>
