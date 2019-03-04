@@ -1,43 +1,37 @@
 package com.bdxh.system.dto;
 
-import com.bdxh.common.base.page.Query;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 
 @Data
-public class RoleQueryDto extends Query {
+public class UpdateRoleDto implements Serializable {
+
+    private static final long serialVersionUID = 5885982808694321117L;
 
     /**
      * 角色id
      */
+    @NotNull(message = "角色id不能为空")
     @ApiModelProperty("角色id")
     private Long id;
 
     /**
      * 角色
      */
+    @NotEmpty(message ="角色不能为空")
     @ApiModelProperty("角色")
     private String role;
 
     /**
      * 角色名称
      */
+    @NotEmpty(message ="角色名称不能为空")
     @ApiModelProperty("角色名称")
     private String roleName;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty("创建时间")
-    private Date createDate;
-
-    /**
-     * 修改时间
-     */
-    @ApiModelProperty("修改时间")
-    private Date updateDate;
 
     /**
      * 操作人

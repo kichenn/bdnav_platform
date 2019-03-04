@@ -3,11 +3,13 @@ package com.bdxh.system.controller;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.system.dto.RoleDto;
+import com.bdxh.system.dto.AddRoleDto;
 import com.bdxh.system.dto.RoleQueryDto;
+import com.bdxh.system.dto.UpdateRoleDto;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.service.RoleService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +34,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/role")
 @Validated
 @Slf4j
-@Api(value = "系统角色相关API", tags = "系统角色管理")
+@Api(value = "系统角色管理", tags = "系统角色管理")
 public class RoleController {
 
     @Autowired
@@ -40,21 +42,49 @@ public class RoleController {
 
     /**
      * 增加角色
-     * @param roleDto
+     * @param addRoleDto
      * @param bindingResult
      * @return
      */
     @ApiOperation("添加角色信息")
     @RequestMapping(value = "/addRole",method = RequestMethod.POST)
-    public Object addRole(@Valid @RequestBody RoleDto roleDto, BindingResult bindingResult){
+    public Object addRole(@Valid @RequestBody AddRoleDto addRoleDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            Role role = BeanMapUtils.map(roleDto, Role.class);
+            Role roleData = roleService.getRoleByRole(addRoleDto.getRole());
+            Preconditions.checkArgument(roleData == null, "角色已经存在");
+            Role role = BeanMapUtils.map(addRoleDto, Role.class);
             roleService.save(role);
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 修改角色信息
+     * @param updateRoleDto
+     * @param bindingResult
+     * @return
+     */
+    @ApiOperation("修改角色信息")
+    @RequestMapping(value = "/updateRole",method = RequestMethod.POST)
+    public Object updateRole(@Valid @RequestBody UpdateRoleDto updateRoleDto, BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            Role roleData = roleService.selectByKey(updateRoleDto.getId());
+            Preconditions.checkArgument(!StringUtils.equals(roleData.getRole(),updateRoleDto.getRole()),"角色已经存在");
+            Role role = BeanMapUtils.map(updateRoleDto, Role.class);
+            roleService.update(role);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,39 +136,14 @@ public class RoleController {
         }
     }
 
-
     /**
-     * 修改角色信息
-     * @param roleDto
-     * @param bindingResult
-     * @return
-     */
-    @ApiOperation("修改角色信息")
-    @RequestMapping(value = "/updateRole",method = RequestMethod.POST)
-    public Object updateRole(@Valid @RequestBody RoleDto roleDto,BindingResult bindingResult){
-        //检验参数
-        if(bindingResult.hasErrors()){
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
-        try {
-            Role role = BeanMapUtils.map(roleDto, Role.class);
-            roleService.update(role);
-            return WrapMapper.ok();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
-
-    /**
-     * 根据id查询对象
+     * 根据id查询角色信息
      * @param id
      * @return
      */
-    @ApiOperation("根据id查询对象")
+    @ApiOperation("根据id查询角色信息")
     @RequestMapping(value = "/queryRoleById",method = RequestMethod.GET)
-    public Object queryRole(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
+    public Object queryRoleById(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
         try {
             Role role = roleService.selectByKey(id);
             return WrapMapper.ok(role);
@@ -166,12 +171,12 @@ public class RoleController {
     }
 
     /**
-     * 根据条件查询列表
+     * 根据条件查询角色列表
      * @param roleQueryDto
      * @return
      */
     @ApiOperation("根据条件查询列表")
-    @RequestMapping(value = "/queryList",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryList",method = RequestMethod.GET)
     public Object queryList(@Valid @RequestBody RoleQueryDto roleQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
@@ -189,7 +194,7 @@ public class RoleController {
      * @return
      */
     @ApiOperation("根据条件分页查找")
-    @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
+    @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
     public Object queryListPage(@Valid @RequestBody RoleQueryDto roleQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
@@ -200,6 +205,5 @@ public class RoleController {
             return WrapMapper.error(e.getMessage());
         }
     }
-
 
 }

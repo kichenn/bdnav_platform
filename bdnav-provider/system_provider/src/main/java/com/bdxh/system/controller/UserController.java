@@ -7,9 +7,11 @@ import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.service.UserService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,53 +29,103 @@ import java.util.stream.Collectors;
 @RequestMapping("/user")
 @Validated
 @Slf4j
-@Api(value = "系统用户相关API", tags = "系统用户管理")
+@Api(value = "系统用户管理", tags = "系统用户管理")
 public class UserController {
 
-      @Autowired
-      private UserService userService;
-
+    @Autowired
+    private UserService userService;
 
     /**
      * 增加用户
-     * @param userDto
+     *
+     * @param addUserDto
      * @param bindingResult
      * @return
      */
-      @RequestMapping(value = "/addUser",method = RequestMethod.POST)
-      public Object addUser(@Valid @RequestBody UserDto userDto, BindingResult bindingResult){
-          //检验参数
-          if(bindingResult.hasErrors()){
-              String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-              return WrapMapper.error(errors);
-          }
-          try {
-              User user = BeanMapUtils.map(userDto, User.class);
-              userService.save(user);
-              return WrapMapper.ok();
-          } catch (Exception e) {
-              e.printStackTrace();
-              return WrapMapper.error(e.getMessage());
-          }
-      }
-
-
-    /**
-     * 修改用户信息
-     * @param bindingResult
-     * @return
-     */
-    @ApiOperation("修改角色信息")
-    @RequestMapping(value = "/updateUser",method = RequestMethod.POST)
-    public Object updateUser(@Valid @RequestBody UserDto userDto,BindingResult bindingResult){
+    @ApiOperation(value = "增加系统用户")
+    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    public Object addUser(@Valid @RequestBody AddUserDto addUserDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            User user = BeanMapUtils.map(userDto, User.class);
+            User userData = userService.getByUserName(addUserDto.getUserName());
+            Preconditions.checkArgument(userData == null, "用户名已经存在");
+            User user = BeanMapUtils.map(addUserDto, User.class);
+            userService.save(user);
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 修改用户信息
+     *
+     * @param bindingResult
+     * @return
+     */
+    @ApiOperation("修改用户信息")
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
+    public Object updateUser(@Valid @RequestBody UpdateUserDto updateUserDto, BindingResult bindingResult) {
+        //检验参数
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            User user = BeanMapUtils.map(updateUserDto, User.class);
             userService.update(user);
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 根据id删除用户信息
+     *
+     * @param id
+     * @return
+     */
+    @ApiOperation("根据id删除用户信息")
+    @RequestMapping(value = "/delUser", method = RequestMethod.POST)
+    public Object delUser(@RequestParam(name = "id") @NotNull(message = "用户id不能为空") Long id) {
+        try {
+            userService.delUser(id);
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param ids
+     * @return
+     */
+    @ApiOperation("修改用户信息")
+    @RequestMapping(value = "/delBatchUser", method = RequestMethod.POST)
+    public Object delBatchUser(@RequestParam(name = "ids") @NotNull(message = "用户ids不能为空") String ids) {
+        try {
+            String[] idsArr = StringUtils.split(ids,",");
+            List<Long> idsLongArr = new ArrayList<>(15);
+            if (idsArr!=null&&idsArr.length>0){
+                for (int i=0;i<idsArr.length;i++){
+                    String id = idsArr[i];
+                    if (StringUtils.isNotEmpty(id)){
+                        idsLongArr.add(Long.valueOf(id));
+                    }
+                }
+            }
+            userService.delBatchUser(idsLongArr);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -83,16 +136,17 @@ public class UserController {
 
     /**
      * 根据id查询用户对象
+     *
      * @param id
      * @return
      */
     @ApiOperation("根据id查询用户对象")
-    @RequestMapping(value = "/queryUserById",method = RequestMethod.GET)
-    public Object queryUser(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
+    @RequestMapping(value = "/queryUserById", method = RequestMethod.GET)
+    public Object queryUser(@RequestParam(name = "id") @NotNull(message = "用户id不能为空") Long id) {
         try {
             User user = userService.selectByKey(id);
             return WrapMapper.ok(user);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -100,16 +154,17 @@ public class UserController {
 
     /**
      * 根据条件查询列表
+     *
      * @return
      */
-    @ApiOperation("根据条件查询列表")
-    @RequestMapping(value = "/queryList",method = RequestMethod.GET)
-    public Object queryList(@Valid @RequestBody UserQueryDto userQueryDto){
+    @ApiOperation("根据条件查询用户列表")
+    @RequestMapping(value = "/queryList", method = RequestMethod.GET)
+    public Object queryList(@Valid @RequestBody UserQueryDto userQueryDto) {
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
             List<User> Users = userService.findList(param);
             return WrapMapper.ok(Users);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -117,23 +172,22 @@ public class UserController {
 
     /**
      * 根据条件分页查找
+     *
      * @param userQueryDto
      * @return
      */
     @ApiOperation("根据条件分页查找")
-    @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
-    public Object queryListPage(@Valid @RequestBody UserQueryDto userQueryDto){
+    @RequestMapping(value = "/queryListPage", method = RequestMethod.GET)
+    public Object queryListPage(@Valid @RequestBody UserQueryDto userQueryDto) {
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
-            PageInfo<User> Users = userService.findListPage(param, userQueryDto.getPageNum(),userQueryDto.getPageSize());
+            PageInfo<User> Users = userService.findListPage(param, userQueryDto.getPageNum(), userQueryDto.getPageSize());
             return WrapMapper.ok(Users);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
-
-
 
 
 }

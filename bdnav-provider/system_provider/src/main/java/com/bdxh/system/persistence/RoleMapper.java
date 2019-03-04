@@ -24,4 +24,11 @@ public interface RoleMapper extends Mapper<Role> {
      */
     List<String> getRoleListByUserId(@Param("userId") Long userId);
 
+    /**
+     * 根据角色查询角色对象
+     * @param role
+     * @return
+     */
+    Role getRoleByRole(String role);
+
 }

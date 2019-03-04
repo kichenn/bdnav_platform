@@ -75,4 +75,9 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
         return roles;
     }
 
+    @Override
+    public Role getRoleByRole(String role) {
+        return roleMapper.getRoleByRole(role);
+    }
+
 }

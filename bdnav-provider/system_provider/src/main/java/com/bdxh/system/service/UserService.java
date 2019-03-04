@@ -15,8 +15,20 @@ import java.util.Map;
  **/
 public interface UserService extends IService<User> {
 
+    /**
+     * 根据条件查询用户列表
+     * @param param
+     * @return
+     */
     List<User> findList(Map<String,Object> param);
 
+    /**
+     * 根据条件分页查询用户列表
+     * @param param
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
     PageInfo<User> findListPage(Map<String,Object> param, int pageNum, int pageSize);
 
     /**
@@ -25,5 +37,17 @@ public interface UserService extends IService<User> {
      * @return
      */
     User getByUserName(String userName);
+
+    /**
+     * 根据id删除用户信息
+     * @param id
+     */
+    void delUser(Long id);
+
+    /**
+     * 根据id批量删除用户信息
+     * @param ids
+     */
+    void delBatchUser(List<Long> ids);
 
 }

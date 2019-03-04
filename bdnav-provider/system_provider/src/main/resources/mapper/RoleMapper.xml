@@ -43,4 +43,10 @@
     select role.role from sys_user user, sys_user_role user_role, sys_role role where user.id = user_role.user_id and role.id = user_role.role_id and user.id = #{userId}
   </select>
 
+  <!-- 根据角色查询角色信息 -->
+  <select id="getRoleByRole" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select <include refid="BaseColumns"/>
+    from sys_role where role = #{role}
+  </select>
+
 </mapper>

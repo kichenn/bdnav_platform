@@ -29,4 +29,11 @@ public interface RoleService extends IService<Role> {
      */
     List<String> getRoleListByUserId(Long userId);
 
+    /**
+     * 根据角色查询角色对象
+     * @param role
+     * @return
+     */
+    Role getRoleByRole(String role);
+
 }
