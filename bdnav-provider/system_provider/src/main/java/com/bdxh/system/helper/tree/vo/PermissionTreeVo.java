@@ -1,6 +1,6 @@
 package com.bdxh.system.helper.tree.vo;
 
-import com.bdxh.system.helper.tree.bean.TreeBean;
+import com.bdxh.common.helper.tree.bean.TreeBean;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

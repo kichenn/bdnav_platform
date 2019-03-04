@@ -1,9 +1,6 @@
-package com.bdxh.system.helper.tree.utils;
+package com.bdxh.common.helper.tree.utils;
 
-import com.bdxh.system.helper.tree.bean.TreeBean;
-import com.bdxh.system.helper.utils.LongUtils;
-import org.apache.commons.lang3.StringUtils;
-
+import com.bdxh.common.helper.tree.bean.TreeBean;
 import java.util.ArrayList;
 import java.util.List;
 

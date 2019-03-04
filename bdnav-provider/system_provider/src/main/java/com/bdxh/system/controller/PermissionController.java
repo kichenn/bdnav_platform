@@ -2,7 +2,7 @@ package com.bdxh.system.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.entity.Permission;
-import com.bdxh.system.helper.tree.utils.TreeLoopUtils;
+import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.system.helper.tree.vo.PermissionTreeVo;
 import com.bdxh.system.service.PermissionService;
 import io.swagger.annotations.Api;
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 

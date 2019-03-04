@@ -1,4 +1,4 @@
-package com.bdxh.system.helper.tree.bean;
+package com.bdxh.common.helper.tree.bean;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
