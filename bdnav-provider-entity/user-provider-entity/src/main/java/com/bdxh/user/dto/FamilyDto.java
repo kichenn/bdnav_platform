@@ -1,5 +1,6 @@
 package com.bdxh.user.dto;
 
+import com.bdxh.user.entity.Student;
 import io.swagger.annotations.ApiModelProperty;
 import  lombok.Data;
 
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class FamilyDto implements Serializable {
@@ -164,4 +166,9 @@ public class FamilyDto implements Serializable {
     @ApiModelProperty("备注")
     private String remark;
 
+    /**
+     * 家长绑定的学生集合
+     */
+    @ApiModelProperty("家长绑定的学生集合")
+    private List<Student> studentList;
 }
