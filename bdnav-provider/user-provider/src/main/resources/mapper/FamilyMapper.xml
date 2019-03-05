@@ -31,36 +31,18 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 
-<!-- 根据条件查询出家长信息展示页数据 -->
-  <select id="getByFamily" resultType="com.bdxh.user.vo.FamilyVo" parameterType="com.bdxh.user.dto.FamilyQueryDto">
-    SELECT
-    f.id ,
-    f.`name` AS fName,
-    f.gender AS fGender,
-    f.phone ,
-    f.image ,
-    f.birth ,
-    s.`name` AS sName,
-    s.gender AS sGender,
-    s.card_number AS cardNumber,
-    f.remark
-    FROM t_family AS f
-    LEFT JOIN  t_family_student AS  fs ON f.id=fs.family_id
-    LEFT JOIN t_student AS s ON fs.student_id = s.id
-    <where>
-    <if test="familyQueryDto.schoolId != null and familyQueryDto.schoolId!=''">
-     AND f.school_id=#{familyQueryDto.schoolId,jdbcType=BIGINT}
-    </if>
-    <if test="familyQueryDto.name != null and familyQueryDto.name!=''">
-      AND f.name LIKE  CONCAT(CONCAT('%', #{familyQueryDto.name,jdbcType=VARCHAR}), '%')
-    </if>
-    <if test="familyQueryDto.activate != null and familyQueryDto.activate!=''">
-      AND f.activate=#{familyQueryDto.activate,jdbcType=TINYINT}
-    </if>
-    <if test="familyQueryDto.stuName != null and familyQueryDto.stuName!=''">
-      AND s.`name` LIKE  CONCAT(CONCAT('%', #{familyQueryDto.stuName,jdbcType=VARCHAR}), '%');
-    </if>
-    </where>
-  </select>
+  <resultMap id="familyVoMap" type="com.bdxh.user.vo.FamilyVo">
+    <id column="id" property="id"/>
+    <result column="name" property="name"/>
+    <collection property="students" ofType="Student" column="id">
+      <id column="sid" property="id"/>
+      <result column="sname" property="name"/>
+      <result column="className" property="className"/>
+    </collection>
+  </resultMap>
+<!-- 根据条件查询出家长详细信息 -->
+ <select id="selectBysCodeAndCard" resultMap="familyVoMap">
+
+ </select>
 
 </mapper>

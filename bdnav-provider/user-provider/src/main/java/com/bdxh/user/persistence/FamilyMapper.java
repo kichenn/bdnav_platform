@@ -13,6 +13,5 @@ import java.util.List;
 @Repository
 public interface FamilyMapper extends Mapper<Family> {
 
-    List<FamilyVo> getByFamily(@Param("familyQueryDto") FamilyQueryDto familyQueryDto);
 
 }

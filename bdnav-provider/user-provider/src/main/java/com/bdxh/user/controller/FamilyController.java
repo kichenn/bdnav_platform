@@ -113,7 +113,7 @@ public class FamilyController {
      @RequestMapping(value ="/queryFamilyInfo",method = RequestMethod.POST)
      public Object queryFamilyInfo(@RequestParam(name = "id") @NotNull(message = "家长id不能为空")  Long id) {
          try {
-             return familyService.selectByKey(id);
+             return familyService.selectBysCodeAndCard(id);
          } catch (Exception e) {
              e.printStackTrace();
              return WrapMapper.error(e.getMessage());
