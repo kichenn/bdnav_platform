@@ -49,7 +49,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     @Transactional
     public void deleteStudentInfo(String id) {
-        studentMapper.deleteByPrimaryKey(id);
+        studentMapper.deleteByPrimaryKey(Long.parseLong(id));
         FamilyStudent familyStudent=new FamilyStudent();
         familyStudent.setFamilyId(Long.parseLong(id));
         familyStudentMapper.delete(familyStudent);
@@ -60,10 +60,15 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional
     public void deleteBatchesStudentInfo(String[] id) {
         for (int i=0; i<id.length; i++){
-            studentMapper.deleteByPrimaryKey(id);
+            studentMapper.deleteByPrimaryKey(Long.parseLong(id[i]));
             FamilyStudent familyStudent=new FamilyStudent();
             familyStudent.setFamilyId(Long.parseLong(id[i]));
             familyStudentMapper.delete(familyStudent);
         }
+    }
+
+    @Override
+    public Boolean saveStudentInfo(Student student) {
+        return studentMapper.insert(student)>0?true:false;
     }
 }
