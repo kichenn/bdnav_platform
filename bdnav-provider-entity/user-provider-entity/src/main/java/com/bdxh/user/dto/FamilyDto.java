@@ -166,9 +166,4 @@ public class FamilyDto implements Serializable {
     @ApiModelProperty("备注")
     private String remark;
 
-    /**
-     * 家长绑定的学生集合
-     */
-    @ApiModelProperty("家长绑定的学生集合")
-    private List<Student> studentList;
 }

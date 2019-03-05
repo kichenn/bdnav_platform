@@ -14,6 +14,7 @@ import com.bdxh.user.entity.Student;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Data
@@ -45,8 +46,13 @@ public class FamilyVo {
 
    //学生数据集合
     @ApiModelProperty("学生数据集合")
-    private List<Student> students;
+    private List<FamilyStudentVo> students;
+
     //备注
     @ApiModelProperty("备注")
     private String remark;
+
+    //创建时间
+    @ApiModelProperty("创建时间")
+    private String createDates;
 }
