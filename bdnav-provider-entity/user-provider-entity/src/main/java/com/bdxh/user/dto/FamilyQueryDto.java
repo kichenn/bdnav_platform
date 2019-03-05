@@ -10,6 +10,7 @@
  */
 package com.bdxh.user.dto;
 
+import io.swagger.annotations.Api;
 import lombok.Data;
 
 import com.bdxh.common.base.page.Query;
@@ -27,13 +28,13 @@ public class FamilyQueryDto extends Query implements Serializable {
      * 主键
      */
     @ApiModelProperty(value="家长id")
-    private Long id;
+    private Integer id;
 
     /**
      * 学校id
      */
     @ApiModelProperty("学校id")
-    private Long schoolId;
+    private Integer schoolId;
 
     /**
      * 学校编码
@@ -63,8 +64,10 @@ public class FamilyQueryDto extends Query implements Serializable {
      * 是否激活 1 未激活 2 激活
      */
     @ApiModelProperty("是否激活 1 未激活 2 激活")
-    private Byte activate;
+    private Integer activate;
 
+    @ApiModelProperty("学生姓名")
+    private String stuName;
 
 
 
