@@ -1,4 +1,4 @@
-package com.bdxh.system.helper.tree.vo;
+package com.bdxh.system.vo;
 
 import com.bdxh.common.helper.tree.bean.TreeBean;
 import io.swagger.annotations.ApiModelProperty;

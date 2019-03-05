@@ -5,7 +5,7 @@ import com.bdxh.system.dto.AddPermissionDto;
 import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
-import com.bdxh.system.helper.tree.vo.PermissionTreeVo;
+import com.bdxh.system.vo.PermissionTreeVo;
 import com.bdxh.system.service.PermissionService;
 import com.bdxh.system.service.RolePermissionService;
 import com.bdxh.system.service.impl.RolePermissionServiceImpl;
@@ -56,6 +56,7 @@ public class PermissionController {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
                 treeVo.setTitle(e.getName());
+                treeVo.setSort(e.getSort());
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
             });
@@ -110,7 +111,7 @@ public class PermissionController {
      * @Author: Kang
      * @Date: 2019/3/4 17:50
      */
-    @RequestMapping(value = "/delPermissionById", method = RequestMethod.POST)
+    @RequestMapping(value = "/delPermissionByRoleId", method = RequestMethod.POST)
     @ApiOperation(value = "角色删除所有权限", response = Boolean.class)
     @ResponseBody
     public Object delPermissionByRoleId(@RequestParam("roleId") Long roleId) {

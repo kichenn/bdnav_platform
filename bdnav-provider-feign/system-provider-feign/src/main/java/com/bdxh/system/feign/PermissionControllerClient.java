@@ -2,7 +2,6 @@ package com.bdxh.system.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.fallback.PermissionControllerClientFallback;
-import com.bdxh.system.fallback.UserControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;

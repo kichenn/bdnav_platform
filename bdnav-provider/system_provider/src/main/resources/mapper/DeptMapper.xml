@@ -30,7 +30,7 @@
       sys_dept
      <where>
       <if test="deptFullName !=null">
-        dept_full_name=#{deptFullName}
+        dept_full_name=LIKE '%'#{deptFullName} '%'
       </if>
      </where>
   </select>

@@ -8,15 +8,7 @@ import lombok.Data;
 public class DeptQueryDto extends Query {
 
 
-    /**
-     * 父级部门id
-     */
-    private Long parentId;
 
-    /**
-     * 父级部门ids
-     */
-    private String parentIds;
 
     /**
      * 部门名称

@@ -4,7 +4,7 @@ import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.system.helper.tree.vo.DeptTreeVo;
+import com.bdxh.system.vo.DeptTreeVo;
 import com.bdxh.system.dto.DeptDto;
 import com.bdxh.system.dto.DeptQueryDto;
 import com.bdxh.system.entity.Dept;
@@ -58,6 +58,7 @@ public class DeptController {
                 depts.stream().forEach(e -> {
                     DeptTreeVo treeVo= new DeptTreeVo();
                     treeVo.setTitle(e.getDeptFullName());
+                    treeVo.setSort(e.getSort());
                     BeanUtils.copyProperties(e, treeVo);
                     treeVos.add(treeVo);
                 });
