@@ -13,7 +13,7 @@ import javax.annotation.security.RolesAllowed;
 @RestController
 @RequestMapping("/temp")
 @Slf4j
-public class tempController {
+public class TempController {
 
     @DenyAll
 //    @SuppressWarnings({"USER"})
