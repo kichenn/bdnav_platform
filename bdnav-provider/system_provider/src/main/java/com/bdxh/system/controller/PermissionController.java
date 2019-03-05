@@ -110,7 +110,7 @@ public class PermissionController {
      * @Author: Kang
      * @Date: 2019/3/4 17:50
      */
-    @RequestMapping(value = "/delPermissionById", method = RequestMethod.POST)
+    @RequestMapping(value = "/delPermissionByRoleId", method = RequestMethod.POST)
     @ApiOperation(value = "角色删除所有权限", response = Boolean.class)
     @ResponseBody
     public Object delPermissionByRoleId(@RequestParam("roleId") Long roleId) {

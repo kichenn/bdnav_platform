@@ -1,4 +1,4 @@
-package com.bdxh.backend.controller;
+package com.bdxh.backend.controller.system;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 @Slf4j
 @Api(value = "系统部门交互API", tags = "系统部门交互API")
-public class sysDeptController {
+public class SysDeptController {
 
     @Autowired
     private DeptControllerClient deptControllerClient;
