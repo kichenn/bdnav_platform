@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -15,16 +16,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * @create: 2019-02-28 12:29
  **/
 @Service
-@FeignClient(value = "system-provider-cluster",fallback= UserControllerClientFallback.class)
+@FeignClient(value = "system-provider-cluster", fallback = UserControllerClientFallback.class)
 public interface UserControllerClient {
 
     /**
      * 根据用户名查询用户对象
+     *
      * @param userName
      * @return
      */
-    @RequestMapping(value = "/queryUserByUserName",method = RequestMethod.GET)
+    @RequestMapping(value = "/user/queryUserByUserName", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<User> queryUserByUserName(String userName);
+    Wrapper<User> queryUserByUserName(@RequestParam("userName") String userName);
 
 }

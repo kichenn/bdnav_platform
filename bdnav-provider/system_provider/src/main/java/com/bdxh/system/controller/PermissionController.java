@@ -46,7 +46,7 @@ public class PermissionController {
      * @Date: 2019/2/28 19:55
      */
     @RequestMapping(value = "/findPermissionByRoleId", method = RequestMethod.GET)
-    @ApiOperation(value = "角色id查询用户权限", response = List.class)
+    @ApiOperation(value = "角色id查询用户菜单or按钮权限", response = List.class)
     @ResponseBody
     public Object findPermissionByRoleId(@RequestParam("roleId") Long roleId, @RequestParam("type") Byte type) {
         List<Permission> permissions = permissionService.findPermissionByRoleId(roleId, type);
@@ -63,6 +63,14 @@ public class PermissionController {
         TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
         List<PermissionTreeVo> result = treeLoopUtils.getChild(new Long("1"), treeVos);
         return WrapMapper.ok(result);
+    }
+
+    @RequestMapping(value = "/permissionMenus", method = RequestMethod.GET)
+    @ApiOperation(value = "角色id查询用户菜单", response = List.class)
+    @ResponseBody
+    public Object permissionMenus(@RequestParam("roleId") Long roleId) {
+        List<String> permissions = permissionService.permissionMenus(roleId);
+        return WrapMapper.ok(permissions);
     }
 
     /**
@@ -117,5 +125,6 @@ public class PermissionController {
         List<Long> permissionIds = rolePermissionService.findPermissionIdByRoleId(roleId);
         return WrapMapper.ok(permissionService.batchDelPermission(permissionIds));
     }
+
 
 }

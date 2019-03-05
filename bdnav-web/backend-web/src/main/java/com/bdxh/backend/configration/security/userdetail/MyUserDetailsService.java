@@ -10,7 +10,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class MyUserDetailsService implements UserDetailsService {
             roles.forEach(role->authorities.add(new SimpleGrantedAuthority(role)));
         }
         //根据用户id查询权限列表
-        Wrapper<List<String>> permissionWrapper = permissionControllerClient.queryPermissionListByUserId(user.getId());
+        Wrapper<List<String>> permissionWrapper = permissionControllerClient.permissionMenus(user.getId());
         List<String> permissions = permissionWrapper.getResult();
         if (permissions!=null && !permissions.isEmpty()){
             permissions.forEach(permission->authorities.add(new SimpleGrantedAuthority(permission)));
@@ -61,17 +60,6 @@ public class MyUserDetailsService implements UserDetailsService {
         }
         MyUserDetails myUserDetails = new MyUserDetails(username,user.getPassword(),isAccountNonLocked,authorities,user);
         return myUserDetails;
-
-
-      /*  User user = new User();
-        user.setUserName("xuyuan");
-        user.setPassword(new BCryptPasswordEncoder().encode("123"));
-        user.setPhone("13946");
-        user.setRealName("徐圆");
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        MyUserDetails myUserDetails = new MyUserDetails(username,user.getPassword(),true,authorities,user);
-        return myUserDetails;*/
     }
 
 }
