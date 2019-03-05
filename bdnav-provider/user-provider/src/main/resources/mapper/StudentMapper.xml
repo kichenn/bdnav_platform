@@ -16,7 +16,7 @@
     <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
     <result column="class_name" jdbcType="VARCHAR" property="className" />
     <result column="class_id" jdbcType="BIGINT" property="classId" />
-    <result column="class_ids" jdbcType="BIGINT" property="classIds" />
+    <result column="class_ids" jdbcType="VARCHAR" property="classIds" />
     <result column="class_names" jdbcType="VARCHAR" property="classNames" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="gender" jdbcType="TINYINT" property="gender" />
@@ -39,5 +39,27 @@
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <resultMap id="StudentVoMap" type="com.bdxh.user.vo.StudentVo">
+    <id column="id" jdbcType="BIGINT" property="sId" />
+    <result column="sName" jdbcType="VARCHAR" property="sName" />
+    <result column="cardNumber" jdbcType="VARCHAR" property="cardNumber" />
+    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="birth" jdbcType="VARCHAR" property="birth" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="campusName" jdbcType="VARCHAR" property="campusName" />
+    <result column="collegeName" jdbcType="VARCHAR" property="collegeName" />
+    <result column="facultyName" jdbcType="VARCHAR" property="facultyName" />
+    <result column="professionName" jdbcType="VARCHAR" property="professionName" />
+    <result column="gradeName" jdbcType="VARCHAR" property="gradeName" />
+    <result column="fName" jdbcType="VARCHAR" property="fName" />
+    <result column="fPhone" jdbcType="VARCHAR" property="fPhone" />
+    <result column="relation" jdbcType="VARCHAR" property="relation" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="createDate" jdbcType="VARCHAR" property="createDate" />
+    <result column="className" jdbcType="VARCHAR" property="className" />
+    <result column="classId" jdbcType="BIGINT" property="classId" />
+    <result column="schoolCode" jdbcType="VARCHAR" property="schoolCode" />
   </resultMap>
 </mapper>
