@@ -72,7 +72,7 @@ spring:
           walletNotice:
             consumer:
               orderly: false
-              tags: app||js||query
+              tags: appmarket||js||query
           walletRecharge:
             consumer:
               orderly: false

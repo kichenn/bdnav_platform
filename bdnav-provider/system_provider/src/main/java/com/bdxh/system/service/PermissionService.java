@@ -13,16 +13,17 @@ import java.util.List;
 public interface PermissionService extends IService<Permission> {
 
     //角色id查询权限菜单
-    List<Permission> findPermissionByRoleId(Long roleId,Byte type);
+    List<Permission> findPermissionByRoleId(Long roleId, Byte type);
 
-    //父id查询节点信息
-    List<Permission> findPermissionByParentId(Long id);
+    //增加权限列表信息
+    Boolean addPermission(Permission permission);
 
-    /**
-     * 根据用户id查询权限列表
-     * @param userId
-     * @return
-     */
-    List<String> getPermissionListByUserId(Long userId);
+    //修改权限列表信息
+    Boolean modifyPermission(Permission permission);
 
+    //Id删除权限列表信息
+    Boolean delPermissionById(Long id);
+
+    //批量删除权限列表信息
+    Boolean batchDelPermission(List<Long> ids);
 }

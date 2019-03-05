@@ -1,0 +1,9 @@
+server:
+  port: 9025
+spring:
+  application:
+    name: appmarket-provider-cluster
+  profiles:
+    active: dev
+logging:
+  config: classpath:logback-spring.xml

@@ -32,7 +32,7 @@ public class TreeLoopUtils<E extends TreeBean> {
         for (E temp1 : childList) {
             if (LongUtils.isNotEmpty(temp1.getId())) {
                 // 递归
-                temp1.setTreeLists(getChild(temp1.getId(), rootMenu));
+                temp1.setChildren(getChild(temp1.getId(), rootMenu));
             }
         } // 递归退出条件
         if (childList.size() == 0) {

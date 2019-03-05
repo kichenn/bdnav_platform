@@ -1,10 +1,14 @@
 package com.bdxh.system.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.system.dto.AddPermissionDto;
+import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.system.helper.tree.vo.PermissionTreeVo;
 import com.bdxh.system.service.PermissionService;
+import com.bdxh.system.service.RolePermissionService;
+import com.bdxh.system.service.impl.RolePermissionServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,13 +37,16 @@ public class PermissionController {
     @Autowired
     private PermissionService permissionService;
 
+    @Autowired
+    private RolePermissionService rolePermissionService;
+
     /**
      * @Description: 角色id查询用户菜单or按钮权限
      * @Author: Kang
      * @Date: 2019/2/28 19:55
      */
     @RequestMapping(value = "/findPermissionByRoleId", method = RequestMethod.GET)
-    @ApiOperation(value = "角色id查询用户权限", response = Boolean.class)
+    @ApiOperation(value = "角色id查询用户权限", response = List.class)
     @ResponseBody
     public Object findPermissionByRoleId(@RequestParam("roleId") Long roleId, @RequestParam("type") Byte type) {
         List<Permission> permissions = permissionService.findPermissionByRoleId(roleId, type);
@@ -48,6 +55,7 @@ public class PermissionController {
         if (CollectionUtils.isNotEmpty(permissions)) {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
+                treeVo.setTitle(e.getName());
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
             });
@@ -65,8 +73,10 @@ public class PermissionController {
     @RequestMapping(value = "/addPermission", method = RequestMethod.POST)
     @ApiOperation(value = "新增用户权限", response = Boolean.class)
     @ResponseBody
-    public Object addPermission() {
-        return WrapMapper.ok();
+    public Object addPermission(@RequestBody AddPermissionDto dto) {
+        Permission permission = new Permission();
+        BeanUtils.copyProperties(dto, permission);
+        return WrapMapper.ok(permissionService.addPermission(permission));
     }
 
     /**
@@ -77,8 +87,10 @@ public class PermissionController {
     @RequestMapping(value = "/modifyPermission", method = RequestMethod.POST)
     @ApiOperation(value = "修改用户权限", response = Boolean.class)
     @ResponseBody
-    public Object modifyPermission() {
-        return WrapMapper.ok();
+    public Object modifyPermission(@RequestBody ModifyPermissionDto dto) {
+        Permission permission = new Permission();
+        BeanUtils.copyProperties(dto, permission);
+        return WrapMapper.ok(permissionService.modifyPermission(permission));
     }
 
     /**
@@ -89,25 +101,21 @@ public class PermissionController {
     @RequestMapping(value = "/delPermissionById", method = RequestMethod.POST)
     @ApiOperation(value = "删除用户权限", response = Boolean.class)
     @ResponseBody
-    public Object delPermission() {
-        return WrapMapper.ok();
+    public Object delPermissionId(@RequestParam("id") Long id) {
+        return WrapMapper.ok(permissionService.delPermissionById(id));
     }
 
-//    /**
-//     * 根据用户id查询角色列表
-//     * @param userId
-//     * @return
-//     */
-//    @ApiOperation("根据用户id查询角色列表")
-//    @RequestMapping(value = "/queryPermissionListByUserId",method = RequestMethod.GET)
-//    public Object queryPermissionListByUserId(@RequestParam(name = "userId") @NotNull(message = "用户id不能为空") Long userId){
-//        try {
-//            List<String> permissions = permissionService.getPermissionListByUserId(userId);
-//            return WrapMapper.ok(permissions);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//            return WrapMapper.error(e.getMessage());
-//        }
-//    }
+    /**
+     * @Description: 角色删除所有权限
+     * @Author: Kang
+     * @Date: 2019/3/4 17:50
+     */
+    @RequestMapping(value = "/delPermissionById", method = RequestMethod.POST)
+    @ApiOperation(value = "角色删除所有权限", response = Boolean.class)
+    @ResponseBody
+    public Object delPermissionByRoleId(@RequestParam("roleId") Long roleId) {
+        List<Long> permissionIds = rolePermissionService.findPermissionIdByRoleId(roleId);
+        return WrapMapper.ok(permissionService.batchDelPermission(permissionIds));
+    }
 
 }

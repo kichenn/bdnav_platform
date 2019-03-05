@@ -9,6 +9,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @Description: 角色权限关系service
  * @Author: Kang
@@ -27,6 +29,11 @@ public class RolePermissionServiceImpl extends BaseService<RolePermission> imple
         return rolePermissionMapper.insertSelective(rolePermission) > 0;
     }
 
+    //角色id查询所有权限id
+    @Override
+    public List<Long> findPermissionIdByRoleId(Long roleId) {
+        return rolePermissionMapper.findPermissionIdByRoleId(roleId);
+    }
 
     // 删除角色与权限关系
     @Override

@@ -1,0 +1,9 @@
+server:
+  port: 9026
+spring:
+  application:
+    name: account-provider-cluster
+  profiles:
+    active: dev
+logging:
+  config: classpath:logback-spring.xml
