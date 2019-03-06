@@ -13,4 +13,7 @@ public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
     //根据家长ID查询出关系表的数据
     @Select("select * from t_family_student where family_id =#{family_id}")
     List<FamilyStudent> getFamilyStudentByFamilyId(@Param("family_id") Long familyId);
+
+    //修改学生家长关系表的信息
+    int updateFamilyStudentInfo(FamilyStudent familyStudent);
 }

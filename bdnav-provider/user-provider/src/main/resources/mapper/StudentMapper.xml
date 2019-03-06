@@ -62,4 +62,5 @@
     <result column="classId" jdbcType="BIGINT" property="classId" />
     <result column="schoolCode" jdbcType="VARCHAR" property="schoolCode" />
   </resultMap>
+
 </mapper>
