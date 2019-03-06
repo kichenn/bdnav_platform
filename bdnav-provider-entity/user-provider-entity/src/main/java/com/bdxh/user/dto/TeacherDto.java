@@ -179,5 +179,9 @@ public class TeacherDto implements Serializable {
     @ApiModelProperty(value="备注")
     private String remark;
 
+    /**
+     * 老师部门关系表
+     */
+    @ApiModelProperty(value="老师部门关系表")
     private List<TeacherDeptDto> teacherDeptDtoList;
 }
