@@ -11,7 +11,10 @@
 package com.bdxh.user.controller;
 
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.user.configration.idgenerator.IdGeneratorConfigration;
+import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.user.dto.TeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.entity.Teacher;
@@ -45,9 +48,10 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
-            Teacher teacher = BeanMapUtils.map(teacherDto, Teacher.class);
-            Boolean result = teacherService.save(teacher) > 0 ;
-            return WrapMapper.ok(result);
+            IdGeneratorProperties idGeneratorProperties=new IdGeneratorProperties();
+            teacherDto.setId(new SnowflakeIdWorker(idGeneratorProperties.getWorkerId(),idGeneratorProperties.getDatacenterId()).nextId());
+            teacherService.saveTeacherDeptInfo(teacherDto)  ;
+            return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
