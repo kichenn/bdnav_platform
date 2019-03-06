@@ -24,8 +24,8 @@ public interface PermissionControllerClient {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/queryPermissionListByUserId",method = RequestMethod.GET)
+    @RequestMapping(value = "/permission/permissionMenus",method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<String>> queryPermissionListByUserId(Long userId);
+    Wrapper<List<String>> permissionMenus(Long userId);
 
 }

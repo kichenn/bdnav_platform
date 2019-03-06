@@ -33,16 +33,41 @@
 
   <resultMap id="familyVoMap" type="com.bdxh.user.vo.FamilyVo">
     <id column="id" property="id"/>
-    <result column="name" property="name"/>
-    <collection property="students" ofType="Student" column="id">
+    <result column="fName" property="fName"/>
+    <result column="fGender" property="fGender"/>
+    <result column="phone" property="phone"/>
+    <result column="image" property="image"/>
+    <result column="birth" property="birth"/>
+    <result column="remark" property="remark"/>
+    <result column="createDate" property="createDates"/>
+    <collection property="students" ofType="com.bdxh.user.vo.FamilyStudentVo" >
       <id column="sid" property="id"/>
-      <result column="sname" property="name"/>
-      <result column="className" property="className"/>
+      <result column="sName" property="sName"/>
+      <result column="fsId" property="fsId"/>
+      <result column="sGender" property="sGender"/>
+      <result column="cardNumber" property="cardNumber"/>
+      <result column="relation" property="relation"/>
     </collection>
   </resultMap>
 <!-- 根据条件查询出家长详细信息 -->
  <select id="selectBysCodeAndCard" resultMap="familyVoMap">
-
+SELECT
+ f.id,
+ f.`name` AS fName,
+ f.gender AS fGender,
+ f.phone,
+ f.image,
+ f.birth,
+ f.remark,
+ f.create_date as createDate,
+ fs.student_id AS sid,
+ fs.student_name AS sName,
+ fs.student_number AS cardNumber,
+ fs.id AS fsId,
+ fs.relation
+FROM t_family AS f
+LEFT JOIN t_family_student AS fs ON f.id = fs.family_id
+where f.school_code=#{schoolCode} and f.card_number=#{cardNumber}
  </select>
 
 </mapper>

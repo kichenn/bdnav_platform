@@ -115,12 +115,12 @@ public class UserController {
     @RequestMapping(value = "/delBatchUser", method = RequestMethod.POST)
     public Object delBatchUser(@RequestParam(name = "ids") @NotNull(message = "用户ids不能为空") String ids) {
         try {
-            String[] idsArr = StringUtils.split(ids,",");
+            String[] idsArr = StringUtils.split(ids, ",");
             List<Long> idsLongArr = new ArrayList<>(15);
-            if (idsArr!=null&&idsArr.length>0){
-                for (int i=0;i<idsArr.length;i++){
+            if (idsArr != null && idsArr.length > 0) {
+                for (int i = 0; i < idsArr.length; i++) {
                     String id = idsArr[i];
-                    if (StringUtils.isNotEmpty(id)){
+                    if (StringUtils.isNotEmpty(id)) {
                         idsLongArr.add(Long.valueOf(id));
                     }
                 }
@@ -189,5 +189,11 @@ public class UserController {
         }
     }
 
+    @ApiOperation("用户名称查询用户信息")
+    @RequestMapping(value = "/queryUserByUserName", method = RequestMethod.GET)
+    @ResponseBody
+    public Object queryUserByUserName(@RequestParam("userName") String userName) {
+        return WrapMapper.ok(userService.getByUserName(userName));
+    }
 
 }

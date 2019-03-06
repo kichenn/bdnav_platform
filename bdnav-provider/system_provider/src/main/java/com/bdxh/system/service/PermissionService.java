@@ -12,8 +12,11 @@ import java.util.List;
  */
 public interface PermissionService extends IService<Permission> {
 
-    //角色id查询权限菜单
+    //角色id查询权限菜单or按钮
     List<Permission> findPermissionByRoleId(Long roleId, Byte type);
+
+    //角色id查询权限菜单
+    List<String> permissionMenus(Long roleId);
 
     //增加权限列表信息
     Boolean addPermission(Permission permission);

@@ -43,11 +43,10 @@ private FamilyStudentService familyStudentService;
         PageInfo<Family> pageInfoFamily = new PageInfo<Family>(listFamily);
         return pageInfoFamily;
     }
-
     @Override
     @Transactional
     public void deleteFamilyInfo(String id) {
-            familyMapper.deleteByPrimaryKey(id);
+            familyMapper.deleteByPrimaryKey(Long.parseLong(id));
             FamilyStudent familyStudent=new FamilyStudent();
             familyStudent.setFamilyId(Long.parseLong(id));
             familyStudentService.delete(familyStudent);
@@ -57,7 +56,7 @@ private FamilyStudentService familyStudentService;
     @Transactional
     public void deleteBatchesFamilyInfo(String id[]) {
         for (int i = 0; i < id.length; i++) {
-            familyMapper.deleteByPrimaryKey(id[i]);
+            familyMapper.deleteByPrimaryKey(Long.parseLong(id[i]));
             FamilyStudent familyStudent=new FamilyStudent();
             familyStudent.setFamilyId(Long.parseLong(id[i]));
             familyStudentService.delete(familyStudent);
@@ -65,30 +64,9 @@ private FamilyStudentService familyStudentService;
     }
 
     @Override
-    @Transactional
-    public void updateFamilyAndStudent(FamilyDto familyDto){
-     /*   Family family = BeanMapUtils.map(familyDto, Family.class);
-        familyMapper.updateByPrimaryKey(family);
-        List<FamilyStudent> familyStudentList=familyStudentService.getFamilyStudentByFamilyId(family.getId());
-        for (int i = 0; i < familyStudentList.size(); i++) {
-            Student student=familyDto.getStudentList().get(i);
-            FamilyStudent familyStudent=new FamilyStudent();
-            familyStudent.setId(familyStudentList.get(i).getId());
-        }*/
-    }
-
-    @Override
-    @Transactional
-    public void saveFamilyAndStudent(FamilyDto familyDto) {
-/*        Family family = BeanMapUtils.map(familyDto, Family.class);
-        familyMapper.insert(family);
-        */
-    }
-
-    @Override
     public FamilyVo selectBysCodeAndCard(Long id) {
         Family family=familyMapper.selectByPrimaryKey(id);
-
-        return null;
+        FamilyVo familyVo=familyMapper.selectBysCodeAndCard(family.getSchoolCode(),family.getCardNumber());
+        return familyVo;
     }
 }

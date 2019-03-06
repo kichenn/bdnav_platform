@@ -94,7 +94,7 @@ public class StudentDto implements Serializable {
      */
     @ApiModelProperty(value="组织架构ids")
     @NotNull(message = "组织架构ids不能为空")
-    private Long classIds;
+    private String classIds;
 
     /**
      * 组织架构名称names

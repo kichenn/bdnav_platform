@@ -7,6 +7,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -25,8 +26,8 @@ public interface RoleControllerClient {
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/queryRoleListByUserId",method = RequestMethod.GET)
+    @RequestMapping(value = "/role/queryRoleListByUserId",method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<String>> queryRoleListByUserId(Long userId);
+    Wrapper<List<String>> queryRoleListByUserId(@RequestParam("userId") Long userId);
 
 }

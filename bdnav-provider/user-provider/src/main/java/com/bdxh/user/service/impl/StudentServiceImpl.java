@@ -11,6 +11,7 @@ import com.bdxh.user.entity.Student;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.persistence.StudentMapper;
 import com.bdxh.user.service.StudentService;
+import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -67,8 +68,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         }
     }
 
-    @Override
-    public Boolean saveStudentInfo(Student student) {
-        return studentMapper.insert(student)>0?true:false;
-    }
+   /* @Override
+    public StudentVo selectStudentVo(Long id) {
+        Student student=studentMapper.selectByPrimaryKey(id);
+        return studentMapper.selectStudentVo(student.getSchoolCode(),student.getCardNumber());
+    }*/
 }
