@@ -4,6 +4,7 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.common.web.support.IService;
+import com.bdxh.user.dto.StudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyStudent;
@@ -68,9 +69,16 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         }
     }
 
-   /* @Override
-    public StudentVo selectStudentVo(Long id) {
-        Student student=studentMapper.selectByPrimaryKey(id);
-        return studentMapper.selectStudentVo(student.getSchoolCode(),student.getCardNumber());
-    }*/
+    @Override
+    @Transactional
+    public void updateStudentInfo(Student student) {
+        studentMapper.updateByPrimaryKey(student);
+        FamilyStudent familyStudent=new FamilyStudent();
+        familyStudent.setStudentId(student.getId());
+        familyStudent=familyStudentMapper.selectOne(familyStudent);
+        if(!student.getName().equals(familyStudent.getStudentName())){
+            familyStudent.setStudentName(student.getName());
+            familyStudentMapper.updateByPrimaryKey(familyStudent);
+        }
+    }
 }

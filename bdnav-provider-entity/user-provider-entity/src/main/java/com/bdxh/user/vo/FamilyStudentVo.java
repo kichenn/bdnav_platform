@@ -15,7 +15,7 @@ import io.swagger.annotations.ApiModelProperty;
 public class FamilyStudentVo {
 
     @ApiModelProperty("学生ID")
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty("学生姓名")
     private String sName;

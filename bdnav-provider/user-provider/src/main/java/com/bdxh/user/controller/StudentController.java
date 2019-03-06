@@ -95,7 +95,7 @@ public class StudentController {
         }
         try {
             Student student = BeanMapUtils.map(studentDto, Student.class);
-            studentService.update(student);
+            studentService.updateStudentInfo(student);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();

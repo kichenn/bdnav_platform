@@ -20,4 +20,20 @@
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  <update id="updateFamilyStudentInfo" >
+   UPDATE
+   `bdxh_user`.`t_family_student`
+   SET
+   `id`='1',
+   `school_id`='1',
+   `school_code`='001',
+   `card_number`='001001001',
+   `family_id`='1',
+   `student_name`='张三',
+   `update_date`=NOW(),
+   `operator`=NULL,
+   `operator_name`=NULL,
+   `remark`=NULL WHERE (`student_id`='552572960829865984');
+
+  </update>
 </mapper>

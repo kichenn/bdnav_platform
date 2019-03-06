@@ -1,6 +1,7 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.web.support.IService;
+import com.bdxh.user.dto.StudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.vo.StudentVo;
@@ -37,6 +38,12 @@ public interface StudentService extends IService<Student> {
      **/
     void deleteBatchesStudentInfo(String id[]);
 
-
-   /* StudentVo selectStudentVo(Long id);*/
+/**
+ * @Author： binzh
+ * @Description： //修改学生信息如果修改了名字则修改关系表学生名称
+ * @Date： 9:41 2019/3/6
+ * @Param： [studentDto]
+ * @return： void
+ **/
+   void updateStudentInfo(Student student);
 }
