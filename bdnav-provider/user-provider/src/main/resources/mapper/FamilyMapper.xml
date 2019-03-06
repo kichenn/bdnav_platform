@@ -60,10 +60,9 @@ SELECT
  f.birth,
  f.remark,
  f.create_date as createDate,
- s.id AS sid,
- s.`name` AS sName,
- s.gender AS sGender,
- s.card_number AS cardNumber,
+ fs.student_id AS sid,
+ fs.student_name AS sName,
+ fs.student_number AS cardNumber,
  fs.id AS fsId,
  fs.relation
 FROM t_family AS f
