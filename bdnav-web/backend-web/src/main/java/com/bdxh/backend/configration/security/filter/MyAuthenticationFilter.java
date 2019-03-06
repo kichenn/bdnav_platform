@@ -107,7 +107,6 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
                 return;
             }
-
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }
