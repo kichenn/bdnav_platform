@@ -42,23 +42,6 @@ public interface FamilyService extends IService<Family> {
 
     void deleteFamilyInfo(String id);
 
-    /**
-     * @Author： binzh
-     * @Description： 修改家长信息已经学生绑定孩子信息
-     * @Date： 17:50 2019/3/4
-     * @Param： [familyDto]
-     * @return： void
-     **/
-     void updateFamilyAndStudent(FamilyDto familyDto);
-
-     /**
-      * @Author： binzh
-      * @Description： //新增家长信息绑定孩子
-      * @Date： 18:40 2019/3/4
-      * @Param： [familyDto]
-      * @return： void
-      **/
-     void saveFamilyAndStudent(FamilyDto familyDto);
 
      /**
       * @Author： binzh

@@ -13,5 +13,5 @@ import java.util.List;
 @Repository
 public interface FamilyMapper extends Mapper<Family> {
 
-
+    FamilyVo selectBysCodeAndCard(@Param("schoolCode") String schoolCode,@Param("cardNumber") String cardNumber);
 }

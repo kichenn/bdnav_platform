@@ -1,8 +1,10 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.web.support.IService;
+import com.bdxh.user.dto.StudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -35,12 +37,13 @@ public interface StudentService extends IService<Student> {
      * @return： void
      **/
     void deleteBatchesStudentInfo(String id[]);
-    /**
-     * @Author： binzh
-     * @Description： 新增学生信息
-     * @Date： 16:15 2019/3/4
-     * @Param： [student]
-     * @return： java.lang.Boolean
-     **/
-    Boolean saveStudentInfo(Student student);
+
+/**
+ * @Author： binzh
+ * @Description： //修改学生信息如果修改了名字则修改关系表学生名称
+ * @Date： 9:41 2019/3/6
+ * @Param： [studentDto]
+ * @return： void
+ **/
+   void updateStudentInfo(Student student);
 }

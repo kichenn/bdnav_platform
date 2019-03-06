@@ -23,98 +23,84 @@ public class StudentDto implements Serializable {
      * 学校id
      */
     @ApiModelProperty(value="学校id")
-    @NotNull(message = "学校id不能为空")
     private Long schoolId;
 
     /**
      * 学校编码
      */
     @ApiModelProperty(value="学校编码")
-    @NotNull(message = "学校编码不能为空")
     private String schoolCode;
 
     /**
      * 学校名称
      */
     @ApiModelProperty(value="学校名称")
-    @NotNull(message = "学校名称不能为空")
     private String schoolName;
 
     /**
      * 校区名称
      */
     @ApiModelProperty(value="校区名称")
-    @NotNull(message = "校区名称不能为空")
     private String campusName;
 
     /**
      * 学院名称
      */
     @ApiModelProperty(value="学院名称")
-    @NotNull(message = "学院名称不能为空")
     private String collegeName;
 
     /**
      * 系名称
      */
     @ApiModelProperty(value="系名称")
-    @NotNull(message = "系名称不能为空")
     private String facultyName;
 
     /**
      * 专业名称
      */
     @ApiModelProperty(value="专业名称")
-    @NotNull(message = "专业名称不能为空")
     private String professionName;
 
     /**
      * 年级名称
      */
     @ApiModelProperty(value="年级名称")
-    @NotNull(message = "年级名称不能为空")
     private String gradeName;
 
     /**
      * 班级名称
      */
     @ApiModelProperty(value="班级名称")
-    @NotNull(message = "班级名称不能为空")
     private String className;
 
     /**
      * 班级id
      */
     @ApiModelProperty(value="班级id")
-    @NotNull(message = "班级id不能为空")
     private Long classId;
 
     /**
      * 组织架构ids
      */
     @ApiModelProperty(value="组织架构ids")
-    @NotNull(message = "组织架构ids不能为空")
-    private Long classIds;
+    private String classIds;
 
     /**
      * 组织架构名称names
      */
     @ApiModelProperty(value="组织架构名称names")
-    @NotNull(message = "组织架构名称names不能为空")
     private String classNames;
 
     /**
      * 学生姓名
      */
     @ApiModelProperty(value="学生姓名")
-    @NotNull(message = "学生姓名不能为空")
     private String name;
 
     /**
      * 学生性别
      */
     @ApiModelProperty(value="学生性别")
-    @NotNull(message = "学生性别不能为空")
     private Byte gender;
 
     /**
@@ -127,21 +113,18 @@ public class StudentDto implements Serializable {
      * 手机号
      */
     @ApiModelProperty(value="手机号")
-    @NotNull(message = "手机号不能为空")
     private String phone;
 
     /**
      * 学号
      */
     @ApiModelProperty(value="学号")
-    @NotNull(message = "学号不能为空")
     private String cardNumber;
 
     /**
      * 身份证号
      */
     @ApiModelProperty(value="学生份证号")
-    @NotNull(message = "身份证号不能为空")
     private String idcard;
 
     /**
@@ -166,7 +149,6 @@ public class StudentDto implements Serializable {
      * 图像
      */
     @ApiModelProperty(value="学生用户头像")
-    @NotNull(message = "头像不能为空")
     private String image;
 
     /**
@@ -209,7 +191,6 @@ public class StudentDto implements Serializable {
      * 创建日期
      */
     @ApiModelProperty(value="创建日期")
-    @Column(name = "create_date")
     private Date createDate;
 
     /**

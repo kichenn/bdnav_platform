@@ -52,8 +52,8 @@ public class StudentController {
             Student student = BeanMapUtils.map(studentDto, Student.class);
             IdGeneratorProperties idGeneratorProperties=new IdGeneratorProperties();
             student.setId(new SnowflakeIdWorker(idGeneratorProperties.getWorkerId(),idGeneratorProperties.getDatacenterId()).nextId());
-            Boolean result = studentService.saveStudentInfo(student) ;
-            return WrapMapper.ok(result);
+           studentService.save(student);
+            return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -95,7 +95,7 @@ public class StudentController {
         }
         try {
             Student student = BeanMapUtils.map(studentDto, Student.class);
-            studentService.update(student);
+            studentService.updateStudentInfo(student);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,7 +112,8 @@ public class StudentController {
     @RequestMapping(value ="/queryStudentInfo",method = RequestMethod.POST)
     public Object queryStudentInfo(@RequestParam(name = "id") @NotNull(message = "学生id不能为空")  Long id) {
         try {
-                return studentService.selectByKey(id);
+               /* return studentService.selectStudentVo(id);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

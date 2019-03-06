@@ -81,7 +81,7 @@ public class Student implements Serializable {
      * 组织架构ids
      */
     @Column(name = "class_ids")
-    private Long classIds;
+    private String classIds;
 
     /**
      * 组织架构名称names
@@ -407,7 +407,7 @@ public class Student implements Serializable {
      *
      * @return class_ids - 组织架构ids
      */
-    public Long getClassIds() {
+    public String getClassIds() {
         return classIds;
     }
 
@@ -416,7 +416,7 @@ public class Student implements Serializable {
      *
      * @param classIds 组织架构ids
      */
-    public void setClassIds(Long classIds) {
+    public void setClassIds(String classIds) {
         this.classIds = classIds;
     }
 

@@ -4,6 +4,7 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.common.web.support.IService;
+import com.bdxh.user.dto.StudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyStudent;
@@ -11,6 +12,7 @@ import com.bdxh.user.entity.Student;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.persistence.StudentMapper;
 import com.bdxh.user.service.StudentService;
+import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +70,15 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     }
 
     @Override
-    public Boolean saveStudentInfo(Student student) {
-        return studentMapper.insert(student)>0?true:false;
+    @Transactional
+    public void updateStudentInfo(Student student) {
+        studentMapper.updateByPrimaryKey(student);
+        FamilyStudent familyStudent=new FamilyStudent();
+        familyStudent.setStudentId(student.getId());
+        familyStudent=familyStudentMapper.selectOne(familyStudent);
+        if(!student.getName().equals(familyStudent.getStudentName())){
+            familyStudent.setStudentName(student.getName());
+            familyStudentMapper.updateByPrimaryKey(familyStudent);
+        }
     }
 }
