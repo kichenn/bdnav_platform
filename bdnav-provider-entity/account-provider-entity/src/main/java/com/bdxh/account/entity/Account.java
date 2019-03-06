@@ -9,7 +9,7 @@ import java.util.Date;
 @Table(name = "t_account")
 public class Account implements Serializable {
 
-    private static final long serialVersionUID = -3483930274977651219L;
+    private static final long serialVersionUID = 2302357156943235557L;
 
     /**
      * 主键
@@ -30,39 +30,63 @@ public class Account implements Serializable {
     private String schoolName;
 
     /**
-     * 学生id
+     * 用户类型 1 学生 2 老师 3 家长
      */
-    @Column(name = "student_id")
-    private Long studentId;
+    @Column(name = "user_type")
+    private Byte userType;
 
     /**
-     * 学生姓名
+     * 用户信息id
      */
-    @Column(name = "student_name")
-    private String studentName;
+    @Column(name = "user_id")
+    private Long userId;
 
     /**
-     * 学生学号
-     */
-    @Column(name = "student_number")
-    private String studentNumber;
-
-    /**
-     * 学生手机号
-     */
-    @Column(name = "student_phone")
-    private String studentPhone;
-
-    /**
-     * 用户名
+     * 用户姓名
      */
     @Column(name = "user_name")
     private String userName;
 
     /**
+     * 用户手机号
+     */
+    @Column(name = "user_phone")
+    private String userPhone;
+
+    /**
+     * 用户学号
+     */
+    @Column(name = "card_number")
+    private String cardNumber;
+
+    /**
+     * 用户登录名
+     */
+    @Column(name = "login_name")
+    private String loginName;
+
+    /**
+     * 修改登录名 1 未修改 2 已修改
+     */
+    @Column(name = "login_name_update")
+    private Byte loginNameUpdate;
+
+    /**
      * 密码
      */
     private String password;
+
+    /**
+     * 账户是否过期 1 正常 2 过期
+     */
+    @Column(name = "account_expired")
+    private Byte accountExpired;
+
+    /**
+     * 账户是否锁定 1 正常 2 锁定
+     */
+    @Column(name = "account_locked")
+    private Byte accountLocked;
 
     /**
      * 创建时间
@@ -131,93 +155,129 @@ public class Account implements Serializable {
     }
 
     /**
-     * 获取学生id
+     * 获取用户类型 1 学生 2 老师 3 家长
      *
-     * @return student_id - 学生id
+     * @return user_type - 用户类型 1 学生 2 老师 3 家长
      */
-    public Long getStudentId() {
-        return studentId;
+    public Byte getUserType() {
+        return userType;
     }
 
     /**
-     * 设置学生id
+     * 设置用户类型 1 学生 2 老师 3 家长
      *
-     * @param studentId 学生id
+     * @param userType 用户类型 1 学生 2 老师 3 家长
      */
-    public void setStudentId(Long studentId) {
-        this.studentId = studentId;
+    public void setUserType(Byte userType) {
+        this.userType = userType;
     }
 
     /**
-     * 获取学生姓名
+     * 获取用户信息id
      *
-     * @return student_name - 学生姓名
+     * @return user_id - 用户信息id
      */
-    public String getStudentName() {
-        return studentName;
+    public Long getUserId() {
+        return userId;
     }
 
     /**
-     * 设置学生姓名
+     * 设置用户信息id
      *
-     * @param studentName 学生姓名
+     * @param userId 用户信息id
      */
-    public void setStudentName(String studentName) {
-        this.studentName = studentName == null ? null : studentName.trim();
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     /**
-     * 获取学生学号
+     * 获取用户姓名
      *
-     * @return student_number - 学生学号
-     */
-    public String getStudentNumber() {
-        return studentNumber;
-    }
-
-    /**
-     * 设置学生学号
-     *
-     * @param studentNumber 学生学号
-     */
-    public void setStudentNumber(String studentNumber) {
-        this.studentNumber = studentNumber == null ? null : studentNumber.trim();
-    }
-
-    /**
-     * 获取学生手机号
-     *
-     * @return student_phone - 学生手机号
-     */
-    public String getStudentPhone() {
-        return studentPhone;
-    }
-
-    /**
-     * 设置学生手机号
-     *
-     * @param studentPhone 学生手机号
-     */
-    public void setStudentPhone(String studentPhone) {
-        this.studentPhone = studentPhone == null ? null : studentPhone.trim();
-    }
-
-    /**
-     * 获取用户名
-     *
-     * @return user_name - 用户名
+     * @return user_name - 用户姓名
      */
     public String getUserName() {
         return userName;
     }
 
     /**
-     * 设置用户名
+     * 设置用户姓名
      *
-     * @param userName 用户名
+     * @param userName 用户姓名
      */
     public void setUserName(String userName) {
         this.userName = userName == null ? null : userName.trim();
+    }
+
+    /**
+     * 获取用户手机号
+     *
+     * @return user_phone - 用户手机号
+     */
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    /**
+     * 设置用户手机号
+     *
+     * @param userPhone 用户手机号
+     */
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone == null ? null : userPhone.trim();
+    }
+
+    /**
+     * 获取用户学号
+     *
+     * @return card_number - 用户学号
+     */
+    public String getCardNumber() {
+        return cardNumber;
+    }
+
+    /**
+     * 设置用户学号
+     *
+     * @param cardNumber 用户学号
+     */
+    public void setCardNumber(String cardNumber) {
+        this.cardNumber = cardNumber == null ? null : cardNumber.trim();
+    }
+
+    /**
+     * 获取用户登录名
+     *
+     * @return login_name - 用户登录名
+     */
+    public String getLoginName() {
+        return loginName;
+    }
+
+    /**
+     * 设置用户登录名
+     *
+     * @param loginName 用户登录名
+     */
+    public void setLoginName(String loginName) {
+        this.loginName = loginName == null ? null : loginName.trim();
+    }
+
+    /**
+     * 获取修改登录名 1 未修改 2 已修改
+     *
+     * @return login_name_update - 修改登录名 1 未修改 2 已修改
+     */
+    public Byte getLoginNameUpdate() {
+        return loginNameUpdate;
+    }
+
+    /**
+     * 设置修改登录名 1 未修改 2 已修改
+     *
+     * @param loginNameUpdate 修改登录名 1 未修改 2 已修改
+     */
+    public void setLoginNameUpdate(Byte loginNameUpdate) {
+        this.loginNameUpdate = loginNameUpdate;
     }
 
     /**
@@ -236,6 +296,42 @@ public class Account implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password == null ? null : password.trim();
+    }
+
+    /**
+     * 获取账户是否过期 1 正常 2 过期
+     *
+     * @return account_expired - 账户是否过期 1 正常 2 过期
+     */
+    public Byte getAccountExpired() {
+        return accountExpired;
+    }
+
+    /**
+     * 设置账户是否过期 1 正常 2 过期
+     *
+     * @param accountExpired 账户是否过期 1 正常 2 过期
+     */
+    public void setAccountExpired(Byte accountExpired) {
+        this.accountExpired = accountExpired;
+    }
+
+    /**
+     * 获取账户是否锁定 1 正常 2 锁定
+     *
+     * @return account_locked - 账户是否锁定 1 正常 2 锁定
+     */
+    public Byte getAccountLocked() {
+        return accountLocked;
+    }
+
+    /**
+     * 设置账户是否锁定 1 正常 2 锁定
+     *
+     * @param accountLocked 账户是否锁定 1 正常 2 锁定
+     */
+    public void setAccountLocked(Byte accountLocked) {
+        this.accountLocked = accountLocked;
     }
 
     /**

@@ -18,4 +18,35 @@
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+
+  <sql id="BaseCloumns">
+    id, category_id, app_name, app_package, app_icon, app_desc, status, create_date, update_date, operator, operator_name, remark
+  </sql>
+
+  <select id="isCategoryAppExist" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    select 1 from t_app where category_id = #{categoryId} limit 1;
+  </select>
+
+  <select id="isAppExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+    select 1 from t_app where app_package = #{appPackage} limit 1;
+  </select>
+
+  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select <include refid="BaseCloumns"/> from t_app
+    <where>
+      <if test="categoryId!=null">
+        and category_id = #{categoryId}
+      </if>
+      <if test="appName!= null and appName!=''">
+        and app_name = #{appName}
+      </if>
+      <if test="appPackage!=null and appPackage!=''">
+        and app_package = #{appPackage}
+      </if>
+      <if test="status!=null">
+        and status = #{status}
+      </if>
+    </where>
+  </select>
+
 </mapper>
