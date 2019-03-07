@@ -1,16 +1,10 @@
 package com.bdxh.account.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "t_account")
-public class Account implements Serializable {
-
-    private static final long serialVersionUID = 2302357156943235557L;
-
+public class Account {
     /**
      * 主键
      */

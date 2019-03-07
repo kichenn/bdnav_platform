@@ -10,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class TeacherDto implements Serializable {
@@ -26,42 +27,36 @@ public class TeacherDto implements Serializable {
      * 学校id
      */
     @ApiModelProperty(value="学校ID")
-    @NotNull(message = "学校id不能为空")
     private Long schoolId;
 
     /**
      * 学校编码
      */
     @ApiModelProperty(value="学校编码")
-    @NotNull(message = "学校编码不能为空")
     private String schoolCode;
 
     /**
      * 学校名称
      */
     @ApiModelProperty(value="学校名称")
-    @NotNull(message = "学校名称不能为空")
     private String schoolName;
 
     /**
      * 校区名称
      */
     @ApiModelProperty(value="校区名称")
-    @NotNull(message = "校区名称不能为空")
     private String campusName;
 
     /**
      * 老师姓名
      */
     @ApiModelProperty(value="老师姓名")
-    @NotNull(message = "老师姓名不能为空")
     private String name;
 
     /**
      * 老师性别
      */
     @ApiModelProperty(value="老师性别")
-    @NotNull(message = "老师性别不能为空")
     private Byte gender;
 
     /**
@@ -80,14 +75,12 @@ public class TeacherDto implements Serializable {
      * 手机号
      */
     @ApiModelProperty(value="手机号")
-    @NotNull(message = "手机号不能为空")
     private String phone;
 
     /**
      * 工号
      */
     @ApiModelProperty(value="工号")
-    @NotNull(message = "工号不能为空")
     private String cardNumber;
 
     /**
@@ -118,7 +111,6 @@ public class TeacherDto implements Serializable {
      * 图像
      */
     @ApiModelProperty(value="图像")
-    @NotNull(message = "图像不能为空")
     private String image;
 
     /**
@@ -187,5 +179,9 @@ public class TeacherDto implements Serializable {
     @ApiModelProperty(value="备注")
     private String remark;
 
-
+    /**
+     * 老师部门关系表
+     */
+    @ApiModelProperty(value="老师部门关系表")
+    private List<TeacherDeptDto> teacherDeptDtoList;
 }
