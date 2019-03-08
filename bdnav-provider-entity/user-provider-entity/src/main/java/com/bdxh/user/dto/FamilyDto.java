@@ -26,7 +26,6 @@ public class FamilyDto implements Serializable {
      * 学校id
      */
     @ApiModelProperty("学校id")
-    @NotNull(message ="学校id不能为空")
     private Long schoolId;
 
     /**
@@ -40,21 +39,18 @@ public class FamilyDto implements Serializable {
      * 学校名称
      */
     @ApiModelProperty("学校名称")
-    @NotBlank(message ="学校名称不能为空")
     private String schoolName;
 
     /**
      * 家长姓名
      */
     @ApiModelProperty("家长姓名")
-    @NotBlank(message ="家长姓名不能为空")
     private String name;
 
     /**
      * 家长性别
      */
     @ApiModelProperty("家长性别")
-    @NotNull(message ="家长性别不能为空")
     private Byte gender;
 
     /**
@@ -80,7 +76,7 @@ public class FamilyDto implements Serializable {
      * 身份证号
      */
     @ApiModelProperty("身份证号")
-    private String idcard;
+    private String idCard;
 
     /**
      * qq号
