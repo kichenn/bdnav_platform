@@ -44,6 +44,7 @@ public class SecurityController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
@@ -78,7 +79,7 @@ public class SecurityController {
             Wrapper wrapper = WrapMapper.ok(token);
             String str = JSON.toJSONString(wrapper);
             response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setStatus(401);
+            response.setStatus(200);
             response.setHeader("Content-type", "application/json; charset=UTF-8");
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json;charset=utf-8");
