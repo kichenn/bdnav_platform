@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration  scan="true" scanPeriod="60 seconds">
     <contextName>logback</contextName>
-    <property name="log.path" value="/opt/logs/backend-web"/>
+    <property name="log.path" value="/opt/logs/app-web"/>
     <!-- spring框架日志 -->
-    <logger name="org.springframework" level="WARN" />
+    <logger name="org.springframework" level="INFO" />
     <!-- apache组件日志 -->
     <logger name="org.apache" level="WARN" />
     <!-- dozer日志 -->

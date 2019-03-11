@@ -50,7 +50,6 @@
     <modules>
         <module>bdnav-common</module>
         <module>bdnav-monitor</module>
-        <module>bdnav-generator</module>
         <module>bdnav-provider-entity</module>
         <module>bdnav-provider</module>
         <module>bdnav-config-server</module>

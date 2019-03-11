@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>backend-web</artifactId>
+    <artifactId>app-web</artifactId>
 
     <dependencies>
         <dependency>
@@ -64,6 +64,11 @@
             <version>2.3.2.RELEASE</version>
         </dependency>
         <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-jwt</artifactId>
+            <version>1.0.9.RELEASE</version>
+        </dependency>
+        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
         </dependency>
@@ -97,7 +102,7 @@
                             <addClasspath>true</addClasspath>
                             <useUniqueVersions>false</useUniqueVersions>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.bdxh.backend.BackendWebApplication</mainClass>
+                            <mainClass>com.bdxh.app.AppWebApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -129,7 +134,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>backend-web</finalName>
+        <finalName>app-web</finalName>
     </build>
 
 </project>
