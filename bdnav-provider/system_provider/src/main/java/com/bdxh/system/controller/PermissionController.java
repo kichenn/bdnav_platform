@@ -56,6 +56,7 @@ public class PermissionController {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
                 treeVo.setTitle(e.getName());
+                treeVo.setCreateDate(e.getCreateDate());
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
             });
