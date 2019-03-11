@@ -19,8 +19,8 @@ public class PermissionTreeVo extends TreeBean {
     @ApiModelProperty("前端组件")
     private String component;
 
-    @ApiModelProperty("排序")
-    private Integer sort;
+//    @ApiModelProperty("排序")
+//    private Integer sort;
 
     @ApiModelProperty("类型 1 菜单 2 按钮")
     private Byte type;

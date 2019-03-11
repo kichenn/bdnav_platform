@@ -61,7 +61,7 @@ public class PermissionController {
             });
         }
         TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
-        List<PermissionTreeVo> result = treeLoopUtils.getChild(new Long("1"), treeVos);
+        List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
         return WrapMapper.ok(result);
     }
 
