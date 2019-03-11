@@ -7,6 +7,7 @@ import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.user.dto.TeacherDeptDto;
 import com.bdxh.user.dto.TeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
+import com.bdxh.user.entity.Student;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.persistence.TeacherDeptMapper;
@@ -106,8 +107,10 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     public void updateTeacherInfo(TeacherDto teacherDto) {
         teacherMapper.updateTeacher(teacherDto);
+            teacherDeptMapper.deleteTeacherDept(teacherDto.getSchoolCode(),teacherDto.getCardNumber());
         for (int i=0;i<teacherDto.getTeacherDeptDtoList().size();i++){
             TeacherDeptDto teacherDeptDto=new TeacherDeptDto();
+            teacherDeptDto.setId(snowflakeIdWorker.nextId());
             teacherDeptDto.setSchoolCode(teacherDto.getSchoolCode());
             teacherDeptDto.setCardNumber(teacherDto.getCardNumber());
             teacherDeptDto.setTeacherId(teacherDto.getId());
@@ -115,7 +118,8 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             teacherDeptDto.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
             teacherDeptDto.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
             teacherDeptDto.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
-            teacherDeptMapper.updateTeacherDept(teacherDeptDto);
+            TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
+            teacherDeptMapper.insert(teacherDept);
         }
     }
 }
