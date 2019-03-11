@@ -3,6 +3,7 @@ package com.bdxh.common.helper.tree.bean;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -19,6 +20,12 @@ public class TreeBean {
 
     @ApiModelProperty("节点层级")
     private String level;
+
+    @ApiModelProperty("排序")
+    private Integer sort;
+
+    @ApiModelProperty("创建时间")
+    private Date createDate;
 
     @ApiModelProperty("是否展开直子节点")
     private Boolean expand=Boolean.FALSE;

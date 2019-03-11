@@ -56,12 +56,13 @@ public class PermissionController {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
                 treeVo.setTitle(e.getName());
+                treeVo.setCreateDate(e.getCreateDate());
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
             });
         }
         TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
-        List<PermissionTreeVo> result = treeLoopUtils.getChild(new Long("1"), treeVos);
+        List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
         return WrapMapper.ok(result);
     }
 
