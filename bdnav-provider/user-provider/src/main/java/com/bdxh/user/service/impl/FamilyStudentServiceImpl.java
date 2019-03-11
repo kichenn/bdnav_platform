@@ -2,6 +2,7 @@ package com.bdxh.user.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.user.entity.FamilyStudent;
+import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.service.FamilyStudentService;
 import lombok.extern.slf4j.Slf4j;
@@ -22,8 +23,15 @@ public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> impleme
     @Autowired
     private FamilyStudentMapper familyStudentMapper;
 
+    @Autowired
+    private FamilyMapper familyMapper;
+
     @Override
-    public List<FamilyStudent> getFamilyStudentByFamilyId(Long familyId) {
-        return familyStudentMapper.getFamilyStudentByFamilyId(familyId);
+    public void removeFamilyStudentInfo(String schoolCode, String cardNumber) {
+    familyStudentMapper.familyRemoveFamilyStudent(schoolCode,cardNumber);
     }
+
+
+
+
 }

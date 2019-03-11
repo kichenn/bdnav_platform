@@ -12,9 +12,7 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
-import com.bdxh.user.dto.FamilyDto;
 import com.bdxh.user.dto.FamilyStudentDto;
-import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.service.FamilyStudentService;
 import io.swagger.annotations.Api;
@@ -74,9 +72,10 @@ private FamilyStudentService familyStudentService;
      **/
     @ApiOperation(value = "删除学生家长绑定关系")
     @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.DELETE)
-    public Object removeFamilyOrStudent(@RequestParam(name = "id") @NotNull(message = "id不能为空") String id){
+    public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
+                                        @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber){
         try{
-            familyStudentService.deleteByKey(Long.parseLong(id));
+            familyStudentService.removeFamilyStudentInfo(schoolCode, cardNumber);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();

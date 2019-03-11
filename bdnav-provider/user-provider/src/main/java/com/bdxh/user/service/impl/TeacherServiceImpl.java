@@ -4,6 +4,7 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
+import com.bdxh.user.dto.TeacherDeptDto;
 import com.bdxh.user.dto.TeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.entity.Teacher;
@@ -11,6 +12,8 @@ import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.persistence.TeacherDeptMapper;
 import com.bdxh.user.persistence.TeacherMapper;
 import com.bdxh.user.service.TeacherService;
+import com.bdxh.user.vo.TeacherDeptVo;
+import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -37,6 +40,9 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Autowired
     private TeacherMapper teacherMapper;
 
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
+
     @Override
     public PageInfo<Teacher> getTeacherList(TeacherQueryDto teacherQueryDto) {
         Teacher teacher = BeanMapUtils.map(teacherQueryDto, Teacher.class);
@@ -49,23 +55,24 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
     @Override
     @Transactional
-    public void deleteTeacherInfo(String id) {
-        teacherMapper.deleteByPrimaryKey(Long.parseLong(id));
-        TeacherDept teacherDept=new TeacherDept();
-        teacherDept.setTeacherId(Long.parseLong(id));
-        teacherDeptMapper.delete(teacherDept);
+    public void deleteTeacherInfo(String schoolCode,String cardNumber) {
+        teacherMapper.deleteTeacher(schoolCode, cardNumber);
+        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber);
     }
 
 
     @Override
     @Transactional
-    public void deleteBatchesTeacherInfo(String[] id) {
-        for (int i=0; i<id.length; i++){
-            teacherMapper.deleteByPrimaryKey(Long.parseLong(id.toString()));
-            TeacherDept teacherDept=new TeacherDept();
-            teacherDept.setTeacherId(Long.parseLong(id[i]));
-            teacherDeptMapper.delete(teacherDept);
+    public void deleteBatchesTeacherInfo(String schoolCodes,String cardNumbers) {
+        String[] schoolCode=schoolCodes.split(",");
+        String[] cardNumber=cardNumbers.split(",");
+        if(schoolCode.length==cardNumber.length){
+            for (int i=0; i<cardNumber.length; i++){
+                teacherMapper.deleteTeacher(schoolCode[i],cardNumber[i]);
+                teacherDeptMapper.deleteTeacherDept(schoolCode[i],cardNumber[i]);
+            }
         }
+
     }
 
     @Override
@@ -73,11 +80,10 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     public void saveTeacherDeptInfo(TeacherDto teacherDto) {
         Teacher teacher = BeanMapUtils.map(teacherDto, Teacher.class);
         teacherMapper.insert(teacher);
-        IdGeneratorProperties idGeneratorProperties=new IdGeneratorProperties();
         IntStream.range(0,teacherDto.getTeacherDeptDtoList().size())
                 .forEach(i -> {
                     TeacherDept teacherDept=new TeacherDept();
-                    teacherDept.setId(new SnowflakeIdWorker(idGeneratorProperties.getWorkerId(),idGeneratorProperties.getDatacenterId()).nextId());
+                    teacherDept.setId(snowflakeIdWorker.nextId());
                     teacherDept.setSchoolCode(teacher.getSchoolCode());
                     teacherDept.setCardNumber(teacher.getCardNumber());
                     teacherDept.setTeacherId(teacher.getId());
@@ -87,5 +93,29 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                     teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
                     teacherDeptMapper.insert(teacherDept);
                         } );
+    }
+
+    @Override
+    public TeacherVo selectTeacherInfo(String schoolCode, String cardNumber) {
+        TeacherVo teacherVo=teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
+        List<TeacherDeptVo> teacherDeptVo=teacherDeptMapper.selectTeacherDeptDetailsInfo(schoolCode, cardNumber);
+        teacherVo.setTeacherDeptVos(teacherDeptVo);
+        return teacherVo;
+    }
+
+    @Override
+    public void updateTeacherInfo(TeacherDto teacherDto) {
+        teacherMapper.updateTeacher(teacherDto);
+        for (int i=0;i<teacherDto.getTeacherDeptDtoList().size();i++){
+            TeacherDeptDto teacherDeptDto=new TeacherDeptDto();
+            teacherDeptDto.setSchoolCode(teacherDto.getSchoolCode());
+            teacherDeptDto.setCardNumber(teacherDto.getCardNumber());
+            teacherDeptDto.setTeacherId(teacherDto.getId());
+            teacherDeptDto.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
+            teacherDeptDto.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
+            teacherDeptDto.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
+            teacherDeptDto.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
+            teacherDeptMapper.updateTeacherDept(teacherDeptDto);
+        }
     }
 }

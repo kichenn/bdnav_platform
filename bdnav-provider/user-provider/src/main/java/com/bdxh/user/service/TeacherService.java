@@ -4,6 +4,7 @@ import com.bdxh.common.web.support.IService;
 import com.bdxh.user.dto.TeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.entity.Teacher;
+import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageInfo;
 
 /**
@@ -30,7 +31,7 @@ public interface TeacherService extends IService<Teacher> {
      * @Param： [id]
      * @return： void
      **/
-    void deleteTeacherInfo(String id);
+    void deleteTeacherInfo(String schoolCode,String cardNumber);
 
     /**
      * @Author： binzh
@@ -39,7 +40,7 @@ public interface TeacherService extends IService<Teacher> {
      * @Param： [id]
      * @return： void
      **/
-    void deleteBatchesTeacherInfo(String id[]);
+    void deleteBatchesTeacherInfo(String schoolCode,String cardNumber);
 
     /**
      * @Author： binzh
@@ -49,4 +50,22 @@ public interface TeacherService extends IService<Teacher> {
      * @return： void
      **/
     void saveTeacherDeptInfo(TeacherDto teacherDto);
+
+    /**
+     * @Author： binzh
+     * @Description： //查询单个老师信息
+     * @Date： 15:01 2019/3/9
+     * @Param： [schoolCode, cardNumber]
+     * @return： TeacherVo
+     **/
+    TeacherVo selectTeacherInfo(String schoolCode, String cardNumber);
+
+    /**
+     * @Author： binzh
+     * @Description： //修改老师信息
+     * @Date： 18:09 2019/3/9
+     * @Param： [teacherDto]
+     * @return： void
+     **/
+    void updateTeacherInfo(TeacherDto teacherDto);
 }

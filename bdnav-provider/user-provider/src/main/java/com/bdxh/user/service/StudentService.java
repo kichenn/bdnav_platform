@@ -23,20 +23,21 @@ public interface StudentService extends IService<Student> {
     PageInfo<Student> getStudentList(StudentQueryDto studentQueryDto);
     /**
      * @Author： binzh
-     * @Description： 根据id删除学生信息以及学生家长绑定信息
-     * @Date： 16:15 2019/3/4
-     * @Param： String
+     * @Description： //根据id删除学生信息以及学生家长绑定信息
+     * @Date： 19:20 2019/3/7
+     * @Param： [schoolCode, cardNumber,studentId]
      * @return： void
      **/
-    void deleteStudentInfo(String id);
-    /**
-     * @Author： binzh
-     * @Description： 根据id批量删除学生信息以及学生家长绑定信息
-     * @Date： 16:15 2019/3/4
-     * @Param： String id[]
-     * @return： void
-     **/
-    void deleteBatchesStudentInfo(String id[]);
+    void deleteStudentInfo(String schoolCode,String cardNumber);
+
+  /**
+   * @Author： binzh
+   * @Description： //根据id批量删除学生信息以及学生家长绑定信息
+   * @Date： 16:15 2019/3/7
+   * @Param： [schoolCodes, cardNumbers, ids]
+   * @return： void
+   **/
+    void deleteBatchesStudentInfo(String schoolCodes,String cardNumbers);
 
 /**
  * @Author： binzh
@@ -45,5 +46,23 @@ public interface StudentService extends IService<Student> {
  * @Param： [studentDto]
  * @return： void
  **/
-   void updateStudentInfo(Student student);
+   void updateStudentInfo(StudentDto studentDto);
+
+   /**
+    * @Author： binzh
+    * @Description： //查询单个学生详细信息
+    * @Date： 17:44 2019/3/8
+    * @Param： [schoolCode, cardNumber]
+    * @return： com.bdxh.user.vo.StudentVo
+    **/
+  StudentVo  selectStudentVo(String schoolCode,String cardNumber);
+
+  /**
+   * @Author： binzh
+   * @Description： //判断数据库是否存在相同卡号
+   * @Date： 17:45 2019/3/8
+   * @Param： [schoolCode, cardNumber]
+   * @return： com.bdxh.user.vo.StudentVo
+   **/
+  StudentVo isNullStudent(String schoolCode,String cardNumber);
 }
