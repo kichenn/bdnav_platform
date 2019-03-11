@@ -20,20 +20,47 @@
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <update id="updateFamilyStudentInfo" >
-   UPDATE
-   `bdxh_user`.`t_family_student`
-   SET
-   `id`='1',
-   `school_id`='1',
-   `school_code`='001',
-   `card_number`='001001001',
-   `family_id`='1',
-   `student_name`='张三',
-   `update_date`=NOW(),
-   `operator`=NULL,
-   `operator_name`=NULL,
-   `remark`=NULL WHERE (`student_id`='552572960829865984');
-
-  </update>
+    <!-- 学生删除家长孩子绑定信息-->
+    <delete id="studentRemoveFamilyStudentInfo">
+     DELETE FROM t_family_student
+     WHERE school_code=#{schoolCode}
+     AND student_number=#{studentNumber}
+    </delete>
+  <!-- 家长删除绑定关系 -->
+    <delete id="familyRemoveFamilyStudent">
+       DELETE FROM t_family_student
+       WHERE school_code=#{schoolCode}
+       AND card_number=#{cardNumber}
+    </delete>
+    <!-- 家长查询绑定关系 -->
+    <select id="selectFamilyStudentInfo" resultType="com.bdxh.user.vo.FamilyStudentVo">
+        select
+          fs.student_id AS sid,
+          fs.student_name AS sName,
+          fs.student_number AS sCardNumber,
+          fs.id AS fsId,
+          fs.relation
+        from t_family_student AS fs where fs.school_code=#{schoolCode} and fs.card_number=#{cardNumber}
+    </select>
+    <!--学生查询关系表数据-->
+    <select id="studentQueryInfo" resultType="com.bdxh.user.vo.FamilyStudentVo">
+          select
+          student_id AS sid,
+          student_name AS sName,
+          student_number AS sCardNumber,
+          id AS fsId,
+          card_number as fCardNumber,
+          relation   from t_family_student where student_number=#{cardNumber} and school_code=#{schoolCode}
+    </select>
+    <!-- 修改关系表数据-->
+        <update id="updateStudentInfo">
+             UPDATE t_family_student
+             SET
+             `student_name`=#{familyStudentDto.studentName},
+             `update_date`=NOW()
+              WHERE
+             `school_code`=#{familyStudentDto.schoolCode}
+             AND
+             `card_number`=#{familyStudentDto.cardNumber};
+        </update>
 </mapper>
