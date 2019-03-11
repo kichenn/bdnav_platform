@@ -5,10 +5,10 @@ import com.bdxh.common.web.support.BaseService;
 import com.bdxh.user.dto.FamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.entity.Family;
-import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.persistence.FamilyMapper;
+import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.service.FamilyService;
-import com.bdxh.user.service.FamilyStudentService;
+import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +33,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
 private FamilyMapper familyMapper;
 
 @Autowired
-private FamilyStudentService familyStudentService;
+private FamilyStudentMapper familyStudentMapper;
 
     @Override
     public PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto) {
@@ -43,30 +43,44 @@ private FamilyStudentService familyStudentService;
         PageInfo<Family> pageInfoFamily = new PageInfo<Family>(listFamily);
         return pageInfoFamily;
     }
+
     @Override
     @Transactional
-    public void deleteFamilyInfo(String id) {
-            familyMapper.deleteByPrimaryKey(Long.parseLong(id));
-            FamilyStudent familyStudent=new FamilyStudent();
-            familyStudent.setFamilyId(Long.parseLong(id));
-            familyStudentService.delete(familyStudent);
+    public void deleteFamilyInfo(String scoolCode,String cardNumber) {
+            familyMapper.removeFamilyInfo(scoolCode,cardNumber);
+             familyStudentMapper.familyRemoveFamilyStudent(scoolCode,cardNumber);
     }
 
     @Override
     @Transactional
-    public void deleteBatchesFamilyInfo(String id[]) {
-        for (int i = 0; i < id.length; i++) {
-            familyMapper.deleteByPrimaryKey(Long.parseLong(id[i]));
-            FamilyStudent familyStudent=new FamilyStudent();
-            familyStudent.setFamilyId(Long.parseLong(id[i]));
-            familyStudentService.delete(familyStudent);
+    public void deleteBatchesFamilyInfo(String schoolCode,String cardNumber) {
+             String[] schoolCodes=schoolCode.split(",");
+             String[] cardNumbers=cardNumber.split(",");
+             if(schoolCodes.length==cardNumbers.length) {
+                 for (int i = 0; i < cardNumbers.length; i++) {
+                     familyMapper.removeFamilyInfo(schoolCodes[i], cardNumbers[i]);
+                     familyStudentMapper.familyRemoveFamilyStudent(schoolCodes[i], cardNumbers[i]);
+                 }
+             }
+    }
+
+    @Override
+    public FamilyVo selectBysCodeAndCard(String schoolCode,String cardNumber) {
+        FamilyVo familyVo=familyMapper.selectByCodeAndCard(schoolCode,cardNumber);
+        List<FamilyStudentVo> familyStudentVos=familyStudentMapper.selectFamilyStudentInfo(schoolCode, cardNumber);
+        if(familyStudentVos.size()>0){
+            familyVo.setStudents(familyStudentVos);
         }
+        return familyVo;
     }
 
     @Override
-    public FamilyVo selectBysCodeAndCard(Long id) {
-        Family family=familyMapper.selectByPrimaryKey(id);
-        FamilyVo familyVo=familyMapper.selectBysCodeAndCard(family.getSchoolCode(),family.getCardNumber());
-        return familyVo;
+    public FamilyVo isNullFamily(String schoolCode, String cardNumber) {
+        return familyMapper.selectByCodeAndCard(schoolCode, cardNumber);
+    }
+
+    @Override
+    public void updateFamily(FamilyDto familyDto) {
+        familyMapper.updateFamilyInfo(familyDto);
     }
 }

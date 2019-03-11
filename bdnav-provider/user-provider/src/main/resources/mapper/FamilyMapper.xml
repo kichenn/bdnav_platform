@@ -31,43 +31,92 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 
-  <resultMap id="familyVoMap" type="com.bdxh.user.vo.FamilyVo">
-    <id column="id" property="id"/>
-    <result column="fName" property="fName"/>
-    <result column="fGender" property="fGender"/>
-    <result column="phone" property="phone"/>
-    <result column="image" property="image"/>
-    <result column="birth" property="birth"/>
-    <result column="remark" property="remark"/>
-    <result column="createDate" property="createDates"/>
-    <collection property="students" ofType="com.bdxh.user.vo.FamilyStudentVo" >
-      <id column="sid" property="id"/>
-      <result column="sName" property="sName"/>
-      <result column="fsId" property="fsId"/>
-      <result column="sGender" property="sGender"/>
-      <result column="cardNumber" property="cardNumber"/>
-      <result column="relation" property="relation"/>
-    </collection>
-  </resultMap>
-<!-- 根据条件查询出家长详细信息 -->
- <select id="selectBysCodeAndCard" resultMap="familyVoMap">
-SELECT
- f.id,
- f.`name` AS fName,
- f.gender AS fGender,
- f.phone,
- f.image,
- f.birth,
- f.remark,
- f.create_date as createDate,
- fs.student_id AS sid,
- fs.student_name AS sName,
- fs.student_number AS cardNumber,
- fs.id AS fsId,
- fs.relation
-FROM t_family AS f
-LEFT JOIN t_family_student AS fs ON f.id = fs.family_id
-where f.school_code=#{schoolCode} and f.card_number=#{cardNumber}
- </select>
+
+
+    <!-- 根据条件查询出家长详细信息 -->
+     <select id="selectByCodeAndCard" resultType="com.bdxh.user.vo.FamilyVo" parameterType="String">
+        SELECT
+         id,
+         `name` AS `name`,
+         gender AS fGender,
+         phone,
+         image,
+         birth,
+         remark,
+         school_code AS schoolCode,
+         card_number AS cardNumber,
+         create_date AS createDate
+        FROM t_family
+        where school_code=#{schoolCode}
+           and card_number=#{cardNumber}
+     </select>
+
+    <!-- 删除家长信息-->
+    <delete id="removeFamilyInfo">
+     DELETE FROM t_family
+     WHERE school_code=#{schoolCode}
+     AND card_number=#{cardNumber}
+    </delete>
+    <!--  修改家长信息     -->
+    <update id="updateFamilyInfo">
+        UPDATE t_family
+        SET
+        <if test="familyDto.name!=null and familyDto.name!=''">
+            `name`=#{familyDto.name},
+        </if>
+        <if test="familyDto.gender!=null and familyDto.gender!=''">
+            `gender`=#{familyDto.gender},
+        </if>
+        <if test="familyDto.birth!=null and familyDto.birth!=''">
+            `birth`=#{familyDto.birth},
+        </if>
+        <if test="familyDto.phone!=null and familyDto.phone!=''">
+            phone=#{familyDto.phone},
+        </if>
+        <if test="familyDto.idCard!=null and familyDto.idCard!=''">
+            `idcard`=#{familyDto.idCard},
+        </if>
+        <if test="familyDto.qqNumber!=null and familyDto.qqNumber!=''">
+            `qq_number`=#{familyDto.qqNumber},
+        </if>
+        <if test="familyDto.wxNumber!=null and familyDto.wxNumber!=''">
+            `wx_number`=#{familyDto.wxNumber},
+        </if>
+        <if test="familyDto.email!=null and familyDto.email!=''">
+            `email`=#{familyDto.email},
+        </if>
+        <if test="familyDto.image!=null and familyDto.image!=''">
+            `image`=#{familyDto.image},
+        </if>
+        <if test="familyDto.nationName!=null and familyDto.nationName!=''">
+            `nation_name`=#{familyDto.nationName},
+        </if>
+        <if test="familyDto.adress!=null and familyDto.adress!=''">
+            `adress`=#{familyDto.adress},
+        </if>
+        <if test="familyDto.physicalNumber!=null and familyDto.physicalNumber!=''">
+            `physical_number`=#{familyDto.physicalNumber},
+        </if>
+        <if test="familyDto.physicalChipNumber!=null and familyDto.physicalChipNumber!=''">
+            `physical_chip_number`=#{familyDto.physicalChipNumber},
+        </if>
+        <if test="familyDto.activate!=null and familyDto.activate!=''">
+            `activate`=#{familyDto.activate},
+        </if>
+        <if test="familyDto.operator!=null and familyDto.operator!=''">
+            `operator`=#{familyDto.operator},
+        </if>
+        <if test="familyDto.operatorName!=null and familyDto.operatorName!=''">
+            `operator_name`=#{familyDto.operatorName},
+        </if>
+        <if test="familyDto.remark!=null and familyDto.remark!=''">
+            `remark`=#{familyDto.remark},
+        </if>
+            `update_date`=NOW()
+         WHERE `school_code`=#{familyDto.schoolCode} AND card_number=#{familyDto.cardNumber};
+    </update>
+
+
+
 
 </mapper>

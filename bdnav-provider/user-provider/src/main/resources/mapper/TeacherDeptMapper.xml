@@ -19,4 +19,57 @@
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  <resultMap id="TeacherDeptVoMap" type="com.bdxh.user.vo.TeacherDeptVo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="school_code" jdbcType="CHAR" property="schoolCode" />
+    <result column="card_number" jdbcType="CHAR" property="cardNumber" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
+    <result column="dept_ids" jdbcType="VARCHAR" property="deptIds" />
+    <result column="dept_names" jdbcType="VARCHAR" property="deptNames" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+  <!-- 删除老师详细信息-->
+  <delete id="deleteTeacherDept">
+    delete from t_teacher_dept where school_code=#{schoolCode} and card_number=#{cardNumber}
+  </delete>
+
+  <!--查询出老师的部门关系-->
+  <select id="selectTeacherDeptDetailsInfo" resultMap="TeacherDeptVoMap">
+    select * from t_teacher_dept where school_code=#{schoolCode} and card_number=#{cardNumber}
+  </select>
+
+  <update id="">
+    UPDATE `t_teacher_dept`
+    <if test="teacherId!=null and teacherId!=''">
+  `teacher_id`=#{teacherId},
+    </if>
+    <if test="deptId!=null and deptId!=''">
+      `dept_id`=#{deptId},
+    </if>
+    <if test="deptName!=null and deptName!=''">
+      `dept_name`=#{deptName},
+    </if>
+    <if test="deptIds!=null and deptIds!=''">
+      `dept_ids`=#{deptIds},
+    </if>
+    <if test="deptNames!=null and deptNames!=''">
+      `dept_names`=#{deptNames},
+    </if>
+    <if test="operator!=null and operator!=''">
+      `operator`=#{operator},
+    </if>
+    <if test="operatorName!=null and operatorName!=''">
+      `operator_name`=#{operatorName},
+    </if>
+    <if test="remark!=null and remark!=''">
+      `remark`=#{remark},
+    </if>
+    `update_date`=Now()
+    WHERE `school_code`=#{schoolCode} and `card_number`=#{cardNumber};
+
+  </update>
 </mapper>

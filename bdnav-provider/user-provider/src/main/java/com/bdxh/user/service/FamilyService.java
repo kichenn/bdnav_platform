@@ -23,33 +23,48 @@ public interface FamilyService extends IService<Family> {
     * @return： com.github.pagehelper.PageInfo<com.bdxh.user.vo.FamilyVo>
     **/
      PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto);
-    /**
+
+     /**
      * @Author： binzh
-     * @Description： //根据id批量删除家长信息以及学生家长绑定信息
+     * @Description： //批量删除家长信息以及学生家长绑定信息
      * @Date： 17:51 2019/3/4
-     * @Param： [id]
+     * @Param： [schoolCode, cardNumber]
      * @return： void
      **/
-
-    void deleteBatchesFamilyInfo(String id[]);
+    void deleteBatchesFamilyInfo(String schoolCode,String cardNumber);
     /**
      * @Author： binzh
-     * @Description：  //根据id删除家长信息以及学生家长绑定信息
-     * @Date： 17:51 2019/3/4
-     * @Param： [id]
+     * @Description： //删除家长信息以及学生家长绑定信息
+     * @Date： 12:21 2019/3/7
+     * @Param： [schoolCode, cardNumber]
      * @return： void
      **/
-
-    void deleteFamilyInfo(String id);
-
+    void deleteFamilyInfo(String schoolCode,String cardNumber);
 
      /**
       * @Author： binzh
       * @Description： //根据家长的ID查询出家长信息以及绑定的孩子信息
-      * @Date： 10:05 2019/3/5
-      * @Param： [id]
+      * @Date： 19:28 2019/3/7
+      * @Param： [schoolCode, cardNumber]
       * @return： com.bdxh.user.vo.FamilyVo
       **/
-     FamilyVo selectBysCodeAndCard(Long id);
+     FamilyVo selectBysCodeAndCard(String schoolCode,String cardNumber);
 
+     /**
+      * @Author： binzh
+      * @Description： //修改家长信息
+      * @Date： 15:15 2019/3/8
+      * @Param： [familyDto]
+      * @return： void
+      **/
+     void updateFamily(FamilyDto familyDto);
+
+     /**
+      * @Author： binzh
+      * @Description： //查询是否有相同卡号家长
+      * @Date： 17:42 2019/3/8
+      * @Param： [schoolCode, cardNumber]
+      * @return： com.bdxh.user.vo.FamilyVo
+      **/
+     FamilyVo isNullFamily(String schoolCode,String cardNumber);
 }

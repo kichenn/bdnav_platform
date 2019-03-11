@@ -4,14 +4,19 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.web.support.BaseService;
 import com.bdxh.common.web.support.IService;
+import com.bdxh.user.dto.FamilyStudentDto;
 import com.bdxh.user.dto.StudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.persistence.StudentMapper;
+import com.bdxh.user.service.FamilyStudentService;
 import com.bdxh.user.service.StudentService;
+import com.bdxh.user.vo.FamilyStudentVo;
+import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +42,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     private FamilyStudentMapper familyStudentMapper;
 
     @Autowired
+    private FamilyMapper familyMapper;
+
+    @Autowired
     private StudentMapper studentMapper;
 
     @Override
@@ -47,38 +56,66 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return pageInfoStudent;
     }
 
-
     @Override
     @Transactional
-    public void deleteStudentInfo(String id) {
-        studentMapper.deleteByPrimaryKey(Long.parseLong(id));
-        FamilyStudent familyStudent=new FamilyStudent();
-        familyStudent.setFamilyId(Long.parseLong(id));
-        familyStudentMapper.delete(familyStudent);
-    }
-
-
-    @Override
-    @Transactional
-    public void deleteBatchesStudentInfo(String[] id) {
-        for (int i=0; i<id.length; i++){
-            studentMapper.deleteByPrimaryKey(Long.parseLong(id[i]));
-            FamilyStudent familyStudent=new FamilyStudent();
-            familyStudent.setFamilyId(Long.parseLong(id[i]));
-            familyStudentMapper.delete(familyStudent);
-        }
+    public void deleteStudentInfo(String schoolCode,String cardNumber) {
+        studentMapper.removeStudentInfo(schoolCode, cardNumber);
+        //获取学生家长信息
+        familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCode,cardNumber);
     }
 
     @Override
     @Transactional
-    public void updateStudentInfo(Student student) {
-        studentMapper.updateByPrimaryKey(student);
-        FamilyStudent familyStudent=new FamilyStudent();
-        familyStudent.setStudentId(student.getId());
-        familyStudent=familyStudentMapper.selectOne(familyStudent);
-        if(!student.getName().equals(familyStudent.getStudentName())){
-            familyStudent.setStudentName(student.getName());
-            familyStudentMapper.updateByPrimaryKey(familyStudent);
+    public void deleteBatchesStudentInfo(String schoolCode,String cardNumber) {
+        String[] schoolCodes=schoolCode.split(",");
+        String[] cardNumbers=cardNumber.split(",");
+        if(schoolCodes.length==cardNumbers.length){
+            for (int i=0; i<cardNumbers.length;i++) {
+                studentMapper.removeStudentInfo(schoolCodes[i], cardNumbers[i]);
+                familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCodes[i], cardNumbers[i]);
+            }
         }
+    }
+
+
+
+    @Override
+    @Transactional
+    public void updateStudentInfo(StudentDto studentDto) {
+        studentMapper.updateStudentInfo(studentDto);
+        FamilyStudentVo familyStudentVo= familyStudentMapper.studentQueryInfo(
+                studentDto.getSchoolCode(),
+                studentDto.getCardNumber());
+        if(null!=familyStudentVo &&!("").equals(familyStudentVo)){
+            if(!studentDto.getName().equals(familyStudentVo.getSName())){
+                //修改关系表数据
+                FamilyStudentDto familyStudentDto=new FamilyStudentDto();
+                familyStudentDto.setStudentName(studentDto.getName());
+                familyStudentDto.setCardNumber(familyStudentVo.getFCardNumber());
+                familyStudentDto.setSchoolCode(studentDto.getSchoolCode());
+                familyStudentMapper.updateStudentInfo(familyStudentDto);
+            }
+        }
+
+
+    }
+
+    @Override
+    public StudentVo selectStudentVo(String schoolCode, String cardNumber) {
+        StudentVo studentVo=studentMapper.selectStudentVo(schoolCode,cardNumber);
+        FamilyStudentVo familyStudentVo=familyStudentMapper.studentQueryInfo(schoolCode, cardNumber);
+        String fNumber=familyStudentVo.getFCardNumber();
+        if(null!=fNumber&&!("").equals(fNumber)){
+            FamilyVo familyVo=familyMapper.selectByCodeAndCard(schoolCode,fNumber);
+            studentVo.setFName(familyVo.getName());
+            studentVo.setCardNumber(fNumber);
+            studentVo.setFPhone(familyVo.getPhone());
+        }
+        return studentVo;
+    }
+
+    @Override
+    public StudentVo isNullStudent(String schoolCode, String cardNumber) {
+        return studentMapper.selectStudentVo(schoolCode,cardNumber);
     }
 }

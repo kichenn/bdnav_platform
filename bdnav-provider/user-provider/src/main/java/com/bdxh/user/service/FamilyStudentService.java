@@ -2,6 +2,7 @@ package com.bdxh.user.service;
 
 import com.bdxh.common.web.support.IService;
 import com.bdxh.user.entity.FamilyStudent;
+import com.bdxh.user.vo.FamilyVo;
 
 import java.util.List;
 
@@ -11,12 +12,17 @@ import java.util.List;
  * @create: 2019-02-26 10:43
  **/
 public interface FamilyStudentService extends IService<FamilyStudent> {
-    /**
-     * @Author： binzh
-     * @Description： //根据家长ID查询出关系表的数据
-     * @Date： 18:02 2019/3/4
-     * @Param： [familyId]
-     * @return： java.util.List<com.bdxh.user.entity.FamilyStudent>
-     **/
-     List<FamilyStudent> getFamilyStudentByFamilyId(Long familyId);
+
+     /**
+      * @Author： binzh
+      * @Description： //删除家长学生关系表数据
+      * @Date： 14:30 2019/3/7
+      * @Param： [schoolCode, cardNumber]
+      * @return： void
+      **/
+     void removeFamilyStudentInfo(String schoolCode,String cardNumber);
+
+
+
+
 }

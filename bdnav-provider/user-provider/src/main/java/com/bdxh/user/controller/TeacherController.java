@@ -39,6 +39,9 @@ import java.util.stream.Collectors;
 public class TeacherController {
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
     @ApiOperation(value="新增老师信息")
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
     public Object addTeacher(@Valid @RequestBody TeacherDto teacherDto, BindingResult bindingResult){
@@ -48,11 +51,10 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
-            IdGeneratorProperties idGeneratorProperties=new IdGeneratorProperties();
-            teacherDto.setId(new SnowflakeIdWorker(idGeneratorProperties.getWorkerId(),idGeneratorProperties.getDatacenterId()).nextId());
-            teacherService.saveTeacherDeptInfo(teacherDto)  ;
+            teacherDto.setId(snowflakeIdWorker.nextId());
+            teacherService.saveTeacherDeptInfo(teacherDto);
             return WrapMapper.ok();
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -60,9 +62,10 @@ public class TeacherController {
 
     @ApiOperation(value="根据ID删除老师信息")
     @RequestMapping(value = "/removeTeacher",method = RequestMethod.POST)
-    public Object removeTeacher(@RequestParam(name = "id") @NotNull(message = "老师id不能为空") String id){
+    public Object removeTeacher(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
+                                @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber){
         try{
-            teacherService.deleteTeacherInfo(id);
+            teacherService.deleteTeacherInfo(schoolCode, cardNumber);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -71,10 +74,10 @@ public class TeacherController {
     }
     @ApiOperation(value="根据ID批量删除老师信息")
     @RequestMapping(value = "/removeTeachers",method = RequestMethod.POST)
-    public Object removeTeachers(@RequestParam(name = "id") @NotNull(message = "老师id不能为空") String id){
+    public Object removeTeachers(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCodes,
+                                 @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumbers){
         try{
-            String fid[]=id.split(",");
-            teacherService.deleteBatchesTeacherInfo(fid);
+            teacherService.deleteBatchesTeacherInfo(schoolCodes, cardNumbers);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -92,8 +95,7 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
-            Teacher teacher = BeanMapUtils.map(teacherDto, Teacher.class);
-            teacherService.update(teacher);
+            teacherService.updateTeacherInfo(teacherDto);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -103,14 +105,15 @@ public class TeacherController {
 
     /**
      * 修改时根据Id查询
-     * @param id
+     * @param schoolCode cardNumber
      * @return
      */
     @ApiOperation(value="修改时根据Id查询单个老师信息")
     @RequestMapping(value ="/queryTeacherInfo",method = RequestMethod.POST)
-    public Object queryTeacherInfo(@RequestParam(name = "id") @NotNull(message = "老师id不能为空")  Long id) {
+    public Object queryTeacherInfo(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
+                                   @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber) {
         try {
-            return teacherService.selectByKey(id);
+            return teacherService.selectTeacherInfo(schoolCode,cardNumber);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

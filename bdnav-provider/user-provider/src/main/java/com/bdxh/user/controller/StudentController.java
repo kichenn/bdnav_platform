@@ -39,6 +39,9 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
+
 
     @ApiOperation(value="新增学生信息")
     @RequestMapping(value = "/addStudent",method = RequestMethod.POST)
@@ -50,10 +53,12 @@ public class StudentController {
         }
         try {
             Student student = BeanMapUtils.map(studentDto, Student.class);
-            IdGeneratorProperties idGeneratorProperties=new IdGeneratorProperties();
-            student.setId(new SnowflakeIdWorker(idGeneratorProperties.getWorkerId(),idGeneratorProperties.getDatacenterId()).nextId());
-           studentService.save(student);
-            return WrapMapper.ok();
+            if (studentService.isNullStudent(student.getSchoolCode(),student.getCardNumber())==null){
+                student.setId(snowflakeIdWorker.nextId());
+                studentService.save(student);
+                return WrapMapper.ok();
+            }
+            return WrapMapper.error("当前学校已有相同cardNumber(学号)");
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -62,9 +67,10 @@ public class StudentController {
 
     @ApiOperation(value="根据ID删除学生信息")
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
-    public Object removeFamily(@RequestParam(name = "id") @NotNull(message = "学生id不能为空") String id){
+    public Object removeFamily(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
+                               @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber){
         try{
-            studentService.deleteStudentInfo(id);
+            studentService.deleteStudentInfo(schoolCode,cardNumber);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -73,10 +79,10 @@ public class StudentController {
     }
     @ApiOperation(value="根据ID批量删除学生信息")
     @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
-    public Object removeFamilys(@RequestParam(name = "id") @NotNull(message = "学生id不能为空") String id){
+    public Object removeFamilys(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCodes,
+                                @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumbers){
         try{
-            String fid[]=id.split(",");
-            studentService.deleteBatchesStudentInfo(fid);
+            studentService.deleteBatchesStudentInfo(schoolCodes,cardNumbers);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -94,8 +100,7 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
-            Student student = BeanMapUtils.map(studentDto, Student.class);
-            studentService.updateStudentInfo(student);
+            studentService.updateStudentInfo(studentDto);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,15 +110,15 @@ public class StudentController {
 
     /**
      * 修改时根据Id查询
-     * @param id
+     * @param  schoolCode cardNumber
      * @return family
      */
-    @ApiOperation(value="修改时根据Id查询单个学生信息")
+    @ApiOperation(value="修改时查询单个学生信息")
     @RequestMapping(value ="/queryStudentInfo",method = RequestMethod.POST)
-    public Object queryStudentInfo(@RequestParam(name = "id") @NotNull(message = "学生id不能为空")  Long id) {
+    public Object queryStudentInfo(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
+                                   @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber) {
         try {
-               /* return studentService.selectStudentVo(id);*/
-            return null;
+               return studentService.selectStudentVo(schoolCode,cardNumber);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

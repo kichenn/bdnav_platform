@@ -40,27 +40,139 @@
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <resultMap id="StudentVoMap" type="com.bdxh.user.vo.StudentVo">
-    <id column="id" jdbcType="BIGINT" property="sId" />
-    <result column="sName" jdbcType="VARCHAR" property="sName" />
-    <result column="cardNumber" jdbcType="VARCHAR" property="cardNumber" />
-    <result column="gender" jdbcType="TINYINT" property="gender" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="birth" jdbcType="VARCHAR" property="birth" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="campusName" jdbcType="VARCHAR" property="campusName" />
-    <result column="collegeName" jdbcType="VARCHAR" property="collegeName" />
-    <result column="facultyName" jdbcType="VARCHAR" property="facultyName" />
-    <result column="professionName" jdbcType="VARCHAR" property="professionName" />
-    <result column="gradeName" jdbcType="VARCHAR" property="gradeName" />
-    <result column="fName" jdbcType="VARCHAR" property="fName" />
-    <result column="fPhone" jdbcType="VARCHAR" property="fPhone" />
-    <result column="relation" jdbcType="VARCHAR" property="relation" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="createDate" jdbcType="VARCHAR" property="createDate" />
-    <result column="className" jdbcType="VARCHAR" property="className" />
-    <result column="classId" jdbcType="BIGINT" property="classId" />
-    <result column="schoolCode" jdbcType="VARCHAR" property="schoolCode" />
-  </resultMap>
 
+  <!-- 删除学生信息-->
+  <delete id="removeStudentInfo">
+     DELETE FROM t_student
+     WHERE school_code=#{schoolCode}
+     AND card_number=#{cardNumber}
+    </delete>
+  <!-- 查询单个学生信息 -->
+<select id="selectStudentVo" resultType="com.bdxh.user.vo.StudentVo">
+      SELECT
+      id as sId,
+      school_id as schoolId,
+      school_code as schoolCode,
+      school_name as schoolName,
+      campus_name as campusName,
+      college_name as collegeName ,
+      faculty_name as facultyName,
+      profession_name as professionName,
+      grade_name as gradeName,
+      class_name as className,
+      class_id as classId,
+      class_ids as classIds,
+      class_names as classNames,
+      `name` as sName,
+      gender,
+      birth,
+      phone,
+      card_number as cardNumber,
+      idcard,
+      qq_number as qqNumber,
+      wx_number as wxNumber,
+      email,
+      image,
+      nation_name as nationName,
+      dormitory_address as dormitoryAddress,
+      adress,
+      physical_number as physicalNumber,
+      physical_chip_number as physicalChipNumber,
+      activate,
+      create_date as createDate,
+      update_date as updateDate,
+      operator,
+      operator_name as operatorName,
+      remark
+      FROM
+      t_student
+      WHERE  school_code=#{schoolCode} and card_number=#{cardNumber}
+</select>
+    <update id="updateStudentInfo">
+        UPDATE `t_student`
+        SET
+        <if test="studentDto.campusName!=null and studentDto.campusName!=''">
+            `campus_name`=#{studentDto.campusName},
+        </if>
+        <if test="studentDto.collegeName!=null and studentDto.collegeName!=''">
+            `college_name`=#{studentDto.collegeName},
+        </if>
+        <if test="studentDto.facultyName!=null and studentDto.facultyName!=''">
+            `faculty_name`=#{studentDto.facultyName},
+        </if>
+        <if test="studentDto.professionName!=null and studentDto.professionName!=''">
+            `profession_name`=#{studentDto.professionName},
+        </if>
+        <if test="studentDto.gradeName!=null and studentDto.gradeName!=''">
+            `grade_name`=#{studentDto.gradeName},
+        </if>
+        <if test="studentDto.className!=null and studentDto.className!=''">
+            `class_name`=#{studentDto.className},
+        </if>
+        <if test="studentDto.classId!=null and studentDto.classId!=''">
+            `class_id`=#{studentDto.classId},
+        </if>
+        <if test="studentDto.classIds!=null and studentDto.classIds!=''">
+            `class_ids`=#{studentDto.classIds},
+        </if>
+        <if test="studentDto.classNames!=null and studentDto.classNames!=''">
+            `class_names`=#{studentDto.classNames},
+        </if>
+        <if test="studentDto.name!=null and studentDto.name!=''">
+            `name`=#{studentDto.name},
+        </if>
+        <if test="studentDto.gender!=null and studentDto.gender!=''">
+            `gender`=#{studentDto.gender},
+        </if>
+        <if test="studentDto.birth!=null and studentDto.birth!=''">
+            `birth`=#{studentDto.birth},
+        </if>
+        <if test="studentDto.phone!=null and studentDto.phone!=''">
+            `phone`=#{studentDto.phone},
+        </if>
+        <if test="studentDto.idcard!=null and studentDto.idcard!=''">
+            `idcard`=#{studentDto.idcard},
+        </if>
+        <if test="studentDto.qqNumber!=null and studentDto.qqNumber!=''">
+            `qq_number`=#{studentDto.qqNumber},
+        </if>
+        <if test="studentDto.wxNumber!=null and studentDto.wxNumber!=''">
+            `wx_number`=#{studentDto.wxNumber},
+        </if>
+        <if test="studentDto.email!=null and studentDto.email!=''">
+            `email`=#{studentDto.email},
+        </if>
+        <if test="studentDto.image!=null and studentDto.image!=''">
+            `image`=#{studentDto.image},
+        </if>
+        <if test="studentDto.nationName!=null and studentDto.nationName!=''">
+            `nation_name`=#{studentDto.nationName},
+        </if>
+        <if test="studentDto.dormitoryAddress!=null and studentDto.dormitoryAddress!=''">
+            `dormitory_address`=#{studentDto.dormitoryAddress},
+        </if>
+        <if test="studentDto.adress!=null and studentDto.adress!=''">
+            `adress`=#{studentDto.adress},
+        </if>
+        <if test="studentDto.physicalNumber!=null and studentDto.physicalNumber!=''">
+            `physical_number`=#{studentDto.physicalNumber},
+        </if>
+        <if test="studentDto.physicalChipNumber!=null and studentDto.physicalChipNumber!=''">
+            `physical_chip_number`=#{studentDto.physicalChipNumber},
+        </if>
+        <if test="studentDto.activate!=null and studentDto.activate!=''">
+            `activate`=#{studentDto.activate},
+        </if>
+        <if test="studentDto.operator!=null and studentDto.operator!=''">
+            `operator`=#{studentDto.operator},
+        </if>
+        <if test="studentDto.operatorName!=null and studentDto.operatorName!=''">
+            `operator_name`=#{studentDto.operatorName},
+        </if>
+        <if test="studentDto.remark!=null and studentDto.remark!=''">
+            `remark`=#{studentDto.remark},
+        </if>
+        `update_date`=NOW()
+          WHERE `school_code`=#{studentDto.schoolCode} AND  `card_number`=#{studentDto.cardNumber};
+    </update>
 </mapper>

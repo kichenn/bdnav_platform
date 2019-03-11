@@ -22,11 +22,19 @@ public class FamilyVo {
 
     //家长ID
     @ApiModelProperty("家长ID")
-    private Long id;
+    private String id;
 
     //家长姓名
     @ApiModelProperty("家长姓名")
-    private String fName;
+    private String name;
+
+    //家长CardNumber
+    @ApiModelProperty("家长CardNumber")
+    private String cardNumber;
+
+    //学校Code
+    @ApiModelProperty("学校Code")
+    private String schoolCode;
 
     //家长性别
     @ApiModelProperty("家长性别")
