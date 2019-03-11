@@ -1,7 +1,7 @@
 package com.bdxh.app.configration.security;
 
-import com.bdxh.app.configration.security.handler.MyExceptionTranslator;
 import com.bdxh.app.configration.security.handler.MyAccessDeniedHandler;
+import com.bdxh.app.configration.security.handler.MyExceptionTranslator;
 import com.bdxh.app.configration.security.handler.MyUnauthorizedHandler;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
