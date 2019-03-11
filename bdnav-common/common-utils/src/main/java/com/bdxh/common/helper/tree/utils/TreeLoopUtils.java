@@ -2,8 +2,7 @@ package com.bdxh.common.helper.tree.utils;
 
 import com.bdxh.common.helper.tree.bean.TreeBean;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: 遍历，循环帮助类
@@ -14,10 +13,10 @@ public class TreeLoopUtils<E extends TreeBean> {
 
 
     /**
-    * @Description:   获取树结构
-    * @Author: Kang
-    * @Date: 2019/3/11 12:11
-    */
+     * @Description: 获取树结构
+     * @Author: Kang
+     * @Date: 2019/3/11 12:11
+     */
     public List<E> getTree(List<E> rootMenu) {
         List<E> result = new ArrayList<>();
         for (E temp : rootMenu) {
@@ -46,6 +45,30 @@ public class TreeLoopUtils<E extends TreeBean> {
                 }
             }
         }
+        Collections.sort(childList, new Comparator<TreeBean>() {
+            /*
+             * int compare(Student o1, Student o2) 返回一个基本类型的整型，
+             * 返回负数表示：o1 小于o2，
+             * 返回0 表示：o1和o2相等，
+             * 返回正数表示：o1大于o2。
+             */
+            public int compare(TreeBean o1, TreeBean o2) {
+                //按照倒序排列
+                if (o1.getSort() > o2.getSort()) {
+                    return 1;
+                }
+                if (o1.getSort() == o2.getSort()) {
+                    if (o1.getCreateDate().getTime() > o2.getCreateDate().getTime()) {
+                        return -1;
+                    } else if (o1.getCreateDate().getTime() < o2.getCreateDate().getTime()) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                }
+                return -1;
+            }
+        });
         rootMenu.remove(childList);
         // 把子节点的子节点再循环一遍
         for (E temp1 : childList) {

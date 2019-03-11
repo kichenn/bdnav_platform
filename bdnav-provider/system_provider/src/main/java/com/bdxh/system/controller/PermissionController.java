@@ -5,7 +5,7 @@ import com.bdxh.system.dto.AddPermissionDto;
 import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
-import com.bdxh.system.vo.PermissionTreeVo;
+import com.bdxh.system.helper.tree.vo.PermissionTreeVo;
 import com.bdxh.system.service.PermissionService;
 import com.bdxh.system.service.RolePermissionService;
 import com.bdxh.system.service.impl.RolePermissionServiceImpl;
@@ -56,7 +56,7 @@ public class PermissionController {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
                 treeVo.setTitle(e.getName());
-                treeVo.setSort(e.getSort());
+                treeVo.setCreateDate(e.getCreateDate());
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
             });
