@@ -59,9 +59,9 @@ public class TreeLoopUtils<E extends TreeBean> {
                 }
                 if (o1.getSort() == o2.getSort()) {
                     if (o1.getCreateDate().getTime() > o2.getCreateDate().getTime()) {
-                        return -1;
-                    } else if (o1.getCreateDate().getTime() < o2.getCreateDate().getTime()) {
                         return 1;
+                    } else if (o1.getCreateDate().getTime() < o2.getCreateDate().getTime()) {
+                        return -1;
                     } else {
                         return 0;
                     }
@@ -69,6 +69,7 @@ public class TreeLoopUtils<E extends TreeBean> {
                 return -1;
             }
         });
+
         rootMenu.remove(childList);
         // 把子节点的子节点再循环一遍
         for (E temp1 : childList) {

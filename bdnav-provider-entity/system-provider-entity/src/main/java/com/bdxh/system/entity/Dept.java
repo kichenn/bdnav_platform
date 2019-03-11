@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Table(name = "sys_dept")
-public class Dept {
+public class Dept{
     /**
      * 主键id
      */
@@ -265,4 +265,6 @@ public class Dept {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+
 }

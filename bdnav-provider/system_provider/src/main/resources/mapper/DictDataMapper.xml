@@ -7,33 +7,38 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="dict_id" jdbcType="BIGINT" property="dictId" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="value" jdbcType="VARCHAR" property="value" />
-    <result column="order" jdbcType="INTEGER" property="order" />
+    <result column="data_name" jdbcType="VARCHAR" property="dataName" />
+    <result column="data_value" jdbcType="VARCHAR" property="dataValue" />
+    <result column="sort" jdbcType="INTEGER" property="sort" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 
-  <sql id="BaseColumns">
-    id,dict_id,`name`,`value`,`order`,create_date,update_date,operator,remark
+  <sql id="BaseColumns" >
+    id,dict_id,data_name,data_value,sort,create_date,update_date,operator,remark
   </sql>
 
   <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColumns"/>
-    from sys_dict_data
+    SELECT
+    <include refid="BaseColumns"/>
+    FROM
+    sys_dict_data
     <where>
-      <if test="name !=null">
-        `name`=#{name}
+      <if test="dataName !=null">
+        data_name LIKE CONCAT(CONCAT('%',#{dataName},'%'));
       </if>
     </where>
   </select>
 
-  <select id="getDictDataByid" resultMap="BaseResultMap" parameterType="long">
-    select <include refid="BaseColumns"/>
-    from sys_dict_data
-    WHERE dict_id=#{dictId}
+  <select id="getDictDataById" resultMap="BaseResultMap">
+    SELECT
+      <include refid="BaseColumns"/>
+    FROM
+      sys_dict_data
+    WHERE
+      dict_id=#{dictId}
   </select>
 
 </mapper>

@@ -1,7 +1,7 @@
 package com.bdxh.system.entity;
 
-import javax.persistence.*;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "sys_dict_data")
 public class DictData {
@@ -9,7 +9,6 @@ public class DictData {
      * 主键
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     /**
@@ -21,17 +20,20 @@ public class DictData {
     /**
      * 字典名称
      */
-    private String name;
+    @Column(name = "data_name")
+    private String dataName;
 
     /**
      * 字典值
      */
-    private String value;
+    @Column(name = "data_value")
+    private String dataValue;
 
     /**
      * 排序
      */
-    private Integer order;
+    @Column(name = "sort")
+    private Integer sort;
 
     /**
      * 创建时间
@@ -94,55 +96,55 @@ public class DictData {
     /**
      * 获取字典名称
      *
-     * @return name - 字典名称
+     * @return data_name - 字典名称
      */
-    public String getName() {
-        return name;
+    public String getDataName() {
+        return dataName;
     }
 
     /**
      * 设置字典名称
      *
-     * @param name 字典名称
+     * @param dataName 字典名称
      */
-    public void setName(String name) {
-        this.name = name == null ? null : name.trim();
+    public void setDataName(String dataName) {
+        this.dataName = dataName == null ? null : dataName.trim();
     }
 
     /**
      * 获取字典值
      *
-     * @return value - 字典值
+     * @return data_value - 字典值
      */
-    public String getValue() {
-        return value;
+    public String getDataValue() {
+        return dataValue;
     }
 
     /**
      * 设置字典值
      *
-     * @param value 字典值
+     * @param dataValue 字典值
      */
-    public void setValue(String value) {
-        this.value = value == null ? null : value.trim();
+    public void setDataValue(String dataValue) {
+        this.dataValue = dataValue == null ? null : dataValue.trim();
     }
 
     /**
      * 获取排序
      *
-     * @return order - 排序
+     * @return sort - 排序
      */
-    public Integer getOrder() {
-        return order;
+    public Integer getSort() {
+        return sort;
     }
 
     /**
      * 设置排序
      *
-     * @param order 排序
+     * @param sort 排序
      */
-    public void setOrder(Integer order) {
-        this.order = order;
+    public void setSort(Integer sort) {
+        this.sort = sort;
     }
 
     /**

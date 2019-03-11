@@ -95,7 +95,7 @@ public class UserController {
      */
     @ApiOperation("根据id删除用户信息")
     @RequestMapping(value = "/delUser", method = RequestMethod.POST)
-    public Object delUser(@RequestParam(name = "id") @NotNull(message = "用户id不能为空") Long id) {
+    public Object delUser(@RequestParam(name = "id") Long id) {
         try {
             userService.delUser(id);
             return WrapMapper.ok();

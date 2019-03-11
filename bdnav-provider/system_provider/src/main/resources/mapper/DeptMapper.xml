@@ -30,7 +30,7 @@
       sys_dept
      <where>
       <if test="deptFullName !=null">
-        dept_full_name=LIKE '%'#{deptFullName} '%'
+          dept_full_name LIKE CONCAT(CONCAT('%',#{deptFullName},'%'));
       </if>
      </where>
   </select>
@@ -41,8 +41,16 @@
         <include refid="BaseColumns"/>
         FROM
         sys_dept
-        WHERE parent_id=#{parentId}
-        ORDER BY sort ASC
+        WHERE id=#{id} and parent_id=#{parentId};
+    </select>
+
+    <!-- 根据父id查询所有子集合-->
+    <select id="selectByParentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        sys_dept
+        WHERE  parent_id=#{parentId};
     </select>
 
 </mapper>
