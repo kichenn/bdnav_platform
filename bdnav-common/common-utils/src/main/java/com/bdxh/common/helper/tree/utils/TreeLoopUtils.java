@@ -12,6 +12,24 @@ import java.util.List;
  */
 public class TreeLoopUtils<E extends TreeBean> {
 
+
+    /**
+    * @Description:   获取树结构
+    * @Author: Kang
+    * @Date: 2019/3/11 12:11
+    */
+    public List<E> getTree(List<E> rootMenu) {
+        List<E> result = new ArrayList<>();
+        for (E temp : rootMenu) {
+            if (LongUtils.isNotEmpty(temp.getParentId())) {
+                if (temp.getParentId().equals(new Long("-1"))) {
+                    result.addAll(getChild(temp.getId(), rootMenu));
+                }
+            }
+        }
+        return result;
+    }
+
     /**
      * @Description: 递归查找子节点
      * @Author: Kang
@@ -28,13 +46,15 @@ public class TreeLoopUtils<E extends TreeBean> {
                 }
             }
         }
+        rootMenu.remove(childList);
         // 把子节点的子节点再循环一遍
         for (E temp1 : childList) {
             if (LongUtils.isNotEmpty(temp1.getId())) {
                 // 递归
                 temp1.setChildren(getChild(temp1.getId(), rootMenu));
             }
-        } // 递归退出条件
+        }
+        // 递归退出条件
         if (childList.size() == 0) {
             return new ArrayList<E>();
         }

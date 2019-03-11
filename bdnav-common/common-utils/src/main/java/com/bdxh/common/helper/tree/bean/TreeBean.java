@@ -23,7 +23,6 @@ public class TreeBean {
     @ApiModelProperty("排序")
     private Integer sort;
 
-
     @ApiModelProperty("是否展开直子节点")
     private Boolean expand=Boolean.FALSE;
 

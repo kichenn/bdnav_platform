@@ -24,12 +24,13 @@ public class FamilyStudentVo {
     @ApiModelProperty("学生卡号")
     private String sCardNumber;
 
-    @ApiModelProperty("家长卡号")
-    private String cardNumber;
 
     @ApiModelProperty("学生家长称呼")
     private String relation;
 
     @ApiModelProperty("学生家长关系表ID")
     private Long fsId;
+
+    @ApiModelProperty("家长卡号")
+    private String fCardNumber;
 }
