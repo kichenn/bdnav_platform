@@ -95,7 +95,8 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
     @Override
     public TeacherVo selectTeacherInfo(String schoolCode, String cardNumber) {
-        TeacherVo teacherVo=teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
+        Teacher teacher=teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
+        TeacherVo teacherVo = BeanMapUtils.map(teacher, TeacherVo.class);
         List<TeacherDeptVo> teacherDeptVo=teacherDeptMapper.selectTeacherDeptDetailsInfo(schoolCode, cardNumber);
         teacherVo.setTeacherDeptVos(teacherDeptVo);
         return teacherVo;
