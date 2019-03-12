@@ -17,7 +17,10 @@ import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.Family;
+import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.service.FamilyService;
+import com.bdxh.user.vo.FamilyVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -126,7 +129,8 @@ public class FamilyController {
      public Object queryFamilyInfo(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber) {
          try {
-             return familyService.selectBysCodeAndCard(schoolCode,cardNumber);
+             FamilyVo familyVo=familyService.selectBysCodeAndCard(schoolCode,cardNumber);
+             return WrapMapper.ok(familyVo) ;
          } catch (Exception e) {
              e.printStackTrace();
              return WrapMapper.error(e.getMessage());
@@ -143,7 +147,8 @@ public class FamilyController {
     public Object queryFamilyListPage(@ModelAttribute  FamilyQueryDto familyQueryDto) {
         try {
             // 封装分页之后的数据
-            return familyService.getFamilyList(familyQueryDto);
+            PageInfo<Family> family=familyService.getFamilyList(familyQueryDto);
+            return WrapMapper.ok(family);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

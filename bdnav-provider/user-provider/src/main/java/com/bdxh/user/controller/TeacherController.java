@@ -15,7 +15,11 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
+import com.bdxh.user.entity.Student;
+import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.service.TeacherService;
+import com.bdxh.user.vo.TeacherVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -110,7 +114,8 @@ public class TeacherController {
     public Object queryTeacherInfo(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber) {
         try {
-            return teacherService.selectTeacherInfo(schoolCode,cardNumber);
+            TeacherVo teacherVo=teacherService.selectTeacherInfo(schoolCode,cardNumber);
+            return WrapMapper.ok(teacherVo);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -126,7 +131,8 @@ public class TeacherController {
     public Object queryTeacherListPage(@ModelAttribute TeacherQueryDto teacherQueryDto) {
         try {
             // 封装分页之后的数据
-            return teacherService.getTeacherList(teacherQueryDto);
+            PageInfo<Teacher> teacher=teacherService.getTeacherList(teacherQueryDto);
+            return WrapMapper.ok(teacher);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
