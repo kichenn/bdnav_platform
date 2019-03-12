@@ -1,6 +1,7 @@
 package com.bdxh.system.service;
 
 import com.bdxh.common.web.support.IService;
+import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.Role;
 import com.github.pagehelper.PageInfo;
 
@@ -35,5 +36,8 @@ public interface RoleService extends IService<Role> {
      * @return
      */
     Role getRoleByRole(String role);
+
+    //分页查询全部角色信息
+    PageInfo<Role> findRolesInConditionPaging(Integer pageNum, Integer pageSize);
 
 }

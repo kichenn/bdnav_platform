@@ -32,13 +32,23 @@
     </where>
   </select>
 
+  <!-- 根据dictid查询所属字典目录-->
   <select id="getDictDataById" resultMap="BaseResultMap">
     SELECT
       <include refid="BaseColumns"/>
     FROM
       sys_dict_data
-    WHERE
-      dict_id=#{dictId}
+    <where>
+      <if test="dictId !=null">
+        dict_id=#{dictId}
+      </if>
+    </where>
+
   </select>
+
+  <delete id="deleteDictDataById" parameterType="java.lang.Long">
+    delete from sys_dict_data where id = #{id,jdbcType=BIGINT}
+  </delete>
+
 
 </mapper>

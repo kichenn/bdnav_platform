@@ -9,10 +9,7 @@ import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.dto.UpdateDictDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.service.DictService;
-import com.bdxh.system.vo.DictVo;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -145,15 +142,14 @@ public class DictController {
 
     /**
      * 根据id删除字典
-     * @param id
      * @return
      */
     @ApiOperation("根据id删除字典")
     @RequestMapping(value = "/delDict",method = RequestMethod.POST)
-    public Object delDict(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
+    public Object delDict(@RequestParam(name = "dictId") Long dictId){
         try {
-            dictService.delDict(id);
-            return WrapMapper.ok();
+        dictService.delDict(dictId);
+           return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -196,6 +192,8 @@ public class DictController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+
 
 
 

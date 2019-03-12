@@ -1,6 +1,7 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
+import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.persistence.RoleMapper;
 import com.bdxh.system.persistence.RolePermissionMapper;
@@ -78,6 +79,13 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     @Override
     public Role getRoleByRole(String role) {
         return roleMapper.getRoleByRole(role);
+    }
+
+    @Override
+    public PageInfo<Role> findRolesInConditionPaging(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Role> roles =roleMapper.selectAll();
+        return new PageInfo(roles);
     }
 
 }
