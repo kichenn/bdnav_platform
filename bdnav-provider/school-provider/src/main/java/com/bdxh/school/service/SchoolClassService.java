@@ -4,7 +4,7 @@ import com.bdxh.common.web.support.IService;
 import com.bdxh.school.dto.SchoolClassDto;
 import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
-import com.bdxh.school.vo.SchoolClassVo;
+import com.bdxh.school.vo.SchoolClassTreeVo;
 
 import java.util.List;
 import java.util.Optional;
@@ -32,14 +32,8 @@ public interface SchoolClassService extends IService<SchoolClass> {
     //删除院校底下信息
     Boolean delSchoolClassBySchoolId(Long schoolId);
 
-    //递归查询关系节点
-    List<SchoolClassVo> findSchoolClassRelation(SchoolClassVo schoolClassVo);
-
     //学校id查询等级节点列表（一级节点为父节点）
-    List<SchoolClass> findSchoolParentClassBySchoolId(Long schoolId, Byte level);
-
-    //关系id查询等级信息
-    List<SchoolClassVo> findSchoolClassByParentId(Long parentId);
+    List<SchoolClass> findSchoolParentClassBySchoolId(Long schoolId);
 
     //id查询信息
     Optional<SchoolClass> findSchoolClassById(Long id);

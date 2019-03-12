@@ -1,12 +1,13 @@
 package com.bdxh.school.contoller;
 
 
+import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.SchoolClassDto;
 import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.service.SchoolClassService;
-import com.bdxh.school.vo.SchoolClassVo;
+import com.bdxh.school.vo.SchoolClassTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,6 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,9 +33,6 @@ import java.util.stream.Collectors;
 @Api(value = "学校专业院校关系", tags = "学校专业院校关系")
 public class SchoolClassController {
 
-    //当前为父级等级节点（1为当前第一级节点，也就是父级节点）
-    private static final Byte LEVEL = 1;
-
     @Autowired
     private SchoolClassService schoolClassService;
 
@@ -47,39 +44,43 @@ public class SchoolClassController {
     @RequestMapping(value = "/findSchoolClassTreeBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "院校树形结构关系", response = List.class)
     @ResponseBody
-    public Object findSchoolClassTreeBySchoolId(@RequestParam Long schoolId) {
-        List<SchoolClass> schoolClassesParents = schoolClassService.findSchoolParentClassBySchoolId(schoolId, LEVEL);
+    public Object findSchoolClassTreeBySchoolId(@RequestParam("schoolId") Long schoolId) {
+        List<SchoolClass> schoolClassesParents = schoolClassService.findSchoolParentClassBySchoolId(schoolId);
         if (CollectionUtils.isEmpty(schoolClassesParents)) {
             return WrapMapper.error("该学校不存在院系关系，请检查！！！");
         }
-        List<SchoolClassVo> schoolClassDtos = schoolClassesParents.stream().map(e -> {
-            SchoolClassVo tempDto = new SchoolClassVo();
-            BeanUtils.copyProperties(e, tempDto);
-            tempDto.setSchoolClassVos(schoolClassService.findSchoolClassRelation(tempDto));
-            return tempDto;
+        List<SchoolClassTreeVo> schoolClassDtos = schoolClassesParents.stream().map(e -> {
+            SchoolClassTreeVo treeVo = new SchoolClassTreeVo();
+            BeanUtils.copyProperties(e, treeVo);
+            treeVo.setTitle(e.getName());
+            treeVo.setCreateDate(e.getCreateDate());
+            return treeVo;
         }).collect(Collectors.toList());
-        return WrapMapper.ok(schoolClassDtos);
+        //树状
+        TreeLoopUtils<SchoolClassTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+        List<SchoolClassTreeVo> result = treeLoopUtils.getTree(schoolClassDtos);
+        return WrapMapper.ok(result);
     }
 
     /**
-     * @Description: 根据id查询院系关系信息
+     * @Description: 根据id查询院系信息
      * @Author: Kang
      * @Date: 2019/2/27 17:07
      */
     @RequestMapping(value = "/findSchoolClassById", method = RequestMethod.GET)
-    @ApiOperation(value = "根据id查询部门关系信息", response = List.class)
+    @ApiOperation(value = "根据id查询部门信息", response = List.class)
     @ResponseBody
-    public Object findSchoolClassById(@RequestParam Long id) {
+    public Object findSchoolClassById(@RequestParam("id") Long id) {
         return WrapMapper.ok(schoolClassService.findSchoolClassById(id).orElse(new SchoolClass()));
     }
 
     /**
-     * @Description: 所有学校院系关系信息（全部无条件）
+     * @Description: 所有学校院系信息列表（全部无条件）
      * @Author: Kang
      * @Date: 2019/2/27 17:02
      */
     @RequestMapping(value = "/findSchoolClassAll", method = RequestMethod.GET)
-    @ApiOperation(value = "所有学校院系关系信息（全部无条件）", response = List.class)
+    @ApiOperation(value = "所有学校院系信息列表（全部无条件）", response = List.class)
     @ResponseBody
     public Object findSchoolClassAll() {
         return WrapMapper.ok(schoolClassService.findSchoolClassAll());
@@ -141,8 +142,8 @@ public class SchoolClassController {
     @RequestMapping(value = "/delSchoolClassBySchoolId", method = RequestMethod.DELETE)
     @ApiOperation(value = "删除院校底下信息", response = Boolean.class)
     @ResponseBody
-    public Object delSchoolClassBySchoolId(@RequestParam("shcoolId") Long shcoolId) {
-        return WrapMapper.ok(schoolClassService.delSchoolClassBySchoolId(shcoolId));
+    public Object delSchoolClassBySchoolId(@RequestParam("schoolId") Long schoolId) {
+        return WrapMapper.ok(schoolClassService.delSchoolClassBySchoolId(schoolId));
     }
 
 }

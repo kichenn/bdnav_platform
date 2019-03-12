@@ -6,16 +6,12 @@ import com.bdxh.school.dto.SchoolDeptModifyDto;
 import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.persistence.SchoolDeptMapper;
 import com.bdxh.school.service.SchoolDeptService;
-import com.bdxh.school.helper.utils.LongUtils;
-import com.bdxh.school.vo.SchoolDeptVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,45 +62,12 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
         return schoolDeptMapper.delSchoolDeptBySchoolId(schoolId) > 0;
     }
 
-    //递归查询关系节点
-    @Override
-    public List<SchoolDeptVo> findSchoolDeptRelation(SchoolDeptVo schoolDeptVo) {
-        List<SchoolDeptVo> schoolDeptVos = new ArrayList<>();
-        if (LongUtils.isNotEmpty(schoolDeptVo.getId())) {
-            schoolDeptVos.addAll(findSchoolDeptByParentId(schoolDeptVo.getId()));
-            if (CollectionUtils.isNotEmpty(schoolDeptVos)) {
-                schoolDeptVos.stream().forEach(e -> {
-                    if (LongUtils.isNotEmpty(e.getId())) {
-                        e.setSchoolDeptVos(findSchoolDeptRelation(e));
-                    }
-                });
-            }
-        }
-        return schoolDeptVos;
-    }
-
     //学校id查询等级节点列表（一级节点为父节点）
     @Override
-    public List<SchoolDept> findSchoolParentDeptBySchoolId(Long schoolId, Byte level) {
+    public List<SchoolDept> findSchoolParentDeptBySchoolId(Long schoolId) {
         SchoolDept schoolDept = new SchoolDept();
-        schoolDept.setLevel(level);
         schoolDept.setSchoolId(schoolId);
         return schoolDeptMapper.select(schoolDept);
-    }
-
-    //关系id查询等级信息
-    @Override
-    public List<SchoolDeptVo> findSchoolDeptByParentId(Long parentId) {
-        List<SchoolDeptVo> schoolDeptVos = new ArrayList<>();
-        List<SchoolDept> schoolDepts = schoolDeptMapper.findSchoolDeptByParentId(parentId);
-        if (CollectionUtils.isNotEmpty(schoolDepts)) {
-            schoolDepts.stream().forEach(e -> {
-                SchoolDeptVo schoolDeptVo = new SchoolDeptVo();
-                BeanUtils.copyProperties(e, schoolDeptVo);
-                schoolDeptVos.add(schoolDeptVo);
-            });
-        }
-        return schoolDeptVos;
     }
 
     //id查询信息

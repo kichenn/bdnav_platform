@@ -29,15 +29,6 @@
     `level`,sort,manager_id,manager_name,create_date,update_date,operator,operator_name,remark
     </sql>
 
-    <select id="findSchoolClassByParentId" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM
-        t_school_class
-        WHERE parent_id=#{parentId,jdbcType=BIGINT}
-        ORDER BY sort ASC
-    </select>
-
     <delete id="batchDelSchoolClassInIds">
         DELETE
         FROM

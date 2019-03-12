@@ -2,7 +2,6 @@ package com.bdxh.system.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
-import com.bdxh.system.entity.DictData;
 import com.bdxh.system.fallback.DictDataControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
 @Service
 @FeignClient(value = "system-provider-cluster",fallback = DictDataControllerClientFallback.class)
 public interface DictDataControllerClient {

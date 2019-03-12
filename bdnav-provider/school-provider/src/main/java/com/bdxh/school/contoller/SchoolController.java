@@ -139,7 +139,7 @@ public class SchoolController {
 
 
     /**
-     * @Description: 查询学校信息 (筛选条件无分页)
+     * @Description: 查询学校列表 (筛选条件无分页)
      * @Author: Kang
      * @Date: 2019/2/28 15:30
      */

@@ -3,11 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.web.support.IService;
 import com.bdxh.school.dto.SchoolDeptDto;
 import com.bdxh.school.dto.SchoolDeptModifyDto;
-import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolDept;
-import com.bdxh.school.vo.SchoolClassVo;
-import com.bdxh.school.vo.SchoolDeptVo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,14 +31,8 @@ public interface SchoolDeptService extends IService<SchoolDept> {
     //删除学校组织信息By SchoolId
     Boolean delSchoolDeptBySchoolId(Long schoolId);
 
-    //递归查询关系节点
-    List<SchoolDeptVo> findSchoolDeptRelation(SchoolDeptVo schoolDeptVo);
-
-    //学校id查询等级节点列表（一级节点为父节点）
-    List<SchoolDept> findSchoolParentDeptBySchoolId(Long schoolId, Byte level);
-
-    //关系id查询等级信息
-    List<SchoolDeptVo> findSchoolDeptByParentId(Long parentId);
+    //学校id查询等级节点列表
+    List<SchoolDept> findSchoolParentDeptBySchoolId(Long schoolId);
 
     //id查询信息
     Optional<SchoolDept> findSchoolDeptById(Long id);

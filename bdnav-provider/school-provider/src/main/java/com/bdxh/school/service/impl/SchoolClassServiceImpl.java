@@ -6,16 +6,12 @@ import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.persistence.SchoolClassMapper;
 import com.bdxh.school.service.SchoolClassService;
-import com.bdxh.school.helper.utils.LongUtils;
-import com.bdxh.school.vo.SchoolClassVo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,45 +62,12 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
         return schoolClassMapper.delSchoolClassBySchoolId(schoolId) > 0;
     }
 
-    //递归查询关系节点
+    //学校id查询等级节点列表
     @Override
-    public List<SchoolClassVo> findSchoolClassRelation(SchoolClassVo schoolClassVo) {
-        List<SchoolClassVo> schoolClassVos = new ArrayList<>();
-        if (LongUtils.isNotEmpty(schoolClassVo.getId())) {
-            schoolClassVos.addAll(findSchoolClassByParentId(schoolClassVo.getId()));
-            if (CollectionUtils.isNotEmpty(schoolClassVos)) {
-                schoolClassVos.stream().forEach(e -> {
-                    if (LongUtils.isNotEmpty(e.getId())) {
-                        e.setSchoolClassVos(findSchoolClassRelation(e));
-                    }
-                });
-            }
-        }
-        return schoolClassVos;
-    }
-
-    //学校id查询等级节点列表（一级节点为父节点）
-    @Override
-    public List<SchoolClass> findSchoolParentClassBySchoolId(Long schoolId, Byte level) {
+    public List<SchoolClass> findSchoolParentClassBySchoolId(Long schoolId) {
         SchoolClass schoolClass = new SchoolClass();
-        schoolClass.setLevel(level);
         schoolClass.setSchoolId(schoolId);
         return schoolClassMapper.select(schoolClass);
-    }
-
-    //关系id查询等级信息
-    @Override
-    public List<SchoolClassVo> findSchoolClassByParentId(Long parentId) {
-        List<SchoolClassVo> schoolClassVos = new ArrayList<>();
-        List<SchoolClass> schoolClasses = schoolClassMapper.findSchoolClassByParentId(parentId);
-        if (CollectionUtils.isNotEmpty(schoolClasses)) {
-            schoolClasses.stream().forEach(e -> {
-                SchoolClassVo schoolClassVo = new SchoolClassVo();
-                BeanUtils.copyProperties(e, schoolClassVo);
-                schoolClassVos.add(schoolClassVo);
-            });
-        }
-        return schoolClassVos;
     }
 
     //id查询信息

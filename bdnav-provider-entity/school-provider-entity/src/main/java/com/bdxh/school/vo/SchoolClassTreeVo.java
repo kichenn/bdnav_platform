@@ -1,22 +1,14 @@
 package com.bdxh.school.vo;
 
+import com.bdxh.common.helper.tree.bean.TreeBean;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class SchoolClassVo {
+public class SchoolClassTreeVo extends TreeBean {
 
-
-    @ApiModelProperty("id")
-    private Long id;
-
-    @ApiModelProperty("父级id")
-    private Long parentId;
-
-    @ApiModelProperty("父级ids")
-    private String parentIds;
 
     @ApiModelProperty("父级names")
     private String parentNames;
@@ -33,15 +25,6 @@ public class SchoolClassVo {
     @ApiModelProperty("类型 1 学院 2 系 3 专业 4 年级 5 班级")
     private Byte type;
 
-    @ApiModelProperty("层级")
-    private Byte level;
-
-    @ApiModelProperty("排序")
-    private Integer sort;
-
     @ApiModelProperty("备注")
     private String remark;
-
-    @ApiModelProperty("子院系信息")
-    private List<SchoolClassVo> schoolClassVos;
 }

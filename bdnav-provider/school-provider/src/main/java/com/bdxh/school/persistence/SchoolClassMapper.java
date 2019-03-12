@@ -10,8 +10,6 @@ import java.util.List;
 @Repository
 public interface SchoolClassMapper extends Mapper<SchoolClass> {
 
-    //parentId查询学校关系信息
-    List<SchoolClass> findSchoolClassByParentId(@Param("parentId") Long parentId);
 
     //id批量删除学校关系信息
     Integer batchDelSchoolClassInIds(@Param("ids") List<Long> ids);

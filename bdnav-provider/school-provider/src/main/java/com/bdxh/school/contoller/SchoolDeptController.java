@@ -1,11 +1,12 @@
 package com.bdxh.school.contoller;
 
+import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.SchoolDeptDto;
 import com.bdxh.school.dto.SchoolDeptModifyDto;
 import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.service.SchoolDeptService;
-import com.bdxh.school.vo.SchoolDeptVo;
+import com.bdxh.school.vo.SchoolDeptTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -26,9 +27,6 @@ import java.util.stream.Collectors;
 @Api(value = "学校部门关系", tags = "学校部门关系")
 public class SchoolDeptController {
 
-    //当前为父级等级节点（1为当前第一级节点，也就是父级节点）
-    private static final Byte LEVEL = 1;
-
     @Autowired
     private SchoolDeptService schoolDeptService;
 
@@ -40,18 +38,22 @@ public class SchoolDeptController {
     @RequestMapping(value = "/findSchoolDeptTreeBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "学校部门树形结构关系", response = List.class)
     @ResponseBody
-    public Object findSchoolDeptTreeBySchoolId(@RequestParam Long schoolId) {
-        List<SchoolDept> schoolDeptParents = schoolDeptService.findSchoolParentDeptBySchoolId(schoolId, LEVEL);
+    public Object findSchoolDeptTreeBySchoolId(@RequestParam("schoolId") Long schoolId) {
+        List<SchoolDept> schoolDeptParents = schoolDeptService.findSchoolParentDeptBySchoolId(schoolId);
         if (CollectionUtils.isEmpty(schoolDeptParents)) {
             return WrapMapper.error("该学校不存在院系关系，请检查！！！");
         }
-        List<SchoolDeptVo> schoolClassDtos = schoolDeptParents.stream().map(e -> {
-            SchoolDeptVo tempDto = new SchoolDeptVo();
-            BeanUtils.copyProperties(e, tempDto);
-            tempDto.setSchoolDeptVos(schoolDeptService.findSchoolDeptRelation(tempDto));
-            return tempDto;
+        List<SchoolDeptTreeVo> schoolDeptDtos = schoolDeptParents.stream().map(e -> {
+            SchoolDeptTreeVo treeVo = new SchoolDeptTreeVo();
+            BeanUtils.copyProperties(e, treeVo);
+            treeVo.setTitle(e.getName());
+            treeVo.setCreateDate(e.getCreateDate());
+            return treeVo;
         }).collect(Collectors.toList());
-        return WrapMapper.ok(schoolClassDtos);
+        //树状
+        TreeLoopUtils<SchoolDeptTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+        List<SchoolDeptTreeVo> result = treeLoopUtils.getTree(schoolDeptDtos);
+        return WrapMapper.ok(result);
     }
 
     /**
@@ -62,17 +64,17 @@ public class SchoolDeptController {
     @RequestMapping(value = "/findSchoolDeptById", method = RequestMethod.GET)
     @ApiOperation(value = "根据id查询部门关系信息", response = List.class)
     @ResponseBody
-    public Object findSchoolDeptById(@RequestParam Long id) {
+    public Object findSchoolDeptById(@RequestParam("id") Long id) {
         return WrapMapper.ok(schoolDeptService.findSchoolDeptById(id).orElse(new SchoolDept()));
     }
 
     /**
-     * @Description: 所有学校部门关系信息（全部无条件）
+     * @Description: 所有学校部门信息（全部无条件）
      * @Author: Kang
      * @Date: 2019/2/27 17:02
      */
     @RequestMapping(value = "/findSchoolDeptAll", method = RequestMethod.GET)
-    @ApiOperation(value = "所有学校部门关系信息（全部无条件）", response = List.class)
+    @ApiOperation(value = "所有学校部门信息（全部无条件）", response = List.class)
     @ResponseBody
     public Object findSchoolDeptAll() {
         return WrapMapper.ok(schoolDeptService.findSchoolDeptAll());
@@ -134,7 +136,7 @@ public class SchoolDeptController {
     @RequestMapping(value = "/delSchoolDeptBySchoolId", method = RequestMethod.DELETE)
     @ApiOperation(value = "删除该学校部门所有关系", response = Boolean.class)
     @ResponseBody
-    public Object delSchoolDeptBySchoolId(@RequestParam("shcoolId") Long shcoolId) {
-        return WrapMapper.ok(schoolDeptService.delSchoolDeptBySchoolId(shcoolId));
+    public Object delSchoolDeptBySchoolId(@RequestParam("schoolId") Long schoolId) {
+        return WrapMapper.ok(schoolDeptService.delSchoolDeptBySchoolId(schoolId));
     }
 }

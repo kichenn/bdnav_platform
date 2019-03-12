@@ -44,13 +44,5 @@
         school_id =#{schoolId,jdbcType=BIGINT}
     </delete>
 
-    <select id="findSchoolDeptByParentId" resultMap="BaseResultMap">
-        SELECT
-        <include refid="Base_Column_List"/>
-        FROM
-        t_school_dept
-        WHERE parent_id=#{parentId,jdbcType=BIGINT}
-        ORDER BY sort ASC
-    </select>
 
 </mapper>

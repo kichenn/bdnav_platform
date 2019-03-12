@@ -6,7 +6,6 @@ import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.dto.UpdateDictDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.fallback.DictControllerClientFallback;
-import com.bdxh.system.vo.DictVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;

@@ -5,11 +5,9 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.DictDataDto;
 import com.bdxh.system.dto.DictDataQueryDto;
 import com.bdxh.system.dto.UpdateDictDataDto;
-import com.bdxh.system.entity.DictData;
 import com.bdxh.system.feign.DictDataControllerClient;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 @Component
 public class DictDataControllerClientFallback implements DictDataControllerClient {
 
