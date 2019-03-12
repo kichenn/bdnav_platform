@@ -2,17 +2,22 @@ package com.bdxh.backend.controller.system;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.system.dto.DeptDto;
+import com.bdxh.system.dto.DeptQueryDto;
 import com.bdxh.system.feign.DeptControllerClient;
+import com.bdxh.system.vo.DeptDetailsVo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.stream.Collectors;
+
 /**
  * 系统部门交互控制层
  */
@@ -29,15 +34,40 @@ public class SysDeptController {
 
     /**
      * 根据id查询部门树形菜单
+     *
      * @param deptId
      * @return
      */
-    @RequestMapping(value = "/queryDeptTreeById",method = RequestMethod.POST)
+    @CrossOrigin
+    @RequestMapping(value = "/queryDeptTreeById", method = RequestMethod.GET)
     @ApiOperation("根据id查询部门树形菜单")
-    public Object queryDeptTreeById(@RequestParam(name = "deptId") Long deptId){
+    public Object queryDeptTreeById(@RequestParam(name = "deptId") Long deptId) {
         try {
-            Preconditions.checkArgument(deptId!=null,"部门id不能为空");
-            Wrapper wrapper =deptControllerClient.queryDeptTreeById(deptId);
+            Preconditions.checkArgument(deptId != null, "部门id不能为空");
+            Wrapper wrapper = deptControllerClient.queryDeptTreeById(deptId);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 带条件的查询
+     *
+     * @return
+     */
+    @CrossOrigin
+    @RequestMapping(value = "/queryDeptList", method = RequestMethod.POST)
+    @ApiOperation("带条件的查询部门")
+    public Object queryDeptList(@Valid @RequestBody DeptQueryDto deptQueryDto, BindingResult bindingResult) {
+        //检验参数
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            Wrapper wrapper = deptControllerClient.queryDeptList(deptQueryDto);
             return WrapMapper.ok(wrapper);
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,4 +75,94 @@ public class SysDeptController {
         }
     }
 
+
+    /**
+     * 根据父级id查询部门详情
+     *
+     * @return
+     */
+    @CrossOrigin
+    @RequestMapping(value = "/queryDeptById", method = RequestMethod.GET)
+    @ApiOperation("根据父级id查询部门详情")
+    @ResponseBody
+    public Object queryDeptById(@RequestParam(name = "deptId") Long deptId, @RequestParam(name = "parentId") Long parentId) {
+        try {
+            DeptDetailsVo result = deptControllerClient.findDeptByParentId(deptId, parentId).getResult();
+            return WrapMapper.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 增加部门信息
+     *
+     * @return
+     */
+    @CrossOrigin
+    @RequestMapping(value = "/addDept", method = RequestMethod.POST)
+    @ApiOperation("增加部门")
+    public Object addDept(@Valid @RequestBody DeptDto deptDto, BindingResult bindingResult) {
+        //检验参数
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            Wrapper wrapper = deptControllerClient.addDept(deptDto);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 增加部门信息
+     *
+     * @return
+     */
+    @CrossOrigin
+    @RequestMapping(value = "/updateDept", method = RequestMethod.POST)
+    @ApiOperation("修改部门信息")
+    public Object updateDept(@Valid @RequestBody DeptDto deptDto, BindingResult bindingResult) {
+        //检验参数
+        if (bindingResult.hasErrors()) {
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            Wrapper wrapper = deptControllerClient.updateDept(deptDto);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 删除部门信息
+     *
+     * @return
+     */
+    @CrossOrigin
+    @RequestMapping(value = "/delDept", method = RequestMethod.POST)
+    @ApiOperation("删除部门信息")
+    public Object delDept(@RequestParam(name = "deptId") Long deptId) {
+
+        try {
+            Wrapper wrapper= deptControllerClient.delDept(deptId);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+
 }
+
+
+

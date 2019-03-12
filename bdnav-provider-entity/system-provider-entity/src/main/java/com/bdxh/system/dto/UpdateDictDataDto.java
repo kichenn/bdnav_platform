@@ -1,33 +1,38 @@
 package com.bdxh.system.dto;
 
-import com.bdxh.common.base.page.Query;
+
 import lombok.Data;
 
 
 @Data
-public class DeptQueryDto extends Query {
+public class UpdateDictDataDto {
+    /**
+     * 主键
+     */
+    private Long id;
 
+    /**
+     * 字典类型id
+     */
+    private Long dictId;
+
+    /**
+     * 字典名称
+     */
+    private String dataName;
 
 
     /**
-     * 部门名称
+     * 字典值
      */
-    private Long deptName;
+    private String dataValue;
 
-    /**
-     * 部门全称
-     */
-    private String deptFullName;
 
     /**
      * 排序
      */
     private Integer sort;
 
-    /**
-     * 部门层级
-     */
-    private Byte level;
 
     /**
      * 操作人

@@ -1,11 +1,14 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.web.support.BaseService;
+import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.DictData;
 import com.bdxh.system.persistence.DictDataMapper;
 import com.bdxh.system.persistence.DictMapper;
 import com.bdxh.system.service.DictService;
+import com.bdxh.system.vo.DeptVo;
+import com.bdxh.system.vo.DictVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -48,13 +51,29 @@ public class DictServiceImpl extends BaseService<Dict> implements DictService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delDict(Long DictId) {
-        List<DictData> DictDataList=dictDataMapper.getDictDataByid(DictId);
+        List<DictData> DictDataList=dictDataMapper.getDictDataById(DictId);
         for (int i = 0; i <DictDataList.size() ; i++) {
           DictData dictData=DictDataList.get(i);
             dictDataMapper.delete(dictData);
         }
 
     }
+
+    @Override
+    public List<Dict> findDictListAll() {
+        return dictMapper.selectAll();
+    }
+
+    //分页筛选条件查询字典列表
+    @Override
+    public PageInfo<Dict> findDictsInConditionPaging(int pageNum, int pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<Dict> dicts =dictMapper.selectAll();
+        return new PageInfo(dicts);
+    }
+
+
+
 
 
 }

@@ -22,11 +22,13 @@
     from sys_dict
     <where>
       <if test="name !=null">
-        `name`=#{name}
+        `name` LIKE CONCAT(CONCAT('%',#{name},'%'));
       </if>
       <if test="type !=null">
         `type`=#{type}
       </if>
     </where>
   </select>
+
+
 </mapper>

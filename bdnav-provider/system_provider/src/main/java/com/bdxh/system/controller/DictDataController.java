@@ -5,6 +5,9 @@ import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.DictDataDto;
 import com.bdxh.system.dto.DictDataQueryDto;
+import com.bdxh.system.dto.DictQueryDto;
+import com.bdxh.system.dto.UpdateDictDataDto;
+import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.DictData;
 import com.bdxh.system.service.DictDataService;
 import com.github.pagehelper.PageInfo;
@@ -49,14 +52,14 @@ public class DictDataController {
      */
     @ApiOperation("添加字典数据信息")
     @RequestMapping(value = "/addDictData",method = RequestMethod.POST)
-    public Object addDictData(@Valid @RequestBody DictDataDto dictDataDto, BindingResult bindingResult){   //检验参数
+    public Object addDictData(@Valid @RequestBody DictDataDto dictDataDto, BindingResult bindingResult){
+        //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
             DictData dictData = BeanMapUtils.map(dictDataDto, DictData.class);
-            Preconditions.checkArgument(dictData == null, "字典数据已经存在");
             dictDataService.save(dictData);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -67,20 +70,19 @@ public class DictDataController {
 
     /**
      * 修改字典数据信息
-     * @param dictDataDto
      * @param bindingResult
      * @return
      */
     @ApiOperation("修改字典数据信息")
     @RequestMapping(value = "/updateDictData",method = RequestMethod.POST)
-    public Object updateDictData(@Valid @RequestBody DictDataDto dictDataDto, BindingResult bindingResult){
+    public Object updateDictData(@Valid @RequestBody UpdateDictDataDto updateDictDataDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            DictData dictData= BeanMapUtils.map(dictDataDto, DictData .class);
+            DictData dictData= BeanMapUtils.map(updateDictDataDto, DictData .class);
             dictDataService.update(dictData);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -95,8 +97,8 @@ public class DictDataController {
      * @return
      */
     @ApiOperation("根据id查询对象")
-    @RequestMapping(value = "/queryDactDataById",method = RequestMethod.GET)
-    public Object queryDictData(@RequestParam(name = "id") @NotNull(message = "字典id不能为空") Long id){
+    @RequestMapping(value = "/queryDictDataById",method = RequestMethod.GET)
+    public Object queryDictDataById(@RequestParam(name = "id") Long id){
         try {
             DictData dictData = dictDataService.selectByKey(id);
             return WrapMapper.ok(dictData);
@@ -116,8 +118,8 @@ public class DictDataController {
     public Object queryList(@Valid @RequestBody DictDataQueryDto dictDataQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(dictDataQueryDto);
-            List<DictData> dictDatas = dictDataService.queryList(param);
-            return WrapMapper.ok(dictDatas);
+            List<DictData> dictData = dictDataService.queryList(param);
+            return WrapMapper.ok(dictData);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -134,8 +136,8 @@ public class DictDataController {
     public Object queryListPage(@Valid @RequestBody DictDataQueryDto dictDataQueryDto){
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(dictDataQueryDto);
-            PageInfo<DictData> dictDatas = dictDataService.findListPage(param, dictDataQueryDto.getPageNum(),dictDataQueryDto.getPageSize());
-            return WrapMapper.ok(dictDatas);
+            PageInfo<DictData> dictData = dictDataService.findListPage(param, 1,2);
+            return WrapMapper.ok(dictData);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -178,7 +180,7 @@ public class DictDataController {
      */
     @ApiOperation("根据id删除字典数据")
     @RequestMapping(value = "/delDictData",method = RequestMethod.POST)
-    public Object delDictData(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
+    public Object delDictData(@RequestParam(name = "id") Long id){
         try {
             dictDataService.deleteByKey(id);
             return WrapMapper.ok();
@@ -187,5 +189,26 @@ public class DictDataController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 分页查询字典数据
+     * @return
+     */
+    @ApiOperation("分页查询字典数据")
+    @RequestMapping(value = "/findDictDataPage",method = RequestMethod.GET)
+    public Object findDictDataPage(@RequestParam(name = "pageNum")Integer pageNum,
+                                    @RequestParam(name = "pageSize")Integer pageSize){
+        try {
+           DictDataQueryDto dqd=new DictDataQueryDto();
+            dqd.setPageNum(pageNum);
+            dqd.setPageSize(pageSize);
+            PageInfo<DictData> dictData=dictDataService.findDictDataPage(dqd.getPageNum(),dqd.getPageSize());
+            return WrapMapper.ok(dictData);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 }

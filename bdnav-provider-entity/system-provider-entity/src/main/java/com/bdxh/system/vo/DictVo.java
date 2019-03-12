@@ -1,30 +1,25 @@
-package com.bdxh.system.dto;
+package com.bdxh.system.vo;
 
-import com.bdxh.common.base.page.Query;
 import lombok.Data;
 
 import java.util.Date;
+
 @Data
-public class DictDataQueryDto extends Query {
+public class DictVo {
     /**
-     * 字典类型id
+     * 主键
      */
-    private Long dictId;
+    private Long id;
 
     /**
-     * 字典名称
+     * 字典类型名称
      */
-    private String dataName;
+    private String name;
 
     /**
-     * 字典值
+     * 字典类型
      */
-    private String dataValue;
-
-    /**
-     * 排序
-     */
-    private Integer sort;
+    private String type;
 
     /**
      * 创建时间
@@ -45,4 +40,5 @@ public class DictDataQueryDto extends Query {
      * 备注
      */
     private String remark;
+
 }

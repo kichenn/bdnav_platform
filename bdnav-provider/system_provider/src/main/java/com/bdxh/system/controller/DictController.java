@@ -6,8 +6,11 @@ import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.DictDto;
 import com.bdxh.system.dto.DictQueryDto;
+import com.bdxh.system.dto.UpdateDictDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.service.DictService;
+import com.bdxh.system.vo.DictVo;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
@@ -53,7 +56,6 @@ public class DictController {
         }
         try {
             Dict dict = BeanMapUtils.map(dictDto, Dict.class);
-            Preconditions.checkArgument(dict == null, "字典已经存在");
             dictService.save(dict);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -64,19 +66,20 @@ public class DictController {
 
     /**
      * 修改目录信息
-     * @param dictDto
+     * @param updateDictDto
      * @param bindingResult
      * @return
      */
+    @ApiOperation("修改字典目录信息")
     @RequestMapping(value = "/updateDict",method = RequestMethod.POST)
-    public Object updateDict(@Valid @RequestBody DictDto dictDto, BindingResult bindingResult){
+    public Object updateDict(@Valid @RequestBody UpdateDictDto updateDictDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-          Dict dict= BeanMapUtils.map(dictDto, Dict.class);
+          Dict dict= BeanMapUtils.map(updateDictDto, Dict.class);
             dictService.update(dict);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -156,5 +159,44 @@ public class DictController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     *查询字典列表
+     * @return
+     */
+    @ApiOperation("查询字典列表")
+    @RequestMapping(value = "/findDictListAll",method = RequestMethod.GET)
+    public Object findDictListAll(){
+        try {
+            List<Dict> dictVos=dictService.findDictListAll();
+            return WrapMapper.ok(dictVos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 分页查询字典列表
+     * @return
+     */
+    @ApiOperation("分页查询字典列表")
+    @RequestMapping(value = "/findPageDectListAll",method = RequestMethod.GET)
+    public Object findPageDectListAll(@RequestParam(name = "pageNum")Integer pageNum,
+                                      @RequestParam(name = "pageSize")Integer pageSize){
+        try {
+            DictQueryDto dqd=new DictQueryDto();
+            dqd.setPageNum(pageNum);
+            dqd.setPageSize(pageSize);
+            PageInfo<Dict> dictVos=dictService.findDictsInConditionPaging(dqd.getPageNum(),dqd.getPageSize());
+            return WrapMapper.ok(dictVos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
 
 }

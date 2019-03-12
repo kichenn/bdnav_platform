@@ -1,4 +1,4 @@
-package com.bdxh.system.helper.tree.vo;
+package com.bdxh.system.vo;
 
 import com.bdxh.common.helper.tree.bean.TreeBean;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,8 +12,9 @@ public class DeptTreeVo extends TreeBean{
     @ApiModelProperty("父级部门ids")
     private String parentIds;
 
-    @ApiModelProperty("排序")
-    private Integer sort;
+    @ApiModelProperty("部门全称")
+    private String deptFullName;
+
 
     @ApiModelProperty("备注")
     private String remark;

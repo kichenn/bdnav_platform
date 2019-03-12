@@ -11,6 +11,11 @@ public class DeptDto implements Serializable {
     private static final long serialVersionUID = -6350638650907752885L;
 
     /**
+     * 主键id
+     */
+    private Long id;
+
+    /**
      * 父级部门id
      */
     @ApiModelProperty("id")
