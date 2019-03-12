@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import  lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -40,7 +41,7 @@ public class AddFamilyDto implements Serializable {
      * 家长性别
      */
     @ApiModelProperty("家长性别")
-    @NotBlank(message ="家长性别不能为空")
+    @NotNull(message ="家长性别不能为空")
     private Byte gender;
 
     /**

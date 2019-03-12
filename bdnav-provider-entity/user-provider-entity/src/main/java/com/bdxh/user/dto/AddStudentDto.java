@@ -19,7 +19,7 @@ public class AddStudentDto implements Serializable {
      * 学校id
      */
     @ApiModelProperty(value="学校id")
-    @NotBlank(message ="学校id不能为空")
+    @NotNull(message ="学校id不能为空")
     private Long schoolId;
 
     /**
@@ -101,7 +101,7 @@ public class AddStudentDto implements Serializable {
      * 学生性别
      */
     @ApiModelProperty(value="学生性别")
-    @NotBlank(message ="学生性别不能为空")
+    @NotNull(message ="学生性别不能为空")
     private Byte gender;
 
     /**

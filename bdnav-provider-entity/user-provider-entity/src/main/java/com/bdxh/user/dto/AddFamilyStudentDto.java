@@ -3,6 +3,7 @@ package com.bdxh.user.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -18,21 +19,21 @@ public class AddFamilyStudentDto implements Serializable {
      * 学校id
      */
     @ApiModelProperty(value="学校id")
-    @NotNull(message ="学校id不能为空")
+    @NotBlank(message ="学校id不能为空")
     private Long schoolId;
 
     /**
      * 学校编码
      */
     @ApiModelProperty(value="学校编码")
-    @NotNull(message ="学校编码不能为空")
+    @NotBlank(message ="学校编码不能为空")
     private String schoolCode;
 
     /**
      * 家长号
      */
     @ApiModelProperty(value="家长号")
-    @NotNull(message ="家长号不能为空")
+    @NotBlank(message ="家长号不能为空")
     private String cardNumber;
 
     /**
@@ -53,21 +54,21 @@ public class AddFamilyStudentDto implements Serializable {
      * 学生姓名
      */
     @ApiModelProperty(value="学生姓名")
-    @NotNull(message ="学生姓名不能为空")
+    @NotBlank(message ="学生姓名不能为空")
     private String studentName;
 
     /**
      * 学生学号
      */
     @ApiModelProperty(value="学生学号")
-    @NotNull(message ="学生姓名不能为空")
+    @NotBlank(message ="学生姓名不能为空")
     private String studentNumber;
 
     /**
      * 关系 父亲 母亲 等等
      */
     @ApiModelProperty(value="关系 父亲 母亲 等等")
-    @NotNull(message ="关系不能为空")
+    @NotBlank(message ="关系不能为空")
     private String relation;
 
     /**
