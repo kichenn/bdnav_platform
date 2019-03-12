@@ -3,19 +3,19 @@ package com.bdxh.user.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * @description:修改老师Dto
+ * @author: binzh
+ * @create: 2019-03-11 19:11
+ **/
 @Data
-public class TeacherDto implements Serializable {
+public class UpdateTeacherDto implements Serializable {
 
-    private static final long serialVersionUID = 2921436647270652540L;
+    private static final long serialVersionUID = 2342455005199240692L;
 
     /**
      * 主键

@@ -31,6 +31,9 @@
        DELETE FROM t_family_student
        WHERE school_code=#{schoolCode}
        AND card_number=#{cardNumber}
+        <if test="id!=null and id!=''">
+            `id`=#{id}
+        </if>
     </delete>
     <!-- 家长查询绑定关系 -->
     <select id="selectFamilyStudentInfo" resultType="com.bdxh.user.vo.FamilyStudentVo">

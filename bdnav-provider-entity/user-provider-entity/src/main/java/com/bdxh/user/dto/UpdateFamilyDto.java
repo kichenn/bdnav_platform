@@ -1,33 +1,25 @@
 package com.bdxh.user.dto;
 
-import com.bdxh.user.entity.Student;
 import io.swagger.annotations.ApiModelProperty;
-import  lombok.Data;
+import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
+/**
+ * @description:修改家长Dto
+ * @author: binzh
+ * @create: 2019-03-11 17:40
+ **/
 @Data
-public class FamilyDto implements Serializable {
+public class UpdateFamilyDto implements Serializable {
 
     private static final long serialVersionUID = 2342455005199240692L;
 
-    /**
-     * 主键
-     */
-    @ApiModelProperty(value="家长id")
-    private Long id;
-
-    /**
-     * 学校id
-     */
-    @ApiModelProperty("学校id")
-    private Long schoolId;
-
+    @ApiModelProperty("家长Id")
+    @NotBlank(message ="家长Id不能为空")
+    private String id;
     /**
      * 学校编码
      */

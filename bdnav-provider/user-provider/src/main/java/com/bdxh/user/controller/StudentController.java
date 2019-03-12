@@ -13,9 +13,9 @@ package com.bdxh.user.controller;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
-import com.bdxh.user.dto.StudentDto;
+import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
+import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.service.StudentService;
 import io.swagger.annotations.Api;
@@ -30,7 +30,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
 
-@Api(value ="学生信息模块接口API", tags = "学生信息模块接口API")
+@Api(value ="学生信息管理接口API", tags = "学生信息管理接口API")
 @RestController
 @RequestMapping("/student")
 @Validated
@@ -45,14 +45,14 @@ public class StudentController {
 
     @ApiOperation(value="新增学生信息")
     @RequestMapping(value = "/addStudent",method = RequestMethod.POST)
-    public Object addStudent(@Valid @RequestBody StudentDto studentDto, BindingResult bindingResult){
+    public Object addStudent(@Valid @RequestBody AddStudentDto addStudentDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            Student student = BeanMapUtils.map(studentDto, Student.class);
+            Student student = BeanMapUtils.map(addStudentDto, Student.class);
             if (studentService.isNullStudent(student.getSchoolCode(),student.getCardNumber())==null){
                 student.setId(snowflakeIdWorker.nextId());
                 studentService.save(student);
@@ -93,14 +93,14 @@ public class StudentController {
     //修改学生信息
     @ApiOperation(value="修改学生信息")
     @RequestMapping(value = "/updateFamily",method = RequestMethod.POST)
-    public Object updateFamily(@Valid @RequestBody StudentDto studentDto, BindingResult bindingResult){
+    public Object updateFamily(@Valid @RequestBody UpdateStudentDto updateStudentDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            studentService.updateStudentInfo(studentDto);
+            studentService.updateStudentInfo(updateStudentDto);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,13 +1,12 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.web.support.IService;
-import com.bdxh.user.dto.FamilyDto;
+import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
+import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.vo.FamilyVo;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @description: 家长信息service
@@ -57,7 +56,7 @@ public interface FamilyService extends IService<Family> {
       * @Param： [familyDto]
       * @return： void
       **/
-     void updateFamily(FamilyDto familyDto);
+     void updateFamily(UpdateFamilyDto updateFamilyDto);
 
      /**
       * @Author： binzh

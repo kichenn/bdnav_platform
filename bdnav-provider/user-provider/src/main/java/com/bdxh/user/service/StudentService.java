@@ -1,8 +1,9 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.web.support.IService;
-import com.bdxh.user.dto.StudentDto;
+import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
+import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
@@ -46,7 +47,7 @@ public interface StudentService extends IService<Student> {
  * @Param： [studentDto]
  * @return： void
  **/
-   void updateStudentInfo(StudentDto studentDto);
+   void updateStudentInfo(UpdateStudentDto updateStudentDto);
 
    /**
     * @Author： binzh
