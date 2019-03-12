@@ -175,14 +175,13 @@ public class DictDataController {
 
     /**
      * 根据id删除角色
-     * @param id
      * @return
      */
     @ApiOperation("根据id删除字典数据")
-    @RequestMapping(value = "/delDictData",method = RequestMethod.POST)
+    @RequestMapping(value = "/delDictData",method = RequestMethod.GET)
     public Object delDictData(@RequestParam(name = "id") Long id){
         try {
-            dictDataService.deleteByKey(id);
+            dictDataService.deleteDictDataById(id);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -190,20 +189,18 @@ public class DictDataController {
         }
     }
 
+
     /**
-     * 分页查询字典数据
+     * 根据dictId查询列表
      * @return
      */
-    @ApiOperation("分页查询字典数据")
-    @RequestMapping(value = "/findDictDataPage",method = RequestMethod.GET)
-    public Object findDictDataPage(@RequestParam(name = "pageNum")Integer pageNum,
-                                    @RequestParam(name = "pageSize")Integer pageSize){
+    @ApiOperation("根据字典ID查询数据列表")
+    @RequestMapping(value = "/findDictListBydictId",method = RequestMethod.GET)
+    public Object findDictListBydictId(@RequestParam(name = "dictId",required = false)Long dictId,
+    @RequestParam(name = "pageNum")Integer pageNum, @RequestParam(name = "pageSize")Integer pageSize){
         try {
-           DictDataQueryDto dqd=new DictDataQueryDto();
-            dqd.setPageNum(pageNum);
-            dqd.setPageSize(pageSize);
-            PageInfo<DictData> dictData=dictDataService.findDictDataPage(dqd.getPageNum(),dqd.getPageSize());
-            return WrapMapper.ok(dictData);
+            PageInfo<DictData> dictDataVos=dictDataService.findDictListBydictId(dictId,pageNum,pageSize);
+            return WrapMapper.ok(dictDataVos);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

@@ -5,6 +5,7 @@ import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.DictData;
 import com.bdxh.system.entity.Role;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,10 @@ public interface DictDataService extends IService<DictData> {
     //根据条件分页查询列表
     PageInfo<DictData> findListPage(Map<String,Object> param, int pageNum, int pageSize);
 
-    //分页查询全部字典数据
-    PageInfo<DictData> findDictDataPage(Integer pageNum, Integer pageSize);
+    //根据字典id查询列表或分页查询全部数据
+    PageInfo<DictData> findDictListBydictId(Long dictId,Integer pageNum, Integer pageSize);
+
+    //根据id删除
+    void deleteDictDataById(Long id);
 
 }

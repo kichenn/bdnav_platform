@@ -4,8 +4,10 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.AddRoleDto;
+import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.dto.RoleQueryDto;
 import com.bdxh.system.dto.UpdateRoleDto;
+import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.service.RoleService;
 import com.github.pagehelper.PageInfo;
@@ -82,7 +84,7 @@ public class RoleController {
         }
         try {
             Role roleData = roleService.selectByKey(updateRoleDto.getId());
-            Preconditions.checkArgument(!StringUtils.equals(roleData.getRole(),updateRoleDto.getRole()),"角色已经存在");
+           // Preconditions.checkArgument(!StringUtils.equals(roleData.getRole(),updateRoleDto.getRole()),"角色已经存在");
             Role role = BeanMapUtils.map(updateRoleDto, Role.class);
             roleService.update(role);
             return WrapMapper.ok();
@@ -94,14 +96,13 @@ public class RoleController {
 
     /**
      * 根据id删除角色
-     * @param id
      * @return
      */
     @ApiOperation("根据id删除角色")
-    @RequestMapping(value = "/delRole",method = RequestMethod.POST)
-    public Object delRole(@RequestParam(name = "id") @NotNull(message = "角色id不能为空") Long id){
+    @RequestMapping(value = "/delRole",method = RequestMethod.GET)
+    public Object delRole(@RequestParam(name = "roleId") Long roleId){
         try {
-            roleService.delRole(id);
+            roleService.delRole(roleId);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -205,5 +206,26 @@ public class RoleController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 分页查询字典列表
+     * @return
+     */
+    @ApiOperation("分页查询角色列表")
+    @RequestMapping(value = "/findPageRoleListAll",method = RequestMethod.GET)
+    public Object findPageDectListAll(@RequestParam(name = "pageNum")Integer pageNum,
+                                      @RequestParam(name = "pageSize")Integer pageSize){
+        try {
+            RoleQueryDto rqd=new RoleQueryDto();
+            rqd.setPageNum(pageNum);
+            rqd.setPageSize(pageSize);
+            PageInfo<Role> roleVos=roleService.findRolesInConditionPaging(rqd.getPageNum(),rqd.getPageSize());
+            return WrapMapper.ok(roleVos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 }

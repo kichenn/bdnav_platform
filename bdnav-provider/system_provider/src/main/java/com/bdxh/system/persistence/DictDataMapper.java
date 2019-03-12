@@ -18,7 +18,9 @@ public interface DictDataMapper extends Mapper<DictData> {
      */
     List<DictData> getByCondition(Map<String,Object> param);
 
-   //根据id查找字典列表
-    List<DictData> getDictDataById(@Param("id") Long id);
+   //根据dictId查找字典列表
+    List<DictData> getDictDataById(@Param("dictId") Long dictId);
 
+    //根据id删除
+    void deleteDictDataById(@Param("id") Long id);
 }

@@ -50,12 +50,21 @@ public class DictServiceImpl extends BaseService<Dict> implements DictService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void delDict(Long DictId) {
-        List<DictData> DictDataList=dictDataMapper.getDictDataById(DictId);
-        for (int i = 0; i <DictDataList.size() ; i++) {
-          DictData dictData=DictDataList.get(i);
-            dictDataMapper.delete(dictData);
+    public void delDict(Long dictId) {
+
+        List<DictData> dictDataList=dictDataMapper.getDictDataById(dictId);
+
+        if(dictDataList.size()>0 && !dictDataList.isEmpty()){
+            for (DictData s : dictDataList) {
+                dictMapper.deleteByPrimaryKey(dictId);
+                DictData dictDatas=new DictData();
+                dictDatas.setId(s.getId());
+                dictDataMapper.delete(dictDatas);
+            }
+        }else{
+            dictMapper.deleteByPrimaryKey(dictId);
         }
+
 
     }
 
