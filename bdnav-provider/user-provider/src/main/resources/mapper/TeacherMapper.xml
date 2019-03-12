@@ -33,38 +33,8 @@
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <resultMap id="TeacherVoMap" type="com.bdxh.user.vo.TeacherVo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_id" jdbcType="BIGINT" property="schoolId" />
-    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
-    <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
-    <result column="campus_name" jdbcType="VARCHAR" property="campusName" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="gender" jdbcType="TINYINT" property="gender" />
-    <result column="birth" jdbcType="CHAR" property="birth" />
-    <result column="position" jdbcType="VARCHAR" property="position" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
-    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
-    <result column="qq_number" jdbcType="VARCHAR" property="qqNumber" />
-    <result column="wx_number" jdbcType="VARCHAR" property="wxNumber" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
-    <result column="dormitory_address" jdbcType="VARCHAR" property="dormitoryAddress" />
-    <result column="adress" jdbcType="VARCHAR" property="adress" />
-    <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber" />
-    <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber" />
-    <result column="activate" jdbcType="TINYINT" property="activate" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
+
+
 
   <!--删除老师信息-->
   <delete id="deleteTeacher">
@@ -74,7 +44,7 @@
   </delete>
 
     <!-- 查询出某个老师的详细信息-->
-    <select id="selectTeacherDetails" resultMap="TeacherVoMap">
+    <select id="selectTeacherDetails" resultMap="BaseResultMap">
     SELECT *  FROM t_teacher where school_code=#{schoolCode} and card_number=#{cardNumber}
     </select>
 

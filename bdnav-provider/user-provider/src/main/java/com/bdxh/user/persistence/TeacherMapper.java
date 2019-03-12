@@ -11,7 +11,7 @@ import tk.mybatis.mapper.common.Mapper;
 public interface TeacherMapper extends Mapper<Teacher> {
     int deleteTeacher(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
 
-    TeacherVo selectTeacherDetails(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
+    Teacher selectTeacherDetails(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
 
     int updateTeacher(UpdateTeacherDto updateTeacherDto);
 
