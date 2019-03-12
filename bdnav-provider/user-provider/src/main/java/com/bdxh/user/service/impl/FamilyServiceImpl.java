@@ -2,8 +2,8 @@ package com.bdxh.user.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.web.support.BaseService;
-import com.bdxh.user.dto.FamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
+import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
@@ -17,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,7 +47,7 @@ private FamilyStudentMapper familyStudentMapper;
     @Transactional
     public void deleteFamilyInfo(String scoolCode,String cardNumber) {
             familyMapper.removeFamilyInfo(scoolCode,cardNumber);
-             familyStudentMapper.familyRemoveFamilyStudent(scoolCode,cardNumber);
+             familyStudentMapper.familyRemoveFamilyStudent(scoolCode,cardNumber,null);
     }
 
     @Override
@@ -59,7 +58,7 @@ private FamilyStudentMapper familyStudentMapper;
              if(schoolCodes.length==cardNumbers.length) {
                  for (int i = 0; i < cardNumbers.length; i++) {
                      familyMapper.removeFamilyInfo(schoolCodes[i], cardNumbers[i]);
-                     familyStudentMapper.familyRemoveFamilyStudent(schoolCodes[i], cardNumbers[i]);
+                     familyStudentMapper.familyRemoveFamilyStudent(schoolCodes[i], cardNumbers[i],null);
                  }
              }
     }
@@ -80,7 +79,7 @@ private FamilyStudentMapper familyStudentMapper;
     }
 
     @Override
-    public void updateFamily(FamilyDto familyDto) {
-        familyMapper.updateFamilyInfo(familyDto);
+    public void updateFamily(UpdateFamilyDto updateFamilyDto) {
+        familyMapper.updateFamilyInfo(updateFamilyDto);
     }
 }

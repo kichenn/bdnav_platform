@@ -4,37 +4,36 @@ import io.swagger.annotations.ApiModelProperty;
 import  lombok.Data;
 
 import javax.persistence.Column;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 @Data
-public class StudentDto implements Serializable {
+public class AddStudentDto implements Serializable {
 
     private static final long serialVersionUID = -9120796138685156209L;
 
-    /**
-     * 主键
-     */
-    @ApiModelProperty(value="学生ID")
-    private Long id;
 
     /**
      * 学校id
      */
     @ApiModelProperty(value="学校id")
+    @NotNull(message ="学校id不能为空")
     private Long schoolId;
 
     /**
      * 学校编码
      */
     @ApiModelProperty(value="学校编码")
+    @NotBlank(message ="学校编码不能为空")
     private String schoolCode;
 
     /**
      * 学校名称
      */
     @ApiModelProperty(value="学校名称")
+    @NotBlank(message ="学校名称不能为空")
     private String schoolName;
 
     /**
@@ -95,12 +94,14 @@ public class StudentDto implements Serializable {
      * 学生姓名
      */
     @ApiModelProperty(value="学生姓名")
+    @NotBlank(message ="学生姓名不能为空")
     private String name;
 
     /**
      * 学生性别
      */
     @ApiModelProperty(value="学生性别")
+    @NotNull(message ="学生性别不能为空")
     private Byte gender;
 
     /**
@@ -113,12 +114,14 @@ public class StudentDto implements Serializable {
      * 手机号
      */
     @ApiModelProperty(value="手机号")
+    @NotBlank(message ="手机号不能为空")
     private String phone;
 
     /**
      * 学号
      */
     @ApiModelProperty(value="学号")
+    @NotBlank(message ="学号不能为空")
     private String cardNumber;
 
     /**

@@ -20,7 +20,7 @@ public interface FamilyStudentService extends IService<FamilyStudent> {
       * @Param： [schoolCode, cardNumber]
       * @return： void
       **/
-     void removeFamilyStudentInfo(String schoolCode,String cardNumber);
+     void removeFamilyStudentInfo(String schoolCode,String cardNumber,String id);
 
 
 

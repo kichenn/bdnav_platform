@@ -1,8 +1,9 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.web.support.IService;
-import com.bdxh.user.dto.TeacherDto;
+import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
+import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageInfo;
@@ -49,7 +50,7 @@ public interface TeacherService extends IService<Teacher> {
      * @Param： [teacherDto]
      * @return： void
      **/
-    void saveTeacherDeptInfo(TeacherDto teacherDto);
+    void saveTeacherDeptInfo(AddTeacherDto teacherDto);
 
     /**
      * @Author： binzh
@@ -67,5 +68,5 @@ public interface TeacherService extends IService<Teacher> {
      * @Param： [teacherDto]
      * @return： void
      **/
-    void updateTeacherInfo(TeacherDto teacherDto);
+    void updateTeacherInfo(UpdateTeacherDto updateTeacherDto);
 }

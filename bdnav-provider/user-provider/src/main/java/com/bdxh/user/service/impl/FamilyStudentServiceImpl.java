@@ -27,8 +27,8 @@ public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> impleme
     private FamilyMapper familyMapper;
 
     @Override
-    public void removeFamilyStudentInfo(String schoolCode, String cardNumber) {
-    familyStudentMapper.familyRemoveFamilyStudent(schoolCode,cardNumber);
+    public void removeFamilyStudentInfo(String schoolCode, String cardNumber,String id) {
+    familyStudentMapper.familyRemoveFamilyStudent(schoolCode,cardNumber,id);
     }
 
 

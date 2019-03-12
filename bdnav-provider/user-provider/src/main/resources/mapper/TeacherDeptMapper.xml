@@ -32,9 +32,11 @@
     <result column="dept_names" jdbcType="VARCHAR" property="deptNames" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-  <!-- 删除老师详细信息-->
+  <!-- 删除老师部门信息-->
   <delete id="deleteTeacherDept">
-    delete from t_teacher_dept where school_code=#{schoolCode} and card_number=#{cardNumber}
+    delete from t_teacher_dept
+    where school_code=#{schoolCode}
+    and card_number=#{cardNumber}
   </delete>
 
   <!--查询出老师的部门关系-->

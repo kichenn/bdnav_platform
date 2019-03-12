@@ -1,12 +1,9 @@
 package com.bdxh.user.persistence;
 
-import com.bdxh.user.dto.FamilyDto;
-import com.bdxh.user.dto.FamilyStudentDto;
+import com.bdxh.user.dto.AddFamilyStudentDto;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.vo.FamilyStudentVo;
-import com.bdxh.user.vo.FamilyVo;
 import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -19,7 +16,7 @@ public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
     int studentRemoveFamilyStudentInfo(@Param("schoolCode")String schoolCode,@Param("studentNumber")String studentNumber);
 
     //家长删除关系表数据
-    int familyRemoveFamilyStudent(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
+    int familyRemoveFamilyStudent(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("id")String id);
 
     //家长查询绑定关系
     List<FamilyStudentVo> selectFamilyStudentInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
@@ -29,5 +26,5 @@ public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
 
 
     //修改学生名称
-    int updateStudentInfo(@Param("familyStudentDto") FamilyStudentDto familyStudentDto);
+    int updateStudentInfo(@Param("addFamilyStudentDto") AddFamilyStudentDto addFamilyStudentDto);
 }

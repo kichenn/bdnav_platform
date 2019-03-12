@@ -10,14 +10,11 @@
  */
 package com.bdxh.user.controller;
 
-import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.user.configration.idgenerator.IdGeneratorConfigration;
-import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
-import com.bdxh.user.dto.TeacherDto;
+import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
-import com.bdxh.user.entity.Teacher;
+import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.service.TeacherService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,7 +28,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
 
-@Api(value ="老师信息模块接口API",tags = "老师信息模块接口API")
+@Api(value ="老师信息管理接口API",tags = "老师信息管理接口API")
 @RestController
 @RequestMapping("/teacher")
 @Validated
@@ -44,15 +41,15 @@ public class TeacherController {
     private SnowflakeIdWorker snowflakeIdWorker;
     @ApiOperation(value="新增老师信息")
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
-    public Object addTeacher(@Valid @RequestBody TeacherDto teacherDto, BindingResult bindingResult){
+    public Object addTeacher(@Valid @RequestBody AddTeacherDto addTeacherDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            teacherDto.setId(snowflakeIdWorker.nextId());
-            teacherService.saveTeacherDeptInfo(teacherDto);
+            addTeacherDto.setId(snowflakeIdWorker.nextId());
+            teacherService.saveTeacherDeptInfo(addTeacherDto);
             return WrapMapper.ok();
         }catch (Exception e) {
             e.printStackTrace();
@@ -88,14 +85,14 @@ public class TeacherController {
     //修改老师信息
     @ApiOperation(value="修改老师信息")
     @RequestMapping(value = "/updateTeacher",method = RequestMethod.POST)
-    public Object updateTeacher(@Valid @RequestBody TeacherDto teacherDto, BindingResult bindingResult){
+    public Object updateTeacher(@Valid @RequestBody UpdateTeacherDto updateTeacherDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            teacherService.updateTeacherInfo(teacherDto);
+            teacherService.updateTeacherInfo(updateTeacherDto);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();

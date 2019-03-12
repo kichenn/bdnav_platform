@@ -1,19 +1,15 @@
 package com.bdxh.user.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.web.support.BaseService;
-import com.bdxh.common.web.support.IService;
-import com.bdxh.user.dto.FamilyStudentDto;
-import com.bdxh.user.dto.StudentDto;
+import com.bdxh.user.dto.AddFamilyStudentDto;
+import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
-import com.bdxh.user.entity.Family;
-import com.bdxh.user.entity.FamilyStudent;
+import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.persistence.StudentMapper;
-import com.bdxh.user.service.FamilyStudentService;
 import com.bdxh.user.service.StudentService;
 import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
@@ -25,9 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @description: 学生信息service实现
@@ -81,18 +75,18 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Override
     @Transactional
-    public void updateStudentInfo(StudentDto studentDto) {
-        studentMapper.updateStudentInfo(studentDto);
+    public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
+        studentMapper.updateStudentInfo(updateStudentDto);
         FamilyStudentVo familyStudentVo= familyStudentMapper.studentQueryInfo(
-                studentDto.getSchoolCode(),
-                studentDto.getCardNumber());
+                updateStudentDto.getSchoolCode(),
+                updateStudentDto.getCardNumber());
         if(null!=familyStudentVo &&!("").equals(familyStudentVo)){
-            if(!studentDto.getName().equals(familyStudentVo.getSName())){
+            if(!updateStudentDto.getName().equals(familyStudentVo.getSName())){
                 //修改关系表数据
-                FamilyStudentDto familyStudentDto=new FamilyStudentDto();
-                familyStudentDto.setStudentName(studentDto.getName());
+                AddFamilyStudentDto familyStudentDto=new AddFamilyStudentDto();
+                familyStudentDto.setStudentName(updateStudentDto.getName());
                 familyStudentDto.setCardNumber(familyStudentVo.getFCardNumber());
-                familyStudentDto.setSchoolCode(studentDto.getSchoolCode());
+                familyStudentDto.setSchoolCode(updateStudentDto.getSchoolCode());
                 familyStudentMapper.updateStudentInfo(familyStudentDto);
             }
         }

@@ -1,6 +1,7 @@
 package com.bdxh.user.persistence;
 
-import com.bdxh.user.dto.TeacherDto;
+import com.bdxh.user.dto.AddTeacherDto;
+import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.vo.TeacherVo;
 import org.apache.ibatis.annotations.Param;
@@ -10,8 +11,8 @@ import tk.mybatis.mapper.common.Mapper;
 public interface TeacherMapper extends Mapper<Teacher> {
     int deleteTeacher(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
 
-    TeacherVo selectTeacherDetails(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
+    Teacher selectTeacherDetails(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
 
-    int updateTeacher(TeacherDto teacherDto);
+    int updateTeacher(UpdateTeacherDto updateTeacherDto);
 
 }

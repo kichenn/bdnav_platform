@@ -13,14 +13,13 @@ package com.bdxh.user.controller;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
-import com.bdxh.user.dto.FamilyDto;
+import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
+import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.service.FamilyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -32,7 +31,7 @@ import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
 
 
-@Api(value ="家长信息模块接口API", tags = "家长信息模块接口API")
+@Api(value ="家长信息管理接口API", tags = "家长信息管理接口API")
 @RestController
 @RequestMapping("/family")
 @Validated
@@ -44,29 +43,26 @@ public class FamilyController {
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
     /**
-     * @Author： binzh
      * @Description： //新增家庭成员信息
      * @Date： 15:27 2019/3/7
-     * @Param： [familyDto, bindingResult]
-     * @return： java.lang.Object
+     * @Param： familyDto, bindingResult
      **/
     @ApiOperation(value="新增家庭成员信息")
     @RequestMapping(value = "/addFamily",method = RequestMethod.POST)
-    public Object addFamily(@Valid @RequestBody FamilyDto familyDto, BindingResult bindingResult){
+    public Object addFamily(@Valid @RequestBody AddFamilyDto addFamilyDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            Family family = BeanMapUtils.map(familyDto, Family.class);
+            Family family = BeanMapUtils.map(addFamilyDto, Family.class);
             if (familyService.isNullFamily(family.getSchoolCode(),family.getCardNumber())==null){
                 family.setId(snowflakeIdWorker.nextId());
                 familyService.save(family);
                 return WrapMapper.ok();
             }
             return WrapMapper.error("当前学校已有相同cardNumber(卡号)");
-
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -74,7 +70,7 @@ public class FamilyController {
     }
 
 
-    @ApiOperation(value="根据条件删除家长信息")
+    @ApiOperation(value="删除家长信息")
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
     public Object removeFamily(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber){
@@ -86,12 +82,13 @@ public class FamilyController {
              return WrapMapper.error(e.getMessage());
         }
     }
-    @ApiOperation(value="根据条件批量删除家长信息")
+    @ApiOperation(value="批量删除家长信息")
     @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
-    public Object removeFamilys(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
-                                @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber){
+    public Object removeFamilys(@RequestParam(name = "schoolCodes") @NotNull(message="学校Code不能为空")String schoolCodes,
+                                @RequestParam(name = "cardNumbers") @NotNull(message="微校卡号不能为空")String cardNumbers
+                               ){
         try{
-                familyService.deleteBatchesFamilyInfo(schoolCode,cardNumber);
+                familyService.deleteBatchesFamilyInfo(schoolCodes,cardNumbers);
                 return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -102,14 +99,14 @@ public class FamilyController {
     //修改家庭成员信息
     @ApiOperation(value="修改家长信息")
     @RequestMapping(value = "/updateFamily",method = RequestMethod.POST)
-    public Object updateFamily(@Valid @RequestBody FamilyDto familyDto, BindingResult bindingResult){
+    public Object updateFamily(@Valid @RequestBody UpdateFamilyDto updateFamilyDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            familyService.updateFamily(familyDto);
+            familyService.updateFamily(updateFamilyDto);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -124,7 +121,7 @@ public class FamilyController {
      * @Param： [schoolCode, cardNumber]
      * @return： java.lang.Object
      **/
-     @ApiOperation(value="修改时根据条件查询单个家长信息")
+     @ApiOperation(value="查询家长信息")
      @RequestMapping(value ="/queryFamilyInfo",method = RequestMethod.POST)
      public Object queryFamilyInfo(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber) {

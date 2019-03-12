@@ -3,11 +3,10 @@ package com.bdxh.user.service.impl;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.web.support.BaseService;
-import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.user.dto.TeacherDeptDto;
-import com.bdxh.user.dto.TeacherDto;
+import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
-import com.bdxh.user.entity.Student;
+import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.persistence.TeacherDeptMapper;
@@ -23,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
 import java.util.stream.IntStream;
 
 /**
@@ -78,7 +75,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
     @Override
     @Transactional
-    public void saveTeacherDeptInfo(TeacherDto teacherDto) {
+    public void saveTeacherDeptInfo(AddTeacherDto teacherDto) {
         Teacher teacher = BeanMapUtils.map(teacherDto, Teacher.class);
         teacherMapper.insert(teacher);
         IntStream.range(0,teacherDto.getTeacherDeptDtoList().size())
@@ -98,26 +95,27 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
     @Override
     public TeacherVo selectTeacherInfo(String schoolCode, String cardNumber) {
-        TeacherVo teacherVo=teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
+        Teacher teacher=teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
+        TeacherVo teacherVo = BeanMapUtils.map(teacher, TeacherVo.class);
         List<TeacherDeptVo> teacherDeptVo=teacherDeptMapper.selectTeacherDeptDetailsInfo(schoolCode, cardNumber);
         teacherVo.setTeacherDeptVos(teacherDeptVo);
         return teacherVo;
     }
 
     @Override
-    public void updateTeacherInfo(TeacherDto teacherDto) {
-        teacherMapper.updateTeacher(teacherDto);
-            teacherDeptMapper.deleteTeacherDept(teacherDto.getSchoolCode(),teacherDto.getCardNumber());
-        for (int i=0;i<teacherDto.getTeacherDeptDtoList().size();i++){
+    public void updateTeacherInfo(UpdateTeacherDto updateTeacherDto) {
+        teacherMapper.updateTeacher(updateTeacherDto);
+            teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
+        for (int i=0;i<updateTeacherDto.getTeacherDeptDtoList().size();i++){
             TeacherDeptDto teacherDeptDto=new TeacherDeptDto();
             teacherDeptDto.setId(snowflakeIdWorker.nextId());
-            teacherDeptDto.setSchoolCode(teacherDto.getSchoolCode());
-            teacherDeptDto.setCardNumber(teacherDto.getCardNumber());
-            teacherDeptDto.setTeacherId(teacherDto.getId());
-            teacherDeptDto.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
-            teacherDeptDto.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
-            teacherDeptDto.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
-            teacherDeptDto.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
+            teacherDeptDto.setSchoolCode(updateTeacherDto.getSchoolCode());
+            teacherDeptDto.setCardNumber(updateTeacherDto.getCardNumber());
+            teacherDeptDto.setTeacherId(updateTeacherDto.getId());
+            teacherDeptDto.setDeptId(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptId());
+            teacherDeptDto.setDeptName(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptName());
+            teacherDeptDto.setDeptIds(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
+            teacherDeptDto.setDeptNames(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
             TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
             teacherDeptMapper.insert(teacherDept);
         }
