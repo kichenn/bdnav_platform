@@ -23,6 +23,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -205,8 +207,8 @@ public class SchoolController {
     @RequestMapping(value = "/downloadReportSchoolExcel", method = RequestMethod.POST)
     @ApiOperation(value = "学校信息导出")
     @ResponseBody
-    public Object downloadReportSchoolExcel(@Validated @RequestBody SchoolExcelDto schoolExcelDto, HttpServletResponse response) {
-
+    public Object downloadReportSchoolExcel(@Validated @RequestBody SchoolExcelDto schoolExcelDto) {
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         List<School> schools = new ArrayList<>();
         switch (schoolExcelDto.getIsBy()) {
             case 0:

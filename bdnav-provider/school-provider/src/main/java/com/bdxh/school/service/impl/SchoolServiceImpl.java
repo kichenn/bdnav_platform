@@ -13,6 +13,7 @@ import com.bdxh.school.helper.excel.utils.StringUtils;
 import com.bdxh.school.persistence.SchoolMapper;
 import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.vo.SchoolShowVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -106,7 +107,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     @Override
 //    @GetWithRedis(key = SCHOOL_LIST_PREFIX)
     public PageInfo<SchoolShowVo> findSchoolShowVoInConditionPaging(SchoolQueryDto schoolQueryDto) {
-        PageHelper.startPage(schoolQueryDto.getPageNum(), schoolQueryDto.getPageSize());
+        Page page = PageHelper.startPage(schoolQueryDto.getPageNum(), schoolQueryDto.getPageSize());
         List<School> schools = schoolMapper.findIdsInCondition(schoolQueryDto);
         List<SchoolShowVo> showVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(schools)) {
@@ -124,7 +125,10 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
                 showVos.add(schoolShowVo);
             });
         }
-        return new PageInfo(showVos);
+
+        PageInfo<SchoolShowVo> pageInfo = new PageInfo(showVos);
+        pageInfo.setTotal(page.getTotal());
+        return pageInfo;
     }
 
     //分页筛选条件查询学校列表

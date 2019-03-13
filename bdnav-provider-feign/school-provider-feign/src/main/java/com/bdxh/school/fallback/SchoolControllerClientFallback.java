@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
+import com.bdxh.school.dto.SchoolExcelDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
@@ -62,7 +63,7 @@ public class SchoolControllerClientFallback implements SchoolControllerClient {
     }
 
     @Override
-    public Wrapper downloadReportSchoolExcel() {
+    public Wrapper downloadReportSchoolExcel(SchoolExcelDto schoolExcelDto) {
         return WrapMapper.error();
     }
 }

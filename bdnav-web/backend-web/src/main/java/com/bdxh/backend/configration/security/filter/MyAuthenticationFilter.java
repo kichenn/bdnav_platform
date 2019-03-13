@@ -40,7 +40,7 @@ import java.util.concurrent.TimeUnit;
 public class MyAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -73,21 +73,21 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 Instant instant = date.toInstant();
                 ZoneId zoneId = ZoneId.systemDefault();
                 LocalDateTime refreshTime = instant.atZone(zoneId).toLocalDateTime();
-                if (LocalDateTime.now().isAfter(refreshTime)){
-                    Map<String,Object> param = new HashMap<>(16);
-                    param.put(SecurityConstant.USER,userStr);
-                    param.put(SecurityConstant.AUTHORITIES,authorityListStr);
+                if (LocalDateTime.now().isAfter(refreshTime)) {
+                    Map<String, Object> param = new HashMap<>(16);
+                    param.put(SecurityConstant.USER, userStr);
+                    param.put(SecurityConstant.AUTHORITIES, authorityListStr);
                     long currentTimeMillis = System.currentTimeMillis();
-                    redisTemplate.opsForValue().set(SecurityConstant.TOKEN_IS_REFRESH+username,new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME * 60 * 1000),SecurityConstant.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
+                    redisTemplate.opsForValue().set(SecurityConstant.TOKEN_IS_REFRESH + username, new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME * 60 * 1000), SecurityConstant.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
                     String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(username)
                             .addClaims(param)
                             .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))
                             .signWith(SignatureAlgorithm.HS512, SecurityConstant.TOKEN_SIGN_KEY)
                             .compressWith(CompressionCodecs.GZIP).compact();
-                    httpServletResponse.addHeader(SecurityConstant.TOKEN_RESPONSE_HEADER,token);
+                    httpServletResponse.addHeader(SecurityConstant.TOKEN_RESPONSE_HEADER, token);
                 }
             } catch (ExpiredJwtException e) {
-                Wrapper wrapper = WrapMapper.error("登录已失效");
+                Wrapper wrapper = WrapMapper.error("登录已失效。");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);
@@ -97,7 +97,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
                 return;
             } catch (Exception e) {
-                Wrapper wrapper = WrapMapper.error("解析token错误");
+                Wrapper wrapper = WrapMapper.error("解析token错误。");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);

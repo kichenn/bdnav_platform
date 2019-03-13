@@ -3,6 +3,7 @@ package com.bdxh.school.feign;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
+import com.bdxh.school.dto.SchoolExcelDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.fallback.SchoolControllerClientFallback;
 import com.bdxh.school.vo.SchoolInfoVo;
@@ -20,7 +21,7 @@ import java.util.List;
  * @Date: 2019/3/12 10:43
  */
 @Service
-@FeignClient(value = "school-provider-clusterr", fallback = SchoolControllerClientFallback.class)
+@FeignClient(value = "school-provider-cluster", fallback = SchoolControllerClientFallback.class)
 public interface SchoolControllerClient {
 
 
@@ -103,5 +104,5 @@ public interface SchoolControllerClient {
      */
     @RequestMapping(value = "/school/downloadReportSchoolExcel", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper downloadReportSchoolExcel();
+    Wrapper downloadReportSchoolExcel(@RequestBody SchoolExcelDto schoolExcelDto);
 }

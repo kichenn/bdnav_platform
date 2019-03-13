@@ -6,11 +6,14 @@ import com.bdxh.backend.configration.security.userdetail.MyUserDetails;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.system.entity.User;
 import com.google.common.base.Preconditions;
 import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +43,7 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/authentication")
 @Slf4j
+@Api(value = "用户登录", tags = "用户登录交互API")
 public class SecurityController {
 
     @Autowired
@@ -50,6 +54,7 @@ public class SecurityController {
 
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @ApiOperation(value = "获取token", response = String.class)
     public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) throws IOException {
         try {
             Preconditions.checkArgument(StringUtils.isNotEmpty(username), "用户名不能为空");

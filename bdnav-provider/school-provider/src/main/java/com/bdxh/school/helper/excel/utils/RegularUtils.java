@@ -8,10 +8,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * <p>正则匹配相关工具</p>
- * author : Crab2Died
- * date : 2017/5/24  9:43
- */
+* @Description:   正则匹配相关工具
+* @Author: Kang
+* @Date: 2019/3/13 10:25
+*/
 public class RegularUtils {
 
 
