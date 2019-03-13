@@ -50,6 +50,6 @@ public interface SecurityConstant {
     /**
      * token是否失效前缀
      */
-    String TOKEN_IS_REFRESH = "token_is_refresh:";
+    String TOKEN_IS_REFRESH = "user_token_is_refresh:";
 
 }

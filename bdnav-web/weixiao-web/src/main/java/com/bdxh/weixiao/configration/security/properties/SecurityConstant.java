@@ -1,4 +1,4 @@
-package com.bdxh.app.configration.security.properties;
+package com.bdxh.weixiao.configration.security.properties;
 
 import java.util.concurrent.TimeUnit;
 

@@ -1,4 +1,4 @@
-package com.bdxh.app;
+package com.bdxh.weixiao;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,15 +6,15 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
- * @description: app服务启动类
+ * @description: weixiao服务启动类
  * @author: xuyuan
- * @create: 2019-03-07 09:55
+ * @create: 2019-03-13 10:02
  **/
 @SpringBootApplication
 @ServletComponentScan
 @EnableEurekaClient
-public class AppWebApplication {
+public class WeixiaoWebApplication {
     public static void main(String[] args) {
-       SpringApplication.run(AppWebApplication.class,args);
+        SpringApplication.run(WeixiaoWebApplication.class,args);
     }
 }
