@@ -1,5 +1,6 @@
 package com.bdxh.app.configration.security.userdetail;
 
+import com.bdxh.account.entity.Account;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,6 +13,8 @@ import java.util.Collection;
  **/
 public class MyUserDetails implements UserDetails {
 
+    private Long id;
+
     private String username;
 
     private String password;
@@ -20,14 +23,19 @@ public class MyUserDetails implements UserDetails {
 
     private boolean isAccountNonLocked;
 
-    private Object data;
+    private Account account;
 
-    public MyUserDetails(String username, String password, boolean isAccountNonExpired, boolean isAccountNonLocked, Object data) {
+    public MyUserDetails(Long id,String username, String password, boolean isAccountNonExpired, boolean isAccountNonLocked, Account account) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;
-        this.data = data;
+        this.account = account;
+    }
+
+    public Long getId(){
+        return id;
     }
 
     @Override
@@ -65,8 +73,8 @@ public class MyUserDetails implements UserDetails {
         return null;
     }
 
-    public Object getData() {
-        return data;
+    public Account getAccount() {
+        return account;
     }
 
 }

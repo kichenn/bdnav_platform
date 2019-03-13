@@ -13,6 +13,7 @@ import java.util.List;
 @Component
 public class DictControllerClientFallback implements DictControllerClient {
 
+
     @Override
     public Wrapper<List<Dict>> findDictListAll() {
         return WrapMapper.error();
@@ -34,10 +35,11 @@ public class DictControllerClientFallback implements DictControllerClient {
     }
 
     @Override
-    public Wrapper delDict(Long id) {
+    public Wrapper delDict(Long dictId) {
         return WrapMapper.error();
     }
-    //
+
+
 
 
 }

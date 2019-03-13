@@ -80,9 +80,9 @@ public class SysDictController {
 
     @RequestMapping(value="/delDict",method = RequestMethod.POST)
     @ApiOperation("删除字典目录")
-    public Object delDict(@RequestParam(name = "id")Long id){
+    public Object delDict(@RequestParam(name = "dictId")Long dictId){
         try {
-            Wrapper wrapper = dictControllerClient.delDict(id);
+            Wrapper wrapper = dictControllerClient.delDict(dictId);
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,19 +90,6 @@ public class SysDictController {
         }
     }
 
-
-    @RequestMapping(value="/findDictDataPage",method = RequestMethod.GET)
-    @ApiOperation("分页查询全部字典数据")
-    public Object findDictDataPage(@RequestParam(name = "pageNum",defaultValue = "1")Integer pageNum,
-                                    @RequestParam(name = "pageSize",defaultValue = "10")Integer pageSize){
-        try {
-            Wrapper wrapper = dictDataControllerClient.findDictDataPage(pageNum,pageSize);
-            return WrapMapper.ok(wrapper.getResult());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
 
     @RequestMapping(value="/queryListPage",method = RequestMethod.POST)
     @ApiOperation("根据条件查询字典数据")
@@ -145,7 +132,7 @@ public class SysDictController {
 
 
 
-    @RequestMapping(value="/delDictData",method = RequestMethod.POST)
+    @RequestMapping(value="/delDictData",method = RequestMethod.GET)
     @ApiOperation("删除单个字典数据")
     public Object delDictData(@RequestParam(name = "id") Long id){
         try {
@@ -162,6 +149,22 @@ public class SysDictController {
     public Object delBatchDictData(@RequestParam(name = "ids")String ids){
         try {
             Wrapper wrapper = dictDataControllerClient.delBatchDictData(ids);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping(value="/findDictDataPage",method = RequestMethod.GET)
+    @ApiOperation("根据字典数据查询数据列表")
+    public Object findDictDataPage(
+            @RequestParam(name ="dictId",required = false)Long dictId,
+            @RequestParam(name = "pageNum",defaultValue = "1")Integer pageNum,
+                                   @RequestParam(name = "pageSize",defaultValue = "10")Integer pageSize){
+        try {
+            Wrapper wrapper = dictDataControllerClient.findDictDataPage(dictId,pageNum,pageSize);
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();

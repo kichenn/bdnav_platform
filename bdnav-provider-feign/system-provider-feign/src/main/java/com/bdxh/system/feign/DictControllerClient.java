@@ -8,10 +8,8 @@ import com.bdxh.system.entity.Dict;
 import com.bdxh.system.fallback.DictControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @Service
@@ -40,9 +38,9 @@ public interface DictControllerClient {
     Wrapper updateDict(@RequestBody UpdateDictDto updateDictDto);
 
     //删除字典目录
-    @RequestMapping("/dict/delDict")
+    @RequestMapping(value = "/dict/delDict",method = RequestMethod.POST)
     @ResponseBody
-    Wrapper delDict(@RequestParam(name = "id")Long id);
+    Wrapper delDict(@RequestParam(name ="dictId")Long dictId);
 
 
 }

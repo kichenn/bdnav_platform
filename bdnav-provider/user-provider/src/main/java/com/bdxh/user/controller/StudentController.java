@@ -18,6 +18,8 @@ import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.service.StudentService;
+import com.bdxh.user.vo.StudentVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value ="学生信息管理接口API", tags = "学生信息管理接口API")
@@ -118,7 +121,8 @@ public class StudentController {
     public Object queryStudentInfo(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber) {
         try {
-               return studentService.selectStudentVo(schoolCode,cardNumber);
+           StudentVo studentVo= studentService.selectStudentVo(schoolCode,cardNumber);
+           return  WrapMapper.ok(studentVo);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -131,10 +135,11 @@ public class StudentController {
      */
     @ApiOperation(value="根据条件分页查询学生数据")
     @RequestMapping(value = "/queryStudentListPage",method = RequestMethod.GET)
-    public Object queryFamilyListPage(@ModelAttribute StudentQueryDto studentQueryDto) {
+    public Object queryStudentListPage(@ModelAttribute StudentQueryDto studentQueryDto) {
         try {
             // 封装分页之后的数据
-            return studentService.getStudentList(studentQueryDto);
+            PageInfo<Student> student=studentService.getStudentList(studentQueryDto);
+            return WrapMapper.ok(student);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

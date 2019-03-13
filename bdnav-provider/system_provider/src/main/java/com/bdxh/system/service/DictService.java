@@ -22,7 +22,7 @@ public interface DictService extends IService<Dict> {
     PageInfo<Dict> findListPage(Map<String,Object> param, int pageNum, int pageSize);
 
     //删除字典
-    void delDict(Long DictId);
+    void delDict(Long dictId);
 
     //查询全部字典列表
     List<Dict> findDictListAll();

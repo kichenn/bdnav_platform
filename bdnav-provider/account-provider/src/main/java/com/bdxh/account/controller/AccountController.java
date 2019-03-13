@@ -102,7 +102,7 @@ public class AccountController {
         }
     }
 
-    @ApiOperation("查询账户信息列表")
+    @ApiOperation("查询账户信息")
     @RequestMapping("/queryAccount")
     public Object queryAccount(@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
                                @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber){

@@ -50,11 +50,18 @@ public class DictDataServiceImpl extends BaseService<DictData> implements DictDa
         return new PageInfo(dictDataLogs);
     }
 
-    @Override
-    public PageInfo<DictData> findDictDataPage(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<DictData> dicts =dictDataMapper.selectAll();
-        return new PageInfo(dicts);
 
+    @Override
+    public PageInfo<DictData> findDictListBydictId(Long dictId, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<DictData> dictDatas =dictDataMapper.getDictDataById(dictId);
+        return new PageInfo(dictDatas);
     }
+
+    @Override
+    public void deleteDictDataById(Long id) {
+      dictDataMapper.deleteDictDataById(id);
+    }
+
+
 }

@@ -11,10 +11,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class DictDataControllerClientFallback implements DictDataControllerClient {
 
-    @Override
-    public Wrapper findDictDataPage(Integer pageNum, Integer pageSize) {
-        return WrapMapper.error();
-    }
 
     @Override
     public Wrapper queryListPage(DictDataQueryDto dictDataQueryDto) {
@@ -38,6 +34,11 @@ public class DictDataControllerClientFallback implements DictDataControllerClien
 
     @Override
     public Wrapper delBatchDictData(String ids) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper findDictDataPage(Long dictId, Integer pageNum, Integer pageSize) {
         return WrapMapper.error();
     }
 }

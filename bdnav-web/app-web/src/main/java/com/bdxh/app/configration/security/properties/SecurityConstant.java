@@ -10,18 +10,48 @@ import java.util.concurrent.TimeUnit;
 public interface SecurityConstant {
 
     /**
-     * token自定义数据key
+     * token分割
      */
-    String DATA_KEY = "data";
+    String TOKEN_SPLIT = "Bearer ";
 
     /**
-     * token失效时间
+     * token加密key
      */
-    int TOKEN_VALIDITY_SECONDS = (int)TimeUnit.DAYS.toSeconds(1);
+    String TOKEN_SIGN_KEY = "bdnav-platform";
 
     /**
-     * refresh_token失效时间
+     * token过期时间14天
      */
-    int REFRESH_TOKEN_VALIDITY_SECONDS = (int)TimeUnit.DAYS.toSeconds(30);
+    long TOKEN_EXPIRE_TIME = TimeUnit.DAYS.toMillis(14);
+
+    /**
+     * token刷新时间7天
+     */
+    long TOKEN_REFRESH_TIME = TimeUnit.DAYS.toMillis(7);
+
+    /**
+     * token请求header
+     */
+    String TOKEN_REQUEST_HEADER = "Authorization";
+
+    /**
+     * token响应header
+     */
+    String TOKEN_RESPONSE_HEADER = "Token";
+
+    /**
+     * 用户信息参数头
+     */
+    String ACCOUNT = "account";
+
+    /**
+     * token是否失效前缀
+     */
+    String TOKEN_IS_REFRESH = "account_token_is_refresh:";
+
+    /**
+     * token是否失效前缀
+     */
+    String TOKEN_KEY = "account_token:";
 
 }

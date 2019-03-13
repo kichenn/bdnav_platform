@@ -5,20 +5,11 @@ import com.bdxh.system.dto.*;
 import com.bdxh.system.fallback.DictDataControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Service
 @FeignClient(value = "system-provider-cluster",fallback = DictDataControllerClientFallback.class)
 public interface DictDataControllerClient {
-
-    //分页查询全部字典数据
-    @RequestMapping("/dictData/findDictDataPage")
-    @ResponseBody
-    Wrapper findDictDataPage(@RequestParam(name = "pageNum")Integer pageNum,
-                                      @RequestParam(name = "pageSize")Integer pageSize);
 
     //带条件的分页查询
     @RequestMapping("/dictData/queryListPage")
@@ -36,7 +27,7 @@ public interface DictDataControllerClient {
     Wrapper updateDictData(@RequestBody UpdateDictDataDto updateDictDataDto);
 
     //删除单个字典数据
-    @RequestMapping("/dictData/delDictData")
+    @RequestMapping(value = "/dictData/delDictData",method = RequestMethod.GET)
     @ResponseBody
     Wrapper delDictData(@RequestParam(name = "id") Long id);
 
@@ -45,6 +36,12 @@ public interface DictDataControllerClient {
     @RequestMapping("/dictData/delBatchDictData")
     @ResponseBody
     Wrapper delBatchDictData(@RequestParam(name = "ids")String ids);
+
+    //根据字典ID查询数据列表或查询全部
+    @RequestMapping(value = "/dictData/findDictListBydictId")
+    @ResponseBody
+    Wrapper findDictDataPage(@RequestParam(name ="dictId")Long dictId,@RequestParam(name = "pageNum")Integer pageNum,
+                                 @RequestParam(name = "pageSize")Integer pageSize);
 
 
 }
