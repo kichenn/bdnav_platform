@@ -39,7 +39,7 @@ public interface SchoolControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 10:57
      */
-    @RequestMapping(value = "/school/modifySchoolInfo", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/school/modifySchoolInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper modifySchoolInfo(@RequestBody ModifySchoolDto schoolDto);
 
@@ -48,7 +48,7 @@ public interface SchoolControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 10:59
      */
-    @RequestMapping(value = "/school/delSchool", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/school/delSchool", method = RequestMethod.GET)
     @ResponseBody
     Wrapper delSchool(@RequestParam("id") Long id);
 
@@ -57,7 +57,7 @@ public interface SchoolControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:00
      */
-    @RequestMapping(value = "/school/batchDelSchool", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/school/batchDelSchool", method = RequestMethod.POST)
     @ResponseBody
     Wrapper batchDelSchool(@RequestBody List<Long> ids);
 

@@ -20,7 +20,7 @@ import java.util.List;
 public class SchoolDeptControllerClientFallback implements SchoolDeptControllerClient {
 
     @Override
-    public Wrapper<List<SchoolDeptTreeVo>> findSchoolClassTreeBySchoolId(Long schoolId) {
+    public Wrapper<List<SchoolDeptTreeVo>> findSchoolDeptTreeBySchoolId(Long schoolId) {
         return WrapMapper.error();
     }
 

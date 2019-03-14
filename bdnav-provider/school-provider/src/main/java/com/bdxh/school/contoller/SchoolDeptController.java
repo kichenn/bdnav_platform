@@ -97,7 +97,7 @@ public class SchoolDeptController {
      * @Author: Kang
      * @Date: 2019/2/27 16:10
      */
-    @RequestMapping(value = "/modifySchoolDept", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/modifySchoolDept", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校的部门关系信息", response = Boolean.class)
     @ResponseBody
     public Object modifySchoolDept(@Validated @RequestBody SchoolDeptModifyDto schoolDeptDto) {
@@ -109,7 +109,7 @@ public class SchoolDeptController {
      * @Author: Kang
      * @Date: 2019/2/27 16:12
      */
-    @RequestMapping(value = "/delSchoolDeptById", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delSchoolDeptById", method = RequestMethod.GET)
     @ApiOperation(value = "根据id删除部门关系信息", response = Boolean.class)
     @ResponseBody
     public Object delSchoolDeptById(@RequestParam("id") Long id) {
@@ -121,7 +121,7 @@ public class SchoolDeptController {
      * @Author: Kang
      * @Date: 2019/2/27 16:12
      */
-    @RequestMapping(value = "/batchDelSchoolDeptInIds", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/batchDelSchoolDeptInIds", method = RequestMethod.POST)
     @ApiOperation(value = "根据ids批量删除学校部门信息", response = Boolean.class)
     @ResponseBody
     public Object batchDelSchoolDeptInIds(@RequestBody List<Long> ids) {
@@ -133,7 +133,7 @@ public class SchoolDeptController {
      * @Author: Kang
      * @Date: 2019/2/27 16:13
      */
-    @RequestMapping(value = "/delSchoolDeptBySchoolId", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delSchoolDeptBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "删除该学校部门所有关系", response = Boolean.class)
     @ResponseBody
     public Object delSchoolDeptBySchoolId(@RequestParam("schoolId") Long schoolId) {

@@ -73,7 +73,7 @@ public class SchoolController {
      * @Author: Kang
      * @Date: 2019/2/26 11:03
      */
-    @RequestMapping(value = "/modifySchoolInfo", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/modifySchoolInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校信息", response = Boolean.class)
     @ResponseBody
     public Object modifySchoolInfo(@Valid @RequestBody ModifySchoolDto school) {
@@ -86,7 +86,7 @@ public class SchoolController {
      * @Author: Kang
      * @Date: 2019/2/26 11:11
      */
-    @RequestMapping(value = "/delSchool", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delSchool", method = RequestMethod.GET)
     @ApiOperation(value = "删除学校信息", response = Boolean.class)
     @ResponseBody
     public Object delSchool(@RequestParam("id") Long id) {
@@ -99,7 +99,7 @@ public class SchoolController {
      * @Author: Kang
      * @Date: 2019/2/26 17:08
      */
-    @RequestMapping(value = "/batchDelSchool", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/batchDelSchool", method = RequestMethod.POST)
     @ApiOperation(value = "批量删除学校信息", response = Boolean.class)
     @ResponseBody
     public Object batchDelSchool(@RequestBody List<Long> ids) {
@@ -123,6 +123,7 @@ public class SchoolController {
         schoolInfoVo.setSchoolNatureValue(SchoolNatureEnum.getValue(school.getSchoolNature()));
         schoolInfoVo.setSchoolTypeValue(SchoolTypeEnum.getValue(schoolInfoVo.getSchoolType()));
         schoolInfoVo.setCreateDate(DateUtils.date2Str(school.getCreateDate(), "yyyyMMdd"));
+        schoolInfoVo.setUpdateDate(DateUtils.date2Str(school.getCreateDate(), "yyyyMMdd"));
         return WrapMapper.ok(school);
     }
 

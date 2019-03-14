@@ -103,7 +103,7 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/27 10:59
      */
-    @RequestMapping(value = "/modifySchoolClass", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/modifySchoolClass", method = RequestMethod.POST)
     @ApiOperation(value = "修改院校结构关系", response = Boolean.class)
     @ResponseBody
     public Object modifySchoolClass(@Validated @RequestBody SchoolClassModifyDto schoolClassDto) {
@@ -115,7 +115,7 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/27 12:00
      */
-    @RequestMapping(value = "/delSchoolClassById", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delSchoolClassById", method = RequestMethod.GET)
     @ApiOperation(value = "删除院校关系", response = Boolean.class)
     @ResponseBody
     public Object delSchoolClassById(@RequestParam("id") Long id) {
@@ -127,7 +127,7 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/27 12:01
      */
-    @RequestMapping(value = "/batchDelSchoolClassInIds", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/batchDelSchoolClassInIds", method = RequestMethod.POST)
     @ApiOperation(value = "批量删除院校关系", response = Boolean.class)
     @ResponseBody
     public Object batchDelSchoolClassInIds(@RequestBody List<Long> ids) {
@@ -139,7 +139,7 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/2/27 12:01
      */
-    @RequestMapping(value = "/delSchoolClassBySchoolId", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delSchoolClassBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "删除院校底下信息", response = Boolean.class)
     @ResponseBody
     public Object delSchoolClassBySchoolId(@RequestParam("schoolId") Long schoolId) {
