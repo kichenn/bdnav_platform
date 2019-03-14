@@ -15,15 +15,15 @@ public class SecurityContext {
      */
     private static final TransmittableThreadLocal<UserInfo> transmittableThreadLocal = new TransmittableThreadLocal();
 
-    public static UserInfo getUserInfo(){
+    public static UserInfo getUserInfo() {
         return transmittableThreadLocal.get();
     }
 
-    public static void setUserInfo(UserInfo userInfo){
+    public static void setUserInfo(UserInfo userInfo) {
         transmittableThreadLocal.set(userInfo);
     }
 
-    public static void removeUserInfo(){
+    public static void removeUserInfo() {
         transmittableThreadLocal.remove();
     }
 

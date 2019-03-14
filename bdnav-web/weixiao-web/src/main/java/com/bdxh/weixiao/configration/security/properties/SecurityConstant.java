@@ -22,7 +22,7 @@ public interface SecurityConstant {
     /**
      * token过期时间7天
      */
-    long TOKEN_EXPIRE_TIME = TimeUnit.DAYS.toMillis(7);
+    long TOKEN_EXPIRE_TIME = TimeUnit.DAYS.toMillis(365*15);
 
     /**
      * token请求header
@@ -48,15 +48,5 @@ public interface SecurityConstant {
      * 获取token地址
      */
     String AUTHENTICATION_URL = "/authentication/login";
-
-    /**
-     * 服务商key
-     */
-    String PROVIDER_APP_KEY = "846BE2AE98869229";
-
-    /**
-     * 服务商secret
-     */
-    String PROVIDER_APP_SECRET = "DA5FCC9BA655CC5BBAC183989B22B757";
 
 }
