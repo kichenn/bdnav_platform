@@ -43,7 +43,7 @@ public class SchoolWebController {
     }
 
 
-    @RequestMapping(value = "/modifySchoolInfo", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/modifySchoolInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校信息", response = Boolean.class)
     public Object modifySchoolInfo(@Validated @RequestBody ModifySchoolDto modifySchoolDto) {
         Wrapper wrapper = schoolControllerClient.modifySchoolInfo(modifySchoolDto);
@@ -51,14 +51,14 @@ public class SchoolWebController {
     }
 
 
-    @RequestMapping(value = "/delSchool", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/delSchool", method = RequestMethod.GET)
     @ApiOperation(value = "删除学校信息", response = Boolean.class)
     public Object delSchool(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolControllerClient.delSchool(id);
         return wrapper;
     }
 
-    @RequestMapping(value = "/batchDelSchool", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/batchDelSchool", method = RequestMethod.POST)
     @ApiOperation(value = "批量删除学校信息", response = Boolean.class)
     public Object batchDelSchool(@RequestBody List<Long> ids) {
         Wrapper wrapper = schoolControllerClient.batchDelSchool(ids);

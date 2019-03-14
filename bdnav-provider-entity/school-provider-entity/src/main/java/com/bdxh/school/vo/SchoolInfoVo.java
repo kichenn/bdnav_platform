@@ -18,14 +18,14 @@ public class SchoolInfoVo {
     @ApiModelProperty("学校名称")
     private String schoolName;
 
-    /*@ApiModelProperty("学校地区代码")
-    private String schoolAreaCode;*/
+    @ApiModelProperty("学校地区代码")
+    private String schoolAreaCode;
 
     @ApiModelProperty("学校地区")
     private String schoolArea;
 
-   /* @ApiModelProperty("学校地址")
-    private String schoolAddress;*/
+    @ApiModelProperty("学校地址")
+    private String schoolAddress;
 
     @ApiModelProperty("学校logo地址")
     private String schoolLogo;
@@ -57,12 +57,13 @@ public class SchoolInfoVo {
     @ApiModelProperty("联系人职位")
     private String contactPosition;
 
-  /*  @ApiModelProperty("学校key")
+    @ApiModelProperty("学校key")
     private String schoolKey;
 
     @ApiModelProperty("学校secret")
     private String schoolSecret;
 
+    /*
     @ApiModelProperty("服务商key")
     private String appKey;
 
@@ -72,14 +73,14 @@ public class SchoolInfoVo {
     @ApiModelProperty("创建时间")
     private String createDate;
 
-    /*@ApiModelProperty("修改时间")
-    private Date updateDate;*/
+    @ApiModelProperty("修改时间")
+    private String updateDate;
 
-   /* @ApiModelProperty("操作人")
+    @ApiModelProperty("操作人")
     private Long operator;
 
     @ApiModelProperty("操作人姓名")
-    private String operatorName;*/
+    private String operatorName;
 
     @ApiModelProperty("备注")
     private String remark;

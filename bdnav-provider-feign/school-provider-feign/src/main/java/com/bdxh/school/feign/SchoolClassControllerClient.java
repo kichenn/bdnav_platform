@@ -3,11 +3,8 @@ package com.bdxh.school.feign;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolClass;
-import com.bdxh.school.fallback.SchoolControllerClientFallback;
+import com.bdxh.school.fallback.SchoolClassControllerClientFallback;
 import com.bdxh.school.vo.SchoolClassTreeVo;
-import com.bdxh.school.vo.SchoolInfoVo;
-import com.bdxh.school.vo.SchoolShowVo;
-import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +17,7 @@ import java.util.List;
  * @Date: 2019/3/12 10:43
  */
 @Service
-@FeignClient(value = "school-provider-clusterr", fallback = SchoolControllerClientFallback.class)
+@FeignClient(value = "school-provider-cluster", fallback = SchoolClassControllerClientFallback.class)
 public interface SchoolClassControllerClient {
 
 
@@ -65,7 +62,7 @@ public interface SchoolClassControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:18
      */
-    @RequestMapping(value = "/schoolClass/modifySchoolClass", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/schoolClass/modifySchoolClass", method = RequestMethod.POST)
     @ResponseBody
     Wrapper modifySchoolClass(@RequestBody SchoolClassModifyDto schoolClassDto);
 
@@ -74,7 +71,7 @@ public interface SchoolClassControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:18
      */
-    @RequestMapping(value = "/schoolClass/delSchoolClassById", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/schoolClass/delSchoolClassById", method = RequestMethod.GET)
     @ResponseBody
     Wrapper delSchoolClassById(@RequestParam("id") Long id);
 
@@ -83,7 +80,7 @@ public interface SchoolClassControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:19
      */
-    @RequestMapping(value = "/schoolClass/batchDelSchoolClassInIds", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/schoolClass/batchDelSchoolClassInIds", method = RequestMethod.POST)
     @ResponseBody
     Wrapper batchDelSchoolClassInIds(@RequestBody List<Long> ids);
 
@@ -92,7 +89,7 @@ public interface SchoolClassControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:20
      */
-    @RequestMapping(value = "/schoolClass/delSchoolClassBySchoolId", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/schoolClass/delSchoolClassBySchoolId", method = RequestMethod.GET)
     @ResponseBody
     Wrapper delSchoolClassBySchoolId(@RequestParam("schoolId") Long schoolId);
 

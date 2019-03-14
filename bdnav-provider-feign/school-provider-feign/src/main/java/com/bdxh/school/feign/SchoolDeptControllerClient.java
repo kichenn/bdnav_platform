@@ -1,14 +1,11 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.SchoolClassDto;
-import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.dto.SchoolDeptDto;
 import com.bdxh.school.dto.SchoolDeptModifyDto;
-import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.fallback.SchoolControllerClientFallback;
-import com.bdxh.school.vo.SchoolClassTreeVo;
+import com.bdxh.school.fallback.SchoolDeptControllerClientFallback;
 import com.bdxh.school.vo.SchoolDeptTreeVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -22,7 +19,7 @@ import java.util.List;
  * @Date: 2019/3/12 10:43
  */
 @Service
-@FeignClient(value = "school-provider-clusterr", fallback = SchoolControllerClientFallback.class)
+@FeignClient(value = "school-provider-cluster", fallback = SchoolDeptControllerClientFallback.class)
 public interface SchoolDeptControllerClient {
 
 
@@ -33,7 +30,7 @@ public interface SchoolDeptControllerClient {
      */
     @RequestMapping(value = "/schoolDept/findSchoolDeptTreeBySchoolId", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolDeptTreeVo>> findSchoolClassTreeBySchoolId(@RequestParam("schoolId") Long schoolId);
+    Wrapper<List<SchoolDeptTreeVo>> findSchoolDeptTreeBySchoolId(@RequestParam("schoolId") Long schoolId);
 
     /**
      * @Description: 根据id查询部门关系信息
@@ -67,7 +64,7 @@ public interface SchoolDeptControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:27
      */
-    @RequestMapping(value = "/schoolDept/modifySchoolDept", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/schoolDept/modifySchoolDept", method = RequestMethod.POST)
     @ResponseBody
     Wrapper modifySchoolDept(@RequestBody SchoolDeptModifyDto schoolDeptDto);
 
@@ -76,7 +73,7 @@ public interface SchoolDeptControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:28
      */
-    @RequestMapping(value = "/schoolDept/delSchoolDeptById", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/schoolDept/delSchoolDeptById", method = RequestMethod.GET)
     @ResponseBody
     Wrapper delSchoolDeptById(@RequestParam("id") Long id);
 
@@ -85,7 +82,7 @@ public interface SchoolDeptControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:28
      */
-    @RequestMapping(value = "/schoolDept/batchDelSchoolDeptInIds", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/schoolDept/batchDelSchoolDeptInIds", method = RequestMethod.POST)
     @ResponseBody
     Wrapper batchDelSchoolDeptInIds(@RequestBody List<Long> ids);
 
@@ -94,7 +91,7 @@ public interface SchoolDeptControllerClient {
      * @Author: Kang
      * @Date: 2019/3/12 11:29
      */
-    @RequestMapping(value = "/schoolDept/delSchoolDeptBySchoolId", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/schoolDept/delSchoolDeptBySchoolId", method = RequestMethod.GET)
     @ResponseBody
     Wrapper delSchoolDeptBySchoolId(@RequestParam("schoolId") Long schoolId);
 
