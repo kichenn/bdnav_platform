@@ -7,12 +7,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 /**
- * 通用接口
- *
- * @param <T> the type parameter @author paascloud.net@gmail.com
- *
- * @author paascloud.net@gmail.com
- */
+ * @description:
+ * @author: xuyuan
+ * @create: 2019-02-28 10:47
+ **/
 public interface IService<T> {
 	/**
 	 * 根据实体中的属性值进行查询, 查询条件使用等号  @param record the record

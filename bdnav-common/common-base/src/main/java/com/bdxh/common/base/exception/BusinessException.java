@@ -1,7 +1,6 @@
 package com.bdxh.common.base.exception;
 
 import com.bdxh.common.base.enums.ErrorCodeEnum;
-import lombok.extern.slf4j.Slf4j;
 
 /**
  * @description: 业务异常
