@@ -1,5 +1,6 @@
 package com.bdxh.user.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -23,70 +24,73 @@ public class TeacherDeptDto implements Serializable {
     /**
      * 学校编码
      */
-    @NotNull(message = "学校编码不能为空")
+    @ApiModelProperty("学校编码")
     private String schoolCode;
 
     /**
      * 老师工号
      */
-    @NotNull(message = "老师工号不能为空")
+    @ApiModelProperty("老师工号")
     private String cardNumber;
 
     /**
      * 老师id
      */
-    @NotNull(message = "老师id不能为空")
+    @ApiModelProperty("老师id")
     private Long teacherId;
 
     /**
      * 组织架构id
      */
-    @NotNull(message = "组织架构id不能为空")
+    @ApiModelProperty("组织架构id")
     private Long deptId;
 
     /**
      * 组织架构名称
      */
-    @NotNull(message = "组织架构名称不能为空")
+    @ApiModelProperty("组织架构名称")
     private String deptName;
 
     /**
      * 组织架构ids
      */
-    @NotNull(message = "组织架构ids不能为空")
+    @ApiModelProperty("组织架构ids")
     private String deptIds;
 
     /**
      * 组织架构names
      */
-    @NotNull(message = "组织架构names不能为空")
+    @ApiModelProperty("组织架构names")
     private String deptNames;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty("创建时间")
     private Date createDate;
 
     /**
      * 修改时间
      */
-    @Column(name = "update_date")
+    @ApiModelProperty("修改时间")
     private Date updateDate;
 
     /**
      * 操作人
      */
+    @ApiModelProperty("操作人")
     private Long operator;
 
     /**
      * 操作人姓名
      */
-    @Column(name = "operator_name")
+    @ApiModelProperty("操作人姓名")
     private String operatorName;
 
     /**
      * 备注
      */
+    @ApiModelProperty("备注")
     private String remark;
 
 }

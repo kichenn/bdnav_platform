@@ -1,25 +1,12 @@
-/**
- * Copyright (C), 2019-2019
- * FileName: TeacherController
- * Author:   bdxh
- * Date:     2019/2/28 10:08
- * Description:
- * History:
- * <author>          <time>          <version>          <desc>
- * 作者姓名           修改时间           版本号              描述
- */
-package com.bdxh.user.controller;
+package com.bdxh.backend.controller.user;
 
-import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
-import com.bdxh.user.entity.Student;
-import com.bdxh.user.entity.Teacher;
-import com.bdxh.user.service.TeacherService;
+import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.TeacherVo;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,39 +15,33 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
 
-@Api(value ="老师信息管理接口API",tags = "老师信息管理接口API")
+/**
+ * @description:
+ * @author: binzh
+ * @create: 2019-03-13 10:02
+ **/
 @RestController
 @RequestMapping("/teacher")
 @Validated
 @Slf4j
+@Api(value = "老师信息交互API", tags = "老师信息交互API")
 public class TeacherController {
     @Autowired
-    private TeacherService teacherService;
-
-    @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
+    private TeacherControllerClient teacherControllerClient;
 
     /**
      * 新增老师信息
      * @param addTeacherDto
-     * @param bindingResult
      * @return
      */
     @ApiOperation(value="新增老师信息")
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
-    public Object addTeacher(@Valid @RequestBody AddTeacherDto addTeacherDto, BindingResult bindingResult){
-        //检验参数
-        if (bindingResult.hasErrors()) {
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
+    public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
         try {
-            addTeacherDto.setId(snowflakeIdWorker.nextId());
-            teacherService.saveTeacherDeptInfo(addTeacherDto);
+            teacherControllerClient.addTeacher(addTeacherDto);
             return WrapMapper.ok();
         }catch (Exception e) {
             e.printStackTrace();
@@ -79,7 +60,7 @@ public class TeacherController {
     public Object removeTeacher(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
                                 @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber){
         try{
-            teacherService.deleteTeacherInfo(schoolCode, cardNumber);
+            teacherControllerClient.removeTeacher(schoolCode, cardNumber);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -98,7 +79,7 @@ public class TeacherController {
     public Object removeTeachers(@RequestParam(name = "schoolCodes") @NotNull(message="老师学校Code不能为空")String schoolCodes,
                                  @RequestParam(name = "cardNumbers") @NotNull(message="老师微校卡号不能为空")String cardNumbers){
         try{
-            teacherService.deleteBatchesTeacherInfo(schoolCodes, cardNumbers);
+            teacherControllerClient.removeTeachers(schoolCodes, cardNumbers);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -109,19 +90,17 @@ public class TeacherController {
     /**
      * 修改老师信息
      * @param updateTeacherDto
-     * @param bindingResult
      * @return
      */
     @ApiOperation(value="修改老师信息")
     @RequestMapping(value = "/updateTeacher",method = RequestMethod.POST)
-    public Object updateTeacher(@Valid @RequestBody UpdateTeacherDto updateTeacherDto, BindingResult bindingResult){
-        //检验参数
+    public Object updateTeacher(@RequestBody UpdateTeacherDto updateTeacherDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            teacherService.updateTeacherInfo(updateTeacherDto);
+            teacherControllerClient.updateTeacher(updateTeacherDto);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -130,34 +109,35 @@ public class TeacherController {
     }
 
     /**
-     * 查询老师信息
+     * 查询单个老师信息
      * @param schoolCode cardNumber
      * @return
      */
-    @ApiOperation(value="查询老师信息")
+    @ApiOperation(value="查询单个老师信息")
     @RequestMapping(value ="/queryTeacherInfo",method = RequestMethod.GET)
     public Object queryTeacherInfo(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber) {
         try {
-            TeacherVo teacherVo=teacherService.selectTeacherInfo(schoolCode,cardNumber);
+            TeacherVo teacherVo=teacherControllerClient.queryTeacherInfo(schoolCode,cardNumber).getResult();
             return WrapMapper.ok(teacherVo);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
+
     /**
-     * 根据条件分页查找
+     * 分页查询老师数据
      * @param teacherQueryDto
-     * @return PageInfo<Family>
+     * @return
      */
-    @ApiOperation(value="根据条件分页查询老师数据")
+    @ApiOperation(value="分页查询老师数据")
     @RequestMapping(value = "/queryTeacherListPage",method = RequestMethod.POST)
     public Object queryTeacherListPage(@RequestBody TeacherQueryDto teacherQueryDto) {
         try {
             // 封装分页之后的数据
-            PageInfo<Teacher> teacher=teacherService.getTeacherList(teacherQueryDto);
-            return WrapMapper.ok(teacher);
+            Wrapper wrapper=teacherControllerClient.queryTeacherListPage(teacherQueryDto);
+            return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

@@ -98,13 +98,15 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public StudentVo selectStudentVo(String schoolCode, String cardNumber) {
         StudentVo studentVo=studentMapper.selectStudentVo(schoolCode,cardNumber);
         FamilyStudentVo familyStudentVo=familyStudentMapper.studentQueryInfo(schoolCode, cardNumber);
-        String fNumber=familyStudentVo.getFCardNumber();
-        if(null!=fNumber&&!("").equals(fNumber)){
-            FamilyVo familyVo=familyMapper.selectByCodeAndCard(schoolCode,fNumber);
-            studentVo.setFName(familyVo.getName());
-            studentVo.setCardNumber(fNumber);
-            studentVo.setFPhone(familyVo.getPhone());
-        }
+       if(null!=familyStudentVo){
+           String fNumber=familyStudentVo.getFCardNumber();
+           if(null!=fNumber&&!("").equals(fNumber)){
+               FamilyVo familyVo=familyMapper.selectByCodeAndCard(schoolCode,fNumber);
+               studentVo.setFName(familyVo.getName());
+               studentVo.setCardNumber(fNumber);
+               studentVo.setFPhone(familyVo.getPhone());
+           }
+       }
         return studentVo;
     }
 

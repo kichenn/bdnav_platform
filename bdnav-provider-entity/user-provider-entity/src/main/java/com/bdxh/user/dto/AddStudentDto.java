@@ -15,12 +15,7 @@ public class AddStudentDto implements Serializable {
     private static final long serialVersionUID = -9120796138685156209L;
 
 
-    /**
-     * 学校id
-     */
-    @ApiModelProperty(value="学校id")
-    @NotNull(message ="学校id不能为空")
-    private Long schoolId;
+
 
     /**
      * 学校编码

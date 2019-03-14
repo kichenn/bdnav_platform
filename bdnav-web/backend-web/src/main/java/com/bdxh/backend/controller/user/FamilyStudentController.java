@@ -1,20 +1,8 @@
-/**
- * Copyright (C), 2019-2019
- * FileName: FamilyStudentController
- * Author:   binzh
- * Date:     2019/3/5 14:01
- * Description: TOOO
- * History:
- */
-package com.bdxh.user.controller;
+package com.bdxh.backend.controller.user;
 
-import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.user.dto.AddFamilyStudentDto;
-import com.bdxh.user.entity.FamilyStudent;
-import com.bdxh.user.service.FamilyStudentService;
+import com.bdxh.user.feign.FamilyStudentControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -27,25 +15,27 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
 
-@Api(value ="家长学生绑定接口API", tags = "家长学生绑定接口API")
+/**
+ * @description:
+ * @author: binzh
+ * @create: 2019-03-13 10:02
+ **/
 @RestController
 @RequestMapping("/familyStudent")
 @Validated
 @Slf4j
+@Api(value = "家长学生关系交互API", tags = "家长学生关系交互API")
 public class FamilyStudentController {
-
-@Autowired
-private FamilyStudentService familyStudentService;
-@Autowired
-private SnowflakeIdWorker snowflakeIdWorker;
+    @Autowired
+    private FamilyStudentControllerClient familyStudentControllerClient;
 
     /**
-     * 绑定孩子接口
+     * 家长绑定孩子
      * @param addFamilyStudentDto
      * @param bindingResult
      * @return
      */
-    @ApiOperation(value="绑定孩子接口")
+    @ApiOperation(value="家长绑定孩子接口")
     @RequestMapping(value = "/bindingStudent",method = RequestMethod.POST)
     public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult){
         //检验参数
@@ -54,10 +44,7 @@ private SnowflakeIdWorker snowflakeIdWorker;
             return WrapMapper.error(errors);
         }
         try {
-            FamilyStudent familyStudent = BeanMapUtils.map(addFamilyStudentDto, FamilyStudent.class);
-
-            familyStudent.setId(snowflakeIdWorker.nextId());
-            familyStudentService.save(familyStudent);
+            familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,16 +60,17 @@ private SnowflakeIdWorker snowflakeIdWorker;
      * @return
      */
     @ApiOperation(value = "删除学生家长绑定关系")
-    @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.GET)
+    @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.DELETE)
     public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                         @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
                                         @RequestParam(name = "id") @NotNull(message="id不能为空")String id){
         try{
-            familyStudentService.removeFamilyStudentInfo(schoolCode, cardNumber,id);
+            familyStudentControllerClient.removeFamilyOrStudent(schoolCode, cardNumber,id);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
+
 }

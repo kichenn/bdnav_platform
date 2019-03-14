@@ -17,5 +17,5 @@ public interface StudentMapper extends Mapper<Student> {
     StudentVo selectStudentVo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
 
     //修改学生信息
-    int updateStudentInfo(@Param("updateStudentDto") UpdateStudentDto updateStudentDto);
+    int updateStudentInfo(@Param("studentDto") UpdateStudentDto updateStudentDto);
 }

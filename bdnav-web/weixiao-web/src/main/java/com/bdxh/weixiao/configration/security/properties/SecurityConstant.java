@@ -20,14 +20,9 @@ public interface SecurityConstant {
     String TOKEN_SIGN_KEY = "bdnav-platform";
 
     /**
-     * token过期时间14天
+     * token过期时间7天
      */
-    long TOKEN_EXPIRE_TIME = TimeUnit.DAYS.toMillis(14);
-
-    /**
-     * token刷新时间7天
-     */
-    long TOKEN_REFRESH_TIME = TimeUnit.DAYS.toMillis(7);
+    long TOKEN_EXPIRE_TIME = TimeUnit.DAYS.toMillis(7);
 
     /**
      * token请求header
@@ -35,23 +30,33 @@ public interface SecurityConstant {
     String TOKEN_REQUEST_HEADER = "Authorization";
 
     /**
-     * token响应header
+     * token请求param
      */
-    String TOKEN_RESPONSE_HEADER = "Token";
+    String TOKEN_REQUEST_PARAM = "token";
+
+    /**
+     * token存储前缀
+     */
+    String TOKEN_KEY = "weixiao_token:";
 
     /**
      * 用户信息参数头
      */
-    String ACCOUNT = "account";
+    String USER_INFO = "user_info";
 
     /**
-     * token是否失效前缀
+     * 获取token地址
      */
-    String TOKEN_IS_REFRESH = "account_token_is_refresh:";
+    String AUTHENTICATION_URL = "/authentication/login";
 
     /**
-     * token是否失效前缀
+     * 服务商key
      */
-    String TOKEN_KEY = "account_token:";
+    String PROVIDER_APP_KEY = "846BE2AE98869229";
+
+    /**
+     * 服务商secret
+     */
+    String PROVIDER_APP_SECRET = "DA5FCC9BA655CC5BBAC183989B22B757";
 
 }

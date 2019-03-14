@@ -13,6 +13,6 @@ public interface TeacherMapper extends Mapper<Teacher> {
 
     Teacher selectTeacherDetails(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
 
-    int updateTeacher(UpdateTeacherDto updateTeacherDto);
+    int updateTeacher(@Param("updateTeacherDto") UpdateTeacherDto updateTeacherDto);
 
 }
