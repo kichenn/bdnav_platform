@@ -10,19 +10,20 @@ import com.bdxh.weixiao.configration.security.entity.UserInfo;
  **/
 public class SecurityContext {
 
+    /**
+     * 保存用户信息
+     */
     private static final TransmittableThreadLocal<UserInfo> transmittableThreadLocal = new TransmittableThreadLocal();
 
-
-    public UserInfo getUserInfo(){
-        UserInfo userInfo = transmittableThreadLocal.get();
-        return userInfo;
+    public static UserInfo getUserInfo(){
+        return transmittableThreadLocal.get();
     }
 
-    public void setUserInfo(UserInfo userInfo){
+    public static void setUserInfo(UserInfo userInfo){
         transmittableThreadLocal.set(userInfo);
     }
 
-    public void removeUserInfo(){
+    public static void removeUserInfo(){
         transmittableThreadLocal.remove();
     }
 
