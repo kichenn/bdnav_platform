@@ -51,71 +51,72 @@
   <!-- 修改老师信息 -->
   <update id="updateTeacher">
       UPDATE `t_teacher`
-    <if test="schoolName!=null and schoolName!=''">
-      `school_name`=#{schoolName},
+    SET
+    <if test="updateTeacherDto.schoolName!=null and updateTeacherDto.schoolName!=''">
+      `school_name`=#{updateTeacherDto.schoolName},
     </if>
-    <if test="campusName!=null and campusName!=''">
-      `campus_name`=#{campusName},
+    <if test="updateTeacherDto.campusName!=null and updateTeacherDto.campusName!=''">
+      `campus_name`=#{updateTeacherDto.campusName},
     </if>
-    <if test="name!=null and name!=''">
-      `name`=#{name},
+    <if test="updateTeacherDto.name!=null and updateTeacherDto.name!=''">
+      `name`=#{updateTeacherDto.name},
     </if>
-    <if test="gender!=null and gender!=''">
-      `gender`=#{gender},
+    <if test="updateTeacherDto.gender!=null and updateTeacherDto.gender!=''">
+      `gender`=#{updateTeacherDto.gender},
     </if>
-    <if test="birth!=null and birth!=''">
-       `birth`=#{birth},
+    <if test="updateTeacherDto.birth!=null and updateTeacherDto.birth!=''">
+       `birth`=#{updateTeacherDto.birth},
     </if>
-    <if test="position!=null and position!=''">
-      `position`=#{position},
+    <if test="updateTeacherDto.position!=null and updateTeacherDto.position!=''">
+      `position`=#{updateTeacherDto.position},
     </if>
-    <if test="phone!=null and phone!=''">
-      `phone`=#{phone},
+    <if test="updateTeacherDto.phone!=null and updateTeacherDto.phone!=''">
+      `phone`=#{updateTeacherDto.phone},
     </if>
-    <if test="idcard!=null and idcard!=''">
-      `idcard`=#{idcard},
+    <if test="updateTeacherDto.idcard!=null and updateTeacherDto.idcard!=''">
+      `idcard`=#{updateTeacherDto.idcard},
     </if>
-    <if test="qqNumber!=null and qqNumber!=''">
-     `qq_number`=#{qqNumber},
+    <if test="updateTeacherDto.qqNumber!=null and updateTeacherDto.qqNumber!=''">
+     `qq_number`=#{updateTeacherDto.qqNumber},
     </if>
-    <if test="wxNumber!=null and wxNumber!=''">
-      `wx_number`=#{wxNumber},
+    <if test="updateTeacherDto.wxNumber!=null and updateTeacherDto.wxNumber!=''">
+      `wx_number`=#{updateTeacherDto.wxNumber},
     </if>
-    <if test="email!=null and email!=''">
-      `email`=#{email},
+    <if test="updateTeacherDto.email!=null and updateTeacherDto.email!=''">
+      `email`=#{updateTeacherDto.email},
     </if>
-    <if test="image!=null and image!=''">
-      `image`=#{image},
+    <if test="updateTeacherDto.image!=null and updateTeacherDto.image!=''">
+      `image`=#{updateTeacherDto.image},
     </if>
-    <if test="nationName!=null and nationName!=''">
-      `nation_name`=#{nationName},
+    <if test="updateTeacherDto.nationName!=null and updateTeacherDto.nationName!=''">
+      `nation_name`=#{updateTeacherDto.nationName},
     </if>
-    <if test="dormitoryAddress!=null and dormitoryAddress!=''">
-      `dormitory_address`=#{dormitoryAddress},
+    <if test="updateTeacherDto.dormitoryAddress!=null and updateTeacherDto.dormitoryAddress!=''">
+      `dormitory_address`=#{updateTeacherDto.dormitoryAddress},
     </if>
-    <if test="adress!=null and adress!=''">
-      `adress`=#{adress},
+    <if test="updateTeacherDto.adress!=null and updateTeacherDto.adress!=''">
+      `adress`=#{updateTeacherDto.adress},
     </if>
-    <if test="physicalNumber!=null and physicalNumber!=''">
-      `physical_number`=#{physicalNumber},
+    <if test="updateTeacherDto.physicalNumber!=null and updateTeacherDto.physicalNumber!=''">
+      `physical_number`=#{updateTeacherDto.physicalNumber},
     </if>
-    <if test="physicalChipNumber!=null and physicalChipNumber!=''">
-      `physical_chip_number`=#{physicalChipNumber},
+    <if test="updateTeacherDto.physicalChipNumber!=null and updateTeacherDto.physicalChipNumber!=''">
+      `physical_chip_number`=#{updateTeacherDto.physicalChipNumber},
     </if>
-    <if test="activate!=null and activate!=''">
-      `activate`=#{activate},
+    <if test="updateTeacherDto.activate!=null and updateTeacherDto.activate!=''">
+      `activate`=#{updateTeacherDto.activate},
     </if>
-    <if test="operator!=null and operator!=''">
-      `operator`=#{operator},
+    <if test="updateTeacherDto.operator!=null and updateTeacherDto.operator!=''">
+      `operator`=#{updateTeacherDto.operator},
     </if>
-    <if test="operatorName!=null and operatorName!=''">
-      `operator_name`=#{operatorName},
+    <if test="updateTeacherDto.operatorName!=null and updateTeacherDto.operatorName!=''">
+      `operator_name`=#{updateTeacherDto.operatorName},
     </if>
-    <if test="remark!=null and remark!=''">
-      `remark`=#{remark},
+    <if test="updateTeacherDto.remark!=null and updateTeacherDto.remark!=''">
+      `remark`=#{updateTeacherDto.remark},
     </if>
     `update_date`=now()
      WHERE
-    `school_code`=#{schoolCode} and `card_number`=#{cardNumber}
+    `school_code`=#{updateTeacherDto.schoolCode} and `card_number`=#{updateTeacherDto.cardNumber}
       </update>
 </mapper>

@@ -43,6 +43,13 @@ public class TeacherController {
 
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
+
+    /**
+     * 新增老师信息
+     * @param addTeacherDto
+     * @param bindingResult
+     * @return
+     */
     @ApiOperation(value="新增老师信息")
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
     public Object addTeacher(@Valid @RequestBody AddTeacherDto addTeacherDto, BindingResult bindingResult){
@@ -61,7 +68,13 @@ public class TeacherController {
         }
     }
 
-    @ApiOperation(value="根据ID删除老师信息")
+    /**
+     * 删除老师信息
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    @ApiOperation(value="删除老师信息")
     @RequestMapping(value = "/removeTeacher",method = RequestMethod.POST)
     public Object removeTeacher(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
                                 @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber){
@@ -73,10 +86,17 @@ public class TeacherController {
             return WrapMapper.error(e.getMessage());
         }
     }
-    @ApiOperation(value="根据ID批量删除老师信息")
+
+    /**
+     * 批量删除老师信息
+     * @param schoolCodes
+     * @param cardNumbers
+     * @return
+     */
+    @ApiOperation(value="批量删除老师信息")
     @RequestMapping(value = "/removeTeachers",method = RequestMethod.POST)
-    public Object removeTeachers(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCodes,
-                                 @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumbers){
+    public Object removeTeachers(@RequestParam(name = "schoolCodes") @NotNull(message="老师学校Code不能为空")String schoolCodes,
+                                 @RequestParam(name = "cardNumbers") @NotNull(message="老师微校卡号不能为空")String cardNumbers){
         try{
             teacherService.deleteBatchesTeacherInfo(schoolCodes, cardNumbers);
             return WrapMapper.ok();
@@ -86,7 +106,12 @@ public class TeacherController {
         }
     }
 
-    //修改老师信息
+    /**
+     * 修改老师信息
+     * @param updateTeacherDto
+     * @param bindingResult
+     * @return
+     */
     @ApiOperation(value="修改老师信息")
     @RequestMapping(value = "/updateTeacher",method = RequestMethod.POST)
     public Object updateTeacher(@Valid @RequestBody UpdateTeacherDto updateTeacherDto, BindingResult bindingResult){
@@ -105,12 +130,12 @@ public class TeacherController {
     }
 
     /**
-     * 修改时根据Id查询
+     * 查询老师信息
      * @param schoolCode cardNumber
      * @return
      */
-    @ApiOperation(value="修改时根据Id查询单个老师信息")
-    @RequestMapping(value ="/queryTeacherInfo",method = RequestMethod.POST)
+    @ApiOperation(value="查询老师信息")
+    @RequestMapping(value ="/queryTeacherInfo",method = RequestMethod.GET)
     public Object queryTeacherInfo(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber) {
         try {
@@ -127,8 +152,8 @@ public class TeacherController {
      * @return PageInfo<Family>
      */
     @ApiOperation(value="根据条件分页查询老师数据")
-    @RequestMapping(value = "/queryTeacherListPage",method = RequestMethod.GET)
-    public Object queryTeacherListPage(@ModelAttribute TeacherQueryDto teacherQueryDto) {
+    @RequestMapping(value = "/queryTeacherListPage",method = RequestMethod.POST)
+    public Object queryTeacherListPage(@RequestBody TeacherQueryDto teacherQueryDto) {
         try {
             // 封装分页之后的数据
             PageInfo<Teacher> teacher=teacherService.getTeacherList(teacherQueryDto);

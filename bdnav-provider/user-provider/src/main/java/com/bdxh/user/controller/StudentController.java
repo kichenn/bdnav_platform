@@ -11,6 +11,7 @@
 package com.bdxh.user.controller;
 
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.POIUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddStudentDto;
@@ -21,15 +22,20 @@ import com.bdxh.user.service.StudentService;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +51,12 @@ public class StudentController {
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
-
+    /**
+     * 新增学生信息
+     * @param addStudentDto
+     * @param bindingResult
+     * @return
+     */
     @ApiOperation(value="新增学生信息")
     @RequestMapping(value = "/addStudent",method = RequestMethod.POST)
     public Object addStudent(@Valid @RequestBody AddStudentDto addStudentDto, BindingResult bindingResult){
@@ -68,9 +79,15 @@ public class StudentController {
         }
     }
 
-    @ApiOperation(value="根据ID删除学生信息")
-    @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
-    public Object removeFamily(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
+    /**
+     * 删除学生信息
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    @ApiOperation(value="删除学生信息")
+    @RequestMapping(value = "/removeStudent",method = RequestMethod.POST)
+    public Object removeStudent(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
                                @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber){
         try{
             studentService.deleteStudentInfo(schoolCode,cardNumber);
@@ -80,10 +97,17 @@ public class StudentController {
             return WrapMapper.error(e.getMessage());
         }
     }
-    @ApiOperation(value="根据ID批量删除学生信息")
-    @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
-    public Object removeFamilys(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCodes,
-                                @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumbers){
+
+    /**
+     * 批量删除学生信息
+     * @param schoolCodes
+     * @param cardNumbers
+     * @return
+     */
+    @ApiOperation(value="批量删除学生信息")
+    @RequestMapping(value = "/removeStudents",method = RequestMethod.POST)
+    public Object removeStudents(@RequestParam(name = "schoolCodes") @NotNull(message="学生学校Code不能为空")String schoolCodes,
+                                @RequestParam(name = "cardNumbers") @NotNull(message="学生微校卡号不能为空")String cardNumbers){
         try{
             studentService.deleteBatchesStudentInfo(schoolCodes,cardNumbers);
             return WrapMapper.ok();
@@ -93,10 +117,15 @@ public class StudentController {
         }
     }
 
-    //修改学生信息
+    /**
+     * 修改学生信息
+     * @param updateStudentDto
+     * @param bindingResult
+     * @return
+     */
     @ApiOperation(value="修改学生信息")
-    @RequestMapping(value = "/updateFamily",method = RequestMethod.POST)
-    public Object updateFamily(@Valid @RequestBody UpdateStudentDto updateStudentDto, BindingResult bindingResult){
+    @RequestMapping(value = "/updateStudent",method = RequestMethod.POST)
+    public Object updateStudent(@Valid @RequestBody UpdateStudentDto updateStudentDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -112,12 +141,12 @@ public class StudentController {
     }
 
     /**
-     * 修改时根据Id查询
+     * 查询单个学生信息
      * @param  schoolCode cardNumber
      * @return family
      */
-    @ApiOperation(value="修改时查询单个学生信息")
-    @RequestMapping(value ="/queryStudentInfo",method = RequestMethod.POST)
+    @ApiOperation(value="查询单个学生信息")
+    @RequestMapping(value ="/queryStudentInfo",method = RequestMethod.GET)
     public Object queryStudentInfo(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber) {
         try {
@@ -134,8 +163,8 @@ public class StudentController {
      * @return PageInfo<Family>
      */
     @ApiOperation(value="根据条件分页查询学生数据")
-    @RequestMapping(value = "/queryStudentListPage",method = RequestMethod.GET)
-    public Object queryStudentListPage(@ModelAttribute StudentQueryDto studentQueryDto) {
+    @RequestMapping(value = "/queryStudentListPage",method = RequestMethod.POST)
+    public Object queryStudentListPage(@RequestBody StudentQueryDto studentQueryDto) {
         try {
             // 封装分页之后的数据
             PageInfo<Student> student=studentService.getStudentList(studentQueryDto);
@@ -145,4 +174,6 @@ public class StudentController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+
 }

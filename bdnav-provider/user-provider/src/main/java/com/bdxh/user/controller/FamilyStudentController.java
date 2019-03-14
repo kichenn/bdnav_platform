@@ -36,15 +36,16 @@ public class FamilyStudentController {
 
 @Autowired
 private FamilyStudentService familyStudentService;
+@Autowired
+private SnowflakeIdWorker snowflakeIdWorker;
 
     /**
-     * @Author： binzh
-     * @Description： //家长绑定孩子接口
-     * @Date： 14:51 2019/3/5
-     * @Param： [familyStudentDto, bindingResult]
-     * @return： java.lang.Object
-     **/
-    @ApiOperation(value="家长绑定孩子接口")
+     * 绑定孩子接口
+     * @param addFamilyStudentDto
+     * @param bindingResult
+     * @return
+     */
+    @ApiOperation(value="绑定孩子接口")
     @RequestMapping(value = "/bindingStudent",method = RequestMethod.POST)
     public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult){
         //检验参数
@@ -54,8 +55,8 @@ private FamilyStudentService familyStudentService;
         }
         try {
             FamilyStudent familyStudent = BeanMapUtils.map(addFamilyStudentDto, FamilyStudent.class);
-            IdGeneratorProperties idGeneratorProperties=new IdGeneratorProperties();
-            familyStudent.setId(new SnowflakeIdWorker(idGeneratorProperties.getWorkerId(),idGeneratorProperties.getDatacenterId()).nextId());
+
+            familyStudent.setId(snowflakeIdWorker.nextId());
             familyStudentService.save(familyStudent);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -63,15 +64,16 @@ private FamilyStudentService familyStudentService;
             return WrapMapper.error(e.getMessage());
         }
     }
+
     /**
-     * @Author： binzh
-     * @Description： //删除学生家长绑定关系
-     * @Date： 15:01 2019/3/5
-     * @Param： [id]
-     * @return： java.lang.Object
-     **/
+     * 删除学生家长绑定关系
+     * @param schoolCode
+     * @param cardNumber
+     * @param id
+     * @return
+     */
     @ApiOperation(value = "删除学生家长绑定关系")
-    @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.GET)
     public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                         @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
                                         @RequestParam(name = "id") @NotNull(message="id不能为空")String id){

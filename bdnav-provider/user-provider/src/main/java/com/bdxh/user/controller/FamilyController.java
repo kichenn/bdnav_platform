@@ -72,7 +72,12 @@ public class FamilyController {
         }
     }
 
-
+    /**
+     * 删除家长信息
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
     @ApiOperation(value="删除家长信息")
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
     public Object removeFamily(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
@@ -85,6 +90,13 @@ public class FamilyController {
              return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 批量删除家长信息
+     * @param schoolCodes
+     * @param cardNumbers
+     * @return
+     */
     @ApiOperation(value="批量删除家长信息")
     @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
     public Object removeFamilys(@RequestParam(name = "schoolCodes") @NotNull(message="学校Code不能为空")String schoolCodes,
@@ -99,7 +111,12 @@ public class FamilyController {
         }
     }
 
-    //修改家庭成员信息
+    /**
+     * 修改家庭成员信息
+     * @param updateFamilyDto
+     * @param bindingResult
+     * @return
+     */
     @ApiOperation(value="修改家长信息")
     @RequestMapping(value = "/updateFamily",method = RequestMethod.POST)
     public Object updateFamily(@Valid @RequestBody UpdateFamilyDto updateFamilyDto, BindingResult bindingResult){
@@ -118,14 +135,13 @@ public class FamilyController {
     }
 
     /**
-     * @Author： binzh
-     * @Description： //修改时根据条件查询单个家长信息
-     * @Date： 9:53 2019/3/8
-     * @Param： [schoolCode, cardNumber]
-     * @return： java.lang.Object
-     **/
+     * 查询单个家长信息
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
      @ApiOperation(value="查询家长信息")
-     @RequestMapping(value ="/queryFamilyInfo",method = RequestMethod.POST)
+     @RequestMapping(value ="/queryFamilyInfo",method = RequestMethod.GET)
      public Object queryFamilyInfo(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber) {
          try {
@@ -143,8 +159,8 @@ public class FamilyController {
      * @return PageInfo<Family>
      */
     @ApiOperation(value="根据条件分页查询家长数据")
-    @RequestMapping(value = "/queryFamilyListPage",method = RequestMethod.GET)
-    public Object queryFamilyListPage(@ModelAttribute  FamilyQueryDto familyQueryDto) {
+    @RequestMapping(value = "/queryFamilyListPage",method = RequestMethod.POST)
+    public Object queryFamilyListPage(@RequestBody  FamilyQueryDto familyQueryDto) {
         try {
             // 封装分页之后的数据
             PageInfo<Family> family=familyService.getFamilyList(familyQueryDto);
