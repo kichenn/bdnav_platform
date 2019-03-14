@@ -15,10 +15,8 @@ public class AddStudentDto implements Serializable {
     private static final long serialVersionUID = -9120796138685156209L;
 
 
-    /**
-     * 学校id
-     */
-    Student
+
+
     /**
      * 学校编码
      */
