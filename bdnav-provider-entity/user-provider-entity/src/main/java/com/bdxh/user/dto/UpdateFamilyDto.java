@@ -18,7 +18,6 @@ public class UpdateFamilyDto implements Serializable {
     private static final long serialVersionUID = 2342455005199240692L;
 
     @ApiModelProperty("家长Id")
-    @NotBlank(message ="家长Id不能为空")
     private String id;
     /**
      * 学校编码

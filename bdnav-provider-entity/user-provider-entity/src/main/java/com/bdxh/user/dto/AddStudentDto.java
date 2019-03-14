@@ -18,10 +18,7 @@ public class AddStudentDto implements Serializable {
     /**
      * 学校id
      */
-    @ApiModelProperty(value="学校id")
-    @NotNull(message ="学校id不能为空")
-    private Long schoolId;
-
+    Student
     /**
      * 学校编码
      */
