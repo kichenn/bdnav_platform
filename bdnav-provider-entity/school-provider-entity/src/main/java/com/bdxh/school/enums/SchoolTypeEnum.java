@@ -17,8 +17,8 @@ public enum SchoolTypeEnum {
     JUNIORMIDDLESCHOOL(new Byte("2"), "初中"),
     HIGHSCHOOL(new Byte("3"), "高中"),
     SECONDARYSPECIALIZEDSCHOOL(new Byte("4"), "中专"),
-    JUNIORCOLLEGE(new Byte("4"), "大专"),
-    COLLEAGESANDUNIVERSITIES(new Byte("5"), "高校");
+    JUNIORCOLLEGE(new Byte("5"), "大专"),
+    COLLEAGESANDUNIVERSITIES(new Byte("6"), "高校");
 
     private final Byte key;
     private final String value;

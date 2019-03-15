@@ -32,7 +32,10 @@ public class SchoolShowVo {
     @ApiModelProperty("区或者县")
     private String areaOrcounty;
 
-    @ApiModelProperty("学校类型")
+    @ApiModelProperty("学校类型key")
+    private String schoolType;
+
+    @ApiModelProperty("学校类型value")
     private String schoolTypeValue;
 
     @ApiModelProperty("教职工人数")

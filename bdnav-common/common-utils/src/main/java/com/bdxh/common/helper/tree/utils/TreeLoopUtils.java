@@ -21,8 +21,9 @@ public class TreeLoopUtils<E extends TreeBean> {
         List<E> result = new ArrayList<>();
         for (E temp : rootMenu) {
             if (LongUtils.isNotEmpty(temp.getParentId())) {
-                if (temp.getParentId().equals(new Long("-1"))) {
-                    result.addAll(getChild(temp.getId(), rootMenu));
+                if (temp.getParentId().equals(new Long("-1")) || temp.getParentId().toString().equals("-1")) {
+                    temp.setChildren(getChild(temp.getId(), rootMenu));
+                    result.add(temp);
                 }
             }
         }
