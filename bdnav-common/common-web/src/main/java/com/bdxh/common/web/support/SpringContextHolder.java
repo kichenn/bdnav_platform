@@ -8,10 +8,10 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
- * The class Spring context holder.
- *
- * @author paascloud.net @gmail.com
- */
+ * @description:
+ * @author: xuyuan
+ * @create: 2019-02-28 10:47
+ **/
 @Component
 public class SpringContextHolder implements ApplicationContextAware {
 

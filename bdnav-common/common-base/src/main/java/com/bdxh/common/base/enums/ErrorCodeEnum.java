@@ -1,7 +1,7 @@
 package com.bdxh.common.base.enums;
 
 /**
- * @description: 阿里短信
+ * @description: 异常码
  * @author: xuyuan
  * @create: 2018-12-17 14:25
  **/

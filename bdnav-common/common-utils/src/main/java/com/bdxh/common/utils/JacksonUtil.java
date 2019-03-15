@@ -25,10 +25,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 
 /**
- * Jackson Json 工具类
- *
- * @author ligang @gmail.com
- */
+ * @description:
+ * @author: xuyuan
+ * @create: 2019-02-28 10:47
+ **/
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class JacksonUtil {
 

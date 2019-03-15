@@ -8,18 +8,10 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * <p>
- * 身份证合法性校验
- * </p>
- *
- * <pre>
- * --15位身份证号码：第7、8位为出生年份(两位数)，第9、10位为出生月份，第11、12位代表出生日期，第15位代表性别，奇数为男，偶数为女。
- * --18位身份证号码：第7、8、9、10位为出生年份(四位数)，第11、第12位为出生月份，第13、14位代表出生日期，第17位代表性别，奇数为男，偶数为女。
- *    最后一位为校验位
- * </pre>
- *
- * @author xuyuan
- */
+ * @description:
+ * @author: xuyuan
+ * @create: 2019-02-28 10:47
+ **/
 public class IdcardValidator {
 
     /**

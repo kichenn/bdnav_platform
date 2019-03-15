@@ -7,9 +7,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 
-/**
- * 2018/7/3
- */
 public final class WXPayXmlUtil {
 
     public static DocumentBuilder newDocumentBuilder() throws ParserConfigurationException {
