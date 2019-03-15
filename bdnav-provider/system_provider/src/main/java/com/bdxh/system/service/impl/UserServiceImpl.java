@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
-
 /**
  * @description: 系统用户管理service实现
  * @author: xuyuan
@@ -29,18 +28,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
     @Autowired
     private UserRoleMapper userRoleMapper;
-    
-    @Override
-    public List<User> findList(Map<String, Object> param) {
-        return userMapper.getByCondition(param);
-    }
+
 
     @Override
-    public PageInfo<User> findListPage(Map<String, Object> param, int pageNum, int pageSize) {
+    public PageInfo<User> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<User> roleLogs = userMapper.getByCondition(param);
-        PageInfo<User> pageInfo=new PageInfo<>(roleLogs);
-        return pageInfo;
+        return new PageInfo(roleLogs);
     }
 
     @Override

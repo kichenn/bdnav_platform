@@ -7,7 +7,6 @@ import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.system.service.PermissionService;
 import com.bdxh.system.service.RolePermissionService;
-import com.bdxh.system.service.impl.RolePermissionServiceImpl;
 import com.bdxh.system.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

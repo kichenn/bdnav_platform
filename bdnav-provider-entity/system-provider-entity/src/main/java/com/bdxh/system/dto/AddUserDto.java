@@ -44,7 +44,7 @@ public class AddUserDto implements Serializable {
      * 性别 1 男 2 女
      */
     @ApiModelProperty("性别 1 男 2 女")
-    @NotEmpty(message = "性别不能为空")
+    @NotNull(message = "性别不能为空")
     private Byte sex;
 
     /**
@@ -85,17 +85,6 @@ public class AddUserDto implements Serializable {
     @ApiModelProperty("类型 1 普通用户 2 管理员")
     private Byte type = 1;
 
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty("创建时间")
-    private Date createDate;
-
-    /**
-     * 修改时间
-     */
-    @ApiModelProperty("修改时间")
-    private Date updateDate;
 
     /**
      * 操作人

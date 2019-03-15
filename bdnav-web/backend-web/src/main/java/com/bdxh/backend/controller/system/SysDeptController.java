@@ -38,7 +38,6 @@ public class SysDeptController {
      * @param deptId
      * @return
      */
-    @CrossOrigin
     @RequestMapping(value = "/queryDeptTreeById", method = RequestMethod.GET)
     @ApiOperation("根据id查询部门树形菜单")
     public Object queryDeptTreeById(@RequestParam(name = "deptId") Long deptId) {
@@ -57,7 +56,6 @@ public class SysDeptController {
      *
      * @return
      */
-    @CrossOrigin
     @RequestMapping(value = "/queryDeptList", method = RequestMethod.POST)
     @ApiOperation("带条件的查询部门")
     public Object queryDeptList(@Valid @RequestBody DeptQueryDto deptQueryDto, BindingResult bindingResult) {
@@ -81,10 +79,8 @@ public class SysDeptController {
      *
      * @return
      */
-    @CrossOrigin
     @RequestMapping(value = "/queryDeptById", method = RequestMethod.GET)
     @ApiOperation("根据父级id查询部门详情")
-    @ResponseBody
     public Object queryDeptById(@RequestParam(name = "deptId") Long deptId, @RequestParam(name = "parentId") Long parentId) {
         try {
             DeptDetailsVo result = deptControllerClient.findDeptByParentId(deptId, parentId).getResult();
@@ -100,7 +96,6 @@ public class SysDeptController {
      *
      * @return
      */
-    @CrossOrigin
     @RequestMapping(value = "/addDept", method = RequestMethod.POST)
     @ApiOperation("增加部门")
     public Object addDept(@Valid @RequestBody DeptDto deptDto, BindingResult bindingResult) {
@@ -123,7 +118,6 @@ public class SysDeptController {
      *
      * @return
      */
-    @CrossOrigin
     @RequestMapping(value = "/updateDept", method = RequestMethod.POST)
     @ApiOperation("修改部门信息")
     public Object updateDept(@Valid @RequestBody DeptDto deptDto, BindingResult bindingResult) {
@@ -146,7 +140,6 @@ public class SysDeptController {
      *
      * @return
      */
-    @CrossOrigin
     @RequestMapping(value = "/delDept", method = RequestMethod.POST)
     @ApiOperation("删除部门信息")
     public Object delDept(@RequestParam(name = "deptId") Long deptId) {

@@ -22,7 +22,7 @@
     from sys_dict
     <where>
       <if test="name !=null">
-        `name` LIKE CONCAT(CONCAT('%',#{name},'%'));
+        `name` LIKE CONCAT(CONCAT('%',#{name},'%'))
       </if>
       <if test="type !=null">
         `type`=#{type}

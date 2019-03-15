@@ -18,7 +18,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -106,14 +105,14 @@ public class UserController {
     }
 
     /**
-     * 修改用户信息
+     * 删除用户信息
      *
      * @param ids
      * @return
      */
-    @ApiOperation("修改用户信息")
+    @ApiOperation("删除用户信息")
     @RequestMapping(value = "/delBatchUser", method = RequestMethod.POST)
-    public Object delBatchUser(@RequestParam(name = "ids") @NotNull(message = "用户ids不能为空") String ids) {
+    public Object delBatchUser(@RequestParam(name = "ids") String ids) {
         try {
             String[] idsArr = StringUtils.split(ids, ",");
             List<Long> idsLongArr = new ArrayList<>(15);
@@ -142,7 +141,7 @@ public class UserController {
      */
     @ApiOperation("根据id查询用户对象")
     @RequestMapping(value = "/queryUserById", method = RequestMethod.GET)
-    public Object queryUser(@RequestParam(name = "id") @NotNull(message = "用户id不能为空") Long id) {
+    public Object queryUser(@RequestParam(name = "id") Long id) {
         try {
             User user = userService.selectByKey(id);
             return WrapMapper.ok(user);
@@ -152,36 +151,19 @@ public class UserController {
         }
     }
 
-    /**
-     * 根据条件查询列表
-     *
-     * @return
-     */
-    @ApiOperation("根据条件查询用户列表")
-    @RequestMapping(value = "/queryList", method = RequestMethod.GET)
-    public Object queryList(@Valid @RequestBody UserQueryDto userQueryDto) {
-        try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
-            List<User> Users = userService.findList(param);
-            return WrapMapper.ok(Users);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
+
 
     /**
-     * 根据条件分页查找
+     * 根据条件分页查找用户列表
      *
-     * @param userQueryDto
      * @return
      */
-    @ApiOperation("根据条件分页查找")
-    @RequestMapping(value = "/queryListPage", method = RequestMethod.GET)
-    public Object queryListPage(@Valid @RequestBody UserQueryDto userQueryDto) {
+    @ApiOperation("根据条件分页查找用户")
+    @RequestMapping(value = "/queryListPage", method = RequestMethod.POST)
+    public Object queryListPage(@RequestBody UserQueryDto userQueryDto) {
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
-            PageInfo<User> Users = userService.findListPage(param, userQueryDto.getPageNum(), userQueryDto.getPageSize());
+            PageInfo<User> Users = userService.findListPage(param,userQueryDto.getPageNum(),userQueryDto.getPageSize());
             return WrapMapper.ok(Users);
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,4 +178,6 @@ public class UserController {
         return WrapMapper.ok(userService.getByUserName(userName));
     }
 
+
+    //导入 导出
 }

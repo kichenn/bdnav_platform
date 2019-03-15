@@ -17,6 +17,7 @@ public interface UserMapper extends Mapper<User> {
      */
     List<User> getByCondition(Map<String,Object> param);
 
+
     /**
      * 根据用户名查询用户对象
      * @param userName

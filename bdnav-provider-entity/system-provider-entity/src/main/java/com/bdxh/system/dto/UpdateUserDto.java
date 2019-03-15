@@ -32,8 +32,15 @@ public class UpdateUserDto implements Serializable {
     /**
      * 姓名
      */
+
     @ApiModelProperty("姓名")
     private String realName;
+    /**
+     * 用户名
+     */
+    @ApiModelProperty("用户名")
+    @NotEmpty(message = "用户名不能为空")
+    private String userName;
 
     /**
      * 性别 1 男 2 女
@@ -76,18 +83,6 @@ public class UpdateUserDto implements Serializable {
      */
     @ApiModelProperty("类型 1 普通用户 2 管理员")
     private Byte type = 1;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty("创建时间")
-    private Date createDate;
-
-    /**
-     * 修改时间
-     */
-    @ApiModelProperty("修改时间")
-    private Date updateDate;
 
     /**
      * 操作人

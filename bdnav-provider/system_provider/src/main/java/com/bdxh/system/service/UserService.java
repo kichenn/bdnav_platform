@@ -15,12 +15,6 @@ import java.util.Map;
  **/
 public interface UserService extends IService<User> {
 
-    /**
-     * 根据条件查询用户列表
-     * @param param
-     * @return
-     */
-    List<User> findList(Map<String,Object> param);
 
     /**
      * 根据条件分页查询用户列表
@@ -29,7 +23,8 @@ public interface UserService extends IService<User> {
      * @param pageSize
      * @return
      */
-    PageInfo<User> findListPage(Map<String,Object> param, int pageNum, int pageSize);
+   PageInfo<User> findListPage(Map<String,Object> param,Integer pageNum, Integer pageSize);
+
 
     /**
      * 根据用户名查询用户对象

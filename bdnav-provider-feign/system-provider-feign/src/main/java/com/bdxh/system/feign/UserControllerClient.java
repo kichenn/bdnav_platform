@@ -1,14 +1,12 @@
 package com.bdxh.system.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.fallback.UserControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @description: 系统用户feign客户端
@@ -28,5 +26,47 @@ public interface UserControllerClient {
     @RequestMapping(value = "/user/queryUserByUserName", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<User> queryUserByUserName(@RequestParam("userName") String userName);
+
+    /**
+     * 添加系统用户
+     * @return
+     */
+    @RequestMapping(value = "/user/addUser")
+    @ResponseBody
+    Wrapper addUser(@RequestBody AddUserDto addUserDto);
+
+    /**
+     * 修改系统用户
+     * @return
+     */
+    @RequestMapping(value = "/user/updateUser")
+    @ResponseBody
+    Wrapper updateUser(@RequestBody UpdateUserDto updateUserDto);
+
+
+    /**
+     *  查询用户列表
+     */
+    @RequestMapping(value = "/user/queryListPage")
+    @ResponseBody
+    Wrapper queryListPage(@RequestBody UserQueryDto userQueryDto);
+
+    /**
+     * 删除系统用户
+     * @return
+     */
+    @RequestMapping(value = "/user/delUser")
+    @ResponseBody
+    Wrapper delUser(@RequestParam(name = "id") Long id);
+
+
+
+    /**
+     * 批量删除系统用户
+     * @return
+     */
+    @RequestMapping(value = "/user/delBatchUser")
+    @ResponseBody
+    Wrapper delBatchUser(@RequestParam(name = "ids") String ids);
 
 }
