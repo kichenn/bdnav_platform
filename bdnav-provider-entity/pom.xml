@@ -29,7 +29,7 @@
     <dependencies>
         <dependency>
             <groupId>com.bdxh</groupId>
-            <artifactId>common-base</artifactId>
+            <artifactId>bdnav-common</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
