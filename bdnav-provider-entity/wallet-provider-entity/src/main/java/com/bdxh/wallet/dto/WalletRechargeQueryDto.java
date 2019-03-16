@@ -1,6 +1,6 @@
 package com.bdxh.wallet.dto;
 
-import com.bdxh.wallet.page.Query;
+import com.bdxh.common.base.page.Query;
 import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;

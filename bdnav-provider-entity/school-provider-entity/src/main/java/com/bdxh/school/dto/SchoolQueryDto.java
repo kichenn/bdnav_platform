@@ -1,6 +1,6 @@
 package com.bdxh.school.dto;
 
-import com.bdxh.school.page.Query;
+import com.bdxh.common.base.page.Query;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
