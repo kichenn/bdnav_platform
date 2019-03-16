@@ -10,7 +10,7 @@
  */
 package com.bdxh.user.dto;
 
-import com.bdxh.common.base.page.Query;
+import com.bdxh.user.page.Query;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 

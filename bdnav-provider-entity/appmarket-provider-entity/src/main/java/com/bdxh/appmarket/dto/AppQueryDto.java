@@ -1,6 +1,6 @@
 package com.bdxh.appmarket.dto;
 
-import com.bdxh.common.base.page.Query;
+import com.bdxh.appmarket.page.Query;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

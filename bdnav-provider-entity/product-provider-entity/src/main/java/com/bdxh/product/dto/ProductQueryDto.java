@@ -1,6 +1,6 @@
 package com.bdxh.product.dto;
 
-import com.bdxh.common.base.page.Query;
+import com.bdxh.product.page.Query;
 import lombok.Data;
 
 import java.util.Date;
