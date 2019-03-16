@@ -1,6 +1,5 @@
 package com.bdxh.common.web.support;
 
-import com.bdxh.common.base.exception.BusinessException;
 import org.apache.ibatis.session.RowBounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,13 +178,13 @@ public abstract class BaseService<T> implements IService<T> {
 	 * @return the int
 	 */
 	@Override
-	public int batchDelete(List<T> list) {
+	public int batchDelete(List<T> list) throws Exception {
 		int result = 0;
 		for (T record : list) {
 			int count = mapper.delete(record);
 			if (count < 1) {
 				logger.error("删除数据失败");
-				throw new BusinessException("删除数据失败!");
+				throw new Exception("删除数据失败!");
 			}
 			result += count;
 		}

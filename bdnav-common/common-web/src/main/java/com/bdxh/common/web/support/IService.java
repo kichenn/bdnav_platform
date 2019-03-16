@@ -100,7 +100,7 @@ public interface IService<T> {
 	 * @return the int
 	 */
 	@Transactional(rollbackFor = Exception.class)
-	int batchDelete(List<T> list);
+	int batchDelete(List<T> list) throws Exception;
 
 	/**
 	 * 根据主键字段进行删除, 方法参数必须包含完整的主键属性  @param key the key
