@@ -1,6 +1,6 @@
 package com.bdxh.order.dto;
 
-import com.bdxh.order.page.Query;
+import com.bdxh.common.base.page.Query;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
