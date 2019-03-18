@@ -1,4 +1,4 @@
-package com.bdxh.applecontrol.dto;
+package com.bdxh.config.dto;
 
 public class TmpeDto {
 }
