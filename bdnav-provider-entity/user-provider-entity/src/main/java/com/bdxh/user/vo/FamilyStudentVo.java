@@ -29,8 +29,11 @@ public class FamilyStudentVo {
     private String relation;
 
     @ApiModelProperty("学生家长关系表ID")
-    private Long fsId;
+    private String fsId;
 
     @ApiModelProperty("家长卡号")
     private String fCardNumber;
+
+    @ApiModelProperty("备注")
+    private String  remark;
 }

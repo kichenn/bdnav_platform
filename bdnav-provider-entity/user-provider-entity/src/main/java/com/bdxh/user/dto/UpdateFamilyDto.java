@@ -67,7 +67,7 @@ public class UpdateFamilyDto implements Serializable {
      * 身份证号
      */
     @ApiModelProperty("身份证号")
-    private String idCard;
+    private String idcard;
 
     /**
      * qq号

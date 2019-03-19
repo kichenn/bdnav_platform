@@ -31,7 +31,32 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 
-
+    <sql id="familyColumn">
+        id,school_id,school_code,school_name,name,gender,birth,phone,card_number,idcard,
+        qq_number,wx_number,email,image,nation_name,adress,physical_number,physical_chip_number,
+        activate,create_date,update_date,operator,operator_name,remark
+    </sql>
+    <!-- 查询所有家长数据 -->
+<select id="selectAllFamilyInfo" resultMap="BaseResultMap">
+    select <include refid="familyColumn"/> from t_family
+    <where>
+        <if test="familyQueryDto.schoolName!=null and familyQueryDto.schoolName!=''">
+        AND school_name=#{familyQueryDto.schoolName}
+        </if>
+        <if test="familyQueryDto.name!=null and familyQueryDto.name!=''">
+            AND name=#{familyQueryDto.name}
+        </if>
+        <if test="familyQueryDto.phone!=null and familyQueryDto.phone!=''">
+            AND phone=#{familyQueryDto.phone}
+        </if>
+        <if test="familyQueryDto.activate!=null and familyQueryDto.activate!=''">
+            AND activate=#{familyQueryDto.activate}
+        </if>
+        <if test="familyQueryDto.cardNumber!=null and familyQueryDto.cardNumber!=''">
+            AND card_number=#{familyQueryDto.cardNumber}
+        </if>
+    </where>
+</select>
 
     <!-- 根据条件查询出家长详细信息 -->
      <select id="selectByCodeAndCard" resultType="com.bdxh.user.vo.FamilyVo" parameterType="String">
@@ -64,7 +89,7 @@
         <if test="familyDto.name!=null and familyDto.name!=''">
             `name`=#{familyDto.name},
         </if>
-        <if test="familyDto.gender!=null and familyDto.gender!=''">
+        <if test="familyDto.gender!=0">
             `gender`=#{familyDto.gender},
         </if>
         <if test="familyDto.birth!=null and familyDto.birth!=''">
@@ -73,8 +98,8 @@
         <if test="familyDto.phone!=null and familyDto.phone!=''">
             phone=#{familyDto.phone},
         </if>
-        <if test="familyDto.idCard!=null and familyDto.idCard!=''">
-            `idcard`=#{familyDto.idCard},
+        <if test="familyDto.idcard!=null and familyDto.idcard!=''">
+            `idcard`=#{familyDto.idcard},
         </if>
         <if test="familyDto.qqNumber!=null and familyDto.qqNumber!=''">
             `qq_number`=#{familyDto.qqNumber},
@@ -100,7 +125,7 @@
         <if test="familyDto.physicalChipNumber!=null and familyDto.physicalChipNumber!=''">
             `physical_chip_number`=#{familyDto.physicalChipNumber},
         </if>
-        <if test="familyDto.activate!=null and familyDto.activate!=''">
+        <if test="familyDto.activate!=0">
             `activate`=#{familyDto.activate},
         </if>
         <if test="familyDto.operator!=null and familyDto.operator!=''">

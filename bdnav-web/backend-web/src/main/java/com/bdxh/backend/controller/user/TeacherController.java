@@ -1,21 +1,30 @@
 package com.bdxh.backend.controller.user;
 
+import com.bdxh.common.utils.POIUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.vo.SchoolInfoVo;
+import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.TeacherVo;
+import feign.Param;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.nio.channels.MulticastChannel;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -31,7 +40,8 @@ import java.util.stream.Collectors;
 public class TeacherController {
     @Autowired
     private TeacherControllerClient teacherControllerClient;
-
+    @Autowired
+    private SchoolControllerClient schoolControllerClient;
     /**
      * 新增老师信息
      * @param addTeacherDto
@@ -41,7 +51,9 @@ public class TeacherController {
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
     public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
         try {
+
             teacherControllerClient.addTeacher(addTeacherDto);
+
             return WrapMapper.ok();
         }catch (Exception e) {
             e.printStackTrace();
@@ -138,6 +150,40 @@ public class TeacherController {
             // 封装分页之后的数据
             Wrapper wrapper=teacherControllerClient.queryTeacherListPage(teacherQueryDto);
             return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 导入老师信息
+     * @param teacherFile
+     * @return
+     */
+    @CrossOrigin
+    @ApiOperation(value="导入老师信息")
+    @RequestMapping(value = "/importTeacherInfo",method = RequestMethod.POST)
+    public Object importTeacherInfo(@RequestParam("teacherFile")MultipartFile teacherFile) {
+        try {
+            List<String[]> teacherList= POIUtil.readExcelNums(teacherFile,0);
+            for (int i = 1; i < teacherList.size(); i++) {
+                String[] columns= teacherList.get(i);
+                Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
+                SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+                AddTeacherDto addTeacherDto=new AddTeacherDto();
+                addTeacherDto.setSchoolName(schoolInfoVo.getSchoolName());
+                addTeacherDto.setSchoolId(schoolInfoVo.getId());
+                addTeacherDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+                addTeacherDto.setCampusName(columns[1]);
+                addTeacherDto.setName(columns[2]);
+                addTeacherDto.setGender(columns[3].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
+                addTeacherDto.setNationName(columns[4]);
+                addTeacherDto.setPhone(columns[5]);
+                addTeacherDto.setCardNumber(columns[6]);
+                addTeacherDto.setRemark(columns[7]);
+            }
+            return WrapMapper.ok("导入成功");
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

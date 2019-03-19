@@ -25,6 +25,12 @@ public class AddStudentDto implements Serializable {
     private String schoolCode;
 
     /**
+     * 学校Id
+     */
+    @ApiModelProperty(value="学校Id")
+    private String schoolId;
+
+    /**
      * 学校名称
      */
     @ApiModelProperty(value="学校名称")

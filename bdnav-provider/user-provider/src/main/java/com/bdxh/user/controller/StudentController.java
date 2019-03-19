@@ -69,6 +69,7 @@ public class StudentController {
             Student student = BeanMapUtils.map(addStudentDto, Student.class);
             if (studentService.isNullStudent(student.getSchoolCode(),student.getCardNumber())==null){
                 student.setId(snowflakeIdWorker.nextId());
+                student.setActivate(Byte.valueOf("1"));
                 studentService.save(student);
                 return WrapMapper.ok();
             }
@@ -174,6 +175,7 @@ public class StudentController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
 
 
 }

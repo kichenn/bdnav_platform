@@ -17,6 +17,12 @@ public class AddFamilyDto implements Serializable {
     private static final long serialVersionUID = 2342455005199240692L;
 
     /**
+     * 学校ID
+     */
+    @ApiModelProperty("学校ID")
+    private Long schoolId;
+
+    /**
      * 学校编码
      */
     @ApiModelProperty("学校编码")
@@ -68,7 +74,7 @@ public class AddFamilyDto implements Serializable {
      * 身份证号
      */
     @ApiModelProperty("身份证号")
-    private String idCard;
+    private String idcard;
 
     /**
      * qq号

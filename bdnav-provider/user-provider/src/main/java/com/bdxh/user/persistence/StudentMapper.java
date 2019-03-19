@@ -1,12 +1,16 @@
 package com.bdxh.user.persistence;
 
 import com.bdxh.user.dto.AddStudentDto;
+import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.vo.StudentVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
+
 @Repository
 public interface StudentMapper extends Mapper<Student> {
 
@@ -18,4 +22,9 @@ public interface StudentMapper extends Mapper<Student> {
 
     //修改学生信息
     int updateStudentInfo(@Param("studentDto") UpdateStudentDto updateStudentDto);
+
+    //查询所有学生
+    List<Student> selectAllStudentInfo(@Param("studentQueryDto")StudentQueryDto studentQueryDto);
+
+
 }

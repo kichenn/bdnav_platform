@@ -43,9 +43,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Override
     public PageInfo<Student> getStudentList(StudentQueryDto studentQueryDto) {
-        Student student = BeanMapUtils.map(studentQueryDto, Student.class);
         PageHelper.startPage(studentQueryDto.getPageNum(), studentQueryDto.getPageSize());
-        List<Student> listStudent = studentMapper.select(student);
+        List<Student> listStudent = studentMapper.selectAllStudentInfo(studentQueryDto);
         PageInfo<Student> pageInfoStudent = new PageInfo<Student>(listStudent);
         return pageInfoStudent;
     }
@@ -90,8 +89,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 familyStudentMapper.updateStudentInfo(familyStudentDto);
             }
         }
-
-
     }
 
     @Override
@@ -114,4 +111,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public StudentVo isNullStudent(String schoolCode, String cardNumber) {
         return studentMapper.selectStudentVo(schoolCode,cardNumber);
     }
+
+
 }

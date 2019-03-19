@@ -21,25 +21,11 @@ import java.io.Serializable;
 public class FamilyQueryDto extends Query implements Serializable {
 
     private static final long serialVersionUID = 2342455005199240692L;
-
-
     /**
-     * 主键
+     * 家长卡号
      */
-    @ApiModelProperty(value="家长id")
-    private Integer id;
-
-    /**
-     * 学校id
-     */
-    @ApiModelProperty("学校id")
-    private Integer schoolId;
-
-    /**
-     * 学校编码
-     */
-    @ApiModelProperty("学校编码")
-    private String schoolCode;
+    @ApiModelProperty("家长卡号")
+    private String cardNumber;
 
     /**
      * 学校名称
@@ -64,9 +50,6 @@ public class FamilyQueryDto extends Query implements Serializable {
      */
     @ApiModelProperty("是否激活 1 未激活 2 激活")
     private Integer activate;
-
-    @ApiModelProperty("学生姓名")
-    private String stuName;
 
 
 

@@ -60,7 +60,7 @@ public class FamilyStudentController {
      * @return
      */
     @ApiOperation(value = "删除学生家长绑定关系")
-    @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.DELETE)
+    @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.GET)
     public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                         @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
                                         @RequestParam(name = "id") @NotNull(message="id不能为空")String id){

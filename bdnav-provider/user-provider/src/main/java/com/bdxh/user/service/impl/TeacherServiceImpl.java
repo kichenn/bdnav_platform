@@ -43,9 +43,8 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
     @Override
     public PageInfo<Teacher> getTeacherList(TeacherQueryDto teacherQueryDto) {
-        Teacher teacher = BeanMapUtils.map(teacherQueryDto, Teacher.class);
         PageHelper.startPage(teacherQueryDto.getPageNum(), teacherQueryDto.getPageSize());
-        List<Teacher> listTeacher = teacherMapper.select(teacher);
+        List<Teacher> listTeacher = teacherMapper.selectAllTeacherInfo(teacherQueryDto);
         PageInfo<Teacher> pageInfoTeacher = new PageInfo<Teacher>(listTeacher);
         return pageInfoTeacher;
     }
@@ -70,7 +69,6 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 teacherDeptMapper.deleteTeacherDept(schoolCode[i],cardNumber[i]);
             }
         }
-
     }
 
     @Override
@@ -78,19 +76,21 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     public void saveTeacherDeptInfo(AddTeacherDto teacherDto) {
         Teacher teacher = BeanMapUtils.map(teacherDto, Teacher.class);
         teacherMapper.insert(teacher);
-        IntStream.range(0,teacherDto.getTeacherDeptDtoList().size())
-                .forEach(i -> {
-                    TeacherDept teacherDept=new TeacherDept();
-                    teacherDept.setId(snowflakeIdWorker.nextId());
-                    teacherDept.setSchoolCode(teacher.getSchoolCode());
-                    teacherDept.setCardNumber(teacher.getCardNumber());
-                    teacherDept.setTeacherId(teacher.getId());
-                    teacherDept.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
-                    teacherDept.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
-                    teacherDept.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
-                    teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
-                    teacherDeptMapper.insert(teacherDept);
-                        } );
+        if(null!=teacherDto.getTeacherDeptDtoList()) {
+            IntStream.range(0, teacherDto.getTeacherDeptDtoList().size())
+                    .forEach(i -> {
+                        TeacherDept teacherDept = new TeacherDept();
+                        teacherDept.setId(snowflakeIdWorker.nextId());
+                        teacherDept.setSchoolCode(teacher.getSchoolCode());
+                        teacherDept.setCardNumber(teacher.getCardNumber());
+                        teacherDept.setTeacherId(teacher.getId());
+                        teacherDept.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
+                        teacherDept.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
+                        teacherDept.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
+                        teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
+                        teacherDeptMapper.insert(teacherDept);
+                    });
+        }
     }
 
     @Override

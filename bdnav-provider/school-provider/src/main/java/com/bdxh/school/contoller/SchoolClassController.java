@@ -146,4 +146,18 @@ public class SchoolClassController {
         return WrapMapper.ok(schoolClassService.delSchoolClassBySchoolId(schoolId));
     }
 
+    /**
+     * 根据条件查询院校信息
+     * @param schoolCode
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "/findSchoolClassByNameAndSchoolCode", method = RequestMethod.GET)
+    @ApiOperation(value = "根据条件查询院校信息", response = Boolean.class)
+    @ResponseBody
+    public Object findSchoolClassByNameAndSchoolCode(@RequestParam("schoolCode") String schoolCode,
+                                                     @RequestParam("name")String name) {
+        return WrapMapper.ok(schoolClassService.findSchoolClassByNameAndSchoolCode(schoolCode,name));
+
+    }
 }

@@ -46,4 +46,11 @@
         WHERE
         school_id=#{schoolId,jdbcType=BIGINT}
     </delete>
+    <select id="findSchoolClassByNameAndSchoolCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_school_class
+        where name=#{name}
+        and school_code=#{schoolCode} limit 1;
+    </select>
 </mapper>

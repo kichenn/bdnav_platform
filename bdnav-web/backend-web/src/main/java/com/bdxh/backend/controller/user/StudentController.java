@@ -11,6 +11,11 @@ package com.bdxh.backend.controller.user;
 import com.bdxh.common.utils.POIUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SchoolClassDto;
+import com.bdxh.school.entity.SchoolClass;
+import com.bdxh.school.feign.SchoolClassControllerClient;
+import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
@@ -29,7 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -43,6 +47,11 @@ public class StudentController {
     @Autowired
     private StudentControllerClient studentControllerClient;
 
+    @Autowired
+    private SchoolControllerClient schoolControllerClient;
+
+    @Autowired
+    private SchoolClassControllerClient schoolClassControllerClient;
     /**
      * 根据条件查询所有学生信息接口
      * @param studentQueryDto
@@ -76,6 +85,14 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
+            String ClassName[]=addStudentDto.getClassNames().split("\\/");
+            addStudentDto.setCollegeName(ClassName[0]);
+            addStudentDto.setFacultyName(ClassName[1]);
+            addStudentDto.setProfessionName(ClassName[2]);
+            addStudentDto.setGradeName(ClassName[3]);
+            addStudentDto.setClassName(ClassName[4]);
+            String ClassId[]=addStudentDto.getClassIds().split(",");
+            addStudentDto.setClassId(Long.parseLong(ClassId[ClassId.length-1]));
             studentControllerClient.addStudent(addStudentDto);
                 return WrapMapper.ok();
         } catch (Exception e) {
@@ -137,6 +154,14 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
+            String ClassName[]=updateStudentDto.getClassNames().split("\\/");
+            updateStudentDto.setCollegeName(ClassName[0]);
+            updateStudentDto.setFacultyName(ClassName[1]);
+            updateStudentDto.setProfessionName(ClassName[2]);
+            updateStudentDto.setGradeName(ClassName[3]);
+            updateStudentDto.setClassName(ClassName[4]);
+            String ClassId[]=updateStudentDto.getClassIds().split(",");
+            updateStudentDto.setClassId(Long.parseLong(ClassId[ClassId.length-1]));
             studentControllerClient.updateStudent(updateStudentDto);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -163,23 +188,70 @@ public class StudentController {
             return WrapMapper.error(e.getMessage());
         }
     }
+    @CrossOrigin
     @ApiOperation("导入学生数据")
     @RequestMapping(value="/importStudentInfo",method = RequestMethod.POST)
-    public Object importStudentInfo(@RequestParam("studentFile") MultipartFile file,@RequestParam("schoolCode") String schoolCode) throws IOException {
-        if (file.isEmpty()) {
-            return  WrapMapper.error("上传失败，请选择文件");
-        }
-        if(schoolCode.isEmpty()){
-            return  WrapMapper.error("请先选择学校");
-        }
-        List<String[]> studentList= POIUtil.readExcelNums(file,0);
-        for (int i=1;i<studentList.size();i++){
-            String column= Arrays.toString(studentList.get(i));
-            String [] columns=column.split(",");
-            Student student=new Student();
-            student.getSchoolName();
-            System.out.println("++++++++++"+column);
-        }
-        return null;
+    public Object importStudentInfo(@RequestParam("studentFile") MultipartFile file) throws IOException {
+       try {
+           if (file.isEmpty()) {
+               return  WrapMapper.error("上传失败，请选择文件");
+           }
+           List<String[]> studentList= POIUtil.readExcelNums(file,0);
+           for (int i=1;i<studentList.size();i++){
+               String[] columns= studentList.get(i);
+               Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
+               SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+               AddStudentDto addStudentDto=new AddStudentDto();
+               addStudentDto.setSchoolName(schoolInfoVo.getSchoolName());
+               addStudentDto.setSchoolId(schoolInfoVo.getId()+"");
+               addStudentDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+               addStudentDto.setCampusName(columns[1]);
+               addStudentDto.setCollegeName(columns[2]);
+               addStudentDto.setFacultyName(columns[3]);
+               addStudentDto.setProfessionName(columns[4]);
+               addStudentDto.setGradeName(columns[5]);
+               addStudentDto.setClassName(columns[6]);
+               addStudentDto.setAdress(columns[7]);
+               addStudentDto.setName(columns[8]);
+               addStudentDto.setGender(columns[9].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
+               addStudentDto.setPhone(columns[10]);
+               addStudentDto.setCardNumber(columns[11]);
+               addStudentDto.setRemark(columns[12]);
+               //拼接ClassNames字段
+               String classNames= addStudentDto.getCollegeName()+"/"
+                       +addStudentDto.getFacultyName()+"/"
+                       +addStudentDto.getProfessionName()+"/"
+                       +addStudentDto.getGradeName()+"/"
+                       +addStudentDto.getClassName();
+               String ids="";
+               String[] classNamearr= classNames.split("\\/");
+               for (int j = 0; j <classNamearr.length; j++) {
+                   //根据学校名称查询
+                  Wrapper wrappers=  schoolClassControllerClient.findSchoolClassByNameAndSchoolCode(schoolInfoVo.getSchoolCode(),classNamearr[j]);
+                  SchoolClass schoolClass=(SchoolClass)wrappers.getResult();
+                  if(schoolClass!=null){
+                      int length=j+1;
+                      if(length==classNamearr.length){
+                          ids+=schoolClass.getId();
+                      }else{
+                          ids+=schoolClass.getId()+",";
+                      }
+                  }else {
+                      return WrapMapper.error("该学校不存在" + classNamearr[j]);
+                  }
+               }
+               addStudentDto.setClassIds(ids);
+               String[] idarr= ids.split(",");
+               addStudentDto.setClassId(Long.parseLong(idarr[idarr.length-1]));
+               addStudentDto.setClassNames(classNames);
+               studentControllerClient.addStudent(addStudentDto);
+           }
+           return  WrapMapper.ok();
+       }catch (Exception e){
+           log.error(e.getMessage());
+           return WrapMapper.error(e.getMessage());
+       }
     }
+
+
 }

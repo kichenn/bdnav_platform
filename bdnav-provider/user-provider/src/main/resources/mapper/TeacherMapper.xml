@@ -33,7 +33,11 @@
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-
+<sql id="BaseColumn">
+  id,school_id,school_code,school_name,name,gender,birth,position,phone,card_number,idcard,qq_number,wx_number,
+  email,image,nation_name,dormitory_address,adress,physical_number,physical_chip_number,activate,create_date,update_date,
+  operator,operator_name,remark
+</sql>
 
 
   <!--删除老师信息-->
@@ -61,7 +65,7 @@
     <if test="updateTeacherDto.name!=null and updateTeacherDto.name!=''">
       `name`=#{updateTeacherDto.name},
     </if>
-    <if test="updateTeacherDto.gender!=null and updateTeacherDto.gender!=''">
+    <if test="updateTeacherDto.gender!=0">
       `gender`=#{updateTeacherDto.gender},
     </if>
     <if test="updateTeacherDto.birth!=null and updateTeacherDto.birth!=''">
@@ -103,7 +107,7 @@
     <if test="updateTeacherDto.physicalChipNumber!=null and updateTeacherDto.physicalChipNumber!=''">
       `physical_chip_number`=#{updateTeacherDto.physicalChipNumber},
     </if>
-    <if test="updateTeacherDto.activate!=null and updateTeacherDto.activate!=''">
+    <if test="updateTeacherDto.activate!=0">
       `activate`=#{updateTeacherDto.activate},
     </if>
     <if test="updateTeacherDto.operator!=null and updateTeacherDto.operator!=''">
@@ -119,4 +123,25 @@
      WHERE
     `school_code`=#{updateTeacherDto.schoolCode} and `card_number`=#{updateTeacherDto.cardNumber}
       </update>
+
+  <select id="selectAllTeacherInfo" resultMap="BaseResultMap">
+    select <include refid="BaseColumn"/> from t_teacher
+    <where>
+      <if test="teacherQueryDto.schoolName!=null and teacherQueryDto.schoolName!=''">
+        AND school_name=#{teacherQueryDto.schoolName}
+      </if>
+      <if test="teacherQueryDto.name!=null and teacherQueryDto.name!=''">
+        AND name=#{teacherQueryDto.name}
+      </if>
+      <if test="teacherQueryDto.cardNumber!=null and teacherQueryDto.cardNumber!=''">
+        AND card_number=#{teacherQueryDto.cardNumber}
+      </if>
+      <if test="teacherQueryDto.phone!=null and teacherQueryDto.phone!=''">
+        AND phone=#{teacherQueryDto.phone}
+      </if>
+      <if test="teacherQueryDto.activate!=0 ">
+        AND activate=#{teacherQueryDto.activate}
+      </if>
+    </where>
+  </select>
 </mapper>

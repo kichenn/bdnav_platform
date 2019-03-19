@@ -40,4 +40,7 @@ public interface SchoolClassService extends IService<SchoolClass> {
 
     //查询所有信息
     List<SchoolClass> findSchoolClassAll();
+
+    //根据条件查询院校关系
+    SchoolClass findSchoolClassByNameAndSchoolCode(String schoolCode,String name);
 }

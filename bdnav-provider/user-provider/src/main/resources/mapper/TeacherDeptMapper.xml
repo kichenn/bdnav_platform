@@ -49,7 +49,7 @@
     <if test="teacherId!=null and teacherId!=''">
   `teacher_id`=#{teacherId},
     </if>
-    <if test="deptId!=null and deptId!=''">
+    <if test="deptId0">
       `dept_id`=#{deptId},
     </if>
     <if test="deptName!=null and deptName!=''">

@@ -22,35 +22,14 @@ import java.util.Date;
 public class TeacherQueryDto extends Query implements Serializable {
 
     private static final long serialVersionUID = 2921436647270652540L;
-    /**
-     * 主键
-     */
-    @ApiModelProperty(value="老师ID")
-    private Long id;
 
-    /**
-     * 学校id
-     */
-    @ApiModelProperty(value="学校ID")
-    private Long schoolId;
 
     /**
      * 学校编码
      */
     @ApiModelProperty(value="学校编码")
-    private String schoolCode;
-
-    /**
-     * 学校名称
-     */
-    @ApiModelProperty(value="学校名称")
     private String schoolName;
 
-    /**
-     * 校区名称
-     */
-    @ApiModelProperty(value="校区名称")
-    private String campusName;
 
     /**
      * 老师姓名
@@ -70,7 +49,11 @@ public class TeacherQueryDto extends Query implements Serializable {
     @ApiModelProperty(value="是否激活 1 未激活 2 激活")
     private Byte activate;
 
-
+    /**
+     * 电话号码
+     */
+    @ApiModelProperty(value="电话号码")
+    private String phone;
 
 
 

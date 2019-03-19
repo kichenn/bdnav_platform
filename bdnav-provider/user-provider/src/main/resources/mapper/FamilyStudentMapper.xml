@@ -32,7 +32,7 @@
        WHERE school_code=#{schoolCode}
        AND card_number=#{cardNumber}
         <if test="id!=null and id!=''">
-            `id`=#{id}
+           AND  `id`=#{id}
         </if>
     </delete>
     <!-- 家长查询绑定关系 -->
@@ -42,7 +42,8 @@
           fs.student_name AS sName,
           fs.student_number AS sCardNumber,
           fs.id AS fsId,
-          fs.relation
+          fs.relation,
+          fs.remark
         from t_family_student AS fs where fs.school_code=#{schoolCode} and fs.card_number=#{cardNumber}
     </select>
     <!--学生查询关系表数据-->

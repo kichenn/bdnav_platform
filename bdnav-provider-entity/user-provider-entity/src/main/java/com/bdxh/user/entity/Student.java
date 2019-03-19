@@ -1,5 +1,7 @@
 package com.bdxh.user.entity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,193 +17,227 @@ public class Student implements Serializable {
      * 主键
      */
     @Id
+    @ApiModelProperty("主键")
     private Long id;
 
     /**
      * 学校id
      */
+    @ApiModelProperty("学校id")
     @Column(name = "school_id")
     private Long schoolId;
 
     /**
      * 学校编码
      */
+    @ApiModelProperty("学校编码")
     @Column(name = "school_code")
     private String schoolCode;
 
     /**
      * 学校名称
      */
+    @ApiModelProperty("学校名称")
     @Column(name = "school_name")
     private String schoolName;
 
     /**
      * 校区名称
      */
+    @ApiModelProperty("校区名称")
     @Column(name = "campus_name")
     private String campusName;
 
     /**
      * 学院名称
      */
+    @ApiModelProperty("学院名称")
     @Column(name = "college_name")
     private String collegeName;
 
     /**
      * 系名称
      */
+    @ApiModelProperty("系名称")
     @Column(name = "faculty_name")
     private String facultyName;
 
     /**
      * 专业名称
      */
+    @ApiModelProperty("专业名称")
     @Column(name = "profession_name")
     private String professionName;
 
     /**
      * 年级名称
      */
+    @ApiModelProperty("年级名称")
     @Column(name = "grade_name")
     private String gradeName;
 
     /**
      * 班级名称
      */
+    @ApiModelProperty("班级名称")
     @Column(name = "class_name")
     private String className;
 
     /**
      * 班级id
      */
+    @ApiModelProperty("班级id")
     @Column(name = "class_id")
     private Long classId;
 
     /**
      * 组织架构ids
      */
+    @ApiModelProperty("组织架构ids")
     @Column(name = "class_ids")
     private String classIds;
 
     /**
      * 组织架构名称names
      */
+    @ApiModelProperty("组织架构名称names")
     @Column(name = "class_names")
     private String classNames;
 
     /**
      * 学生姓名
      */
+    @ApiModelProperty("学生姓名")
     private String name;
 
     /**
      * 学生性别
      */
+    @ApiModelProperty("学生性别")
     private Byte gender;
 
     /**
      * 出身日期
      */
+    @ApiModelProperty("出身日期")
     private String birth;
 
     /**
      * 手机号
      */
+    @ApiModelProperty("手机号")
     private String phone;
 
     /**
      * 学号
      */
+    @ApiModelProperty("学号")
     @Column(name = "card_number")
     private String cardNumber;
 
     /**
      * 身份证号
      */
+    @ApiModelProperty("身份证号")
     private String idcard;
 
     /**
      * qq号
      */
+    @ApiModelProperty("qq号")
     @Column(name = "qq_number")
     private String qqNumber;
 
     /**
      * 微信号
      */
+    @ApiModelProperty("微信号")
     @Column(name = "wx_number")
     private String wxNumber;
 
     /**
      * 邮箱
      */
+    @ApiModelProperty("邮箱")
     private String email;
 
     /**
      * 图像
      */
+    @ApiModelProperty("图像")
     private String image;
 
     /**
      * 民族名称
      */
+    @ApiModelProperty("民族名称")
     @Column(name = "nation_name")
     private String nationName;
 
     /**
      * 宿舍地址
      */
+    @ApiModelProperty("宿舍地址")
     @Column(name = "dormitory_address")
     private String dormitoryAddress;
 
     /**
      * 家庭住址
      */
+    @ApiModelProperty("家庭住址")
     private String adress;
 
     /**
      * 物理卡号
      */
+    @ApiModelProperty("物理卡号")
     @Column(name = "physical_number")
     private String physicalNumber;
 
     /**
      * 物理芯片号
      */
+    @ApiModelProperty("物理芯片号")
     @Column(name = "physical_chip_number")
     private String physicalChipNumber;
 
     /**
      * 是否激活 1 未激活 2 激活
      */
+    @ApiModelProperty("是否激活 1 未激活 2 激活")
     private Byte activate;
 
     /**
      * 创建日期
      */
+    @ApiModelProperty("创建日期")
     @Column(name = "create_date")
     private Date createDate;
 
     /**
      * 修改日期
      */
+    @ApiModelProperty("修改日期")
     @Column(name = "update_date")
     private Date updateDate;
 
     /**
      * 操作人
      */
+    @ApiModelProperty("操作人")
     private Long operator;
 
     /**
      * 操作人姓名
      */
+    @ApiModelProperty("操作人姓名")
     @Column(name = "operator_name")
     private String operatorName;
 
     /**
      * 备注
      */
+    @ApiModelProperty("备注")
     private String remark;
 
     /**

@@ -37,8 +37,7 @@ private FamilyStudentMapper familyStudentMapper;
     @Override
     public PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto) {
         PageHelper.startPage(familyQueryDto.getPageNum(), familyQueryDto.getPageSize());
-        Family family = BeanMapUtils.map(familyQueryDto, Family.class);
-        List<Family> listFamily = familyMapper.select(family);
+        List<Family> listFamily = familyMapper.selectAllFamilyInfo(familyQueryDto);
         PageInfo<Family> pageInfoFamily = new PageInfo<Family>(listFamily);
         return pageInfoFamily;
     }

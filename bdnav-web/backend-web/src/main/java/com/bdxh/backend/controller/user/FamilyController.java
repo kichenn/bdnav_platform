@@ -1,20 +1,28 @@
 package com.bdxh.backend.controller.user;
 
+import com.bdxh.common.utils.POIUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddFamilyDto;
+import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.vo.FamilyVo;
+import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * @description:
@@ -30,7 +38,8 @@ public class FamilyController {
 
     @Autowired
     private FamilyControllerClient familyControllerClient;
-
+    @Autowired
+    private SchoolControllerClient schoolControllerClient;
     /**
      * 新增家庭成员信息
      * @param addFamilyDto
@@ -40,9 +49,8 @@ public class FamilyController {
     @RequestMapping(value = "/addFamily",method = RequestMethod.POST)
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
         try {
-            familyControllerClient.addFamily(addFamilyDto);
-                return WrapMapper.ok();
-
+            Wrapper wrapper=familyControllerClient.addFamily(addFamilyDto);
+            return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -138,6 +146,39 @@ public class FamilyController {
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+    @ApiOperation("导入家长数据")
+    @RequestMapping(value="/importFamilyInfo",method = RequestMethod.POST)
+    public Object importStudentInfo( @RequestParam("schoolId") Long schoolId,@RequestParam("familyFile") MultipartFile file) throws IOException {
+        try {
+            if (file.isEmpty()) {
+                return  WrapMapper.error("上传失败，请选择文件");
+            }
+            if(schoolId.equals("")){
+                return  WrapMapper.error("请先选择学校");
+            }
+            Wrapper wrapper=schoolControllerClient.findSchoolById(schoolId);
+            SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+            List<String[]> familyList= POIUtil.readExcel(file);
+            for (int i=1;i<familyList.size();i++){
+                String[] columns= familyList.get(i);
+                AddFamilyDto addFamilyDto=new AddFamilyDto();
+                addFamilyDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+                addFamilyDto.setSchoolId(schoolInfoVo.getId());
+                addFamilyDto.setSchoolName(schoolInfoVo.getSchoolName());
+                addFamilyDto.setName(columns[0]);
+                addFamilyDto.setGender(columns[1].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
+                addFamilyDto.setPhone(columns[2]);
+                addFamilyDto.setCardNumber(columns[3]);
+                addFamilyDto.setWxNumber(columns[4]);
+                addFamilyDto.setAdress(columns[5]);
+                addFamilyDto.setRemark(columns[6]);
+                familyControllerClient.addFamily(addFamilyDto);
+            }
+            return  WrapMapper.ok();
+        }catch (Exception e){
             return WrapMapper.error(e.getMessage());
         }
     }

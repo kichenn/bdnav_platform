@@ -62,6 +62,7 @@ public class FamilyController {
             Family family = BeanMapUtils.map(addFamilyDto, Family.class);
             if (familyService.isNullFamily(family.getSchoolCode(),family.getCardNumber())==null){
                 family.setId(snowflakeIdWorker.nextId());
+                family.setActivate(Byte.valueOf("1"));
                 familyService.save(family);
                 return WrapMapper.ok();
             }

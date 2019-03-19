@@ -8,6 +8,8 @@ import com.bdxh.user.entity.Student;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @description: 学生信息service
  * @author: xuyuan
@@ -66,4 +68,6 @@ public interface StudentService extends IService<Student> {
    * @return： com.bdxh.user.vo.StudentVo
    **/
   StudentVo isNullStudent(String schoolCode,String cardNumber);
+
+
 }

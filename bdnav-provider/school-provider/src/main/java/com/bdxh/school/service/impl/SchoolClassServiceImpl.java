@@ -82,4 +82,8 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
         return schoolClassMapper.selectAll();
     }
 
+    @Override
+    public SchoolClass findSchoolClassByNameAndSchoolCode(String schoolCode,String name) {
+        return schoolClassMapper.findSchoolClassByNameAndSchoolCode(schoolCode,name);
+    }
 }
