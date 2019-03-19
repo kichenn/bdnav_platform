@@ -28,6 +28,7 @@
     <result column="wx_number" jdbcType="VARCHAR" property="wxNumber" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="image" jdbcType="VARCHAR" property="image" />
+      <result column="image_name" jdbcType="VARCHAR" property="imageName" />
     <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
     <result column="dormitory_address" jdbcType="VARCHAR" property="dormitoryAddress" />
     <result column="adress" jdbcType="VARCHAR" property="adress" />
@@ -44,7 +45,7 @@
      id,school_id,school_code,school_name,campus_name,college_name,faculty_name,profession_name,
      grade_name,class_name,class_id,class_ids,class_names,name,gender,birth,phone,card_number,idcard,
      qq_number,wx_number,email,image,nation_name,dormitory_address,adress,physical_number,physical_chip_number,
-     activate,create_date,update_date,operator,operator_name,remark
+     activate,create_date,update_date,operator,operator_name,remark,image_name
     </sql>
     <!-- -->
 <select id="selectAllStudentInfo" resultMap="BaseResultMap">

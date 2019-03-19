@@ -32,6 +32,9 @@ public class StudentVo {
     @ApiModelProperty("头像地址")
     private String image;
 
+    @ApiModelProperty("用户头像名称")
+    private String imageName;
+
     @ApiModelProperty("所属校区")
     private String campusName;
 

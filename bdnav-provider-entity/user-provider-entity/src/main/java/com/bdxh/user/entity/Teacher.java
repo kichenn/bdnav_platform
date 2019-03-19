@@ -1,5 +1,7 @@
 package com.bdxh.user.entity;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -98,6 +100,13 @@ public class Teacher implements Serializable {
      * 图像
      */
     private String image;
+
+    /**
+     * 图像名称
+     */
+    @ApiModelProperty("图像名称")
+    @Column(name = "image_name")
+    private String imageName;
 
     /**
      * 民族名称
@@ -646,4 +655,23 @@ public class Teacher implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    /**
+     * 获取头像名称
+     *
+     * @return imageName - 获取头像名称
+     */
+    public String getImageName() {
+        return imageName;
+    }
+
+    /**
+     * 设置头像名称
+     *
+     * @param imageName 头像名称
+     */
+    public void setImageName(String imageName) {
+        this.imageName = remark == null ? null : imageName.trim();
+    }
+
 }

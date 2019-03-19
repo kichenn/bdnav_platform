@@ -155,6 +155,12 @@ public class UpdateStudentDto implements Serializable {
     private String image;
 
     /**
+     * 用户头像名称
+     */
+    @ApiModelProperty(value="用户头像名称")
+    private String imageName;
+
+    /**
      * 民族名称
      */
     @ApiModelProperty(value="民族名称")
