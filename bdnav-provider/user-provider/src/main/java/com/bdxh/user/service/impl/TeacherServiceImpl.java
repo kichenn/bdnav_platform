@@ -112,8 +112,10 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             teacherDeptDto.setSchoolCode(updateTeacherDto.getSchoolCode());
             teacherDeptDto.setCardNumber(updateTeacherDto.getCardNumber());
             teacherDeptDto.setTeacherId(updateTeacherDto.getId());
-            teacherDeptDto.setDeptId(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptId());
-            teacherDeptDto.setDeptName(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptName());
+            String [] ids=updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
+            String [] names=updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
+            updateTeacherDto.getTeacherDeptDtoList().get(i).setDeptId(Long.parseLong(ids[ids.length-1]));
+            updateTeacherDto.getTeacherDeptDtoList().get(i).setDeptName(names[names.length-1]);
             teacherDeptDto.setDeptIds(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
             teacherDeptDto.setDeptNames(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
             TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
