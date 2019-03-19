@@ -6,11 +6,15 @@ import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.exception.CosClientException;
+import com.qcloud.cos.exception.CosServiceException;
 import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
 import com.qcloud.cos.transfer.TransferManager;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -28,6 +32,10 @@ import java.util.concurrent.Executors;
  */
 public class FileOperationUtils {
 
+    // 1 初始化用户身份信息(secretId, secretKey)
+    private static COSCredentials cred = new BasicCOSCredentials(QcloudConstants.SECRET_ID, QcloudConstants.SERCRET_KEY);
+
+    private static ClientConfig clientConfig = new ClientConfig(new Region(QcloudConstants.REGION_NAME));
 
     /**
      * @Description: 文件上传
@@ -35,35 +43,36 @@ public class FileOperationUtils {
      * @Date: 2019/3/12 18:17
      */
     public static String saveFile(MultipartFile multipartFile) throws Exception {
-        COSCredentials cred = new BasicCOSCredentials(QcloudConstants.SECRET_ID, QcloudConstants.SERCRET_KEY);
-        ClientConfig clientConfig = new ClientConfig(new Region(QcloudConstants.REGION_NAME));
         COSClient cosClient = new COSClient(cred, clientConfig);
-        // 线程池大小，建议在客户端与COS网络充足(如使用腾讯云的CVM，同园区上传COS)的情况下，设置成16或32即可, 可较充分的利用网络资源
         // 对于使用公网传输且网络带宽质量不高的情况，建议减小该值，避免因网速过慢，造成请求超时。
         ExecutorService threadPool = Executors.newFixedThreadPool(QcloudConstants.N_THREADS);
         // 传入一个 threadpool, 若不传入线程池, 默认 TransferManager 中会生成一个单线程的线程池。
         TransferManager transferManager = new TransferManager(cosClient, threadPool);
+//        CommonsMultipartFile cf = (CommonsMultipartFile) multipartFile;
+//        DiskFileItem fi = (DiskFileItem) cf.getFileItem();
+//
+//        File f = fi.getStoreLocation();
         // 文件名
         String fileName = multipartFile.getOriginalFilename();
-        // 文件后缀名
+        // 文件后缀
         String extName = FilenameUtils.getExtension(fileName);
-        File localFile = multipartFileToFile(multipartFile);
-
-        String key = QcloudConstants.RESOURCES_PREFIX + getDestPath(extName);
-        PutObjectRequest putObjectRequest = new PutObjectRequest(QcloudConstants.BUCKET_NAME, key, localFile);
-        // 设置自定义属性(如 content-type, content-disposition 等)
+//        File localFile = (File) multipartFile;//multipartFileToFile(multipartFile);
+        String key = getDestPath(extName);
         ObjectMetadata objectMetadata = new ObjectMetadata();
-        // 设置 Content type, 默认是 application/octet-stream
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setCacheControl("no-cache");
+        objectMetadata.setHeader("Pragma", "no-cache");
         objectMetadata.setContentType(getcontentType(extName));
+        objectMetadata.setContentDisposition("inline;filename=" + key);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(QcloudConstants.BUCKET_NAME, QcloudConstants.RESOURCES_PREFIX + key, multipartFile.getInputStream(),objectMetadata);
         putObjectRequest.setMetadata(objectMetadata);
         // putobjectResult会返回文件的etag
         PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
         // 获取文件的 etag
         String etag = putObjectResult.getETag();
-        System.out.println("------------------返回etag的值"+etag+"--------------------");
         // 关闭 TransferManger
         transferManager.shutdownNow();
-        return etag;
+        return etag != null ? key : "error";
     }
 
     /**
@@ -72,20 +81,39 @@ public class FileOperationUtils {
      * @Author: Kang
      * @Date: 2019/3/12 18:23
      */
-    public static void downloadFile(String fileName) {
+    public static COSObjectInputStream downloadFile(String fileName) {
         String key = QcloudConstants.RESOURCES_PREFIX + fileName;
-        COSCredentials cred = new BasicCOSCredentials(QcloudConstants.SECRET_ID, QcloudConstants.SERCRET_KEY);
-        ClientConfig clientConfig = new ClientConfig(new Region(QcloudConstants.REGION_NAME));
         COSClient cosClient = new COSClient(cred, clientConfig);
         // 获取下载输入流
-//        GetObjectRequest getObjectRequest = new GetObjectRequest(QcloudConstants.BUCKET_NAME, key);
-//        COSObject cosObject = cosClient.getObject(getObjectRequest);
-//        COSObjectInputStream cosObjectInput = cosObject.getObjectContent();
-
-        //下载到本地
-        File downFile = new File("C:\\用户\\Administrator\\Desktop\\1.jpg");
         GetObjectRequest getObjectRequest = new GetObjectRequest(QcloudConstants.BUCKET_NAME, key);
-        ObjectMetadata downObjectMeta = cosClient.getObject(getObjectRequest, downFile);
+        COSObject cosObject = cosClient.getObject(getObjectRequest);
+        COSObjectInputStream cosObjectInput = cosObject.getObjectContent();
+        return cosObjectInput;
+//        //下载到本地
+//        File downFile = new File("C:\\用户\\Administrator\\Desktop\\1.jpg");
+//        GetObjectRequest getObjectRequest = new GetObjectRequest(QcloudConstants.BUCKET_NAME, key);
+//        ObjectMetadata downObjectMeta = cosClient.getObject(getObjectRequest, downFile);
+    }
+
+
+    /**
+     * @Description: 文件下载
+     * @Author: Kang
+     * @Date: 2019/3/19 10:53
+     */
+    public static void deleteFile(String fileName) {
+        String key = QcloudConstants.RESOURCES_PREFIX + fileName;
+        // 3 生成cos客户端
+        COSClient cosclient = new COSClient(cred, clientConfig);
+        try {
+            cosclient.deleteObject(QcloudConstants.BUCKET_NAME, key);
+        } catch (CosServiceException e) {
+            e.printStackTrace();
+        } catch (CosClientException e) {
+            e.printStackTrace();
+        }
+        // 关闭客户端
+        cosclient.shutdown();
     }
 
     /**
@@ -169,7 +197,8 @@ public class FileOperationUtils {
         } else {
             InputStream ins = null;
             ins = multipartFile.getInputStream();
-            file = new File(multipartFile.getOriginalFilename());
+            String orgiFile = multipartFile.getOriginalFilename();
+            file = new File(orgiFile);
             inputStreamToFile(ins, file);
             ins.close();
         }
