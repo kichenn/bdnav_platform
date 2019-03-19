@@ -150,10 +150,11 @@ public class AddStudentDto implements Serializable {
     private String email;
 
     /**
-     * 图像
+     * 用户头像名称
      */
-    @ApiModelProperty(value="学生用户头像")
-    private String image;
+    @ApiModelProperty(value="用户头像名称")
+    private String imageName;
+
 
     /**
      * 民族名称

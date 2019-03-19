@@ -115,6 +115,9 @@ public class TeacherVo {
     @ApiModelProperty("图像")
     private String image;
 
+    @ApiModelProperty("用户头像名称")
+    private String imageName;
+
     /**
      * 民族名称
      */

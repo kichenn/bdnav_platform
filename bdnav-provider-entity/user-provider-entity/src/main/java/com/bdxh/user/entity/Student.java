@@ -168,6 +168,13 @@ public class Student implements Serializable {
     private String image;
 
     /**
+     * 图像名称
+     */
+    @ApiModelProperty("图像名称")
+    @Column(name = "image_name")
+    private String imageName;
+
+    /**
      * 民族名称
      */
     @ApiModelProperty("民族名称")
@@ -851,4 +858,23 @@ public class Student implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+    /**
+     * 获取头像名称
+     *
+     * @return imageName - 获取头像名称
+     */
+    public String getImageName() {
+        return imageName;
+    }
+
+    /**
+     * 设置头像名称
+     *
+     * @param imageName 头像名称
+     */
+    public void setImageName(String imageName) {
+        this.imageName = remark == null ? null : imageName.trim();
+    }
+
 }

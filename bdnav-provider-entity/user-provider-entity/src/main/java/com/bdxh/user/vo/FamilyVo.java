@@ -48,6 +48,10 @@ public class FamilyVo {
     @ApiModelProperty("家长头像")
     private String image;
 
+    //家长头像名称
+    @ApiModelProperty("家长头像名称")
+    private String imageName;
+
     //家长生日
     @ApiModelProperty("家长生日")
     private String birth;
