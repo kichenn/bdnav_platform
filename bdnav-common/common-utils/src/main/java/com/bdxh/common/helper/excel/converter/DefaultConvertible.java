@@ -15,19 +15,22 @@
  * limitations under the License.
  */
 
-package com.bdxh.school.helper.excel.exceptions;
+package com.bdxh.common.helper.excel.converter;
 
 /**
-* @Description: 异常
+* @Description:   默认转换器, 实现了{@link WriteConvertible} 与 {@link ReadConvertible}接口
 * @Author: Kang
-* @Date: 2019/2/27 18:18
+* @Date: 2019/2/27 18:16
 */
-public class TimeMatchFormatException extends Exception {
+public class DefaultConvertible implements WriteConvertible, ReadConvertible {
 
-    private static final long serialVersionUID = 206910143412957809L;
-
-    public TimeMatchFormatException(String message) {
-        super(message);
+    @Override
+    public Object execWrite(Object object) {
+        return object;
     }
 
+    @Override
+    public Object execRead(String object) {
+        return object;
+    }
 }

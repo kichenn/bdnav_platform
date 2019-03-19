@@ -45,13 +45,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-pool2</artifactId>
         </dependency>
-
-        <!-- excel-->
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-excelant</artifactId>
-            <version>3.10-FINAL</version>
-        </dependency>
     </dependencies>
 
     <build>

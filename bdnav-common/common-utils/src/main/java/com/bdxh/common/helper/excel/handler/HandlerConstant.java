@@ -15,27 +15,32 @@
  * limitations under the License.
  */
 
-package com.bdxh.school.helper.excel.exceptions;
+package com.bdxh.common.helper.excel.handler;
 
 
 /**
- * @Description: Excel 异常
- * @Author: Kang
- * @Date: 2019/2/27 18:18
- */
-public class Excel4jReadException extends Exception {
+* @Description:   Excel模板自定义属性,不区分大小写
+* @Author: Kang
+* @Date: 2019/2/27 18:19
+*/
+class HandlerConstant {
 
-    private static final long serialVersionUID = 8735084330744657672L;
+    // 数据插入起始坐标点
+    static final String DATA_INIT_INDEX = "$data_index";
 
-    public Excel4jReadException() {
+    // 默认样式
+    static final String DEFAULT_STYLE = "$default_style";
 
-    }
+    // 当前标记行样式
+    static final String APPOINT_LINE_STYLE = "$appoint_line_style";
 
-    public Excel4jReadException(String message) {
-        super(message);
-    }
+    // 单数行样式
+    static final String SINGLE_LINE_STYLE = "$single_line_style";
 
-    public Excel4jReadException(String message, Throwable cause) {
-        super(message, cause);
-    }
+    // 双数行样式
+    static final String DOUBLE_LINE_STYLE = "$double_line_style";
+
+    // 序号列坐标点
+    static final String SERIAL_NUMBER = "$serial_number";
+
 }

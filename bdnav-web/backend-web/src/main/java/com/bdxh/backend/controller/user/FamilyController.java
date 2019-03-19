@@ -1,17 +1,15 @@
 package com.bdxh.backend.controller.user;
 
-import com.bdxh.common.utils.POIUtil;
+import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddFamilyDto;
-import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.vo.FamilyVo;
-import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -161,7 +159,7 @@ public class FamilyController {
             }
             Wrapper wrapper=schoolControllerClient.findSchoolById(schoolId);
             SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
-            List<String[]> familyList= POIUtil.readExcel(file);
+            List<String[]> familyList= ExcelImportUtil.readExcel(file);
             for (int i=1;i<familyList.size();i++){
                 String[] columns= familyList.get(i);
                 AddFamilyDto addFamilyDto=new AddFamilyDto();

@@ -1,4 +1,4 @@
-package com.bdxh.school.helper.excel.exceldto;
+package com.bdxh.common.helper.excel.exceldto;
 
 import lombok.Data;
 

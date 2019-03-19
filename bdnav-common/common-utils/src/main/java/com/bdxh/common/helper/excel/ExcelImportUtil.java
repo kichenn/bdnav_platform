@@ -1,4 +1,4 @@
-package com.bdxh.common.utils;
+package com.bdxh.common.helper.excel;
 
 import com.monitorjbl.xlsx.StreamingReader;
 import org.apache.poi.hssf.usermodel.HSSFDateUtil;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-public class POIUtil {
+public class ExcelImportUtil {
 	private final static String xls = "xls";
 	private final static String XLS = "XLS";
 	private final static String xlsx = "xlsx";
@@ -480,7 +480,7 @@ public class POIUtil {
 	public static void main(String[] args) {
 		try {
 
-			List<String[]> list =POIUtil.readExcelNums(new File("D:\\新建文件夹\\成绩导入测试数据.xls"), 0);
+			List<String[]> list = ExcelImportUtil.readExcelNums(new File("D:\\新建文件夹\\成绩导入测试数据.xls"), 0);
 			for(String[] strs : list){
 				if(strs.length == 0){
 					continue;

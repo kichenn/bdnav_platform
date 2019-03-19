@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package com.bdxh.school.helper.excel.handler;
+package com.bdxh.common.helper.excel.handler;
 
-import com.bdxh.school.helper.excel.converter.ReadConvertible;
-import com.bdxh.school.helper.excel.converter.WriteConvertible;
+import com.bdxh.common.helper.excel.converter.ReadConvertible;
+import com.bdxh.common.helper.excel.converter.WriteConvertible;
 
 /**
 * @Description:   用来存储Excel标题的对象，通过该对象可以获取标题和方法的对应关系

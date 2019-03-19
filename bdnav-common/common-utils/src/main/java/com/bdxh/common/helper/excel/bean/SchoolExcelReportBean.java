@@ -1,10 +1,9 @@
-package com.bdxh.school.helper.excel.bean;
+package com.bdxh.common.helper.excel.bean;
 
-import com.bdxh.school.helper.excel.annotation.ExcelField;
+import com.bdxh.common.helper.excel.annotation.ExcelField;
 import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @Description: 所需导出的列信息

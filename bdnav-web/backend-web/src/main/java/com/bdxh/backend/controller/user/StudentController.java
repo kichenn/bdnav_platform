@@ -8,10 +8,9 @@
  */
 package com.bdxh.backend.controller.user;
 
-import com.bdxh.common.utils.POIUtil;
+import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.SchoolClassDto;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
@@ -19,7 +18,6 @@ import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
-import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
@@ -196,7 +194,7 @@ public class StudentController {
            if (file.isEmpty()) {
                return  WrapMapper.error("上传失败，请选择文件");
            }
-           List<String[]> studentList= POIUtil.readExcelNums(file,0);
+           List<String[]> studentList= ExcelImportUtil.readExcelNums(file,0);
            for (int i=1;i<studentList.size();i++){
                String[] columns= studentList.get(i);
                Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));

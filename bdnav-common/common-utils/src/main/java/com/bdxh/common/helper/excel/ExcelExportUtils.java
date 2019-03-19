@@ -1,12 +1,11 @@
-package com.bdxh.school.helper.excel;
+package com.bdxh.common.helper.excel;
 
-import com.bdxh.school.helper.excel.converter.DefaultConvertible;
-import com.bdxh.school.helper.excel.exceptions.Excel4jReadException;
-import com.bdxh.school.helper.excel.handler.ExcelHeader;
-import com.bdxh.school.helper.excel.handler.ExcelTemplate;
-import com.bdxh.school.helper.excel.utils.Utils;
+import com.bdxh.common.helper.excel.converter.DefaultConvertible;
+import com.bdxh.common.helper.excel.exceptions.Excel4jReadException;
+import com.bdxh.common.helper.excel.handler.ExcelHeader;
+import com.bdxh.common.helper.excel.handler.ExcelTemplate;
+import com.bdxh.common.helper.excel.utils.Utils;
 import org.apache.commons.beanutils.BeanUtils;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -21,17 +20,17 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class ExcelUtils {
+public class ExcelExportUtils {
 
     /**
      * 单例
      */
-    static private ExcelUtils excelUtils = new ExcelUtils();
+    static private ExcelExportUtils excelUtils = new ExcelExportUtils();
 
-    private ExcelUtils() {
+    private ExcelExportUtils() {
     }
 
-    public static ExcelUtils getInstance() {
+    public static ExcelExportUtils getInstance() {
         return excelUtils;
     }
 
@@ -541,7 +540,7 @@ public class ExcelUtils {
      *//*
     public static List<MyModel<?>> uploadByBean(InputStream is, Class<?> beanClazz, Class<? extends MyModel<?>> modelClazz) throws Exception {
         Method[] methods = beanClazz.getMethods();
-        List<?> beanList = ExcelUtils.getInstance().readExcel2Objects(is, beanClazz);
+        List<?> beanList = ExcelExportUtils.getInstance().readExcel2Objects(is, beanClazz);
         List<MyModel<?>> modelList = new ArrayList<MyModel<?>>();
         for (Object bean : beanList) {
             MyModel<?> model = modelClazz.newInstance();

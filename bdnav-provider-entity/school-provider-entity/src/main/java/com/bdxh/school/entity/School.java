@@ -53,6 +53,12 @@ public class School implements Serializable {
     private String schoolLogo;
 
     /**
+     * 学校logo地址
+     */
+    @Column(name = "school_logo_name")
+    private String schoolLogoName;
+
+    /**
      * 学校类型 1 小学 2 初中 3 高中 4 中专 5 大专 6 高校
      */
     @Column(name = "school_type")

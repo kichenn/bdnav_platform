@@ -15,32 +15,19 @@
  * limitations under the License.
  */
 
-package com.bdxh.school.helper.excel.handler;
-
+package com.bdxh.common.helper.excel.exceptions;
 
 /**
-* @Description:   Excel模板自定义属性,不区分大小写
+/**
+* @Description: 异常
 * @Author: Kang
-* @Date: 2019/2/27 18:19
+* @Date: 2019/2/27 18:18
 */
-class HandlerConstant {
+public class IllegalGroupIndexException extends Exception {
 
-    // 数据插入起始坐标点
-    static final String DATA_INIT_INDEX = "$data_index";
+    private static final long serialVersionUID = 7725478743860387475L;
 
-    // 默认样式
-    static final String DEFAULT_STYLE = "$default_style";
-
-    // 当前标记行样式
-    static final String APPOINT_LINE_STYLE = "$appoint_line_style";
-
-    // 单数行样式
-    static final String SINGLE_LINE_STYLE = "$single_line_style";
-
-    // 双数行样式
-    static final String DOUBLE_LINE_STYLE = "$double_line_style";
-
-    // 序号列坐标点
-    static final String SERIAL_NUMBER = "$serial_number";
-
+    public IllegalGroupIndexException(String message) {
+        super(message);
+    }
 }

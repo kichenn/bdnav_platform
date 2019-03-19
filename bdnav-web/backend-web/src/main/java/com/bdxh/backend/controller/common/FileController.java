@@ -18,6 +18,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/fileController")
@@ -29,15 +30,15 @@ public class FileController {
     @PostMapping("/saveFile")
     @ApiOperation(value = "上传文件", response = String.class)
     public Object saveFile(MultipartFile multipartFile) {
-        String fileNameStr = null;
+        Map<String, String> resultMap = null;
         try {
-            fileNameStr = FileOperationUtils.saveFile(multipartFile);
+            resultMap = FileOperationUtils.saveFile(multipartFile, null);
             log.info("----------上传成功-----------");
         } catch (Exception e) {
             e.printStackTrace();
             log.info("----------上传失败-----------");
         }
-        return WrapMapper.ok(fileNameStr);
+        return WrapMapper.ok(resultMap);
     }
 
     @PostMapping("/downloadFile")
@@ -52,7 +53,7 @@ public class FileController {
             //设置Content-Disposition头(告诉浏览器弹出下载框)
             response.addHeader("Content-Disposition", "attachment;filename=" + fileName);
             //创建一个文件输入流
-            COSObjectInputStream cis = FileOperationUtils.downloadFile(fileName);
+            COSObjectInputStream cis = FileOperationUtils.downloadFile(fileName, null);
             //获得输出流
             ServletOutputStream os = response.getOutputStream();
             //流对拷
@@ -69,7 +70,7 @@ public class FileController {
     @PostMapping("/deleteFile")
     @ApiOperation(value = "删除文件", response = Boolean.class)
     public Object deleteFile(@RequestParam("fileName") String fileName) {
-        FileOperationUtils.deleteFile(fileName);
+        FileOperationUtils.deleteFile(fileName, null);
         return WrapMapper.ok(true);
     }
 }

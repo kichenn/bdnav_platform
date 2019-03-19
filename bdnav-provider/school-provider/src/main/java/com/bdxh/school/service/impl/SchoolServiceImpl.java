@@ -1,15 +1,14 @@
 package com.bdxh.school.service.impl;
 
+import com.bdxh.common.helper.excel.ExcelExportUtils;
+import com.bdxh.common.helper.excel.bean.SchoolExcelReportBean;
+import com.bdxh.common.helper.excel.utils.DateUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.enums.SchoolTypeEnum;
-import com.bdxh.school.helper.excel.ExcelUtils;
-import com.bdxh.school.helper.excel.bean.SchoolExcelReportBean;
-import com.bdxh.school.helper.excel.utils.DateUtils;
-import com.bdxh.school.helper.excel.utils.StringUtils;
 import com.bdxh.school.persistence.SchoolMapper;
 import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.vo.SchoolShowVo;
@@ -18,6 +17,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -165,7 +165,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     //学校列表信息导出
     @Override
     public void downloadReportItemsExcel(List<SchoolExcelReportBean> schoolExcelReportBeans, OutputStream out) throws Exception {
-        ExcelUtils.getInstance().exportObjects2Excel(schoolExcelReportBeans, SchoolExcelReportBean.class, true, "北斗星航", true, out);
+        ExcelExportUtils.getInstance().exportObjects2Excel(schoolExcelReportBeans, SchoolExcelReportBean.class, true, "北斗星航", true, out);
     }
 
 }

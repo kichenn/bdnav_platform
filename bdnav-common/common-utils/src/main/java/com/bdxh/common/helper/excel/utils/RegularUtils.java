@@ -1,6 +1,6 @@
-package com.bdxh.school.helper.excel.utils;
+package com.bdxh.common.helper.excel.utils;
 
-import com.bdxh.school.helper.excel.exceptions.IllegalGroupIndexException;
+import com.bdxh.common.helper.excel.exceptions.IllegalGroupIndexException;
 
 import java.util.ArrayList;
 import java.util.List;

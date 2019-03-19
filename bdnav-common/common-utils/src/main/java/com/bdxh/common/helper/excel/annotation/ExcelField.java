@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-package com.bdxh.school.helper.excel.annotation;
+package com.bdxh.common.helper.excel.annotation;
 
-import com.bdxh.school.helper.excel.converter.DefaultConvertible;
-import com.bdxh.school.helper.excel.converter.ReadConvertible;
-import com.bdxh.school.helper.excel.converter.WriteConvertible;
+import com.bdxh.common.helper.excel.converter.DefaultConvertible;
+import com.bdxh.common.helper.excel.converter.ReadConvertible;
+import com.bdxh.common.helper.excel.converter.WriteConvertible;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

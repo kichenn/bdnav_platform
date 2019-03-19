@@ -1,19 +1,16 @@
 package com.bdxh.backend.controller.user;
 
-import com.bdxh.common.utils.POIUtil;
+import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
-import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.TeacherVo;
-import feign.Param;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
-import java.nio.channels.MulticastChannel;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -166,7 +162,7 @@ public class TeacherController {
     @RequestMapping(value = "/importTeacherInfo",method = RequestMethod.POST)
     public Object importTeacherInfo(@RequestParam("teacherFile")MultipartFile teacherFile) {
         try {
-            List<String[]> teacherList= POIUtil.readExcelNums(teacherFile,0);
+            List<String[]> teacherList= ExcelImportUtil.readExcelNums(teacherFile,0);
             for (int i = 1; i < teacherList.size(); i++) {
                 String[] columns= teacherList.get(i);
                 Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));

@@ -15,22 +15,27 @@
  * limitations under the License.
  */
 
-package com.bdxh.school.helper.excel.converter;
+package com.bdxh.common.helper.excel.exceptions;
+
 
 /**
-* @Description:   默认转换器, 实现了{@link WriteConvertible} 与 {@link ReadConvertible}接口
-* @Author: Kang
-* @Date: 2019/2/27 18:16
-*/
-public class DefaultConvertible implements WriteConvertible, ReadConvertible {
+ * @Description: Excel 异常
+ * @Author: Kang
+ * @Date: 2019/2/27 18:18
+ */
+public class Excel4jReadException extends Exception {
 
-    @Override
-    public Object execWrite(Object object) {
-        return object;
+    private static final long serialVersionUID = 8735084330744657672L;
+
+    public Excel4jReadException() {
+
     }
 
-    @Override
-    public Object execRead(String object) {
-        return object;
+    public Excel4jReadException(String message) {
+        super(message);
+    }
+
+    public Excel4jReadException(String message, Throwable cause) {
+        super(message, cause);
     }
 }

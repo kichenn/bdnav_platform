@@ -1,6 +1,6 @@
-package com.bdxh.school.helper.excel.utils;
+package com.bdxh.common.helper.excel.utils;
 
-import com.bdxh.school.helper.excel.exceptions.TimeMatchFormatException;
+import com.bdxh.common.helper.excel.exceptions.TimeMatchFormatException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

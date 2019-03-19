@@ -12,6 +12,7 @@
         <result column="school_area" jdbcType="VARCHAR" property="schoolArea"/>
         <result column="school_address" jdbcType="VARCHAR" property="schoolAddress"/>
         <result column="school_logo" jdbcType="VARCHAR" property="schoolLogo"/>
+        <result column="school_logo_name" jdbcType="VARCHAR" property="schoolLogoName"/>
         <result column="school_type" jdbcType="TINYINT" property="schoolType"/>
         <result column="school_nature" jdbcType="VARCHAR" property="schoolNature"/>
         <result column="teacher_nums" jdbcType="INTEGER" property="teacherNums"/>
@@ -31,7 +32,7 @@
     </resultMap>
 
     <sql id="Base_Column_List">
-        id,school_code,school_name,school_area_code,school_area,school_address,school_logo,school_type,
+        id,school_code,school_name,school_area_code,school_area,school_address,school_logo,school_logo_name,school_type,
         school_nature,teacher_nums,student_nums,school_contact,contact_phone,contact_position,
         school_key,school_secret,app_key,app_secret,create_date,update_date,operator,operator_name,remark
     </sql>

@@ -36,6 +36,9 @@ public class ModifySchoolDto{
     @ApiModelProperty("学校logo地址")
     private String schoolLogo;
 
+    @ApiModelProperty("学校logo图片地址")
+    private String schoolLogoName;
+
     @ApiModelProperty("学校类型 1 小学 2 初中 3 高中 4 中专 5 大专 6 高校")
     private Byte schoolType;
 

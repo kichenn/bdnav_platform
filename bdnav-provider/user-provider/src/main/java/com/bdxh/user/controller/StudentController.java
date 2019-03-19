@@ -11,7 +11,6 @@
 package com.bdxh.user.controller;
 
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.POIUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddStudentDto;
@@ -22,21 +21,15 @@ import com.bdxh.user.service.StudentService;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value ="学生信息管理接口API", tags = "学生信息管理接口API")

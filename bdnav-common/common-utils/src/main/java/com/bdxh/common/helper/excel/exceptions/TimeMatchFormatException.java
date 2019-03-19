@@ -15,19 +15,19 @@
  * limitations under the License.
  */
 
-package com.bdxh.school.helper.excel.exceptions;
+package com.bdxh.common.helper.excel.exceptions;
 
-/**
 /**
 * @Description: 异常
 * @Author: Kang
 * @Date: 2019/2/27 18:18
 */
-public class IllegalGroupIndexException extends Exception {
+public class TimeMatchFormatException extends Exception {
 
-    private static final long serialVersionUID = 7725478743860387475L;
+    private static final long serialVersionUID = 206910143412957809L;
 
-    public IllegalGroupIndexException(String message) {
+    public TimeMatchFormatException(String message) {
         super(message);
     }
+
 }

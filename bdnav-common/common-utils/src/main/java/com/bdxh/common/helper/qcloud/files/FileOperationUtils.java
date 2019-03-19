@@ -2,19 +2,29 @@ package com.bdxh.common.helper.qcloud.files;
 
 import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.utils.DateUtil;
+import com.bdxh.common.utils.ObjectUtil;
 import com.qcloud.cos.COSClient;
 import com.qcloud.cos.ClientConfig;
 import com.qcloud.cos.auth.BasicCOSCredentials;
 import com.qcloud.cos.auth.COSCredentials;
 import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.exception.CosServiceException;
+import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
 import com.qcloud.cos.transfer.TransferManager;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -30,14 +40,20 @@ public class FileOperationUtils {
     private static COSCredentials cred = new BasicCOSCredentials(QcloudConstants.SECRET_ID, QcloudConstants.SERCRET_KEY);
 
     private static ClientConfig clientConfig = new ClientConfig(new Region(QcloudConstants.REGION_NAME));
+    // 3 生成cos客户端
+    private static COSClient cosClient = new COSClient(cred, clientConfig);
 
     /**
-     * @Description: 文件上传
+     * @Description: 文件上传  buckentName 存储桶名 不传使用默认的
      * @Author: Kang
      * @Date: 2019/3/12 18:17
      */
-    public static String saveFile(MultipartFile multipartFile) throws Exception {
-        COSClient cosClient = new COSClient(cred, clientConfig);
+    public static Map<String, String> saveFile(MultipartFile multipartFile, String buckentName) throws Exception {
+        //设置存储桶名称，不传使用默认存储名
+        String buckentNameFinal = QcloudConstants.BUCKET_NAME;
+        if (StringUtils.isNotEmpty(buckentName)) {
+            buckentNameFinal = buckentName;
+        }
         // 对于使用公网传输且网络带宽质量不高的情况，建议减小该值，避免因网速过慢，造成请求超时。
         ExecutorService threadPool = Executors.newFixedThreadPool(QcloudConstants.N_THREADS);
         // 传入一个 threadpool, 若不传入线程池, 默认 TransferManager 中会生成一个单线程的线程池。
@@ -58,7 +74,7 @@ public class FileOperationUtils {
         objectMetadata.setHeader("Pragma", "no-cache");
         objectMetadata.setContentType(getcontentType(extName));
         objectMetadata.setContentDisposition("inline;filename=" + key);
-        PutObjectRequest putObjectRequest = new PutObjectRequest(QcloudConstants.BUCKET_NAME, QcloudConstants.RESOURCES_PREFIX + key, multipartFile.getInputStream(),objectMetadata);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(buckentNameFinal, QcloudConstants.RESOURCES_PREFIX + key, multipartFile.getInputStream(), objectMetadata);
         putObjectRequest.setMetadata(objectMetadata);
         // putobjectResult会返回文件的etag
         PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
@@ -66,20 +82,32 @@ public class FileOperationUtils {
         String etag = putObjectResult.getETag();
         // 关闭 TransferManger
         transferManager.shutdownNow();
-        return etag != null ? key : "error";
+
+        if (StringUtils.isNotEmpty(etag)) {
+            Map<String, String> map = new HashMap<>();
+            map.put("name", key);
+            map.put("url", getUrl(key, null));
+            return map;
+        }
+        return null;
     }
 
     /**
-     * @Description: 文件下载
+     * @Description: 文件下载 fileName文件名 buckentName 存储桶名
      * @Param: 文件名(阿里存储的文件名)
      * @Author: Kang
      * @Date: 2019/3/12 18:23
      */
-    public static COSObjectInputStream downloadFile(String fileName) {
+    public static COSObjectInputStream downloadFile(String fileName, String buckentName) {
+        //设置存储桶名称，不传使用默认存储名
+        String buckentNameFinal = QcloudConstants.BUCKET_NAME;
+        if (StringUtils.isNotEmpty(buckentName)) {
+            buckentNameFinal = buckentName;
+        }
         String key = QcloudConstants.RESOURCES_PREFIX + fileName;
         COSClient cosClient = new COSClient(cred, clientConfig);
         // 获取下载输入流
-        GetObjectRequest getObjectRequest = new GetObjectRequest(QcloudConstants.BUCKET_NAME, key);
+        GetObjectRequest getObjectRequest = new GetObjectRequest(buckentNameFinal, key);
         COSObject cosObject = cosClient.getObject(getObjectRequest);
         COSObjectInputStream cosObjectInput = cosObject.getObjectContent();
         return cosObjectInput;
@@ -91,24 +119,52 @@ public class FileOperationUtils {
 
 
     /**
-     * @Description: 文件下载
+     * @Description: 文件删除 fileName文件名 buckentName 存储桶名
      * @Author: Kang
      * @Date: 2019/3/19 10:53
      */
-    public static void deleteFile(String fileName) {
+    public static void deleteFile(String fileName, String buckentName) {
+        //设置存储桶名称，不传使用默认存储名
+        String buckentNameFinal = QcloudConstants.BUCKET_NAME;
+        if (StringUtils.isNotEmpty(buckentName)) {
+            buckentNameFinal = buckentName;
+        }
         String key = QcloudConstants.RESOURCES_PREFIX + fileName;
-        // 3 生成cos客户端
-        COSClient cosclient = new COSClient(cred, clientConfig);
         try {
-            cosclient.deleteObject(QcloudConstants.BUCKET_NAME, key);
+            cosClient.deleteObject(buckentNameFinal, key);
         } catch (CosServiceException e) {
             e.printStackTrace();
         } catch (CosClientException e) {
             e.printStackTrace();
         }
         // 关闭客户端
-        cosclient.shutdown();
+        cosClient.shutdown();
     }
+
+
+    /**
+     * @Description: 获得url链接 fileName文件名 buckentName 存储桶名
+     * @Author: Kang
+     * @Date: 2019/3/19 16:49
+     */
+    private static String getUrl(String fileName, String buckentName) {
+        //设置存储桶名称，不传使用默认存储名
+        String buckentNameFinal = QcloudConstants.BUCKET_NAME;
+        if (StringUtils.isNotEmpty(buckentName)) {
+            buckentNameFinal = buckentName;
+        }
+        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(buckentNameFinal, QcloudConstants.RESOURCES_PREFIX + fileName, HttpMethodName.GET);
+        // 设置签名过期时间(可选), 过期时间不做限制，只需比当前时间大, 若未进行设置, 则默认使用ClientConfig中的签名过期时间(5分钟)
+        // 这里设置签名在半个小时后过期
+        Date expirationDate = new Date(System.currentTimeMillis() + 30 * 60 * 1000);
+        req.setExpiration(expirationDate);
+        URL url = cosClient.generatePresignedUrl(req);
+        if (url != null) {
+            return url.toString();
+        }
+        return null;
+    }
+
 
     /**
      * @Description: 生成文件名
@@ -119,8 +175,7 @@ public class FileOperationUtils {
     private static String getDestPath(String extName) {
         //规则：  年月日_随机数.后缀名
         String sb = DateUtil.format(new Date(), DateUtil.DATE_FORMAT_SHORT)
-                + "_" + getRandomNum(6)
-                + "." + extName;
+                + "_" + ObjectUtil.getUuid() + extName;
         return sb;
     }
 
