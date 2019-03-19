@@ -9,12 +9,11 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>bdnav-web</artifactId>
+    <artifactId>bdnav-tcpservice</artifactId>
     <packaging>pom</packaging>
+
     <modules>
-        <module>backend-web</module>
-        <module>app-web</module>
-        <module>weixiao-web</module>
+        <module>netty-server</module>
     </modules>
 
     <dependencies>
@@ -29,7 +28,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-actuator</artifactId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
         </dependency>
         <dependency>
             <groupId>io.springfox</groupId>

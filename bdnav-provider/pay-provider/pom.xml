@@ -19,7 +19,7 @@
         </dependency>
         <dependency>
             <groupId>com.bdxh</groupId>
-            <artifactId>common-web</artifactId>
+            <artifactId>common-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>

@@ -14,10 +14,6 @@ import com.qcloud.cos.transfer.TransferManager;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Date;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;

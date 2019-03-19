@@ -48,6 +48,9 @@
         <netty.version>4.1.34.Final</netty.version>
         <protobuf.version>3.0.0</protobuf.version>
         <threadlocal.version>2.10.2</threadlocal.version>
+        <disruptor.version>3.4.2</disruptor.version>
+        <smscore.version>3.3.1</smscore.version>
+        <smsdysmsapi.version>1.0.0</smsdysmsapi.version>
     </properties>
     
     <modules>
@@ -60,6 +63,7 @@
         <module>bdnav-gateway</module>
         <module>bdnav-provider-feign</module>
         <module>bdnav-web</module>
+        <module>bdnav-tcpservice</module>
     </modules>
 
     <dependencies>
@@ -310,7 +314,23 @@
                 <artifactId>transmittable-thread-local</artifactId>
                 <version>${threadlocal.version}</version>
             </dependency>
-
+            <!-- disruptor依赖 -->
+            <dependency>
+                <groupId>com.lmax</groupId>
+                <artifactId>disruptor</artifactId>
+                <version>${disruptor.version}</version>
+            </dependency>
+            <!--阿里短信依赖-->
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-core</artifactId>
+                <version>${smscore.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aliyun</groupId>
+                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
+                <version>${smsdysmsapi.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
