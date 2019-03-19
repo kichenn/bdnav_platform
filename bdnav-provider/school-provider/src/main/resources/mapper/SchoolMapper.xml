@@ -64,6 +64,7 @@
                 )
             </if>
         </where>
+        Order BY create_date DESC
     </select>
 
     <select id="findSchoolInIds" resultMap="BaseResultMap">

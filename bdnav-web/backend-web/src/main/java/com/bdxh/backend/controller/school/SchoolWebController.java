@@ -1,5 +1,6 @@
 package com.bdxh.backend.controller.school;
 
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.ModifySchoolDto;
@@ -46,6 +47,12 @@ public class SchoolWebController {
     @RequestMapping(value = "/modifySchoolInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校信息", response = Boolean.class)
     public Object modifySchoolInfo(@Validated @RequestBody ModifySchoolDto modifySchoolDto) {
+        SchoolInfoVo schoolInfo = schoolControllerClient.findSchoolById(modifySchoolDto.getId()).getResult();
+        //匹配图片是否已经修改，如果修改删除前一次的图片
+        if (!schoolInfo.getSchoolLogoName().equals(modifySchoolDto.getSchoolLogoName())) {
+            //删除腾讯云的以前图片
+            FileOperationUtils.deleteFile(schoolInfo.getSchoolLogoName(), null);
+        }
         Wrapper wrapper = schoolControllerClient.modifySchoolInfo(modifySchoolDto);
         return WrapMapper.ok(wrapper.getResult());
     }
@@ -54,6 +61,10 @@ public class SchoolWebController {
     @RequestMapping(value = "/delSchool", method = RequestMethod.GET)
     @ApiOperation(value = "删除学校信息", response = Boolean.class)
     public Object delSchool(@RequestParam("id") Long id) {
+        SchoolInfoVo schoolInfo = schoolControllerClient.findSchoolById(id).getResult();
+        //删除腾讯云的信息
+        FileOperationUtils.deleteFile(schoolInfo.getSchoolLogoName(), null);
+        //删除学校
         Wrapper wrapper = schoolControllerClient.delSchool(id);
         return WrapMapper.ok(wrapper.getResult());
     }

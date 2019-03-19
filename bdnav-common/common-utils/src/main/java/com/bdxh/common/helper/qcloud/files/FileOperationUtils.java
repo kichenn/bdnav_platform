@@ -175,7 +175,7 @@ public class FileOperationUtils {
     private static String getDestPath(String extName) {
         //规则：  年月日_随机数.后缀名
         String sb = DateUtil.format(new Date(), DateUtil.DATE_FORMAT_SHORT)
-                + "_" + ObjectUtil.getUuid() + extName;
+                + "_" + ObjectUtil.getUuid() + "." + extName;
         return sb;
     }
 

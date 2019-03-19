@@ -279,6 +279,24 @@ public class School implements Serializable {
     }
 
     /**
+     * 获取学校logo图片地址
+     *
+     * @return school_logo - 学校logo地址
+     */
+    public String getSchoolLogoName() {
+        return schoolLogoName;
+    }
+
+    /**
+     * 设置学校logo图片地址
+     *
+     * @param schoolLogoName 学校logo图片地址
+     */
+    public void setSchoolLogoName(String schoolLogoName) {
+        this.schoolLogoName = schoolLogoName == null ? null : schoolLogoName.trim();
+    }
+
+    /**
      * 获取学校类型 1 小学 2 初中 3 高中 4 中专 5 大专 6 高校
      *
      * @return school_type - 学校类型 1 小学 2 初中 3 高中 4 中专 5 大专 6 高校
