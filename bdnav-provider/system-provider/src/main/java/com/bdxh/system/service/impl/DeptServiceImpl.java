@@ -1,7 +1,7 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.system.entity.Dept;
 import com.bdxh.system.persistence.DeptMapper;
 import com.bdxh.system.service.DeptService;

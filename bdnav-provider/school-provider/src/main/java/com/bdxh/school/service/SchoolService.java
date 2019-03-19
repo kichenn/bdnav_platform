@@ -1,6 +1,6 @@
 package com.bdxh.school.service;
 
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;

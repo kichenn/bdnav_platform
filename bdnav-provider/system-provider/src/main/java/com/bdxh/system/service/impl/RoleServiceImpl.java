@@ -1,6 +1,6 @@
 package com.bdxh.system.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.persistence.RoleMapper;

@@ -1,6 +1,6 @@
 package com.bdxh.system.service;
 
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.entity.UserRole;
 

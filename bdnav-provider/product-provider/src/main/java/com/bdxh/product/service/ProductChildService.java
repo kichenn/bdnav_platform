@@ -1,6 +1,6 @@
 package com.bdxh.product.service;
 
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.bdxh.product.entity.ProductChild;
 
 /**

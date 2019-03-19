@@ -5,7 +5,7 @@ import com.bdxh.order.enums.OrderPayStatusEnum;
 import com.bdxh.order.enums.OrderTradeStatusEnum;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.order.dto.OrderDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.entity.OrderItem;

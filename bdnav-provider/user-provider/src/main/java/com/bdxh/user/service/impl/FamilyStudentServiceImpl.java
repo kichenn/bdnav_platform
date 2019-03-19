@@ -1,6 +1,6 @@
 package com.bdxh.user.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;

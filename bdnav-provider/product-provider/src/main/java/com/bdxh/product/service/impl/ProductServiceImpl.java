@@ -1,7 +1,7 @@
 package com.bdxh.product.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.product.enums.BusinessTypeEnum;
 import com.bdxh.product.enums.ProductTypeEnum;
 import com.bdxh.product.persistence.ProductChildMapper;

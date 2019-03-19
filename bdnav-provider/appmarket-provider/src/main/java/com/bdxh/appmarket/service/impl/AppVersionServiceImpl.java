@@ -3,7 +3,7 @@ package com.bdxh.appmarket.service.impl;
 import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.persistence.AppVersionMapper;
 import com.bdxh.appmarket.service.AppVersionService;
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;

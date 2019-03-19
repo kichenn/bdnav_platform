@@ -1,6 +1,6 @@
 package com.bdxh.wallet.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.wallet.entity.WalletXianConfig;
 import com.bdxh.wallet.service.WalletXianConfigService;
 import org.springframework.stereotype.Service;

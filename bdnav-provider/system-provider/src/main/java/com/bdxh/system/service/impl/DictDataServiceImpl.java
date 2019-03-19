@@ -1,6 +1,6 @@
 package com.bdxh.system.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.system.entity.DictData;
 import com.bdxh.system.persistence.DictDataMapper;
 import com.bdxh.system.service.DictDataService;

@@ -6,7 +6,7 @@ import com.bdxh.common.base.enums.BusinessStatusEnum;
 import com.bdxh.common.base.enums.PayStatusEnum;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.wallet.dto.WalletKailuOrderDto;
 import com.bdxh.wallet.entity.WalletKailuConsumer;
 import com.bdxh.wallet.persistence.WalletKailuConsumerMapper;

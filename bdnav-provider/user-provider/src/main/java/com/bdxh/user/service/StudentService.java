@@ -1,6 +1,6 @@
 package com.bdxh.user.service;
 
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;

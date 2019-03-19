@@ -1,7 +1,7 @@
 package com.bdxh.system.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.BaseService;
+import com.bdxh.common.support.IService;
 import com.bdxh.system.entity.Role;
 import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.persistence.UserRoleMapper;

@@ -1,7 +1,7 @@
 package com.bdxh.user.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.Family;

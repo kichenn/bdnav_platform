@@ -1,6 +1,6 @@
 package com.bdxh.system.service;
 
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.entity.Dict;
 import com.github.pagehelper.PageInfo;

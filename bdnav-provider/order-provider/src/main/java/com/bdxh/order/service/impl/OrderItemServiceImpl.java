@@ -1,6 +1,6 @@
 package com.bdxh.order.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.order.entity.OrderItem;
 import com.bdxh.order.service.OrderItemService;
 import org.springframework.stereotype.Service;

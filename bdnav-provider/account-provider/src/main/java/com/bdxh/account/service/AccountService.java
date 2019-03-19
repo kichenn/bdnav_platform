@@ -1,7 +1,7 @@
 package com.bdxh.account.service;
 
 import com.bdxh.account.entity.Account;
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;

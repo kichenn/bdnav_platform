@@ -3,7 +3,7 @@ package com.bdxh.account.service.impl;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.persistence.AccountMapper;
 import com.bdxh.account.service.AccountService;
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;

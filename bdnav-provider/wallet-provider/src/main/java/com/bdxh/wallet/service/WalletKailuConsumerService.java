@@ -1,6 +1,6 @@
 package com.bdxh.wallet.service;
 
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.bdxh.wallet.dto.WalletKailuOrderDto;
 import com.bdxh.wallet.entity.WalletKailuConsumer;
 import com.bdxh.wallet.vo.WalletKailuOrderVo;

@@ -1,7 +1,7 @@
 package com.bdxh.appmarket.service;
 
 import com.bdxh.appmarket.entity.App;
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 

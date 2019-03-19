@@ -1,6 +1,6 @@
 package com.bdxh.system.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.persistence.UserMapper;

@@ -1,6 +1,6 @@
 package com.bdxh.order.service;
 
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.IService;
 import com.bdxh.order.dto.OrderDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.vo.OrderVo;

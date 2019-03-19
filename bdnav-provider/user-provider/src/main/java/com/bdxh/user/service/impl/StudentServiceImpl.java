@@ -1,7 +1,7 @@
 package com.bdxh.user.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.user.dto.AddFamilyStudentDto;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;

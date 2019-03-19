@@ -1,6 +1,6 @@
 package com.bdxh.system.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.DictData;

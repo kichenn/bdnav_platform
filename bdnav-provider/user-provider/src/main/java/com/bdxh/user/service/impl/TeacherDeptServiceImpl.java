@@ -1,7 +1,7 @@
 package com.bdxh.user.service.impl;
 
-import com.bdxh.common.web.support.BaseService;
-import com.bdxh.common.web.support.IService;
+import com.bdxh.common.support.BaseService;
+import com.bdxh.common.support.IService;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.persistence.TeacherDeptMapper;
 import com.bdxh.user.service.TeacherDeptService;
