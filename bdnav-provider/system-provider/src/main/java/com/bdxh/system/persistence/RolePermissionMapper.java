@@ -25,4 +25,14 @@ public interface RolePermissionMapper extends Mapper<RolePermission> {
      */
     List<Long> findPermissionIdByRoleId(@Param("roleId") Long roleId);
 
+    /**
+     * 根据角色id和开关条件查询所有权限
+     *
+     * @param roleId
+     * @return
+     */
+    List<RolePermission> findPermissionList(@Param("roleId") Long roleId,@Param("RpSwitch") Integer RpSwitch);
+
+
+
 }

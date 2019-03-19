@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.AddRoleDto;
 import com.bdxh.system.dto.UpdateRoleDto;
+import com.bdxh.system.feign.PermissionControllerClient;
 import com.bdxh.system.feign.RoleControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -24,6 +25,9 @@ public class SysRoleController {
 
     @Autowired
     private RoleControllerClient roleControllerClient;
+
+    @Autowired
+    private PermissionControllerClient permissionControllerClient;
 
     @RequestMapping(value="/findPageRoleListAll",method = RequestMethod.GET)
     @ApiOperation("分页查询全部角色信息")
@@ -59,6 +63,19 @@ public class SysRoleController {
     public Object updateRole(@RequestBody UpdateRoleDto updateRoleDto){
         try {
             Wrapper wrapper = roleControllerClient.updateRole(updateRoleDto);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping(value="/updateRSwitchRole",method = RequestMethod.POST)
+    @ApiOperation("修改角色启用状态")
+    public Object updateRSwitchRole(@RequestParam(name = "roleId") Long roleId){
+        try {
+            Wrapper wrapper = roleControllerClient.updateRSwitchRole(roleId);
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();

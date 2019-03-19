@@ -2,7 +2,9 @@ package com.bdxh.system.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.AddPermissionDto;
+import com.bdxh.system.dto.AuRolePermissionDto;
 import com.bdxh.system.dto.ModifyPermissionDto;
+import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.system.service.PermissionService;
@@ -124,6 +126,60 @@ public class PermissionController {
     public Object delPermissionByRoleId(@RequestParam("roleId") Long roleId) {
         List<Long> permissionIds = rolePermissionService.findPermissionIdByRoleId(roleId);
         return WrapMapper.ok(permissionService.batchDelPermission(permissionIds));
+    }
+
+    /**
+     *  查询全部菜单列表
+     *   @return
+     */
+    @RequestMapping(value = "/theTreeMenu", method = RequestMethod.GET)
+    @ApiOperation(value = "查询全部菜单", response = List.class)
+    @ResponseBody
+    public Object theTreeMenu(@RequestParam(value = "roleId",required = false) Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected
+    ) {
+
+        List<RolePermissionDto> permissions = permissionService.theTreeMenu(selected);
+          System.out.print("==============="+permissions);
+
+        List<PermissionTreeVo> treeVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(permissions)) {
+            permissions.stream().forEach(e -> {
+                PermissionTreeVo treeVo = new PermissionTreeVo();
+                treeVo.setTitle(e.getName());
+                treeVo.setCreateDate(e.getCreateDate());
+                treeVo.setExpand(Boolean.TRUE);
+                //e.getRplist().get(0).getRoleId().equals(roleId)&&
+              /*List<Permission> permission = permissionService.permissionByMenus(Long.valueOf(roleId),selected);*/
+               /*   if (e.getRplist().get(0).getRoleId().equals(roleId)) {*/
+                       if (e.getId().equals(e.getRplist().get(0).getPermissionId())) {
+                           treeVo.setSelected(Boolean.TRUE);
+                       }
+               /*  }*/
+
+
+                BeanUtils.copyProperties(e, treeVo);
+                treeVos.add(treeVo);
+            });
+        }
+        TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+        List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
+        return WrapMapper.ok(result);
+    }
+
+
+    /**
+     * 保存并修改权限
+     * @return
+     */
+    @RequestMapping(value = "/addorUpdatePermission", method = RequestMethod.POST)
+    @ApiOperation(value = "保存并修改权限", response = Boolean.class)
+    public Object addorUpdatePermission(@RequestBody AuRolePermissionDto auRolePermissionDto) {
+
+  /*    Permission permission = new Permission();
+        BeanUtils.copyProperties(dto, permission);
+        permissionService.addPermission(permission)*/
+
+        return WrapMapper.ok();
     }
 
 

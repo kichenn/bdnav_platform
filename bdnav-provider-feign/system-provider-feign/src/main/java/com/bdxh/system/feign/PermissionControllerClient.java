@@ -55,6 +55,16 @@ public interface PermissionControllerClient {
     Wrapper modifyPermission(@RequestBody ModifyPermissionDto dto);
 
 
+    /**
+     * 查询全部菜单
+     * @return
+     */
+    @RequestMapping(value = "/permission/theTreeMenu",method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<PermissionTreeVo>> theTreeMenu(
+            @RequestParam("roleId") Long roleId,
+            @RequestParam(value = "selected") Integer selected);
+
 
 
 }

@@ -38,6 +38,11 @@ public class RoleControllerClientFallback implements RoleControllerClient {
     }
 
     @Override
+    public Wrapper updateRSwitchRole(Long roleId) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper delRole(Long id) {
         return WrapMapper.error();
     }

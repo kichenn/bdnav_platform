@@ -1,5 +1,6 @@
 package com.bdxh.system.controller;
 
+import cn.afterturn.easypoi.cache.manager.IFileLoader;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -221,6 +222,26 @@ public class RoleController {
             rqd.setPageSize(pageSize);
             PageInfo<Role> roleVos=roleService.findRolesInConditionPaging(rqd.getPageNum(),rqd.getPageSize());
             return WrapMapper.ok(roleVos);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    /**
+     * 修改启用状态
+     * @return
+     */
+    @ApiOperation("修改启用状态")
+    @RequestMapping(value = "/updateRSwitchRole",method = RequestMethod.POST)
+    public Object updateRSwitchRole(@RequestParam(name = "roleId")Long roleId){
+        try {
+            if (roleService.UpdateByInitiateMode(roleId).equals(Boolean.TRUE)){
+                return WrapMapper.ok();
+            }else{
+                return WrapMapper.ok("请为该角色赋予权限后开始启用");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

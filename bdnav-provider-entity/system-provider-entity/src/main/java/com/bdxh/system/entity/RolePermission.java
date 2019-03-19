@@ -23,6 +23,21 @@ public class RolePermission {
     @Column(name = "permission_id")
     private Long permissionId;
 
+
+    /**
+     * 启用状态 1 开 2关
+     */
+    @Column(name = "rp_switch")
+    private Integer RpSwitch;
+
+    /**
+     * "选中状态 1 选中 2未选中"
+     */
+    @Column(name = "selected")
+    private Integer selected;
+
+
+
     /**
      * 获取主键
      *
@@ -75,5 +90,36 @@ public class RolePermission {
      */
     public void setPermissionId(Long permissionId) {
         this.permissionId = permissionId;
+    }
+
+    /**
+     * 获取开关权限
+     * @return
+     */
+    public Integer getRpSwitch() {
+        return RpSwitch;
+    }
+
+    /**
+     * 设置开关权限
+     * @param rpSwitch
+     */
+    public void setRpSwitch(Integer rpSwitch) {
+        RpSwitch = rpSwitch;
+    }
+
+    /**
+     * 获取选中状态
+     * @return
+     */
+    public Integer getSelected() {
+        return selected;
+    }
+    /**
+     * 设置选中状态
+     * @param
+     */
+    public void setSelected(Integer selected) {
+        this.selected = selected;
     }
 }

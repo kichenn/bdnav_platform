@@ -2,6 +2,7 @@ package com.bdxh.system.service;
 
 import com.bdxh.common.support.IService;
 import com.bdxh.system.entity.RolePermission;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -21,4 +22,8 @@ public interface RolePermissionService extends IService<RolePermission> {
 
     // 删除角色与权限关系
     Boolean delRolePermission(Long roleId);
+
+    //根据角色id和启动条件查询
+    List<RolePermission> findPermissionList(Long roleId,Integer RpSwitch);
+
 }

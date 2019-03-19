@@ -34,6 +34,13 @@ public class UpdateRoleDto implements Serializable {
     private String roleName;
 
     /**
+     * 启用开关
+     */
+    @ApiModelProperty("启用开关 1开 2关")
+    private Integer rswitch;
+
+
+    /**
      * 操作人
      */
     @ApiModelProperty("操作人")

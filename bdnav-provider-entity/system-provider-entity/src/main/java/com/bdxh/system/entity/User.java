@@ -12,10 +12,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /**
-     * 头像
-     */
-    private String image;
+
+
 
     /**
      * 用户名
@@ -71,6 +69,18 @@ public class User {
     private Byte type;
 
     /**
+     * 头像图片
+     */
+    @Column(name = "image")
+    private String Image;
+
+    /**
+     * 文件地址
+     */
+    @Column(name = "img_file_address")
+    private String ImgFileAddress;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_date")
@@ -116,8 +126,10 @@ public class User {
      * @return image - 头像
      */
     public String getImage() {
-        return image;
+        return Image;
     }
+
+
 
     /**
      * 设置头像
@@ -125,9 +137,8 @@ public class User {
      * @param image 头像
      */
     public void setImage(String image) {
-        this.image = image == null ? null : image.trim();
+        this.Image = image == null ? null : image.trim();
     }
-
     /**
      * 获取用户名
      *
@@ -379,4 +390,15 @@ public class User {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
+
+
+    public String getImgFileAddress() {
+        return ImgFileAddress;
+    }
+
+    public void setImgFileAddress(String imgFileAddress) {
+        this.ImgFileAddress = imgFileAddress == null ? null : imgFileAddress.trim();
+    }
+
 }

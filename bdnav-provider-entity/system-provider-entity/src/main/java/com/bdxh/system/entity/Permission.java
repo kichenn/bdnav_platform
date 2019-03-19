@@ -2,6 +2,7 @@ package com.bdxh.system.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "sys_permission")
 public class Permission {
@@ -75,6 +76,12 @@ public class Permission {
      * 操作人
      */
     private Long operator;
+
+
+    /**
+     * 角色关系
+     */
+    private List<RolePermission> rplist;
 
     /**
      * 备注
@@ -314,6 +321,17 @@ public class Permission {
     public void setOperator(Long operator) {
         this.operator = operator;
     }
+
+
+
+    public List<RolePermission> getRplist() {
+        return rplist;
+    }
+
+    public void setRplist(List<RolePermission> rplist) {
+        this.rplist = rplist;
+    }
+
 
     /**
      * 获取备注

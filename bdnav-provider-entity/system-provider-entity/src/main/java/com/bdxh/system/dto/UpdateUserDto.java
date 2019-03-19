@@ -18,10 +18,16 @@ public class UpdateUserDto implements Serializable {
     private Long id;
 
     /**
-     * 头像
+     * 头像图片
      */
     @ApiModelProperty("用户头像")
-    private String image;
+    private String Image;
+
+    /**
+     * 文件地址
+     */
+    @ApiModelProperty("文件地址")
+    private String ImgFileAddress;
 
     /**
      * 密码
