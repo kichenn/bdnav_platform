@@ -61,4 +61,9 @@ public class SchoolClassControllerClientFallback implements SchoolClassControlle
     public Wrapper delSchoolClassBySchoolId(Long schoolId) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<SchoolClass> findSchoolClassByNameAndSchoolCode(String schoolCode, String name) {
+        return WrapMapper.error();
+    }
 }

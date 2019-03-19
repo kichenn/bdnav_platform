@@ -27,7 +27,7 @@ public interface TeacherControllerClient {
      */
     @RequestMapping(value = "/teacher/addTeacher",method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addTeacher(@RequestParam(name = "addTeacherDto") @RequestBody AddTeacherDto addTeacherDto);
+    Wrapper addTeacher(@RequestBody AddTeacherDto addTeacherDto);
 
     /**
      * 删除老师信息

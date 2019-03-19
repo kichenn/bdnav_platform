@@ -1,10 +1,12 @@
 package com.bdxh.school.feign;
 
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.fallback.SchoolClassControllerClientFallback;
 import com.bdxh.school.vo.SchoolClassTreeVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -93,4 +95,14 @@ public interface SchoolClassControllerClient {
     @ResponseBody
     Wrapper delSchoolClassBySchoolId(@RequestParam("schoolId") Long schoolId);
 
+    /**
+     * 根据条件查询院校信息
+     * @param schoolCode
+     * @param name
+     * @return
+     */
+    @RequestMapping(value = "/schoolClass/findSchoolClassByNameAndSchoolCode", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<SchoolClass> findSchoolClassByNameAndSchoolCode(@RequestParam("schoolCode") String schoolCode,
+                                               @RequestParam("name")String name);
 }
