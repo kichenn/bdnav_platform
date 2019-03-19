@@ -11,10 +11,8 @@ import com.qcloud.cos.exception.CosServiceException;
 import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
 import com.qcloud.cos.transfer.TransferManager;
-import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -181,47 +179,5 @@ public class FileOperationUtils {
             sb.append(ch);
         }
         return sb.toString();
-    }
-
-    /**
-     * MultipartFile 转 File
-     *
-     * @param multipartFile
-     * @throws Exception
-     */
-    public static File multipartFileToFile(MultipartFile multipartFile) throws Exception {
-
-        File file = null;
-        if (multipartFile.equals("") || multipartFile.getSize() <= 0) {
-            multipartFile = null;
-        } else {
-            InputStream ins = null;
-            ins = multipartFile.getInputStream();
-            String orgiFile = multipartFile.getOriginalFilename();
-            file = new File(orgiFile);
-            inputStreamToFile(ins, file);
-            ins.close();
-        }
-        return file;
-    }
-
-    /**
-     * @Description: File  Multipart 互相转换
-     * @Author: Kang
-     * @Date: 2019/3/12 18:06
-     */
-    public static void inputStreamToFile(InputStream ins, File file) {
-        try {
-            OutputStream os = new FileOutputStream(file);
-            int bytesRead = 0;
-            byte[] buffer = new byte[8192];
-            while ((bytesRead = ins.read(buffer, 0, 8192)) != -1) {
-                os.write(buffer, 0, bytesRead);
-            }
-            os.close();
-            ins.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 }
