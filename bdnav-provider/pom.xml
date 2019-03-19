@@ -19,7 +19,7 @@
         <module>product-provider</module>
         <module>mapservice-provider</module>
         <module>applecontrol-provider</module>
-        <module>system_provider</module>
+        <module>system-provider</module>
         <module>school-provider</module>
         <module>user-provider</module>
         <module>appmarket-provider</module>

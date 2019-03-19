@@ -32,14 +32,14 @@ public class SchoolWebController {
     @ApiOperation(value = "学校信息列表数据[分页筛选]", response = SchoolShowVo.class)
     public Object findSchoolsInConditionPaging(@Validated @RequestBody SchoolQueryDto schoolQueryDto) {
         Wrapper wrapper = schoolControllerClient.findSchoolsInConditionPaging(schoolQueryDto);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/addSchool", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校信息", response = Boolean.class)
     public Object findSchoolsInConditionPaging(@Validated @RequestBody SchoolDto schoolDto) {
         Wrapper wrapper = schoolControllerClient.addSchool(schoolDto);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
 
@@ -55,21 +55,21 @@ public class SchoolWebController {
     @ApiOperation(value = "删除学校信息", response = Boolean.class)
     public Object delSchool(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolControllerClient.delSchool(id);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/batchDelSchool", method = RequestMethod.POST)
     @ApiOperation(value = "批量删除学校信息", response = Boolean.class)
     public Object batchDelSchool(@RequestBody List<Long> ids) {
         Wrapper wrapper = schoolControllerClient.batchDelSchool(ids);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/findSchoolById", method = RequestMethod.GET)
     @ApiOperation(value = "查询学校详情", response = SchoolInfoVo.class)
     public Object findSchoolById(@RequestParam("schoolId") Long id) {
         Wrapper wrapper = schoolControllerClient.findSchoolById(id);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
 

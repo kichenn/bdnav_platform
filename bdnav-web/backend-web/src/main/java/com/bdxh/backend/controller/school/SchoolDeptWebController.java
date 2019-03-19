@@ -1,5 +1,6 @@
 package com.bdxh.backend.controller.school;
 
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.SchoolClassDto;
 import com.bdxh.school.dto.SchoolClassModifyDto;
@@ -33,7 +34,7 @@ public class SchoolDeptWebController {
     @ApiOperation(value = "学校id递归查询院校结构关系", response = SchoolDeptTreeVo.class)
     public Object findSchoolDeptTreeBySchoolId(@RequestParam("schoolId") Long schoolId) {
         Wrapper wrapper = schoolDeptControllerClient.findSchoolDeptTreeBySchoolId(schoolId);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
 
@@ -41,7 +42,7 @@ public class SchoolDeptWebController {
     @ApiOperation(value = "根据id查询部门关系信息", response = SchoolDept.class)
     public Object findSchoolDeptById(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolDeptControllerClient.findSchoolDeptById(id);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
 
@@ -49,7 +50,7 @@ public class SchoolDeptWebController {
     @ApiOperation(value = "增加学校的部门关系信息", response = Boolean.class)
     public Object addSchoolDept(@Validated @RequestBody SchoolDeptDto schoolDeptDto) {
         Wrapper wrapper = schoolDeptControllerClient.addSchoolDept(schoolDeptDto);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
 
@@ -57,27 +58,27 @@ public class SchoolDeptWebController {
     @ApiOperation(value = "修改学校的部门关系信息", response = Boolean.class)
     public Object modifySchoolDept(@Validated @RequestBody SchoolDeptModifyDto schoolDeptDto) {
         Wrapper wrapper = schoolDeptControllerClient.modifySchoolDept(schoolDeptDto);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/delSchoolDeptById", method = RequestMethod.GET)
     @ApiOperation(value = "根据id删除部门关系信息", response = Boolean.class)
     public Object delSchoolDeptById(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolDeptControllerClient.delSchoolDeptById(id);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/batchDelSchoolDeptInIds", method = RequestMethod.POST)
     @ApiOperation(value = "根据ids批量删除学校部门信息", response = Boolean.class)
     public Object batchDelSchoolDeptInIds(@RequestBody List<Long> ids) {
         Wrapper wrapper = schoolDeptControllerClient.batchDelSchoolDeptInIds(ids);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/delSchoolDeptBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "根据院校id 删除该学校部门所有关系", response = Boolean.class)
     public Object delSchoolDeptBySchoolId(@RequestParam("schoolId") Long schoolId) {
         Wrapper wrapper = schoolDeptControllerClient.delSchoolDeptBySchoolId(schoolId);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 }
