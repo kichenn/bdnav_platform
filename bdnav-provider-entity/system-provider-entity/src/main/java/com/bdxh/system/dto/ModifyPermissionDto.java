@@ -3,6 +3,8 @@ package com.bdxh.system.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
+
 /**
  * @Description: 增加角色的权限 dto
  * @Author: Kang
@@ -20,6 +22,9 @@ public class ModifyPermissionDto {
 
 //    @ApiModelProperty("父级菜单ids")
 //    private String parentIds;
+
+    @ApiModelProperty("启用开关 1开 2关")
+    private Integer RpSwitch;
 
     @ApiModelProperty("菜单名称")
     private String name;

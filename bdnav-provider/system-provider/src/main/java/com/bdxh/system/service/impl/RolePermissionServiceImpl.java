@@ -41,4 +41,10 @@ public class RolePermissionServiceImpl extends BaseService<RolePermission> imple
         return rolePermissionMapper.deleteByRoleId(roleId) > 0;
     }
 
+    //条件查询列表
+    @Override
+    public List<RolePermission> findPermissionList(Long roleId, Integer RpSwitch) {
+        return  rolePermissionMapper.findPermissionList(roleId,RpSwitch);
+    }
+
 }

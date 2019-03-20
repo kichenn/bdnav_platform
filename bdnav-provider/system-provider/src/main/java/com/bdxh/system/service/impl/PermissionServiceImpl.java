@@ -1,6 +1,7 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.support.BaseService;
+import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.system.persistence.PermissionMapper;
 import com.bdxh.system.service.PermissionService;
@@ -71,6 +72,16 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     @Transactional(rollbackFor = Exception.class)
     public Boolean batchDelPermission(List<Long> ids) {
         return permissionMapper.batchDelPermissionInIds(ids) > 0;
+    }
+
+    @Override
+    public List<RolePermissionDto> theTreeMenu(Integer selected) {
+        return permissionMapper.theTreeMenu(selected);
+    }
+
+    @Override
+    public List<Permission> permissionByMenus(Long roleId, Integer selected) {
+        return permissionMapper.findPermission(roleId,selected);
     }
 
 

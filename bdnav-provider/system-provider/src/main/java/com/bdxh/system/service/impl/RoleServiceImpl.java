@@ -3,6 +3,7 @@ package com.bdxh.system.service.impl;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.Role;
+import com.bdxh.system.entity.RolePermission;
 import com.bdxh.system.persistence.RoleMapper;
 import com.bdxh.system.persistence.RolePermissionMapper;
 import com.bdxh.system.persistence.UserRoleMapper;
@@ -10,6 +11,7 @@ import com.bdxh.system.service.RoleService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,6 +88,21 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
         PageHelper.startPage(pageNum,pageSize);
         List<Role> roles =roleMapper.selectAll();
         return new PageInfo(roles);
+    }
+
+    @Override
+    public Boolean UpdateByInitiateMode(Long roleId) {
+        //根据角色id查询所有权限菜单
+      List<RolePermission> lists=rolePermissionMapper.findPermissionList(roleId,1);
+
+      if (CollectionUtils.isNotEmpty(lists)&&lists.size()>0){
+          Role role=new Role();
+          role.setId(roleId);
+          role.setRswitch(2);
+       roleMapper.updateByPrimaryKeySelective(role);
+          return Boolean.TRUE;
+      }
+        return Boolean.FALSE;
     }
 
 }

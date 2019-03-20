@@ -38,4 +38,10 @@ public class PermissionControllerClientFallback implements PermissionControllerC
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper<List<PermissionTreeVo>> theTreeMenu(Long roleId, Integer selected) {
+        return WrapMapper.error();
+    }
+
+
 }

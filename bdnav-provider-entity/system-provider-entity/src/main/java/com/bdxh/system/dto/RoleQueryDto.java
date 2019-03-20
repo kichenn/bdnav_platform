@@ -28,6 +28,12 @@ public class RoleQueryDto extends Query {
     private String roleName;
 
     /**
+     * 启用开关 1开 2关
+     */
+    @ApiModelProperty("启用开关 1开 2关")
+    private Integer rswitch;
+
+    /**
      * 创建时间
      */
     @ApiModelProperty("创建时间")

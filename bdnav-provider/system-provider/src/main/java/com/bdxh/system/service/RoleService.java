@@ -4,6 +4,7 @@ import com.bdxh.common.support.IService;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.Role;
 import com.github.pagehelper.PageInfo;
+import tk.mybatis.mapper.common.example.UpdateByExampleMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -39,5 +40,8 @@ public interface RoleService extends IService<Role> {
 
     //分页查询全部角色信息
     PageInfo<Role> findRolesInConditionPaging(Integer pageNum, Integer pageSize);
+
+    //修改启用状态
+    Boolean UpdateByInitiateMode(Long roleId);
 
 }

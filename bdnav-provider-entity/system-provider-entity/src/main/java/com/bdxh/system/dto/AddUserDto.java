@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -15,10 +16,16 @@ public class AddUserDto implements Serializable {
     private static final long serialVersionUID = 7421251545883628226L;
 
     /**
-     * 头像
+     * 头像图片
      */
     @ApiModelProperty("用户头像")
-    private String image;
+    private String Image;
+
+    /**
+     * 文件地址
+     */
+    @ApiModelProperty("文件地址")
+    private String ImgFileAddress;
 
     /**
      * 用户名

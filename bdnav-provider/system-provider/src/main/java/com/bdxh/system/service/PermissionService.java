@@ -1,7 +1,10 @@
 package com.bdxh.system.service;
 
+
 import com.bdxh.common.support.IService;
+import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
+
 
 import java.util.List;
 
@@ -29,4 +32,11 @@ public interface PermissionService extends IService<Permission> {
 
     //批量删除权限列表信息
     Boolean batchDelPermission(List<Long> ids);
+
+    //查询所有菜单 /选中状态 默认给2 未选中显示全部
+    List<RolePermissionDto> theTreeMenu(Integer selected);
+
+    //根据角色id查询权限菜单
+   List<Permission> permissionByMenus(Long roleId,Integer selected);
+
 }
