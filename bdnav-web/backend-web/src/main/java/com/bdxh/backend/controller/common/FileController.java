@@ -43,7 +43,7 @@ public class FileController {
 
     @PostMapping("/downloadFile")
     @ApiOperation(value = "下载文件", response = Boolean.class)
-    public Object downloadFile(@RequestParam("fileName") String fileName, HttpServletRequest request, HttpServletResponse response) {
+    public Object downloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) {
         try {
             //解决请求乱码问题
             response.setContentType("text/html;charset=utf-8");
