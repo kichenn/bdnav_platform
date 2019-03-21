@@ -185,7 +185,8 @@ public class PermissionController {
            Boolean  b = rps.containsAll(addPermissionDto) && addPermissionDto.containsAll(rps);
            if (b.equals(Boolean.FALSE)){
                for(RolePermission u:rps){
-                   rolePermissionService.delRolePermission(u.getId());
+                   rolePermissionService.deleteByKey(u.getId());
+         /*          rolePermissionService.delRolePermission(u.getId());*/
                }
                RolePermission rolePermission=new RolePermission();
                rolePermission.setPermissionId(Long.valueOf(permissionId));
