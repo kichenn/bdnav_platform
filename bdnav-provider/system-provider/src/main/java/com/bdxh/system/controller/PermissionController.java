@@ -177,22 +177,21 @@ public class PermissionController {
     public Object addorUpdatePermission(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "arpdDtos")String arpdDtos) {
        try{
        JSONArray addPermissionDto = JSON.parseArray(arpdDtos);
-       for (int i = 0; i < addPermissionDto.size(); i++) {
-           JSONObject jsonObject = (JSONObject) addPermissionDto.get(i);
-           String permissionId=jsonObject.getString("id");
+   /*        String permissionId=jsonObject.getString("id");*/
            //查询当前角色关系表中全部权限
            List<RolePermission> rps=rolePermissionService.findPermissionId(roleId);
            Boolean  b = rps.containsAll(addPermissionDto) && addPermissionDto.containsAll(rps);
            if (b.equals(Boolean.FALSE)){
                for(RolePermission u:rps){
                    rolePermissionService.deleteByKey(u.getId());
-         /*          rolePermissionService.delRolePermission(u.getId());*/
                }
-               RolePermission rolePermission=new RolePermission();
-               rolePermission.setPermissionId(Long.valueOf(permissionId));
-               rolePermission.setRoleId(roleId);
-               rolePermission.setSelected(2);
-               rolePermissionService.save(rolePermission);
+               for (int i = 0; i < addPermissionDto.size(); i++) {
+                   JSONObject jsonObject = (JSONObject) addPermissionDto.get(i);
+                   RolePermission rolePermission=new RolePermission();
+                   rolePermission.setPermissionId(Long.valueOf(jsonObject.getString("id")));
+                   rolePermission.setRoleId(roleId);
+                   rolePermission.setSelected(2);
+                   rolePermissionService.save(rolePermission);
             }
        }
             return WrapMapper.ok();
