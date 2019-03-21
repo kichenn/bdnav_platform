@@ -213,6 +213,10 @@ public class PermissionController {
             @RequestParam(value = "roleId") Long roleId) {
             //查询当前角色关系表中全部权限
         List<RolePermission> rps=rolePermissionService.findPermissionId(roleId);
+        for(RolePermission u:rps){
+            System.out.print(u.getId());
+            rolePermissionService.deleteByKey(u.getId());
+        }
             //判断list中的值长度有则进入下一层 没有权限增添加
    /*         if (rps.size()>0){
             }*/

@@ -12,7 +12,7 @@
     <result column="selected" jdbcType="TINYINT" property="selected" />
   </resultMap>
 
-  <sql id="BaseColumns">role_id,permission_id,rp_switch,selected</sql>
+  <sql id="BaseColumns">id,role_id,permission_id,rp_switch,selected</sql>
 
   <delete id="deleteByRoleId" parameterType="java.lang.Long">
     delete from sys_role_permission where role_id = #{roleId,jdbcType=BIGINT}

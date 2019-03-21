@@ -1,7 +1,6 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.support.BaseService;
-import com.bdxh.common.support.IService;
 import com.bdxh.system.entity.RolePermission;
 import com.bdxh.system.persistence.RolePermissionMapper;
 import com.bdxh.system.service.RolePermissionService;
