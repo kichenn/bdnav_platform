@@ -6,7 +6,6 @@
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
@@ -17,6 +16,8 @@
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="img_file_address" jdbcType="VARCHAR" property="ImgFileAddress" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />
@@ -24,7 +25,7 @@
   </resultMap>
   
   <sql id="BaseColumns">
-    id, image, user_name,`password`, real_name, sex, birthday, phone, email, dept_id, `status`, `type`, create_date, update_date, operator, remark
+    id,user_name,`password`, real_name, sex, birthday, phone, email, dept_id, `status`, `type`,image, img_file_address, create_date, update_date, operator, remark
   </sql>
 
   <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">

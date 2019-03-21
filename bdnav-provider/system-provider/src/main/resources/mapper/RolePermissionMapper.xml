@@ -24,6 +24,12 @@
       FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
     </select>
 
+  <select id="findPermissionId" parameterType="java.util.Map" resultMap="BaseResultMap">
+      SELECT
+    <include refid="BaseColumns"/>
+      FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
+  </select>
+
   <select id="findPermissionList" parameterType="java.util.Map" resultMap="BaseResultMap">
       SELECT
     <include refid="BaseColumns"/>

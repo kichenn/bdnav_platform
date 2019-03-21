@@ -3,7 +3,9 @@ package com.bdxh.backend.controller.system;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.AddPermissionDto;
+import com.bdxh.system.dto.AuRolePermissionDto;
 import com.bdxh.system.dto.ModifyPermissionDto;
+import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.feign.PermissionControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/sysPermission")
@@ -77,7 +81,7 @@ public class SysPermissionController {
 
     @RequestMapping(value="/theTreeMenu",method = RequestMethod.GET)
     @ApiOperation("查询全部菜单权限")
-    public Object theTreeMenu( @RequestParam(value = "roleId",required = false) Long roleId,
+    public Object theTreeMenu( @RequestParam(value = "roleId") Long roleId,
                                @RequestParam(value = "selected",defaultValue = "2") Integer selected){
         try {
             Wrapper wrapper = permissionControllerClient.theTreeMenu(roleId,selected);
@@ -88,6 +92,19 @@ public class SysPermissionController {
         }
     }
 
+
+
+    @RequestMapping(value="/addorUpdatePermission",method = RequestMethod.POST)
+    @ApiOperation("保存并修改权限")
+    public Object addorUpdatePermission(   @RequestParam(value = "roleId") Long roleId,@RequestParam(value = "arpdDtos")String arpdDtos){
+        try {
+            Wrapper wrapper = permissionControllerClient.addorUpdatePermission(roleId,arpdDtos);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 
 
 }

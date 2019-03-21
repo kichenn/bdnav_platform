@@ -31,9 +31,17 @@ public class RolePermissionServiceImpl extends BaseService<RolePermission> imple
 
     //角色id查询所有权限id
     @Override
+    public List<RolePermission> findPermissionId(Long roleId) {
+        return rolePermissionMapper.findPermissionId(roleId);
+    }
+
+    //角色id查询所有权限id
+    @Override
     public List<Long> findPermissionIdByRoleId(Long roleId) {
         return rolePermissionMapper.findPermissionIdByRoleId(roleId);
     }
+
+
 
     // 删除角色与权限关系
     @Override

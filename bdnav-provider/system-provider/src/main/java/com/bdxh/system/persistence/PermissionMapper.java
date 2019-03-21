@@ -18,8 +18,9 @@ public interface PermissionMapper extends Mapper<Permission> {
     Integer batchDelPermissionInIds(@Param("ids") List<Long> ids);
 
     //查询所有菜单 /选中状态 默认给2 未选中显示全部
-    List<RolePermissionDto> theTreeMenu(@Param("selected")Integer selected);
+    List<RolePermissionDto> theTreeMenu(@Param("roleId") Long roleId,@Param("selected")Integer selected);
 
-   //角色id所有权限
+    //角色id所有权限
     List<Permission> findPermission(@Param("roleId") Long roleId,@Param("selected")Integer selected);
+
 }
