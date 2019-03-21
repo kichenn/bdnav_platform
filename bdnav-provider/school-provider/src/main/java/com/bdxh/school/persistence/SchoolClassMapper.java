@@ -19,4 +19,5 @@ public interface SchoolClassMapper extends Mapper<SchoolClass> {
 
     //根据条件查询院校信息
     SchoolClass findSchoolClassByNameAndSchoolCode(@Param("schoolCode")String schoolCode,@Param("name")String name);
+
 }

@@ -24,11 +24,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -50,6 +52,9 @@ public class StudentController {
 
     @Autowired
     private SchoolClassControllerClient schoolClassControllerClient;
+
+/*    @Autowired
+    private ValueOperations valueOperations;*/
     /**
      * 根据条件查询所有学生信息接口
      * @param studentQueryDto
@@ -197,12 +202,40 @@ public class StudentController {
            List<String[]> studentList= ExcelImportUtil.readExcelNums(file,0);
            for (int i=1;i<studentList.size();i++){
                String[] columns= studentList.get(i);
-               Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
-               SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
                AddStudentDto addStudentDto=new AddStudentDto();
-               addStudentDto.setSchoolName(schoolInfoVo.getSchoolName());
-               addStudentDto.setSchoolId(schoolInfoVo.getId()+"");
-               addStudentDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+               if(i==1){
+                   //第一条查询数据存到缓存中
+                   Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
+                   SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+                   /*valueOperations.set("schoolInfoVo",schoolInfoVo);*/
+                   addStudentDto.setSchoolName(schoolInfoVo.getSchoolName());
+                   addStudentDto.setSchoolId(schoolInfoVo.getId()+"");
+                   addStudentDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+               //判断当前schoolCode是否与上一条相同
+                }else if(studentList.get(i)[0]==(i-1>=studentList.size()?studentList.get(studentList.size())[0]:studentList.get(i-1)[0])){
+                    //判断得出在同一个班级直接从缓存中拉取数据
+                   SchoolInfoVo schoolInfoVo=new SchoolInfoVo();/*(SchoolInfoVo)valueOperations.get("schoolInfoVo");*/
+                   addStudentDto.setSchoolName(schoolInfoVo.getSchoolName());
+                   addStudentDto.setSchoolId(schoolInfoVo.getId()+"");
+                   addStudentDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+               }else{
+                   //重新查询数据库进行缓存
+                   Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
+                   SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+                  /* valueOperations.set("schoolInfoVo",schoolInfoVo);*/
+                   addStudentDto.setSchoolName(schoolInfoVo.getSchoolName());
+                   addStudentDto.setSchoolId(schoolInfoVo.getId()+"");
+                   addStudentDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+               }
+
+
+
+
+
+
+
+
+
                addStudentDto.setCampusName(columns[1]);
                addStudentDto.setCollegeName(columns[2]);
                addStudentDto.setFacultyName(columns[3]);
@@ -225,8 +258,8 @@ public class StudentController {
                String[] classNamearr= classNames.split("\\/");
                for (int j = 0; j <classNamearr.length; j++) {
                    //根据学校名称查询
-                  Wrapper wrappers=  schoolClassControllerClient.findSchoolClassByNameAndSchoolCode(schoolInfoVo.getSchoolCode(),classNamearr[j]);
-                  SchoolClass schoolClass=(SchoolClass)wrappers.getResult();
+                 /* Wrapper wrappers=  schoolClassControllerClient.findSchoolClassByNameAndSchoolCode(schoolInfoVo.getSchoolCode(),classNamearr[j]);*/
+                  SchoolClass schoolClass=null;/*(SchoolClass)wrappers.getResult();*/
                   if(schoolClass!=null){
                       int length=j+1;
                       if(length==classNamearr.length){

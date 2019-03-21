@@ -158,6 +158,11 @@ public class SchoolClassController {
     public Object findSchoolClassByNameAndSchoolCode(@RequestParam("schoolCode") String schoolCode,
                                                      @RequestParam("name")String name) {
         return WrapMapper.ok(schoolClassService.findSchoolClassByNameAndSchoolCode(schoolCode,name));
-
+    }
+    @RequestMapping(value = "/queryIdsBySchoolId", method = RequestMethod.GET)
+    @ApiOperation(value = "根据条件查询院校信息", response = Boolean.class)
+    @ResponseBody
+    public Object queryIdsBySchoolId(@RequestParam("schoolId") Long schoolId) {
+        return WrapMapper.ok(schoolClassService.queryIdsBySchoolId(schoolId));
     }
 }

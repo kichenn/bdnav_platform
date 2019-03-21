@@ -149,6 +149,13 @@ public class AddStudentDto implements Serializable {
     @ApiModelProperty(value="学生邮箱")
     private String email;
 
+
+    /**
+     * 图像
+     */
+    @ApiModelProperty("用户头像地址")
+    private String image;
+
     /**
      * 用户头像名称
      */

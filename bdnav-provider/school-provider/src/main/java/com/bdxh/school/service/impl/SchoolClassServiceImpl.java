@@ -7,13 +7,15 @@ import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.persistence.SchoolClassMapper;
 import com.bdxh.school.service.SchoolClassService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import lombok.Data;
 
-import java.util.List;
-import java.util.Optional;
+import java.lang.reflect.Array;
+import java.util.*;
 
 /**
  * @Description: 学校院系关系Service
@@ -86,4 +88,46 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     public SchoolClass findSchoolClassByNameAndSchoolCode(String schoolCode,String name) {
         return schoolClassMapper.findSchoolClassByNameAndSchoolCode(schoolCode,name);
     }
+    @Override
+    public List<List<SchoolClassOrgInfos>> queryIdsBySchoolId(Long schoolId){
+        SchoolClass schoolClass=new SchoolClass();
+        schoolClass.setSchoolId(schoolId);
+        List<SchoolClass> schoolClassList=schoolClassMapper.select(schoolClass);
+        //一个学校所有的院系架构 ids 和names
+        List<List<SchoolClassOrgInfos>> classInfos=new ArrayList<>();
+        for (int i = 0; i < schoolClassList.size(); i++) {
+            if(schoolClassList.get(i).getParentId().equals(Long.parseLong("-1"))){
+                classInfos.add(getNamesOrIds(schoolClassList.get(i).getId()+"",schoolClassList.get(i).getName(),schoolClassList,new ArrayList<>()));
+            }
+        }
+        return classInfos;
+    }
+
+    public List<SchoolClassOrgInfos> getNamesOrIds(String pId,String pName,List<SchoolClass> schoolClassList,List<SchoolClassOrgInfos> schoolClassOrgInfosLists){
+        List<SchoolClassOrgInfos> schoolClassOrgInfosList=schoolClassOrgInfosLists;
+        SchoolClassOrgInfos schoolClassOrgInfos=new SchoolClassOrgInfos();
+        for (int i = 0; i <  schoolClassList.size(); i++) {
+            String []pIds=pId.split(",");
+            if (schoolClassList.get(i).getParentId().equals(Long.parseLong(pIds[pIds.length - 1])) || schoolClassList.get(i).getParentId() + "" == pIds[pIds.length - 1]) {
+                pName += "/" + schoolClassList.get(i).getName();
+                pId += "," + schoolClassList.get(i).getId();
+                schoolClassOrgInfos.setSchoolClassIds(pId);
+                schoolClassOrgInfos.setSchoolClassNames(pName);
+                schoolClassOrgInfosList.removeAll(schoolClassOrgInfosList);
+                schoolClassOrgInfosList.add(schoolClassOrgInfos);
+                List<SchoolClassOrgInfos> classOrgInfosList = getNamesOrIds(pId, pName, schoolClassList, schoolClassOrgInfosList);
+            }
+        }
+        return schoolClassOrgInfosList;
+    }
+
+    @Data
+    public class SchoolClassOrgInfos{
+        //院校名称 如 ： 音乐学院/舞蹈系/舞蹈专业..
+        private String schoolClassNames;
+        //院校ID 如 ： 1,2,3..
+        private String schoolClassIds;
+    }
+
+
 }

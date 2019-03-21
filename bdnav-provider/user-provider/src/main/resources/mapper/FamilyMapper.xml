@@ -114,6 +114,9 @@
         <if test="familyDto.image!=null and familyDto.image!=''">
             `image`=#{familyDto.image},
         </if>
+        <if test="familyDto.imageName!=null and familyDto.imageName!=''">
+            `image_name`=#{familyDto.imageName},
+        </if>
         <if test="familyDto.nationName!=null and familyDto.nationName!=''">
             `nation_name`=#{familyDto.nationName},
         </if>

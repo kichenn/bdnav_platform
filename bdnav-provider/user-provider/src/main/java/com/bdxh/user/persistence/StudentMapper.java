@@ -1,6 +1,5 @@
 package com.bdxh.user.persistence;
 
-import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;

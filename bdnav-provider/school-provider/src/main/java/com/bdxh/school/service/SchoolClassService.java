@@ -4,9 +4,11 @@ import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.SchoolClassDto;
 import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
+import com.bdxh.school.service.impl.SchoolClassServiceImpl;
 import com.bdxh.school.vo.SchoolClassTreeVo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -43,4 +45,6 @@ public interface SchoolClassService extends IService<SchoolClass> {
 
     //根据条件查询院校关系
     SchoolClass findSchoolClassByNameAndSchoolCode(String schoolCode,String name);
+
+    List<List<SchoolClassServiceImpl.SchoolClassOrgInfos>> queryIdsBySchoolId(Long schoolId);
 }
