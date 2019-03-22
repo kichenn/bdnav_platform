@@ -93,6 +93,9 @@
     <if test="updateTeacherDto.image!=null and updateTeacherDto.image!=''">
       `image`=#{updateTeacherDto.image},
     </if>
+    <if test="updateTeacherDto.imageName!=null and updateTeacherDto.imageName!=''">
+      `image_name`=#{updateTeacherDto.imageName},
+    </if>
     <if test="updateTeacherDto.nationName!=null and updateTeacherDto.nationName!=''">
       `nation_name`=#{updateTeacherDto.nationName},
     </if>

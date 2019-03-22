@@ -12,7 +12,7 @@
     <result column="selected" jdbcType="TINYINT" property="selected" />
   </resultMap>
 
-  <sql id="BaseColumns">role_id,permission_id,rp_switch,selected</sql>
+  <sql id="BaseColumns">id,role_id,permission_id,rp_switch,selected</sql>
 
   <delete id="deleteByRoleId" parameterType="java.lang.Long">
     delete from sys_role_permission where role_id = #{roleId,jdbcType=BIGINT}
@@ -23,6 +23,12 @@
       permission_id
       FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
     </select>
+
+  <select id="findPermissionId" parameterType="java.util.Map" resultMap="BaseResultMap">
+      SELECT
+    <include refid="BaseColumns"/>
+      FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
+  </select>
 
   <select id="findPermissionList" parameterType="java.util.Map" resultMap="BaseResultMap">
       SELECT

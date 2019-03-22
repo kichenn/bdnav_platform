@@ -71,11 +71,12 @@ public class SysRoleController {
     }
 
 
-    @RequestMapping(value="/updateRSwitchRole",method = RequestMethod.POST)
+    @RequestMapping(value="/updateRSwitchRole",method = RequestMethod.GET)
     @ApiOperation("修改角色启用状态")
-    public Object updateRSwitchRole(@RequestParam(name = "roleId") Long roleId){
+    public Object updateRSwitchRole(@RequestParam(name = "roleId") Long roleId,
+                     @RequestParam(name = "rswitch")Integer rswitch){
         try {
-            Wrapper wrapper = roleControllerClient.updateRSwitchRole(roleId);
+            Wrapper wrapper = roleControllerClient.updateRSwitchRole(roleId,rswitch);
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();

@@ -118,3 +118,7 @@ httpPool:
   connectTimeout: 5000
   socketTimeout: 10000
   enable: false
+#ID生成器
+id-generator:
+  workerId: 0
+  datacenterId: 5

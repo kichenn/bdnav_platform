@@ -49,7 +49,7 @@ public class SchoolClassWebController {
     }
 
 
-    @RequestMapping(value = "/modifySchoolClass", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/modifySchoolClass", method = RequestMethod.POST)
     @ApiOperation(value = "修改院校结构关系", response = Boolean.class)
     public Object modifySchoolClass(@Validated @RequestBody SchoolClassModifyDto schoolClassModifyDto) {
         Wrapper wrapper = schoolClassControllerClient.modifySchoolClass(schoolClassModifyDto);

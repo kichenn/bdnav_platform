@@ -4,9 +4,9 @@ import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.SchoolClassDto;
 import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
-import com.bdxh.school.entity.SchoolDept;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**

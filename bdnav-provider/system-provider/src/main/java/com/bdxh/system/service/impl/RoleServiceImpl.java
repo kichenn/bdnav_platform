@@ -91,18 +91,19 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     }
 
     @Override
-    public Boolean UpdateByInitiateMode(Long roleId) {
+    public Boolean UpdateByInitiateMode(Long roleId,Integer rswitch) {
         //根据角色id查询所有权限菜单
       List<RolePermission> lists=rolePermissionMapper.findPermissionList(roleId,1);
-
       if (CollectionUtils.isNotEmpty(lists)&&lists.size()>0){
           Role role=new Role();
           role.setId(roleId);
-          role.setRswitch(2);
+          role.setRswitch(rswitch);
        roleMapper.updateByPrimaryKeySelective(role);
           return Boolean.TRUE;
       }
-        return Boolean.FALSE;
+          return Boolean.FALSE;
+
+
     }
 
 }

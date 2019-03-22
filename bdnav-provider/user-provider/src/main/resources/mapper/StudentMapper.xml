@@ -81,7 +81,7 @@ select <include refid="studentCloumn" /> from t_student
      AND card_number=#{cardNumber}
     </delete>
   <!-- 查询单个学生信息 -->
-<select id="selectStudentVo" resultType="com.bdxh.user.vo.StudentVo">
+<select id="selectStudentVo" resultType="com.bdxh.user.vo.StudentVo" parameterType="String">
       SELECT
       id as sId,
       school_id as schoolId,
@@ -106,6 +106,7 @@ select <include refid="studentCloumn" /> from t_student
       wx_number as wxNumber,
       email,
       image,
+      image_name as imageName,
       nation_name as nationName,
       dormitory_address as dormitoryAddress,
       adress,
@@ -119,7 +120,8 @@ select <include refid="studentCloumn" /> from t_student
       remark
       FROM
       t_student
-      WHERE  school_code=#{schoolCode} and card_number=#{cardNumber} limit 1;
+     where school_code = #{schoolCode}
+     and card_number = #{cardNumber}
 </select>
     <update id="updateStudentInfo">
         UPDATE `t_student`
@@ -177,6 +179,9 @@ select <include refid="studentCloumn" /> from t_student
         </if>
         <if test="studentDto.image!=null and studentDto.image!=''">
             `image`=#{studentDto.image},
+        </if>
+        <if test="studentDto.imageName!=null and studentDto.imageName!=''">
+            `image_name`=#{studentDto.imageName},
         </if>
         <if test="studentDto.nationName!=null and studentDto.nationName!=''">
             `nation_name`=#{studentDto.nationName},

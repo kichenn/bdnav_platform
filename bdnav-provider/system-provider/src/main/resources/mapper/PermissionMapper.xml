@@ -86,7 +86,7 @@
      FROM
 	sys_permission
     LEFT JOIN sys_role_permission ON sys_permission.id = sys_role_permission.permission_id
-       AND sys_role_permission.selected =#{selected}
+       AND sys_role_permission.selected =#{selected} AND  sys_role_permission.role_id=#{roleId,jdbcType=BIGINT}
     </select>
 
 

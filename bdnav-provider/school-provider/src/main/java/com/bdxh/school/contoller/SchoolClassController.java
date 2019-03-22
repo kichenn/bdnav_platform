@@ -159,7 +159,6 @@ public class SchoolClassController {
     public Object findSchoolClassByNameAndSchoolCode(@RequestParam("schoolCode") String schoolCode,
                                                      @RequestParam("name") String name) {
         return WrapMapper.ok(schoolClassService.findSchoolClassByNameAndSchoolCode(schoolCode, name));
-
     }
 
     /**

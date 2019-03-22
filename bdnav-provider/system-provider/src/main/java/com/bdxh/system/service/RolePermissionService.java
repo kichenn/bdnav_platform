@@ -20,6 +20,9 @@ public interface RolePermissionService extends IService<RolePermission> {
     //角色id查询所有权限id
     List<Long> findPermissionIdByRoleId(Long roleId);
 
+    //角色id查询当前用户权限
+    List<RolePermission> findPermissionId(Long roleId);
+
     // 删除角色与权限关系
     Boolean delRolePermission(Long roleId);
 

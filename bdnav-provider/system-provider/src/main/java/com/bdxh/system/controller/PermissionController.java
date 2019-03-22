@@ -1,5 +1,8 @@
 package com.bdxh.system.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.AddPermissionDto;
 import com.bdxh.system.dto.AuRolePermissionDto;
@@ -7,9 +10,14 @@ import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
+import com.bdxh.system.entity.Role;
+import com.bdxh.system.entity.RolePermission;
 import com.bdxh.system.service.PermissionService;
 import com.bdxh.system.service.RolePermissionService;
+import com.bdxh.system.service.impl.RolePermissionServiceImpl;
 import com.bdxh.system.vo.PermissionTreeVo;
+import com.sun.corba.se.spi.ior.IdentifiableFactory;
+import com.sun.org.apache.bcel.internal.generic.NEW;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -135,10 +143,9 @@ public class PermissionController {
     @RequestMapping(value = "/theTreeMenu", method = RequestMethod.GET)
     @ApiOperation(value = "查询全部菜单", response = List.class)
     @ResponseBody
-    public Object theTreeMenu(@RequestParam(value = "roleId",required = false) Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected
-    ) {
+    public Object theTreeMenu(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
 
-        List<RolePermissionDto> permissions = permissionService.theTreeMenu(selected);
+        List<RolePermissionDto> permissions = permissionService.theTreeMenu(roleId,selected);
           System.out.print("==============="+permissions);
 
         List<PermissionTreeVo> treeVos = new ArrayList<>();
@@ -148,15 +155,9 @@ public class PermissionController {
                 treeVo.setTitle(e.getName());
                 treeVo.setCreateDate(e.getCreateDate());
                 treeVo.setExpand(Boolean.TRUE);
-                //e.getRplist().get(0).getRoleId().equals(roleId)&&
-              /*List<Permission> permission = permissionService.permissionByMenus(Long.valueOf(roleId),selected);*/
-               /*   if (e.getRplist().get(0).getRoleId().equals(roleId)) {*/
-                       if (e.getId().equals(e.getRplist().get(0).getPermissionId())) {
-                           treeVo.setSelected(Boolean.TRUE);
-                       }
-               /*  }*/
-
-
+                if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)) {
+                    treeVo.setSelected(Boolean.TRUE);
+                }
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
             });
@@ -171,15 +172,54 @@ public class PermissionController {
      * 保存并修改权限
      * @return
      */
-    @RequestMapping(value = "/addorUpdatePermission", method = RequestMethod.POST)
+   @RequestMapping(value = "/addorUpdatePermission", method = RequestMethod.POST)
     @ApiOperation(value = "保存并修改权限", response = Boolean.class)
-    public Object addorUpdatePermission(@RequestBody AuRolePermissionDto auRolePermissionDto) {
+    public Object addorUpdatePermission(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "arpdDtos")String arpdDtos) {
+       try{
+       JSONArray addPermissionDto = JSON.parseArray(arpdDtos);
+   /*        String permissionId=jsonObject.getString("id");*/
+           //查询当前角色关系表中全部权限
+           List<RolePermission> rps=rolePermissionService.findPermissionId(roleId);
+           Boolean  b = rps.containsAll(addPermissionDto) && addPermissionDto.containsAll(rps);
+           if (b.equals(Boolean.FALSE)){
+               for(RolePermission u:rps){
+                   rolePermissionService.deleteByKey(u.getId());
+               }
+               for (int i = 0; i < addPermissionDto.size(); i++) {
+                   JSONObject jsonObject = (JSONObject) addPermissionDto.get(i);
+                   RolePermission rolePermission=new RolePermission();
+                   rolePermission.setPermissionId(Long.valueOf(jsonObject.getString("id")));
+                   rolePermission.setRoleId(roleId);
+                   rolePermission.setSelected(2);
+                   rolePermissionService.save(rolePermission);
+            }
+       }
+            return WrapMapper.ok();
+        }catch (Exception e){
+        e.printStackTrace();
+        return WrapMapper.error(e.getMessage());
+    }
+    }
 
-  /*    Permission permission = new Permission();
-        BeanUtils.copyProperties(dto, permission);
-        permissionService.addPermission(permission)*/
 
-        return WrapMapper.ok();
+    /**
+     * 保存并修改权限
+     * @return
+     */
+    @RequestMapping(value = "/test1", method = RequestMethod.POST)
+    @ApiOperation(value = "测试返回数据保存并修改权限", response = Boolean.class)
+    public Object test1(
+            @RequestParam(value = "roleId") Long roleId) {
+            //查询当前角色关系表中全部权限
+        List<RolePermission> rps=rolePermissionService.findPermissionId(roleId);
+        for(RolePermission u:rps){
+            System.out.print(u.getId());
+            rolePermissionService.deleteByKey(u.getId());
+        }
+            //判断list中的值长度有则进入下一层 没有权限增添加
+   /*         if (rps.size()>0){
+            }*/
+        return WrapMapper.ok(rps);
     }
 
 

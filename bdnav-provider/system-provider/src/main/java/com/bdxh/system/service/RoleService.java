@@ -42,6 +42,6 @@ public interface RoleService extends IService<Role> {
     PageInfo<Role> findRolesInConditionPaging(Integer pageNum, Integer pageSize);
 
     //修改启用状态
-    Boolean UpdateByInitiateMode(Long roleId);
+    Boolean UpdateByInitiateMode(Long roleId,Integer rswitch);
 
 }

@@ -23,6 +23,13 @@ public interface RolePermissionMapper extends Mapper<RolePermission> {
      * @param roleId
      * @return
      */
+    List<RolePermission> findPermissionId (@Param("roleId") Long roleId);
+
+    /**
+     * 角色id查询当前用户
+     * @param roleId
+     * @return
+     */
     List<Long> findPermissionIdByRoleId(@Param("roleId") Long roleId);
 
     /**

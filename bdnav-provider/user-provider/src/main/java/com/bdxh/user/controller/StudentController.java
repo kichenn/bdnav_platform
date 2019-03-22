@@ -66,7 +66,7 @@ public class StudentController {
                 studentService.save(student);
                 return WrapMapper.ok();
             }
-            return WrapMapper.error("当前学校已有相同cardNumber(学号)");
+            return WrapMapper.ok("当前学校已有相同cardNumber(学号)");
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

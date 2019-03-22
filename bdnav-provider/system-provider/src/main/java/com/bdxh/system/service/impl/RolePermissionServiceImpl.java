@@ -1,7 +1,6 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.support.BaseService;
-import com.bdxh.common.support.IService;
 import com.bdxh.system.entity.RolePermission;
 import com.bdxh.system.persistence.RolePermissionMapper;
 import com.bdxh.system.service.RolePermissionService;
@@ -31,9 +30,17 @@ public class RolePermissionServiceImpl extends BaseService<RolePermission> imple
 
     //角色id查询所有权限id
     @Override
+    public List<RolePermission> findPermissionId(Long roleId) {
+        return rolePermissionMapper.findPermissionId(roleId);
+    }
+
+    //角色id查询所有权限id
+    @Override
     public List<Long> findPermissionIdByRoleId(Long roleId) {
         return rolePermissionMapper.findPermissionIdByRoleId(roleId);
     }
+
+
 
     // 删除角色与权限关系
     @Override
