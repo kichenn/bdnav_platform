@@ -9,6 +9,7 @@
         <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
         <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
         <result column="parent_names" jdbcType="VARCHAR" property="parentNames"/>
+        <result column="this_url" jdbcType="VARCHAR" property="thisUrl"/>
         <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -21,7 +22,7 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id,parent_id,parent_ids,parent_names,school_id,school_code,`name`,`level`,
+    id,parent_id,parent_ids,parent_names,this_url,school_id,school_code,`name`,`level`,
     sort,create_date,update_date,operator,operator_name,remark
     </sql>
 
@@ -43,6 +44,12 @@
         WHERE
         school_id =#{schoolId,jdbcType=BIGINT}
     </delete>
+    <select id="findSchoolByParentId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from t_school_dept
+        where parent_id=#{parentId}
+    </select>
 
 
 </mapper>

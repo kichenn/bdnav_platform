@@ -34,5 +34,4 @@ public class SchoolDeptTreeVo extends TreeBean {
 
     @ApiModelProperty("备注")
     private String remark;
-
 }

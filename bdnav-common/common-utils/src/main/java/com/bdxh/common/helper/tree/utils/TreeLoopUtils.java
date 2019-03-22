@@ -76,4 +76,33 @@ public class TreeLoopUtils<E extends TreeBean> {
         }
         return childList;
     }
+
+
+    /**
+     * @Description: 获取父节点
+     * @Author: Kang
+     * @Date: 2019/3/22 17:08
+     */
+    public List<E> getParent(Long parentId, List<E> rootMenu) {
+        List<E> parentList = new ArrayList<>();
+        // 节点信息
+        for (E temp : rootMenu) {
+            // 遍历所有节点，将节点id与传过来的父id比较
+            if (LongUtils.isNotEmpty(temp.getId())) {
+                if (temp.getId().equals(parentId)) {
+                    parentList.add(temp);
+                    break;
+                }
+            }
+        }
+        rootMenu.remove(parentList);
+        // 把父节点的父节点再循环一遍
+        for (E temp1 : parentList) {
+            if (LongUtils.isNotEmpty(temp1.getId())) {
+                // 递归
+                temp1.setChildren(getParent(temp1.getParentId(), rootMenu));
+            }
+        }
+        return parentList;
+    }
 }

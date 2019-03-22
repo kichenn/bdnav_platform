@@ -18,5 +18,8 @@ public interface SchoolClassMapper extends Mapper<SchoolClass> {
     Integer delSchoolClassBySchoolId(@Param("schoolId") Long schoolId);
 
     //根据条件查询院校信息
-    SchoolClass findSchoolClassByNameAndSchoolCode(@Param("schoolCode")String schoolCode,@Param("name")String name);
+    SchoolClass findSchoolClassByNameAndSchoolCode(@Param("schoolCode") String schoolCode, @Param("name") String name);
+
+    //父id查询院系信息
+    SchoolClass findSchoolByParentId(@Param("parentId") Long parentId);
 }

@@ -35,6 +35,12 @@ public class SchoolClass implements Serializable {
     private String parentNames;
 
     /**
+     * 当前路径
+     */
+    @Column(name = "this_url")
+    private String thisUrl;
+
+    /**
      * 学校id
      */
     @Column(name = "school_id")
@@ -176,6 +182,24 @@ public class SchoolClass implements Serializable {
      */
     public void setParentNames(String parentNames) {
         this.parentNames = parentNames == null ? null : parentNames.trim();
+    }
+
+    /**
+     * 获取绝对路径
+     *
+     * @return parent_names - 父级部门names
+     */
+    public String getThisUrl() {
+        return thisUrl;
+    }
+
+    /**
+     * 设置绝对路径
+     *
+     * @param thisUrl 绝对路径
+     */
+    public void setThisUrl(String thisUrl) {
+        this.thisUrl = thisUrl == null ? null : thisUrl.trim();
     }
 
     /**

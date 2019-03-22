@@ -8,10 +8,10 @@ package com.bdxh.common.helper.tree.utils;
 public class LongUtils {
 
     public static Boolean isEmpty(Long record) {
-        return record == null || record == 0;
+        return record == null || record == -1;
     }
 
     public static Boolean isNotEmpty(Long record) {
-        return record != null && record != 0;
+        return record != null && record != -1;
     }
 }

@@ -18,12 +18,6 @@ public class SchoolDeptDto  {
     @ApiModelProperty("父级部门id")
     private Long parentId;
 
-    @ApiModelProperty("父级部门ids")
-    private String parentIds;
-
-    @ApiModelProperty("父级部门names")
-    private String parentNames;
-
     @ApiModelProperty("学校id")
     private Long schoolId;
 

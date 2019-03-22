@@ -105,4 +105,13 @@ public interface SchoolClassControllerClient {
     @ResponseBody
     Wrapper<SchoolClass> findSchoolClassByNameAndSchoolCode(@RequestParam("schoolCode") String schoolCode,
                                                @RequestParam("name")String name);
+
+    /**
+     * @Description: 父id查询院系信息
+     * @Author: Kang
+     * @Date: 2019/3/22 18:41
+     */
+    @RequestMapping(value = "/schoolClass/findSchoolByParentId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<SchoolClass> findSchoolByParentId(@RequestParam("parentId") Long parentId);
 }

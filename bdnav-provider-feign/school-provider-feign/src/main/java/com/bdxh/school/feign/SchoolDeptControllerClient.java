@@ -95,4 +95,13 @@ public interface SchoolDeptControllerClient {
     @ResponseBody
     Wrapper delSchoolDeptBySchoolId(@RequestParam("schoolId") Long schoolId);
 
+    /**
+     * @Description: 父id查询部门信息
+     * @Author: Kang
+     * @Date: 2019/3/12 11:29
+     */
+    @RequestMapping(value = "/schoolDept/findSchoolByParentId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper findSchoolByParentId(@RequestParam("parentId") Long parentId);
+
 }

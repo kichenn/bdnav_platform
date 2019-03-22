@@ -58,4 +58,9 @@ public class SchoolDeptControllerClientFallback implements SchoolDeptControllerC
     public Wrapper delSchoolDeptBySchoolId(Long schoolId) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper findSchoolByParentId(Long parentId) {
+        return WrapMapper.error();
+    }
 }

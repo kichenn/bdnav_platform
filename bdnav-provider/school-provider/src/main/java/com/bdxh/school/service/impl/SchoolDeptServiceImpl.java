@@ -1,12 +1,17 @@
 package com.bdxh.school.service.impl;
 
+import com.bdxh.common.helper.tree.bean.TreeBean;
+import com.bdxh.common.helper.tree.utils.LongUtils;
+import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.school.dto.SchoolDeptDto;
 import com.bdxh.school.dto.SchoolDeptModifyDto;
 import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.persistence.SchoolDeptMapper;
 import com.bdxh.school.service.SchoolDeptService;
+import com.bdxh.school.vo.SchoolDeptTreeVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 学校组织Service
@@ -32,6 +38,18 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     public Boolean addSchoolDept(SchoolDeptDto schoolDeptDto) {
         SchoolDept schoolDept = new SchoolDept();
         BeanUtils.copyProperties(schoolDeptDto, schoolDept);
+        if (LongUtils.isNotEmpty(schoolDept.getParentId())) {
+            //查询父亲节点
+            SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
+            //树状全路径
+            schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
+            schoolDept.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName());
+            schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
+        } else if (schoolDept.getParentId() != null && new Long("-1").equals(schoolDept.getParentId())) {
+            schoolDept.setParentNames("");
+            schoolDept.setThisUrl(schoolDept.getName());
+            schoolDept.setParentIds("");
+        }
         return schoolDeptMapper.insertSelective(schoolDept) > 0;
     }
 
@@ -40,6 +58,18 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     public Boolean modifySchoolDept(SchoolDeptModifyDto schoolDeptDto) {
         SchoolDept schoolDept = new SchoolDept();
         BeanUtils.copyProperties(schoolDeptDto, schoolDept);
+        if (LongUtils.isNotEmpty(schoolDept.getParentId())) {
+            //查询父亲节点
+            SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
+            //树状
+            schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
+            schoolDept.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName());
+            schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "/" + schoolDeptTemp.getId());
+        } else if (schoolDept.getParentId() != null && new Long("-1").equals(schoolDept.getParentId())) {
+            schoolDept.setParentNames("");
+            schoolDept.setThisUrl(schoolDept.getName());
+            schoolDept.setParentIds("");
+        }
         return schoolDeptMapper.updateByPrimaryKeySelective(schoolDept) > 0;
     }
 
@@ -80,5 +110,11 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     @Override
     public List<SchoolDept> findSchoolDeptAll() {
         return schoolDeptMapper.selectAll();
+    }
+
+    //父级id查询部门信息
+    @Override
+    public SchoolDept findSchoolByParentId(Long parentId) {
+        return schoolDeptMapper.findSchoolByParentId(parentId);
     }
 }

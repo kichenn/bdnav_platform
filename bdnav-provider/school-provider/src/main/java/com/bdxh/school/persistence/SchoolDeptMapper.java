@@ -16,4 +16,6 @@ public interface SchoolDeptMapper extends Mapper<SchoolDept> {
     //schoolId删除学校组织信息
     Integer delSchoolDeptBySchoolId(@Param("schoolId") Long schoolId);
 
+
+    SchoolDept findSchoolByParentId(@Param("parentId") Long parentId);
 }

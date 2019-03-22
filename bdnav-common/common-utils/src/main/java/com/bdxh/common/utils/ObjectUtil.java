@@ -81,7 +81,6 @@ public class ObjectUtil {
 				|| URL.class == clazz || Locale.class == clazz || Class.class == clazz);
 	}
 
-
 	/**
 	 * 获取随机字符串 Nonce Str
 	 * @return String 随机字符串
