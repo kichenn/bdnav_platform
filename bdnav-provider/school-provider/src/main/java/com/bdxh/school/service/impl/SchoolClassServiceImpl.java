@@ -33,17 +33,17 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     public Boolean addSchoolClass(SchoolClassDto schoolClassDto) {
         SchoolClass schoolClass = new SchoolClass();
         BeanUtils.copyProperties(schoolClassDto, schoolClass);
-        if (LongUtils.isNotEmpty(schoolClassDto.getParentId())) {
+        if (new Long("-1").equals(schoolClass.getParentId())) {
+            schoolClass.setParentNames("");
+            schoolClass.setThisUrl(schoolClass.getName());
+            schoolClass.setParentIds("");
+        } else {
             //查询父亲节点
             SchoolClass schoolClassTemp = findSchoolClassById(schoolClassDto.getParentId()).orElse(new SchoolClass());
             //树状
             schoolClass.setParentNames(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName());
             schoolClass.setThisUrl(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName());
-            schoolClass.setParentIds(schoolClassTemp.getParentIds() + "/" + schoolClassTemp.getId());
-        } else if (schoolClass.getParentId() != null && new Long("-1").equals(schoolClass.getParentId())) {
-            schoolClass.setParentNames("");
-            schoolClass.setThisUrl(schoolClass.getName());
-            schoolClass.setParentIds("");
+            schoolClass.setParentIds(schoolClassTemp.getParentIds() + "," + schoolClassTemp.getId());
         }
         return schoolClassMapper.insertSelective(schoolClass) > 0;
     }
@@ -53,17 +53,17 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     public Boolean modifySchoolClass(SchoolClassModifyDto schoolClassDto) {
         SchoolClass schoolClass = new SchoolClass();
         BeanUtils.copyProperties(schoolClassDto, schoolClass);
-        if (LongUtils.isNotEmpty(schoolClassDto.getParentId())) {
+        if (new Long("-1").equals(schoolClass.getParentId())) {
+            schoolClass.setParentNames("");
+            schoolClass.setThisUrl(schoolClass.getName());
+            schoolClass.setParentIds("");
+        } else {
             //查询父亲节点
             SchoolClass schoolClassTemp = findSchoolClassById(schoolClassDto.getParentId()).orElse(new SchoolClass());
             //树状
             schoolClass.setParentNames(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName());
             schoolClass.setThisUrl(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName());
-            schoolClass.setParentIds(schoolClassTemp.getParentIds() + "/" + schoolClassTemp.getId());
-        } else if (schoolClass.getParentId() != null && new Long("-1").equals(schoolClass.getParentId())) {
-            schoolClass.setParentNames("");
-            schoolClass.setThisUrl(schoolClass.getName());
-            schoolClass.setParentIds("");
+            schoolClass.setParentIds(schoolClassTemp.getParentIds() + "," + schoolClassTemp.getId());
         }
         return schoolClassMapper.updateByPrimaryKeySelective(schoolClass) > 0;
     }

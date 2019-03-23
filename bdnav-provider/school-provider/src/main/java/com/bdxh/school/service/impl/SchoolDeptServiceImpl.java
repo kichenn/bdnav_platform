@@ -38,17 +38,17 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     public Boolean addSchoolDept(SchoolDeptDto schoolDeptDto) {
         SchoolDept schoolDept = new SchoolDept();
         BeanUtils.copyProperties(schoolDeptDto, schoolDept);
-        if (LongUtils.isNotEmpty(schoolDept.getParentId())) {
-            //查询父亲节点
-            SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
-            //树状全路径
-            schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
-            schoolDept.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName());
-            schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
-        } else if (schoolDept.getParentId() != null && new Long("-1").equals(schoolDept.getParentId())) {
+        if (new Long("-1").equals(schoolDept.getParentId())) {
             schoolDept.setParentNames("");
             schoolDept.setThisUrl(schoolDept.getName());
             schoolDept.setParentIds("");
+        } else {
+            //查询父亲节点
+            SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
+            //树状
+            schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
+            schoolDept.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName());
+            schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
         }
         return schoolDeptMapper.insertSelective(schoolDept) > 0;
     }
@@ -58,17 +58,17 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     public Boolean modifySchoolDept(SchoolDeptModifyDto schoolDeptDto) {
         SchoolDept schoolDept = new SchoolDept();
         BeanUtils.copyProperties(schoolDeptDto, schoolDept);
-        if (LongUtils.isNotEmpty(schoolDept.getParentId())) {
+        if (new Long("-1").equals(schoolDept.getParentId())) {
+            schoolDept.setParentNames("");
+            schoolDept.setThisUrl(schoolDept.getName());
+            schoolDept.setParentIds("");
+        } else {
             //查询父亲节点
             SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
             //树状
             schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
             schoolDept.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName());
-            schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "/" + schoolDeptTemp.getId());
-        } else if (schoolDept.getParentId() != null && new Long("-1").equals(schoolDept.getParentId())) {
-            schoolDept.setParentNames("");
-            schoolDept.setThisUrl(schoolDept.getName());
-            schoolDept.setParentIds("");
+            schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
         }
         return schoolDeptMapper.updateByPrimaryKeySelective(schoolDept) > 0;
     }
