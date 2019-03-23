@@ -72,9 +72,9 @@ public class SchoolClassWebController {
             student = studentControllerClient.findStudentBySchoolClassId(schoolClass.getSchoolCode(), schoolClass.getSchoolId(), id).getResult();
         }
         if (schoolClass != null) {
-            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, "该院系底下存在子院系不能删除", false);
+            return WrapMapper.error("该院系底下存在子院系不能删除");
         } else if (student != null) {
-            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, "该院系底下存在人员不能删除", false);
+            return WrapMapper.error("该院系底下存在人员不能删除");
         }
         Wrapper wrapper = schoolClassControllerClient.delSchoolClassById(id);
         return WrapMapper.ok(wrapper.getResult());
