@@ -168,4 +168,8 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         ExcelExportUtils.getInstance().exportObjects2Excel(schoolExcelReportBeans, SchoolExcelReportBean.class, true, "北斗星航", true, out);
     }
 
+    @Override
+    public School findSchoolBySchoolCode(String schoolCode) {
+        return  schoolMapper.findSchoolBySchoolCode(schoolCode);
+    }
 }

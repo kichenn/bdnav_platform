@@ -117,70 +117,9 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     public SchoolClass findSchoolByParentId(Long parentId) {
         return schoolClassMapper.findSchoolByParentId(parentId);
     }
-/*    @Override
-    public List<List<SchoolClassOrgInfos>> queryIdsBySchoolId(Long schoolId){
-        SchoolClass schoolClass=new SchoolClass();
-        schoolClass.setSchoolId(schoolId);
-        List<SchoolClass> schoolClassList=schoolClassMapper.select(schoolClass);
-        //一个学校所有的院系架构 ids 和names
-        List<List<SchoolClassOrgInfos>> classInfos=new ArrayList<>();
-        for (int i = 0; i < schoolClassList.size(); i++) {
-            //判断为父节点的数据
-            if(schoolClassList.get(i).getParentId().equals(Long.parseLong("-1"))){
-                classInfos.add(getNamesOrIds(schoolClassList.get(i).getId()+"",schoolClassList.get(i).getName(),schoolClassList));
-            }
-        }
-        return classInfos;
+
+    @Override
+    public List<SchoolClass> queryClassBySchoolCode(String schoolCode) {
+        return schoolClassMapper.queryClassBySchoolCode(schoolCode);
     }
-    public List<SchoolClassOrgInfos> getNamesOrIds(String pIds,String pName,List<SchoolClass> schoolClassList){
-       List<SchoolClassOrgInfos> schoolClassOrgInfosList=new ArrayList<>();
-        SchoolClassOrgInfos schoolClassOrgInfos=new SchoolClassOrgInfos();
-        String []pId=pIds.split(",");
-        String names=pName;
-        //循环所有节点
-        int j=0;
-        for (int i = 0; i <  schoolClassList.size(); i++) {
-            if (schoolClassList.get(i).getParentId().equals(Long.parseLong(pId[pId.length - 1]))
-                    || schoolClassList.get(i).getParentId() + "" == pId[pId.length - 1]) {
-                if(j>0){
-                    pName += "/" + schoolClassList.get(i).getName();
-                    pIds="";
-                            for(int x=0;x<pId.length;x++){
-                                if((x+1)==pId.length){
-                                    pIds+=pId[x];
-                                }else{
-                                    pIds+=pId[x]+",";
-                                }
-                            }
-                    pIds += "," + schoolClassList.get(i).getId();
-                   getNamesOrIds(pIds, pName, schoolClassList);
-                }else{
-                    names += "/" + schoolClassList.get(i).getName();
-                    pIds += "," + schoolClassList.get(i).getId();
-                    schoolClassOrgInfosList=getNamesOrIds(pIds, names, schoolClassList);
-                    j++;
-                }
-            }
-
-        }
-        if(j==0){
-            schoolClassOrgInfos.setSchoolClassNames(pName);
-            schoolClassOrgInfos.setSchoolClassIds(pIds);
-             schoolClassOrgInfosList.add(schoolClassOrgInfos);
-        }
-        return schoolClassOrgInfosList;
-    }
-    public SchoolClassOrgInfos addSchoolClassInfo(){
-
-    }
-    @Data
-    public class SchoolClassOrgInfos{
-        //院校名称 如 ： 音乐学院/舞蹈系/舞蹈专业..
-        private String schoolClassNames;
-        //院校ID 如 ： 1,2,3..
-        private String schoolClassIds;
-
-    }*/
-
-
 }

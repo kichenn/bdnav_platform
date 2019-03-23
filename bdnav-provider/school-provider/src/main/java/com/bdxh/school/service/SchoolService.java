@@ -56,4 +56,7 @@ public interface SchoolService extends IService<School> {
 
     //学校列表信息导出
     void downloadReportItemsExcel(List<SchoolExcelReportBean> schoolExcelReportBeans, OutputStream out) throws Exception;
+
+    //根据学校Code查询学校
+    School findSchoolBySchoolCode(String schoolCode);
 }

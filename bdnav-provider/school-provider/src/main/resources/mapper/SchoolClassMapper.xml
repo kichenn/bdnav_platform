@@ -60,4 +60,10 @@
         from t_school_class
         where parent_id=#{parentId}
     </select>
+
+    <select id="queryClassBySchoolCode" resultMap="BaseResultMap">
+       select  <include refid="Base_Column_List"/>
+        from t_school_class
+        where school_code=#{schoolCode} and t_school_class.type="5"
+    </select>
 </mapper>
