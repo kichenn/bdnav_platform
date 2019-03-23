@@ -183,12 +183,10 @@ public class SchoolClassController {
     @ResponseBody
     public Object queryClassUrlBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
         List<SchoolClass> list=schoolClassService.queryClassBySchoolCode(schoolCode);
-
         for (int i = 0; i < list.size(); i++) {
             if(!list.get(i).getParentId().equals("-1")){
-            list.get(i).setParentIds(list.get(i).getParentIds().trim().substring(1));
-            list.get(i).setThisUrl(list.get(i).getThisUrl().trim().substring(1));
-            list.get(i).setParentIds(list.get(i).getParentIds()+","+list.get(i).getId());
+            list.get(i).setParentIds(list.get(i).getParentIds().trim().substring(1)+","+list.get(i).getId());
+            list.get(i).setThisUrl(list.get(i).getThisUrl().trim().substring(1)+"/"+list.get(i).getName());
             }
         }
         return WrapMapper.ok(list);
