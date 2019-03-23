@@ -1,6 +1,7 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.support.BaseService;
+import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.RolePermission;
 import com.bdxh.system.persistence.RolePermissionMapper;
 import com.bdxh.system.service.RolePermissionService;
@@ -52,6 +53,13 @@ public class RolePermissionServiceImpl extends BaseService<RolePermission> imple
     @Override
     public List<RolePermission> findPermissionList(Long roleId, Integer RpSwitch) {
         return  rolePermissionMapper.findPermissionList(roleId,RpSwitch);
+    }
+
+    //批量添加
+    @Override
+    public Boolean batchAddPermissions(List<RolePermissionDto> rolePermissionDto) {
+
+        return rolePermissionMapper.batchAddPermissions(rolePermissionDto)>0;
     }
 
 }

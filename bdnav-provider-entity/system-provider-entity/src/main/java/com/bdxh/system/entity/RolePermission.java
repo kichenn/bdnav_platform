@@ -1,5 +1,6 @@
 package com.bdxh.system.entity;
 
+
 import javax.persistence.*;
 
 @Table(name = "sys_role_permission")
@@ -36,7 +37,18 @@ public class RolePermission {
     @Column(name = "selected")
     private Integer selected;
 
+    /**
+     * "是否选中 1 选中 2未选中"
+     */
+    @Column(name = "checked")
+    private Integer checked;
 
+
+    /**
+     * "半选状态 1 选中 2未选中"
+     */
+    @Column(name = "indeterminate")
+    private Integer indeterminate;
 
     /**
      * 获取主键
@@ -113,6 +125,7 @@ public class RolePermission {
      * @return
      */
     public Integer getSelected() {
+
         return selected;
     }
     /**
@@ -122,4 +135,22 @@ public class RolePermission {
     public void setSelected(Integer selected) {
         this.selected = selected;
     }
+
+    public Integer getChecked() {
+        return checked;
+    }
+
+    public void setChecked(Integer checked) {
+        this.checked = checked;
+    }
+
+    public Integer getIndeterminate() {
+        return indeterminate;
+    }
+
+    public void setIndeterminate(Integer indeterminate) {
+        this.indeterminate = indeterminate;
+    }
+
+
 }

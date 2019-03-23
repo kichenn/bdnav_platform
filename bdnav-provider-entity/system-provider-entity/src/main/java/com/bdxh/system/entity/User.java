@@ -2,6 +2,7 @@ package com.bdxh.system.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "sys_user")
 public class User {
@@ -11,9 +12,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
-
 
     /**
      * 用户名
@@ -101,6 +99,24 @@ public class User {
      * 备注
      */
     private String remark;
+
+    private List<UserRole> urList;
+
+    /**
+     * 获取用户角色关系
+     * @return
+     */
+    public List<UserRole> getUrList() {
+        return urList;
+    }
+
+    /**
+     * 设置用户角色关系
+     * @param urList
+     */
+    public void setUrList(List<UserRole> urList) {
+        this.urList = urList;
+    }
 
     /**
      * 获取主键id

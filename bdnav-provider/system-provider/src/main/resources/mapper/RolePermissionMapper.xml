@@ -10,9 +10,11 @@
     <result column="permission_id" jdbcType="BIGINT" property="permissionId" />
     <result column="rp_switch" jdbcType="TINYINT" property="RpSwitch" />
     <result column="selected" jdbcType="TINYINT" property="selected" />
+    <result column="checked" jdbcType="TINYINT" property="checked" />
+    <result column="indeterminate" jdbcType="TINYINT" property="indeterminate" />
   </resultMap>
 
-  <sql id="BaseColumns">id,role_id,permission_id,rp_switch,selected</sql>
+  <sql id="BaseColumns">id,role_id,permission_id,rp_switch,selected,checked,indeterminate</sql>
 
   <delete id="deleteByRoleId" parameterType="java.lang.Long">
     delete from sys_role_permission where role_id = #{roleId,jdbcType=BIGINT}
@@ -36,6 +38,9 @@
       FROM sys_role_permission
     where role_id = #{roleId} AND rp_switch = #{RpSwitch}
     </select>
+
+
+
 
 
 

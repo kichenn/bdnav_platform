@@ -1,7 +1,6 @@
 package com.bdxh.system.service;
 
 import com.bdxh.common.support.IService;
-import com.bdxh.system.entity.Role;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 
@@ -44,5 +43,7 @@ public interface UserService extends IService<User> {
      * @param ids
      */
     void delBatchUser(List<Long> ids);
+
+
 
 }

@@ -40,6 +40,9 @@ public class TreeBean {
     @ApiModelProperty("是否选中子节点")
     private Boolean selected=Boolean.FALSE;
 
+    @ApiModelProperty("半选状态 ")
+    private Boolean indeterminate=Boolean.FALSE;
+
     @ApiModelProperty("是否勾选(如果勾选，子节点也会全部勾选)")
     private Boolean checked=Boolean.FALSE;
 

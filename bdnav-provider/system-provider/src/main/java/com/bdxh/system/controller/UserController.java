@@ -54,6 +54,7 @@ public class UserController {
             Preconditions.checkArgument(userData == null, "用户名已经存在");
             User user = BeanMapUtils.map(addUserDto, User.class);
             userService.save(user);
+
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();

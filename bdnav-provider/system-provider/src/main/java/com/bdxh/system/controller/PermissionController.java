@@ -1,23 +1,13 @@
 package com.bdxh.system.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.system.dto.AddPermissionDto;
-import com.bdxh.system.dto.AuRolePermissionDto;
-import com.bdxh.system.dto.ModifyPermissionDto;
-import com.bdxh.system.dto.RolePermissionDto;
+import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
-import com.bdxh.system.entity.Role;
 import com.bdxh.system.entity.RolePermission;
 import com.bdxh.system.service.PermissionService;
 import com.bdxh.system.service.RolePermissionService;
-import com.bdxh.system.service.impl.RolePermissionServiceImpl;
 import com.bdxh.system.vo.PermissionTreeVo;
-import com.sun.corba.se.spi.ior.IdentifiableFactory;
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -146,17 +136,22 @@ public class PermissionController {
     public Object theTreeMenu(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
 
         List<RolePermissionDto> permissions = permissionService.theTreeMenu(roleId,selected);
-          System.out.print("==============="+permissions);
 
         List<PermissionTreeVo> treeVos = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(permissions)) {
+        if (CollectionUtils.isNotEmpty(permissions)&&permissions.size()>0) {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
                 treeVo.setTitle(e.getName());
                 treeVo.setCreateDate(e.getCreateDate());
                 treeVo.setExpand(Boolean.TRUE);
-                if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)) {
+                if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)&&e.getRplist().get(0).getSelected().equals(2)) {
                     treeVo.setSelected(Boolean.TRUE);
+                }
+                if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)&&e.getRplist().get(0).getIndeterminate().equals(1)){
+                    treeVo.setIndeterminate(Boolean.TRUE);
+                }
+                if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)&&e.getRplist().get(0).getChecked().equals(1)){
+                    treeVo.setChecked(Boolean.TRUE);
                 }
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
@@ -172,28 +167,24 @@ public class PermissionController {
      * 保存并修改权限
      * @return
      */
-   @RequestMapping(value = "/addorUpdatePermission", method = RequestMethod.POST)
+   @RequestMapping(value = "/addOrUpdatePermission", method = RequestMethod.POST)
     @ApiOperation(value = "保存并修改权限", response = Boolean.class)
-    public Object addorUpdatePermission(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "arpdDtos")String arpdDtos) {
+    public Object addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto) {
+       System.out.println(""+baPermissionsDto.getRoleId());
        try{
-       JSONArray addPermissionDto = JSON.parseArray(arpdDtos);
-   /*        String permissionId=jsonObject.getString("id");*/
-           //查询当前角色关系表中全部权限
-           List<RolePermission> rps=rolePermissionService.findPermissionId(roleId);
-           Boolean  b = rps.containsAll(addPermissionDto) && addPermissionDto.containsAll(rps);
-           if (b.equals(Boolean.FALSE)){
-               for(RolePermission u:rps){
-                   rolePermissionService.deleteByKey(u.getId());
-               }
-               for (int i = 0; i < addPermissionDto.size(); i++) {
-                   JSONObject jsonObject = (JSONObject) addPermissionDto.get(i);
-                   RolePermission rolePermission=new RolePermission();
-                   rolePermission.setPermissionId(Long.valueOf(jsonObject.getString("id")));
-                   rolePermission.setRoleId(roleId);
-                   rolePermission.setSelected(2);
-                   rolePermissionService.save(rolePermission);
-            }
-       }
+           //根据roid将所有权限进行删除
+           rolePermissionService.delRolePermission(Long.valueOf(baPermissionsDto.getRoleId()));
+           //在批量将前台数据添加进去
+           List<AuRolePermissionDto> rpd=baPermissionsDto.getRolePermissionDto();
+           for (AuRolePermissionDto pd:rpd){
+               RolePermission rolePermission=new RolePermission();
+               rolePermission.setRoleId(Long.valueOf(baPermissionsDto.getRoleId()));
+               rolePermission.setPermissionId(pd.getId());
+               rolePermission.setChecked(pd.getChecked());
+               rolePermission.setIndeterminate(pd.getIndeterminate());
+               rolePermissionService.save(rolePermission);
+           }
+
             return WrapMapper.ok();
         }catch (Exception e){
         e.printStackTrace();
@@ -210,16 +201,23 @@ public class PermissionController {
     @ApiOperation(value = "测试返回数据保存并修改权限", response = Boolean.class)
     public Object test1(
             @RequestParam(value = "roleId") Long roleId) {
-            //查询当前角色关系表中全部权限
+
+        List<RolePermissionDto> permissions = permissionService.theTreeMenu(roleId,2);
+
+     /*       //查询当前角色关系表中全部权限
         List<RolePermission> rps=rolePermissionService.findPermissionId(roleId);
         for(RolePermission u:rps){
             System.out.print(u.getId());
             rolePermissionService.deleteByKey(u.getId());
         }
+        if (roleId == null) {
+
+        }*/
+
             //判断list中的值长度有则进入下一层 没有权限增添加
    /*         if (rps.size()>0){
             }*/
-        return WrapMapper.ok(rps);
+        return WrapMapper.ok(permissions);
     }
 
 
