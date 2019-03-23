@@ -3,6 +3,7 @@ package com.bdxh.backend.configration.security.controller;
 import com.alibaba.fastjson.JSON;
 import com.bdxh.backend.configration.security.properties.SecurityConstant;
 import com.bdxh.backend.configration.security.userdetail.MyUserDetails;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -38,7 +39,6 @@ import java.util.concurrent.TimeUnit;
  * @create: 2019-02-28 10:47
  **/
 @RestController
-@RequestMapping("/authentication")
 @Slf4j
 @Api(value = "用户登录", tags = "用户登录交互API")
 public class SecurityController {
@@ -50,7 +50,7 @@ public class SecurityController {
     private RedisTemplate<String, Object> redisTemplate;
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/authentication/login", method = RequestMethod.GET)
     @ApiOperation(value = "获取token", response = String.class)
     public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) throws IOException {
         try {
@@ -105,4 +105,10 @@ public class SecurityController {
         }
     }
 
+
+    @GetMapping("/getUserInfoByToken")
+    @ApiOperation(value = "token获取用户信息", response = String.class)
+    public Object getUserInfoByToken() {
+        return WrapMapper.ok(SecurityUtils.getCurrentUser());
+    }
 }

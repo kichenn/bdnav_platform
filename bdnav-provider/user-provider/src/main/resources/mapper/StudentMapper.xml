@@ -1,46 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.user.persistence.StudentMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.user.entity.Student">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_id" jdbcType="BIGINT" property="schoolId" />
-    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
-    <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
-    <result column="campus_name" jdbcType="VARCHAR" property="campusName" />
-    <result column="college_name" jdbcType="VARCHAR" property="collegeName" />
-    <result column="faculty_name" jdbcType="VARCHAR" property="facultyName" />
-    <result column="profession_name" jdbcType="VARCHAR" property="professionName" />
-    <result column="grade_name" jdbcType="VARCHAR" property="gradeName" />
-    <result column="class_name" jdbcType="VARCHAR" property="className" />
-    <result column="class_id" jdbcType="BIGINT" property="classId" />
-    <result column="class_ids" jdbcType="VARCHAR" property="classIds" />
-    <result column="class_names" jdbcType="VARCHAR" property="classNames" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="gender" jdbcType="TINYINT" property="gender" />
-    <result column="birth" jdbcType="CHAR" property="birth" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
-    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
-    <result column="qq_number" jdbcType="VARCHAR" property="qqNumber" />
-    <result column="wx_number" jdbcType="VARCHAR" property="wxNumber" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-      <result column="image_name" jdbcType="VARCHAR" property="imageName" />
-    <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
-    <result column="dormitory_address" jdbcType="VARCHAR" property="dormitoryAddress" />
-    <result column="adress" jdbcType="VARCHAR" property="adress" />
-    <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber" />
-    <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber" />
-    <result column="activate" jdbcType="TINYINT" property="activate" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.user.entity.Student">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="campus_name" jdbcType="VARCHAR" property="campusName"/>
+        <result column="college_name" jdbcType="VARCHAR" property="collegeName"/>
+        <result column="faculty_name" jdbcType="VARCHAR" property="facultyName"/>
+        <result column="profession_name" jdbcType="VARCHAR" property="professionName"/>
+        <result column="grade_name" jdbcType="VARCHAR" property="gradeName"/>
+        <result column="class_name" jdbcType="VARCHAR" property="className"/>
+        <result column="class_id" jdbcType="BIGINT" property="classId"/>
+        <result column="class_ids" jdbcType="VARCHAR" property="classIds"/>
+        <result column="class_names" jdbcType="VARCHAR" property="classNames"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="birth" jdbcType="CHAR" property="birth"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="idcard" jdbcType="VARCHAR" property="idcard"/>
+        <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
+        <result column="wx_number" jdbcType="VARCHAR" property="wxNumber"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
+        <result column="nation_name" jdbcType="VARCHAR" property="nationName"/>
+        <result column="dormitory_address" jdbcType="VARCHAR" property="dormitoryAddress"/>
+        <result column="adress" jdbcType="VARCHAR" property="adress"/>
+        <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
+        <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber"/>
+        <result column="activate" jdbcType="TINYINT" property="activate"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
     <sql id="studentCloumn">
      id,school_id,school_code,school_name,campus_name,college_name,faculty_name,profession_name,
      grade_name,class_name,class_id,class_ids,class_names,name,gender,birth,phone,card_number,idcard,
@@ -48,40 +48,42 @@
      activate,create_date,update_date,operator,operator_name,remark,image_name
     </sql>
     <!-- -->
-<select id="selectAllStudentInfo" resultMap="BaseResultMap">
-select <include refid="studentCloumn" /> from t_student
-    <where>
-    <if test="studentQueryDto.schoolName!=null and studentQueryDto.schoolName!=''">
-      AND school_name=#{studentQueryDto.schoolName}
-    </if>
-    <if test="studentQueryDto.name!=null and studentQueryDto.name!=''">
-        AND `name`=#{studentQueryDto.name}
-    </if>
-    <if test="studentQueryDto.phone!=null and studentQueryDto.phone!=''">
-        AND phone=#{studentQueryDto.phone}
-    </if>
-    <if test="studentQueryDto.cardNumber!=null and studentQueryDto.cardNumber!=''">
-        AND card_number=#{studentQueryDto.cardNumber}
-    </if>
-    <if test="studentQueryDto.activate!=null and studentQueryDto.activate!=''">
-        AND activate=#{studentQueryDto.activate}
-    </if>
-    <if test="studentQueryDto.schoolCode!=null and studentQueryDto.schoolCode!=''">
-        AND school_code=#{studentQueryDto.schoolCode}
-    </if>
-    <if test="studentQueryDto.classIds!=null and studentQueryDto.classIds!=''">
-        AND  class_ids like CONCAT(#{studentQueryDto.classIds},'%')
-    </if>
-    </where>
-</select>
-  <!-- 删除学生信息-->
-  <delete id="removeStudentInfo">
+    <select id="selectAllStudentInfo" resultMap="BaseResultMap">
+        select
+        <include refid="studentCloumn"/>
+        from t_student
+        <where>
+            <if test="studentQueryDto.schoolName!=null and studentQueryDto.schoolName!=''">
+                AND school_name=#{studentQueryDto.schoolName}
+            </if>
+            <if test="studentQueryDto.name!=null and studentQueryDto.name!=''">
+                AND `name`=#{studentQueryDto.name}
+            </if>
+            <if test="studentQueryDto.phone!=null and studentQueryDto.phone!=''">
+                AND phone=#{studentQueryDto.phone}
+            </if>
+            <if test="studentQueryDto.cardNumber!=null and studentQueryDto.cardNumber!=''">
+                AND card_number=#{studentQueryDto.cardNumber}
+            </if>
+            <if test="studentQueryDto.activate!=null and studentQueryDto.activate!=''">
+                AND activate=#{studentQueryDto.activate}
+            </if>
+            <if test="studentQueryDto.schoolCode!=null and studentQueryDto.schoolCode!=''">
+                AND school_code=#{studentQueryDto.schoolCode}
+            </if>
+            <if test="studentQueryDto.classIds!=null and studentQueryDto.classIds!=''">
+                AND class_ids like CONCAT(#{studentQueryDto.classIds},'%')
+            </if>
+        </where>
+    </select>
+    <!-- 删除学生信息-->
+    <delete id="removeStudentInfo">
      DELETE FROM t_student
      WHERE school_code=#{schoolCode}
      AND card_number=#{cardNumber}
     </delete>
-  <!-- 查询单个学生信息 -->
-<select id="selectStudentVo" resultType="com.bdxh.user.vo.StudentVo" parameterType="String">
+    <!-- 查询单个学生信息 -->
+    <select id="selectStudentVo" resultType="com.bdxh.user.vo.StudentVo" parameterType="String">
       SELECT
       id as sId,
       school_id as schoolId,
@@ -211,9 +213,17 @@ select <include refid="studentCloumn" /> from t_student
             `remark`=#{studentDto.remark},
         </if>
         `update_date`=NOW()
-          WHERE `school_code`=#{studentDto.schoolCode} AND  `card_number`=#{studentDto.cardNumber};
+        WHERE `school_code`=#{studentDto.schoolCode} AND `card_number`=#{studentDto.cardNumber};
     </update>
 
-
+    <select id="findStudentBySchoolClassId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="studentCloumn"/>
+        FROM t_student
+        WHERE `school_code`=#{schoolCode,jdbcType=VARCHAR}
+        AND `school_id`=#{schoolId,jdbcType=BIGINT}
+        AND `class_id`=#{classId,jdbcType=BIGINT}
+        limit 1;
+    </select>
 
 </mapper>

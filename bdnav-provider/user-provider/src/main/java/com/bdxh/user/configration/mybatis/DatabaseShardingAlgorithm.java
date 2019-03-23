@@ -14,7 +14,7 @@ public class DatabaseShardingAlgorithm implements PreciseShardingAlgorithm<Strin
             if (each.endsWith(Objects.hashCode(preciseShardingValue.getValue()) % size + "")) {
                 return each;
             }
-        }
+    }
         throw new UnsupportedOperationException();
     }
 }

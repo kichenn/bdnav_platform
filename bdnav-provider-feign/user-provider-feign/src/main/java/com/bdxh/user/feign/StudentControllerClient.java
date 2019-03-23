@@ -12,6 +12,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
+import com.bdxh.user.entity.Student;
 import com.bdxh.user.fallback.StudentControllerFallback;
 import com.bdxh.user.vo.StudentVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -79,4 +80,14 @@ public interface StudentControllerClient {
     @RequestMapping(value = "/student/removeStudent",method = RequestMethod.POST)
     @ResponseBody
     Wrapper removeStudent(@RequestParam(name = "schoolCode")String schoolCode,@RequestParam(name = "cardNumber")String cardNumber);
+
+
+    /**
+     * @Description: 学校code，学校id，班级id查询学生信息
+     * @Author: Kang
+     * @Date: 2019/3/23 10:19
+     */
+    @RequestMapping(value = "/student/findStudentBySchoolClassId",method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<Student> findStudentBySchoolClassId(@RequestParam("schoolCode") String schoolCode, @RequestParam("schoolId") Long schoolId, @RequestParam("classId") Long classId);
 }

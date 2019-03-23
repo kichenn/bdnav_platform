@@ -13,6 +13,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
+import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import org.springframework.stereotype.Component;
@@ -53,6 +54,11 @@ public class StudentControllerFallback implements StudentControllerClient {
 
     @Override
     public Wrapper removeStudent(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<Student> findStudentBySchoolClassId(String schoolCode, Long schoolId, Long classId) {
         return WrapMapper.error();
     }
 }

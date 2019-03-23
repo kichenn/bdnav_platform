@@ -166,10 +166,10 @@ public class SchoolClassController {
      * @Author: Kang
      * @Date: 2019/3/22 18:41
      */
-    @RequestMapping(value = "/findSchoolByParentId", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSchoolClassByParentId", method = RequestMethod.GET)
     @ApiOperation(value = "父id查询院系信息", response = SchoolClass.class)
     @ResponseBody
-    public Object findSchoolByParentId(@RequestParam("parentId") Long parentId) {
+    public Object findSchoolClassByParentId(@RequestParam("parentId") Long parentId) {
         return WrapMapper.ok(schoolClassService.findSchoolByParentId(parentId));
     }
 }

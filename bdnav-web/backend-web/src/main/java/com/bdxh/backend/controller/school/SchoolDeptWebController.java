@@ -14,6 +14,7 @@ import com.bdxh.school.vo.SchoolDeptTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,14 @@ public class SchoolDeptWebController {
     @RequestMapping(value = "/delSchoolDeptById", method = RequestMethod.GET)
     @ApiOperation(value = "根据id删除部门关系信息", response = Boolean.class)
     public Object delSchoolDeptById(@RequestParam("id") Long id) {
+        //删除该部门时，查看部门底下是否还存在子部门
+        SchoolDept schoolDept = schoolDeptControllerClient.findSchoolDeptByParentId(id).getResult();
+        if (schoolDept != null) {
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, "该部门底下存在子部门不能删除", false);
+        }
+        /*此处加上 如果部门底下存在人数也不能删除
+        else if () {
+        }*/
         Wrapper wrapper = schoolDeptControllerClient.delSchoolDeptById(id);
         return WrapMapper.ok(wrapper.getResult());
     }

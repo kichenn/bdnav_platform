@@ -51,19 +51,19 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Override
     @Transactional
-    public void deleteStudentInfo(String schoolCode,String cardNumber) {
+    public void deleteStudentInfo(String schoolCode, String cardNumber) {
         studentMapper.removeStudentInfo(schoolCode, cardNumber);
         //获取学生家长信息
-        familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCode,cardNumber);
+        familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCode, cardNumber);
     }
 
     @Override
     @Transactional
-    public void deleteBatchesStudentInfo(String schoolCode,String cardNumber) {
-        String[] schoolCodes=schoolCode.split(",");
-        String[] cardNumbers=cardNumber.split(",");
-        if(schoolCodes.length==cardNumbers.length){
-            for (int i=0; i<cardNumbers.length;i++) {
+    public void deleteBatchesStudentInfo(String schoolCode, String cardNumber) {
+        String[] schoolCodes = schoolCode.split(",");
+        String[] cardNumbers = cardNumber.split(",");
+        if (schoolCodes.length == cardNumbers.length) {
+            for (int i = 0; i < cardNumbers.length; i++) {
                 studentMapper.removeStudentInfo(schoolCodes[i], cardNumbers[i]);
                 familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCodes[i], cardNumbers[i]);
             }
@@ -71,18 +71,17 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     }
 
 
-
     @Override
     @Transactional
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
         studentMapper.updateStudentInfo(updateStudentDto);
-        FamilyStudentVo familyStudentVo= familyStudentMapper.studentQueryInfo(
+        FamilyStudentVo familyStudentVo = familyStudentMapper.studentQueryInfo(
                 updateStudentDto.getSchoolCode(),
                 updateStudentDto.getCardNumber());
-        if(null!=familyStudentVo &&!("").equals(familyStudentVo)){
-            if(!updateStudentDto.getName().equals(familyStudentVo.getSName())){
+        if (null != familyStudentVo && !("").equals(familyStudentVo)) {
+            if (!updateStudentDto.getName().equals(familyStudentVo.getSName())) {
                 //修改关系表数据
-                AddFamilyStudentDto familyStudentDto=new AddFamilyStudentDto();
+                AddFamilyStudentDto familyStudentDto = new AddFamilyStudentDto();
                 familyStudentDto.setStudentName(updateStudentDto.getName());
                 familyStudentDto.setCardNumber(familyStudentVo.getFCardNumber());
                 familyStudentDto.setSchoolCode(updateStudentDto.getSchoolCode());
@@ -93,24 +92,33 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Override
     public StudentVo selectStudentVo(String schoolCode, String cardNumber) {
-        StudentVo studentVo=studentMapper.selectStudentVo(schoolCode,cardNumber);
-        FamilyStudentVo familyStudentVo=familyStudentMapper.studentQueryInfo(schoolCode, cardNumber);
-       if(null!=familyStudentVo){
-           String fNumber=familyStudentVo.getFCardNumber();
-           if(null!=fNumber&&!("").equals(fNumber)){
-               FamilyVo familyVo=familyMapper.selectByCodeAndCard(schoolCode,fNumber);
-               studentVo.setFName(familyVo.getName());
-               studentVo.setCardNumber(fNumber);
-               studentVo.setFPhone(familyVo.getPhone());
-           }
-       }
+        StudentVo studentVo = studentMapper.selectStudentVo(schoolCode, cardNumber);
+        FamilyStudentVo familyStudentVo = familyStudentMapper.studentQueryInfo(schoolCode, cardNumber);
+        if (null != familyStudentVo) {
+            String fNumber = familyStudentVo.getFCardNumber();
+            if (null != fNumber && !("").equals(fNumber)) {
+                FamilyVo familyVo = familyMapper.selectByCodeAndCard(schoolCode, fNumber);
+                studentVo.setFName(familyVo.getName());
+                studentVo.setCardNumber(fNumber);
+                studentVo.setFPhone(familyVo.getPhone());
+            }
+        }
         return studentVo;
     }
 
     @Override
     public StudentVo isNullStudent(String schoolCode, String cardNumber) {
-        return studentMapper.selectStudentVo(schoolCode,cardNumber);
+        return studentMapper.selectStudentVo(schoolCode, cardNumber);
     }
 
+    /**
+     * @Description: 学校code，学校id，班级id查询学生信息
+     * @Author: Kang
+     * @Date: 2019/3/23 10:43
+     */
+    @Override
+    public Student findStudentBySchoolClassId(String schoolCode, Long schoolId, Long classId) {
+        return studentMapper.findStudentBySchoolClassId(schoolCode,schoolId,classId);
+    }
 
 }

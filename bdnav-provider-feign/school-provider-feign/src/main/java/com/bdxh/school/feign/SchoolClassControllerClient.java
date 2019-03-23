@@ -111,7 +111,7 @@ public interface SchoolClassControllerClient {
      * @Author: Kang
      * @Date: 2019/3/22 18:41
      */
-    @RequestMapping(value = "/schoolClass/findSchoolByParentId", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolClass/findSchoolClassByParentId", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<SchoolClass> findSchoolByParentId(@RequestParam("parentId") Long parentId);
+    Wrapper<SchoolClass> findSchoolClassByParentId(@RequestParam("parentId") Long parentId);
 }

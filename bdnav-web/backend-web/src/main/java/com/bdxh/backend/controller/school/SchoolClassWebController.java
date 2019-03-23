@@ -6,6 +6,8 @@ import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.vo.SchoolClassTreeVo;
+import com.bdxh.user.entity.Student;
+import com.bdxh.user.feign.StudentControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +26,9 @@ public class SchoolClassWebController {
 
     @Autowired
     private SchoolClassControllerClient schoolClassControllerClient;
+
+    @Autowired
+    private StudentControllerClient studentControllerClient;
 
     @RequestMapping(value = "/findSchoolClassTreeBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "学校id递归查询院校结构关系", response = SchoolClassTreeVo.class)
@@ -59,6 +64,17 @@ public class SchoolClassWebController {
     @RequestMapping(value = "/delSchoolClassById", method = RequestMethod.DELETE)
     @ApiOperation(value = "根据id删除院校关系", response = Boolean.class)
     public Object delSchoolClassById(@RequestParam("id") Long id) {
+        //删除该院系时，查看院系底下是否还存在子院系
+        SchoolClass schoolClass = schoolClassControllerClient.findSchoolClassByParentId(id).getResult();
+        Student student = null;
+        //院系底下不存在子院系，查看当前院系是否存在人员
+        if (schoolClass == null) {
+            student = studentControllerClient.findStudentBySchoolClassId(schoolClass.getSchoolCode(), schoolClass.getSchoolId(), schoolClass.getId()).getResult();
+        }
+        if (schoolClass != null) {
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, "该院系底下存在子院系不能删除", false);
+        } else if (student != null) {
+        }
         Wrapper wrapper = schoolClassControllerClient.delSchoolClassById(id);
         return WrapMapper.ok(wrapper.getResult());
     }
