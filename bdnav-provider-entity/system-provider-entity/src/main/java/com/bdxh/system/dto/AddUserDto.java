@@ -1,5 +1,6 @@
 package com.bdxh.system.dto;
 
+import com.bdxh.system.entity.UserRole;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.Data;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Data
 public class AddUserDto implements Serializable {
@@ -81,6 +83,12 @@ public class AddUserDto implements Serializable {
     private Long deptId;
 
     /**
+     * 分配的角色id
+     */
+    @ApiModelProperty("分配的角色id")
+    private String roleIds;
+
+    /**
      * 状态 1 正常 2 锁定
      */
     @ApiModelProperty("状态 1 正常 2 锁定")
@@ -92,6 +100,11 @@ public class AddUserDto implements Serializable {
     @ApiModelProperty("类型 1 普通用户 2 管理员")
     private Byte type = 1;
 
+
+    /**
+     * 用户角色关系表 多对多关系
+     */
+    private List<UserRole> urList;
 
     /**
      * 操作人

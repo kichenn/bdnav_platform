@@ -2,10 +2,7 @@ package com.bdxh.system.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.system.dto.AddPermissionDto;
-import com.bdxh.system.dto.AuRolePermissionDto;
-import com.bdxh.system.dto.ModifyPermissionDto;
-import com.bdxh.system.dto.RolePermissionDto;
+import com.bdxh.system.dto.*;
 import com.bdxh.system.feign.PermissionControllerClient;
 import com.bdxh.system.vo.PermissionTreeVo;
 import org.springframework.stereotype.Component;
@@ -46,7 +43,7 @@ public class PermissionControllerClientFallback implements PermissionControllerC
     }
 
     @Override
-    public Wrapper addorUpdatePermission(Long roleId, String arpdDtos) {
+    public Wrapper addOrUpdatePermission(BaPermissionsDto baPermissionsDto) {
         return WrapMapper.error();
     }
 

@@ -45,6 +45,8 @@
             <result column="permission_id" jdbcType="BIGINT" property="permissionId" />
             <result column="rp_switch" jdbcType="TINYINT" property="RpSwitch" />
             <result column="selected" jdbcType="TINYINT" property="selected" />
+            <result column="checked" jdbcType="TINYINT" property="checked" />
+            <result column="indeterminate" jdbcType="TINYINT" property="indeterminate" />
         </collection>
     </resultMap>
 

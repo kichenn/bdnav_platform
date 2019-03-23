@@ -1,10 +1,7 @@
 package com.bdxh.system.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.system.dto.AddPermissionDto;
-import com.bdxh.system.dto.AuRolePermissionDto;
-import com.bdxh.system.dto.ModifyPermissionDto;
-import com.bdxh.system.dto.RolePermissionDto;
+import com.bdxh.system.dto.*;
 import com.bdxh.system.fallback.PermissionControllerClientFallback;
 import com.bdxh.system.vo.PermissionTreeVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -72,9 +69,8 @@ public interface PermissionControllerClient {
      * 更改或保存权限
      * @return
      */
-    @RequestMapping(value = "/permission/addorUpdatePermission",method = RequestMethod.POST)
+    @RequestMapping(value = "/permission/addOrUpdatePermission",method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addorUpdatePermission(
-            @RequestParam(value = "roleId") Long roleId,@RequestParam(value = "arpdDtos")String arpdDtos);
+    Wrapper addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto);
 
 }

@@ -1,6 +1,8 @@
 package com.bdxh.system.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.system.dto.BaPermissionsDto;
+import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.RolePermission;
 import org.apache.ibatis.annotations.Param;
 
@@ -29,4 +31,6 @@ public interface RolePermissionService extends IService<RolePermission> {
     //根据角色id和启动条件查询
     List<RolePermission> findPermissionList(Long roleId,Integer RpSwitch);
 
+    //批量添加用户关系
+    Boolean batchAddPermissions(List<RolePermissionDto> rolePermissionDto);
 }

@@ -1,5 +1,7 @@
 package com.bdxh.system.persistence;
 
+import com.bdxh.system.dto.BaPermissionsDto;
+import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.RolePermission;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -40,6 +42,9 @@ public interface RolePermissionMapper extends Mapper<RolePermission> {
      */
     List<RolePermission> findPermissionList(@Param("roleId") Long roleId,@Param("RpSwitch") Integer RpSwitch);
 
-
+    /**
+     * 批量添加用户关系
+     */
+    Integer batchAddPermissions(@Param("rolePermissionDto") List<RolePermissionDto> rolePermissionDto);
 
 }
