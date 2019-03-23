@@ -32,6 +32,10 @@
     <result column="dept_names" jdbcType="VARCHAR" property="deptNames" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+
+  <sql id="batchSql">
+    id,school_code,card_number,teacher_id,dept_id,dept_name,dept_ids,dept_names,create_date,update_date,operator,operator_name,remark
+  </sql>
   <!-- 删除老师部门信息-->
   <delete id="deleteTeacherDept">
     delete from t_teacher_dept
@@ -44,7 +48,8 @@
     select * from t_teacher_dept where school_code=#{schoolCode} and card_number=#{cardNumber}
   </select>
 
-  <update id="">
+
+    <update id="">
     UPDATE `t_teacher_dept`
     <if test="teacherId!=null and teacherId!=''">
   `teacher_id`=#{teacherId},
@@ -74,5 +79,16 @@
     WHERE `school_code`=#{schoolCode} and `card_number`=#{cardNumber};
 
   </update>
+
+
+  <select id="findTeacherBySchoolDeptId" resultMap="BaseResultMap">
+    SELECT
+     <include refid="batchSql"/>
+    FROM t_teacher_dept
+    WHERE `school_code`=#{schoolCode,jdbcType=VARCHAR}
+    AND `school_id`=#{schoolId,jdbcType=BIGINT}
+    AND `dept_id`=#{deptId,jdbcType=BIGINT}
+    limit 1;
+  </select>
 
 </mapper>

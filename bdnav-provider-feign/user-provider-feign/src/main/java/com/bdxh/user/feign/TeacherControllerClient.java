@@ -4,6 +4,8 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
+import com.bdxh.user.entity.Teacher;
+import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.fallback.TeacherControllerFallback;
 import com.bdxh.user.vo.TeacherVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -79,4 +81,15 @@ public interface TeacherControllerClient {
     @RequestMapping(value = "/teacher/queryTeacherListPage",method = RequestMethod.POST)
     @ResponseBody
     Wrapper queryTeacherListPage(@RequestBody TeacherQueryDto teacherQueryDto);
+
+
+
+    /**
+     * @Description: 学校code，学校id，部门id查询老师信息
+     * @Author: Kang
+     * @Date: 2019/3/23 11:36
+     */
+    @RequestMapping(value = "/teacher/findTeacherBySchoolDeptId",method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<TeacherDept> findTeacherBySchoolDeptId(@RequestParam("schoolCode") String schoolCode, @RequestParam("schoolId") Long schoolId, @RequestParam("deptId") Long deptId);
 }

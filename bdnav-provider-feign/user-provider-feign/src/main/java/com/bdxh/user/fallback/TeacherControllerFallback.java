@@ -5,6 +5,8 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
+import com.bdxh.user.entity.Teacher;
+import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.TeacherVo;
 import org.springframework.stereotype.Component;
@@ -43,6 +45,11 @@ public class TeacherControllerFallback implements TeacherControllerClient {
 
     @Override
     public Wrapper queryTeacherListPage(TeacherQueryDto teacherQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<TeacherDept> findTeacherBySchoolDeptId(String schoolCode, Long schoolId, Long deptId) {
         return WrapMapper.error();
     }
 }

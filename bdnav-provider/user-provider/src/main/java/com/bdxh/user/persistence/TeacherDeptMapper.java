@@ -11,12 +11,15 @@ import java.util.List;
 
 @Repository
 public interface TeacherDeptMapper extends Mapper<TeacherDept> {
-    int deleteTeacherDept(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
+    int deleteTeacherDept(@Param("schoolCode") String schoolCode, @Param("cardNumber") String cardNumber);
 
-    List<TeacherDeptVo> selectTeacherDeptDetailsInfo(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
+    List<TeacherDeptVo> selectTeacherDeptDetailsInfo(@Param("schoolCode") String schoolCode, @Param("cardNumber") String cardNumber);
 
     TeacherDeptDto updateTeacherDept(TeacherDeptDto teacherDeptDto);
 
     //根据部门ID统计老师人数
     int queryTeacherCount(String schoolCode, String deptId);
+
+    //学校code，学校id，部门id查询老师信息
+    TeacherDept findTeacherBySchoolDeptId(@Param("schoolCode") String schoolCode, @Param("schoolId") Long schoolId, @Param("deptId") Long deptId);
 }

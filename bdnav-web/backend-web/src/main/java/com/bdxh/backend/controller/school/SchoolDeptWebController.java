@@ -11,6 +11,8 @@ import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.feign.SchoolDeptControllerClient;
 import com.bdxh.school.vo.SchoolClassTreeVo;
 import com.bdxh.school.vo.SchoolDeptTreeVo;
+import com.bdxh.user.entity.TeacherDept;
+import com.bdxh.user.feign.TeacherControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,9 @@ public class SchoolDeptWebController {
 
     @Autowired
     private SchoolDeptControllerClient schoolDeptControllerClient;
+
+    @Autowired
+    private TeacherControllerClient teacherControllerClient;
 
     @RequestMapping(value = "/findSchoolDeptTreeBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "学校id递归查询院校结构关系", response = SchoolDeptTreeVo.class)
@@ -67,12 +72,15 @@ public class SchoolDeptWebController {
     public Object delSchoolDeptById(@RequestParam("id") Long id) {
         //删除该部门时，查看部门底下是否还存在子部门
         SchoolDept schoolDept = schoolDeptControllerClient.findSchoolDeptByParentId(id).getResult();
+        TeacherDept teacherDept = null;
+        if (schoolDept == null) {
+            teacherDept =teacherControllerClient.findTeacherBySchoolDeptId(schoolDept.getSchoolCode(),schoolDept.getSchoolId(),id).getResult();
+        }
         if (schoolDept != null) {
             return WrapMapper.wrap(Wrapper.SUCCESS_CODE, "该部门底下存在子部门不能删除", false);
+        } else if (teacherDept!=null) {
+            return WrapMapper.wrap(Wrapper.SUCCESS_CODE, "该部门底下存在人员不能删除", false);
         }
-        /*此处加上 如果部门底下存在人数也不能删除
-        else if () {
-        }*/
         Wrapper wrapper = schoolDeptControllerClient.delSchoolDeptById(id);
         return WrapMapper.ok(wrapper.getResult());
     }

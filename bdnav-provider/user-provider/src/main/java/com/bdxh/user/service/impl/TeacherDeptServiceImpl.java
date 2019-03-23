@@ -25,4 +25,14 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
     public void deleteTeacherDeptInfo(String schoolCode, String cardNumber, String id) {
         teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber);
     }
+
+    /**
+     * @Description: 学校code，学校id，部门id查询老师信息
+     * @Author: Kang
+     * @Date: 2019/3/23 11:40
+     */
+    @Override
+    public TeacherDept findTeacherBySchoolDeptId(String schoolCode, Long schoolId, Long deptId) {
+        return teacherDeptMapper.findTeacherBySchoolDeptId(schoolCode,schoolId,deptId);
+    }
 }

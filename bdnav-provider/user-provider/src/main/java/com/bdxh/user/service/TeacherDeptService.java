@@ -14,5 +14,12 @@ public interface TeacherDeptService extends IService<TeacherDept> {
      * @author: xuyuan
      * @create: 2019-02-26 10:46
      **/
-    void deleteTeacherDeptInfo(String schoolCode,String cardNumber,String id);
+    void deleteTeacherDeptInfo(String schoolCode, String cardNumber, String id);
+
+    /**
+     * @Description: 学校code，学校id，部门id查询老师信息
+     * @Author: Kang
+     * @Date: 2019/3/23 11:40
+     */
+    TeacherDept findTeacherBySchoolDeptId(String schoolCode, Long schoolId, Long deptId);
 }
