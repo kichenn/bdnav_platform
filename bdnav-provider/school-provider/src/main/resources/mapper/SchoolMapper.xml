@@ -90,4 +90,10 @@
             #{empId,jdbcType=BIGINT}
         </foreach>
     </delete>
+
+    <select id="findSchoolBySchoolCode" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from t_school where school_code =#{schoolCode}
+    </select>
 </mapper>

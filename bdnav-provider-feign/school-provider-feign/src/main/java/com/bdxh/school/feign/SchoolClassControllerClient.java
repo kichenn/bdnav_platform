@@ -114,4 +114,14 @@ public interface SchoolClassControllerClient {
     @RequestMapping(value = "/schoolClass/findSchoolClassByParentId", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<SchoolClass> findSchoolClassByParentId(@RequestParam("parentId") Long parentId);
+
+    /**
+     * 查询单个学校院系路径和Ids
+     * @param schoolCode
+     * @Author: bin
+     * @return
+     */
+    @RequestMapping(value = "/schoolClass/queryClassUrlBySchoolCode", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolClass>> queryClassUrlBySchoolCode(@RequestParam("schoolCode") String schoolCode);
 }

@@ -20,4 +20,7 @@ public interface SchoolMapper extends Mapper<School> {
 
     //批量删除
     Integer batchDelSchool(@Param("ids") List<Long> ids);
+
+    //根据Code查询学校
+    School findSchoolBySchoolCode(@Param("schoolCode")String schoolCode);
 }

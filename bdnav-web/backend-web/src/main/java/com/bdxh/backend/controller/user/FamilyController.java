@@ -3,6 +3,7 @@ package com.bdxh.backend.controller.user;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddFamilyDto;
@@ -161,31 +162,28 @@ public class FamilyController {
                 return  WrapMapper.error("上传失败，请选择文件");
             }
             List<String[]> familyList= ExcelImportUtil.readExcel(file);
-            SchoolInfoVo schoolInfoVo=new SchoolInfoVo();
+            School school=new School();
             for (int i=1;i<familyList.size();i++){
                 String[] columns= familyList.get(i);
+
                 if(i==1){
                     //第一条查询数据存到缓存中
-                    Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
-                    schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
-                    redisTemplate.opsForValue().set("schoolInfoVo",schoolInfoVo);
-                    //判断当前schoolCode是否与上一条相同
-                }else if(familyList.get(i)[0].equals(i-1>=familyList.size()?
-                        familyList.get(familyList.size()-1)[0]:
-                        familyList.get(i-1)[0])){
+                    Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                    school=(School)wrapper.getResult();
+                    redisTemplate.opsForValue().set("schoolInfoVo",school);
                     //判断得出在同一个班级直接从缓存中拉取数据
-                    schoolInfoVo=(SchoolInfoVo)redisTemplate.opsForValue().get("schoolInfoVo");
+                }else if(familyList.get(i)[0].equals(i-1>=familyList.size()?familyList.get(familyList.size()-1)[0]:familyList.get(i-1)[0])){
+                    school=(School)redisTemplate.opsForValue().get("schoolInfoVo");
                 }else{
-                    //重新查询数据库进行缓存
-                    Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
-                    schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
-                    redisTemplate.opsForValue().set("schoolInfoVo",schoolInfoVo);
+                    Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                    school=(School)wrapper.getResult();
+                    redisTemplate.opsForValue().set("schoolInfoVo",school);
                 }
-                if(schoolInfoVo.equals("")){
+                if(school!=null){
                 AddFamilyDto addFamilyDto=new AddFamilyDto();
-                addFamilyDto.setSchoolCode(schoolInfoVo.getSchoolCode());
-                addFamilyDto.setSchoolId(schoolInfoVo.getId());
-                addFamilyDto.setSchoolName(schoolInfoVo.getSchoolName());
+                addFamilyDto.setSchoolCode(school.getSchoolCode());
+                addFamilyDto.setSchoolId(school.getId());
+                addFamilyDto.setSchoolName(school.getSchoolName());
                 addFamilyDto.setName(columns[1]);
                 addFamilyDto.setGender(columns[2].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
                 addFamilyDto.setPhone(columns[3]);
@@ -194,7 +192,9 @@ public class FamilyController {
                 addFamilyDto.setAdress(columns[6]);
                 addFamilyDto.setRemark(columns[7]);
                 familyControllerClient.addFamily(addFamilyDto);
-             }
+             }else{
+                    return WrapMapper.error("第"+i+"条的学校数据不存在！请检查");
+                }
             }
             return  WrapMapper.ok();
         }catch (Exception e){

@@ -5,10 +5,12 @@ import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolExcelDto;
 import com.bdxh.school.dto.SchoolQueryDto;
+import com.bdxh.school.entity.School;
 import com.bdxh.school.fallback.SchoolControllerClientFallback;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -105,4 +107,13 @@ public interface SchoolControllerClient {
     @RequestMapping(value = "/school/downloadReportSchoolExcel", method = RequestMethod.POST)
     @ResponseBody
     Wrapper downloadReportSchoolExcel(@RequestBody SchoolExcelDto schoolExcelDto);
+
+    /**
+     * @Description: 根据学校Code查询学校
+     * @Author: bin
+     * @Date: 019/3/23 10:18
+     */
+    @RequestMapping(value = "/school/findSchoolBySchoolCode", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<School> findSchoolBySchoolCode(@RequestParam("schoolCode") String schoolCode);
 }

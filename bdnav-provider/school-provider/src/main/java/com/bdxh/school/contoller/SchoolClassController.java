@@ -172,4 +172,25 @@ public class SchoolClassController {
     public Object findSchoolClassByParentId(@RequestParam("parentId") Long parentId) {
         return WrapMapper.ok(schoolClassService.findSchoolByParentId(parentId));
     }
+
+    /**
+     * 查询单个学校院系路径和Ids
+     * @param schoolCode
+     * @return
+     */
+    @RequestMapping(value = "/queryClassUrlBySchoolCode", method = RequestMethod.GET)
+    @ApiOperation(value = "查询单个学校院系路径和Ids", response = SchoolClass.class)
+    @ResponseBody
+    public Object queryClassUrlBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
+        List<SchoolClass> list=schoolClassService.queryClassBySchoolCode(schoolCode);
+
+        for (int i = 0; i < list.size(); i++) {
+            if(!list.get(i).getParentId().equals("-1")){
+            list.get(i).setParentIds(list.get(i).getParentIds().trim().substring(1));
+            list.get(i).setThisUrl(list.get(i).getThisUrl().trim().substring(1));
+            list.get(i).setParentIds(list.get(i).getParentIds()+","+list.get(i).getId());
+            }
+        }
+        return WrapMapper.ok(list);
+    }
 }

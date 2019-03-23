@@ -139,7 +139,18 @@ public class SchoolController {
         //符合条件的学校信息
         return WrapMapper.ok(schoolService.findSchoolShowVoInConditionPaging(schoolQueryDto));
     }
-
+    /**
+     * @Description: 根据学校Code查询学校
+     * @Author: bin
+     * @Date: 019/3/23 10:18
+     */
+    @RequestMapping(value = "/findSchoolBySchoolCode", method = RequestMethod.GET)
+    @ApiOperation(value = "根据学校Code查询学校", response = SchoolShowVo.class)
+    @ResponseBody
+    public Object findSchoolBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
+        //符合条件的单个学校信息
+        return WrapMapper.ok(schoolService.findSchoolBySchoolCode(schoolCode));
+    }
 
     /**
      * @Description: 查询学校列表 (筛选条件无分页)

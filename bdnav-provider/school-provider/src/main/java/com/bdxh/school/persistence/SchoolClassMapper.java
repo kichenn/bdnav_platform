@@ -22,4 +22,7 @@ public interface SchoolClassMapper extends Mapper<SchoolClass> {
 
     //父id查询院系信息
     SchoolClass findSchoolByParentId(@Param("parentId") Long parentId);
+
+    //查询单个学校院系路径和Ids
+    List<SchoolClass> queryClassBySchoolCode(@Param("schoolCode")String schoolCode);
 }
