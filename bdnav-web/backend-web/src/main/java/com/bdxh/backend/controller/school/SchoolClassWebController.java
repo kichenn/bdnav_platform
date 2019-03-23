@@ -69,7 +69,8 @@ public class SchoolClassWebController {
         Student student = null;
         //院系底下不存在子院系，查看当前院系是否存在人员
         if (schoolClass == null) {
-            student = studentControllerClient.findStudentBySchoolClassId(schoolClass.getSchoolCode(), schoolClass.getSchoolId(), id).getResult();
+            SchoolClass thisSchoolClass = schoolClassControllerClient.findSchoolClassById(id).getResult();
+            student = studentControllerClient.findStudentBySchoolClassId(thisSchoolClass.getSchoolCode(), thisSchoolClass.getSchoolId(), id).getResult();
         }
         if (schoolClass != null) {
             return WrapMapper.error("该院系底下存在子院系不能删除");

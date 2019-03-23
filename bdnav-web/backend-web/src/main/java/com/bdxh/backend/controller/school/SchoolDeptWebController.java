@@ -74,7 +74,8 @@ public class SchoolDeptWebController {
         SchoolDept schoolDept = schoolDeptControllerClient.findSchoolDeptByParentId(id).getResult();
         TeacherDept teacherDept = null;
         if (schoolDept == null) {
-            teacherDept = teacherControllerClient.findTeacherBySchoolDeptId(schoolDept.getSchoolCode(), schoolDept.getSchoolId(), id).getResult();
+            SchoolDept thisSchoolDept = schoolDeptControllerClient.findSchoolDeptById(id).getResult();
+            teacherDept = teacherControllerClient.findTeacherBySchoolDeptId(thisSchoolDept.getSchoolCode(), thisSchoolDept.getSchoolId(), id).getResult();
         }
         if (schoolDept != null) {
             return WrapMapper.error("该部门底下存在子部门不能删除");
