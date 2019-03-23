@@ -97,17 +97,14 @@ public interface SchoolClassControllerClient {
 
     /**
      * 根据条件查询院校信息
-     * @param schoolCode
-     * @param name
+     * @param schoolClass
      * @return
      */
-    @RequestMapping(value = "/schoolClass/findSchoolClassByNameAndSchoolCode", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolClass/findSchoolClassBySchoolClass", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<SchoolClass> findSchoolClassByNameAndSchoolCode(@RequestParam("schoolCode") String schoolCode,
-                                               @RequestParam("name")String name);
+    Wrapper<SchoolClass> findSchoolClassBySchoolClass(@RequestBody SchoolClass schoolClass);
 
-    /**
-     * @Description: 父id查询院系信息
+    /**    * @Description: 父id查询院系信息
      * @Author: Kang
      * @Date: 2019/3/22 18:41
      */

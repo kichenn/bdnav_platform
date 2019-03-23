@@ -27,13 +27,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -94,16 +92,28 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
-            String ClassName[]=addStudentDto.getClassNames().split("\\/");
-            addStudentDto.setCollegeName(ClassName[0]);
-            addStudentDto.setFacultyName(ClassName[1]);
-            addStudentDto.setProfessionName(ClassName[2]);
-            addStudentDto.setGradeName(ClassName[3]);
-            addStudentDto.setClassName(ClassName[4]);
+            SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=addStudentDto.getClassIds().split(",");
-            addStudentDto.setClassId(Long.parseLong(ClassId[ClassId.length-1]));
-            studentControllerClient.addStudent(addStudentDto);
-                return WrapMapper.ok();
+            for (int i = 0; i < ClassId.length; i++) {
+                String s = ClassId[i];
+                schoolClass.setSchoolCode(addStudentDto.getSchoolCode());
+                schoolClass.setId(Long.parseLong(ClassId[i]));
+                schoolClass=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
+                if(schoolClass.getType().equals("1")){
+                    addStudentDto.setCollegeName(schoolClass.getName());
+                }else if(schoolClass.getType().equals("2")){
+                    addStudentDto.setFacultyName(schoolClass.getName());
+                }else if(schoolClass.getType().equals("3")){
+                    addStudentDto.setProfessionName(schoolClass.getName());
+                }else if(schoolClass.getType().equals("4")){
+                    addStudentDto.setGradeName(schoolClass.getName());
+                }else if(schoolClass.getType().equals("5")){
+                    addStudentDto.setClassName(schoolClass.getName());
+                    addStudentDto.setClassId(schoolClass.getId());
+                }
+            }
+            Wrapper wrapper=studentControllerClient.addStudent(addStudentDto);
+            return WrapMapper.ok(wrapper.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -121,8 +131,8 @@ public class StudentController {
     public Object removeStudent(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
                                @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber){
         try{
-            studentControllerClient.removeStudent(schoolCode,cardNumber);
-            return WrapMapper.ok();
+            Wrapper wrapper=studentControllerClient.removeStudent(schoolCode,cardNumber);
+            return WrapMapper.ok(wrapper.getMessage());
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -140,8 +150,8 @@ public class StudentController {
     public Object removeStudents(@RequestParam(name = "schoolCodes") @NotNull(message="学生学校Code不能为空")String schoolCodes,
                                 @RequestParam(name = "cardNumbers") @NotNull(message="学生微校卡号不能为空")String cardNumbers){
         try{
-            studentControllerClient.removeStudents(schoolCodes,cardNumbers);
-            return WrapMapper.ok();
+            Wrapper wrapper=studentControllerClient.removeStudents(schoolCodes,cardNumbers);
+            return WrapMapper.ok(wrapper.getMessage());
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -163,14 +173,26 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
-            String ClassName[]=updateStudentDto.getClassNames().split("\\/");
-            updateStudentDto.setCollegeName(ClassName[0]);
-            updateStudentDto.setFacultyName(ClassName[1]);
-            updateStudentDto.setProfessionName(ClassName[2]);
-            updateStudentDto.setGradeName(ClassName[3]);
-            updateStudentDto.setClassName(ClassName[4]);
+            SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=updateStudentDto.getClassIds().split(",");
-            updateStudentDto.setClassId(Long.parseLong(ClassId[ClassId.length-1]));
+            for (int i = 0; i < ClassId.length; i++) {
+                String s = ClassId[i];
+                schoolClass.setSchoolCode(updateStudentDto.getSchoolCode());
+                schoolClass.setId(Long.parseLong(ClassId[i]));
+                schoolClass=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
+                if(schoolClass.getType().equals("1")){
+                    updateStudentDto.setCollegeName(schoolClass.getName());
+                }else if(schoolClass.getType().equals("2")){
+                    updateStudentDto.setFacultyName(schoolClass.getName());
+                }else if(schoolClass.getType().equals("3")){
+                    updateStudentDto.setProfessionName(schoolClass.getName());
+                }else if(schoolClass.getType().equals("4")){
+                    updateStudentDto.setGradeName(schoolClass.getName());
+                }else if(schoolClass.getType().equals("5")){
+                    updateStudentDto.setClassName(schoolClass.getName());
+                    updateStudentDto.setClassId(schoolClass.getId());
+                }
+            }
             studentControllerClient.updateStudent(updateStudentDto);
             return WrapMapper.ok();
         } catch (Exception e) {

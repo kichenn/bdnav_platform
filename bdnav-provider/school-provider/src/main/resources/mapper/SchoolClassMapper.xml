@@ -47,12 +47,54 @@
         WHERE
         school_id=#{schoolId,jdbcType=BIGINT}
     </delete>
-    <select id="findSchoolClassByNameAndSchoolCode" resultMap="BaseResultMap">
+    <select id="findSchoolClassBySchoolClass" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from t_school_class
-        where name=#{name}
-        and school_code=#{schoolCode} limit 1;
+        <where>
+            <if test="#{schoolClass.id}!=0">
+                and id=#{schoolClass.id}
+            </if>
+            <if test="#{schoolClass.parentId}!=0">
+            and parent_id=#{schoolClass.parentId}
+            </if>
+            <if test="#{schoolClass.parentIds}!=null and #{schoolClass.parentIds}!=''">
+                and parent_ids=#{schoolClass.parentIds}
+            </if>
+            <if test="#{schoolClass.parentNames}!=null and #{schoolClass.parentNames}!=''">
+                and parent_names=#{schoolClass.parentNames}
+            </if>
+            <if test="#{schoolClass.thisUrl}!=null and #{schoolClass.thisUrl}!=''">
+                and this_url=#{schoolClass.thisUrl}
+            </if>
+            <if test="#{schoolClass.schoolId}!=0">
+                and school_id=#{schoolClass.schoolId}
+            </if>
+            <if test="#{schoolClass.schoolCode}!=null and #{schoolClass.schoolCode}!=''">
+                and school_code=#{schoolClass.schoolCode}
+            </if>
+
+            <if test="#{schoolClass.name}!=null and #{schoolClass.name}!=''">
+                and name=#{schoolClass.name}
+            </if>
+            <if test="#{schoolClass.type}!=0">
+                and type=#{schoolClass.type}
+            </if>
+            <if test="#{schoolClass.level}!=0">
+                and level=#{schoolClass.level}
+            </if>
+            <if test="#{schoolClass.sort}!=0">
+                and sort=#{schoolClass.sort}
+            </if>
+            <if test="#{schoolClass.managerName}!=null and #{schoolClass.managerName}!=''">
+                and manager_name=#{schoolClass.managerName}
+            </if>
+            <if test="#{schoolClass.operator}!=0">
+                and operator=#{schoolClass.operator}
+            </if>
+             limit 1;
+        </where>
+
     </select>
     <select id="findSchoolByParentId" resultMap="BaseResultMap">
         select

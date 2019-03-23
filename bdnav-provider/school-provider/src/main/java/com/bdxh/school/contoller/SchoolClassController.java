@@ -149,16 +149,14 @@ public class SchoolClassController {
     /**
      * 根据条件查询院校信息
      *
-     * @param schoolCode
-     * @param name
+     * @param schoolClass
      * @return
      */
-    @RequestMapping(value = "/findSchoolClassByNameAndSchoolCode", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSchoolClassBySchoolClass", method = RequestMethod.GET)
     @ApiOperation(value = "根据条件查询院校信息", response = Boolean.class)
     @ResponseBody
-    public Object findSchoolClassByNameAndSchoolCode(@RequestParam("schoolCode") String schoolCode,
-                                                     @RequestParam("name") String name) {
-        return WrapMapper.ok(schoolClassService.findSchoolClassByNameAndSchoolCode(schoolCode, name));
+    public Object findSchoolClassBySchoolClass(@RequestBody SchoolClass schoolClass) {
+        return WrapMapper.ok(schoolClassService.findSchoolClassBySchoolClass(schoolClass));
     }
 
     /**
