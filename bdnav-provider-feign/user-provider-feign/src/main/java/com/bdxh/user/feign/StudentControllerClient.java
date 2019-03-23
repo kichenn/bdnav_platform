@@ -8,12 +8,14 @@
  */
 package com.bdxh.user.feign;
 
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.fallback.StudentControllerFallback;
 import com.bdxh.user.vo.StudentVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -79,4 +81,13 @@ public interface StudentControllerClient {
     @RequestMapping(value = "/student/removeStudent",method = RequestMethod.POST)
     @ResponseBody
     Wrapper removeStudent(@RequestParam(name = "schoolCode")String schoolCode,@RequestParam(name = "cardNumber")String cardNumber);
+
+    /**
+     * 根据学校CODE和班级ID统计学生人数
+     * @param schoolCode
+     * @param classId
+     * @return
+     */
+    @RequestMapping(value = "/student/statisticsStuByClassIds",method = RequestMethod.POST)
+    Wrapper statisticsStuByClassIds(@RequestParam("schoolCode")String schoolCode,@RequestParam("classId")Long classId);
 }

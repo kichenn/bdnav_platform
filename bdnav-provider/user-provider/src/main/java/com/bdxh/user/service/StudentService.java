@@ -69,5 +69,11 @@ public interface StudentService extends IService<Student> {
    **/
   StudentVo isNullStudent(String schoolCode,String cardNumber);
 
-
+    /**
+     * 根据学校CODE和班级ID统计学生人数
+     * @param schoolCode
+     * @param classId
+     * @return
+     */
+    int statisticsStuByClassIds(String schoolCode,Long classId);
 }

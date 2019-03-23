@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value ="学生信息管理接口API", tags = "学生信息管理接口API")
@@ -168,7 +169,23 @@ public class StudentController {
             return WrapMapper.error(e.getMessage());
         }
     }
-
+    /**
+     * 根据学校CODE和班级ID统计学生人数
+     * @param schoolCode
+     * @param classId
+     * @return
+     */
+    @ApiOperation(value="根据班级ID统计学生人数")
+    @RequestMapping(value = "/statisticsStuByClassIds",method = RequestMethod.POST)
+    public Object statisticsStuByClassIds(@RequestParam("schoolCode")String schoolCode,@RequestParam("classId")Long classId) {
+        try {
+            int studentCount=studentService.statisticsStuByClassIds(schoolCode,classId);
+            return WrapMapper.ok(studentCount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 
 
 }

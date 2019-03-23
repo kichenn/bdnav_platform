@@ -55,4 +55,9 @@ public class StudentControllerFallback implements StudentControllerClient {
     public Wrapper removeStudent(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper statisticsStuByClassIds(String schoolCode, Long classId) {
+         return WrapMapper.error();
+    }
 }

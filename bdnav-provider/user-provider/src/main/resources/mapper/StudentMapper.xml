@@ -215,5 +215,4 @@ select <include refid="studentCloumn" /> from t_student
     </update>
 
 
-
 </mapper>

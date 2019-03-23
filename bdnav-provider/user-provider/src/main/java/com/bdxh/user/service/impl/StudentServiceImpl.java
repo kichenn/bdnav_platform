@@ -112,5 +112,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return studentMapper.selectStudentVo(schoolCode,cardNumber);
     }
 
-
+    @Override
+    public int statisticsStuByClassIds(String schoolCode, Long classId) {
+        return studentMapper.statisticsStuByClassIds(schoolCode,classId);
+    }
 }

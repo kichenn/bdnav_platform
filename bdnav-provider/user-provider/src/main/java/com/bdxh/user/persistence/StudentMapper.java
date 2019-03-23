@@ -5,6 +5,7 @@ import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.vo.StudentVo;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
@@ -25,5 +26,7 @@ public interface StudentMapper extends Mapper<Student> {
     //查询所有学生
     List<Student> selectAllStudentInfo(@Param("studentQueryDto")StudentQueryDto studentQueryDto);
 
+    //根据学校CODE和班级ID统计学生人数
+    int statisticsStuByClassIds(@Param("schoolCode")String schoolCode,@Param("classId")Long classId);
 
 }
