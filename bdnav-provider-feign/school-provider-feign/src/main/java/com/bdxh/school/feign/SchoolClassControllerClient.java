@@ -100,7 +100,7 @@ public interface SchoolClassControllerClient {
      * @param schoolClass
      * @return
      */
-    @RequestMapping(value = "/schoolClass/findSchoolClassBySchoolClass", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolClass/findSchoolClassBySchoolClass", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<SchoolClass> findSchoolClassBySchoolClass(@RequestBody SchoolClass schoolClass);
 

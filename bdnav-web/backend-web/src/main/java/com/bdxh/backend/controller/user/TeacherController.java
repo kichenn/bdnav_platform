@@ -183,12 +183,11 @@ public class TeacherController {
                     school=(School)wrapper.getResult();
                     redisTemplate.opsForValue().set("schoolInfoVo",school);
                 }
-                Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
-                SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+                if(school!=null){
                 AddTeacherDto addTeacherDto=new AddTeacherDto();
-                addTeacherDto.setSchoolName(schoolInfoVo.getSchoolName());
-                addTeacherDto.setSchoolId(schoolInfoVo.getId());
-                addTeacherDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+                addTeacherDto.setSchoolName(school.getSchoolName());
+                addTeacherDto.setSchoolId(school.getId());
+                addTeacherDto.setSchoolCode(school.getSchoolCode());
                 addTeacherDto.setCampusName(columns[1]);
                 addTeacherDto.setName(columns[2]);
                 addTeacherDto.setGender(columns[3].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
@@ -196,6 +195,9 @@ public class TeacherController {
                 addTeacherDto.setPhone(columns[5]);
                 addTeacherDto.setCardNumber(columns[6]);
                 addTeacherDto.setRemark(columns[7]);
+            }else{
+                    return WrapMapper.error("第"+i+"条不存在当前学校Code");
+                }
             }
             return WrapMapper.ok("导入成功");
         } catch (Exception e) {

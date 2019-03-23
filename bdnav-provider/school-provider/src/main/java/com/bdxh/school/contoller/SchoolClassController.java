@@ -152,7 +152,7 @@ public class SchoolClassController {
      * @param schoolClass
      * @return
      */
-    @RequestMapping(value = "/findSchoolClassBySchoolClass", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSchoolClassBySchoolClass", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件查询院校信息", response = Boolean.class)
     @ResponseBody
     public Object findSchoolClassBySchoolClass(@RequestBody SchoolClass schoolClass) {
