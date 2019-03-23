@@ -225,5 +225,4 @@
         AND `class_id`=#{classId,jdbcType=BIGINT}
         limit 1;
     </select>
-
 </mapper>

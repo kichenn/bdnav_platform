@@ -14,10 +14,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.List;
@@ -38,6 +41,9 @@ public class FamilyController {
     private FamilyControllerClient familyControllerClient;
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
+
     /**
      * 新增家庭成员信息
      * @param addFamilyDto
@@ -149,31 +155,46 @@ public class FamilyController {
     }
     @ApiOperation("导入家长数据")
     @RequestMapping(value="/importFamilyInfo",method = RequestMethod.POST)
-    public Object importStudentInfo( @RequestParam("schoolId") Long schoolId,@RequestParam("familyFile") MultipartFile file) throws IOException {
+    public Object importStudentInfo( @RequestParam("familyFile") MultipartFile file) throws IOException {
         try {
             if (file.isEmpty()) {
                 return  WrapMapper.error("上传失败，请选择文件");
             }
-            if(schoolId.equals("")){
-                return  WrapMapper.error("请先选择学校");
-            }
-            Wrapper wrapper=schoolControllerClient.findSchoolById(schoolId);
-            SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
             List<String[]> familyList= ExcelImportUtil.readExcel(file);
+            SchoolInfoVo schoolInfoVo=new SchoolInfoVo();
             for (int i=1;i<familyList.size();i++){
                 String[] columns= familyList.get(i);
+                if(i==1){
+                    //第一条查询数据存到缓存中
+                    Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
+                    schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+                    redisTemplate.opsForValue().set("schoolInfoVo",schoolInfoVo);
+                    //判断当前schoolCode是否与上一条相同
+                }else if(familyList.get(i)[0].equals(i-1>=familyList.size()?
+                        familyList.get(familyList.size()-1)[0]:
+                        familyList.get(i-1)[0])){
+                    //判断得出在同一个班级直接从缓存中拉取数据
+                    schoolInfoVo=(SchoolInfoVo)redisTemplate.opsForValue().get("schoolInfoVo");
+                }else{
+                    //重新查询数据库进行缓存
+                    Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
+                    schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+                    redisTemplate.opsForValue().set("schoolInfoVo",schoolInfoVo);
+                }
+                if(schoolInfoVo.equals("")){
                 AddFamilyDto addFamilyDto=new AddFamilyDto();
                 addFamilyDto.setSchoolCode(schoolInfoVo.getSchoolCode());
                 addFamilyDto.setSchoolId(schoolInfoVo.getId());
                 addFamilyDto.setSchoolName(schoolInfoVo.getSchoolName());
-                addFamilyDto.setName(columns[0]);
-                addFamilyDto.setGender(columns[1].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
-                addFamilyDto.setPhone(columns[2]);
-                addFamilyDto.setCardNumber(columns[3]);
-                addFamilyDto.setWxNumber(columns[4]);
-                addFamilyDto.setAdress(columns[5]);
-                addFamilyDto.setRemark(columns[6]);
+                addFamilyDto.setName(columns[1]);
+                addFamilyDto.setGender(columns[2].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
+                addFamilyDto.setPhone(columns[3]);
+                addFamilyDto.setCardNumber(columns[4]);
+                addFamilyDto.setWxNumber(columns[5]);
+                addFamilyDto.setAdress(columns[6]);
+                addFamilyDto.setRemark(columns[7]);
                 familyControllerClient.addFamily(addFamilyDto);
+             }
             }
             return  WrapMapper.ok();
         }catch (Exception e){

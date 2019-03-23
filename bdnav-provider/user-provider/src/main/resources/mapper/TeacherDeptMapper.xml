@@ -74,4 +74,5 @@
     WHERE `school_code`=#{schoolCode} and `card_number`=#{cardNumber};
 
   </update>
+
 </mapper>
