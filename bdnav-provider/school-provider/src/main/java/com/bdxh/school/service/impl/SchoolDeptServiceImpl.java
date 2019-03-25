@@ -47,7 +47,7 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
             //树状
             schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
-            schoolDept.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName());
+            schoolDept.setThisUrl(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName() + "/" + schoolDept.getName());
             schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
         }
         return schoolDeptMapper.insertSelective(schoolDept) > 0;
@@ -67,7 +67,7 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
             //树状
             schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
-            schoolDept.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName());
+            schoolDept.setThisUrl(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName() + "/" + schoolDept.getName());
             schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
         }
         return schoolDeptMapper.updateByPrimaryKeySelective(schoolDept) > 0;
