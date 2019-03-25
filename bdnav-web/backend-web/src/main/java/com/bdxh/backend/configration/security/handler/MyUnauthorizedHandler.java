@@ -25,7 +25,7 @@ public class MyUnauthorizedHandler implements AuthenticationEntryPoint{
         wrapper.setCode(401);
         String str = JSON.toJSONString(wrapper);
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpServletResponse.setStatus(401);
+        //httpServletResponse.setStatus(401);
         httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
         httpServletResponse.setCharacterEncoding("utf-8");
         httpServletResponse.setContentType("application/json;charset=utf-8");
