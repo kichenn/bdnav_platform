@@ -14,14 +14,13 @@ public class UpdateUserDto implements Serializable {
     private static final long serialVersionUID = 566703849379026270L;
 
     @ApiModelProperty("用户id")
-    @NotNull(message = "用户id不能为空")
     private Long id;
 
     /**
      * 头像图片
      */
     @ApiModelProperty("用户头像")
-    private String Image;
+    private String image;
 
     /**
      * 文件地址
@@ -79,16 +78,22 @@ public class UpdateUserDto implements Serializable {
     private Long deptId;
 
     /**
+     * 分配的角色id
+     */
+    @ApiModelProperty("分配的角色id")
+    private String roleIds;
+
+    /**
      * 状态 1 正常 2 锁定
      */
     @ApiModelProperty("状态 1 正常 2 锁定")
-    private Byte status = 1;
+    private Byte status;
 
     /**
      * 类型 1 普通用户 2 管理员
      */
     @ApiModelProperty("类型 1 普通用户 2 管理员")
-    private Byte type = 1;
+    private Byte type;
 
     /**
      * 操作人

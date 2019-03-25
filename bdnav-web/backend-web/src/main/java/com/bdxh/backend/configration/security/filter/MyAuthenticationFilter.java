@@ -92,6 +92,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 Wrapper wrapper = WrapMapper.wrap(401, "登录已失效");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+                httpServletResponse.setStatus(200);
                 httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
                 httpServletResponse.setCharacterEncoding("utf-8");
                 httpServletResponse.setContentType("application/json;charset=utf-8");
@@ -101,6 +102,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 Wrapper wrapper = WrapMapper.wrap(401, "解析token错误");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+                httpServletResponse.setStatus(200);
                 httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
                 httpServletResponse.setCharacterEncoding("utf-8");
                 httpServletResponse.setContentType("application/json;charset=utf-8");
