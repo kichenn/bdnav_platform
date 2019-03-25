@@ -66,7 +66,7 @@ public class SysUserController {
     }
 
 
-    @RequestMapping(value = "/delUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/delUser", method = RequestMethod.GET)
     @ApiOperation(value = "根据id删除用户信息")
     public Object delUser(@RequestParam(name = "id") Long id) {
         try {

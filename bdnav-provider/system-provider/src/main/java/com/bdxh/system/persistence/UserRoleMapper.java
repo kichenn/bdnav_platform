@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface UserRoleMapper extends Mapper<UserRole> {
+
+
     //根据id查找对象列表
     List<Role> findUserRole( Long RoleId);
 
@@ -18,5 +20,13 @@ public interface UserRoleMapper extends Mapper<UserRole> {
      * @param roleId
      */
     void deleteByRoleId(@Param("roleId") Long roleId);
+
+    /**
+     * 根据用户id查找用户角色关系
+     * @param userId
+     * @return
+     */
+    List<UserRole> findUserRoleByUserId(Long userId);
+
 
 }

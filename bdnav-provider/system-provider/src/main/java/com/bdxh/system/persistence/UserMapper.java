@@ -1,6 +1,7 @@
 package com.bdxh.system.persistence;
 
 import com.bdxh.system.dto.AddUserDto;
+import com.bdxh.system.dto.UpdateUserDto;
 import com.bdxh.system.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -34,7 +35,7 @@ public interface UserMapper extends Mapper<User> {
     /**
      * 修改用户
      */
-    AddUserDto UpdateUsers(Map<String,Object> param);
+    AddUserDto UpdateUsers(UpdateUserDto updateUserDto);
 
 
 }

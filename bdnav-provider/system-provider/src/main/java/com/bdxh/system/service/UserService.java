@@ -54,4 +54,6 @@ public interface UserService extends IService<User> {
      * 修改用户
      */
     void updateUsers(UpdateUserDto updateUserDto);
+
+    List<String> findUserRoleByUserId(Long userId);
 }
