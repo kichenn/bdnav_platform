@@ -14,6 +14,7 @@ import com.bdxh.user.vo.TeacherVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.BindingResult;
@@ -170,6 +171,7 @@ public class TeacherController {
             School school=new School();
             for (int i = 1; i < teacherList.size(); i++) {
                 String[] columns= teacherList.get(i);
+                if(StringUtils.isNotBlank(teacherList.get(i)[0])){
                 if(i==1){
                     //第一条查询数据存到缓存中
                     Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
@@ -195,11 +197,13 @@ public class TeacherController {
                 addTeacherDto.setPhone(columns[5]);
                 addTeacherDto.setCardNumber(columns[6]);
                 addTeacherDto.setRemark(columns[7]);
-            }else{
+                teacherControllerClient.addTeacher(addTeacherDto);
+                }else{
                     return WrapMapper.error("第"+i+"条不存在当前学校Code");
                 }
+             }
             }
-            return WrapMapper.ok("导入成功");
+            return WrapMapper.ok("导入完成");
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
