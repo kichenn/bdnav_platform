@@ -61,4 +61,14 @@
     </where>
   </select>
 
+
+    <insert id="addUsers" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+    <!--<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+        select LAST_INSERT_ID()
+      </selectKey>
+      /**/-->
+     insert into sys_user(user_name,`password`,real_name,sex,birthday,phone,email,dept_id,`status`,`type`,image,img_file_address,create_date,update_date,operator,remark)
+      values(#{userName}, #{password}, #{realName}, #{sex}, #{birthday}, #{phone}, #{email}, #{deptId}, #{status}, #{type}, #{image}, #{ImgFileAddress} ,#{createDate}, #{updateDate}, #{operator}, #{remark})
+    </insert>
+
 </mapper>

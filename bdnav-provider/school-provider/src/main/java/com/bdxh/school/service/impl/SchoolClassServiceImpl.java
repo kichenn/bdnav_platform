@@ -42,7 +42,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             SchoolClass schoolClassTemp = findSchoolClassById(schoolClassDto.getParentId()).orElse(new SchoolClass());
             //树状
             schoolClass.setParentNames(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName());
-            schoolClass.setThisUrl(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName());
+            schoolClass.setThisUrl(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName() + "/" + schoolClass.getName());
             schoolClass.setParentIds(schoolClassTemp.getParentIds() + "," + schoolClassTemp.getId());
         }
         return schoolClassMapper.insertSelective(schoolClass) > 0;
@@ -62,7 +62,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             SchoolClass schoolClassTemp = findSchoolClassById(schoolClassDto.getParentId()).orElse(new SchoolClass());
             //树状
             schoolClass.setParentNames(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName());
-            schoolClass.setThisUrl(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName());
+            schoolClass.setThisUrl(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName() + "/" + schoolClass.getName());
             schoolClass.setParentIds(schoolClassTemp.getParentIds() + "," + schoolClassTemp.getId());
         }
         return schoolClassMapper.updateByPrimaryKeySelective(schoolClass) > 0;

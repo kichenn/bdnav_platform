@@ -43,7 +43,7 @@ public class SysUserController {
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     @ApiOperation(value = "添加用户信息")
-    public Object addUser(@Validated @RequestBody AddUserDto addUserDto) {
+    public Object addUser(@RequestBody AddUserDto addUserDto) {
         try {
             Wrapper wrapper = userControllerClient.addUser(addUserDto);
             return WrapMapper.ok(wrapper.getResult());

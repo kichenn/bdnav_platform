@@ -1,8 +1,6 @@
 package com.bdxh.system.dto;
 
-import com.bdxh.system.entity.UserRole;
 import io.swagger.annotations.ApiModelProperty;
-import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 
 import javax.persistence.Column;
@@ -10,7 +8,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
+
 
 @Data
 public class AddUserDto implements Serializable {
@@ -18,16 +16,10 @@ public class AddUserDto implements Serializable {
     private static final long serialVersionUID = 7421251545883628226L;
 
     /**
-     * 头像图片
+     * id
      */
-    @ApiModelProperty("用户头像")
-    private String Image;
-
-    /**
-     * 文件地址
-     */
-    @ApiModelProperty("文件地址")
-    private String ImgFileAddress;
+    @ApiModelProperty("用户id")
+    private Long id;
 
     /**
      * 用户名
@@ -42,6 +34,7 @@ public class AddUserDto implements Serializable {
     @ApiModelProperty("密码")
     @NotEmpty(message = "密码不能为空")
     private String password;
+
 
     /**
      * 姓名
@@ -61,6 +54,7 @@ public class AddUserDto implements Serializable {
      */
     @ApiModelProperty("出生日期")
     private String birthday;
+
 
     /**
      * 手机
@@ -83,16 +77,32 @@ public class AddUserDto implements Serializable {
     private Long deptId;
 
     /**
+     * 状态 1 正常 2 锁定
+     */
+    @ApiModelProperty("状态 1 正常 2 锁定")
+    private Byte status = 1;
+
+    /**
+     * 头像图片
+     */
+    @ApiModelProperty("用户头像")
+    private String image;
+
+    /**
+     * 文件地址
+     */
+    @ApiModelProperty("文件地址")
+    private String ImgFileAddress;
+
+
+
+    /**
      * 分配的角色id
      */
     @ApiModelProperty("分配的角色id")
     private String roleIds;
 
-    /**
-     * 状态 1 正常 2 锁定
-     */
-    @ApiModelProperty("状态 1 正常 2 锁定")
-    private Byte status = 1;
+
 
     /**
      * 类型 1 普通用户 2 管理员
@@ -104,7 +114,17 @@ public class AddUserDto implements Serializable {
     /**
      * 用户角色关系表 多对多关系
      */
-    private List<UserRole> urList;
+/*    private List<UserRole> urList;*/
+
+    /**
+     * 创建时间
+     */
+    private Date createDate;
+
+    /**
+     * 修改时间
+     */
+    private Date updateDate;
 
     /**
      * 操作人
