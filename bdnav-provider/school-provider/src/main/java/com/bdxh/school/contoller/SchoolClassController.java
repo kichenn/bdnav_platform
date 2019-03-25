@@ -149,16 +149,14 @@ public class SchoolClassController {
     /**
      * 根据条件查询院校信息
      *
-     * @param schoolCode
-     * @param name
+     * @param schoolClass
      * @return
      */
-    @RequestMapping(value = "/findSchoolClassByNameAndSchoolCode", method = RequestMethod.GET)
+    @RequestMapping(value = "/findSchoolClassBySchoolClass", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件查询院校信息", response = Boolean.class)
     @ResponseBody
-    public Object findSchoolClassByNameAndSchoolCode(@RequestParam("schoolCode") String schoolCode,
-                                                     @RequestParam("name") String name) {
-        return WrapMapper.ok(schoolClassService.findSchoolClassByNameAndSchoolCode(schoolCode, name));
+    public Object findSchoolClassBySchoolClass(@RequestBody SchoolClass schoolClass) {
+        return WrapMapper.ok(schoolClassService.findSchoolClassBySchoolClass(schoolClass));
     }
 
     /**
@@ -183,12 +181,10 @@ public class SchoolClassController {
     @ResponseBody
     public Object queryClassUrlBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
         List<SchoolClass> list=schoolClassService.queryClassBySchoolCode(schoolCode);
-
         for (int i = 0; i < list.size(); i++) {
             if(!list.get(i).getParentId().equals("-1")){
-            list.get(i).setParentIds(list.get(i).getParentIds().trim().substring(1));
-            list.get(i).setThisUrl(list.get(i).getThisUrl().trim().substring(1));
-            list.get(i).setParentIds(list.get(i).getParentIds()+","+list.get(i).getId());
+            list.get(i).setParentIds(list.get(i).getParentIds().trim().substring(1)+","+list.get(i).getId());
+            list.get(i).setThisUrl(list.get(i).getThisUrl().trim().substring(1)+"/"+list.get(i).getName());
             }
         }
         return WrapMapper.ok(list);

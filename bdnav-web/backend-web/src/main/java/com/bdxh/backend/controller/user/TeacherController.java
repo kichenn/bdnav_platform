@@ -3,6 +3,7 @@ package com.bdxh.backend.controller.user;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddTeacherDto;
@@ -14,6 +15,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +40,8 @@ public class TeacherController {
     private TeacherControllerClient teacherControllerClient;
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+    @Autowired
+    private RedisTemplate<String,Object> redisTemplate;
     /**
      * 新增老师信息
      * @param addTeacherDto
@@ -163,14 +167,27 @@ public class TeacherController {
     public Object importTeacherInfo(@RequestParam("teacherFile")MultipartFile teacherFile) {
         try {
             List<String[]> teacherList= ExcelImportUtil.readExcelNums(teacherFile,0);
+            School school=new School();
             for (int i = 1; i < teacherList.size(); i++) {
                 String[] columns= teacherList.get(i);
-                Wrapper wrapper=schoolControllerClient.findSchoolById(Long.parseLong(columns[0]));
-                SchoolInfoVo schoolInfoVo=(SchoolInfoVo)wrapper.getResult();
+                if(i==1){
+                    //第一条查询数据存到缓存中
+                    Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                    school=(School)wrapper.getResult();
+                    redisTemplate.opsForValue().set("schoolInfoVo",school);
+                    //判断得出在同一个班级直接从缓存中拉取数据
+                }else if(teacherList.get(i)[0].equals(i-1>=teacherList.size()?teacherList.get(teacherList.size()-1)[0]:teacherList.get(i-1)[0])){
+                    school=(School)redisTemplate.opsForValue().get("schoolInfoVo");
+                }else{
+                    Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                    school=(School)wrapper.getResult();
+                    redisTemplate.opsForValue().set("schoolInfoVo",school);
+                }
+                if(school!=null){
                 AddTeacherDto addTeacherDto=new AddTeacherDto();
-                addTeacherDto.setSchoolName(schoolInfoVo.getSchoolName());
-                addTeacherDto.setSchoolId(schoolInfoVo.getId());
-                addTeacherDto.setSchoolCode(schoolInfoVo.getSchoolCode());
+                addTeacherDto.setSchoolName(school.getSchoolName());
+                addTeacherDto.setSchoolId(school.getId());
+                addTeacherDto.setSchoolCode(school.getSchoolCode());
                 addTeacherDto.setCampusName(columns[1]);
                 addTeacherDto.setName(columns[2]);
                 addTeacherDto.setGender(columns[3].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
@@ -178,6 +195,9 @@ public class TeacherController {
                 addTeacherDto.setPhone(columns[5]);
                 addTeacherDto.setCardNumber(columns[6]);
                 addTeacherDto.setRemark(columns[7]);
+            }else{
+                    return WrapMapper.error("第"+i+"条不存在当前学校Code");
+                }
             }
             return WrapMapper.ok("导入成功");
         } catch (Exception e) {

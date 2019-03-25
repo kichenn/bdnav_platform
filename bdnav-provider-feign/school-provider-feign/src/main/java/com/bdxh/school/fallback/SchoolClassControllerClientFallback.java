@@ -63,7 +63,7 @@ public class SchoolClassControllerClientFallback implements SchoolClassControlle
     }
 
     @Override
-    public Wrapper<SchoolClass> findSchoolClassByNameAndSchoolCode(String schoolCode, String name) {
+    public Wrapper<SchoolClass> findSchoolClassBySchoolClass(SchoolClass schoolClass) {
         return WrapMapper.error();
     }
 

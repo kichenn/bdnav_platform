@@ -108,8 +108,8 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     }
 
     @Override
-    public SchoolClass findSchoolClassByNameAndSchoolCode(String schoolCode, String name) {
-        return schoolClassMapper.findSchoolClassByNameAndSchoolCode(schoolCode, name);
+    public SchoolClass findSchoolClassBySchoolClass(SchoolClass schoolClass) {
+        return schoolClassMapper.findSchoolClassBySchoolClass(schoolClass);
     }
 
     //父id查询院系信息

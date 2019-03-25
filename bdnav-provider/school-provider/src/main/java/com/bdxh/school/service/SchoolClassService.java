@@ -6,7 +6,6 @@ import com.bdxh.school.dto.SchoolClassModifyDto;
 import com.bdxh.school.entity.SchoolClass;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -42,11 +41,13 @@ public interface SchoolClassService extends IService<SchoolClass> {
     List<SchoolClass> findSchoolClassAll();
 
     //根据条件查询院校关系
-    SchoolClass findSchoolClassByNameAndSchoolCode(String schoolCode,String name);
+    SchoolClass findSchoolClassBySchoolClass(SchoolClass schoolClass);
 
     //父id查询院系信息
     SchoolClass findSchoolByParentId(Long parentId);
 
     //查询单个学校院系路径和Ids
     List<SchoolClass> queryClassBySchoolCode(String schoolCode);
+
+
 }
