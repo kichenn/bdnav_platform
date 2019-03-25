@@ -1,6 +1,8 @@
 package com.bdxh.system.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.system.dto.AddUserDto;
+import com.bdxh.system.dto.UpdateUserDto;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 
@@ -44,6 +46,12 @@ public interface UserService extends IService<User> {
      */
     void delBatchUser(List<Long> ids);
 
-
-
+    /**
+     * 添加用户
+     */
+    void addUsers(AddUserDto addUserDto);
+    /**
+     * 修改用户
+     */
+    void updateUsers(UpdateUserDto updateUserDto);
 }

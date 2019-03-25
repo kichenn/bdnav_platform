@@ -235,8 +235,7 @@ public class RoleController {
      */
     @ApiOperation("修改启用状态")
     @RequestMapping(value = "/updateRSwitchRole",method = RequestMethod.GET)
-    public Object updateRSwitchRole(@RequestParam(name = "roleId")Long roleId,
-                                    @RequestParam(name = "rswitch")Integer rswitch){
+    public Object updateRSwitchRole(@RequestParam(name = "roleId")Long roleId,@RequestParam(name = "rswitch")Integer rswitch){
         try {
             if (roleService.UpdateByInitiateMode(roleId,rswitch).equals(Boolean.TRUE)){
                 return WrapMapper.ok(Boolean.TRUE);
