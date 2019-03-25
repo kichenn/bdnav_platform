@@ -88,20 +88,18 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     httpServletResponse.addHeader(SecurityConstant.TOKEN_RESPONSE_HEADER, token);
                 }
             } catch (ExpiredJwtException e) {
-                Wrapper wrapper = WrapMapper.error("登录已失效。");
+                Wrapper wrapper = WrapMapper.wrap(401, "登录已失效");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-                httpServletResponse.setStatus(401);
                 httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
                 httpServletResponse.setCharacterEncoding("utf-8");
                 httpServletResponse.setContentType("application/json;charset=utf-8");
                 httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
                 return;
             } catch (Exception e) {
-                Wrapper wrapper = WrapMapper.error("解析token错误。");
+                Wrapper wrapper = WrapMapper.wrap(401, "解析token错误");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-                httpServletResponse.setStatus(401);
                 httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
                 httpServletResponse.setCharacterEncoding("utf-8");
                 httpServletResponse.setContentType("application/json;charset=utf-8");

@@ -21,10 +21,9 @@ public class MyUnauthorizedHandler implements AuthenticationEntryPoint{
 
     @Override
     public void commence(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException exception) throws IOException {
-        Wrapper wrapper= WrapMapper.error("未登录系统");
+        Wrapper wrapper=WrapMapper.wrap(401,"未登录系统");
         String str = JSON.toJSONString(wrapper);
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpServletResponse.setStatus(401);
         httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
         httpServletResponse.setCharacterEncoding("utf-8");
         httpServletResponse.setContentType("application/json;charset=utf-8");

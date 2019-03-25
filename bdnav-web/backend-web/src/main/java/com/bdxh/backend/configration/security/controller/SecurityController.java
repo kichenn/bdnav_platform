@@ -50,7 +50,7 @@ public class SecurityController {
     private RedisTemplate<String, Object> redisTemplate;
 
 
-    @RequestMapping(value = "/authentication/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/authentication/login", method = RequestMethod.POST)
     @ApiOperation(value = "获取token", response = String.class)
     public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) throws IOException {
         try {
@@ -94,10 +94,9 @@ public class SecurityController {
             if (e instanceof LockedException) {
                 message = "账户已被锁定";
             }
-            Wrapper wrapper = WrapMapper.error(message);
+            Wrapper wrapper = WrapMapper.wrap(401,message);
             String str = JSON.toJSONString(wrapper);
             response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setStatus(401);
             response.setHeader("Content-type", "application/json; charset=UTF-8");
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json;charset=utf-8");
