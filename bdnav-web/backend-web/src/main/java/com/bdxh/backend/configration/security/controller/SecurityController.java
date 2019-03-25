@@ -7,7 +7,6 @@ import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.system.entity.User;
 import com.google.common.base.Preconditions;
 import io.jsonwebtoken.CompressionCodecs;
@@ -97,6 +96,7 @@ public class SecurityController {
             Wrapper wrapper = WrapMapper.wrap(401,message);
             String str = JSON.toJSONString(wrapper);
             response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setStatus(200);
             response.setHeader("Content-type", "application/json; charset=UTF-8");
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json;charset=utf-8");
@@ -104,10 +104,10 @@ public class SecurityController {
         }
     }
 
-
     @GetMapping("/getUserInfoByToken")
     @ApiOperation(value = "token获取用户信息", response = String.class)
     public Object getUserInfoByToken() {
         return WrapMapper.ok(SecurityUtils.getCurrentUser());
     }
+
 }
