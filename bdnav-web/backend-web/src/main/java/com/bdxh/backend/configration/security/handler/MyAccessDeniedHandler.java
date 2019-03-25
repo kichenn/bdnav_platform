@@ -20,12 +20,11 @@ import java.io.IOException;
  **/
 @Component
 @Slf4j
-public class MyAccessDeniedHandler implements AccessDeniedHandler{
+public class MyAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException exception) throws IOException, ServletException {
-        Wrapper wrapper= WrapMapper.error("没有相关权限");
-        wrapper.setCode(403);
+        Wrapper wrapper = WrapMapper.wrap(403, "没有相关权限");
         String str = JSON.toJSONString(wrapper);
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
         httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
