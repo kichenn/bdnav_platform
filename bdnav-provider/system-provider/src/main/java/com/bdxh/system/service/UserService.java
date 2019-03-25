@@ -55,5 +55,15 @@ public interface UserService extends IService<User> {
      */
     void updateUsers(UpdateUserDto updateUserDto);
 
-    List<String> findUserRoleByUserId(Long userId);
+ /**
+  * 根据用户id查询所有关系
+  * @param userId
+  * @return
+  */
+ List<String> findUserRoleByUserId(Long userId);
+
+ /**
+  * 更改用户启用状态
+  */
+ Boolean startUsing(UpdateUserDto updateUserDto);
 }

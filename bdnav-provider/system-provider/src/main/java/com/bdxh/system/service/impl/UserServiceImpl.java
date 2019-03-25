@@ -143,8 +143,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         return userRoles;
     }
 
-
-
+    @Override
+    public Boolean startUsing(UpdateUserDto updateUserDto) {
+        User user=new User();
+        user.setStatus(updateUserDto.getStatus());
+        Boolean flag=userMapper.updateByPrimaryKey(user)>0;
+        return  flag;
+    }
 
 
 }
