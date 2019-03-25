@@ -89,6 +89,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 }
             } catch (ExpiredJwtException e) {
                 Wrapper wrapper = WrapMapper.error("登录已失效。");
+                wrapper.setCode(401);
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);
@@ -99,6 +100,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 return;
             } catch (Exception e) {
                 Wrapper wrapper = WrapMapper.error("解析token错误。");
+                wrapper.setCode(401);
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);
