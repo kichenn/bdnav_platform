@@ -64,12 +64,13 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
+            if(addTeacherDto.getTeacherDeptDtoList().size()>0){
             for (int i = 0; i < addTeacherDto.getTeacherDeptDtoList().size(); i++) {
                 String[] ids = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
                 String[] names = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
                 addTeacherDto.getTeacherDeptDtoList().get(i).setDeptId(Long.parseLong(ids[ids.length - 1]));
                 addTeacherDto.getTeacherDeptDtoList().get(i).setDeptName(names[names.length - 1]);
-            }
+            }}
             addTeacherDto.setId(snowflakeIdWorker.nextId());
             addTeacherDto.setActivate(Byte.valueOf("1"));
             teacherService.saveTeacherDeptInfo(addTeacherDto);
