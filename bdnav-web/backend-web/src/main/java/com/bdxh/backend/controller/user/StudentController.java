@@ -25,6 +25,7 @@ import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.BindingResult;
@@ -228,84 +229,86 @@ public class StudentController {
                return  WrapMapper.error("上传失败，请选择文件");
            }
            List<String[]> studentList= ExcelImportUtil.readExcelNums(file,0);
-           for (int i=1;i<studentList.size();i++){
-               String[] columns= studentList.get(i);
-               AddStudentDto addStudentDto=new AddStudentDto();
-               School school=new School();
-               List<SchoolClass> schoolClassList=new ArrayList<>();
-               if(i==1){
-                   //第一条查询数据存到缓存中
-                   Wrapper schoolWrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
-                   Wrapper schoolClassWrapper=schoolClassControllerClient.queryClassUrlBySchoolCode(columns[0]);
-                    schoolClassList=(List<SchoolClass>)schoolClassWrapper.getResult();
-                   school=(School)schoolWrapper.getResult();
-                   redisTemplate.opsForValue().set("schoolInfoVo",school);
-                   redisTemplate.opsForValue().set("schoolClassList",schoolClassList);
-               //判断当前schoolCode是否与上一条相同
-                }else if(studentList.get(i)[0].equals(i-1>=studentList.size()?studentList.get(studentList.size())[0]:studentList.get(i-1)[0])){
-                    //判断得出在同一个班级直接从缓存中拉取数据
-                   school=(School)redisTemplate.opsForValue().get("schoolInfoVo");
-                   schoolClassList=(List<SchoolClass>)redisTemplate.opsForValue().get("schoolClassList");
-               }else{
-                   //重新查询数据库进行缓存
-                   Wrapper schoolWrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
-                   Wrapper schoolClassWrapper=schoolClassControllerClient.queryClassUrlBySchoolCode(columns[0]);
-                   schoolClassList=(List<SchoolClass>)schoolClassWrapper.getResult();
-                   school=(School)schoolWrapper.getResult();
-                   redisTemplate.opsForValue().set("schoolInfoVo",school);
-                   redisTemplate.opsForValue().set("schoolClassList",schoolClassList);
-               }
-               addStudentDto.setSchoolName(school.getSchoolName());
-               addStudentDto.setSchoolId(school.getId()+"");
-               addStudentDto.setSchoolCode(school.getSchoolCode());
-               addStudentDto.setCampusName(columns[1]);
-               addStudentDto.setCollegeName(columns[2]);
-               addStudentDto.setFacultyName(columns[3]);
-               addStudentDto.setProfessionName(columns[4]);
-               addStudentDto.setGradeName(columns[5]);
-               addStudentDto.setClassName(columns[6]);
-               addStudentDto.setAdress(columns[7]);
-               addStudentDto.setName(columns[8]);
-               addStudentDto.setGender(columns[9].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
-               addStudentDto.setPhone(columns[10]);
-               addStudentDto.setCardNumber(columns[11]);
-               addStudentDto.setRemark(columns[12]);
-               String classNames="";
+           for (int i=1;i<studentList.size();i++) {
+               String[] columns = studentList.get(i);
+               AddStudentDto addStudentDto = new AddStudentDto();
+               School school = new School();
+               List<SchoolClass> schoolClassList = new ArrayList<>();
+               if (StringUtils.isNotBlank(studentList.get(i)[0])) {
+                   if (i == 1) {
+                       //第一条查询数据存到缓存中
+                       Wrapper schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                       Wrapper schoolClassWrapper = schoolClassControllerClient.queryClassUrlBySchoolCode(columns[0]);
+                       schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
+                       school = (School) schoolWrapper.getResult();
+                       redisTemplate.opsForValue().set("schoolInfoVo", school);
+                       redisTemplate.opsForValue().set("schoolClassList", schoolClassList);
+                       //判断当前schoolCode是否与上一条相同
+                   } else if (studentList.get(i)[0].equals(i - 1 >= studentList.size() ? studentList.get(studentList.size())[0] : studentList.get(i - 1)[0])) {
+                       //判断得出在同一个班级直接从缓存中拉取数据
+                       school = (School) redisTemplate.opsForValue().get("schoolInfoVo");
+                       schoolClassList = (List<SchoolClass>) redisTemplate.opsForValue().get("schoolClassList");
+                   } else {
+                       //重新查询数据库进行缓存
+                       Wrapper schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                       Wrapper schoolClassWrapper = schoolClassControllerClient.queryClassUrlBySchoolCode(columns[0]);
+                       schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
+                       school = (School) schoolWrapper.getResult();
+                       redisTemplate.opsForValue().set("schoolInfoVo", school);
+                       redisTemplate.opsForValue().set("schoolClassList", schoolClassList);
+                   }
+                   addStudentDto.setSchoolName(school.getSchoolName());
+                   addStudentDto.setSchoolId(school.getId() + "");
+                   addStudentDto.setSchoolCode(school.getSchoolCode());
+                   addStudentDto.setCampusName(columns[1]);
+                   addStudentDto.setCollegeName(columns[2]);
+                   addStudentDto.setFacultyName(columns[3]);
+                   addStudentDto.setProfessionName(columns[4]);
+                   addStudentDto.setGradeName(columns[5]);
+                   addStudentDto.setClassName(columns[6]);
+                   addStudentDto.setAdress(columns[7]);
+                   addStudentDto.setName(columns[8]);
+                   addStudentDto.setGender(columns[9].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
+                   addStudentDto.setPhone(columns[10]);
+                   addStudentDto.setCardNumber(columns[11]);
+                   addStudentDto.setRemark(columns[12]);
+                   String classNames = "";
 
-               if(!("").equals(addStudentDto.getCollegeName())&&null!=addStudentDto.getCollegeName()){
-                   classNames+=addStudentDto.getCollegeName()+"/";
+                   if (!("").equals(addStudentDto.getCollegeName()) && null != addStudentDto.getCollegeName()) {
+                       classNames += addStudentDto.getCollegeName() + "/";
+                   }
+                   if (!("").equals(addStudentDto.getFacultyName()) && null != addStudentDto.getFacultyName()) {
+                       classNames += addStudentDto.getFacultyName() + "/";
+                   }
+                   if (!("").equals(addStudentDto.getProfessionName()) && null != addStudentDto.getProfessionName()) {
+                       classNames += addStudentDto.getProfessionName() + "/";
+                   }
+                   if (!("").equals(addStudentDto.getGradeName()) && null != addStudentDto.getGradeName()) {
+                       classNames += addStudentDto.getGradeName() + "/";
+                   }
+                   if (!("").equals(addStudentDto.getClassName()) && null != addStudentDto.getClassName()) {
+                       classNames += addStudentDto.getClassName();
+                   }
+                   String ids = "";
+                   int j;
+                   for (j = 0; j < schoolClassList.size(); j++) {
+                       //String column = columns[j];
+                       if (classNames.trim().equals(schoolClassList.get(j).getThisUrl().trim())) {
+                           ids += schoolClassList.get(j).getParentIds();
+                       }
+                   }
+                   if (ids.equals("")) {
+                       return WrapMapper.error("请检查" + i + "条数据院系组织填写是否正确");
+                   }
+                   //拼接ClassNames字段
+                   addStudentDto.setClassIds(ids);
+                   String[] idarr = ids.split(",");
+                   addStudentDto.setClassId(Long.parseLong(idarr[idarr.length - 1]));
+                   addStudentDto.setClassNames(classNames);
+                   studentControllerClient.addStudent(addStudentDto);
                }
-               if(!("").equals(addStudentDto.getFacultyName())&&null!=addStudentDto.getFacultyName()){
-                   classNames+=addStudentDto.getFacultyName()+"/";
-               }
-               if(!("").equals(addStudentDto.getProfessionName())&&null!=addStudentDto.getProfessionName()){
-                   classNames+=addStudentDto.getProfessionName()+"/";
-               }
-               if(!("").equals(addStudentDto.getGradeName())&&null!=addStudentDto.getGradeName()){
-                   classNames+=addStudentDto.getGradeName()+"/";
-               }
-               if(!("").equals(addStudentDto.getClassName())&&null!=addStudentDto.getClassName()){
-                   classNames+=addStudentDto.getClassName();
-               }
-               String ids="";
-               int j;
-               for (j = 0; j < schoolClassList.size(); j++) {
-                   //String column = columns[j];
-                if(classNames.trim().equals(schoolClassList.get(j).getThisUrl().trim())){
-                     ids+=schoolClassList.get(j).getParentIds();
-                }
-               }
-                if(ids.equals("")){
-                return WrapMapper.error("请检查"+i+"条数据院系组织填写是否正确");
-                }
-               //拼接ClassNames字段
-               addStudentDto.setClassIds(ids);
-               String[] idarr= ids.split(",");
-               addStudentDto.setClassId(Long.parseLong(idarr[idarr.length-1]));
-               addStudentDto.setClassNames(classNames);
-               studentControllerClient.addStudent(addStudentDto);
            }
-           return  WrapMapper.ok();
+           return  WrapMapper.ok("导入完成");
        }catch (Exception e){
            log.error(e.getMessage());
            return WrapMapper.error(e.getMessage());
