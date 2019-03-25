@@ -50,7 +50,7 @@ public class SecurityController {
     private RedisTemplate<String, Object> redisTemplate;
 
 
-    @RequestMapping(value = "/authentication/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/authentication/login", method = RequestMethod.POST)
     @ApiOperation(value = "获取token", response = String.class)
     public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) throws IOException {
         try {
