@@ -99,19 +99,23 @@ public class StudentController {
                 String s = ClassId[i];
                 schoolClass.setSchoolCode(addStudentDto.getSchoolCode());
                 schoolClass.setId(Long.parseLong(ClassId[i]));
-                schoolClass=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
-                if(schoolClass.getType().equals("1")){
-                    addStudentDto.setCollegeName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("2")){
-                    addStudentDto.setFacultyName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("3")){
-                    addStudentDto.setProfessionName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("4")){
-                    addStudentDto.setGradeName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("5")){
-                    addStudentDto.setClassName(schoolClass.getName());
-                    addStudentDto.setClassId(schoolClass.getId());
-                }
+               SchoolClass schoolClass1=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
+               if(null!=schoolClass1) {
+                   if (schoolClass1.getType().equals("1") || schoolClass1.getType() == 1) {
+                       addStudentDto.setCollegeName(schoolClass1.getName());
+                   } else if (schoolClass1.getType().equals("2") || schoolClass1.getType() == 2) {
+                       addStudentDto.setFacultyName(schoolClass1.getName());
+                   } else if (schoolClass1.getType().equals("3") || schoolClass1.getType() == 3) {
+                       addStudentDto.setProfessionName(schoolClass1.getName());
+                   } else if (schoolClass1.getType().equals("4") || schoolClass1.getType() == 4) {
+                       addStudentDto.setGradeName(schoolClass1.getName());
+                   } else if (schoolClass1.getType().equals("5") || schoolClass1.getType() == 5) {
+                       addStudentDto.setClassName(schoolClass1.getName());
+                       addStudentDto.setClassId(schoolClass1.getId());
+                   }
+               }else{
+                   return WrapMapper.error();
+               }
             }
             Wrapper wrapper=studentControllerClient.addStudent(addStudentDto);
             return WrapMapper.ok(wrapper.getMessage());
@@ -180,18 +184,22 @@ public class StudentController {
                 String s = ClassId[i];
                 schoolClass.setSchoolCode(updateStudentDto.getSchoolCode());
                 schoolClass.setId(Long.parseLong(ClassId[i]));
-                schoolClass=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
-                if(schoolClass.getType().equals("1")){
-                    updateStudentDto.setCollegeName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("2")){
-                    updateStudentDto.setFacultyName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("3")){
-                    updateStudentDto.setProfessionName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("4")){
-                    updateStudentDto.setGradeName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("5")){
-                    updateStudentDto.setClassName(schoolClass.getName());
-                    updateStudentDto.setClassId(schoolClass.getId());
+                SchoolClass schoolClass1=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
+                if(null!=schoolClass1) {
+                    if (schoolClass1.getType().equals("1") || schoolClass1.getType() == 1) {
+                        updateStudentDto.setCollegeName(schoolClass1.getName());
+                    } else if (schoolClass1.getType().equals("2") || schoolClass1.getType() == 2) {
+                        updateStudentDto.setFacultyName(schoolClass1.getName());
+                    } else if (schoolClass1.getType().equals("3") || schoolClass1.getType() == 3) {
+                        updateStudentDto.setProfessionName(schoolClass1.getName());
+                    } else if (schoolClass1.getType().equals("4") || schoolClass1.getType() == 4) {
+                        updateStudentDto.setGradeName(schoolClass1.getName());
+                    } else if (schoolClass1.getType().equals("5") || schoolClass1.getType() == 5) {
+                        updateStudentDto.setClassName(schoolClass1.getName());
+                        updateStudentDto.setClassId(schoolClass1.getId());
+                    }
+                }else{
+                    return WrapMapper.error();
                 }
             }
             studentControllerClient.updateStudent(updateStudentDto);

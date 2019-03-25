@@ -52,16 +52,25 @@
         <include refid="Base_Column_List"/>
         from t_school_class
         <where>
-            <if test="#{schoolClass.id}!=0">
+            <if test="schoolClass.id!=0">
                 and id=#{schoolClass.id}
             </if>
-            <if test="#{schoolClass.parentId}!=0">
+            <if test="schoolClass.parentId!=null and schoolClass.parentId!=''">
             and parent_id=#{schoolClass.parentId}
             </if>
-            <if test="#{schoolClass.schoolId}!=0">
+            <if test="schoolClass.parentIds!=null and schoolClass.parentIds!=''">
+                and parent_ids=#{schoolClass.parentIds}
+            </if>
+            <if test="schoolClass.parentNames!=null and schoolClass.parentNames!=''">
+                and parent_names=#{schoolClass.parentNames}
+            </if>
+            <if test="schoolClass.thisUrl!=null and schoolClass.thisUrl!=''">
+                and this_url=#{schoolClass.thisUrl}
+            </if>
+            <if test="schoolClass.schoolId!=null and schoolClass.schoolId!=''">
                 and school_id=#{schoolClass.schoolId}
             </if>
-            <if test="#{schoolClass.schoolCode}!=null and #{schoolClass.schoolCode}!=''">
+            <if test="schoolClass.schoolCode!=null and schoolClass.schoolCode!=''">
                 and school_code=#{schoolClass.schoolCode}
             </if>
              limit 1;
