@@ -62,7 +62,7 @@ public class StudentController {
         }
         try {
             Student student = BeanMapUtils.map(addStudentDto, Student.class);
-            if (studentService.isNullStudent(student.getSchoolCode(), student.getCardNumber()) == null) {
+            if (null==studentService.isNullStudent(student.getSchoolCode(), student.getCardNumber()) ) {
                 student.setId(snowflakeIdWorker.nextId());
                 student.setActivate(Byte.valueOf("1"));
                 studentService.save(student);

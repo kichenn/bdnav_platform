@@ -84,45 +84,46 @@
     </delete>
     <!-- 查询单个学生信息 -->
     <select id="selectStudentVo" resultType="com.bdxh.user.vo.StudentVo" parameterType="String">
-      SELECT
-      id as sId,
-      school_id as schoolId,
-      school_code as schoolCode,
-      school_name as schoolName,
-      campus_name as campusName,
-      college_name as collegeName ,
-      faculty_name as facultyName,
-      profession_name as professionName,
-      grade_name as gradeName,
-      class_name as className,
-      class_id as classId,
-      class_ids as classIds,
-      class_names as classNames,
-      `name` as sName,
-      gender,
-      birth,
-      phone,
-      card_number as cardNumber,
-      idcard,
-      qq_number as qqNumber,
-      wx_number as wxNumber,
-      email,
-      image,
-      image_name as imageName,
-      nation_name as nationName,
-      dormitory_address as dormitoryAddress,
-      adress,
-      physical_number as physicalNumber,
-      physical_chip_number as physicalChipNumber,
-      activate,
-      create_date as createDate,
-      update_date as updateDate,
-      operator,
-      operator_name as operatorName,
-      remark
-      FROM
-      t_student
-     where school_code = #{schoolCode}
+         SELECT
+            id AS sId,
+            school_id AS schoolId,
+            school_code AS schoolCode,
+            school_name AS schoolName,
+            campus_name AS campusName,
+            college_name AS collegeName,
+            faculty_name AS facultyName,
+            profession_name AS professionName,
+            grade_name AS gradeName,
+            class_name AS className,
+            class_id AS classId,
+            class_ids AS classIds,
+            class_names AS classNames,
+            `name` AS sName,
+            gender,
+            birth,
+            phone,
+            card_number AS cardNumber,
+            idcard,
+            qq_number AS qqNumber,
+            wx_number AS wxNumber,
+            email,
+            image,
+            image_name AS imageName,
+            nation_name AS nationName,
+            dormitory_address AS dormitoryAddress,
+            adress,
+            physical_number AS physicalNumber,
+            physical_chip_number AS physicalChipNumber,
+            activate,
+            create_date AS createDate,
+            update_date AS updateDate,
+            operator,
+            operator_name AS operatorName,
+            remark
+        FROM
+            t_student
+        WHERE
+         school_code = #{schoolCode}
      and card_number = #{cardNumber}
 </select>
     <update id="updateStudentInfo">

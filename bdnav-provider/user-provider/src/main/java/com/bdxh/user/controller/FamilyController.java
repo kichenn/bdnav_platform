@@ -60,7 +60,7 @@ public class FamilyController {
         }
         try {
             Family family = BeanMapUtils.map(addFamilyDto, Family.class);
-            if (familyService.isNullFamily(family.getSchoolCode(),family.getCardNumber())==null){
+            if (null == familyService.isNullFamily(family.getSchoolCode(),family.getCardNumber())){
                 family.setId(snowflakeIdWorker.nextId());
                 family.setActivate(Byte.valueOf("1"));
                 familyService.save(family);
