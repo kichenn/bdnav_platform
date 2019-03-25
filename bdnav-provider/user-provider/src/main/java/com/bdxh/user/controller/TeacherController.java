@@ -24,6 +24,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -64,7 +65,7 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
-            if(addTeacherDto.getTeacherDeptDtoList().size()>0){
+            if(null!=addTeacherDto.getTeacherDeptDtoList()){
             for (int i = 0; i < addTeacherDto.getTeacherDeptDtoList().size(); i++) {
                 String[] ids = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
                 String[] names = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
