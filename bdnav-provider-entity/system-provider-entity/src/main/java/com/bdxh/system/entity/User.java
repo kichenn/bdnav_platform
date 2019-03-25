@@ -38,7 +38,8 @@ public class User {
     /**
      * 出生日期
      */
-    private String birthday;
+    private String birth;
+
 
     /**
      * 手机
@@ -239,17 +240,17 @@ public class User {
      *
      * @return birthday - 出生日期
      */
-    public String getBirthday() {
-        return birthday;
+    public String getBirth() {
+        return birth;
     }
+
 
     /**
      * 设置出生日期
      *
-     * @param birthday 出生日期
      */
-    public void setBirthday(String birthday) {
-        this.birthday = birthday == null ? null : birthday.trim();
+    public void setBirth(String birth) {
+        this.birth = birth == null ? null : birth.trim();
     }
 
     /**

@@ -51,7 +51,7 @@ public class AddUserDto implements Serializable {
      * 出生日期
      */
     @ApiModelProperty("出生日期")
-    private String birthday;
+    private String birth;
 
 
     /**
