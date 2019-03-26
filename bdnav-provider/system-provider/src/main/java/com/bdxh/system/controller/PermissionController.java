@@ -133,7 +133,7 @@ public class PermissionController {
     @RequestMapping(value = "/theTreeMenu", method = RequestMethod.GET)
     @ApiOperation(value = "查询全部菜单", response = List.class)
     @ResponseBody
-    public Object theTreeMenu(@RequestParam(value = "roleId",required = false) Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
+    public Object theTreeMenu(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
 
         List<RolePermissionDto> permissions = permissionService.theTreeMenu(roleId,selected);
 
