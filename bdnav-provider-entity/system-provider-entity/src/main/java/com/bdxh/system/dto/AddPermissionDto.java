@@ -14,11 +14,14 @@ public class AddPermissionDto {
     @ApiModelProperty("父级菜单id")
     private Long parentId;
 
-//    @ApiModelProperty("父级菜单ids")
-//    private String parentIds;
+   @ApiModelProperty("父级菜单ids")
+    private String parentIds;
+
+    @ApiModelProperty("路由路径")
+    private String name;
 
     @ApiModelProperty("菜单名称")
-    private String name;
+    private String title;
 
     @ApiModelProperty("路径")
     private String path;
@@ -40,4 +43,5 @@ public class AddPermissionDto {
 
     @ApiModelProperty("备注")
     private String remark;
+
 }

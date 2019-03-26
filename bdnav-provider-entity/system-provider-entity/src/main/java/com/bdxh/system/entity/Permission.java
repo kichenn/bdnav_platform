@@ -26,9 +26,14 @@ public class Permission {
     private String parentIds;
 
     /**
-     * 菜单名称
+     * 路由路径
      */
     private String name;
+
+    /**
+     * 菜单名称
+     */
+    private String title;
 
     /**
      * 路径
@@ -143,22 +148,33 @@ public class Permission {
     }
 
     /**
-     * 获取菜单名称
-     *
-     * @return name - 菜单名称
+     * 获取路由路径
      */
     public String getName() {
         return name;
     }
 
     /**
-     * 设置菜单名称
-     *
-     * @param name 菜单名称
+     * 设置路由路径
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
     }
+
+    /**
+     * 获取菜单名称
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * 设置菜单名称
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
 
     /**
      * 获取路径

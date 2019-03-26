@@ -4,7 +4,6 @@ package com.bdxh.system.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
-import org.apache.ibatis.annotations.Param;
 
 
 import java.util.List;
@@ -38,6 +37,6 @@ public interface PermissionService extends IService<Permission> {
     List<RolePermissionDto> theTreeMenu(Long roleId, Integer selected);
 
     //根据角色id查询权限菜单
-   List<Permission> permissionByMenus(Long roleId,Integer selected);
+    List<Permission> permissionByMenus(Long roleId,Integer selected);
 
 }
