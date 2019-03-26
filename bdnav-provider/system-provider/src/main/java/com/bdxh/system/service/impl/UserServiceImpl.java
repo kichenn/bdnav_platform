@@ -2,11 +2,8 @@ package com.bdxh.system.service.impl;
 
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.system.dto.AddUserDto;
 import com.bdxh.system.dto.UpdateUserDto;
-import com.bdxh.system.entity.Permission;
-import com.bdxh.system.entity.Role;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.persistence.UserMapper;

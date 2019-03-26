@@ -19,6 +19,7 @@ public class UserQueryDto extends Query {
     @ApiModelProperty("部门id")
     private Long deptId;
 
+
     /**
      * 性别 1 男 2 女
      */

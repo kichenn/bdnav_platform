@@ -6,6 +6,7 @@ import java.util.List;
 
 @Table(name = "sys_user")
 public class User {
+
     /**
      * 主键id
      */
@@ -432,7 +433,6 @@ public class User {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
-
 
 
     public String getImgFileAddress() {

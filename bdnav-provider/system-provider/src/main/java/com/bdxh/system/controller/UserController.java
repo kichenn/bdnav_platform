@@ -1,6 +1,5 @@
 package com.bdxh.system.controller;
 
-import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.*;
@@ -34,7 +33,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-
+    
     /**
      * 增加用户
      *
@@ -198,8 +197,6 @@ public class UserController {
         List<String> result=userService.findUserRoleByUserId(userId);
         return WrapMapper.ok(result);
     }
-
-
 
 
 }
