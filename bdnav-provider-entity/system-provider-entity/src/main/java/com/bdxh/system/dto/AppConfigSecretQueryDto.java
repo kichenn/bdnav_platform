@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -23,6 +25,24 @@ public class AppConfigSecretQueryDto extends Query {
      */
     @ApiModelProperty("主键")
     private Long Id;
+
+    /**
+     * 学校id
+     */
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+
+    /**
+     * 学校名称
+     */
+    @ApiModelProperty("学校名称")
+    private String schoolName;
 
     /**
      * 应用id
@@ -47,12 +67,6 @@ public class AppConfigSecretQueryDto extends Query {
      */
     @ApiModelProperty("秘钥")
     private String AppSecret;
-
-    /**
-     * 回调地址
-     */
-    @ApiModelProperty("回调地址")
-    private String NoticeUrl;
 
     /**
      * 创建时间
