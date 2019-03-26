@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,6 +50,8 @@ public class SchoolUserWebController {
     public Object addUser(@RequestBody AddSchoolUserDto addUserDto) {
         SchoolUser schoolUser = new SchoolUser();
         BeanUtils.copyProperties(addUserDto, schoolUser);
+        //密码加密
+        schoolUser.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
         //设置操作人
         User user = SecurityUtils.getCurrentUser();
         schoolUser.setOperator(user.getId());
@@ -62,6 +65,8 @@ public class SchoolUserWebController {
     public Object modifySchoolUser(@RequestBody ModifyUserDto modifyUserDto) {
         SchoolUser schoolUser = new SchoolUser();
         BeanUtils.copyProperties(modifyUserDto, schoolUser);
+        //密码加密
+        schoolUser.setPassword(new BCryptPasswordEncoder().encode(modifyUserDto.getPassword()));
         //设置操作人
         User user = SecurityUtils.getCurrentUser();
         schoolUser.setOperator(user.getId());
@@ -74,6 +79,11 @@ public class SchoolUserWebController {
     @RequestMapping(value = "/delSchoolUser", method = RequestMethod.POST)
     @ApiOperation(value = "根据id删除学校用户信息", response = Boolean.class)
     public Object delUser(@RequestParam(name = "id") Long id) {
+        User user = SecurityUtils.getCurrentUser();
+        if (id.equals(user.getId())) {
+            //如果删除的id和当前登录的用户id相同，则不能删除
+            return WrapMapper.error("不能删除当前登录账号");
+        }
         Wrapper wrapper = schoolUserControllerClient.delSchoolUser(id);
         return wrapper;
     }
