@@ -23,7 +23,28 @@ spring:
   datasource:
     ds0:
       name : dataSource
-      url : jdbc:mysql://119.23.185.109:3306/bdxh_wallet?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_onecard?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      username : admin
+      password : Abc_123456
+      type : com.alibaba.druid.pool.DruidDataSource
+      driver-class-name : com.mysql.jdbc.Driver
+      filters :  stat
+      maxActive : 20
+      initialSize : 1
+      minIdle : 3
+      maxWait : 60000
+      timeBetweenEvictionRunsMillis : 60000
+      minEvictableIdleTimeMillis : 300000
+      validationQuery : select 'x' from dual
+      testWhileIdle : true
+      testOnBorrow : false
+      testOnReturn : false
+      poolPreparedStatements : true
+      maxOpenPreparedStatements : 50
+      connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
+    ds1:
+      name : dataSource
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_onecard?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
       username : admin
       password : Abc_123456
       type : com.alibaba.druid.pool.DruidDataSource
@@ -68,60 +89,6 @@ spring:
       rocketmq:
         binder:
           namesrv-addr: 47.107.253.90:9876;47.107.255.252:9876
-        bindings:
-          walletNotice:
-            consumer:
-              orderly: false
-              tags: appmarket||js||query
-          walletRecharge:
-            consumer:
-              orderly: false
-              tags: add
-          walletKailuPay:
-            consumer:
-              orderly: false
-              tags: consumer
-          walletKailuPayUpdate:
-            consumer:
-              orderly: false
-              tags: update
-      bindings:
-        walletNotice:
-          destination: wechatPayWalletNotice
-          contentType: text/plain
-          group: wechatPayWalletNotice-group
-          consumer:
-            #并发消费数量
-            concurrency: 50
-            #重试次数
-            max-attempts: 1
-        walletRecharge:
-          destination: xiancardWalletRecharge
-          contentType: text/plain
-          group: xiancardWalletRecharge-group
-          consumer:
-            #并发消费数量
-            concurrency: 50
-            #重试次数
-            max-attempts: 1
-        walletKailuPay:
-          destination: xiancardWalletKailu
-          contentType: text/plain
-          group: xiancardWalletKailu-group
-          consumer:
-            #并发消费数量
-            concurrency: 50
-            #重试次数
-            max-attempts: 1
-        walletKailuPayUpdate:
-          destination: xiancardWalletKailuUpdate
-          contentType: text/plain
-          group: xiancardWalletKailu-group
-          consumer:
-            #并发消费数量
-            concurrency: 50
-            #重试次数
-            max-attempts: 1
 #rocketmq producer配置
 rocketmq:
   producer:

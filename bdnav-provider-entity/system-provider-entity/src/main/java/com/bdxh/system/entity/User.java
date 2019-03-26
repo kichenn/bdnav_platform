@@ -66,6 +66,11 @@ public class User {
     private Long deptId;
 
     /**
+     * 部门全称
+     */
+    private String deptFullName;
+
+    /**
      * 状态 1 正常 2 锁定
      */
     private Byte status;
@@ -306,6 +311,23 @@ public class User {
     public void setRoleIds(String roleIds) {
         this.roleIds = roleIds;
     }
+
+    /**
+     * 设置部门名称
+     * @return
+     */
+    public String getDeptFullName() {
+        return deptFullName;
+    }
+
+    /**
+     * 设置部门名称
+     * @param deptFullName
+     */
+    public void setDeptFullName(String deptFullName) {
+        this.deptFullName = deptFullName;
+    }
+
 
 
     /**

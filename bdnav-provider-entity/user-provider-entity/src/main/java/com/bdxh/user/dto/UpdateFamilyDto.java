@@ -19,6 +19,7 @@ public class UpdateFamilyDto implements Serializable {
 
     @ApiModelProperty("家长Id")
     private String id;
+
     /**
      * 学校编码
      */

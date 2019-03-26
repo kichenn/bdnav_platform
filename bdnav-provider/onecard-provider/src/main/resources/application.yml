@@ -1,9 +1,0 @@
-server:
-  port: 9015
-spring:
-  application:
-    name: onecard-provider-cluster
-  profiles:
-    active: dev
-logging:
-  config: classpath:logback-spring.xml

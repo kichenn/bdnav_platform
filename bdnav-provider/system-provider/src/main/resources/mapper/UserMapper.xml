@@ -23,7 +23,9 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="dept_full_name" jdbcType="VARCHAR" property="deptFullName" />
   </resultMap>
+
   
   <sql id="BaseColumns">
     id,user_name,`password`, real_name, sex, birth, phone, email,roleIds,dept_id, `status`, `type`,image, img_file_address, create_date, update_date, operator, remark
@@ -40,25 +42,25 @@
     LEFT JOIN sys_dept ON sys_user.dept_id = sys_dept.id
     <where>
       <if test="userName !=null and userName!=''">
-        AND user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
+        AND sys_user.user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
       </if>
       <if test="sex !=null and sex!=0">
-        AND sex =#{sex}
+        AND sys_user.sex =#{sex}
       </if>
       <if test="phone !=null and phone!=''">
-        AND phone =#{phone}
+        AND sys_user.phone =#{phone}
       </if>
       <if test="deptId !=null and deptId!=0">
-        AND  dept_id =#{deptId}
+        AND  sys_user.dept_id =#{deptId}
       </if>
       <if test="status !=null and status!=0">
-        AND status =#{status}
+        AND sys_user.status =#{status}
       </if>
       <if test="type !=null and type!=0">
-        AND `type` =#{type}
+        AND sys_user.type =#{type}
       </if>
     </where>
-    order by create_date desc
+    ORDER BY sys_user.create_date DESC
   </select>
 
 

@@ -2,6 +2,7 @@ package com.bdxh.system.persistence;
 
 import com.bdxh.system.dto.AddUserDto;
 import com.bdxh.system.dto.UpdateUserDto;
+import com.bdxh.system.dto.UserQueryDto;
 import com.bdxh.system.entity.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,8 +18,8 @@ public interface UserMapper extends Mapper<User> {
      * @param param
      * @return
      */
-    List<User> getByCondition(Map<String,Object> param);
-
+/*    List<User> getByCondition(Map<String,Object> param);*/
+    List<UserQueryDto> getByCondition(Map<String,Object> param);
 
     /**
      * 根据用户名查询用户对象
