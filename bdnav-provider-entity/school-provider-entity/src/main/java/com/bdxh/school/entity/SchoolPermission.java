@@ -16,7 +16,7 @@ public class SchoolPermission {
     /**
      * 学校id
      */
-    @Column(name = "shcool_id")
+    @Column(name = "school_id")
     private Long schoolId;
 
     /**

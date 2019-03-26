@@ -11,33 +11,44 @@
     </resultMap>
 
     <sql id="BaseColumns">
-    id,school_id,school_code,role_id,permission_id,rp_switch,selected,checked,indeterminate
+    id,school_id,school_code,role_id,permission_id
     </sql>
 
     <delete id="deleteByRoleId" parameterType="java.lang.Long">
         DELETE FROM
-           sys_role_permission
+           t_school_role_permission
         WHERE role_id = #{roleId,jdbcType=BIGINT}
     </delete>
 
     <select id="findPermissionIdByRoleId" resultType="java.lang.Long">
       SELECT
       permission_id
-      FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
+      FROM t_school_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
     </select>
 
     <select id="findPermissionId" parameterType="java.util.Map" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
-        FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
+        FROM t_school_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
     </select>
 
     <select id="findPermissionList" parameterType="java.util.Map" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
-        FROM sys_role_permission
+        FROM t_school_role_permission
         WHERE role_id = #{roleId}
     </select>
+
+    <delete id="delBatchRoleByRoleIds">
+        DELETE
+        FROM
+        t_school_role_permission
+        WHERE
+        role_id IN
+        <foreach collection="roleIds" item="empId" separator="," open="(" close=")">
+            #{empId,jdbcType=BIGINT}
+        </foreach>
+    </delete>
 
 
 </mapper>
