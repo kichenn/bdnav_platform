@@ -92,17 +92,6 @@ public class SysUserController {
     }
 
 
-    @RequestMapping(value = "/initiateMode", method = RequestMethod.POST)
-    @ApiOperation(value = "用户启用开关")
-    public Object initiateMode(@RequestBody UpdateUserDto updateUserDto) {
-        try {
-            Wrapper wrapper = userControllerClient.initiateMode(updateUserDto);
-            return WrapMapper.ok(wrapper.getResult());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
 
 
 }

@@ -44,7 +44,6 @@ public class UpdateUserDto implements Serializable {
      * 用户名
      */
     @ApiModelProperty("用户名")
-    @NotEmpty(message = "用户名不能为空")
     private String userName;
 
     /**

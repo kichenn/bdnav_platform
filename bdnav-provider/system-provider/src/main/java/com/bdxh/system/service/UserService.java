@@ -25,7 +25,6 @@ public interface UserService extends IService<User> {
      * @param pageSize
      * @return
      */
-/*   PageInfo<User> findListPage(Map<String,Object> param,Integer pageNum, Integer pageSize);*/
     PageInfo<UserQueryDto> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);
 
     /**
@@ -63,8 +62,4 @@ public interface UserService extends IService<User> {
   */
  List<String> findUserRoleByUserId(Long userId);
 
- /**
-  * 更改用户启用状态
-  */
- Boolean startUsing(UpdateUserDto updateUserDto);
 }

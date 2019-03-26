@@ -1,6 +1,8 @@
 package com.bdxh.system.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.Data;
 import java.io.Serializable;
 import java.util.Date;
@@ -25,6 +27,24 @@ public class AppConfigSecret implements Serializable {
 	private Long Id;
 
 	/**
+	 * 学校id
+	 */
+	@Column(name = "school_id")
+	private Long schoolId;
+
+	/**
+	 * 学校编码
+	 */
+	@Column(name = "school_code")
+	private String schoolCode;
+
+	/**
+	 * 学校名称
+	 */
+	@Column(name = "school_name")
+	private String schoolName;
+
+	/**
 	 * 应用id
 	 */
 	@Column(name = "app_id")
@@ -47,12 +67,6 @@ public class AppConfigSecret implements Serializable {
 	 */
 	@Column(name = "app_secret")
 	private String AppSecret;
-
-	/**
-	 * 回调地址
-	 */
-	@Column(name = "notice_url")
-	private String NoticeUrl;
 
 	/**
 	 * 创建时间

@@ -70,11 +70,4 @@ public interface UserControllerClient {
     Wrapper delBatchUser(@RequestParam(name = "ids") String ids);
 
 
-    /**
-     * 用户启用开关
-     * @return
-     */
-    @RequestMapping(value = "/user/initiateMode")
-    @ResponseBody
-    Wrapper initiateMode(@RequestBody UpdateUserDto updateUserDto);
 }
