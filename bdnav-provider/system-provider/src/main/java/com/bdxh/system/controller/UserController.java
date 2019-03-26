@@ -1,6 +1,5 @@
 package com.bdxh.system.controller;
 
-import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.*;
@@ -162,7 +161,7 @@ public class UserController {
     public Object queryListPage(@RequestBody UserQueryDto userQueryDto) {
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
-            PageInfo<User> Users = userService.findListPage(param,userQueryDto.getPageNum(),userQueryDto.getPageSize());
+            PageInfo<UserQueryDto> Users = userService.findListPage(param,userQueryDto.getPageNum(),userQueryDto.getPageSize());
             return WrapMapper.ok(Users);
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,20 +176,6 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/initiateMode ", method = RequestMethod.POST)
-    @ApiOperation(value = "更改用户启用状态", response = Boolean.class)
-    public Object initiateMode(@RequestBody UpdateUserDto updateUserDto) {
-    try{
-        Boolean result=userService.startUsing(updateUserDto);
-        return WrapMapper.ok(result);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return WrapMapper.error(e.getMessage());
-    }
-    }
-
-
-
     @RequestMapping(value = "/test1", method = RequestMethod.POST)
     @ApiOperation(value = "测试返回数据", response = Boolean.class)
     public Object test1(
@@ -198,8 +183,6 @@ public class UserController {
         List<String> result=userService.findUserRoleByUserId(userId);
         return WrapMapper.ok(result);
     }
-
-
 
 
 }

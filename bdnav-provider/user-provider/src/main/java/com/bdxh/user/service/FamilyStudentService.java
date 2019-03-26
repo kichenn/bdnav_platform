@@ -2,6 +2,7 @@ package com.bdxh.user.service;
 
 import com.bdxh.common.support.IService;
 import com.bdxh.user.entity.FamilyStudent;
+import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 
 import java.util.List;
@@ -21,6 +22,15 @@ public interface FamilyStudentService extends IService<FamilyStudent> {
       * @return： void
       **/
      void removeFamilyStudentInfo(String schoolCode,String cardNumber,String id);
+
+     /**
+      * 查询学生家长关系数据
+      * @param studentName
+      * @param schoolCode
+      * @Author：bin
+      * @return
+      */
+     List<FamilyStudentVo> queryaAllFamilyStudent(String studentName, String schoolCode);
 
 
 

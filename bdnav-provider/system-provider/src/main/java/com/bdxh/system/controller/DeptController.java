@@ -155,24 +155,6 @@ public class DeptController {
 
 
     /**
-     * 根据id查询部门
-     *
-     * @param id
-     * @return
-     */
-  /*  @ApiOperation("根据id查询部门")
-    @RequestMapping(value = "/queryDeptById", method = RequestMethod.GET)
-    public Object queryDept(@RequestParam(name = "id") @NotNull(message = "部门id不能为空") Long id) {
-        try {
-            Dept dept = deptService.selectByKey(id);
-            return WrapMapper.ok(dept);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }*/
-
-    /**
      * 查询部门详情
      *
      * @return
@@ -237,6 +219,5 @@ public class DeptController {
             return WrapMapper.error(e.getMessage());
         }
     }
-
 
 }

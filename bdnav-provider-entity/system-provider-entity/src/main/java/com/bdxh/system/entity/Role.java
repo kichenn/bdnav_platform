@@ -24,16 +24,6 @@ public class Role {
     private String roleName;
 
 
-
-
-    /**
-     * 启用开关 1 开 2 关
-     */
-    @Column(name = "rswitch")
-    private Integer rswitch;
-
-
-
     /**
      * 创建时间
      */
@@ -110,21 +100,6 @@ public class Role {
         this.roleName = roleName == null ? null : roleName.trim();
     }
 
-    /**
-     * 获取角色开关
-     * @return
-     */
-    public Integer getRswitch() {
-        return rswitch;
-    }
-    /**
-     * 设置角色开关
-     * @return
-     */
-
-    public void setRswitch(Integer rswitch) {
-        this.rswitch = rswitch;
-    }
 
     /**
      * 获取创建时间

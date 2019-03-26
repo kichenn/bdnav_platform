@@ -2,7 +2,6 @@ package com.bdxh.onecard.configration.common;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpRequest;
 import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 
 /**

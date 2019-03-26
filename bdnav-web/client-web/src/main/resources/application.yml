@@ -1,0 +1,9 @@
+server:
+  port: 9029
+spring:
+  application:
+    name: client-web
+  profiles:
+    active: dev
+logging:
+  config: classpath:logback-spring.xml

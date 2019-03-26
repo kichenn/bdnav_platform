@@ -49,12 +49,22 @@
     <!--学生查询关系表数据-->
     <select id="studentQueryInfo" resultType="com.bdxh.user.vo.FamilyStudentVo">
           select
-          student_id AS sid,
+          student_id AS id,
           student_name AS sName,
           student_number AS sCardNumber,
           id AS fsId,
           card_number as fCardNumber,
           relation   from t_family_student where student_number=#{cardNumber} and school_code=#{schoolCode}
+    </select>
+    <select id="queryaAllFamilyStudent" resultType="com.bdxh.user.vo.FamilyStudentVo">
+         select
+          student_id AS id,
+          student_name AS sName,
+          student_number AS sCardNumber,
+          school_code AS schoolCode,
+          id AS fsId,
+          card_number as fCardNumber,
+          relation   from t_family_student where student_name=#{studentName} and school_code=#{schoolCode}
     </select>
     <!-- 修改关系表数据-->
         <update id="updateStudentInfo">

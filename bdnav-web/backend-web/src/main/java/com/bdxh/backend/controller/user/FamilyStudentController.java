@@ -73,4 +73,23 @@ public class FamilyStudentController {
         }
     }
 
+    /**
+     * 查询所有家长与孩子关系
+     * @param studentName
+     * @param schoolCode
+     * @return
+     */
+    @ApiOperation(value = "查询所有家长与孩子关系")
+    @RequestMapping(value = "/queryaAllFamilyStudent",method =RequestMethod.GET)
+    public Object queryAllFamilyStudent(@RequestParam(name="studentName")String studentName,
+                                        @RequestParam(name="schoolCode")String schoolCode){
+        try{
+            familyStudentControllerClient.queryAllFamilyStudent(studentName, schoolCode);
+            return WrapMapper.ok();
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 }

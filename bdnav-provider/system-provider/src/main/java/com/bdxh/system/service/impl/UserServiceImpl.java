@@ -2,11 +2,9 @@ package com.bdxh.system.service.impl;
 
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.system.dto.AddUserDto;
 import com.bdxh.system.dto.UpdateUserDto;
-import com.bdxh.system.entity.Permission;
-import com.bdxh.system.entity.Role;
+import com.bdxh.system.dto.UserQueryDto;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.persistence.UserMapper;
@@ -39,10 +37,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     private UserRoleMapper userRoleMapper;
 
 
+
+
     @Override
-    public PageInfo<User> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
+    public PageInfo<UserQueryDto> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<User> roleLogs = userMapper.getByCondition(param);
+        List<UserQueryDto> roleLogs = userMapper.getByCondition(param);
         return new PageInfo(roleLogs);
     }
 
@@ -107,28 +107,30 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
     @Override
     public void updateUsers(UpdateUserDto updateUserDto) {
-        String [] roleIds=updateUserDto.getRoleIds().split(",");
-        List<String> Urbyids=findUserRoleByUserId(updateUserDto.getId());
-        Boolean falg=stringArrayCompare(roleIds, Urbyids);
-        System.out.println(falg);
-        if (falg.equals(Boolean.FALSE)){
+        if (!updateUserDto.getRoleIds().equals("")){
+            String [] roleIds=updateUserDto.getRoleIds().split(",");
+            List<String> Urbyids=findUserRoleByUserId(updateUserDto.getId());
+            Boolean falg=stringArrayCompare(roleIds, Urbyids);
+            if (falg.equals(Boolean.FALSE)){
                 UserRole userRole = new UserRole();
                 userRole.setUserId(updateUserDto.getId());
                 userRoleMapper.delete(userRole);
-            for (int i = 0; i <roleIds.length ; i++) {
-                UserRole addUr=new UserRole();
-                addUr.setUserId(updateUserDto.getId());
-                addUr.setRoleId(Long.valueOf(roleIds[i]));
-                userRoleMapper.insert(addUr);
+                for (int i = 0; i <roleIds.length ; i++) {
+                    UserRole addUr=new UserRole();
+                    addUr.setUserId(updateUserDto.getId());
+                    addUr.setRoleId(Long.valueOf(roleIds[i]));
+                    userRoleMapper.insert(addUr);
+                }
+                userMapper.UpdateUsers(updateUserDto);
+            }else{
+                userMapper.UpdateUsers(updateUserDto);
             }
-            User user = BeanMapUtils.map(updateUserDto, User.class);
-            user.setPassword(new BCryptPasswordEncoder().encode(updateUserDto.getPassword()));
-            userMapper.updateByPrimaryKey(user);
         }else{
-            User user = BeanMapUtils.map(updateUserDto, User.class);
-            user.setPassword(new BCryptPasswordEncoder().encode(updateUserDto.getPassword()));
-            userMapper.updateByPrimaryKey(user);
+            updateUserDto.setRoleIds("");
+            userMapper.UpdateUsers(updateUserDto);
         }
+
+
     }
 
     @Override
@@ -141,14 +143,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
             });
         }
         return userRoles;
-    }
-
-    @Override
-    public Boolean startUsing(UpdateUserDto updateUserDto) {
-        User user=new User();
-        user.setStatus(updateUserDto.getStatus());
-        Boolean flag=userMapper.updateByPrimaryKey(user)>0;
-        return  flag;
     }
 
 

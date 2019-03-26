@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.persistence.SchoolRoleMapper">
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolRole">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+    id,school_id,school_name,role,role_name,rswitch,create_date,update_date,operator,remark
+    </sql>
+
+    <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM sys_user_role
+        <where>
+            <if test="role !=null">
+                role=#{role}
+            </if>
+            <if test="roleName != null">
+                and role_name=#{roleName}
+            </if>
+            <if test="createDate != null">
+                <![CDATA[AND create_date >= #{createDate}]]>
+            </if>
+            <if test="updateDate != null">
+                <![CDATA[AND update_date <= #{updateDate}]]>
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <!-- 根据用户id查询角色列表 -->
+    <select id="getRoleListByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
+    SELECT role.role
+    FROM sys_user `user`
+    INNER JOIN  sys_user_role user_role ON `user`.id = user_role.user_id
+    INNER JOIN  sys_role role ON  role.id = user_role.role_id
+    where  `user`.id = #{userId}
+    </select>
+
+    <!-- 根据角色查询角色信息 -->
+    <select id="getRoleByRole" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM sys_role
+        WHERE role = #{role}
+    </select>
+
+</mapper>

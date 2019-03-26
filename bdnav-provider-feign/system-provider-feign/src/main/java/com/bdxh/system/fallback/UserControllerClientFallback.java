@@ -47,9 +47,6 @@ public class UserControllerClientFallback implements UserControllerClient {
         return WrapMapper.error();
     }
 
-    @Override
-    public Wrapper initiateMode(UpdateUserDto updateUserDto) {
-        return WrapMapper.error();
-    }
+
 
 }

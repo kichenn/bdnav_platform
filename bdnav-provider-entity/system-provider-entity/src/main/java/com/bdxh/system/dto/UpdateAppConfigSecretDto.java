@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
@@ -26,16 +27,28 @@ public class UpdateAppConfigSecretDto implements Serializable {
     private Long id;
 
     /**
+     * 学校id
+     */
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+
+    /**
+     * 学校名称
+     */
+    @ApiModelProperty("学校名称")
+    private String schoolName;
+
+    /**
      * 商户名称
      */
     @ApiModelProperty("商户名称")
     private String MchName;
-
-    /**
-     * 回调地址
-     */
-    @ApiModelProperty("回调地址")
-    private String NoticeUrl;
 
     /**
      * 操作人

@@ -6,6 +6,7 @@ import java.util.List;
 
 @Table(name = "sys_user")
 public class User {
+
     /**
      * 主键id
      */
@@ -63,6 +64,7 @@ public class User {
      */
     @Column(name = "dept_id")
     private Long deptId;
+
 
     /**
      * 状态 1 正常 2 锁定
@@ -432,7 +434,6 @@ public class User {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
-
 
 
     public String getImgFileAddress() {

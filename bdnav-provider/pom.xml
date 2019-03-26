@@ -12,9 +12,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>wallet-provider</module>
-        <module>order-provider</module>
         <module>onecard-provider</module>
+        <module>order-provider</module>
         <module>pay-provider</module>
         <module>product-provider</module>
         <module>mapservice-provider</module>

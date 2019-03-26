@@ -1,5 +1,5 @@
 server:
-  port: 9015
+  port: 9010
 spring:
   application:
     name: onecard-provider-cluster
