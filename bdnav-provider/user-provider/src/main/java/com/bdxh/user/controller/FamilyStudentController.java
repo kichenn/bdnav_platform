@@ -85,9 +85,23 @@ private SnowflakeIdWorker snowflakeIdWorker;
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 查询所有家长与孩子关系
+     * @param studentName
+     * @param schoolCode
+     * @return
+     */
     @ApiOperation(value = "查询所有家长与孩子关系")
     @RequestMapping(value = "queryaAllFamilyStudent",method =RequestMethod.GET)
-    public Object queryAllFamilyStudent(){
-return null;
+    public Object queryAllFamilyStudent(@RequestParam(name="studentName")String studentName,
+                                        @RequestParam(name="schoolCode")String schoolCode){
+        try{
+            familyStudentService.queryaAllFamilyStudent(studentName, schoolCode);
+            return WrapMapper.ok();
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
     }
 }
