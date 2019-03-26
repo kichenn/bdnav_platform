@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.persistence.SchoolRolePermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolRolePermission">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="permission_id" jdbcType="BIGINT" property="permissionId"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+    id,school_id,school_code,role_id,permission_id,rp_switch,selected,checked,indeterminate
+    </sql>
+
+    <delete id="deleteByRoleId" parameterType="java.lang.Long">
+        DELETE FROM
+           sys_role_permission
+        WHERE role_id = #{roleId,jdbcType=BIGINT}
+    </delete>
+
+    <select id="findPermissionIdByRoleId" resultType="java.lang.Long">
+      SELECT
+      permission_id
+      FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
+    </select>
+
+    <select id="findPermissionId" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM sys_role_permission WHERE role_id = #{roleId,jdbcType=BIGINT}
+    </select>
+
+    <select id="findPermissionList" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM sys_role_permission
+        WHERE role_id = #{roleId}
+    </select>
+
+
+</mapper>

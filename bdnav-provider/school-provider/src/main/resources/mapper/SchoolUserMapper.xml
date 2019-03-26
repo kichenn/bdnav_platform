@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdxh.system.persistence.UserMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.system.entity.User">
+<mapper namespace="com.bdxh.school.persistence.UserMapper">
+  <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolUser">
     <!--
       WARNING - @mbg.generated
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+    <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
     <result column="user_name" jdbcType="VARCHAR" property="userName" />
     <result column="password" jdbcType="VARCHAR" property="password" />
     <result column="real_name" jdbcType="VARCHAR" property="realName" />
@@ -22,32 +24,10 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
-
-  <resultMap id="BaseResult" type="com.bdxh.system.dto.UserQueryDto">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="real_name" jdbcType="VARCHAR" property="realName" />
-    <result column="sex" jdbcType="TINYINT" property="sex" />
-    <result column="birth" jdbcType="VARCHAR" property="birth" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="roleIds" jdbcType="VARCHAR" property="roleIds" />
-    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="dept_full_name" jdbcType="VARCHAR" property="deptFullName" />
-  </resultMap>
-
-
+  
   <sql id="BaseColumns">
     id,user_name,`password`, real_name, sex, birth, phone, email,roleIds,dept_id, `status`, `type`,image, img_file_address, create_date, update_date, operator, remark
   </sql>
@@ -58,30 +38,30 @@
   </select>
 
    <!-- 带条件查询用户列表 -->
-  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResult">
+  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
     SELECT * FROM sys_user
     LEFT JOIN sys_dept ON sys_user.dept_id = sys_dept.id
     <where>
       <if test="userName !=null and userName!=''">
-        AND sys_user.user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
+        AND user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
       </if>
       <if test="sex !=null and sex!=0">
-        AND sys_user.sex =#{sex}
+        AND sex =#{sex}
       </if>
       <if test="phone !=null and phone!=''">
-        AND sys_user.phone =#{phone}
+        AND phone =#{phone}
       </if>
       <if test="deptId !=null and deptId!=0">
-        AND  sys_user.dept_id =#{deptId}
+        AND  dept_id =#{deptId}
       </if>
       <if test="status !=null and status!=0">
-        AND sys_user.status =#{status}
+        AND status =#{status}
       </if>
       <if test="type !=null and type!=0">
-        AND sys_user.type =#{type}
+        AND `type` =#{type}
       </if>
     </where>
-    ORDER BY sys_user.create_date DESC
+    order by create_date desc
   </select>
 
 

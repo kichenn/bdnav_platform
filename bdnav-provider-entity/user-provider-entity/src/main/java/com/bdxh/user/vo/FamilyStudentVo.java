@@ -20,10 +20,14 @@ public class FamilyStudentVo {
     @ApiModelProperty("学生姓名")
     private String sName;
 
+    @ApiModelProperty("家长姓名")
+    private String fName;
 
     @ApiModelProperty("学生卡号")
     private String sCardNumber;
 
+    @ApiModelProperty("学校Code")
+    private String schoolCode;
 
     @ApiModelProperty("学生家长称呼")
     private String relation;

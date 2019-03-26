@@ -1,11 +1,11 @@
-package com.bdxh.system.entity;
+package com.bdxh.school.entity;
 
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
-@Table(name = "sys_user")
-public class User {
+@Table(name = "t_school_user")
+public class SchoolUser {
 
     /**
      * 主键id
@@ -13,6 +13,18 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * 学校id
+     */
+    @Column(name = "shcool_id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @Column(name = "school_code")
+    private String schoolCode;
 
     /**
      * 用户名
@@ -65,7 +77,6 @@ public class User {
     @Column(name = "dept_id")
     private Long deptId;
 
-
     /**
      * 状态 1 正常 2 锁定
      */
@@ -85,8 +96,8 @@ public class User {
     /**
      * 文件地址
      */
-    @Column(name = "img_file_address")
-    private String ImgFileAddress;
+    @Column(name = "image_name")
+    private String imageName;
 
     /**
      * 创建时间
@@ -106,25 +117,33 @@ public class User {
     private Long operator;
 
     /**
+     * 操作人姓名
+     */
+    @Column(name = "operator_name")
+    private String operatorName;
+
+    /**
      * 备注
      */
     private String remark;
 
-    private List<UserRole> urList;
+    private List<SchoolUserRole> urList;
 
     /**
      * 获取用户角色关系
+     *
      * @return
      */
-    public List<UserRole> getUrList() {
+    public List<SchoolUserRole> getUrList() {
         return urList;
     }
 
     /**
      * 设置用户角色关系
+     *
      * @param urList
      */
-    public void setUrList(List<UserRole> urList) {
+    public void setUrList(List<SchoolUserRole> urList) {
         this.urList = urList;
     }
 
@@ -147,6 +166,43 @@ public class User {
     }
 
     /**
+     * 获取学校id
+     *
+     * @return school_id - 学校id
+     */
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    /**
+     * 设置学校id
+     *
+     * @param schoolId 学校id
+     */
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
+    }
+
+
+    /**
+     * 获取学校编码
+     *
+     * @return school_code - 学校编码
+     */
+    public String getSchoolCode() {
+        return schoolCode;
+    }
+
+    /**
+     * 设置学校编码
+     *
+     * @param schoolCode 学校编码
+     */
+    public void setSchoolCode(String schoolCode) {
+        this.schoolCode = schoolCode == null ? null : schoolCode.trim();
+    }
+
+    /**
      * 获取头像
      *
      * @return image - 头像
@@ -154,7 +210,6 @@ public class User {
     public String getImage() {
         return Image;
     }
-
 
 
     /**
@@ -165,6 +220,7 @@ public class User {
     public void setImage(String image) {
         this.Image = image == null ? null : image.trim();
     }
+
     /**
      * 获取用户名
      *
@@ -249,7 +305,6 @@ public class User {
 
     /**
      * 设置出生日期
-     *
      */
     public void setBirth(String birth) {
         this.birth = birth == null ? null : birth.trim();
@@ -292,17 +347,17 @@ public class User {
     }
 
 
-
     /**
      * 获取角色id
+     *
      * @return
      */
     public String getRoleIds() {
         return roleIds;
     }
+
     /**
      * 设置角色id
-     *
      */
     public void setRoleIds(String roleIds) {
         this.roleIds = roleIds;
@@ -417,6 +472,25 @@ public class User {
         this.operator = operator;
     }
 
+
+    /**
+     * 获取操作人姓名
+     *
+     * @return operator_name - 操作人姓名
+     */
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    /**
+     * 设置操作人姓名
+     *
+     * @param operatorName 操作人姓名
+     */
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName == null ? null : operatorName.trim();
+    }
+
     /**
      * 获取备注
      *
@@ -436,12 +510,12 @@ public class User {
     }
 
 
-    public String getImgFileAddress() {
-        return ImgFileAddress;
+    public String getImgName() {
+        return imageName;
     }
 
-    public void setImgFileAddress(String imgFileAddress) {
-        this.ImgFileAddress = imgFileAddress == null ? null : imgFileAddress.trim();
+    public void setImgName(String imageName) {
+        this.imageName = imageName == null ? null : imageName.trim();
     }
 
 }
