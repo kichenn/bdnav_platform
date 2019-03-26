@@ -36,7 +36,7 @@ public interface UserMapper extends Mapper<User> {
     /**
      * 修改用户
      */
-    AddUserDto UpdateUsers(UpdateUserDto updateUserDto);
+    Integer UpdateUsers(UpdateUserDto updateUserDto);
 
 
 }

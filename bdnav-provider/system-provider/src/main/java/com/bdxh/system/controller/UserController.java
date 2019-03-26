@@ -176,20 +176,6 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/initiateMode ", method = RequestMethod.POST)
-    @ApiOperation(value = "更改用户启用状态", response = Boolean.class)
-    public Object initiateMode(@RequestBody UpdateUserDto updateUserDto) {
-    try{
-        Boolean result=userService.startUsing(updateUserDto);
-        return WrapMapper.ok(result);
-    } catch (Exception e) {
-        e.printStackTrace();
-        return WrapMapper.error(e.getMessage());
-    }
-    }
-
-
-
     @RequestMapping(value = "/test1", method = RequestMethod.POST)
     @ApiOperation(value = "测试返回数据", response = Boolean.class)
     public Object test1(
