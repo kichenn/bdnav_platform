@@ -229,24 +229,6 @@ public class RoleController {
     }
 
 
-    /**
-     * 修改启用状态
-     * @return
-     */
-    @ApiOperation("修改启用状态")
-    @RequestMapping(value = "/updateRSwitchRole",method = RequestMethod.GET)
-    public Object updateRSwitchRole(@RequestParam(name = "roleId")Long roleId,@RequestParam(name = "rswitch")Integer rswitch){
-        try {
-            if (roleService.UpdateByInitiateMode(roleId,rswitch).equals(Boolean.TRUE)){
-                return WrapMapper.ok(Boolean.TRUE);
-            }else{
-                return WrapMapper.ok(Boolean.FALSE);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
 
 
 }

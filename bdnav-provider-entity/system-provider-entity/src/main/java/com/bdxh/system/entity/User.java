@@ -65,6 +65,7 @@ public class User {
     @Column(name = "dept_id")
     private Long deptId;
 
+
     /**
      * 状态 1 正常 2 锁定
      */

@@ -4,6 +4,7 @@ import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.system.dto.AddUserDto;
 import com.bdxh.system.dto.UpdateUserDto;
+import com.bdxh.system.dto.UserQueryDto;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.persistence.UserMapper;
@@ -36,10 +37,18 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     private UserRoleMapper userRoleMapper;
 
 
-    @Override
+  /*  @Override
     public PageInfo<User> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<User> roleLogs = userMapper.getByCondition(param);
+        return new PageInfo(roleLogs);
+    }*/
+
+
+    @Override
+    public PageInfo<UserQueryDto> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<UserQueryDto> roleLogs = userMapper.getByCondition(param);
         return new PageInfo(roleLogs);
     }
 

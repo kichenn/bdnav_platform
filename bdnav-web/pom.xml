@@ -15,6 +15,7 @@
         <module>backend-web</module>
         <module>app-web</module>
         <module>weixiao-web</module>
+        <module>client-web</module>
     </modules>
 
     <dependencies>
