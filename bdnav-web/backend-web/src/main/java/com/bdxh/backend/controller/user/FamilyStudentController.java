@@ -80,7 +80,7 @@ public class FamilyStudentController {
      * @return
      */
     @ApiOperation(value = "查询所有家长与孩子关系")
-    @RequestMapping(value = "queryaAllFamilyStudent",method =RequestMethod.GET)
+    @RequestMapping(value = "/queryaAllFamilyStudent",method =RequestMethod.GET)
     public Object queryAllFamilyStudent(@RequestParam(name="studentName")String studentName,
                                         @RequestParam(name="schoolCode")String schoolCode){
         try{
