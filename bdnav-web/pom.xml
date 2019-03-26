@@ -16,6 +16,7 @@
         <module>app-web</module>
         <module>weixiao-web</module>
         <module>client-web</module>
+        <module>apiservice-web</module>
     </modules>
 
     <dependencies>
