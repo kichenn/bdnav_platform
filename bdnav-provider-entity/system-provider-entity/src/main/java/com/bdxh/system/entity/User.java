@@ -38,7 +38,8 @@ public class User {
     /**
      * 出生日期
      */
-    private String birthday;
+    private String birth;
+
 
     /**
      * 手机
@@ -49,6 +50,13 @@ public class User {
      * 电子邮件
      */
     private String email;
+
+
+    /**
+     * 分配的角色id
+     */
+    @Column(name = "roleIds")
+    private String roleIds;
 
     /**
      * 部门id
@@ -232,17 +240,17 @@ public class User {
      *
      * @return birthday - 出生日期
      */
-    public String getBirthday() {
-        return birthday;
+    public String getBirth() {
+        return birth;
     }
+
 
     /**
      * 设置出生日期
      *
-     * @param birthday 出生日期
      */
-    public void setBirthday(String birthday) {
-        this.birthday = birthday == null ? null : birthday.trim();
+    public void setBirth(String birth) {
+        this.birth = birth == null ? null : birth.trim();
     }
 
     /**
@@ -280,6 +288,24 @@ public class User {
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
     }
+
+
+
+    /**
+     * 获取角色id
+     * @return
+     */
+    public String getRoleIds() {
+        return roleIds;
+    }
+    /**
+     * 设置角色id
+     *
+     */
+    public void setRoleIds(String roleIds) {
+        this.roleIds = roleIds;
+    }
+
 
     /**
      * 获取部门id

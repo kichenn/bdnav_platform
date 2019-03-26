@@ -2,8 +2,6 @@ package com.bdxh.system.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -53,7 +51,7 @@ public class AddUserDto implements Serializable {
      * 出生日期
      */
     @ApiModelProperty("出生日期")
-    private String birthday;
+    private String birth;
 
 
     /**
@@ -99,7 +97,7 @@ public class AddUserDto implements Serializable {
     /**
      * 分配的角色id
      */
-    @ApiModelProperty("分配的角色id")
+    @ApiModelProperty("分配的角色ids")
     private String roleIds;
 
 

@@ -9,6 +9,7 @@
 package com.bdxh.backend.controller.user;
 
 import com.bdxh.common.helper.excel.ExcelImportUtil;
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
@@ -19,6 +20,7 @@ import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
+import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import com.netflix.discovery.converters.Auto;
@@ -99,22 +101,26 @@ public class StudentController {
                 String s = ClassId[i];
                 schoolClass.setSchoolCode(addStudentDto.getSchoolCode());
                 schoolClass.setId(Long.parseLong(ClassId[i]));
-                schoolClass=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
-                if(schoolClass.getType().equals("1")){
-                    addStudentDto.setCollegeName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("2")){
-                    addStudentDto.setFacultyName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("3")){
-                    addStudentDto.setProfessionName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("4")){
-                    addStudentDto.setGradeName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("5")){
-                    addStudentDto.setClassName(schoolClass.getName());
-                    addStudentDto.setClassId(schoolClass.getId());
-                }
+               SchoolClass schoolClass1=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
+               if(null!=schoolClass1) {
+                   if (schoolClass1.getType() == 1) {
+                       addStudentDto.setCollegeName(schoolClass1.getName());
+                   } else if (schoolClass1.getType() == 2) {
+                       addStudentDto.setFacultyName(schoolClass1.getName());
+                   } else if (schoolClass1.getType() == 3) {
+                       addStudentDto.setProfessionName(schoolClass1.getName());
+                   } else if (schoolClass1.getType() == 4) {
+                       addStudentDto.setGradeName(schoolClass1.getName());
+                   } else if (schoolClass1.getType() == 5) {
+                       addStudentDto.setClassName(schoolClass1.getName());
+                       addStudentDto.setClassId(schoolClass1.getId());
+                   }
+               }else{
+                   return WrapMapper.error();
+               }
             }
             Wrapper wrapper=studentControllerClient.addStudent(addStudentDto);
-            return WrapMapper.ok(wrapper.getMessage());
+            return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -132,6 +138,9 @@ public class StudentController {
     public Object removeStudent(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
                                @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber){
         try{
+            StudentVo studentVo=(StudentVo)studentControllerClient.queryStudentInfo(schoolCode,cardNumber).getResult();
+            //删除腾讯云的信息
+            FileOperationUtils.deleteFile(studentVo.getImage(),null);
             Wrapper wrapper=studentControllerClient.removeStudent(schoolCode,cardNumber);
             return WrapMapper.ok(wrapper.getMessage());
         }catch (Exception e){
@@ -174,24 +183,34 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
+            StudentVo studentVo=(StudentVo)studentControllerClient.queryStudentInfo(updateStudentDto.getSchoolCode(),updateStudentDto.getCardNumber()).getResult();
+            if (!studentVo.getImage().equals(updateStudentDto.getImage())) {
+                //删除腾讯云的以前图片
+                FileOperationUtils.deleteFile(studentVo.getImage(), null);
+            }
             SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=updateStudentDto.getClassIds().split(",");
             for (int i = 0; i < ClassId.length; i++) {
                 String s = ClassId[i];
                 schoolClass.setSchoolCode(updateStudentDto.getSchoolCode());
                 schoolClass.setId(Long.parseLong(ClassId[i]));
-                schoolClass=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
-                if(schoolClass.getType().equals("1")){
-                    updateStudentDto.setCollegeName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("2")){
-                    updateStudentDto.setFacultyName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("3")){
-                    updateStudentDto.setProfessionName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("4")){
-                    updateStudentDto.setGradeName(schoolClass.getName());
-                }else if(schoolClass.getType().equals("5")){
-                    updateStudentDto.setClassName(schoolClass.getName());
-                    updateStudentDto.setClassId(schoolClass.getId());
+                SchoolClass schoolClass1=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
+                if(null!=schoolClass1) {
+                    if ( schoolClass1.getType() == 1) {
+                        updateStudentDto.setCollegeName(schoolClass1.getName());
+                    } else if (schoolClass1.getType() == 2) {
+                        updateStudentDto.setFacultyName(schoolClass1.getName());
+                    } else if (schoolClass1.getType() == 3) {
+                        updateStudentDto.setProfessionName(schoolClass1.getName());
+                    } else if (schoolClass1.getType() == 4) {
+                        updateStudentDto.setGradeName(schoolClass1.getName());
+                    } else if (schoolClass1.getType() == 5) {
+                        updateStudentDto.setClassName(schoolClass1.getName());
+                        updateStudentDto.setClassId(schoolClass1.getId());
+                    }
+
+                }else{
+                    return WrapMapper.error();
                 }
             }
             studentControllerClient.updateStudent(updateStudentDto);

@@ -83,12 +83,6 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
         List<Dept> depts =deptMapper.selectByParentId(deptId.getId());
         if(depts != null&&!depts.isEmpty()){
             return Boolean.TRUE;
-           /*     for (Dept s : depts) {
-                        deptMapper.deleteByPrimaryKey(id);
-                        Dept delDept=new Dept();
-                        delDept.setId(s.getId());
-                        deptMapper.delete(delDept);
-                }*/
         }else{
             deptMapper.deleteByPrimaryKey(id);
             return Boolean.FALSE;

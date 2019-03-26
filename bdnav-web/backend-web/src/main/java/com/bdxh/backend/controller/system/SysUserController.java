@@ -66,7 +66,7 @@ public class SysUserController {
     }
 
 
-    @RequestMapping(value = "/delUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/delUser", method = RequestMethod.GET)
     @ApiOperation(value = "根据id删除用户信息")
     public Object delUser(@RequestParam(name = "id") Long id) {
         try {
@@ -90,5 +90,19 @@ public class SysUserController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+
+    @RequestMapping(value = "/initiateMode", method = RequestMethod.POST)
+    @ApiOperation(value = "用户启用开关")
+    public Object initiateMode(@RequestBody UpdateUserDto updateUserDto) {
+        try {
+            Wrapper wrapper = userControllerClient.initiateMode(updateUserDto);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 }

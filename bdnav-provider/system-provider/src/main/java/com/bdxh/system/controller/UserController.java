@@ -34,6 +34,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+
     /**
      * 增加用户
      *
@@ -76,8 +77,7 @@ public class UserController {
             return WrapMapper.error(errors);
         }
         try {
-            User user = BeanMapUtils.map(updateUserDto, User.class);
-            userService.update(user);
+            userService.updateUsers(updateUserDto);
             return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,7 +92,7 @@ public class UserController {
      * @return
      */
     @ApiOperation("根据id删除用户信息")
-    @RequestMapping(value = "/delUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/delUser", method = RequestMethod.GET)
     public Object delUser(@RequestParam(name = "id") Long id) {
         try {
             userService.delUser(id);
@@ -172,10 +172,34 @@ public class UserController {
 
     @ApiOperation("用户名称查询用户信息")
     @RequestMapping(value = "/queryUserByUserName", method = RequestMethod.GET)
-    @ResponseBody
     public Object queryUserByUserName(@RequestParam("userName") String userName) {
         return WrapMapper.ok(userService.getByUserName(userName));
     }
+
+
+    @RequestMapping(value = "/initiateMode ", method = RequestMethod.POST)
+    @ApiOperation(value = "更改用户启用状态", response = Boolean.class)
+    public Object initiateMode(@RequestBody UpdateUserDto updateUserDto) {
+    try{
+        Boolean result=userService.startUsing(updateUserDto);
+        return WrapMapper.ok(result);
+    } catch (Exception e) {
+        e.printStackTrace();
+        return WrapMapper.error(e.getMessage());
+    }
+    }
+
+
+
+    @RequestMapping(value = "/test1", method = RequestMethod.POST)
+    @ApiOperation(value = "测试返回数据", response = Boolean.class)
+    public Object test1(
+            @RequestParam(value = "userId") Long userId) {
+        List<String> result=userService.findUserRoleByUserId(userId);
+        return WrapMapper.ok(result);
+    }
+
+
 
 
 }

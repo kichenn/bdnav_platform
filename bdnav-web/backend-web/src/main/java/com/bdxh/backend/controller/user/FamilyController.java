@@ -1,6 +1,7 @@
 package com.bdxh.backend.controller.user;
 
 import com.bdxh.common.helper.excel.ExcelImportUtil;
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
@@ -9,6 +10,7 @@ import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
+import com.bdxh.user.entity.Family;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.vo.FamilyVo;
 import io.swagger.annotations.Api;
@@ -74,6 +76,8 @@ public class FamilyController {
     public Object removeFamily(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber){
         try{
+            FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
+            FileOperationUtils.deleteFile(familyVo.getImage(), null);
             familyControllerClient.removeFamily(schoolCode,cardNumber);
             return WrapMapper.ok();
         }catch (Exception e){
@@ -111,6 +115,11 @@ public class FamilyController {
     @RequestMapping(value = "/updateFamily",method = RequestMethod.POST)
     public Object updateFamily(@RequestBody UpdateFamilyDto updateFamilyDto){
         try {
+            FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(updateFamilyDto.getSchoolCode(),updateFamilyDto.getCardNumber()).getResult();
+            if (!familyVo.getImage().equals(updateFamilyDto.getImage())) {
+                //删除腾讯云的以前图片
+                FileOperationUtils.deleteFile(familyVo.getImage(), null);
+            }
             familyControllerClient.updateFamily(updateFamilyDto);
             return WrapMapper.ok();
         } catch (Exception e) {

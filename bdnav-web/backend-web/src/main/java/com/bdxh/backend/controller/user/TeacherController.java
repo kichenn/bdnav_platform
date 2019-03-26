@@ -1,6 +1,7 @@
 package com.bdxh.backend.controller.user;
 
 import com.bdxh.common.helper.excel.ExcelImportUtil;
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
@@ -10,6 +11,7 @@ import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.feign.TeacherControllerClient;
+import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.TeacherVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -73,6 +75,8 @@ public class TeacherController {
     public Object removeTeacher(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
                                 @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber){
         try{
+            TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(schoolCode,cardNumber).getResult();
+            FileOperationUtils.deleteFile(teacherVo.getImage(), null);
             teacherControllerClient.removeTeacher(schoolCode, cardNumber);
             return WrapMapper.ok();
         }catch (Exception e){
@@ -113,6 +117,11 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
+            TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
+            if (!teacherVo.getImage().equals(updateTeacherDto.getImage())) {
+                //删除腾讯云的以前图片
+                FileOperationUtils.deleteFile(teacherVo.getImage(), null);
+            }
             teacherControllerClient.updateTeacher(updateTeacherDto);
             return WrapMapper.ok();
         } catch (Exception e) {
