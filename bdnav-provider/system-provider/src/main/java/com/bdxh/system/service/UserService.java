@@ -3,6 +3,7 @@ package com.bdxh.system.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.system.dto.AddUserDto;
 import com.bdxh.system.dto.UpdateUserDto;
+import com.bdxh.system.dto.UserQueryDto;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 
@@ -24,8 +25,8 @@ public interface UserService extends IService<User> {
      * @param pageSize
      * @return
      */
-   PageInfo<User> findListPage(Map<String,Object> param,Integer pageNum, Integer pageSize);
-
+/*   PageInfo<User> findListPage(Map<String,Object> param,Integer pageNum, Integer pageSize);*/
+    PageInfo<UserQueryDto> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);
 
     /**
      * 根据用户名查询用户对象

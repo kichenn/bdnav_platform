@@ -33,7 +33,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    
+
     /**
      * 增加用户
      *
@@ -161,7 +161,7 @@ public class UserController {
     public Object queryListPage(@RequestBody UserQueryDto userQueryDto) {
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
-            PageInfo<User> Users = userService.findListPage(param,userQueryDto.getPageNum(),userQueryDto.getPageSize());
+            PageInfo<UserQueryDto> Users = userService.findListPage(param,userQueryDto.getPageNum(),userQueryDto.getPageSize());
             return WrapMapper.ok(Users);
         } catch (Exception e) {
             e.printStackTrace();
