@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.onecard.persistence.VirtualCardMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.onecard.entity.VirtualCard">
+	 <id column="id" jdbcType="BIGINT" property="id"/>
+	 <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	 <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+	 <result column="user_type" jdbcType="TINYINT" property="userType"/>
+	 <result column="user_id" jdbcType="BIGINT" property="userId"/>
+	 <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+	 <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+	 <result column="money" jdbcType="DECIMAL" property="money"/>
+	 <result column="avalible_money" jdbcType="DECIMAL" property="avalibleMoney"/>
+	 <result column="freeze_money" jdbcType="DECIMAL" property="freezeMoney"/>
+	 <result column="valid" jdbcType="TINYINT" property="valid"/>
+	 <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	 <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,school_code,school_name,user_type,user_id,user_name,card_number,money,avalible_money,freeze_money,valid,create_date,update_date
+	</sql>
+	<select id="getVirtualCardAllCount" resultType="java.lang.Integer">
+	  SELECT 
+	  COUNT(1)
+	  FROM t_virtual_card 
+	</select>
+
+	<delete id="delVirtualCardInIds" parameterType="java.lang.Integer">
+	  DELETE
+	  FROM t_virtual_card
+	  WHERE
+	  id IN
+	  <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	    #{id, jdbcType = BIGINT}
+	  </foreach >
+	</delete>
+
+</mapper>

@@ -22,4 +22,9 @@ public class FamilyStudentControllerFallback implements FamilyStudentControllerC
     public Wrapper removeFamilyOrStudent(String schoolCode, String cardNumber, String id) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper queryAllFamilyStudent(String studentName, String schoolCode) {
+        return WrapMapper.error();
+    }
 }

@@ -60,6 +60,7 @@ public class AppConfigSecretController {
             Map<String,Object> param = new HashMap<>();
             param.put("appId",addAppConfigSecretDto.getAppId());
             param.put("mchName",addAppConfigSecretDto.getMchName());
+            param.put("schoolCode",addAppConfigSecretDto.getSchoolCode());
             Integer isAppConfigSecretExist = appConfigSecretService.isAppConfigSecretExist(param);
             Preconditions.checkArgument(isAppConfigSecretExist==null,"应用秘钥已存在");
             AppConfigSecret appConfigSecret = BeanMapUtils.map(addAppConfigSecretDto, AppConfigSecret.class);

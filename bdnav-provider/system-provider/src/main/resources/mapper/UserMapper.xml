@@ -23,10 +23,31 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+  </resultMap>
+
+  <resultMap id="BaseResult" type="com.bdxh.system.dto.UserQueryDto">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="sex" jdbcType="TINYINT" property="sex" />
+    <result column="birth" jdbcType="VARCHAR" property="birth" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="roleIds" jdbcType="VARCHAR" property="roleIds" />
+    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="image" jdbcType="VARCHAR" property="image" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
     <result column="dept_full_name" jdbcType="VARCHAR" property="deptFullName" />
   </resultMap>
 
-  
+
   <sql id="BaseColumns">
     id,user_name,`password`, real_name, sex, birth, phone, email,roleIds,dept_id, `status`, `type`,image, img_file_address, create_date, update_date, operator, remark
   </sql>
@@ -37,13 +58,14 @@
   </select>
 
    <!-- 带条件查询用户列表 -->
-  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResult">
     SELECT * FROM sys_user
     LEFT JOIN sys_dept ON sys_user.dept_id = sys_dept.id
     <where>
       <if test="userName !=null and userName!=''">
         AND sys_user.user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
       </if>
+
       <if test="sex !=null and sex!=0">
         AND sys_user.sex =#{sex}
       </if>
@@ -68,5 +90,52 @@
      insert into sys_user(user_name,`password`,real_name,sex,birth,phone,email,roleIds,dept_id,`status`,`type`,image,img_file_address,create_date,update_date,operator,remark)
       values(#{userName}, #{password}, #{realName}, #{sex}, #{birth}, #{phone}, #{email},#{roleIds},#{deptId}, #{status}, #{type}, #{image}, #{ImgFileAddress} ,#{createDate}, #{updateDate}, #{operator}, #{remark})
     </insert>
+
+
+  <update id="UpdateUsers" parameterType="java.util.Map">
+    update sys_user
+    <set >
+      <if test="userName != null and userName!=''" >
+        user_name = #{userName},
+      </if>
+      <if test="realName != null and realName!=''" >
+        real_name = #{realName},
+      </if>
+      <if test="password != null and password!=''" >
+        password = #{password},
+      </if>
+      <if test="sex != null and sex!=''" >
+        sex = #{sex},
+      </if>
+      <if test="birth != null and birth!=''" >
+        birth = #{birth},
+      </if>
+      <if test="phone != null and phone!=''" >
+        phone = #{phone},
+      </if>
+      <if test="email != null and email!=''" >
+        email = #{email},
+      </if>
+      <if test="roleIds != null" >
+        roleIds = #{roleIds},
+      </if>
+      <if test="deptId != null and deptId!=''" >
+        dept_id = #{deptId},
+      </if>
+      <if test="status != null and status!=''" >
+        status = #{status},
+      </if>
+      <if test="type != null and type!=''" >
+        `type` = #{type},
+      </if>
+      <if test="image != null and image!=''" >
+        image = #{image},
+      </if>
+      <if test="remark != null and remark!=''" >
+        remark = #{remark},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
 
 </mapper>
