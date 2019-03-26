@@ -9,6 +9,7 @@
         <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
         <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="icon" jdbcType="VARCHAR" property="icon"/>
         <result column="component" jdbcType="VARCHAR" property="component"/>
@@ -29,6 +30,7 @@
         <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
         <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="icon" jdbcType="VARCHAR" property="icon"/>
         <result column="component" jdbcType="VARCHAR" property="component"/>
@@ -51,7 +53,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-    id, parent_id, parent_ids, name, path, icon, component, sort, level, type, create_date, update_date, operator, remark
+    id, parent_id, parent_ids, `name`,title, path, icon, component, sort, `level`, `type`, create_date, update_date, operator, remark
   </sql>
 
     <sql id="BaseColumns1">
@@ -100,4 +102,17 @@
         INNER JOIN sys_role_permission ON sys_permission.id=sys_role_permission.permission_id
         sys_role_permission.role_id=#{roleId,jdbcType=BIGINT} AND sys_role_permission.selected=#{selected,jdbcType=BIGINT}
     </select>
+
+    <select id="findByTitle" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        sys_permission perm
+        <where>
+            <if test="title!=null">
+                title LIKE CONCAT(CONCAT('%',#{title},'%'))
+            </if>
+        </where>
+    </select>
+
 </mapper>

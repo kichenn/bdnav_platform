@@ -51,6 +51,12 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     //增加权限列表信息
     @Override
     public Boolean addPermission(Permission permission) {
+        if (new Long("-1").equals(permission.getParentId())) {
+            permission.setParentIds("");
+        } else {
+            Permission Permission = findPermissionById(permission.getParentId());
+            permission.setParentIds(permission.getParentIds() + "," + permission.getId());
+        }
         return permissionMapper.insertSelective(permission) > 0;
     }
 
@@ -79,10 +85,23 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         return permissionMapper.theTreeMenu(roleId,selected);
     }
 
+    //根据id查询权限信息
+    @Override
+    public Permission findPermissionById(Long id) {
+        return permissionMapper.selectByPrimaryKey(id);
+    }
 
     @Override
-    public List<Permission> permissionByMenus(Long roleId, Integer selected) {
-        return permissionMapper.findPermission(roleId,selected);
+    public List<Permission> findByTitle(String title) {
+        return permissionMapper.findByTitle(title);
     }
+
+
+//    @Override
+//    public List<Permission> permissionByMenus(Long roleId, Integer selected) {
+//        return permissionMapper.findPermission(roleId,selected);
+//    }
+
+
 
 }

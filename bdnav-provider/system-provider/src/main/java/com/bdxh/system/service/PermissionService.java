@@ -36,7 +36,16 @@ public interface PermissionService extends IService<Permission> {
     //查询所有菜单 /选中状态 默认给2 未选中显示全部
     List<RolePermissionDto> theTreeMenu(Long roleId, Integer selected);
 
-    //根据角色id查询权限菜单
-    List<Permission> permissionByMenus(Long roleId,Integer selected);
+  /*  //根据角色id查询权限菜单
+    List<Permission> permissionByMenus(Long roleId,Integer selected);*/
+
+    /**
+     * 根据id查询权限信息
+     * @param id
+     * @return
+     */
+    Permission findPermissionById(Long id);
+
+    List<Permission> findByTitle(String title);
 
 }
