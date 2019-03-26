@@ -3,49 +3,48 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>bdnav-provider</artifactId>
+        <artifactId>bdnav-web</artifactId>
         <groupId>com.bdxh</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>wallet-provider</artifactId>
+    <artifactId>client-web</artifactId>
 
     <dependencies>
         <dependency>
             <groupId>com.bdxh</groupId>
-            <artifactId>wallet-provider-entity</artifactId>
+            <artifactId>common-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mybatis.spring.boot</groupId>
+                    <artifactId>mybatis-spring-boot-starter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.bdxh</groupId>
+            <artifactId>system-provider-feign</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.bdxh</groupId>
-            <artifactId>pay-provider-feign</artifactId>
+            <artifactId>school-provider-feign</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.bdxh</groupId>
-            <artifactId>onecard-provider-feign</artifactId>
+            <artifactId>user-provider-feign</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper-spring-boot-starter</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-hystrix</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -57,40 +56,16 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-stream-rocketmq</artifactId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.shardingsphere</groupId>
-            <artifactId>sharding-jdbc</artifactId>
-            <type>pom</type>
+            <groupId>org.springframework.security.oauth</groupId>
+            <artifactId>spring-security-oauth2</artifactId>
+            <version>2.3.2.RELEASE</version>
         </dependency>
         <dependency>
-            <groupId>io.shardingsphere</groupId>
-            <artifactId>sharding-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.shardingsphere</groupId>
-            <artifactId>sharding-jdbc-orchestration</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-lite-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.dangdang</groupId>
-            <artifactId>elastic-job-lite-spring</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-framework</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-client</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.curator</groupId>
-            <artifactId>curator-recipes</artifactId>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
         </dependency>
     </dependencies>
 
@@ -122,7 +97,7 @@
                             <addClasspath>true</addClasspath>
                             <useUniqueVersions>false</useUniqueVersions>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.bdxh.wallet.WalletProviderApplication</mainClass>
+                            <mainClass>com.bdxh.client.ClientWebApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -154,7 +129,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>wallet-provider1</finalName>
+        <finalName>client-web</finalName>
     </build>
 
 </project>

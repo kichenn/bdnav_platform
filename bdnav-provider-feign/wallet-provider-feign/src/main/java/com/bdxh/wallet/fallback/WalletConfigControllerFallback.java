@@ -2,7 +2,6 @@ package com.bdxh.wallet.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.wallet.entity.WalletXianConfig;
 import com.bdxh.wallet.feign.WalletConfigControllerClient;
 import org.springframework.stereotype.Component;
 
