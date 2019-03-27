@@ -147,7 +147,7 @@
         <if test="studentDto.className!=null and studentDto.className!=''">
             `class_name`=#{studentDto.className},
         </if>
-        <if test="studentDto.classId!=0">
+        <if test="studentDto.classId!=null and studentDto.className!=''">
             `class_id`=#{studentDto.classId},
         </if>
         <if test="studentDto.classIds!=null and studentDto.classIds!=''">
