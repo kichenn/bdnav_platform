@@ -71,9 +71,10 @@ public interface UserControllerClient {
     @RequestMapping(value = "/user/delBatchUser")
     @ResponseBody
     Wrapper delBatchUser(@RequestParam(name = "ids") String ids);
-
+    
     /**
      * 根据用户id查询所有权限
+     * @param userId
      * @return
      */
     @RequestMapping(value = "/user/finaUserRoleByUserId")

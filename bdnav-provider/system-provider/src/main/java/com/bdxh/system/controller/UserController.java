@@ -188,6 +188,7 @@ public class UserController {
         List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
         List<Long> roles = new ArrayList<>();
         result.stream().forEach(e -> {
+
             roles.add(e.getRoleId());
         });
         return WrapMapper.ok(roles);
