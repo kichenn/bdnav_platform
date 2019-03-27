@@ -16,8 +16,10 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.Teacher;
+import com.bdxh.user.service.BaseUserService;
 import com.bdxh.user.service.FamilyService;
 import com.bdxh.user.vo.FamilyVo;
 import com.github.pagehelper.PageInfo;
@@ -43,8 +45,7 @@ public class FamilyController {
     @Autowired
     private FamilyService familyService;
 
-    @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
+
     /**
      * @Description： //新增家庭成员信息
      * @Date： 15:27 2019/3/7
@@ -61,9 +62,7 @@ public class FamilyController {
         try {
             Family family = BeanMapUtils.map(addFamilyDto, Family.class);
             if (null == familyService.isNullFamily(family.getSchoolCode(),family.getCardNumber())){
-                family.setId(snowflakeIdWorker.nextId());
-                family.setActivate(Byte.valueOf("1"));
-                familyService.save(family);
+                familyService.saveFamily(family);
                 return WrapMapper.ok();
             }
             return WrapMapper.error("当前学校已有相同cardNumber(卡号)");

@@ -2,11 +2,11 @@ package com.bdxh.user.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
-import com.bdxh.user.dto.AddFamilyStudentDto;
-import com.bdxh.user.dto.AddStudentDto;
-import com.bdxh.user.dto.StudentQueryDto;
-import com.bdxh.user.dto.UpdateStudentDto;
+import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.user.dto.*;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.persistence.BaseUserMapper;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.persistence.StudentMapper;
@@ -33,8 +33,13 @@ import java.util.List;
 public class StudentServiceImpl extends BaseService<Student> implements StudentService {
 
     @Autowired
+    private BaseUserMapper baseUserMapper;
+
+    @Autowired
     private FamilyStudentMapper familyStudentMapper;
 
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
     @Autowired
     private FamilyMapper familyMapper;
 
@@ -53,8 +58,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional
     public void deleteStudentInfo(String schoolCode, String cardNumber) {
         studentMapper.removeStudentInfo(schoolCode, cardNumber);
-        //获取学生家长信息
         familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCode, cardNumber);
+        baseUserMapper.deleteBaseUserInfo(schoolCode ,cardNumber );
     }
 
     @Override
@@ -66,6 +71,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             for (int i = 0; i < cardNumbers.length; i++) {
                 studentMapper.removeStudentInfo(schoolCodes[i], cardNumbers[i]);
                 familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCodes[i], cardNumbers[i]);
+                baseUserMapper.deleteBaseUserInfo(schoolCodes[i],cardNumbers[i]);
             }
         }
     }
@@ -75,6 +81,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
         studentMapper.updateStudentInfo(updateStudentDto);
+        UpdateBaseUserDto updateBaseUserDto = BeanMapUtils.map(updateStudentDto, UpdateBaseUserDto.class);
+        baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
         FamilyStudentVo familyStudentVo = familyStudentMapper.studentQueryInfo(
                 updateStudentDto.getSchoolCode(),
                 updateStudentDto.getCardNumber());
@@ -86,6 +94,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 familyStudentDto.setCardNumber(familyStudentVo.getFCardNumber());
                 familyStudentDto.setSchoolCode(updateStudentDto.getSchoolCode());
                 familyStudentMapper.updateStudentInfo(familyStudentDto);
+
             }
         }
     }
@@ -121,4 +130,16 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return studentMapper.findStudentBySchoolClassId(schoolCode,schoolId,classId);
     }
 
+    @Override
+    @Transactional
+    public void saveStudent(Student student) {
+        student.setId(snowflakeIdWorker.nextId());
+        student.setActivate(Byte.valueOf("1"));
+        studentMapper.insert(student);
+        BaseUser baseUser = BeanMapUtils.map(student, BaseUser.class);
+        baseUser.setUserType(1);
+        baseUser.setUserId(student.getId());
+        baseUser.setId(snowflakeIdWorker.nextId());
+        baseUserMapper.insert(baseUser);
+    }
 }

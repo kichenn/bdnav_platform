@@ -66,4 +66,10 @@ public interface FamilyService extends IService<Family> {
       * @return： com.bdxh.user.vo.FamilyVo
       **/
      FamilyVo isNullFamily(String schoolCode,String cardNumber);
+
+    /**
+     * 新增家长信息
+     * @param family
+     */
+     void saveFamily(Family family);
 }

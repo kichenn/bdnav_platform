@@ -46,8 +46,7 @@ public class TeacherController {
     @Autowired
     private TeacherDeptService teacherDeptService;
 
-    @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
+
 
     /**
      * 新增老师信息
@@ -72,8 +71,6 @@ public class TeacherController {
                 addTeacherDto.getTeacherDeptDtoList().get(i).setDeptId(Long.parseLong(ids[ids.length - 1]));
                 addTeacherDto.getTeacherDeptDtoList().get(i).setDeptName(names[names.length - 1]);
             }}
-            addTeacherDto.setId(snowflakeIdWorker.nextId());
-            addTeacherDto.setActivate(Byte.valueOf("1"));
             teacherService.saveTeacherDeptInfo(addTeacherDto);
             return WrapMapper.ok();
         } catch (Exception e) {
