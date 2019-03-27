@@ -41,9 +41,9 @@ public interface PermissionControllerClient {
      * 添加权限信息
      * @return
      */
-    @RequestMapping(value = "/permission/AddPermissionDto")
+    @RequestMapping(value = "/permission/addPermission")
     @ResponseBody
-    Wrapper AddPermissionDto(@RequestBody AddPermissionDto dto);
+    Wrapper addPermission(@RequestBody AddPermissionDto addPermissionDto);
 
     /**
      * 修改权限信息

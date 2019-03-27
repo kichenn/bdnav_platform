@@ -52,11 +52,11 @@ public class SysPermissionController {
     }
 
 
-    @RequestMapping(value="/AddPermissionDto",method = RequestMethod.POST)
+    @RequestMapping(value="/addPermission",method = RequestMethod.POST)
     @ApiOperation("添加权限菜单")
-    public Object AddPermissionDto(@RequestBody AddPermissionDto addPermissionDto){
+    public Object addPermission(@RequestBody AddPermissionDto addPermissionDto){
         try {
-            Wrapper wrapper = permissionControllerClient.AddPermissionDto(addPermissionDto);
+            Wrapper wrapper = permissionControllerClient.addPermission(addPermissionDto);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();

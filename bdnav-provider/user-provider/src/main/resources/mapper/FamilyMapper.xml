@@ -56,8 +56,9 @@
         <if test="familyQueryDto.cardNumber!=null and familyQueryDto.cardNumber!=''">
             AND card_number=#{familyQueryDto.cardNumber}
         </if>
-        order by create_date desc
+
     </where>
+    order by create_date desc
 </select>
 
     <!-- 根据条件查询出家长详细信息 -->
