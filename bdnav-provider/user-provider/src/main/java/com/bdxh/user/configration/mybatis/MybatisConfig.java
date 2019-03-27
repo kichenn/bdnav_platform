@@ -119,10 +119,7 @@ public class MybatisConfig {
 
 	@Bean(name="transactionManager")
 	public DataSourceTransactionManager testTransactionManager(@Qualifier("shardingDataSource") DataSource dataSource) {
-		return new DataSourceTransactionManager(
-
-
-		);
+		return new DataSourceTransactionManager(dataSource);
 	}
 
 	@Bean
