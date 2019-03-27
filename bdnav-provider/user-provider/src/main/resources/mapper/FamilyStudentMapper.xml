@@ -64,7 +64,16 @@
           school_code AS schoolCode,
           id AS fsId,
           card_number as fCardNumber,
-          relation   from t_family_student where student_name=#{studentName} and school_code=#{schoolCode}
+          relation   from t_family_student
+        <where>
+          <if test="studentName!=null and student!=''">
+              and   student_name=#{studentName}
+          </if>
+        <if test="studentName!=null and student!=''">
+              and school_code=#{schoolCode}
+        </if>
+
+        </where>
     </select>
     <!-- 修改关系表数据-->
         <update id="updateStudentInfo">

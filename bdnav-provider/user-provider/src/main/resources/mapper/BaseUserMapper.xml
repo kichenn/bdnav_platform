@@ -87,10 +87,10 @@
 	<update id="updateBaseUserInfo">
 		UPDATE t_base_user
 		SET
-		 <if test="updateBaseUserDto.id>0">
+		 <if test="updateBaseUserDto.id!=null and updateBaseUserDto.id!=''">
 			 id= #{updateBaseUserDto.id},
 		 </if>
-		<if test="updateBaseUserDto.schoolId>0">
+		<if test="updateBaseUserDto.schoolId!=null and updateBaseUserDto.schoolId!=''">
 			school_id= #{updateBaseUserDto.schoolId},
 		</if>
 		<if test="updateBaseUserDto.schoolCode!=null and updateBaseUserDto.schoolCode!=''">
@@ -99,16 +99,16 @@
 		<if test="updateBaseUserDto.schoolName!=null and updateBaseUserDto.schoolName!=''">
 			school_name= #{updateBaseUserDto.schoolName},
 		</if>
-		<if test="updateBaseUserDto.userType>0">
+		<if test="updateBaseUserDto.userType!=null and updateBaseUserDto.userType!=''">
 			user_type= #{updateBaseUserDto.userType},
 		</if>
-		<if test="updateBaseUserDto.userId>0">
+		<if test="updateBaseUserDto.userId!=null and updateBaseUserDto.userId!=''">
 			user_id= #{updateBaseUserDto.userId},
 		</if>
 		<if test="updateBaseUserDto.name!=null and updateBaseUserDto.name!=''">
 			name= #{updateBaseUserDto.name},
 		</if>
-		<if test="updateBaseUserDto.gender>0">
+		<if test="updateBaseUserDto.gender!=null and updateBaseUserDto.gender!=''">
 			gender= #{updateBaseUserDto.gender},
 		</if>
 		<if test="updateBaseUserDto.birth!=null and updateBaseUserDto.birth!=''">
@@ -144,10 +144,6 @@
 		<if test="updateBaseUserDto.adress!=null and updateBaseUserDto.adress!=''">
 			adress= #{updateBaseUserDto.adress},
 		</if>
-		<if test="updateBaseUserDto.createDate!=null and updateBaseUserDto.createDate!=''">
-			create_date= #{updateBaseUserDto.createDate},
-		</if>
-
 		<if test="updateBaseUserDto.operator!=null and updateBaseUserDto.operator!=''">
 			operator= #{updateBaseUserDto.operator},
 		</if>

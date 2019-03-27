@@ -3,7 +3,6 @@ package com.bdxh.system.controller;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.*;
-import com.bdxh.system.entity.Permission;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.service.UserRoleService;
@@ -13,7 +12,6 @@ import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -186,12 +184,20 @@ public class UserController {
     @ApiOperation(value = "根据用户id查询所有权限", response = Boolean.class)
     public Object findUserRoleByUserId(@RequestParam(value = "userId") Long userId) {
         List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
-        List<String> roles = new ArrayList<>();
+        List<Long> roles = new ArrayList<>();
         result.stream().forEach(e -> {
-            roles.add(String.valueOf(e.getRoleId()));
+            roles.add(e.getRoleId());
         });
         return WrapMapper.ok(roles);
     }
+
+
+    @RequestMapping(value = "/enableAndDisable", method = RequestMethod.GET)
+    @ApiOperation(value = "用户的启用与禁止", response = Boolean.class)
+    public Object enableAndDisable(@RequestParam(value = "userId") Long userId,@RequestParam(name = "status") Byte status) {
+        return WrapMapper.ok(userService.enableAndDisable(userId,status));
+    }
+
 
 
 }

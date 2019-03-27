@@ -73,4 +73,13 @@ public interface PermissionControllerClient {
     @ResponseBody
     Wrapper addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto);
 
+
+
+    /**
+     * 全部菜单权限
+     * @return
+     */
+    @RequestMapping(value = "/permission/thePermissionMenu")
+    @ResponseBody
+    Wrapper<List<PermissionTreeVo>> thePermissionMenu();
 }

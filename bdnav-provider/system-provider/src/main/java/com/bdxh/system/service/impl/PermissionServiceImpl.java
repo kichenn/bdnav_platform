@@ -54,8 +54,8 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         if (new Long("-1").equals(permission.getParentId())) {
             permission.setParentIds("");
         } else {
-            Permission Permission = findPermissionById(permission.getParentId());
-            permission.setParentIds(permission.getParentIds() + "," + permission.getId());
+            Permission sysPermissions = findPermissionById(permission.getParentId());
+            permission.setParentIds(sysPermissions.getParentIds() + "," + sysPermissions.getId());
         }
         return permissionMapper.insertSelective(permission) > 0;
     }
@@ -96,16 +96,6 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         return permissionMapper.findByTitle(title);
     }
 
-    @Override
-    public List<RolePermissionDto> theTreeMenuList() {
-        return permissionMapper.theTreeMenuList();
-    }
-
-
-//    @Override
-//    public List<Permission> permissionByMenus(Long roleId, Integer selected) {
-//        return permissionMapper.findPermission(roleId,selected);
-//    }
 
 
 

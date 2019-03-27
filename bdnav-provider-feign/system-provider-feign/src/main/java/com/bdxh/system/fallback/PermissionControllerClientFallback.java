@@ -47,5 +47,10 @@ public class PermissionControllerClientFallback implements PermissionControllerC
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper thePermissionMenu() {
+        return WrapMapper.error();
+    }
+
 
 }

@@ -71,15 +71,25 @@ public interface UserControllerClient {
     @RequestMapping(value = "/user/delBatchUser")
     @ResponseBody
     Wrapper delBatchUser(@RequestParam(name = "ids") String ids);
-
+    
     /**
      * 根据用户id查询所有权限
+     * @param userId
      * @return
      */
     @RequestMapping(value = "/user/finaUserRoleByUserId")
     @ResponseBody
-    Wrapper<List<String>> findUserRoleByUserId(@RequestParam(value = "userId") Long userId);
+    Wrapper<List<Long>> findUserRoleByUserId(@RequestParam(value = "userId") Long userId);
 
+
+    /**
+     * 用户的启用与关闭
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/user/enableAndDisable")
+    @ResponseBody
+    Wrapper enableAndDisable(@RequestParam(value = "userId") Long userId,@RequestParam(name = "status") Byte status);
 
 
 }
