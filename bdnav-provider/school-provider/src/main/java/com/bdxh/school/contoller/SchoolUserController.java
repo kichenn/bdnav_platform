@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.service.SchoolUserService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -116,8 +117,8 @@ public class SchoolUserController {
 
     @ApiOperation(value = "修改用户状态(启用或者禁用)", response = Boolean.class)
     @RequestMapping(value = "/modifySchoolUserStatusById", method = RequestMethod.POST)
-    public Object modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "status") Byte status) {
-        return WrapMapper.ok(schoolUserService.modifySchoolUserStatusById(id, status));
+    public Object modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "statusEnum") SchoolUserStatusEnum statusEnum) {
+        return WrapMapper.ok(schoolUserService.modifySchoolUserStatusById(id, statusEnum.getKey()));
     }
 
 }

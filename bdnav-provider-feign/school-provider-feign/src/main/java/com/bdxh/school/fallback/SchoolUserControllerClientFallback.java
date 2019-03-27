@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.feign.SchoolUserControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
@@ -49,7 +50,7 @@ public class SchoolUserControllerClientFallback implements SchoolUserControllerC
     }
 
     @Override
-    public Wrapper modifySchoolUserStatusById(Long id, Byte status) {
+    public Wrapper modifySchoolUserStatusById(Long id, SchoolUserStatusEnum statusEnum) {
         return WrapMapper.error();
     }
 

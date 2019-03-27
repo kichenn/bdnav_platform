@@ -3,6 +3,7 @@ package com.bdxh.school.feign;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.fallback.SchoolUserControllerClientFallback;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -83,6 +84,6 @@ public interface SchoolUserControllerClient {
      */
     @RequestMapping(value = "/schoolUser/modifySchoolUserStatusById", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "status") Byte status);
+    Wrapper modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "statusEnum") SchoolUserStatusEnum statusEnum);
 
 }
