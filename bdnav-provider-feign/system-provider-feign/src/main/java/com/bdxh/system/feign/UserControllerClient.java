@@ -78,7 +78,7 @@ public interface UserControllerClient {
      */
     @RequestMapping(value = "/user/finaUserRoleByUserId")
     @ResponseBody
-    Wrapper<List<String>> findUserRoleByUserId(@RequestParam(value = "userId") Long userId);
+    Wrapper<List<Long>> findUserRoleByUserId(@RequestParam(value = "userId") Long userId);
 
 
 
