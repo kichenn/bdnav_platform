@@ -49,7 +49,7 @@ public class SysRoleController {
     public Object addRole(@RequestBody AddRoleDto addRoleDto){
         try {
             Wrapper wrapper = roleControllerClient.addRole(addRoleDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -63,26 +63,13 @@ public class SysRoleController {
     public Object updateRole(@RequestBody UpdateRoleDto updateRoleDto){
         try {
             Wrapper wrapper = roleControllerClient.updateRole(updateRoleDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
-
-    @RequestMapping(value="/updateRSwitchRole",method = RequestMethod.GET)
-    @ApiOperation("修改角色启用状态")
-    public Object updateRSwitchRole(@RequestParam(name = "roleId") Long roleId,
-                     @RequestParam(name = "rswitch")Integer rswitch){
-        try {
-            Wrapper wrapper = roleControllerClient.updateRSwitchRole(roleId,rswitch);
-            return WrapMapper.ok(wrapper.getResult());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
 
 
 
@@ -91,7 +78,7 @@ public class SysRoleController {
     public Object delRole(@RequestParam(name = "roleId") Long roleId){
         try {
             Wrapper wrapper = roleControllerClient.delRole(roleId);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -105,7 +92,7 @@ public class SysRoleController {
     public Object delBatchRole(@RequestParam(name = "ids") String ids){
         try {
             Wrapper wrapper = roleControllerClient.delBatchRole(ids);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
