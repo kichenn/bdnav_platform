@@ -1,6 +1,7 @@
 package com.bdxh.apiservice.modules.maiquancard.dto;
 
 import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -22,41 +23,50 @@ public class MaiquanUserDto implements Serializable {
     /**
      * 姓名
      */
+    @NotEmpty(message = "姓名不能为空")
+    @ApiModelProperty("姓名")
     private String name;
 
     /**
-     *
+     * 卡号
      */
+    @NotEmpty(message = "卡号不能为空")
+    @ApiModelProperty("卡号")
     private String cardNumber;
 
     /**
      * 应用id
      */
-    @NotEmpty(message = "应用id不能为空")
-    private String appId;
+    @NotNull(message = "应用id不能为空")
+    @ApiModelProperty("应用id")
+    private Long appId;
 
     /**
      * 商户号
      */
-    @NotEmpty(message = "商户号不能为空")
-    private String mchId;
+    @NotNull(message = "商户号不能为空")
+    @ApiModelProperty("商户号")
+    private Long mchId;
 
     /**
      * 随机字符串
      */
     @NotEmpty(message = "随机字符串不能为空")
+    @ApiModelProperty("随机字符串")
     private String noticeStr;
 
     /**
      * 时间戳
      */
     @NotNull(message = "时间戳不能为空")
+    @ApiModelProperty("时间戳")
     private Date timeStamp;
 
     /**
      * 签名
      */
     @NotEmpty(message = "签名不能为空")
+    @ApiModelProperty("签名")
     private String sign;
 
 }
