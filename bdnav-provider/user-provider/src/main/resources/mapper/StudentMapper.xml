@@ -132,21 +132,7 @@
         <if test="studentDto.campusName!=null and studentDto.campusName!=''">
             `campus_name`=#{studentDto.campusName},
         </if>
-        <if test="studentDto.collegeName!=null and studentDto.collegeName!=''">
-            `college_name`=#{studentDto.collegeName},
-        </if>
-        <if test="studentDto.facultyName!=null and studentDto.facultyName!=''">
-            `faculty_name`=#{studentDto.facultyName},
-        </if>
-        <if test="studentDto.professionName!=null and studentDto.professionName!=''">
-            `profession_name`=#{studentDto.professionName},
-        </if>
-        <if test="studentDto.gradeName!=null and studentDto.gradeName!=''">
-            `grade_name`=#{studentDto.gradeName},
-        </if>
-        <if test="studentDto.className!=null and studentDto.className!=''">
-            `class_name`=#{studentDto.className},
-        </if>
+
         <if test="studentDto.classId!=null and studentDto.className!=''">
             `class_id`=#{studentDto.classId},
         </if>
@@ -213,6 +199,11 @@
         <if test="studentDto.remark!=null and studentDto.remark!=''">
             `remark`=#{studentDto.remark},
         </if>
+        `college_name`=#{studentDto.collegeName},
+        `faculty_name`=#{studentDto.facultyName},
+        `profession_name`=#{studentDto.professionName},
+        `grade_name`=#{studentDto.gradeName},
+        `class_name`=#{studentDto.className},
         `update_date`=NOW()
         WHERE `school_code`=#{studentDto.schoolCode} AND `card_number`=#{studentDto.cardNumber};
     </update>

@@ -205,7 +205,6 @@ public class StudentController {
                         updateStudentDto.setClassName(schoolClass1.getName());
                         updateStudentDto.setClassId(schoolClass1.getId());
                     }
-
                 }else{
                     return WrapMapper.error();
                 }
