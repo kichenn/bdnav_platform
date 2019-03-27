@@ -46,7 +46,7 @@ public class SysUserController {
     public Object addUser(@RequestBody AddUserDto addUserDto) {
         try {
             Wrapper wrapper = userControllerClient.addUser(addUserDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -58,7 +58,7 @@ public class SysUserController {
     public Object updateUser(@RequestBody UpdateUserDto updateUserDto) {
         try {
             Wrapper wrapper = userControllerClient.updateUser(updateUserDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -71,7 +71,7 @@ public class SysUserController {
     public Object delUser(@RequestParam(name = "id") Long id) {
         try {
             Wrapper wrapper = userControllerClient.delUser(id);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -84,7 +84,7 @@ public class SysUserController {
     public Object delBatchUser(@RequestParam(name = "ids") String ids) {
         try {
             Wrapper wrapper = userControllerClient.delBatchUser(ids);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -114,7 +114,7 @@ public class SysUserController {
     public Object enableAndDisable(@RequestParam(value = "userId") Long userId,@RequestParam(name = "status") Byte status) {
         try {
             Wrapper wrapper = userControllerClient.enableAndDisable(userId,status);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

@@ -41,10 +41,12 @@ public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> impleme
     public PageInfo<FamilyStudentVo> queryaAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto) {
         PageHelper.startPage(familyStudentQueryDto.getPageNum(), familyStudentQueryDto.getPageSize());
         List<FamilyStudentVo> familyStudentVoList= familyStudentMapper.queryaAllFamilyStudent(familyStudentQueryDto);
-        for (int i = 0; i < familyStudentVoList.size(); i++) {
-           FamilyVo familyVo= familyMapper.selectByCodeAndCard(familyStudentVoList.get(i).getFCardNumber(),familyStudentVoList.get(i).getSchoolCode());
-            familyStudentVoList.get(i).setFName(familyVo.getName());
-            familyStudentVoList.get(i).setSchoolName(familyVo.getSchoolName());
+        if(null!=familyStudentVoList) {
+            for (int i = 0; i < familyStudentVoList.size(); i++) {
+                FamilyVo familyVo = familyMapper.selectByCodeAndCard(familyStudentVoList.get(i).getFCardNumber(), familyStudentVoList.get(i).getSchoolCode());
+                familyStudentVoList.get(i).setFName(familyVo.getName());
+                familyStudentVoList.get(i).setSchoolName(familyVo.getSchoolName());
+            }
         }
         PageInfo<FamilyStudentVo> pageInfoFamilyStudent = new PageInfo<FamilyStudentVo>(familyStudentVoList);
         return pageInfoFamilyStudent;

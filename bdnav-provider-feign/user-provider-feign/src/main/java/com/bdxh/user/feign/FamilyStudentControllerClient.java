@@ -45,6 +45,6 @@ public interface FamilyStudentControllerClient {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "/familyStudent/queryaAllFamilyStudent",method =RequestMethod.GET)
+    @RequestMapping(value = "/familyStudent/queryAllFamilyStudent",method =RequestMethod.POST)
     Wrapper<PageInfo<FamilyStudentVo>>  queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto);
 }
