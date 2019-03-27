@@ -40,7 +40,7 @@ public class SchoolWebController {
     @ApiOperation(value = "增加学校信息", response = Boolean.class)
     public Object findSchoolsInConditionPaging(@Validated @RequestBody SchoolDto schoolDto) {
         Wrapper wrapper = schoolControllerClient.addSchool(schoolDto);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 
 
@@ -54,7 +54,7 @@ public class SchoolWebController {
             FileOperationUtils.deleteFile(schoolInfo.getSchoolLogoName(), null);
         }
         Wrapper wrapper = schoolControllerClient.modifySchoolInfo(modifySchoolDto);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 
 
@@ -66,14 +66,14 @@ public class SchoolWebController {
         FileOperationUtils.deleteFile(schoolInfo.getSchoolLogoName(), null);
         //删除学校
         Wrapper wrapper = schoolControllerClient.delSchool(id);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 
     @RequestMapping(value = "/batchDelSchool", method = RequestMethod.POST)
     @ApiOperation(value = "批量删除学校信息", response = Boolean.class)
     public Object batchDelSchool(@RequestBody List<Long> ids) {
         Wrapper wrapper = schoolControllerClient.batchDelSchool(ids);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 
     @RequestMapping(value = "/findSchoolById", method = RequestMethod.GET)

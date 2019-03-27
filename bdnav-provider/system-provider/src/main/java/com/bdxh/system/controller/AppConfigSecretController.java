@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  * @create: 2019-03-21 17:14
  **/
 @RestController
-@RequestMapping("/appConfig")
+@RequestMapping("/appConfigSecret")
 @Validated
 @Slf4j
 @Api(value = "应用秘钥管理", tags = "应用秘钥管理")
@@ -50,7 +50,7 @@ public class AppConfigSecretController {
 
     @ApiOperation("增加应用秘钥")
     @RequestMapping("/addAppConfigSecret")
-    public Object addCategory(@Valid @RequestBody AddAppConfigSecretDto addAppConfigSecretDto, BindingResult bindingResult){
+    public Object addAppConfigSecret(@Valid @RequestBody AddAppConfigSecretDto addAppConfigSecretDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -78,7 +78,7 @@ public class AppConfigSecretController {
 
     @ApiOperation("根据id删除应用秘钥")
     @RequestMapping("/delAppConfigSecret")
-    public Object delApp(@RequestParam(name = "id") @NotNull(message = "应用秘钥id不能为空") Long id){
+    public Object delAppConfigSecret(@RequestParam(name = "id") @NotNull(message = "应用秘钥id不能为空") Long id){
         try {
             appConfigSecretService.deleteByKey(id);
             return WrapMapper.ok();
@@ -90,7 +90,7 @@ public class AppConfigSecretController {
 
     @ApiOperation("根据id更新应用")
     @RequestMapping("/updateAppConfigSecret")
-    public Object updateApp(@Valid @RequestBody UpdateAppConfigSecretDto updateAppConfigSecretDto, BindingResult bindingResult){
+    public Object updateAppConfigSecret(@Valid @RequestBody UpdateAppConfigSecretDto updateAppConfigSecretDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -108,7 +108,7 @@ public class AppConfigSecretController {
 
     @ApiOperation("查询应用秘钥")
     @RequestMapping("/queryAppConfigSecret")
-    public Object queryApp(@RequestParam(name = "id") @NotNull(message = "应用秘钥id不能为空") Long id){
+    public Object queryAppConfigSecret(@RequestParam(name = "id") @NotNull(message = "应用秘钥id不能为空") Long id){
         try {
             AppConfigSecret appConfigSecret = appConfigSecretService.selectByKey(id);
             return WrapMapper.ok(appConfigSecret);
@@ -120,7 +120,7 @@ public class AppConfigSecretController {
 
     @ApiOperation("查询应用秘钥列表")
     @RequestMapping("/queryAppConfigSecretList")
-    public Object queryAppList(@Valid @RequestBody AppConfigSecretQueryDto appConfigSecretQueryDto, BindingResult bindingResult){
+    public Object queryAppConfigSecretList(@Valid @RequestBody AppConfigSecretQueryDto appConfigSecretQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -138,7 +138,7 @@ public class AppConfigSecretController {
 
     @ApiOperation("分页查询应用列表")
     @RequestMapping("/queryAppConfigSecretListPage")
-    public Object queryAppListPage(@Valid @RequestBody AppConfigSecretQueryDto appConfigSecretQueryDto, BindingResult bindingResult){
+    public Object queryAppConfigSecretListPage(@Valid @RequestBody AppConfigSecretQueryDto appConfigSecretQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));

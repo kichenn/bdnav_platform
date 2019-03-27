@@ -1,6 +1,5 @@
 package com.bdxh.apiservice.modules.maiquancard.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.bdxh.apiservice.modules.maiquancard.config.AppKeyConfig;
 import com.bdxh.apiservice.modules.maiquancard.dto.MaiquanUserDto;
 import com.bdxh.apiservice.modules.maiquancard.vo.MaiquanUserVo;

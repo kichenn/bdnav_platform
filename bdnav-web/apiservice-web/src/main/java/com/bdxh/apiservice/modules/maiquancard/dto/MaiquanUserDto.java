@@ -18,14 +18,7 @@ import java.util.Date;
 @ApiModel("麦圈获取用户信息请求类")
 public class MaiquanUserDto implements Serializable {
 
-    private static final long serialVersionUID = -83871955650362525L;
-
-    /**
-     * 姓名
-     */
-    @NotEmpty(message = "姓名不能为空")
-    @ApiModelProperty("姓名")
-    private String name;
+    private static final long serialVersionUID = 7683558128579755589L;
 
     /**
      * 卡号

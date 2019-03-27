@@ -42,8 +42,6 @@ public interface PermissionService extends IService<Permission> {
     //根据名称查询所有列表
     List<Permission> findByTitle(String title);
 
-    //查询所有菜单集合
-    List<RolePermissionDto> theTreeMenuList();
 
 
 }
