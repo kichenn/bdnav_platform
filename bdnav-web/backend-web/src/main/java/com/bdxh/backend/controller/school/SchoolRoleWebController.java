@@ -36,8 +36,6 @@ public class SchoolRoleWebController {
     @Autowired
     private SchoolRoleControllerClient schoolRoleControllerClient;
 
-    @Autowired
-    private PermissionControllerClient permissionControllerClient;
 
     @RequestMapping(value = "/findRolesInConditionPage", method = RequestMethod.POST)
     @ApiOperation(value = "分页条件筛选查询学校角色信息", response = SchoolRole.class)
