@@ -8,6 +8,7 @@
  */
 package com.bdxh.user.vo;
 
+import io.swagger.annotations.Api;
 import  lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -28,6 +29,9 @@ public class FamilyStudentVo {
 
     @ApiModelProperty("学校Code")
     private String schoolCode;
+
+    @ApiModelProperty("学校名称")
+    private String schoolName;
 
     @ApiModelProperty("学生家长称呼")
     private String relation;
