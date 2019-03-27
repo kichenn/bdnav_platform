@@ -1,103 +1,116 @@
 package com.bdxh.onecard.entity;
 
 import javax.persistence.*;
-
 import lombok.Data;
-
-import java.io.Serializable;
 import java.util.Date;
 import java.lang.String;
 import java.math.BigDecimal;
-import java.lang.Integer;
+import java.lang.Byte;
 
 /**
 * @Description: 实体类
 * @Author Kang
-* @Date 2019-03-25 14:14:55
+* @Date 2019-03-27 10:54:14
 */
 @Data
 @Table(name = "t_virtual_card")
-public class VirtualCard implements Serializable {
-
-	private static final long serialVersionUID = 5817590269303654495L;
+public class VirtualCard {
 
 	/**
 	 * 主键
 	 */
 	@Id
-	@Column(name = "id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	/**
+	 * 学校id
+	 */
+	@Column(name = "school_id")
+	private Long schoolId;
 
 	/**
 	 * 学校编码
 	 */
 	@Column(name = "school_code")
-	private String SchoolCode;
+	private String schoolCode;
 
 	/**
 	 * 学校名称
 	 */
 	@Column(name = "school_name")
-	private String SchoolName;
+	private String schoolName;
+
+	/**
+	 * 基本用户id
+	 */
+	@Column(name = "base_user_id")
+	private Long baseUserId;
 
 	/**
 	 * 账户类型 1 学生 2 老师 3 家长
 	 */
 	@Column(name = "user_type")
-	private Integer UserType;
+	private Byte userType;
 
 	/**
 	 * 用户id
 	 */
 	@Column(name = "user_id")
-	private Long UserId;
+	private Long userId;
 
 	/**
 	 * 姓名
 	 */
 	@Column(name = "user_name")
-	private String UserName;
+	private String userName;
 
 	/**
 	 * 卡号
 	 */
 	@Column(name = "card_number")
-	private String CardNumber;
+	private String cardNumber;
 
 	/**
 	 * 账户总余额
 	 */
 	@Column(name = "money")
-	private BigDecimal Money;
+	private BigDecimal money;
 
 	/**
 	 * 可用余额
 	 */
 	@Column(name = "avalible_money")
-	private BigDecimal AvalibleMoney;
+	private BigDecimal avalibleMoney;
 
 	/**
 	 * 冻结余额
 	 */
 	@Column(name = "freeze_money")
-	private BigDecimal FreezeMoney;
+	private BigDecimal freezeMoney;
 
 	/**
 	 * 状态 1 正常 2 异常
 	 */
 	@Column(name = "valid")
-	private Integer Valid;
+	private Byte valid;
 
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_date")
-	private Date CreateDate;
+	private Date createDate;
 
 	/**
 	 * 修改时间
 	 */
 	@Column(name = "update_date")
-	private Date UpdateDate;
+	private Date updateDate;
+
+	/**
+	 * 备注
+	 */
+	@Column(name = "remark")
+	private String remark;
 
 }

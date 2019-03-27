@@ -4,8 +4,10 @@
 
 	<resultMap id="BaseResultMap" type="com.bdxh.onecard.entity.VirtualCard">
 	 <id column="id" jdbcType="BIGINT" property="id"/>
+	 <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
 	 <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
 	 <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+	 <result column="base_user_id" jdbcType="BIGINT" property="baseUserId"/>
 	 <result column="user_type" jdbcType="TINYINT" property="userType"/>
 	 <result column="user_id" jdbcType="BIGINT" property="userId"/>
 	 <result column="user_name" jdbcType="VARCHAR" property="userName"/>
@@ -16,11 +18,13 @@
 	 <result column="valid" jdbcType="TINYINT" property="valid"/>
 	 <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
 	 <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	 <result column="remark" jdbcType="VARCHAR" property="remark"/>
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,school_code,school_name,user_type,user_id,user_name,card_number,money,avalible_money,freeze_money,valid,create_date,update_date
+	  id,school_id,school_code,school_name,base_user_id,user_type,user_id,user_name,card_number,money,avalible_money,freeze_money,valid,create_date,update_date,remark
 	</sql>
+
 	<select id="getVirtualCardAllCount" resultType="java.lang.Integer">
 	  SELECT 
 	  COUNT(1)
