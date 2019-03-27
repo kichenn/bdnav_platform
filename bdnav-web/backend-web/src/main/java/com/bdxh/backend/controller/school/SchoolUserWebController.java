@@ -101,6 +101,11 @@ public class SchoolUserWebController {
     @RequestMapping(value = "/modifySchoolUserStatusById", method = RequestMethod.POST)
     @ApiOperation(value = "修改用户状态(启用或者禁用)", response = Boolean.class)
     public Object modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "status") Byte status) {
+        User user = SecurityUtils.getCurrentUser();
+        if (id.equals(user.getId())) {
+            //如果删除的id和当前登录的用户id相同，则不能禁用
+            return WrapMapper.error("不能禁用当前登录账号");
+        }
         Wrapper wrapper = schoolUserControllerClient.modifySchoolUserStatusById(id, status);
         return wrapper;
     }
