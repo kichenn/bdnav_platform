@@ -32,12 +32,7 @@ public class UserQueryDto extends Query {
      */
     @ApiModelProperty("部门名称")
     private String deptFullName;
-
-    /**
-     * 角色ids
-     */
-    @ApiModelProperty("部门名称")
-    private String roleIds;
+    
 
     /**
      * 性别 1 男 2 女

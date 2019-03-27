@@ -6,8 +6,11 @@ import com.bdxh.system.dto.AddUserDto;
 import com.bdxh.system.dto.UpdateUserDto;
 import com.bdxh.system.dto.UserQueryDto;
 import com.bdxh.system.entity.User;
+import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.feign.UserControllerClient;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @description: 系统用户feign降级服务
@@ -47,6 +50,10 @@ public class UserControllerClientFallback implements UserControllerClient {
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper<List<UserRole>> findUserRoleByUserId(Long userId) {
+        return WrapMapper.error();
+    }
 
 
 }

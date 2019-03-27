@@ -5,6 +5,7 @@ import com.bdxh.system.dto.AddUserDto;
 import com.bdxh.system.dto.UpdateUserDto;
 import com.bdxh.system.dto.UserQueryDto;
 import com.bdxh.system.entity.User;
+import com.bdxh.system.entity.UserRole;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -55,11 +56,11 @@ public interface UserService extends IService<User> {
      */
     void updateUsers(UpdateUserDto updateUserDto);
 
- /**
-  * 根据用户id查询所有关系
-  * @param userId
-  * @return
-  */
- List<String> findUserRoleByUserId(Long userId);
+   /**
+    * 根据用户id查询所有关系
+    * @param userId
+    * @return
+    */
+    List<String> findUserRoleByUserId(Long userId);
 
 }

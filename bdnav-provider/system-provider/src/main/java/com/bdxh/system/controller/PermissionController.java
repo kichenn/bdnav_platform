@@ -148,16 +148,21 @@ public class PermissionController {
     @ApiOperation(value = "查询全部菜单", response = List.class)
     @ResponseBody
     public Object theTreeMenu(@RequestParam(value = "roleId",required = false) Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
-
-        List<RolePermissionDto> permissions = permissionService.theTreeMenu(roleId,selected);
-
+        List<RolePermissionDto> permissions;
+        if (!roleId.equals("")&&roleId!=0){
+            permissions = permissionService.theTreeMenu(roleId,selected);
+        }else{
+            permissions=permissionService.theTreeMenuList();
+        }
         List<PermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)&&permissions.size()>0) {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
                 treeVo.setTitle(e.getTitle());
                 treeVo.setCreateDate(e.getCreateDate());
-                treeVo.setExpand(Boolean.TRUE);
+                if (!roleId.equals("")){
+                    treeVo.setExpand(Boolean.TRUE);
+                }
                 if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)&&e.getRplist().get(0).getSelected().equals(2)) {
                     treeVo.setSelected(Boolean.TRUE);
                 }

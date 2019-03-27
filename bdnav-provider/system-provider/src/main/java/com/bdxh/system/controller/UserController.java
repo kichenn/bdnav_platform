@@ -4,6 +4,8 @@ import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.User;
+import com.bdxh.system.entity.UserRole;
+import com.bdxh.system.service.UserRoleService;
 import com.bdxh.system.service.UserService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -33,6 +35,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * 增加用户
@@ -176,11 +180,10 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/test1", method = RequestMethod.POST)
-    @ApiOperation(value = "测试返回数据", response = Boolean.class)
-    public Object test1(
-            @RequestParam(value = "userId") Long userId) {
-        List<String> result=userService.findUserRoleByUserId(userId);
+    @RequestMapping(value = "/finaUserRoleByUserId", method = RequestMethod.POST)
+    @ApiOperation(value = "根据用户id查询所有权限", response = Boolean.class)
+    public Object findUserRoleByUserId(@RequestParam(value = "userId") Long userId) {
+        List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
         return WrapMapper.ok(result);
     }
 

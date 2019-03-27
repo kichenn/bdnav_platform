@@ -31,6 +31,6 @@ public interface RolePermissionService extends IService<RolePermission> {
     //根据角色id和启动条件查询
     List<RolePermission> findPermissionList(Long roleId,Integer RpSwitch);
 
-    //批量添加用户关系
-    Boolean batchAddPermissions(List<RolePermissionDto> rolePermissionDto);
+
+
 }
