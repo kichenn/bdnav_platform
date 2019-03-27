@@ -110,7 +110,7 @@
         SELECT
         <include refid="BaseColumns"/>
         FROM
-        sys_permission perm
+        sys_permission
         <where>
             <if test="title!=null">
                 title LIKE CONCAT(CONCAT('%',#{title},'%'))

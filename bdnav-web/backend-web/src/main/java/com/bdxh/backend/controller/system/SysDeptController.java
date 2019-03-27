@@ -106,7 +106,7 @@ public class SysDeptController {
         }
         try {
             Wrapper wrapper = deptControllerClient.addDept(deptDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -128,7 +128,7 @@ public class SysDeptController {
         }
         try {
             Wrapper wrapper = deptControllerClient.updateDept(deptDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -146,7 +146,7 @@ public class SysDeptController {
 
         try {
             Wrapper wrapper= deptControllerClient.delDept(deptId);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
