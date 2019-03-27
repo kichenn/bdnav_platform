@@ -61,7 +61,7 @@ public class StudentController {
         try {
             Student student = BeanMapUtils.map(addStudentDto, Student.class);
             if (null==studentService.isNullStudent(student.getSchoolCode(), student.getCardNumber()) ) {
-                studentService.save(student);
+                studentService.saveStudent(student);
                 return WrapMapper.ok();
             }
             return WrapMapper.ok("当前学校已有相同cardNumber(学号)");

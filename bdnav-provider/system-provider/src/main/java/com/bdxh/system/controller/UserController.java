@@ -186,9 +186,10 @@ public class UserController {
     @ApiOperation(value = "根据用户id查询所有权限", response = Boolean.class)
     public Object findUserRoleByUserId(@RequestParam(value = "userId") Long userId) {
         List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
-        List<String> roles = new ArrayList<>();
+        List<Long> roles = new ArrayList<>();
         result.stream().forEach(e -> {
-            roles.add(String.valueOf(e.getRoleId()));
+
+            roles.add(e.getRoleId());
         });
         return WrapMapper.ok(roles);
     }
