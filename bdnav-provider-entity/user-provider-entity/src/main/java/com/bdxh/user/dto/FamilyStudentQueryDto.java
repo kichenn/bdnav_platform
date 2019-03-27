@@ -2,16 +2,14 @@ package com.bdxh.user.dto;
 
 import com.bdxh.common.base.page.Query;
 import io.swagger.annotations.ApiModelProperty;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import java.util.Date;
+import lombok.Data;
 
 /**
  * @description:
  * @author: binzh
  * @create: 2019-03-27 18:17
  **/
+@Data
 public class FamilyStudentQueryDto  extends Query {
 
 

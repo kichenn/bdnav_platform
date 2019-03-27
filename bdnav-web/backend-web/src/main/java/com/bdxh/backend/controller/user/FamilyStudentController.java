@@ -81,7 +81,7 @@ public class FamilyStudentController {
      * @return
      */
     @ApiOperation(value = "查询所有家长与孩子关系")
-    @RequestMapping(value = "/queryaAllFamilyStudent",method =RequestMethod.GET)
+    @RequestMapping(value = "/queryAllFamilyStudent",method =RequestMethod.POST)
     public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
         try{
             Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
