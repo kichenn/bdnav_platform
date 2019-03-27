@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.persistence.GroupPermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.GroupPermission">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="group_type" jdbcType="TINYINT" property="groupType"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="recursion_permission" jdbcType="TINYINT" property="recursionPermission"/>
+        <result column="recursion_permission_ids" jdbcType="VARCHAR" property="recursionPermissionIds"/>
+        <result column="device_id" jdbcType="BIGINT" property="deviceId"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="access_flag" jdbcType="TINYINT" property="accessFlag"/>
+        <result column="access_begin" jdbcType="TIMESTAMP" property="accessBegin"/>
+        <result column="access_end" jdbcType="TIMESTAMP" property="accessEnd"/>
+        <result column="access_day_mark" jdbcType="VARCHAR" property="accessDayMark"/>
+        <result column="access_time_mark" jdbcType="VARCHAR" property="accessTimeMark"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+	  id,school_id,school_code,group_type,group_id,recursion_permission,recursion_permission_ids,device_id,device_code,access_flag,access_begin,access_end,access_day_mark,access_time_mark,create_date,update_date,operator,operator_name,remark
+	</sql>
+
+    <select id="getGroupPermissionAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_group_permission 
+	</select>
+
+    <delete id="delGroupPermissionInIds" parameterType="Integer">
+        DELETE
+        FROM t_group_permission
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
+
+    <select id="findGroupRecursionPermissionIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_group_permission
+        WHERE　
+        group_id =#{groupId,jdbcType=BIGINT}
+        AND group_type=#{groupId,jdbcType=TINYINT}
+    </select>
+    <select id="findGroupPermissionInConditionPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_group_permission
+        <where>
+            <if test="permission.schoolCode !=null and permission.schoolCode !=''">
+                school_code like CONCAT(CONCAT('%',#{permission.schoolCode,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="permission.groupId !=null">
+               AND group_id=#{permission.groupId,jdbcType=BIGINT}
+            </if>
+            <if test="permission.groupType !=null">
+                AND group_type=#{permission.groupType,jdbcType=BIGINT}
+            </if>
+            <if test="permission.deviceCode !=null">
+                AND device_code like CONCAT(CONCAT('%',#{permission.deviceCode,jdbcType=VARCHAR}),'%')
+            </if>
+        </where>
+        ORDER BY　create_date　DESC
+    </select>
+
+</mapper>

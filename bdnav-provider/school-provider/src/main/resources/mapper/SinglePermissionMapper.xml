@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.persistence.SinglePermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SinglePermission">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="user_type" jdbcType="TINYINT" property="userType"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="device_id" jdbcType="BIGINT" property="deviceId"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="access_begin" jdbcType="TIMESTAMP" property="accessBegin"/>
+        <result column="access_end" jdbcType="TIMESTAMP" property="accessEnd"/>
+        <result column="access_day_mark" jdbcType="VARCHAR" property="accessDayMark"/>
+        <result column="access_time_mark" jdbcType="VARCHAR" property="accessTimeMark"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+	  id,school_id,school_code,user_type,user_id,user_name,card_number,device_id,device_code,access_begin,access_end,access_day_mark,access_time_mark,create_date,update_date,operator,operator_name,remark
+	</sql>
+    <select id="getSinglePermissionAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_single_permission 
+	</select>
+
+    <delete id="delSinglePermissionInIds" parameterType="Integer">
+        DELETE
+        FROM t_single_permission
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
+    <select id="findSinglePermissionInConditionPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_single_permission
+        <where>
+            <if test="singlePermission.schoolCode !=null and singlePermission.schoolCode !=''">
+                school_code like CONCAT(CONCAT('%',#{singlePermission.schoolCode,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="singlePermission.userName !=null and singlePermission.userName!=''">
+                AND user_name like CONCAT(CONCAT('%',#{singlePermission.userName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="singlePermission.cardNumber !=null and singlePermission.cardNumber!=''">
+                AND card_number like CONCAT(CONCAT('%',#{singlePermission.cardNumber,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="singlePermission.deviceCode !=null and singlePermission.deviceCode!=''">
+                AND device_code like CONCAT(CONCAT('%',#{singlePermission.deviceCode,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="singlePermission.userType !=null ">
+                AND user_type =#{singlePermission.userType,jdbcType=TINYINT}
+            </if>
+        </where>
+        ORDER BY　create_date　DESC
+    </select>
+
+</mapper>
