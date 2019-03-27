@@ -119,7 +119,10 @@ public class MybatisConfig {
 
 	@Bean(name="transactionManager")
 	public DataSourceTransactionManager testTransactionManager(@Qualifier("shardingDataSource") DataSource dataSource) {
-		return new DataSourceTransactionManager(dataSource);
+		return new DataSourceTransactionManager(
+
+
+		);
 	}
 
 	@Bean
@@ -176,7 +179,7 @@ public class MybatisConfig {
 	public TableRuleConfiguration getBaseUserTableRuleConfiguration() {
 		TableRuleConfiguration result = new TableRuleConfiguration();
 		result.setLogicTable("t_base_user");
-		result.setActualDataNodes("ds_${0..3}.t_base_user{0..3}");
+		result.setActualDataNodes("ds_${0..3}.t_base_user${0..3}");
 		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
 		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
 		return result;
