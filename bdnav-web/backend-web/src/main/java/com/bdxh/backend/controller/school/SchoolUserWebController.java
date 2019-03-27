@@ -107,7 +107,7 @@ public class SchoolUserWebController {
             //如果删除的id和当前登录的用户id相同，则不能禁用
             return WrapMapper.error("不能禁用当前登录账号");
         }
-        Wrapper wrapper = schoolUserControllerClient.modifySchoolUserStatusById(id, statusEnum.getKey());
+        Wrapper wrapper = schoolUserControllerClient.modifySchoolUserStatusById(id, statusEnum);
         return wrapper;
     }
 
