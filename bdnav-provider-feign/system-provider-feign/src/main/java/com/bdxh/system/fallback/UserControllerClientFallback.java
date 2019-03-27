@@ -51,7 +51,7 @@ public class UserControllerClientFallback implements UserControllerClient {
     }
 
     @Override
-    public Wrapper<List<UserRole>> findUserRoleByUserId(Long userId) {
+    public Wrapper<List<String>> findUserRoleByUserId(Long userId) {
         return WrapMapper.error();
     }
 

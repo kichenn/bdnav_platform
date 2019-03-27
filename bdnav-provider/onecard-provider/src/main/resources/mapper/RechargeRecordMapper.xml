@@ -3,23 +3,25 @@
 <mapper namespace="com.bdxh.onecard.persistence.RechargeRecordMapper">
 
 	<resultMap id="BaseResultMap" type="com.bdxh.onecard.entity.RechargeRecord">
-		<result column="order_no" jdbcType="BIGINT" property="orderNo"/>
-		<result column="virtual_card_id" jdbcType="BIGINT" property="virtualCardId"/>
-		<result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-		<result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
-		<result column="recharge_money" jdbcType="DECIMAL" property="rechargeMoney"/>
-		<result column="order_type" jdbcType="TINYINT" property="orderType"/>
-		<result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
-		<result column="issue_number" jdbcType="VARCHAR" property="issueNumber"/>
-		<result column="phy_number" jdbcType="VARCHAR" property="phyNumber"/>
-		<result column="order_status" jdbcType="TINYINT" property="orderStatus"/>
-		<result column="wx_order_type" jdbcType="VARCHAR" property="wxOrderType"/>
-		<result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-		<result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	 <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
+	 <result column="virtual_card_id" jdbcType="BIGINT" property="virtualCardId"/>
+	 <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	 <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+	 <result column="recharge_money" jdbcType="DECIMAL" property="rechargeMoney"/>
+	 <result column="order_type" jdbcType="TINYINT" property="orderType"/>
+	 <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
+	 <result column="issue_number" jdbcType="VARCHAR" property="issueNumber"/>
+	 <result column="phy_number" jdbcType="VARCHAR" property="phyNumber"/>
+	 <result column="order_status" jdbcType="TINYINT" property="orderStatus"/>
+	 <result column="wx_order_type" jdbcType="VARCHAR" property="wxOrderType"/>
+	 <result column="body" jdbcType="VARCHAR" property="body"/>
+	 <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	 <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	 <result column="message" jdbcType="VARCHAR" property="message"/>
 	</resultMap>
 
 	<sql id="BaseColumns">
-		order_no,virtual_card_id,school_code,card_number,recharge_money,order_type,out_order_no,issue_number,phy_number,order_status,wx_order_type,create_date,update_date
+	  order_no,virtual_card_id,school_code,card_number,recharge_money,order_type,out_order_no,issue_number,phy_number,order_status,wx_order_type,body,create_date,update_date,message
 	</sql>
 
 	<select id="getRechargeRecordAllCount" resultType="java.lang.Integer">
@@ -32,7 +34,7 @@
 	  DELETE
 	  FROM t_recharge_record
 	  WHERE
-	  order_no IN
+	  id IN
 	  <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
 	    #{id, jdbcType = BIGINT}
 	  </foreach >
