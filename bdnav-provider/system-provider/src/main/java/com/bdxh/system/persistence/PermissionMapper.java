@@ -25,4 +25,7 @@ public interface PermissionMapper extends Mapper<Permission> {
 
     //根据菜单名称查询列表
     List<Permission> findByTitle(@Param("title") String title);
+
+    //查询所有菜单集合
+    List<RolePermissionDto> theTreeMenuList();
 }

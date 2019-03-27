@@ -3,10 +3,13 @@ package com.bdxh.system.feign;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.User;
+import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.fallback.UserControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @description: 系统用户feign客户端
@@ -68,6 +71,15 @@ public interface UserControllerClient {
     @RequestMapping(value = "/user/delBatchUser")
     @ResponseBody
     Wrapper delBatchUser(@RequestParam(name = "ids") String ids);
+
+    /**
+     * 根据用户id查询所有权限
+     * @return
+     */
+    @RequestMapping(value = "/user/finaUserRoleByUserId")
+    @ResponseBody
+    Wrapper<List<UserRole>> findUserRoleByUserId(@RequestParam(value = "userId") Long userId);
+
 
 
 }

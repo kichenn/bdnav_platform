@@ -37,7 +37,7 @@
     <include refid="BaseColumns"/>
       FROM sys_role_permission
     where role_id = #{roleId} AND rp_switch = #{RpSwitch}
-    </select>
+  </select>
 
 
 

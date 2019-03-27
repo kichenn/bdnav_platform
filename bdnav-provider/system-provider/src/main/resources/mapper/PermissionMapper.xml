@@ -90,7 +90,18 @@
      FROM
 	sys_permission
     LEFT JOIN sys_role_permission ON sys_permission.id = sys_role_permission.permission_id
-       AND sys_role_permission.selected =#{selected} AND  sys_role_permission.role_id=#{roleId,jdbcType=BIGINT}
+        <where>
+            <if test="roleId!=null">AND  sys_role_permission.role_id=#{roleId,jdbcType=BIGINT} </if>
+            <if test="roleId!=selected">AND sys_role_permission.selected =#{selected}  </if>
+        </where>
+    </select>
+
+    <select id="theTreeMenuList" resultMap="RpResultMap">
+        SELECT
+        *
+        FROM
+        sys_permission
+        LEFT JOIN sys_role_permission ON sys_permission.id = sys_role_permission.permission_id
     </select>
 
 

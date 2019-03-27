@@ -52,13 +52,6 @@ public class User {
      */
     private String email;
 
-
-    /**
-     * 分配的角色id
-     */
-    @Column(name = "roleIds")
-    private String roleIds;
-
     /**
      * 部门id
      */
@@ -289,23 +282,6 @@ public class User {
      */
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
-    }
-
-
-
-    /**
-     * 获取角色id
-     * @return
-     */
-    public String getRoleIds() {
-        return roleIds;
-    }
-    /**
-     * 设置角色id
-     *
-     */
-    public void setRoleIds(String roleIds) {
-        this.roleIds = roleIds;
     }
 
 
