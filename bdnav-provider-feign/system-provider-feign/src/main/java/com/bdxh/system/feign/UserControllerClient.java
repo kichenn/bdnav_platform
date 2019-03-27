@@ -82,5 +82,14 @@ public interface UserControllerClient {
     Wrapper<List<Long>> findUserRoleByUserId(@RequestParam(value = "userId") Long userId);
 
 
+    /**
+     * 用户的启用与关闭
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/user/enableAndDisable")
+    @ResponseBody
+    Wrapper enableAndDisable(@RequestParam(value = "userId") Long userId,@RequestParam(name = "status") Byte status);
+
 
 }

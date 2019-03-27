@@ -94,7 +94,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         boolean flag = false;
         for (int i = 0; i < c.size(); i++) {
             for (int j = 0; j < b.length; j++) {
-                if (c.get(i).equals(b[j])) {
+                if (c.get(i).equals(b[j])&&b.length==c.size()) {
                     flag = true;
                     break;
                 } else {
@@ -110,8 +110,8 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         if (!updateUserDto.getRoleIds().equals("")){
             String [] roleIds=updateUserDto.getRoleIds().split(",");
             List<String> Urbyids=findUserRoleByUserId(updateUserDto.getId());
-            Boolean falg=stringArrayCompare(roleIds, Urbyids);
-            if (falg.equals(Boolean.FALSE)){
+           Boolean falg=stringArrayCompare(roleIds, Urbyids);
+         if (falg.equals(Boolean.FALSE)){
                 UserRole userRole = new UserRole();
                 userRole.setUserId(updateUserDto.getId());
                 userRoleMapper.delete(userRole);
@@ -126,11 +126,8 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
                 userMapper.UpdateUsers(updateUserDto);
             }
         }else{
-            updateUserDto.setRoleIds("");
             userMapper.UpdateUsers(updateUserDto);
         }
-
-
     }
 
     @Override
@@ -143,6 +140,21 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
             });
         }
         return userRoles;
+    }
+
+
+    /**
+     * 用户id启用或者禁用信息
+     * @param id
+     * @param status
+     * @return
+     */
+    @Override
+    public Boolean enableAndDisable(Long id, Byte status) {
+        UpdateUserDto uud=new UpdateUserDto();
+        uud.setId(id);
+        uud.setStatus(status);
+        return userMapper.UpdateUsers(uud) > 0;
     }
 
 
