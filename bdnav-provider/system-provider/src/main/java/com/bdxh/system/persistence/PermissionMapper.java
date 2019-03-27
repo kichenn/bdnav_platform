@@ -23,4 +23,6 @@ public interface PermissionMapper extends Mapper<Permission> {
     //角色id所有权限
     List<Permission> findPermission(@Param("roleId") Long roleId,@Param("selected")Integer selected);
 
+    //根据菜单名称查询列表
+    List<Permission> findByTitle(@Param("title") String title);
 }

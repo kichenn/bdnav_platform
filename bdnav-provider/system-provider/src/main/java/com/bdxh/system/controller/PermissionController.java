@@ -54,7 +54,7 @@ public class PermissionController {
         if (CollectionUtils.isNotEmpty(permissions)) {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
-                treeVo.setTitle(e.getName());
+                treeVo.setTitle(e.getTitle());
                 treeVo.setCreateDate(e.getCreateDate());
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
@@ -101,6 +101,20 @@ public class PermissionController {
         return WrapMapper.ok(permissionService.modifyPermission(permission));
     }
 
+
+    /**
+     * 根据菜单名称搜索查询
+     * @param title
+     * @return
+     */
+    @RequestMapping(value = "/findByTitle", method = RequestMethod.POST)
+    @ApiOperation(value = "根据菜单名称进行查询", response = Boolean.class)
+    public Object findByTitle(@RequestParam("title") String title) {
+        return WrapMapper.ok(permissionService.findByTitle(title));
+    }
+
+
+
     /**
      * @Description: 删除用户权限
      * @Author: Kang
@@ -133,7 +147,7 @@ public class PermissionController {
     @RequestMapping(value = "/theTreeMenu", method = RequestMethod.GET)
     @ApiOperation(value = "查询全部菜单", response = List.class)
     @ResponseBody
-    public Object theTreeMenu(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
+    public Object theTreeMenu(@RequestParam(value = "roleId",required = false) Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
 
         List<RolePermissionDto> permissions = permissionService.theTreeMenu(roleId,selected);
 
@@ -141,7 +155,7 @@ public class PermissionController {
         if (CollectionUtils.isNotEmpty(permissions)&&permissions.size()>0) {
             permissions.stream().forEach(e -> {
                 PermissionTreeVo treeVo = new PermissionTreeVo();
-                treeVo.setTitle(e.getName());
+                treeVo.setTitle(e.getTitle());
                 treeVo.setCreateDate(e.getCreateDate());
                 treeVo.setExpand(Boolean.TRUE);
                 if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)&&e.getRplist().get(0).getSelected().equals(2)) {
@@ -219,6 +233,8 @@ public class PermissionController {
             }*/
         return WrapMapper.ok(permissions);
     }
+
+
 
 
 }

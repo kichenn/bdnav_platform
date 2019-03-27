@@ -22,9 +22,13 @@ public class RolePermissionDto {
      * 父级菜单ids
      */
     private String parentIds;
-
     /**
      * 菜单名称
+     */
+    private String title;
+
+    /**
+     * 路由路径
      */
     private String name;
 

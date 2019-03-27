@@ -20,14 +20,17 @@ public class ModifyPermissionDto {
     @ApiModelProperty("父级菜单id")
     private Long parentId;
 
-//    @ApiModelProperty("父级菜单ids")
-//    private String parentIds;
+   @ApiModelProperty("父级菜单ids")
+   private String parentIds;
 
     @ApiModelProperty("启用开关 1开 2关")
     private Integer RpSwitch;
 
-    @ApiModelProperty("菜单名称")
+    @ApiModelProperty("路由路径")
     private String name;
+
+    @ApiModelProperty("菜单名称")
+    private String title;
 
     @ApiModelProperty("路径")
     private String path;
