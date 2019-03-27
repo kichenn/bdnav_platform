@@ -42,8 +42,6 @@ public class StudentController {
     @Autowired
     private StudentService studentService;
 
-    @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 新增学生信息
@@ -63,8 +61,6 @@ public class StudentController {
         try {
             Student student = BeanMapUtils.map(addStudentDto, Student.class);
             if (null==studentService.isNullStudent(student.getSchoolCode(), student.getCardNumber()) ) {
-                student.setId(snowflakeIdWorker.nextId());
-                student.setActivate(Byte.valueOf("1"));
                 studentService.save(student);
                 return WrapMapper.ok();
             }

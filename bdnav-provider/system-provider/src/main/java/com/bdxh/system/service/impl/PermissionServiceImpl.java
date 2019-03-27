@@ -96,6 +96,11 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         return permissionMapper.findByTitle(title);
     }
 
+    @Override
+    public List<RolePermissionDto> theTreeMenuList() {
+        return permissionMapper.theTreeMenuList();
+    }
+
 
 //    @Override
 //    public List<Permission> permissionByMenus(Long roleId, Integer selected) {

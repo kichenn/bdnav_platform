@@ -13,7 +13,6 @@
     <result column="birth" jdbcType="VARCHAR" property="birth" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="roleIds" jdbcType="VARCHAR" property="roleIds" />
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="type" jdbcType="TINYINT" property="type" />
@@ -36,7 +35,6 @@
     <result column="birth" jdbcType="VARCHAR" property="birth" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="roleIds" jdbcType="VARCHAR" property="roleIds" />
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="status" jdbcType="TINYINT" property="status" />
     <result column="type" jdbcType="TINYINT" property="type" />
@@ -49,7 +47,7 @@
 
 
   <sql id="BaseColumns">
-    id,user_name,`password`, real_name, sex, birth, phone, email,roleIds,dept_id, `status`, `type`,image, img_file_address, create_date, update_date, operator, remark
+    id,user_name,`password`, real_name, sex, birth, phone, email, dept_id, `status`, `type`,image, img_file_address, create_date, update_date, operator, remark
   </sql>
 
   <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -87,8 +85,8 @@
 
 
     <insert id="addUsers" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
-     insert into sys_user(user_name,`password`,real_name,sex,birth,phone,email,roleIds,dept_id,`status`,`type`,image,img_file_address,create_date,update_date,operator,remark)
-      values(#{userName}, #{password}, #{realName}, #{sex}, #{birth}, #{phone}, #{email},#{roleIds},#{deptId}, #{status}, #{type}, #{image}, #{ImgFileAddress} ,#{createDate}, #{updateDate}, #{operator}, #{remark})
+     insert into sys_user(user_name,`password`,real_name,sex,birth,phone,email,dept_id,`status`,`type`,image,img_file_address,create_date,update_date,operator,remark)
+      values(#{userName}, #{password}, #{realName}, #{sex}, #{birth}, #{phone}, #{email},#{deptId}, #{status}, #{type}, #{image}, #{ImgFileAddress} ,#{createDate}, #{updateDate}, #{operator}, #{remark})
     </insert>
 
 
@@ -115,9 +113,6 @@
       </if>
       <if test="email != null and email!=''" >
         email = #{email},
-      </if>
-      <if test="roleIds != null" >
-        roleIds = #{roleIds},
       </if>
       <if test="deptId != null and deptId!=''" >
         dept_id = #{deptId},

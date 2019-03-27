@@ -58,13 +58,13 @@ public class BaseUser implements Serializable {
 	private Long UserId;
 
 	/**
-	 * 学生姓名
+	 * 用户姓名
 	 */
 	@Column(name = "name")
 	private String Name;
 
 	/**
-	 * 学生性别
+	 * 用户性别
 	 */
 	@Column(name = "gender")
 	private Integer Gender;

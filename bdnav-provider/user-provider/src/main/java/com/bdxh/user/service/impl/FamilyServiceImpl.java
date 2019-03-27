@@ -2,9 +2,13 @@ package com.bdxh.user.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.FamilyQueryDto;
+import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Family;
+import com.bdxh.user.persistence.BaseUserMapper;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.service.FamilyService;
@@ -32,7 +36,13 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
 private FamilyMapper familyMapper;
 
 @Autowired
+private BaseUserMapper baseUserMapper;
+
+@Autowired
 private FamilyStudentMapper familyStudentMapper;
+
+@Autowired
+private SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
     public PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto) {
@@ -47,6 +57,7 @@ private FamilyStudentMapper familyStudentMapper;
     public void deleteFamilyInfo(String scoolCode,String cardNumber) {
             familyMapper.removeFamilyInfo(scoolCode,cardNumber);
              familyStudentMapper.familyRemoveFamilyStudent(scoolCode,cardNumber,null);
+        baseUserMapper.deleteBaseUserInfo(scoolCode,cardNumber);
     }
 
     @Override
@@ -58,6 +69,7 @@ private FamilyStudentMapper familyStudentMapper;
                  for (int i = 0; i < cardNumbers.length; i++) {
                      familyMapper.removeFamilyInfo(schoolCodes[i], cardNumbers[i]);
                      familyStudentMapper.familyRemoveFamilyStudent(schoolCodes[i], cardNumbers[i],null);
+                     baseUserMapper.deleteBaseUserInfo(schoolCodes[i],cardNumbers[i]);
                  }
              }
     }
@@ -78,7 +90,23 @@ private FamilyStudentMapper familyStudentMapper;
     }
 
     @Override
+    @Transactional
     public void updateFamily(UpdateFamilyDto updateFamilyDto) {
         familyMapper.updateFamilyInfo(updateFamilyDto);
+        UpdateBaseUserDto updateBaseUserDto = BeanMapUtils.map(updateFamilyDto, UpdateBaseUserDto.class);
+        baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
+    }
+
+    @Override
+    @Transactional
+    public void saveFamily(Family family) {
+        family.setId(snowflakeIdWorker.nextId());
+        family.setActivate(Byte.valueOf("1"));
+        familyMapper.insert(family);
+        BaseUser baseUser = BeanMapUtils.map(family, BaseUser.class);
+        baseUser.setUserType(3);
+        baseUser.setUserId(family.getId());
+        baseUser.setId(snowflakeIdWorker.nextId());
+        baseUserMapper.insert(baseUser);
     }
 }

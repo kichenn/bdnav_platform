@@ -2,6 +2,7 @@ package com.bdxh.system.service;
 
 import com.bdxh.common.support.IService;
 import com.bdxh.system.entity.Role;
+import com.bdxh.system.entity.RolePermission;
 import com.bdxh.system.entity.UserRole;
 
 import java.util.List;
@@ -14,4 +15,8 @@ import java.util.List;
 public interface UserRoleService extends IService<UserRole> {
 
       List<Role> findUserRole(Long RoleId);
+
+      //根据用户id查询所有权限
+      List<UserRole> findUserRoleByUserId(Long user_Id);
+
 }

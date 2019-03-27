@@ -55,11 +55,5 @@ public class RolePermissionServiceImpl extends BaseService<RolePermission> imple
         return  rolePermissionMapper.findPermissionList(roleId,RpSwitch);
     }
 
-    //批量添加
-    @Override
-    public Boolean batchAddPermissions(List<RolePermissionDto> rolePermissionDto) {
-
-        return rolePermissionMapper.batchAddPermissions(rolePermissionDto)>0;
-    }
 
 }

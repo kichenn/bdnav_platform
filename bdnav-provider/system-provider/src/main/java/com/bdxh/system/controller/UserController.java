@@ -3,13 +3,17 @@ package com.bdxh.system.controller;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.dto.*;
+import com.bdxh.system.entity.Permission;
 import com.bdxh.system.entity.User;
+import com.bdxh.system.entity.UserRole;
+import com.bdxh.system.service.UserRoleService;
 import com.bdxh.system.service.UserService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -33,6 +37,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private UserRoleService userRoleService;
 
     /**
      * 增加用户
@@ -176,12 +182,15 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/test1", method = RequestMethod.POST)
-    @ApiOperation(value = "测试返回数据", response = Boolean.class)
-    public Object test1(
-            @RequestParam(value = "userId") Long userId) {
-        List<String> result=userService.findUserRoleByUserId(userId);
-        return WrapMapper.ok(result);
+    @RequestMapping(value = "/finaUserRoleByUserId", method = RequestMethod.GET)
+    @ApiOperation(value = "根据用户id查询所有权限", response = Boolean.class)
+    public Object findUserRoleByUserId(@RequestParam(value = "userId") Long userId) {
+        List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
+        List<String> roles = new ArrayList<>();
+        result.stream().forEach(e -> {
+            roles.add(String.valueOf(e.getRoleId()));
+        });
+        return WrapMapper.ok(roles);
     }
 
 

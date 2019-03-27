@@ -77,4 +77,10 @@ public interface StudentService extends IService<Student> {
      * @Date: 2019/3/23 10:43
      */
     Student findStudentBySchoolClassId(String schoolCode, Long schoolId, Long classId);
+
+    /**
+     * 新增学生信息
+     * @param student
+     */
+    void saveStudent(Student student);
 }

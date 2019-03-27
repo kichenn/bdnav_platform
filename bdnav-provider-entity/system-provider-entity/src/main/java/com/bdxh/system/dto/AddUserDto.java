@@ -109,10 +109,6 @@ public class AddUserDto implements Serializable {
     private Byte type = 1;
 
 
-    /**
-     * 用户角色关系表 多对多关系
-     */
-/*    private List<UserRole> urList;*/
 
     /**
      * 创建时间

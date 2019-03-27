@@ -94,4 +94,17 @@ public class SysUserController {
 
 
 
+
+    @RequestMapping(value = "/findUserRoleByUserId", method = RequestMethod.GET)
+    @ApiOperation(value = "根据用户id查询所有权限")
+    public Object findUserRoleByUserId(@RequestParam(value = "userId") Long userId) {
+        try {
+            Wrapper wrapper = userControllerClient.findUserRoleByUserId(userId);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 }

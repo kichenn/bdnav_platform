@@ -27,6 +27,22 @@ public class TreeLoopUtils<E extends TreeBean> {
                 }
             }
         }
+        //按照正序排列
+        Collections.sort(result, (o1, o2) -> {
+            if (o1.getSort() > o2.getSort()) {
+                return 1;
+            }
+            if (o1.getSort() == o2.getSort()) {
+                if (o1.getCreateDate().getTime() > o2.getCreateDate().getTime()) {
+                    return 1;
+                } else if (o1.getCreateDate().getTime() < o2.getCreateDate().getTime()) {
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+            return -1;
+        });
         return result;
     }
 
