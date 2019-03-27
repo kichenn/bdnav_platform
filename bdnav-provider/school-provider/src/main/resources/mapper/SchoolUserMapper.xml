@@ -12,7 +12,6 @@
         <result column="birth" jdbcType="VARCHAR" property="birth"/>
         <result column="phone" jdbcType="VARCHAR" property="phone"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="roleIds" jdbcType="VARCHAR" property="roleIds"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="type" jdbcType="TINYINT" property="type"/>
@@ -26,7 +25,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-    id,school_id,school_code,user_name,`password`, real_name, sex, birth, phone, email,roleIds,dept_id, `status`, `type`,image, image_name, create_date, update_date, operator,operator_name, remark
+    id,school_id,school_code,user_name,`password`, real_name, sex, birth, phone, email,dept_id, `status`, `type`,image, image_name, create_date, update_date, operator,operator_name, remark
   </sql>
 
     <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">

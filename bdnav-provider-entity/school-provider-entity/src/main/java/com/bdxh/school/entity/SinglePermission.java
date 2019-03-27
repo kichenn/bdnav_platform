@@ -1,10 +1,10 @@
 package com.bdxh.school.entity;
 
-import javax.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Data;
 import java.util.Date;
 import java.lang.String;
-import java.math.Long;
 import java.lang.Byte;
 
 /**
