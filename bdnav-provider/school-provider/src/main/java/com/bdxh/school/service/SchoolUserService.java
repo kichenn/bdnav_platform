@@ -53,4 +53,11 @@ public interface SchoolUserService extends IService<SchoolUser> {
      * @return
      */
     List<String> findUserRoleByUserId(Long userId);
+
+    /**
+    * @Description:   用户id启用或者禁用信息
+    * @Author: Kang
+    * @Date: 2019/3/27 10:38
+    */
+    Boolean modifySchoolUserStatusById(Long id,Byte status);
 }

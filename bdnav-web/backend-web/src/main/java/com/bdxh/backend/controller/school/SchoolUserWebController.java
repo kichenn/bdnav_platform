@@ -20,6 +20,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * @Description: 学校用户交互
@@ -91,8 +93,15 @@ public class SchoolUserWebController {
 
     @RequestMapping(value = "/delBatchSchoolUserInIds", method = RequestMethod.POST)
     @ApiOperation(value = "批量删除学校用户信息", response = Boolean.class)
-    public Object delBatchSchoolUserInIds(@RequestParam(name = "ids") String ids) {
+    public Object delBatchSchoolUserInIds(@RequestParam(name = "ids") List<Long> ids) {
         Wrapper wrapper = schoolUserControllerClient.delBatchSchoolUserInIds(ids);
+        return wrapper;
+    }
+
+    @RequestMapping(value = "/modifySchoolUserStatusById", method = RequestMethod.POST)
+    @ApiOperation(value = "修改用户状态(启用或者禁用)", response = Boolean.class)
+    public Object modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "status") Byte status) {
+        Wrapper wrapper = schoolUserControllerClient.modifySchoolUserStatusById(id, status);
         return wrapper;
     }
 

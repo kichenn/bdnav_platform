@@ -8,6 +8,8 @@ import com.bdxh.school.feign.SchoolUserControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @Description: 学校系统用户feign降级服务
  * @Author: Kang
@@ -42,7 +44,12 @@ public class SchoolUserControllerClientFallback implements SchoolUserControllerC
     }
 
     @Override
-    public Wrapper delBatchSchoolUserInIds(String ids) {
+    public Wrapper delBatchSchoolUserInIds(List<Long> ids) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper modifySchoolUserStatusById(Long id, Byte status) {
         return WrapMapper.error();
     }
 

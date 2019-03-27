@@ -88,5 +88,17 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         return userRoles;
     }
 
+    /**
+     * @Description: 用户id启用或者禁用信息
+     * @Author: Kang
+     * @Date: 2019/3/27 10:38
+     */
+    @Override
+    public Boolean modifySchoolUserStatusById(Long id, Byte status) {
+        SchoolUser schoolUser = new SchoolUser();
+        schoolUser.setId(id);
+        schoolUser.setStatus(status);
+        return schoolUserMapper.updateByPrimaryKeySelective(schoolUser) > 0;
+    }
 
 }

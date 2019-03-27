@@ -9,11 +9,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
-* @Description:  学校系统用户feign客户端
-* @Author: Kang
-* @Date: 2019/3/26 16:22
-*/
+ * @Description: 学校系统用户feign客户端
+ * @Author: Kang
+ * @Date: 2019/3/26 16:22
+ */
 @Service
 @FeignClient(value = "school-provider-cluster", fallback = SchoolUserControllerClientFallback.class)
 public interface SchoolUserControllerClient {
@@ -30,6 +32,7 @@ public interface SchoolUserControllerClient {
 
     /**
      * 添加系统用户
+     *
      * @return
      */
     @RequestMapping(value = "/schoolUser/addSchoolUser", method = RequestMethod.POST)
@@ -38,6 +41,7 @@ public interface SchoolUserControllerClient {
 
     /**
      * 修改系统用户
+     *
      * @return
      */
     @RequestMapping(value = "/schoolUser/modifySchoolUser", method = RequestMethod.POST)
@@ -46,7 +50,7 @@ public interface SchoolUserControllerClient {
 
 
     /**
-     *  根据条件查询用户列表并分页
+     * 根据条件查询用户列表并分页
      */
     @RequestMapping(value = "/schoolUser/findSchoolUsersInConditionPage", method = RequestMethod.POST)
     @ResponseBody
@@ -54,6 +58,7 @@ public interface SchoolUserControllerClient {
 
     /**
      * 删除系统用户
+     *
      * @return
      */
     @RequestMapping(value = "/schoolUser/delSchoolUser", method = RequestMethod.POST)
@@ -61,14 +66,23 @@ public interface SchoolUserControllerClient {
     Wrapper delSchoolUser(@RequestParam(name = "id") Long id);
 
 
-
     /**
      * 批量删除系统用户
+     *
      * @return
      */
     @RequestMapping(value = "/schoolUser/delBatchSchoolUserInIds", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper delBatchSchoolUserInIds(@RequestParam(name = "ids") String ids);
+    Wrapper delBatchSchoolUserInIds(@RequestParam(name = "ids") List<Long> ids);
 
+
+    /**
+     * @Description: 修改用户状态(启用或者禁用)
+     * @Author: Kang
+     * @Date: 2019/3/27 10:35
+     */
+    @RequestMapping(value = "/schoolUser/modifySchoolUserStatusById", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "status") Byte status);
 
 }
