@@ -66,14 +66,17 @@
           card_number as fCardNumber,
           relation   from t_family_student
         <where>
-          <if test="studentName!=null and student!=''">
-              and   student_name=#{studentName}
-          </if>
-        <if test="studentName!=null and student!=''">
-              and school_code=#{schoolCode}
+          <if test="familyStudentQueryDto.studentName!=null and familyStudentQueryDto.studentName!=''">
+            and   student_name like CONCAT('%',CONCAT(#{familyStudentQueryDto.studentName},'%'))
         </if>
-
+            <if test="familyStudentQueryDto.cardNumber!=null and familyStudentQueryDto.cardNumber!=''">
+                and   card_number = #{familyStudentQueryDto.cardNumber}
+            </if>
+            <if test="familyStudentQueryDto.studentNumber!=null and familyStudentQueryDto.studentNumber!=''">
+                and   student_number = #{familyStudentQueryDto.studentNumber}
+            </if>
         </where>
+        order by create_date desc
     </select>
     <!-- 修改关系表数据-->
         <update id="updateStudentInfo">

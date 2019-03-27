@@ -36,6 +36,9 @@ public class FamilyVo {
     @ApiModelProperty("学校Code")
     private String schoolCode;
 
+    @ApiModelProperty
+    private String schoolName;
+
     //家长性别
     @ApiModelProperty("家长性别")
     private Byte fGender;

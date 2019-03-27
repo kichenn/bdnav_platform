@@ -75,6 +75,7 @@
                 AND class_ids like CONCAT(#{studentQueryDto.classIds},'%')
             </if>
         </where>
+        order by create_date desc
     </select>
     <!-- 删除学生信息-->
     <delete id="removeStudentInfo">

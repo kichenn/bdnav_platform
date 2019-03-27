@@ -1,10 +1,11 @@
 package com.bdxh.user.feign;
 
-import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyStudentDto;
+import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.fallback.FamilyStudentControllerFallback;
-import io.swagger.annotations.ApiOperation;
+import com.bdxh.user.vo.FamilyStudentVo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -40,12 +41,10 @@ public interface FamilyStudentControllerClient {
 
     /**
      * 查询所有关系
-     * @param studentName
-     * @param schoolCode
+     * @param familyStudentQueryDto
      * @return
      */
     @ResponseBody
     @RequestMapping(value = "/familyStudent/queryaAllFamilyStudent",method =RequestMethod.GET)
-    Wrapper queryAllFamilyStudent(@RequestParam(name="studentName")String studentName,
-                                        @RequestParam(name="schoolCode")String schoolCode);
+    Wrapper<PageInfo<FamilyStudentVo>>  queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto);
 }

@@ -1,7 +1,9 @@
 package com.bdxh.backend.controller.user;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyStudentDto;
+import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -74,18 +76,16 @@ public class FamilyStudentController {
     }
 
     /**
-     * 查询所有家长与孩子关系
-     * @param studentName
-     * @param schoolCode
+     * 查询所有关系
+     * @param familyStudentQueryDto
      * @return
      */
     @ApiOperation(value = "查询所有家长与孩子关系")
     @RequestMapping(value = "/queryaAllFamilyStudent",method =RequestMethod.GET)
-    public Object queryAllFamilyStudent(@RequestParam(name="studentName")String studentName,
-                                        @RequestParam(name="schoolCode")String schoolCode){
+    public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
         try{
-            familyStudentControllerClient.queryAllFamilyStudent(studentName, schoolCode);
-            return WrapMapper.ok();
+            Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
+            return WrapMapper.ok(wrapper.getResult());
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

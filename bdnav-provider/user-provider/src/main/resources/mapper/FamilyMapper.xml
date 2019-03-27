@@ -56,6 +56,7 @@
         <if test="familyQueryDto.cardNumber!=null and familyQueryDto.cardNumber!=''">
             AND card_number=#{familyQueryDto.cardNumber}
         </if>
+        order by create_date desc
     </where>
 </select>
 
@@ -71,7 +72,8 @@
          remark,
          school_code AS schoolCode,
          card_number AS cardNumber,
-         create_date AS createDate
+         create_date AS createDate,
+         school_name AS schoolName
         FROM t_family
         where school_code=#{schoolCode}
            and card_number=#{cardNumber}
