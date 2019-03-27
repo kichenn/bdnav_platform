@@ -63,4 +63,12 @@ public interface UserService extends IService<User> {
     */
     List<String> findUserRoleByUserId(Long userId);
 
+    /**
+     * 启用与禁止
+     * @param id
+     * @param status
+     * @return
+     */
+    Boolean enableAndDisable(Long id,Byte status);
+
 }

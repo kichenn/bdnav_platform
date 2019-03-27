@@ -108,4 +108,18 @@ public class SysUserController {
         }
     }
 
+
+    @RequestMapping(value = "/enableAndDisable", method = RequestMethod.GET)
+    @ApiOperation(value = "用户的启用与禁止")
+    public Object enableAndDisable(@RequestParam(value = "userId") Long userId,@RequestParam(name = "status") Byte status) {
+        try {
+            Wrapper wrapper = userControllerClient.enableAndDisable(userId,status);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
 }
