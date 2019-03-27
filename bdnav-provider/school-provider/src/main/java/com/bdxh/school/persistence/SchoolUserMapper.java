@@ -13,10 +13,10 @@ public interface SchoolUserMapper extends Mapper<SchoolUser> {
 
     /**
      * 根据条件查询字典
-     * @param param
+     * @param schoolUser
      * @return
      */
-    List<SchoolUser> getByCondition(Map<String, Object> param);
+    List<SchoolUser> getByCondition(SchoolUser schoolUser);
 
 
     /**
@@ -26,4 +26,9 @@ public interface SchoolUserMapper extends Mapper<SchoolUser> {
      */
     SchoolUser getByUserName(@Param("userName") String userName);
 
+    /** 用户id批量删除用户信息
+     * @param ids
+     * @return
+     */
+    Integer delBatchSchoolUserInIds(@Param("ids") List<Long> ids);
 }

@@ -15,13 +15,13 @@
     </resultMap>
 
     <sql id="BaseColumns">
-    id,school_id,school_name,role,role_name,rswitch,create_date,update_date,operator,remark
+    id,school_id,school_code,role,role_name,create_date,update_date,operator,operator_name,remark
     </sql>
 
-    <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="getByCondition" parameterType="com.bdxh.school.entity.SchoolRole" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
-        FROM sys_user_role
+        FROM t_school_role
         <where>
             <if test="role !=null">
                 role=#{role}
@@ -42,9 +42,9 @@
     <!-- 根据用户id查询角色列表 -->
     <select id="getRoleListByUserId" parameterType="java.lang.Long" resultType="java.lang.String">
     SELECT role.role
-    FROM sys_user `user`
-    INNER JOIN  sys_user_role user_role ON `user`.id = user_role.user_id
-    INNER JOIN  sys_role role ON  role.id = user_role.role_id
+    FROM t_school_user `user`
+    INNER JOIN  t_school_user_role user_role ON `user`.id = user_role.user_id
+    INNER JOIN  t_school_role role ON  role.id = user_role.role_id
     where  `user`.id = #{userId}
     </select>
 
@@ -52,8 +52,19 @@
     <select id="getRoleByRole" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
-        FROM sys_role
+        FROM t_school_role
         WHERE role = #{role}
     </select>
+
+    <delete id="delBatchRoleByRoleIds">
+        DELETE
+        FROM
+        t_school_role
+        WHERE
+        id IN
+        <foreach collection="ids" item="empId" separator="," open="(" close=")">
+            #{empId,jdbcType=BIGINT}
+        </foreach>
+    </delete>
 
 </mapper>

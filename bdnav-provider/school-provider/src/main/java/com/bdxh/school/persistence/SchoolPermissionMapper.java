@@ -11,7 +11,7 @@ import java.util.List;
 public interface SchoolPermissionMapper extends Mapper<SchoolPermission> {
 
     //角色id查询父节点
-    List<SchoolPermission> findPermissionByRoleId(@Param("roleId") Long roleId, @Param("type") Byte type);
+    List<SchoolPermission> findPermissionByRoleId(@Param("roleId") Long roleId, @Param("type") Byte type, @Param("schoolId") Long schoolId);
 
     //批量删除
     Integer batchDelPermissionInIds(@Param("ids") List<Long> ids);

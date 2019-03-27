@@ -30,25 +30,29 @@
 
     <sql id="BaseColumns1">
     perm.id,perm.school_id,perm.school_code, perm.parent_id, perm.parent_ids, perm.name,
-    perm.path, perm.icon,perm.component, perm.sort, perm.level, perm.type, perm.create_date, perm.update_date, perm.operator, perm.remark
+    perm.path, perm.icon,perm.component, perm.sort, perm.level, perm.type, perm.create_date, perm.update_date, perm.operator,perm.operator_name, perm.remark
     </sql>
 
     <select id="findPermissionByRoleId" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns1"/>
         FROM
-        sys_permission perm
-        INNER JOIN sys_role_permission roleperm ON perm.id=roleperm.permission_id
-        WHERE
-        roleperm.role_id=#{roleId,jdbcType=BIGINT}
-        AND
-        perm.type=#{type,jdbcType=TINYINT}
+        t_school_permission perm
+        INNER JOIN t_school_role_permission roleperm ON perm.id=roleperm.permission_id
+        <where>
+            roleperm.role_id=#{roleId,jdbcType=BIGINT}
+            AND
+            perm.type=#{type,jdbcType=TINYINT}
+            <if test="schoolId !=null">
+                roleperm. school_id=#{schoolId,jdbcType=BIGINT}
+            </if>
+        </where>
     </select>
 
     <delete id="batchDelPermissionInIds">
         DELETE
         FROM
-        sys_permission
+        t_school_permission
         WHERE
         id IN
         <foreach collection="ids" item="empId" separator="," open="(" close=")">
@@ -60,6 +64,6 @@
         SELECT
         <include refid="BaseColumns"/>
         FROM
-        sys_permission role_id=#{roleId,jdbcType=BIGINT}
+        t_school_permission role_id=#{roleId,jdbcType=BIGINT}
     </select>
 </mapper>

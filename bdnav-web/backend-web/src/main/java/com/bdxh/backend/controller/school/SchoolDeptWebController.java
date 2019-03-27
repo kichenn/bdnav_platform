@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/schoolClassWebController")
+@RequestMapping("/schoolDeptWebController")
 @Validated
 @Slf4j
 @Api(value = "学校老师部门", tags = "学校老师部门交互API")
@@ -37,7 +37,7 @@ public class SchoolDeptWebController {
     private TeacherControllerClient teacherControllerClient;
 
     @RequestMapping(value = "/findSchoolDeptTreeBySchoolId", method = RequestMethod.GET)
-    @ApiOperation(value = "学校id递归查询院校结构关系", response = SchoolDeptTreeVo.class)
+    @ApiOperation(value = "学校id递归查询部门关系", response = SchoolDeptTreeVo.class)
     public Object findSchoolDeptTreeBySchoolId(@RequestParam("schoolId") Long schoolId) {
         Wrapper wrapper = schoolDeptControllerClient.findSchoolDeptTreeBySchoolId(schoolId);
         return WrapMapper.ok(wrapper.getResult());

@@ -1,0 +1,51 @@
+package com.bdxh.school.fallback;
+
+import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SchoolRoleQueryDto;
+import com.bdxh.school.entity.SchoolRole;
+import com.bdxh.school.feign.SchoolRoleControllerClient;
+import com.github.pagehelper.PageInfo;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+
+/**
+* @Description: 学校系统角色feign降级服务
+* @Author: Kang
+* @Date: 2019/3/26 16:00
+*/
+@Component
+public class SchoolRoleControllerClientFallback implements SchoolRoleControllerClient {
+
+    @Override
+    public Wrapper<List<String>> findSchoolRolesByUserId(Long userId) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<PageInfo<SchoolRole>> findRolesInConditionPage(SchoolRoleQueryDto roleQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper addSchoolRole(SchoolRole schoolRole) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper modifySchoolRole(SchoolRole schoolRole) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper delSchoolRole(Long id) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper delBatchSchoolRole(List<Long> ids) {
+        return WrapMapper.error();
+    }
+
+}

@@ -17,7 +17,7 @@ public class SchoolUser {
     /**
      * 学校id
      */
-    @Column(name = "shcool_id")
+    @Column(name = "school_id")
     private Long schoolId;
 
     /**
@@ -91,7 +91,7 @@ public class SchoolUser {
      * 头像图片
      */
     @Column(name = "image")
-    private String Image;
+    private String image;
 
     /**
      * 文件地址
@@ -208,7 +208,7 @@ public class SchoolUser {
      * @return image - 头像
      */
     public String getImage() {
-        return Image;
+        return image;
     }
 
 
@@ -218,8 +218,28 @@ public class SchoolUser {
      * @param image 头像
      */
     public void setImage(String image) {
-        this.Image = image == null ? null : image.trim();
+        this.image = image == null ? null : image.trim();
     }
+
+    /**
+     * 获取头像
+     *
+     * @return image - 头像
+     */
+    public String getImageName() {
+        return imageName;
+    }
+
+
+    /**
+     * 设置头像
+     *
+     * @param image 头像
+     */
+    public void setImageName(String imageName) {
+        this.imageName = imageName == null ? null : imageName.trim();
+    }
+
 
     /**
      * 获取用户名

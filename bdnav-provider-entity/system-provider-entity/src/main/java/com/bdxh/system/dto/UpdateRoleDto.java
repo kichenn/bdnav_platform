@@ -19,6 +19,12 @@ public class UpdateRoleDto implements Serializable {
     @ApiModelProperty("角色id")
     private Long id;
 
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+
     /**
      * 角色
      */

@@ -1,73 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdxh.school.persistence.UserMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolUser">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
-    <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="password" jdbcType="VARCHAR" property="password" />
-    <result column="real_name" jdbcType="VARCHAR" property="realName" />
-    <result column="sex" jdbcType="TINYINT" property="sex" />
-    <result column="birth" jdbcType="VARCHAR" property="birth" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="roleIds" jdbcType="VARCHAR" property="roleIds" />
-    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="type" jdbcType="TINYINT" property="type" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="img_file_address" jdbcType="VARCHAR" property="ImgFileAddress" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
-  
-  <sql id="BaseColumns">
-    id,user_name,`password`, real_name, sex, birth, phone, email,roleIds,dept_id, `status`, `type`,image, img_file_address, create_date, update_date, operator, remark
+<mapper namespace="com.bdxh.school.persistence.SchoolUserMapper">
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolUser">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="birth" jdbcType="VARCHAR" property="birth"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+    id,school_id,school_code,user_name,`password`, real_name, sex, birth, phone, email,dept_id, `status`, `type`,image, image_name, create_date, update_date, operator,operator_name, remark
   </sql>
 
-  <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select <include refid="BaseColumns"/>
-    from sys_user where user_name = #{userName} limit 1;
-  </select>
+    <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_user
+        WHERE user_name = #{userName} limit 1;
+    </select>
 
-   <!-- 带条件查询用户列表 -->
-  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-    SELECT * FROM sys_user
-    LEFT JOIN sys_dept ON sys_user.dept_id = sys_dept.id
-    <where>
-      <if test="userName !=null and userName!=''">
-        AND user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
-      </if>
-      <if test="sex !=null and sex!=0">
-        AND sex =#{sex}
-      </if>
-      <if test="phone !=null and phone!=''">
-        AND phone =#{phone}
-      </if>
-      <if test="deptId !=null and deptId!=0">
-        AND  dept_id =#{deptId}
-      </if>
-      <if test="status !=null and status!=0">
-        AND status =#{status}
-      </if>
-      <if test="type !=null and type!=0">
-        AND `type` =#{type}
-      </if>
-    </where>
-    order by create_date desc
-  </select>
+    <!-- 带条件查询用户列表 -->
+    <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT * FROM t_school_user
+        LEFT JOIN t_school_dept ON t_school_user.dept_id = t_school_dept.id
+        <where>
+            <if test="userName !=null and userName!=''">
+                AND user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
+            </if>
+            <if test="sex !=null and sex!=0">
+                AND sex =#{sex}
+            </if>
+            <if test="phone !=null and phone!=''">
+                AND phone =#{phone}
+            </if>
+            <if test="deptId !=null and deptId!=0">
+                AND dept_id =#{deptId}
+            </if>
+            <if test="status !=null and status!=0">
+                AND status =#{status}
+            </if>
+            <if test="type !=null and type!=0">
+                AND `type` =#{type}
+            </if>
+        </where>
+        order by t_school_user.create_date desc
+    </select>
 
 
-    <insert id="addUsers" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
-     insert into sys_user(user_name,`password`,real_name,sex,birth,phone,email,roleIds,dept_id,`status`,`type`,image,img_file_address,create_date,update_date,operator,remark)
-      values(#{userName}, #{password}, #{realName}, #{sex}, #{birth}, #{phone}, #{email},#{roleIds},#{deptId}, #{status}, #{type}, #{image}, #{ImgFileAddress} ,#{createDate}, #{updateDate}, #{operator}, #{remark})
-    </insert>
+    <delete id="delBatchSchoolUserInIds">
+        DELETE
+        FROM
+        t_school_user
+        WHERE
+        id IN
+        <foreach collection="ids" item="empId" separator="," open="(" close=")">
+            #{empId,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+
 
 </mapper>

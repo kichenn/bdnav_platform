@@ -40,4 +40,12 @@ public interface SchoolRolePermissionMapper extends Mapper<SchoolRolePermission>
      */
     List<SchoolRolePermission> findPermissionList(@Param("roleId") Long roleId);
 
+
+    /**
+     * 批量删除角色，根据角色id
+     *
+     * @param roleIds
+     * @return
+     */
+    Integer delBatchRoleByRoleIds(@Param("roleIds") List<Long> roleIds);
 }
