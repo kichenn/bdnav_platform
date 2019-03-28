@@ -95,10 +95,10 @@ public class PermissionController {
     @RequestMapping(value = "/modifyPermission", method = RequestMethod.POST)
     @ApiOperation(value = "修改用户权限", response = Boolean.class)
     @ResponseBody
-    public Object modifyPermission(@RequestBody ModifyPermissionDto dto) {
-        Permission permission = new Permission();
-        BeanUtils.copyProperties(dto, permission);
-        return WrapMapper.ok(permissionService.modifyPermission(permission));
+    public Object modifyPermission(@RequestBody ModifyPermissionDto mdifyPermissionDto) {
+/*        Permission permission = new Permission();
+        BeanUtils.copyProperties(dto, permission);*/
+        return WrapMapper.ok(permissionService.modifyPermission(mdifyPermissionDto));
     }
 
 
@@ -120,7 +120,7 @@ public class PermissionController {
      * @Author: Kang
      * @Date: 2019/2/28 19:57
      */
-    @RequestMapping(value = "/delPermissionById", method = RequestMethod.POST)
+    @RequestMapping(value = "/delPermissionById", method = RequestMethod.GET)
     @ApiOperation(value = "删除用户权限", response = Boolean.class)
     @ResponseBody
     public Object delPermissionId(@RequestParam("id") Long id) {
@@ -232,6 +232,7 @@ public class PermissionController {
             for (Permission ps:permissions){
                 PermissionTreeVo treeVo = new PermissionTreeVo();
                 treeVo.setTitle(ps.getTitle());
+                treeVo.setName(ps.getName());
                 treeVo.setCreateDate(ps.getCreateDate());
                 BeanUtils.copyProperties(ps, treeVo);
                 treeVos.add(treeVo);

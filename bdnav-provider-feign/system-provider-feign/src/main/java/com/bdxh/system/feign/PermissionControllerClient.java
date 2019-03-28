@@ -51,7 +51,7 @@ public interface PermissionControllerClient {
      */
     @RequestMapping(value = "/permission/modifyPermission")
     @ResponseBody
-    Wrapper modifyPermission(@RequestBody ModifyPermissionDto dto);
+    Wrapper modifyPermission(@RequestBody ModifyPermissionDto modifyPermissionDto);
 
 
     /**
@@ -82,4 +82,11 @@ public interface PermissionControllerClient {
     @RequestMapping(value = "/permission/thePermissionMenu")
     @ResponseBody
     Wrapper<List<PermissionTreeVo>> thePermissionMenu();
+
+    /**
+     * 删除单个权限
+     */
+    @RequestMapping(value = "/permission/delPermissionById")
+    @ResponseBody
+    Wrapper delPermissionById(@RequestParam("id") Long id);
 }

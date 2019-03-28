@@ -3,6 +3,7 @@ package com.bdxh.system.service;
 
 import com.bdxh.common.support.IService;
 import com.bdxh.system.dto.AddPermissionDto;
+import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
 
@@ -26,7 +27,7 @@ public interface PermissionService extends IService<Permission> {
     Boolean addPermission(AddPermissionDto addPermissionDto);
 
     //修改权限列表信息
-    Boolean modifyPermission(Permission permission);
+    Boolean modifyPermission(ModifyPermissionDto mdifyPermissionDto);
 
     //Id删除权限列表信息
     Boolean delPermissionById(Long id);

@@ -13,6 +13,9 @@ public class PermissionTreeVo extends TreeBean {
     @ApiModelProperty("路径")
     private String path;
 
+    @ApiModelProperty("路由英文名")
+    private String name;
+
     @ApiModelProperty("菜单图标")
     private String icon;
 
