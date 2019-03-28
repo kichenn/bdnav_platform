@@ -7,28 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 /**
- * @Description: 设备状态枚举
+ * @Description: 学校用户类型枚举
  * @Author: Kang
- * @Date: 2019/3/27 15:31
+ * @Date: 2019/3/28 10:20
  */
-public enum DeviceStatusEnum {
-    NORMAL(new Byte("1"), "正常"),
-    OFFLINE(new Byte("2"), "离线"),
-    ALL(new Byte("-1"), "全部");
+public enum SchoolUserSexEnum {
+    MALE(new Byte("1"), "男"),
+    FEMALE(new Byte("2"), "女");
 
     private final Byte key;
     private final String value;
 
-    public final static Byte NORMAL_KEY = 1;
-    public final static Byte OFFLINE_KEY = 2;
-    public final static Byte ALL_KEY = -1;
-    public final static String NORMAL_VALUE = "正常";
-    public final static String OFFLINE_VALUE = "离线";
-    public final static String ALL_VALUE = "全部";
+    public final static Byte MALE_KEY = 1;
+    public final static Byte FEMALE_KEY = 2;
+    public final static String MALE_VALUE = "男";
+    public final static String FEMALE_VALUE = "女";
 
-    private DeviceStatusEnum(Byte key, String value) {
+    private SchoolUserSexEnum(Byte key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -45,7 +41,7 @@ public enum DeviceStatusEnum {
         if (null == value) {
             return null;
         }
-        for (DeviceStatusEnum c : DeviceStatusEnum.values()) {
+        for (SchoolUserSexEnum c : SchoolUserSexEnum.values()) {
             if (c.getValue().equals(value)) {
                 return c.key;
             }
@@ -57,7 +53,7 @@ public enum DeviceStatusEnum {
         if (null == key) {
             return StringUtils.EMPTY;
         }
-        for (DeviceStatusEnum c : DeviceStatusEnum.values()) {
+        for (SchoolUserSexEnum c : SchoolUserSexEnum.values()) {
             if (c.getKey().equals(key)) {
                 return c.value;
             }
@@ -67,8 +63,8 @@ public enum DeviceStatusEnum {
 
     public static List<Map<String, Object>> getEnums() {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        DeviceStatusEnum[] bs = DeviceStatusEnum.values();
-        for (DeviceStatusEnum projectType : bs) {
+        SchoolUserSexEnum[] bs = SchoolUserSexEnum.values();
+        for (SchoolUserSexEnum projectType : bs) {
             Map<String, Object> map = Maps.newHashMap();
             map.put("key", projectType.getKey());
             map.put("value", projectType.getValue());

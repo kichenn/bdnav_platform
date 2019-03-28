@@ -2,9 +2,7 @@ package com.bdxh.school.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.SchoolDeptDto;
-import com.bdxh.school.dto.SchoolDeptModifyDto;
-import com.bdxh.school.dto.SchoolDeviceQueryDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
@@ -22,12 +20,12 @@ import java.util.List;
 @Component
 public class SchoolDeviceControllerClientFallback implements SchoolDeviceControllerClient {
     @Override
-    public Wrapper addSchoolDevice(SchoolDevice schoolDevice) {
+    public Wrapper addSchoolDevice(AddSchoolDeviceDto addSchoolDeviceDto) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper modifySchoolDevice(SchoolDevice schoolDevice) {
+    public Wrapper modifySchoolDevice(ModifySchoolDeviceDto modifySchoolDeviceDto) {
         return WrapMapper.error();
     }
 

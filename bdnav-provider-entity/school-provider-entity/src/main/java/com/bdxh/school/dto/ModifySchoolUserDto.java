@@ -9,14 +9,16 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.util.Date;
 
 
 @Data
-public class AddSchoolUserDto implements Serializable {
+public class ModifySchoolUserDto {
 
-    private static final long serialVersionUID = 7421251545883628226L;
 
+    @NotEmpty(message = "id不能为空")
+    @NotNull(message = "id不能为空")
+    @ApiModelProperty("id")
+    private Long id;
 
     @ApiModelProperty("学校id")
     private Long schoolId;
@@ -35,7 +37,6 @@ public class AddSchoolUserDto implements Serializable {
      * 密码
      */
     @ApiModelProperty("密码")
-    @NotEmpty(message = "密码不能为空")
     private String password;
 
 

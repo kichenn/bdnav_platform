@@ -11,7 +11,6 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,15 +37,10 @@ public class SchoolDeviceWebController {
     public Object addSchoolDevice(@Validated @RequestBody AddSchoolDeviceDto addSchoolDeviceDto) {
         //获取当前用户
         User user = SecurityUtils.getCurrentUser();
-        //复制实体
-        SchoolDevice schoolDevice = new SchoolDevice();
-        BeanUtils.copyProperties(addSchoolDeviceDto, schoolDevice);
-        //设置状态
-        schoolDevice.setDeviceStatus(addSchoolDeviceDto.getDeviceStatusEnum().getKey());
         //设置操作人
-        schoolDevice.setOperator(user.getId());
-        schoolDevice.setOperatorName(user.getUserName());
-        Wrapper wrapper = schoolDeviceControllerClient.addSchoolDevice(schoolDevice);
+        addSchoolDeviceDto.setOperator(user.getId());
+        addSchoolDeviceDto.setOperatorName(user.getUserName());
+        Wrapper wrapper = schoolDeviceControllerClient.addSchoolDevice(addSchoolDeviceDto);
         return wrapper;
     }
 
@@ -55,15 +49,10 @@ public class SchoolDeviceWebController {
     public Object modifySchoolDevice(@Validated @RequestBody ModifySchoolDeviceDto modifySchoolDeviceDto) {
         //获取当前用户
         User user = SecurityUtils.getCurrentUser();
-        //复制实体
-        SchoolDevice schoolDevice = new SchoolDevice();
-        BeanUtils.copyProperties(modifySchoolDeviceDto, schoolDevice);
-        //设置状态
-        schoolDevice.setDeviceStatus(modifySchoolDeviceDto.getDeviceStatusEnum().getKey());
         //设置操作人
-        schoolDevice.setOperator(user.getId());
-        schoolDevice.setOperatorName(user.getUserName());
-        Wrapper wrapper = schoolDeviceControllerClient.modifySchoolDevice(schoolDevice);
+        modifySchoolDeviceDto.setOperator(user.getId());
+        modifySchoolDeviceDto.setOperatorName(user.getUserName());
+        Wrapper wrapper = schoolDeviceControllerClient.modifySchoolDevice(modifySchoolDeviceDto);
         return wrapper;
     }
 

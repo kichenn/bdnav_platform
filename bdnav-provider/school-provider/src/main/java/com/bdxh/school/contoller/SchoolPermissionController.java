@@ -2,6 +2,8 @@ package com.bdxh.school.contoller;
 
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.AddSchoolPermissionDto;
+import com.bdxh.school.dto.ModifySchoolPermissionDto;
 import com.bdxh.school.entity.SchoolPermission;
 import com.bdxh.school.service.SchoolPermissionService;
 import com.bdxh.school.service.SchoolRolePermissionService;
@@ -69,7 +71,11 @@ public class SchoolPermissionController {
      */
     @RequestMapping(value = "/addSchoolPermission", method = RequestMethod.POST)
     @ApiOperation(value = "新增用户权限", response = Boolean.class)
-    public Object addSchoolPermission(@RequestBody SchoolPermission schoolPermission) {
+    public Object addSchoolPermission(@Validated @RequestBody AddSchoolPermissionDto addSchoolPermissionDto) {
+        SchoolPermission schoolPermission = new SchoolPermission();
+        BeanUtils.copyProperties(addSchoolPermissionDto, schoolPermission);
+        //赋值类型
+        schoolPermission.setType(addSchoolPermissionDto.getSchoolPermissionTypeEnum().getKey());
         return WrapMapper.ok(schoolPermissionService.addPermission(schoolPermission));
     }
 
@@ -80,7 +86,11 @@ public class SchoolPermissionController {
      */
     @RequestMapping(value = "/modifySchoolPermission", method = RequestMethod.POST)
     @ApiOperation(value = "修改用户权限", response = Boolean.class)
-    public Object modifySchoolPermission(@RequestBody SchoolPermission schoolPermission) {
+    public Object modifySchoolPermission(@Validated @RequestBody ModifySchoolPermissionDto ModifySchoolPermissionDto) {
+        SchoolPermission schoolPermission = new SchoolPermission();
+        BeanUtils.copyProperties(ModifySchoolPermissionDto, schoolPermission);
+        //赋值类型
+        schoolPermission.setType(ModifySchoolPermissionDto.getSchoolPermissionTypeEnum().getKey());
         return WrapMapper.ok(schoolPermissionService.modifyPermission(schoolPermission));
     }
 

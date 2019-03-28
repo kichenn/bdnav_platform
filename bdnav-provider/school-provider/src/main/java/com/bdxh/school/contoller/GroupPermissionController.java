@@ -1,12 +1,15 @@
 package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.AddGroupPermissionDto;
 import com.bdxh.school.dto.GroupPermissionQueryDto;
+import com.bdxh.school.dto.ModifyGroupPermissionDto;
 import com.bdxh.school.enums.GroupTypeEnum;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -38,7 +41,14 @@ public class GroupPermissionController {
      */
     @PostMapping("/addGroupPermission")
     @ApiOperation(value = "增加学校组门禁", response = Boolean.class)
-    public Object addGroupPermission(@RequestBody GroupPermission groupPermission) {
+    public Object addGroupPermission(@Validated @RequestBody AddGroupPermissionDto addGroupPermissionDto) {
+        //复制实体
+        GroupPermission groupPermission = new GroupPermission();
+        BeanUtils.copyProperties(addGroupPermissionDto, groupPermission);
+        //设置选择状态
+        groupPermission.setGroupType(addGroupPermissionDto.getGroupTypeEnum().getKey());
+        groupPermission.setAccessFlag(addGroupPermissionDto.getAccessFlagEnum().getKey());
+        groupPermission.setRecursionPermission(addGroupPermissionDto.getRecursionPermissionStatusEnum().getKey());
         return WrapMapper.ok(groupPermissionService.save(groupPermission) > 0);
     }
 
@@ -49,7 +59,14 @@ public class GroupPermissionController {
      */
     @PostMapping("/modifyGroupPermission")
     @ApiOperation(value = "修改学校组门禁", response = Boolean.class)
-    public Object modifyGroupPermission(@RequestBody GroupPermission groupPermission) {
+    public Object modifyGroupPermission(@Validated @RequestBody ModifyGroupPermissionDto modifyGroupPermissionDto) {
+        //复制实体
+        GroupPermission groupPermission = new GroupPermission();
+        BeanUtils.copyProperties(modifyGroupPermissionDto, groupPermission);
+        //设置选择状态
+        groupPermission.setGroupType(modifyGroupPermissionDto.getGroupTypeEnum().getKey());
+        groupPermission.setAccessFlag(modifyGroupPermissionDto.getAccessFlagEnum().getKey());
+        groupPermission.setRecursionPermission(modifyGroupPermissionDto.getRecursionPermissionStatusEnum().getKey());
         return WrapMapper.ok(groupPermissionService.update(groupPermission) > 0);
     }
 

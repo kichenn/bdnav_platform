@@ -4,6 +4,7 @@ import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolRoleDto;
+import com.bdxh.school.dto.ModifySchoolRoleDto;
 import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.feign.SchoolRoleControllerClient;
@@ -47,28 +48,24 @@ public class SchoolRoleWebController {
 
     @RequestMapping(value = "/addSchoolRole", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校角色信息", response = Boolean.class)
-    public Object addSchoolRole(@RequestBody AddSchoolRoleDto addRoleDto) {
-        SchoolRole schoolRole = new SchoolRole();
-        BeanUtils.copyProperties(addRoleDto, schoolRole);
+    public Object addSchoolRole(@Validated @RequestBody AddSchoolRoleDto addRoleDto) {
         //设置操作人
         User user = SecurityUtils.getCurrentUser();
-        schoolRole.setOperator(user.getId());
-        schoolRole.setOperatorName(user.getUserName());
-        Wrapper wrapper = schoolRoleControllerClient.addSchoolRole(schoolRole);
+        addRoleDto.setOperator(user.getId());
+        addRoleDto.setOperatorName(user.getUserName());
+        Wrapper wrapper = schoolRoleControllerClient.addSchoolRole(addRoleDto);
         return wrapper;
     }
 
 
     @RequestMapping(value = "/modifySchoolRole", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校角色信息", response = Boolean.class)
-    public Object modifySchoolRole(@RequestBody UpdateRoleDto updateRoleDto) {
-        SchoolRole schoolRole = new SchoolRole();
-        BeanUtils.copyProperties(updateRoleDto, schoolRole);
+    public Object modifySchoolRole(@Validated @RequestBody ModifySchoolRoleDto ModifySchoolRoleDto) {
         //设置操作人
         User user = SecurityUtils.getCurrentUser();
-        schoolRole.setOperator(user.getId());
-        schoolRole.setOperatorName(user.getUserName());
-        Wrapper wrapper = schoolRoleControllerClient.modifySchoolRole(schoolRole);
+        ModifySchoolRoleDto.setOperator(user.getId());
+        ModifySchoolRoleDto.setOperatorName(user.getUserName());
+        Wrapper wrapper = schoolRoleControllerClient.modifySchoolRole(ModifySchoolRoleDto);
         return wrapper;
     }
 

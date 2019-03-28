@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -21,6 +22,7 @@ public class AddSinglePermission {
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
+    @NotNull(message = "用户类型不能为空")
     @ApiModelProperty("用户类型 1 学生 2 老师 3 家长")
     private SingleUserTypeEnum singleUserTypeEnum;
 
@@ -50,6 +52,12 @@ public class AddSinglePermission {
 
     @ApiModelProperty("日时间段")
     private String accessTimeMark;
+
+    @ApiModelProperty("操作人（前端不需要传递，后端自己获取）")
+    private Long operator;
+
+    @ApiModelProperty("操作人姓名（前端不需要传递，后端自己获取）")
+    private String operatorName;
 
     @ApiModelProperty("备注")
     private String remark;

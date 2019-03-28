@@ -7,28 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-
 /**
- * @Description: 设备状态枚举
- * @Author: Kang
- * @Date: 2019/3/27 15:31
- */
-public enum DeviceStatusEnum {
-    NORMAL(new Byte("1"), "正常"),
-    OFFLINE(new Byte("2"), "离线"),
-    ALL(new Byte("-1"), "全部");
+* @Description: 学校用户类型枚举
+* @Author: Kang
+* @Date: 2019/3/28 10:20
+*/
+public enum SchoolUserTypeEnum {
+    ORDINARY(new Byte("1"), "普通用户"),
+    ADMIN(new Byte("2"), "管理员");
 
     private final Byte key;
     private final String value;
 
-    public final static Byte NORMAL_KEY = 1;
-    public final static Byte OFFLINE_KEY = 2;
-    public final static Byte ALL_KEY = -1;
-    public final static String NORMAL_VALUE = "正常";
-    public final static String OFFLINE_VALUE = "离线";
-    public final static String ALL_VALUE = "全部";
+    public final static Byte ORDINARY_KEY = 1;
+    public final static Byte ADMIN_KEY = 2;
+    public final static String ORDINARY_VALUE = "普通用户";
+    public final static String ADMIN_VALUE = "管理员";
 
-    private DeviceStatusEnum(Byte key, String value) {
+    private SchoolUserTypeEnum(Byte key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -45,7 +41,7 @@ public enum DeviceStatusEnum {
         if (null == value) {
             return null;
         }
-        for (DeviceStatusEnum c : DeviceStatusEnum.values()) {
+        for (SchoolUserTypeEnum c : SchoolUserTypeEnum.values()) {
             if (c.getValue().equals(value)) {
                 return c.key;
             }
@@ -57,7 +53,7 @@ public enum DeviceStatusEnum {
         if (null == key) {
             return StringUtils.EMPTY;
         }
-        for (DeviceStatusEnum c : DeviceStatusEnum.values()) {
+        for (SchoolUserTypeEnum c : SchoolUserTypeEnum.values()) {
             if (c.getKey().equals(key)) {
                 return c.value;
             }
@@ -67,8 +63,8 @@ public enum DeviceStatusEnum {
 
     public static List<Map<String, Object>> getEnums() {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        DeviceStatusEnum[] bs = DeviceStatusEnum.values();
-        for (DeviceStatusEnum projectType : bs) {
+        SchoolUserTypeEnum[] bs = SchoolUserTypeEnum.values();
+        for (SchoolUserTypeEnum projectType : bs) {
             Map<String, Object> map = Maps.newHashMap();
             map.put("key", projectType.getKey());
             map.put("value", projectType.getValue());

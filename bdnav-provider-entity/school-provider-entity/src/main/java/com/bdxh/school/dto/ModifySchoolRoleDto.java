@@ -4,17 +4,23 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
-public class AddSchoolRoleDto implements Serializable {
+public class ModifySchoolRoleDto implements Serializable {
 
     private static final long serialVersionUID = 9202976682572419808L;
 
+
+    @NotEmpty(message = "id不能为空")
+    @NotNull(message = "id不能为空")
+    @ApiModelProperty("id")
+    private Long id;
     /**
      * 角色
      */
-    @NotEmpty(message ="角色不能为空")
+    @NotEmpty(message = "角色不能为空")
     @ApiModelProperty("角色")
     private String role;
 
@@ -27,7 +33,7 @@ public class AddSchoolRoleDto implements Serializable {
     /**
      * 角色名称
      */
-    @NotEmpty(message ="角色名称不能为空")
+    @NotEmpty(message = "角色名称不能为空")
     @ApiModelProperty("角色名称")
     private String roleName;
 
@@ -43,6 +49,6 @@ public class AddSchoolRoleDto implements Serializable {
      * 备注
      */
     @ApiModelProperty("备注")
-     private String remark;
+    private String remark;
 
 }

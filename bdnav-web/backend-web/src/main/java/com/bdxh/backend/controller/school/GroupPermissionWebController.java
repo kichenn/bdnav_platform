@@ -34,16 +34,10 @@ public class GroupPermissionWebController {
     public Object addGroupPermission(@Validated @RequestBody AddGroupPermissionDto addGroupPermissionDto) {
         //获取当前用户
         User user = SecurityUtils.getCurrentUser();
-        //复制实体
-        GroupPermission groupPermission = new GroupPermission();
-        BeanUtils.copyProperties(addGroupPermissionDto, groupPermission);
-        //设置选择状态
-        groupPermission.setGroupType(addGroupPermissionDto.getGroupTypeEnum().getKey());
-        groupPermission.setRecursionPermission(addGroupPermissionDto.getRecursionPermissionStatusEnum().getKey());
         //设置操作人
-        groupPermission.setOperator(user.getId());
-        groupPermission.setOperatorName(user.getUserName());
-        Wrapper wrapper = groupPermissionControllerClient.addGroupPermission(groupPermission);
+        addGroupPermissionDto.setOperator(user.getId());
+        addGroupPermissionDto.setOperatorName(user.getUserName());
+        Wrapper wrapper = groupPermissionControllerClient.addGroupPermission(addGroupPermissionDto);
         return wrapper;
     }
 
@@ -52,16 +46,10 @@ public class GroupPermissionWebController {
     public Object modifyGroupPermission(@Validated @RequestBody ModifyGroupPermissionDto modifyGroupPermissionDto) {
         //获取当前用户
         User user = SecurityUtils.getCurrentUser();
-        //复制实体
-        GroupPermission groupPermission = new GroupPermission();
-        BeanUtils.copyProperties(modifyGroupPermissionDto, groupPermission);
-        //设置选择状态
-        groupPermission.setGroupType(modifyGroupPermissionDto.getGroupTypeEnum().getKey());
-        groupPermission.setRecursionPermission(modifyGroupPermissionDto.getRecursionPermissionStatusEnum().getKey());
         //设置操作人
-        groupPermission.setOperator(user.getId());
-        groupPermission.setOperatorName(user.getUserName());
-        Wrapper wrapper = groupPermissionControllerClient.modifyGroupPermission(groupPermission);
+        modifyGroupPermissionDto.setOperator(user.getId());
+        modifyGroupPermissionDto.setOperatorName(user.getUserName());
+        Wrapper wrapper = groupPermissionControllerClient.modifyGroupPermission(modifyGroupPermissionDto);
         return wrapper;
     }
 

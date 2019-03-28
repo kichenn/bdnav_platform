@@ -1,12 +1,14 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.support.BaseService;
+import com.bdxh.system.dto.AddPermissionDto;
 import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.system.persistence.PermissionMapper;
 import com.bdxh.system.service.PermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -50,12 +52,14 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
 
     //增加权限列表信息
     @Override
-    public Boolean addPermission(Permission permission) {
+    public Boolean addPermission(AddPermissionDto addPermissionDto) {
+        Permission permission = new Permission();
+        BeanUtils.copyProperties(addPermissionDto, permission);
         if (new Long("-1").equals(permission.getParentId())) {
             permission.setParentIds("");
         } else {
             Permission sysPermissions = findPermissionById(permission.getParentId());
-            permission.setParentIds(sysPermissions.getParentIds() + "," + sysPermissions.getId());
+            permission.setParentIds(sysPermissions.getParentIds() +","+ sysPermissions.getId());
         }
         return permissionMapper.insertSelective(permission) > 0;
     }

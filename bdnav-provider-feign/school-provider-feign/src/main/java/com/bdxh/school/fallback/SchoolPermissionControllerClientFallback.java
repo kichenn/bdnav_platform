@@ -2,6 +2,8 @@ package com.bdxh.school.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSchoolPermissionDto;
+import com.bdxh.school.dto.ModifySchoolPermissionDto;
 import com.bdxh.school.entity.SchoolPermission;
 import com.bdxh.school.feign.SchoolPermissionControllerClient;
 import com.bdxh.school.vo.SchoolPermissionTreeVo;
@@ -24,12 +26,12 @@ public class SchoolPermissionControllerClientFallback implements SchoolPermissio
     }
 
     @Override
-    public Wrapper addSchoolPermission(SchoolPermission schoolPermission) {
+    public Wrapper addSchoolPermission(AddSchoolPermissionDto addSchoolPermissionDto) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper modifySchoolPermission(SchoolPermission schoolPermission) {
+    public Wrapper modifySchoolPermission(ModifySchoolPermissionDto modifySchoolPermissionDto) {
         return WrapMapper.error();
     }
 
