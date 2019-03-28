@@ -59,7 +59,7 @@ public class SysDictController {
     public Object addDict(@RequestBody DictDto dictDto){
         try {
             Wrapper wrapper = dictControllerClient.addDict(dictDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -71,7 +71,7 @@ public class SysDictController {
     public Object updateDict(@RequestBody UpdateDictDto updateDictDto){
         try {
             Wrapper wrapper = dictControllerClient.updateDict(updateDictDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -83,7 +83,7 @@ public class SysDictController {
     public Object delDict(@RequestParam(name = "dictId")Long dictId){
         try {
             Wrapper wrapper = dictControllerClient.delDict(dictId);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -108,7 +108,7 @@ public class SysDictController {
     public Object addDictData(@RequestBody DictDataDto dictDataDto){
         try {
             Wrapper wrapper = dictDataControllerClient.addDictData(dictDataDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -122,7 +122,7 @@ public class SysDictController {
     public Object updateDictData(@RequestBody UpdateDictDataDto updateDictDataDto){
         try {
             Wrapper wrapper = dictDataControllerClient.updateDictData(updateDictDataDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -137,7 +137,7 @@ public class SysDictController {
     public Object delDictData(@RequestParam(name = "id") Long id){
         try {
             Wrapper wrapper = dictDataControllerClient.delDictData(id);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -149,7 +149,7 @@ public class SysDictController {
     public Object delBatchDictData(@RequestParam(name = "ids")String ids){
         try {
             Wrapper wrapper = dictDataControllerClient.delBatchDictData(ids);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

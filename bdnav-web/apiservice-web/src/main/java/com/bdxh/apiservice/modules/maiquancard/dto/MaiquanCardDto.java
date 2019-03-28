@@ -7,106 +7,78 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @description: 麦圈开卡dto
+ * @description: 麦圈开卡请求类
  * @author: xuyuan
- * @create: 2019-03-27 09:50
+ * @create: 2019-03-26 17:49
  **/
 @Data
-@ApiModel("麦圈开卡dto")
-public class MaiquanCreateCardDto implements Serializable {
+@ApiModel("麦圈开卡请求类")
+public class MaiquanCardDto implements Serializable {
 
-    private static final long serialVersionUID = -6527371071937228264L;
+    private static final long serialVersionUID = 8241015016701583649L;
 
-    @ApiModelProperty("虚拟卡号")
-    private Long virtualCardId;
+    /**
+     * 基本信息主键
+     */
+    @ApiModelProperty("基本信息主键")
+    private Long id;
 
     /**
      * 学校id
      */
-    @NotNull(message = "学校id不能为空")
     @ApiModelProperty("学校id")
-    private Long schoolId;
+    private Long SchoolId;
 
     /**
      * 学校编码
      */
-    @NotEmpty(message = "学校编码不能为空")
     @ApiModelProperty("学校编码")
-    private String schoolCode;
+    private String SchoolCode;
 
     /**
      * 学校名称
      */
-    @NotEmpty(message = "学校名称不能为空")
     @ApiModelProperty("学校名称")
-    private String schoolName;
-
-    /**
-     * 基本用户id
-     */
-    @NotNull(message = "基本用户id不能为空")
-    @ApiModelProperty("基本用户id")
-    private Long baseUserId;
+    private String SchoolName;
 
     /**
      * 用户类型 1 学生 2 老师 3 家长
      */
-    @NotNull(message = "用户类型不能为空")
     @ApiModelProperty("用户类型")
-    private Byte userType;
+    private Integer UserType;
 
     /**
      * 用户id
      */
-    @NotNull(message = "用户id不能为空")
     @ApiModelProperty("用户id")
-    private Long userId;
+    private Long UserId;
 
     /**
-     * 姓名
+     * 学生姓名
      */
-    @NotEmpty(message = "姓名不能为空")
-    @ApiModelProperty("姓名")
-    private String userName;
+    @ApiModelProperty("学生姓名")
+    private String Name;
 
     /**
-     * 卡号
+     * 学号
      */
-    @NotEmpty(message = "卡号不能为空")
-    @ApiModelProperty("卡号")
-    private String cardNumber;
-
-    /**
-     * 卡类型  1 M1卡 2 CPU卡
-     */
-    @NotNull(message = "卡类型不能为空")
-    @ApiModelProperty("卡类型")
-    private Byte card_type;
+    @ApiModelProperty("学号")
+    private String CardNumber;
 
     /**
      * 卡发行号
      */
-    @NotEmpty(message = "卡发行号不能为空")
     @ApiModelProperty("卡发行号")
-    private String issue_number;
+    private String issueNumber;
 
     /**
      * 卡物理号
      */
-    @NotEmpty(message = "卡物理号不能为空")
     @ApiModelProperty("卡物理号")
-    private String phy_number;
-
-    /**
-     * 押金
-     */
-    @NotNull(message = "押金不能为空")
-    @ApiModelProperty("押金")
-    private BigDecimal deposit;
+    private String phyNumber;
 
     /**
      * 应用id

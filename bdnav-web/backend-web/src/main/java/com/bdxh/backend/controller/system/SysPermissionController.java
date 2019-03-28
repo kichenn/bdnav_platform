@@ -4,12 +4,15 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
 import com.bdxh.system.feign.PermissionControllerClient;
+import com.bdxh.system.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -49,12 +52,12 @@ public class SysPermissionController {
     }
 
 
-    @RequestMapping(value="/AddPermissionDto",method = RequestMethod.POST)
+    @RequestMapping(value="/addPermission",method = RequestMethod.POST)
     @ApiOperation("添加权限菜单")
-    public Object AddPermissionDto(@RequestBody AddPermissionDto addPermissionDto){
+    public Object addPermission(@RequestBody AddPermissionDto addPermissionDto){
         try {
-            Wrapper wrapper = permissionControllerClient.AddPermissionDto(addPermissionDto);
-            return WrapMapper.ok(wrapper.getResult());
+            Wrapper wrapper = permissionControllerClient.addPermission(addPermissionDto);
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -67,7 +70,7 @@ public class SysPermissionController {
     public Object modifyPermission(@RequestBody ModifyPermissionDto modifyPermissionDto){
         try {
             Wrapper wrapper = permissionControllerClient.modifyPermission(modifyPermissionDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -76,7 +79,7 @@ public class SysPermissionController {
 
 
     @RequestMapping(value="/theTreeMenu",method = RequestMethod.GET)
-    @ApiOperation("查询全部菜单权限")
+    @ApiOperation("查询特定情况下菜单")
     public Object theTreeMenu( @RequestParam(value = "roleId") Long roleId,
                                @RequestParam(value = "selected",defaultValue = "2") Integer selected){
         try {
@@ -88,6 +91,17 @@ public class SysPermissionController {
         }
     }
 
+    @RequestMapping(value="/thePermissionMenu",method = RequestMethod.GET)
+    @ApiOperation("查询全部菜单权限")
+    public Object thePermissionMenu(){
+        try {
+            Wrapper wrapper = permissionControllerClient.thePermissionMenu();
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 
 
     @RequestMapping(value="/addOrUpdatePermission",method = RequestMethod.POST)
@@ -95,7 +109,7 @@ public class SysPermissionController {
     public Object addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto){
         try {
             Wrapper wrapper = permissionControllerClient.addOrUpdatePermission(baPermissionsDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

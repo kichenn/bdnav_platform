@@ -1,0 +1,99 @@
+package com.bdxh.school.contoller;
+
+import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.SinglePermissionQueryDto;
+import com.bdxh.school.entity.SchoolDevice;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import com.bdxh.school.entity.SinglePermission;
+import com.bdxh.school.service.SinglePermissionService;
+
+import java.util.List;
+
+/**
+ * @Description: 学校门禁单控制器
+ * @Author Kang
+ * @Date 2019-03-27 12:28:42
+ */
+@RestController
+@RequestMapping("/singlePermission")
+@Slf4j
+@Validated
+@Api(value = "学校门禁单交互API", tags = "学校门禁单控制器交互API")
+public class SinglePermissionController {
+
+    @Autowired
+    private SinglePermissionService singlePermissionService;
+
+    /**
+     * @Description: 增加门禁单信息
+     * @Author: Kang
+     * @Date: 2019/3/27 16:20
+     */
+    @PostMapping("/addSinglePermission")
+    @ApiOperation(value = "增加门禁单信息", response = Boolean.class)
+    public Object addSinglePermission(@RequestBody SinglePermission singlePermission) {
+        return WrapMapper.ok(singlePermissionService.save(singlePermission) > 0);
+    }
+
+    /**
+     * @Description: 修改门禁单信息
+     * @Author: Kang
+     * @Date: 2019/3/27 16:20
+     */
+    @PostMapping("/modifySinglePermission")
+    @ApiOperation(value = "修改门禁单信息", response = Boolean.class)
+    public Object modifySinglePermission(@RequestBody SinglePermission singlePermission) {
+        return WrapMapper.ok(singlePermissionService.update(singlePermission) > 0);
+    }
+
+    /**
+     * @Description: 删除门禁单信息
+     * @Author: Kang
+     * @Date: 2019/3/27 16:20
+     */
+    @PostMapping("/delSinglePermissionById")
+    @ApiOperation(value = "删除门禁单信息", response = Boolean.class)
+    public Object delSinglePermissionById(@RequestParam("id") Long id) {
+        return WrapMapper.ok(singlePermissionService.deleteByKey(id) > 0);
+    }
+
+    /**
+     * @Description: 批量删除门禁单信息
+     * @Author: Kang
+     * @Date: 2019/3/27 16:20
+     */
+    @PostMapping("/delBatchSinglePermissionByInIds")
+    @ApiOperation(value = "批量删除门禁单信息", response = Boolean.class)
+    public Object delBatchSinglePermissionInIds(@RequestParam("ids") List<Long> ids) {
+        return WrapMapper.ok(singlePermissionService.batchDelSinglePermissionInIds(ids));
+    }
+
+    /**
+     * @Description: id查询门禁单信息
+     * @Author: Kang
+     * @Date: 2019/3/27 16:20
+     */
+    @GetMapping("/findSinglePermissionById")
+    @ApiOperation(value = "id查询门禁单信息", response = Boolean.class)
+    public Object delBatchSinglePermissionByInIds(@RequestParam("id") Long id) {
+        return WrapMapper.ok(singlePermissionService.selectByKey(id));
+    }
+
+    /**
+     * @Description: 门禁单人信息根据条件分页查询
+     * @Author: Kang
+     * @Date: 2019/3/27 16:20
+     */
+    @PostMapping("/findSinglePermissionInConditionPage")
+    @ApiOperation(value = "id查询门禁单信息", response = PageInfo.class)
+    public Object findSinglePermissionInConditionPage(@RequestBody SinglePermissionQueryDto singlePermissionQueryDto) {
+        return WrapMapper.ok(singlePermissionService.findSinglePermissionInConditionPage(singlePermissionQueryDto));
+    }
+}

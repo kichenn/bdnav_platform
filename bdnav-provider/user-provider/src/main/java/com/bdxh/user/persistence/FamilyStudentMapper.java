@@ -1,6 +1,7 @@
 package com.bdxh.user.persistence;
 
 import com.bdxh.user.dto.AddFamilyStudentDto;
+import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.vo.FamilyStudentVo;
 import org.apache.ibatis.annotations.Param;
@@ -22,11 +23,10 @@ public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
     List<FamilyStudentVo> selectFamilyStudentInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
 
     //根据条件查询学生家长关系
-    List<FamilyStudentVo> queryaAllFamilyStudent(@Param("studentName")String studentName,@Param("schoolCode")String schoolCode);
+    List<FamilyStudentVo> queryaAllFamilyStudent(@Param("familyStudentQueryDto") FamilyStudentQueryDto familyStudentQueryDto);
 
     //学生查询关系表数据
     FamilyStudentVo studentQueryInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
-
 
     //修改学生名称
     int updateStudentInfo(@Param("addFamilyStudentDto") AddFamilyStudentDto addFamilyStudentDto);

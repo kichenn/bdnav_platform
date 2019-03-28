@@ -3,8 +3,12 @@ package com.bdxh.user.fallback;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyStudentDto;
+import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
+import com.bdxh.user.vo.FamilyStudentVo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @description:
@@ -24,7 +28,7 @@ public class FamilyStudentControllerFallback implements FamilyStudentControllerC
     }
 
     @Override
-    public Wrapper queryAllFamilyStudent(String studentName, String schoolCode) {
+    public Wrapper<PageInfo<FamilyStudentVo>> queryAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto) {
         return WrapMapper.error();
     }
 }

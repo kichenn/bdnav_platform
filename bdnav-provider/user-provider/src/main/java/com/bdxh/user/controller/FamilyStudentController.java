@@ -13,8 +13,11 @@ import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.user.dto.AddFamilyStudentDto;
+import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.service.FamilyStudentService;
+import com.bdxh.user.vo.FamilyStudentVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -88,17 +91,15 @@ private SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 查询所有家长与孩子关系
-     * @param studentName
-     * @param schoolCode
+     * @param familyStudentQueryDto
      * @return
      */
     @ApiOperation(value = "查询所有家长与孩子关系")
-    @RequestMapping(value = "queryaAllFamilyStudent",method =RequestMethod.GET)
-    public Object queryAllFamilyStudent(@RequestParam(name="studentName")String studentName,
-                                        @RequestParam(name="schoolCode")String schoolCode){
+    @RequestMapping(value = "queryAllFamilyStudent",method =RequestMethod.POST)
+    public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
         try{
-            familyStudentService.queryaAllFamilyStudent(studentName, schoolCode);
-            return WrapMapper.ok();
+            PageInfo<FamilyStudentVo> familyStudentVoPageInfo=familyStudentService.queryaAllFamilyStudent(familyStudentQueryDto);
+            return  WrapMapper.ok(familyStudentVoPageInfo);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

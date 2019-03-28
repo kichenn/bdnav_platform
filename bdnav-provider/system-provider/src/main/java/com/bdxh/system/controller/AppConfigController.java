@@ -53,7 +53,7 @@ public class AppConfigController {
 
     @ApiOperation("增加应用配置")
     @RequestMapping("/addAppConfig")
-    public Object addCategory(@Valid @RequestBody AddAppConfigDto addAppConfigDto, BindingResult bindingResult){
+    public Object addAppConfig(@Valid @RequestBody AddAppConfigDto addAppConfigDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -75,7 +75,7 @@ public class AppConfigController {
 
     @ApiOperation("根据id删除应用配置")
     @RequestMapping("/delAppConfig")
-    public Object delCategory(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
+    public Object delAppConfig(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
         try {
             AppConfig appConfig = appConfigService.selectByKey(id);
             Preconditions.checkArgument(appConfig!=null,"应用配置不存在");
@@ -93,7 +93,7 @@ public class AppConfigController {
 
     @ApiOperation("根据id更新应用配置")
     @RequestMapping("/updateAppConfig")
-    public Object updateCategory(@Valid @RequestBody UpdateAppConfigDto updateAppConfigDto, BindingResult bindingResult){
+    public Object updateAppConfig(@Valid @RequestBody UpdateAppConfigDto updateAppConfigDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -111,7 +111,7 @@ public class AppConfigController {
 
     @ApiOperation("查询应用配置")
     @RequestMapping("/queryAppConfig")
-    public Object queryCategory(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
+    public Object queryAppConfig(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
         try {
             AppConfig appConfig = appConfigService.selectByKey(id);
             return WrapMapper.ok(appConfig);
@@ -122,8 +122,8 @@ public class AppConfigController {
     }
 
     @ApiOperation("查询应用配置列表")
-    @RequestMapping("/queryCategoryList")
-    public Object queryCategoryList(@Valid @RequestBody AppConfigQueryDto appConfigQueryDto, BindingResult bindingResult){
+    @RequestMapping("/queryAppConfigList")
+    public Object queryAppConfigList(@Valid @RequestBody AppConfigQueryDto appConfigQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -140,8 +140,8 @@ public class AppConfigController {
     }
 
     @ApiOperation("分页查询应用配置列表")
-    @RequestMapping("/queryCategoryListPage")
-    public Object queryCategoryListPage(@Valid @RequestBody AppConfigQueryDto appConfigQueryDto, BindingResult bindingResult){
+    @RequestMapping("/queryAppConfigListPage")
+    public Object queryAppConfigListPage(@Valid @RequestBody AppConfigQueryDto appConfigQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));

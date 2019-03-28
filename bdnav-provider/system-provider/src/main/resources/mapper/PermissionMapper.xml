@@ -96,14 +96,6 @@
         </where>
     </select>
 
-    <select id="theTreeMenuList" resultMap="RpResultMap">
-        SELECT
-        *
-        FROM
-        sys_permission
-        LEFT JOIN sys_role_permission ON sys_permission.id = sys_role_permission.permission_id
-    </select>
-
 
     <select id="findPermission" resultMap="RpResultMap">
         SELECT
@@ -118,7 +110,7 @@
         SELECT
         <include refid="BaseColumns"/>
         FROM
-        sys_permission perm
+        sys_permission
         <where>
             <if test="title!=null">
                 title LIKE CONCAT(CONCAT('%',#{title},'%'))

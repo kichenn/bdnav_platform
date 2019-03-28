@@ -145,15 +145,10 @@ public class PermissionController {
      *   @return
      */
     @RequestMapping(value = "/theTreeMenu", method = RequestMethod.GET)
-    @ApiOperation(value = "查询全部菜单", response = List.class)
+    @ApiOperation(value = "根据条件查询相对菜单", response = List.class)
     @ResponseBody
-    public Object theTreeMenu(@RequestParam(value = "roleId",required = false) Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
-        List<RolePermissionDto> permissions;
-        if (!roleId.equals("")&&roleId!=0){
-            permissions = permissionService.theTreeMenu(roleId,selected);
-        }else{
-            permissions=permissionService.theTreeMenuList();
-        }
+    public Object theTreeMenu(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
+        List<RolePermissionDto> permissions= permissionService.theTreeMenu(roleId,selected);
         List<PermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)&&permissions.size()>0) {
             permissions.stream().forEach(e -> {
@@ -223,20 +218,29 @@ public class PermissionController {
 
         List<RolePermissionDto> permissions = permissionService.theTreeMenu(roleId,2);
 
-     /*       //查询当前角色关系表中全部权限
-        List<RolePermission> rps=rolePermissionService.findPermissionId(roleId);
-        for(RolePermission u:rps){
-            System.out.print(u.getId());
-            rolePermissionService.deleteByKey(u.getId());
-        }
-        if (roleId == null) {
-
-        }*/
-
-            //判断list中的值长度有则进入下一层 没有权限增添加
-   /*         if (rps.size()>0){
-            }*/
         return WrapMapper.ok(permissions);
+    }
+
+
+
+    @RequestMapping(value = "/thePermissionMenu", method = RequestMethod.GET)
+    @ApiOperation(value = "查询全部菜单", response = List.class)
+    @ResponseBody
+    public Object thePermissionMenu() {
+        List<Permission> permissions = permissionService.selectAll();
+        List<PermissionTreeVo> treeVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(permissions)) {
+            permissions.stream().forEach(e -> {
+                PermissionTreeVo treeVo = new PermissionTreeVo();
+                treeVo.setTitle(e.getTitle());
+                treeVo.setCreateDate(e.getCreateDate());
+                BeanUtils.copyProperties(e, treeVo);
+                treeVos.add(treeVo);
+            });
+        }
+        TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+        List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
+        return WrapMapper.ok(result);
     }
 
 

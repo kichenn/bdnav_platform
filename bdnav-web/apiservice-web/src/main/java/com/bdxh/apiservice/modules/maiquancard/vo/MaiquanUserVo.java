@@ -15,17 +15,13 @@ import java.io.Serializable;
 @ApiModel("麦圈获取用户信息响应类")
 public class MaiquanUserVo implements Serializable {
 
-    /**
-     * 主键
-     */
-    @ApiModelProperty("主键")
-    private Long id;
+    private static final long serialVersionUID = 8403998558468647078L;
 
     /**
-     * 虚拟卡号
+     * 基本信息主键
      */
-    @ApiModelProperty("虚拟卡号")
-    private Long virtualCardId;
+    @ApiModelProperty("基本信息主键")
+    private Long id;
 
     /**
      * 学校id

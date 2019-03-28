@@ -28,9 +28,10 @@ public class PermissionControllerClientFallback implements PermissionControllerC
     }
 
     @Override
-    public Wrapper AddPermissionDto(AddPermissionDto dto) {
+    public Wrapper addPermission(AddPermissionDto addPermissionDto) {
         return WrapMapper.error();
     }
+
 
     @Override
     public Wrapper modifyPermission(ModifyPermissionDto dto) {
@@ -44,6 +45,11 @@ public class PermissionControllerClientFallback implements PermissionControllerC
 
     @Override
     public Wrapper addOrUpdatePermission(BaPermissionsDto baPermissionsDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper thePermissionMenu() {
         return WrapMapper.error();
     }
 

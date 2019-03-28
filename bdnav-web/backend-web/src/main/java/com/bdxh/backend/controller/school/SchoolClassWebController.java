@@ -42,7 +42,7 @@ public class SchoolClassWebController {
     @ApiOperation(value = "根据id查询院系信息", response = SchoolClass.class)
     public Object findSchoolClassById(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolClassControllerClient.findSchoolClassById(id);
-        return wrapper;
+        return WrapMapper.ok(wrapper.getResult());
     }
 
 
@@ -50,7 +50,7 @@ public class SchoolClassWebController {
     @ApiOperation(value = "增加院校结构关系", response = Boolean.class)
     public Object addSchoolClass(@Validated @RequestBody SchoolClassDto schoolClassDto) {
         Wrapper wrapper = schoolClassControllerClient.addSchoolClass(schoolClassDto);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 
 
@@ -58,7 +58,7 @@ public class SchoolClassWebController {
     @ApiOperation(value = "修改院校结构关系", response = Boolean.class)
     public Object modifySchoolClass(@Validated @RequestBody SchoolClassModifyDto schoolClassModifyDto) {
         Wrapper wrapper = schoolClassControllerClient.modifySchoolClass(schoolClassModifyDto);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 
     @RequestMapping(value = "/delSchoolClassById", method = RequestMethod.DELETE)
@@ -78,20 +78,20 @@ public class SchoolClassWebController {
             return WrapMapper.error("该院系底下存在人员不能删除");
         }
         Wrapper wrapper = schoolClassControllerClient.delSchoolClassById(id);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 
     @RequestMapping(value = "/batchDelSchoolClassInIds", method = RequestMethod.DELETE)
     @ApiOperation(value = "根据ids批量删除院校关系", response = Boolean.class)
     public Object batchDelSchoolClassInIds(@RequestBody List<Long> ids) {
         Wrapper wrapper = schoolClassControllerClient.batchDelSchoolClassInIds(ids);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 
     @RequestMapping(value = "/delSchoolClassBySchoolId", method = RequestMethod.DELETE)
     @ApiOperation(value = "根据院校id 删除该院校底下所有关系", response = Boolean.class)
     public Object delSchoolClassBySchoolId(@RequestParam("schoolId") Long schoolId) {
         Wrapper wrapper = schoolClassControllerClient.delSchoolClassBySchoolId(schoolId);
-        return WrapMapper.ok(wrapper.getResult());
+        return wrapper;
     }
 }

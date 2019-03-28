@@ -1,8 +1,10 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.vo.FamilyStudentVo;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -24,12 +26,11 @@ public interface FamilyStudentService extends IService<FamilyStudent> {
 
      /**
       * 查询学生家长关系数据
-      * @param studentName
-      * @param schoolCode
+      * @param familyStudentQueryDto
       * @Author：bin
       * @return
       */
-     List<FamilyStudentVo> queryaAllFamilyStudent(String studentName, String schoolCode);
+     PageInfo<FamilyStudentVo> queryaAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto);
 
 
 
