@@ -58,8 +58,11 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         BeanUtils.copyProperties(addPermissionDto, permission);
         if (new Long("-1").equals(permission.getParentId())) {
             permission.setParentIds("");
+            permission.setPath("/"+addPermissionDto.getPath());
+
         } else {
             Permission sysPermissions = findPermissionById(permission.getParentId());
+            permission.setName(addPermissionDto.getPath());
             permission.setParentIds(sysPermissions.getParentIds() +","+ sysPermissions.getId());
         }
         return permissionMapper.insertSelective(permission) > 0;
@@ -72,6 +75,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         BeanUtils.copyProperties(mdifyPermissionDto, permission);
         if (new Long("-1").equals(permission.getParentId())) {
             permission.setParentIds("");
+            permission.setPath("/"+mdifyPermissionDto.getPath());
         } else {
             Permission sysPermissions = findPermissionById(permission.getParentId());
             permission.setName(mdifyPermissionDto.getPath());
