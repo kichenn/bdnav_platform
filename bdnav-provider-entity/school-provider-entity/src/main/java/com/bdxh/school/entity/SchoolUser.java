@@ -362,23 +362,6 @@ public class SchoolUser {
 
 
     /**
-     * 获取角色id
-     *
-     * @return
-     */
-    public String getRoleIds() {
-        return roleIds;
-    }
-
-    /**
-     * 设置角色id
-     */
-    public void setRoleIds(String roleIds) {
-        this.roleIds = roleIds;
-    }
-
-
-    /**
      * 获取部门id
      *
      * @return dept_id - 部门id
