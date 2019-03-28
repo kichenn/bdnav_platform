@@ -74,6 +74,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
             permission.setParentIds("");
         } else {
             Permission sysPermissions = findPermissionById(permission.getParentId());
+            permission.setName(mdifyPermissionDto.getPath());
             permission.setParentIds(sysPermissions.getParentIds() +","+ sysPermissions.getId());
         }
         return permissionMapper.updateByPrimaryKeySelective(permission) > 0;
