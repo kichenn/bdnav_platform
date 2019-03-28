@@ -3,6 +3,7 @@ package com.bdxh.backend.controller.school;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddRolePermissionBindMenuDto;
 import com.bdxh.school.dto.AddSchoolPermissionDto;
 import com.bdxh.school.dto.ModifySchoolPermissionDto;
 import com.bdxh.school.entity.SchoolPermission;
@@ -67,8 +68,14 @@ public class SchoolPermissionWebController {
 
 
     /**
-     * @Description: 用户与权限菜单的捆绑（addOrModify）
+     * @Description: 角色与权限菜单的捆绑
      * @Author: Kang
      * @Date: 2019/3/28 12:01
      */
+    @RequestMapping(value = "/addRolePermissionBindMenu", method = RequestMethod.POST)
+    @ApiOperation(value = "角色与权限菜单or按钮的捆绑")
+    public Object addRolePermissionBindMenu(@Validated @RequestBody AddRolePermissionBindMenuDto addRolePermissionBindMenu) {
+        Wrapper wrapper = schoolPermissionControllerClient.addRolePermissionBindMenu(addRolePermissionBindMenu);
+        return wrapper;
+    }
 }

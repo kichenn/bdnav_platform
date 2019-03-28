@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.AddRolePermissionBindMenuDto;
 import com.bdxh.school.entity.SchoolRolePermission;
 
 import java.util.List;
@@ -24,4 +25,7 @@ public interface SchoolRolePermissionService extends IService<SchoolRolePermissi
 
     // 删除角色与权限关系
     Boolean delRolePermission(Long roleId);
+
+    //角色与权限菜单的捆绑
+    void addRolePermissionBindMenu(AddRolePermissionBindMenuDto addRolePermissionBindMenu);
 }
