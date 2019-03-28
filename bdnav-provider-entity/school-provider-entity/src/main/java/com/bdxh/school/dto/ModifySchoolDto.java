@@ -13,7 +13,6 @@ public class ModifySchoolDto{
 
 
     @ApiModelProperty("学校id")
-    @NotEmpty(message = "id不能为空")
     @NotNull(message = "id不能为空")
     private Long id;
 
