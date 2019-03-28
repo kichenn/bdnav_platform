@@ -265,6 +265,7 @@ public class SchoolController {
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
             schoolService.downloadReportItemsExcel(schoolExcelReportBeans, out);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("导出失败：" + e.getMessage());
         }
         return WrapMapper.ok(true);
