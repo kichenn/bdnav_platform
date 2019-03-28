@@ -17,7 +17,7 @@ public interface TeacherMapper extends Mapper<Teacher> {
 
     Teacher selectTeacherDetails(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
 
-    int updateTeacher(@Param("updateTeacherDto") UpdateTeacherDto updateTeacherDto);
+    int updateTeacher(@Param("teacher") Teacher teacher);
 
     List<Teacher> selectAllTeacherInfo(@Param("teacherQueryDto")TeacherQueryDto teacherQueryDto);
 

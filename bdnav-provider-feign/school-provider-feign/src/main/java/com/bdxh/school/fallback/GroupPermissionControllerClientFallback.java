@@ -2,13 +2,12 @@ package com.bdxh.school.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddGroupPermissionDto;
 import com.bdxh.school.dto.GroupPermissionQueryDto;
-import com.bdxh.school.dto.SinglePermissionQueryDto;
+import com.bdxh.school.dto.ModifyGroupPermissionDto;
 import com.bdxh.school.entity.GroupPermission;
-import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.enums.GroupTypeEnum;
 import com.bdxh.school.feign.GroupPermissionControllerClient;
-import com.bdxh.school.feign.SinglePermissionControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +21,12 @@ import java.util.List;
 @Component
 public class GroupPermissionControllerClientFallback implements GroupPermissionControllerClient {
     @Override
-    public Wrapper addGroupPermission(GroupPermission groupPermission) {
+    public Wrapper addGroupPermission(AddGroupPermissionDto addGroupPermissionDto) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper modifyGroupPermission(GroupPermission groupPermission) {
+    public Wrapper modifyGroupPermission(ModifyGroupPermissionDto modifyGroupPermissionDto) {
         return WrapMapper.error();
     }
 

@@ -4,7 +4,7 @@ import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolUserDto;
-import com.bdxh.school.dto.ModifyUserDto;
+import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.entity.SchoolUser;
@@ -50,31 +50,28 @@ public class SchoolUserWebController {
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     @ApiOperation(value = "添加学校用户信息", response = Boolean.class)
-    public Object addUser(@RequestBody AddSchoolUserDto addUserDto) {
-        SchoolUser schoolUser = new SchoolUser();
-        BeanUtils.copyProperties(addUserDto, schoolUser);
+    public Object addUser(@Validated @RequestBody AddSchoolUserDto addUserDto) {
         //密码加密
-        schoolUser.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
+        addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
         //设置操作人
         User user = SecurityUtils.getCurrentUser();
-        schoolUser.setOperator(user.getId());
-        schoolUser.setOperatorName(user.getUserName());
-        Wrapper wrapper = schoolUserControllerClient.addSchoolUser(schoolUser);
+        addUserDto.setOperator(user.getId());
+        addUserDto.setOperatorName(user.getUserName());
+        Wrapper wrapper = schoolUserControllerClient.addSchoolUser(addUserDto);
         return wrapper;
     }
 
     @RequestMapping(value = "/modifySchoolUser", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校用户信息", response = Boolean.class)
-    public Object modifySchoolUser(@RequestBody ModifyUserDto modifyUserDto) {
-        SchoolUser schoolUser = new SchoolUser();
-        BeanUtils.copyProperties(modifyUserDto, schoolUser);
+    public Object modifySchoolUser(@Validated @RequestBody ModifySchoolUserDto modifySchoolUserDto) {
+
         //密码加密
-        schoolUser.setPassword(new BCryptPasswordEncoder().encode(modifyUserDto.getPassword()));
+        modifySchoolUserDto.setPassword(new BCryptPasswordEncoder().encode(modifySchoolUserDto.getPassword()));
         //设置操作人
         User user = SecurityUtils.getCurrentUser();
-        schoolUser.setOperator(user.getId());
-        schoolUser.setOperatorName(user.getUserName());
-        Wrapper wrapper = schoolUserControllerClient.modifySchoolUser(schoolUser);
+        modifySchoolUserDto.setOperator(user.getId());
+        modifySchoolUserDto.setOperatorName(user.getUserName());
+        Wrapper wrapper = schoolUserControllerClient.modifySchoolUser(modifySchoolUserDto);
         return wrapper;
     }
 

@@ -4,6 +4,7 @@ import com.bdxh.school.enums.SingleUserTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -15,7 +16,8 @@ import java.util.Date;
 @Data
 public class ModifySinglePermission {
 
-    @NotNull
+    @NotEmpty(message = "id不能为空")
+    @NotNull(message = "id不能为空")
     @ApiModelProperty("主键")
     private Long id;
 
@@ -25,6 +27,7 @@ public class ModifySinglePermission {
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
+    @NotNull(message = "用户类型不能为空")
     @ApiModelProperty("用户类型 1 学生 2 老师 3 家长")
     private SingleUserTypeEnum singleUserTypeEnum;
 
@@ -54,6 +57,12 @@ public class ModifySinglePermission {
 
     @ApiModelProperty("日时间段")
     private String accessTimeMark;
+
+    @ApiModelProperty("操作人（前端不需要传递，后端自己获取）")
+    private Long operator;
+
+    @ApiModelProperty("操作人姓名（前端不需要传递，后端自己获取）")
+    private String operatorName;
 
     @ApiModelProperty("备注")
     private String remark;

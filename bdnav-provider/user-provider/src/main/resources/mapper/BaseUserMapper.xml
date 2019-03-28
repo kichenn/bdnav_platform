@@ -87,72 +87,72 @@
 	<update id="updateBaseUserInfo">
 		UPDATE t_base_user
 		SET
-		 <if test="updateBaseUserDto.id!=null and updateBaseUserDto.id!=''">
-			 id= #{updateBaseUserDto.id},
+		 <if test="baseUser.id!=null and baseUser.id!=''">
+			 id= #{baseUser.id},
 		 </if>
-		<if test="updateBaseUserDto.schoolId!=null and updateBaseUserDto.schoolId!=''">
-			school_id= #{updateBaseUserDto.schoolId},
+		<if test="baseUser.schoolId!=null and baseUser.schoolId!=''">
+			school_id= #{baseUser.schoolId},
 		</if>
-		<if test="updateBaseUserDto.schoolCode!=null and updateBaseUserDto.schoolCode!=''">
-			school_code= #{updateBaseUserDto.schoolCode},
+		<if test="baseUser.schoolCode!=null and baseUser.schoolCode!=''">
+			school_code= #{baseUser.schoolCode},
 		</if>
-		<if test="updateBaseUserDto.schoolName!=null and updateBaseUserDto.schoolName!=''">
-			school_name= #{updateBaseUserDto.schoolName},
+		<if test="baseUser.schoolName!=null and baseUser.schoolName!=''">
+			school_name= #{baseUser.schoolName},
 		</if>
-		<if test="updateBaseUserDto.userType!=null and updateBaseUserDto.userType!=''">
-			user_type= #{updateBaseUserDto.userType},
+		<if test="baseUser.userType!=null and baseUser.userType!=''">
+			user_type= #{baseUser.userType},
 		</if>
-		<if test="updateBaseUserDto.userId!=null and updateBaseUserDto.userId!=''">
-			user_id= #{updateBaseUserDto.userId},
+		<if test="baseUser.userId!=null and baseUser.userId!=''">
+			user_id= #{baseUser.userId},
 		</if>
-		<if test="updateBaseUserDto.name!=null and updateBaseUserDto.name!=''">
-			name= #{updateBaseUserDto.name},
+		<if test="baseUser.name!=null and baseUser.name!=''">
+			name= #{baseUser.name},
 		</if>
-		<if test="updateBaseUserDto.gender!=null and updateBaseUserDto.gender!=''">
-			gender= #{updateBaseUserDto.gender},
+		<if test="baseUser.gender!=null and baseUser.gender!=''">
+			gender= #{baseUser.gender},
 		</if>
-		<if test="updateBaseUserDto.birth!=null and updateBaseUserDto.birth!=''">
-			birth= #{updateBaseUserDto.birth},
+		<if test="baseUser.birth!=null and baseUser.birth!=''">
+			birth= #{baseUser.birth},
 		</if>
-		<if test="updateBaseUserDto.phone!=null and updateBaseUserDto.phone!=''">
-			phone= #{updateBaseUserDto.phone},
+		<if test="baseUser.phone!=null and baseUser.phone!=''">
+			phone= #{baseUser.phone},
 		</if>
-		<if test="updateBaseUserDto.cardNumber!=null and updateBaseUserDto.cardNumber!=''">
-			card_number= #{updateBaseUserDto.cardNumber},
+		<if test="baseUser.cardNumber!=null and baseUser.cardNumber!=''">
+			card_number= #{baseUser.cardNumber},
 		</if>
-		<if test="updateBaseUserDto.idcard!=null and updateBaseUserDto.idcard!=''">
-			idcard= #{updateBaseUserDto.idcard},
+		<if test="baseUser.idcard!=null and baseUser.idcard!=''">
+			idcard= #{baseUser.idcard},
 		</if>
-		<if test="updateBaseUserDto.qqNumber!=null and updateBaseUserDto.qqNumber!=''">
-			qq_number= #{updateBaseUserDto.qqNumber},
+		<if test="baseUser.qqNumber!=null and baseUser.qqNumber!=''">
+			qq_number= #{baseUser.qqNumber},
 		</if>
-		<if test="updateBaseUserDto.wxNumber!=null and updateBaseUserDto.wxNumber!=''">
-			wx_number= #{updateBaseUserDto.wxNumber},
+		<if test="baseUser.wxNumber!=null and baseUser.wxNumber!=''">
+			wx_number= #{baseUser.wxNumber},
 		</if>
-		<if test="updateBaseUserDto.email!=null and updateBaseUserDto.email!=''">
-			email= #{updateBaseUserDto.email},
+		<if test="baseUser.email!=null and baseUser.email!=''">
+			email= #{baseUser.email},
 		</if>
-		<if test="updateBaseUserDto.image!=null and updateBaseUserDto.image!=''">
-			image= #{updateBaseUserDto.image},
+		<if test="baseUser.image!=null and baseUser.image!=''">
+			image= #{baseUser.image},
 		</if>
-		<if test="updateBaseUserDto.imageName!=null and updateBaseUserDto.imageName!=''">
-			image_name= #{updateBaseUserDto.imageName},
+		<if test="baseUser.imageName!=null and baseUser.imageName!=''">
+			image_name= #{baseUser.imageName},
 		</if>
-		<if test="updateBaseUserDto.nationName!=null and updateBaseUserDto.nationName!=''">
-			nation_name= #{updateBaseUserDto.nationName},
+		<if test="baseUser.nationName!=null and baseUser.nationName!=''">
+			nation_name= #{baseUser.nationName},
 		</if>
-		<if test="updateBaseUserDto.adress!=null and updateBaseUserDto.adress!=''">
-			adress= #{updateBaseUserDto.adress},
+		<if test="baseUser.adress!=null and baseUser.adress!=''">
+			adress= #{baseUser.adress},
 		</if>
-		<if test="updateBaseUserDto.operator!=null and updateBaseUserDto.operator!=''">
-			operator= #{updateBaseUserDto.operator},
+		<if test="baseUser.operator!=null and baseUser.operator!=''">
+			operator= #{baseUser.operator},
 		</if>
-		<if test="updateBaseUserDto.operatorName!=null and updateBaseUserDto.operatorName!=''">
-			operator_name= #{updateBaseUserDto.operatorName},
+		<if test="baseUser.operatorName!=null and baseUser.operatorName!=''">
+			operator_name= #{baseUser.operatorName},
 		</if>
-		update_date= #{updateBaseUserDto.updateDate}
+		update_date= #{baseUser.updateDate}
 		WHERE
-		school_code=#{updateBaseUserDto.schoolCode} and card_number=#{updateBaseUserDto.cardNumber};
+		school_code=#{baseUser.schoolCode} and card_number=#{baseUser.cardNumber};
 	</update>
 
 	<!--删除用户信息-->

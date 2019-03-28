@@ -1,9 +1,11 @@
 package com.bdxh.user.service.impl;
 
 import com.bdxh.common.support.BaseService;
+import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.Family;
 import com.bdxh.user.persistence.BaseUserMapper;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.StudentMapper;
@@ -26,15 +28,6 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
 
 @Autowired
 private BaseUserMapper baseUserMapper;
-
-@Autowired
-private FamilyMapper familyMapper;
-
-@Autowired
-private StudentMapper studentMapper;
-
-@Autowired
-private TeacherMapper teacherMapper;
     @Override
     public List<BaseUser> queryBaseUserInfo(BaseUserQueryDto baseUserQueryDto) {
         return baseUserMapper.queryBaseUserInfo(baseUserQueryDto);
@@ -42,7 +35,8 @@ private TeacherMapper teacherMapper;
 
     @Override
     public void updateBaseUserInfo(UpdateBaseUserDto updateBaseUserDto) {
-        baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
+        BaseUser baseUser = BeanMapUtils.map(updateBaseUserDto, BaseUser.class);
+        baseUserMapper.updateBaseUserInfo(baseUser);
     }
 
     @Override

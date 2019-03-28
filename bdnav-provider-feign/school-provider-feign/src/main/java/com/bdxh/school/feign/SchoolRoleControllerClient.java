@@ -1,6 +1,8 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSchoolRoleDto;
+import com.bdxh.school.dto.ModifySchoolRoleDto;
 import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.fallback.SchoolRoleControllerClientFallback;
@@ -46,7 +48,7 @@ public interface SchoolRoleControllerClient {
      */
     @RequestMapping(value = "/schoolRole/addSchoolRole", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addSchoolRole(@RequestBody SchoolRole schoolRole);
+    Wrapper addSchoolRole(@RequestBody AddSchoolRoleDto addSchoolRoleDto);
 
 
     /**
@@ -56,7 +58,7 @@ public interface SchoolRoleControllerClient {
      */
     @RequestMapping(value = "/schoolRole/modifySchoolRole", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifySchoolRole(@RequestBody SchoolRole schoolRole);
+    Wrapper modifySchoolRole(@RequestBody ModifySchoolRoleDto ModifySchoolRoleDto);
 
 
     /**

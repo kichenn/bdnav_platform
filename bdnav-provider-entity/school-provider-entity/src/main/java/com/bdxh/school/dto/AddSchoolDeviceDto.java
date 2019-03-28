@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -45,8 +46,15 @@ public class AddSchoolDeviceDto {
     @ApiModelProperty("ip")
     private String deviceIp;
 
+    @NotNull(message = "设备状态不能为空")
     @ApiModelProperty("设备状态 1 正常 2 离线")
     private DeviceStatusEnum deviceStatusEnum;
+
+    @ApiModelProperty("操作人（前端不需要传递，后端自己获取）")
+    private Long operator;
+
+    @ApiModelProperty("操作人姓名（前端不需要传递，后端自己获取）")
+    private String operatorName;
 
     @ApiModelProperty("注释")
     private String remark;

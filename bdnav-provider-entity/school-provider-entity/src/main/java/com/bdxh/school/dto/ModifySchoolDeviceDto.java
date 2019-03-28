@@ -4,6 +4,7 @@ import com.bdxh.school.enums.DeviceStatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -15,7 +16,8 @@ import javax.validation.constraints.NotNull;
 public class ModifySchoolDeviceDto {
 
 
-    @NotNull
+    @NotEmpty(message = "id不能为空")
+    @NotNull(message = "id不能为空")
     @ApiModelProperty("id")
     private Long id;
 
@@ -49,8 +51,15 @@ public class ModifySchoolDeviceDto {
     @ApiModelProperty("ip")
     private String deviceIp;
 
+    @NotNull(message = "设备状态不能为空")
     @ApiModelProperty("设备状态 1 正常 2 离线")
     private DeviceStatusEnum deviceStatusEnum;
+
+    @ApiModelProperty("操作人（前端不需要传递，后端自己获取）")
+    private Long operator;
+
+    @ApiModelProperty("操作人姓名（前端不需要传递，后端自己获取）")
+    private String operatorName;
 
     @ApiModelProperty("注释")
     private String remark;

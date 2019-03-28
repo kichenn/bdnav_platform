@@ -36,10 +36,10 @@ public interface BaseUserMapper extends Mapper<BaseUser> {
 
 	/**
 	 * 修改用户数据
-	 * @param updateBaseUserDto
+	 * @param baseUser
 	 * @return
 	 */
-	int updateBaseUserInfo(@Param("updateBaseUserDto") UpdateBaseUserDto updateBaseUserDto);
+	int updateBaseUserInfo(@Param("baseUser") BaseUser baseUser);
 
 	/**
 	 * 删除用户数据

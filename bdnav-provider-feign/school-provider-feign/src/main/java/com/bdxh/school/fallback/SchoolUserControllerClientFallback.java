@@ -2,6 +2,8 @@ package com.bdxh.school.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSchoolUserDto;
+import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
@@ -25,12 +27,12 @@ public class SchoolUserControllerClientFallback implements SchoolUserControllerC
     }
 
     @Override
-    public Wrapper addSchoolUser(SchoolUser addUserDto) {
+    public Wrapper addSchoolUser(AddSchoolUserDto addSchoolUserDto) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper modifySchoolUser(SchoolUser updateUserDto) {
+    public Wrapper modifySchoolUser(ModifySchoolUserDto modifySchoolUserDto) {
         return WrapMapper.error();
     }
 

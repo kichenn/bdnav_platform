@@ -1,6 +1,8 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSchoolUserDto;
+import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
@@ -38,7 +40,7 @@ public interface SchoolUserControllerClient {
      */
     @RequestMapping(value = "/schoolUser/addSchoolUser", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addSchoolUser(@RequestBody SchoolUser addUserDto);
+    Wrapper addSchoolUser(@RequestBody AddSchoolUserDto addSchoolUserDto);
 
     /**
      * 修改系统用户
@@ -47,7 +49,7 @@ public interface SchoolUserControllerClient {
      */
     @RequestMapping(value = "/schoolUser/modifySchoolUser", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifySchoolUser(@RequestBody SchoolUser updateUserDto);
+    Wrapper modifySchoolUser(@RequestBody ModifySchoolUserDto modifySchoolUserDto);
 
 
     /**

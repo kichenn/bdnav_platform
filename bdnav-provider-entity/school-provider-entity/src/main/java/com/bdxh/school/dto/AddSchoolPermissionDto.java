@@ -1,7 +1,10 @@
 package com.bdxh.school.dto;
 
+import com.bdxh.school.enums.SchoolPermissionTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotNull;
 
 /**
  * @Description: 增加角色的权限 dto
@@ -41,8 +44,15 @@ public class AddSchoolPermissionDto {
     @ApiModelProperty("层级")
     private Integer level;
 
+    @NotNull(message = "类型不能为空")
     @ApiModelProperty("类型 1 菜单 2 按钮")
-    private Byte type;
+    private SchoolPermissionTypeEnum schoolPermissionTypeEnum;
+
+    @ApiModelProperty("操作人（前端不需要传递，后端自己获取）")
+    private Long operator;
+
+    @ApiModelProperty("操作人姓名（前端不需要传递，后端自己获取）")
+    private String operatorName;
 
     @ApiModelProperty("备注")
     private String remark;

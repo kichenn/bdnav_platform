@@ -1,11 +1,14 @@
 package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.AddSchoolDeviceDto;
+import com.bdxh.school.dto.ModifySchoolDeviceDto;
 import com.bdxh.school.dto.SchoolDeviceQueryDto;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +40,12 @@ public class SchoolDeviceController {
      */
     @PostMapping("/addSchoolDevice")
     @ApiOperation(value = "增加门禁信息", response = Boolean.class)
-    public Object addSchoolDevice(@RequestBody SchoolDevice schoolDevice) {
+    public Object addSchoolDevice(@Validated @RequestBody AddSchoolDeviceDto addSchoolDeviceDto) {
+        //复制实体
+        SchoolDevice schoolDevice = new SchoolDevice();
+        BeanUtils.copyProperties(addSchoolDeviceDto, schoolDevice);
+        //设置状态
+        schoolDevice.setDeviceStatus(addSchoolDeviceDto.getDeviceStatusEnum().getKey());
         return WrapMapper.ok(schoolDeviceService.save(schoolDevice) > 0);
     }
 
@@ -48,7 +56,12 @@ public class SchoolDeviceController {
      */
     @PostMapping("/modifySchoolDevice")
     @ApiOperation(value = "修改门禁信息", response = Boolean.class)
-    public Object modifySchoolDevice(@RequestBody SchoolDevice schoolDevice) {
+    public Object modifySchoolDevice(@Validated @RequestBody ModifySchoolDeviceDto modifySchoolDeviceDto) {
+        //复制实体
+        SchoolDevice schoolDevice = new SchoolDevice();
+        BeanUtils.copyProperties(modifySchoolDeviceDto, schoolDevice);
+        //设置状态
+        schoolDevice.setDeviceStatus(modifySchoolDeviceDto.getDeviceStatusEnum().getKey());
         return WrapMapper.ok(schoolDeviceService.update(schoolDevice) > 0);
     }
 

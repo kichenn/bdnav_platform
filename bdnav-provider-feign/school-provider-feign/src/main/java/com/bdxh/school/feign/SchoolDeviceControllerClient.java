@@ -1,6 +1,8 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSchoolDeviceDto;
+import com.bdxh.school.dto.ModifySchoolDeviceDto;
 import com.bdxh.school.dto.SchoolDeviceQueryDto;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.GroupPermission;
@@ -31,7 +33,7 @@ public interface SchoolDeviceControllerClient {
      */
     @RequestMapping(value = "/schoolDevice/addSchoolDevice", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addSchoolDevice(@RequestBody SchoolDevice schoolDevice);
+    Wrapper addSchoolDevice(@RequestBody AddSchoolDeviceDto addSchoolDeviceDto);
 
     /**
      * @Description: 修改门禁信息
@@ -40,7 +42,7 @@ public interface SchoolDeviceControllerClient {
      */
     @RequestMapping(value = "/schoolDevice/modifySchoolDevice", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifySchoolDevice(@RequestBody SchoolDevice schoolDevice);
+    Wrapper modifySchoolDevice(@RequestBody ModifySchoolDeviceDto modifySchoolDeviceDto);
 
     /**
      * @Description: 删除门禁信息

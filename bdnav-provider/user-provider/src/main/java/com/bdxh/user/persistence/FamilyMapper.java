@@ -20,7 +20,7 @@ public interface FamilyMapper extends Mapper<Family> {
     int removeFamilyInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
 
     //修改家长信息
-    int updateFamilyInfo(@Param("familyDto") UpdateFamilyDto updateFamilyDto);
+    int updateFamilyInfo(@Param("family") Family family);
 
     //查询所有家长信息
     List<Family> selectAllFamilyInfo(@Param("familyQueryDto")FamilyQueryDto familyQueryDto);

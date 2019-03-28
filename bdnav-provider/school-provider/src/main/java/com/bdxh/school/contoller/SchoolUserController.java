@@ -2,6 +2,8 @@ package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSchoolUserDto;
+import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
@@ -11,6 +13,7 @@ import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,11 +40,17 @@ public class SchoolUserController {
      */
     @ApiOperation(value = "增加学校系统用户", response = Boolean.class)
     @RequestMapping(value = "/addSchoolUser", method = RequestMethod.POST)
-    public Object addSchoolUser(@Valid @RequestBody SchoolUser schoolUser) {
-        SchoolUser userData = schoolUserService.getByUserName(schoolUser.getUserName());
+    public Object addSchoolUser(@Validated @RequestBody AddSchoolUserDto addSchoolUserDto) {
+        SchoolUser userData = schoolUserService.getByUserName(addSchoolUserDto.getUserName());
         if (userData != null) {
             return WrapMapper.error("该用户名已经存在");
         }
+        SchoolUser schoolUser = new SchoolUser();
+        BeanUtils.copyProperties(addSchoolUserDto, schoolUser);
+        //设置类型值
+        schoolUser.setStatus(addSchoolUserDto.getSchoolUserStatusEnum().getKey());
+        schoolUser.setType(addSchoolUserDto.getSchoolUserTypeEnum().getKey());
+        schoolUser.setSex(addSchoolUserDto.getSchoolUserSexEnum().getKey());
         return WrapMapper.ok(schoolUserService.save(schoolUser) > 0);
     }
 
@@ -53,7 +62,13 @@ public class SchoolUserController {
      */
     @ApiOperation(value = "修改学校用户信息", response = Boolean.class)
     @RequestMapping(value = "/modifySchoolUser", method = RequestMethod.POST)
-    public Object modifySchoolUser(@Valid @RequestBody SchoolUser schoolUser) {
+    public Object modifySchoolUser(@Validated @RequestBody ModifySchoolUserDto modifySchoolUserDto) {
+        SchoolUser schoolUser = new SchoolUser();
+        BeanUtils.copyProperties(modifySchoolUserDto, schoolUser);
+        //设置类型值
+        schoolUser.setStatus(modifySchoolUserDto.getSchoolUserStatusEnum().getKey());
+        schoolUser.setType(modifySchoolUserDto.getSchoolUserTypeEnum().getKey());
+        schoolUser.setSex(modifySchoolUserDto.getSchoolUserSexEnum().getKey());
         return WrapMapper.ok(schoolUserService.update(schoolUser) > 0);
     }
 

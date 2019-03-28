@@ -6,14 +6,12 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.entity.SchoolDevice;
-import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -40,13 +38,10 @@ public class SinglePermissionWebController {
     public Object addSinglePermission(@Validated @RequestBody AddSinglePermission addSinglePermission) {
         //获取当前用户
         User user = SecurityUtils.getCurrentUser();
-        //复制实体
-        SinglePermission singlePermission = new SinglePermission();
-        BeanUtils.copyProperties(addSinglePermission, singlePermission);
         //设置操作人
-        singlePermission.setOperator(user.getId());
-        singlePermission.setOperatorName(user.getUserName());
-        Wrapper wrapper = singlePermissionControllerClient.addSinglePermission(singlePermission);
+        addSinglePermission.setOperator(user.getId());
+        addSinglePermission.setOperatorName(user.getUserName());
+        Wrapper wrapper = singlePermissionControllerClient.addSinglePermission(addSinglePermission);
         return wrapper;
     }
 
@@ -55,13 +50,10 @@ public class SinglePermissionWebController {
     public Object modifySinglePermission(@Validated @RequestBody ModifySinglePermission modifySinglePermission) {
         //获取当前用户
         User user = SecurityUtils.getCurrentUser();
-        //复制实体
-        SinglePermission singlePermission = new SinglePermission();
-        BeanUtils.copyProperties(modifySinglePermission, singlePermission);
         //设置操作人
-        singlePermission.setOperator(user.getId());
-        singlePermission.setOperatorName(user.getUserName());
-        Wrapper wrapper = singlePermissionControllerClient.modifySinglePermission(singlePermission);
+        modifySinglePermission.setOperator(user.getId());
+        modifySinglePermission.setOperatorName(user.getUserName());
+        Wrapper wrapper = singlePermissionControllerClient.modifySinglePermission(modifySinglePermission);
         return wrapper;
     }
 

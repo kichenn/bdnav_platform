@@ -1,13 +1,12 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddGroupPermissionDto;
 import com.bdxh.school.dto.GroupPermissionQueryDto;
-import com.bdxh.school.dto.SinglePermissionQueryDto;
+import com.bdxh.school.dto.ModifyGroupPermissionDto;
 import com.bdxh.school.entity.GroupPermission;
-import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.enums.GroupTypeEnum;
 import com.bdxh.school.fallback.GroupPermissionControllerClientFallback;
-import com.bdxh.school.fallback.SinglePermissionControllerClientFallback;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -31,7 +30,7 @@ public interface GroupPermissionControllerClient {
      */
     @RequestMapping(value = "/groupPermission/addGroupPermission", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addGroupPermission(@RequestBody GroupPermission groupPermission);
+    Wrapper addGroupPermission(@RequestBody AddGroupPermissionDto addGroupPermissionDto);
 
     /**
      * @Description: 修改门禁组信息
@@ -40,7 +39,7 @@ public interface GroupPermissionControllerClient {
      */
     @RequestMapping(value = "/groupPermission/modifyGroupPermission", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifyGroupPermission(@RequestBody GroupPermission groupPermission);
+    Wrapper modifyGroupPermission(@RequestBody ModifyGroupPermissionDto modifyGroupPermissionDto);
 
     /**
      * @Description: 删除门禁组信息
