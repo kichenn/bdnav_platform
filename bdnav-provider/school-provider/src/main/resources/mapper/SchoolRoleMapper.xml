@@ -29,6 +29,9 @@
             <if test="roleName != null">
                 and role_name=#{roleName}
             </if>
+            <if test="schoolId != null">
+                and school_id=#{schoolId}
+            </if>
             <if test="createDate != null">
                 <![CDATA[AND create_date >= #{createDate}]]>
             </if>
