@@ -225,18 +225,17 @@ public class PermissionController {
 
     @RequestMapping(value = "/thePermissionMenu", method = RequestMethod.GET)
     @ApiOperation(value = "查询全部菜单", response = List.class)
-    @ResponseBody
     public Object thePermissionMenu() {
         List<Permission> permissions = permissionService.selectAll();
         List<PermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)) {
-            permissions.stream().forEach(e -> {
+            for (Permission ps:permissions){
                 PermissionTreeVo treeVo = new PermissionTreeVo();
-                treeVo.setTitle(e.getTitle());
-                treeVo.setCreateDate(e.getCreateDate());
-                BeanUtils.copyProperties(e, treeVo);
+                treeVo.setTitle(ps.getTitle());
+                treeVo.setCreateDate(ps.getCreateDate());
+                BeanUtils.copyProperties(ps, treeVo);
                 treeVos.add(treeVo);
-            });
+            }
         }
         TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
         List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
