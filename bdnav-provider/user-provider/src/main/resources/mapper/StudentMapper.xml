@@ -128,94 +128,129 @@
      and card_number = #{cardNumber}
 </select>
     <update id="updateStudentInfo">
-        UPDATE `t_student`
+        UPDATE t_student
         SET
-        <if test="studentDto.campusName!=null and studentDto.campusName!=''">
-            `campus_name`=#{studentDto.campusName},
+        <if test="student.campusName!=null and student.campusName!=''">
+            campus_name=#{student.campusName},
         </if>
 
-        <if test="studentDto.classId!=null and studentDto.className!=''">
-            `class_id`=#{studentDto.classId},
+        <if test="student.classId!=null and student.className!=''">
+            class_id=#{student.classId},
         </if>
-        <if test="studentDto.classIds!=null and studentDto.classIds!=''">
-            `class_ids`=#{studentDto.classIds},
+        <if test="student.classIds!=null and student.classIds!=''">
+            class_ids=#{student.classIds},
         </if>
-        <if test="studentDto.classNames!=null and studentDto.classNames!=''">
-            `class_names`=#{studentDto.classNames},
+        <if test="student.classNames!=null and student.classNames!=''">
+            class_names=#{student.classNames},
         </if>
-        <if test="studentDto.name!=null and studentDto.name!=''">
-            `name`=#{studentDto.name},
+        <if test="student.name!=null and student.name!=''">
+            name=#{student.name},
         </if>
-        <if test="studentDto.gender!=0">
-            `gender`=#{studentDto.gender},
+        <if test="student.gender!=0">
+            gender=#{student.gender},
         </if>
-        <if test="studentDto.birth!=null and studentDto.birth!=''">
-            `birth`=#{studentDto.birth},
+        <if test="student.birth!=null and student.birth!=''">
+            birth=#{student.birth},
         </if>
-        <if test="studentDto.phone!=null and studentDto.phone!=''">
-            `phone`=#{studentDto.phone},
+        <if test="student.phone!=null and student.phone!=''">
+            phone=#{student.phone},
         </if>
-        <if test="studentDto.idcard!=null and studentDto.idcard!=''">
-            `idcard`=#{studentDto.idcard},
+        <if test="student.idcard!=null and student.idcard!=''">
+            idcard=#{student.idcard},
         </if>
-        <if test="studentDto.qqNumber!=null and studentDto.qqNumber!=''">
-            `qq_number`=#{studentDto.qqNumber},
+        <if test="student.qqNumber!=null and student.qqNumber!=''">
+            qq_number=#{student.qqNumber},
         </if>
-        <if test="studentDto.wxNumber!=null and studentDto.wxNumber!=''">
-            `wx_number`=#{studentDto.wxNumber},
+        <if test="student.wxNumber!=null and student.wxNumber!=''">
+            wx_number=#{student.wxNumber},
         </if>
-        <if test="studentDto.email!=null and studentDto.email!=''">
-            `email`=#{studentDto.email},
+        <if test="student.email!=null and student.email!=''">
+            email=#{student.email},
         </if>
-        <if test="studentDto.image!=null and studentDto.image!=''">
-            `image`=#{studentDto.image},
+        <if test="student.image!=null and student.image!=''">
+            image=#{student.image},
         </if>
-        <if test="studentDto.imageName!=null and studentDto.imageName!=''">
-            `image_name`=#{studentDto.imageName},
+        <if test="student.imageName!=null and student.imageName!=''">
+            image_name=#{student.imageName},
         </if>
-        <if test="studentDto.nationName!=null and studentDto.nationName!=''">
-            `nation_name`=#{studentDto.nationName},
+        <if test="student.nationName!=null and student.nationName!=''">
+            nation_name=#{student.nationName},
         </if>
-        <if test="studentDto.dormitoryAddress!=null and studentDto.dormitoryAddress!=''">
-            `dormitory_address`=#{studentDto.dormitoryAddress},
+        <if test="student.dormitoryAddress!=null and student.dormitoryAddress!=''">
+            dormitory_address=#{student.dormitoryAddress},
         </if>
-        <if test="studentDto.adress!=null and studentDto.adress!=''">
-            `adress`=#{studentDto.adress},
+        <if test="student.adress!=null and student.adress!=''">
+            adress=#{student.adress},
         </if>
-        <if test="studentDto.physicalNumber!=null and studentDto.physicalNumber!=''">
-            `physical_number`=#{studentDto.physicalNumber},
+        <if test="student.physicalNumber!=null and student.physicalNumber!=''">
+            physical_number=#{student.physicalNumber},
         </if>
-        <if test="studentDto.physicalChipNumber!=null and studentDto.physicalChipNumber!=''">
-            `physical_chip_number`=#{studentDto.physicalChipNumber},
+        <if test="student.physicalChipNumber!=null and student.physicalChipNumber!=''">
+            physical_chip_number=#{student.physicalChipNumber},
         </if>
-        <if test="studentDto.activate!=0">
-            `activate`=#{studentDto.activate},
+        <if test="student.activate!=0">
+            activate=#{student.activate},
         </if>
-        <if test="studentDto.operator!=null and studentDto.operator!=''">
-            `operator`=#{studentDto.operator},
+        <if test="student.operator!=null and student.operator!=''">
+            operator=#{student.operator},
         </if>
-        <if test="studentDto.operatorName!=null and studentDto.operatorName!=''">
-            `operator_name`=#{studentDto.operatorName},
+        <if test="student.operatorName!=null and student.operatorName!=''">
+            operator_name=#{student.operatorName},
         </if>
-        <if test="studentDto.remark!=null and studentDto.remark!=''">
-            `remark`=#{studentDto.remark},
+        <if test="student.remark!=null and student.remark!=''">
+            remark=#{student.remark},
         </if>
-        `college_name`=#{studentDto.collegeName},
-        `faculty_name`=#{studentDto.facultyName},
-        `profession_name`=#{studentDto.professionName},
-        `grade_name`=#{studentDto.gradeName},
-        `class_name`=#{studentDto.className},
-        `update_date`=NOW()
-        WHERE `school_code`=#{studentDto.schoolCode} AND `card_number`=#{studentDto.cardNumber};
+        <choose>
+            <when test="student.collegeName != null and student.collegeName !=''">
+                college_name=#{student.collegeName},
+            </when>
+            <otherwise>
+                college_name='',
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="student.facultyName != null and student.facultyName !=''">
+                faculty_name=#{student.facultyName},
+            </when>
+            <otherwise>
+                faculty_name='',
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="student.professionName != null and student.professionName !=''">
+                profession_name=#{student.professionName},
+            </when>
+            <otherwise>
+                profession_name='',
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="student.gradeName != null and student.gradeName !=''">
+                grade_name=#{student.gradeName},
+            </when>
+            <otherwise>
+                grade_name='',
+            </otherwise>
+        </choose>
+        <choose>
+            <when test="student.className != null and student.className !=''">
+                class_name=#{student.className},
+            </when>
+            <otherwise>
+                class_name='',
+            </otherwise>
+        </choose>
+        update_date=NOW()
+        WHERE school_code=#{student.schoolCode} AND card_number=#{student.cardNumber};
     </update>
 
     <select id="findStudentBySchoolClassId" resultMap="BaseResultMap">
         SELECT
         <include refid="studentCloumn"/>
         FROM t_student
-        WHERE `school_code`=#{schoolCode,jdbcType=VARCHAR}
-        AND `school_id`=#{schoolId,jdbcType=BIGINT}
-        AND `class_id`=#{classId,jdbcType=BIGINT}
+        WHERE school_code=#{schoolCode,jdbcType=VARCHAR}
+        AND school_id=#{schoolId,jdbcType=BIGINT}
+        AND class_id=#{classId,jdbcType=BIGINT}
         limit 1;
     </select>
 </mapper>

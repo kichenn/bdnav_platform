@@ -15,18 +15,15 @@ import java.util.Map;
  */
 public enum DeviceStatusEnum {
     NORMAL(new Byte("1"), "正常"),
-    OFFLINE(new Byte("2"), "离线"),
-    ALL(new Byte("-1"), "全部");
+    OFFLINE(new Byte("2"), "离线");
 
     private final Byte key;
     private final String value;
 
     public final static Byte NORMAL_KEY = 1;
     public final static Byte OFFLINE_KEY = 2;
-    public final static Byte ALL_KEY = -1;
     public final static String NORMAL_VALUE = "正常";
     public final static String OFFLINE_VALUE = "离线";
-    public final static String ALL_VALUE = "全部";
 
     private DeviceStatusEnum(Byte key, String value) {
         this.key = key;

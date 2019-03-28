@@ -62,7 +62,7 @@
                 AND user_type =#{singlePermission.userType,jdbcType=TINYINT}
             </if>
         </where>
-        ORDER BY　create_date　DESC
+        Order BY　create_date　DESC
     </select>
 
 </mapper>

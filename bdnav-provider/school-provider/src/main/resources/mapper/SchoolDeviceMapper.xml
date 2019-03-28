@@ -58,11 +58,11 @@
             <if test="device.deviceAddress !=null and device.deviceAddress!=''">
                 AND device_address like CONCAT(CONCAT('%',#{device.deviceAddress,jdbcType=VARCHAR}),'%')
             </if>
-            <if test="device.deviceStatus !=null and device.deviceStatus !=-1">
+            <if test="device.deviceStatus !=null">
                 AND device_status =#{device.deviceStatus,jdbcType=TINYINT}
             </if>
         </where>
-        ORDER BY　create_date　DESC
+        Order BY create_date DESC
     </select>
 
 </mapper>

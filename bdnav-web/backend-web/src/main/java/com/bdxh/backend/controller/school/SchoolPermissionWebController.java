@@ -65,4 +65,10 @@ public class SchoolPermissionWebController {
         return wrapper;
     }
 
+
+    /**
+     * @Description: 用户与权限菜单的捆绑（addOrModify）
+     * @Author: Kang
+     * @Date: 2019/3/28 12:01
+     */
 }

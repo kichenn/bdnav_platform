@@ -56,8 +56,10 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
         Page page = PageHelper.startPage(schoolDeviceQueryDto.getPageNum(), schoolDeviceQueryDto.getPageSize());
         SchoolDevice schoolDevice = new SchoolDevice();
         BeanUtils.copyProperties(schoolDeviceQueryDto, schoolDevice);
-        //设置类型
-        schoolDevice.setDeviceStatus(schoolDeviceQueryDto.getDeviceStatusEnum().getKey());
+        if (schoolDeviceQueryDto.getDeviceStatusEnum() != null) {
+            //设置类型
+            schoolDevice.setDeviceStatus(schoolDeviceQueryDto.getDeviceStatusEnum().getKey());
+        }
         PageInfo<SchoolDevice> pageInfo = new PageInfo(schoolDeviceMapper.findSchoolDeviceInConditionPage(schoolDevice));
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
