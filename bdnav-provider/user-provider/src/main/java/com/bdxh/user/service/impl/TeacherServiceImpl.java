@@ -115,8 +115,9 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     @Transactional
     public void updateTeacherInfo(UpdateTeacherDto updateTeacherDto) {
-        teacherMapper.updateTeacher(updateTeacherDto);
-        UpdateBaseUserDto updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, UpdateBaseUserDto.class);
+        Teacher teacher = BeanMapUtils.map(updateTeacherDto, Teacher.class);
+        teacherMapper.updateTeacher(teacher);
+        BaseUser updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, BaseUser.class);
         baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
             teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
         for (int i=0;i<updateTeacherDto.getTeacherDeptDtoList().size();i++){

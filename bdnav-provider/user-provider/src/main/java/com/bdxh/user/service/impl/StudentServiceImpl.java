@@ -80,8 +80,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     @Transactional
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
-        studentMapper.updateStudentInfo(updateStudentDto);
-        UpdateBaseUserDto updateBaseUserDto = BeanMapUtils.map(updateStudentDto, UpdateBaseUserDto.class);
+        Student student = BeanMapUtils.map(updateStudentDto, Student.class);
+        studentMapper.updateStudentInfo(student);
+        BaseUser updateBaseUserDto = BeanMapUtils.map(updateStudentDto, BaseUser.class);
         baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
         FamilyStudentVo familyStudentVo = familyStudentMapper.studentQueryInfo(
                 updateStudentDto.getSchoolCode(),

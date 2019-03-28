@@ -81,10 +81,10 @@ public class PermissionController {
     @RequestMapping(value = "/addPermission", method = RequestMethod.POST)
     @ApiOperation(value = "新增用户权限", response = Boolean.class)
     @ResponseBody
-    public Object addPermission(@RequestBody AddPermissionDto dto) {
-        Permission permission = new Permission();
-        BeanUtils.copyProperties(dto, permission);
-        return WrapMapper.ok(permissionService.addPermission(permission));
+    public Object addPermission(@RequestBody AddPermissionDto addPermissionDto) {
+        /*Permission permission = new Permission();
+        BeanUtils.copyProperties(addPermissionDto, permission);*/
+        return WrapMapper.ok(permissionService.addPermission(addPermissionDto));
     }
 
     /**
