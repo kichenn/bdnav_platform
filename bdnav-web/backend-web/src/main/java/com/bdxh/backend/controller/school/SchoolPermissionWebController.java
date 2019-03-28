@@ -43,6 +43,13 @@ public class SchoolPermissionWebController {
         return WrapMapper.ok(wrapper.getResult());
     }
 
+    @RequestMapping(value = "/findPermissionList", method = RequestMethod.GET)
+    @ApiOperation(value = "菜单or按钮权限列表", response = SchoolPermissionTreeVo.class)
+    public Object findPermissionList() {
+        Wrapper wrapper = schoolPermissionControllerClient.findPermissionList();
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
     @RequestMapping(value = "/addSchoolPermission", method = RequestMethod.POST)
     @ApiOperation(value = "添加权限菜单", response = Boolean.class)
     public Object addSchoolPermission(@Validated @RequestBody AddSchoolPermissionDto aspd) {

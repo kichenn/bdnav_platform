@@ -66,6 +66,31 @@ public class SchoolPermissionController {
 
 
     /**
+     * @Description: 菜单or按钮权限列表
+     * @Author: Kang
+     * @Date: 2019/3/26 14:29
+     */
+    @GetMapping("/findPermissionList")
+    @ApiOperation(value = "菜单or按钮权限列表", response = List.class)
+    public Object findPermissionList() {
+        List<SchoolPermission> permissions = schoolPermissionService.selectAll();
+        List<SchoolPermissionTreeVo> treeVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(permissions)) {
+            permissions.stream().forEach(e -> {
+                SchoolPermissionTreeVo treeVo = new SchoolPermissionTreeVo();
+                treeVo.setTitle(e.getName());
+                treeVo.setCreateDate(e.getCreateDate());
+                BeanUtils.copyProperties(e, treeVo);
+                treeVos.add(treeVo);
+            });
+        }
+        TreeLoopUtils<SchoolPermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+        List<SchoolPermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
+        return WrapMapper.ok(result);
+    }
+
+
+    /**
      * @Description: 增加用户权限
      * @Author: Kang
      * @Date: 2019/3/26 14:29
