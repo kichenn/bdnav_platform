@@ -2,6 +2,7 @@ package com.bdxh.system.service;
 
 
 import com.bdxh.common.support.IService;
+import com.bdxh.system.dto.AddPermissionDto;
 import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
 
@@ -22,7 +23,7 @@ public interface PermissionService extends IService<Permission> {
     List<String> permissionMenus(Long roleId);
 
     //增加权限列表信息
-    Boolean addPermission(Permission permission);
+    Boolean addPermission(AddPermissionDto addPermissionDto);
 
     //修改权限列表信息
     Boolean modifyPermission(Permission permission);
