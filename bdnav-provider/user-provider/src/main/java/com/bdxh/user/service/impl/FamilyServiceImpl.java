@@ -92,8 +92,9 @@ private SnowflakeIdWorker snowflakeIdWorker;
     @Override
     @Transactional
     public void updateFamily(UpdateFamilyDto updateFamilyDto) {
-        familyMapper.updateFamilyInfo(updateFamilyDto);
-        UpdateBaseUserDto updateBaseUserDto = BeanMapUtils.map(updateFamilyDto, UpdateBaseUserDto.class);
+        Family family = BeanMapUtils.map(updateFamilyDto, Family.class);
+        familyMapper.updateFamilyInfo(family);
+        BaseUser updateBaseUserDto = BeanMapUtils.map(updateFamilyDto, BaseUser.class);
         baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
     }
 

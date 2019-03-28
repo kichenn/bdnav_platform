@@ -57,75 +57,75 @@
   <update id="updateTeacher">
       UPDATE `t_teacher`
     SET
-    <if test="updateTeacherDto.schoolName!=null and updateTeacherDto.schoolName!=''">
-      `school_name`=#{updateTeacherDto.schoolName},
+    <if test="teacher.schoolName!=null and teacher.schoolName!=''">
+      `school_name`=#{teacher.schoolName},
     </if>
-    <if test="updateTeacherDto.campusName!=null and updateTeacherDto.campusName!=''">
-      `campus_name`=#{updateTeacherDto.campusName},
+    <if test="teacher.campusName!=null and teacher.campusName!=''">
+      `campus_name`=#{teacher.campusName},
     </if>
-    <if test="updateTeacherDto.name!=null and updateTeacherDto.name!=''">
-      `name`=#{updateTeacherDto.name},
+    <if test="teacher.name!=null and teacher.name!=''">
+      `name`=#{teacher.name},
     </if>
-    <if test="updateTeacherDto.gender!=0">
-      `gender`=#{updateTeacherDto.gender},
+    <if test="teacher.gender!=0">
+      `gender`=#{teacher.gender},
     </if>
-    <if test="updateTeacherDto.birth!=null and updateTeacherDto.birth!=''">
-       `birth`=#{updateTeacherDto.birth},
+    <if test="teacher.birth!=null and teacher.birth!=''">
+       `birth`=#{teacher.birth},
     </if>
-    <if test="updateTeacherDto.position!=null and updateTeacherDto.position!=''">
-      `position`=#{updateTeacherDto.position},
+    <if test="teacher.position!=null and teacher.position!=''">
+      `position`=#{teacher.position},
     </if>
-    <if test="updateTeacherDto.phone!=null and updateTeacherDto.phone!=''">
-      `phone`=#{updateTeacherDto.phone},
+    <if test="teacher.phone!=null and teacher.phone!=''">
+      `phone`=#{teacher.phone},
     </if>
-    <if test="updateTeacherDto.idcard!=null and updateTeacherDto.idcard!=''">
-      `idcard`=#{updateTeacherDto.idcard},
+    <if test="teacher.idcard!=null and teacher.idcard!=''">
+      `idcard`=#{teacher.idcard},
     </if>
-    <if test="updateTeacherDto.qqNumber!=null and updateTeacherDto.qqNumber!=''">
-     `qq_number`=#{updateTeacherDto.qqNumber},
+    <if test="teacher.qqNumber!=null and teacher.qqNumber!=''">
+     `qq_number`=#{teacher.qqNumber},
     </if>
-    <if test="updateTeacherDto.wxNumber!=null and updateTeacherDto.wxNumber!=''">
-      `wx_number`=#{updateTeacherDto.wxNumber},
+    <if test="teacher.wxNumber!=null and teacher.wxNumber!=''">
+      `wx_number`=#{teacher.wxNumber},
     </if>
-    <if test="updateTeacherDto.email!=null and updateTeacherDto.email!=''">
-      `email`=#{updateTeacherDto.email},
+    <if test="teacher.email!=null and teacher.email!=''">
+      `email`=#{teacher.email},
     </if>
-    <if test="updateTeacherDto.image!=null and updateTeacherDto.image!=''">
-      `image`=#{updateTeacherDto.image},
+    <if test="teacher.image!=null and teacher.image!=''">
+      `image`=#{teacher.image},
     </if>
-    <if test="updateTeacherDto.imageName!=null and updateTeacherDto.imageName!=''">
-      `image_name`=#{updateTeacherDto.imageName},
+    <if test="teacher.imageName!=null and teacher.imageName!=''">
+      `image_name`=#{teacher.imageName},
     </if>
-    <if test="updateTeacherDto.nationName!=null and updateTeacherDto.nationName!=''">
-      `nation_name`=#{updateTeacherDto.nationName},
+    <if test="teacher.nationName!=null and teacher.nationName!=''">
+      `nation_name`=#{teacher.nationName},
     </if>
-    <if test="updateTeacherDto.dormitoryAddress!=null and updateTeacherDto.dormitoryAddress!=''">
-      `dormitory_address`=#{updateTeacherDto.dormitoryAddress},
+    <if test="teacher.dormitoryAddress!=null and teacher.dormitoryAddress!=''">
+      `dormitory_address`=#{teacher.dormitoryAddress},
     </if>
-    <if test="updateTeacherDto.adress!=null and updateTeacherDto.adress!=''">
-      `adress`=#{updateTeacherDto.adress},
+    <if test="teacher.adress!=null and teacher.adress!=''">
+      `adress`=#{teacher.adress},
     </if>
-    <if test="updateTeacherDto.physicalNumber!=null and updateTeacherDto.physicalNumber!=''">
-      `physical_number`=#{updateTeacherDto.physicalNumber},
+    <if test="teacher.physicalNumber!=null and teacher.physicalNumber!=''">
+      `physical_number`=#{teacher.physicalNumber},
     </if>
-    <if test="updateTeacherDto.physicalChipNumber!=null and updateTeacherDto.physicalChipNumber!=''">
-      `physical_chip_number`=#{updateTeacherDto.physicalChipNumber},
+    <if test="teacher.physicalChipNumber!=null and teacher.physicalChipNumber!=''">
+      `physical_chip_number`=#{teacher.physicalChipNumber},
     </if>
-    <if test="updateTeacherDto.activate!=0">
-      `activate`=#{updateTeacherDto.activate},
+    <if test="teacher.activate!=0">
+      `activate`=#{teacher.activate},
     </if>
-    <if test="updateTeacherDto.operator!=null and updateTeacherDto.operator!=''">
-      `operator`=#{updateTeacherDto.operator},
+    <if test="teacher.operator!=null and teacher.operator!=''">
+      `operator`=#{teacher.operator},
     </if>
-    <if test="updateTeacherDto.operatorName!=null and updateTeacherDto.operatorName!=''">
-      `operator_name`=#{updateTeacherDto.operatorName},
+    <if test="teacher.operatorName!=null and teacher.operatorName!=''">
+      `operator_name`=#{teacher.operatorName},
     </if>
-    <if test="updateTeacherDto.remark!=null and updateTeacherDto.remark!=''">
-      `remark`=#{updateTeacherDto.remark},
+    <if test="teacher.remark!=null and teacher.remark!=''">
+      `remark`=#{teacher.remark},
     </if>
     `update_date`=now()
      WHERE
-    `school_code`=#{updateTeacherDto.schoolCode} and `card_number`=#{updateTeacherDto.cardNumber}
+    `school_code`=#{teacher.schoolCode} and `card_number`=#{teacher.cardNumber}
       </update>
 
   <select id="selectAllTeacherInfo" resultMap="BaseResultMap">

@@ -90,62 +90,62 @@
     <update id="updateFamilyInfo">
         UPDATE t_family
         SET
-        <if test="familyDto.name!=null and familyDto.name!=''">
-            `name`=#{familyDto.name},
+        <if test="family.name!=null and family.name!=''">
+            `name`=#{family.name},
         </if>
-        <if test="familyDto.gender!=0">
-            `gender`=#{familyDto.gender},
+        <if test="family.gender!=0">
+            `gender`=#{family.gender},
         </if>
-        <if test="familyDto.birth!=null and familyDto.birth!=''">
-            `birth`=#{familyDto.birth},
+        <if test="family.birth!=null and family.birth!=''">
+            `birth`=#{family.birth},
         </if>
-        <if test="familyDto.phone!=null and familyDto.phone!=''">
-            phone=#{familyDto.phone},
+        <if test="family.phone!=null and family.phone!=''">
+            phone=#{family.phone},
         </if>
-        <if test="familyDto.idcard!=null and familyDto.idcard!=''">
-            `idcard`=#{familyDto.idcard},
+        <if test="family.idcard!=null and family.idcard!=''">
+            `idcard`=#{family.idcard},
         </if>
-        <if test="familyDto.qqNumber!=null and familyDto.qqNumber!=''">
-            `qq_number`=#{familyDto.qqNumber},
+        <if test="family.qqNumber!=null and family.qqNumber!=''">
+            `qq_number`=#{family.qqNumber},
         </if>
-        <if test="familyDto.wxNumber!=null and familyDto.wxNumber!=''">
-            `wx_number`=#{familyDto.wxNumber},
+        <if test="family.wxNumber!=null and family.wxNumber!=''">
+            `wx_number`=#{family.wxNumber},
         </if>
-        <if test="familyDto.email!=null and familyDto.email!=''">
-            `email`=#{familyDto.email},
+        <if test="family.email!=null and family.email!=''">
+            `email`=#{family.email},
         </if>
-        <if test="familyDto.image!=null and familyDto.image!=''">
-            `image`=#{familyDto.image},
+        <if test="family.image!=null and family.image!=''">
+            `image`=#{family.image},
         </if>
-        <if test="familyDto.imageName!=null and familyDto.imageName!=''">
-            `image_name`=#{familyDto.imageName},
+        <if test="family.imageName!=null and family.imageName!=''">
+            `image_name`=#{family.imageName},
         </if>
-        <if test="familyDto.nationName!=null and familyDto.nationName!=''">
-            `nation_name`=#{familyDto.nationName},
+        <if test="family.nationName!=null and family.nationName!=''">
+            `nation_name`=#{family.nationName},
         </if>
-        <if test="familyDto.adress!=null and familyDto.adress!=''">
-            `adress`=#{familyDto.adress},
+        <if test="family.adress!=null and family.adress!=''">
+            `adress`=#{family.adress},
         </if>
-        <if test="familyDto.physicalNumber!=null and familyDto.physicalNumber!=''">
-            `physical_number`=#{familyDto.physicalNumber},
+        <if test="family.physicalNumber!=null and family.physicalNumber!=''">
+            `physical_number`=#{family.physicalNumber},
         </if>
-        <if test="familyDto.physicalChipNumber!=null and familyDto.physicalChipNumber!=''">
-            `physical_chip_number`=#{familyDto.physicalChipNumber},
+        <if test="family.physicalChipNumber!=null and family.physicalChipNumber!=''">
+            `physical_chip_number`=#{family.physicalChipNumber},
         </if>
-        <if test="familyDto.activate!=0">
-            `activate`=#{familyDto.activate},
+        <if test="family.activate!=0">
+            `activate`=#{familyfamily.activate},
         </if>
-        <if test="familyDto.operator!=null and familyDto.operator!=''">
-            `operator`=#{familyDto.operator},
+        <if test="family.operator!=null and family.operator!=''">
+            `operator`=#{family.operator},
         </if>
-        <if test="familyDto.operatorName!=null and familyDto.operatorName!=''">
-            `operator_name`=#{familyDto.operatorName},
+        <if test="family.operatorName!=null and family.operatorName!=''">
+            `operator_name`=#{family.operatorName},
         </if>
-        <if test="familyDto.remark!=null and familyDto.remark!=''">
-            `remark`=#{familyDto.remark},
+        <if test="family.remark!=null and family.remark!=''">
+            `remark`=#{family.remark},
         </if>
             `update_date`=NOW()
-         WHERE `school_code`=#{familyDto.schoolCode} AND card_number=#{familyDto.cardNumber};
+         WHERE `school_code`=#{family.schoolCode} AND card_number=#{family.cardNumber};
     </update>
 
 
