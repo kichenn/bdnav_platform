@@ -66,12 +66,6 @@ public class SchoolUser {
 
 
     /**
-     * 分配的角色id
-     */
-    @Column(name = "roleIds")
-    private String roleIds;
-
-    /**
      * 部门id
      */
     @Column(name = "dept_id")

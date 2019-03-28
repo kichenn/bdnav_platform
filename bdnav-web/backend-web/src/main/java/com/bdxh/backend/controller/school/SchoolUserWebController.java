@@ -48,9 +48,9 @@ public class SchoolUserWebController {
     }
 
 
-    @RequestMapping(value = "/addUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/addSchoolUser", method = RequestMethod.POST)
     @ApiOperation(value = "添加学校用户信息", response = Boolean.class)
-    public Object addUser(@Validated @RequestBody AddSchoolUserDto addUserDto) {
+    public Object addSchoolUser(@Validated @RequestBody AddSchoolUserDto addUserDto) {
         //密码加密
         addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
         //设置操作人
@@ -78,7 +78,7 @@ public class SchoolUserWebController {
 
     @RequestMapping(value = "/delSchoolUser", method = RequestMethod.POST)
     @ApiOperation(value = "根据id删除学校用户信息", response = Boolean.class)
-    public Object delUser(@RequestParam(name = "id") Long id) {
+    public Object delSchoolUser(@RequestParam(name = "id") Long id) {
         User user = SecurityUtils.getCurrentUser();
         if (id.equals(user.getId())) {
             //如果删除的id和当前登录的用户id相同，则不能删除
