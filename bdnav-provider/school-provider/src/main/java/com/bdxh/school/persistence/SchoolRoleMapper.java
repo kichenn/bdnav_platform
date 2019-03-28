@@ -16,7 +16,7 @@ public interface SchoolRoleMapper extends Mapper<SchoolRole> {
      * @param schoolRole
      * @return
      */
-    List<SchoolRole> getByCondition(SchoolRole schoolRole);
+    List<SchoolRole> getByCondition(@Param("schoolRole") SchoolRole schoolRole);
 
     /**
      * 根据用户id查询角色列表
