@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/schoolWebPermissionController")
 @Validated
 @Slf4j
-@Api(value = "学校权限交互API", tags = "学校权限交互API")
+@Api(value = "学校权限操作菜单管理API", tags = "学校权限操作菜单管理API")
 public class SchoolPermissionWebController {
 
     @Autowired
