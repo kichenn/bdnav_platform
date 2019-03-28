@@ -26,5 +26,6 @@ public interface PermissionMapper extends Mapper<Permission> {
     //根据菜单名称查询列表
     List<Permission> findByTitle(@Param("title") String title);
 
-
+    //父级id查询部门信息
+    Permission findPermissionByParentId(Long parentId);
 }

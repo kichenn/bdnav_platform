@@ -118,4 +118,12 @@
         </where>
     </select>
 
+    <select id="findPermissionByParentId" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from sys_permission
+        where parent_id=#{parentId}
+    </select>
+
+
 </mapper>

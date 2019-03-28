@@ -111,7 +111,10 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         return permissionMapper.findByTitle(title);
     }
 
-
+    @Override
+    public Permission findPermissionByParentId(Long parentId) {
+        return permissionMapper.findPermissionByParentId(parentId);
+    }
 
 
 }

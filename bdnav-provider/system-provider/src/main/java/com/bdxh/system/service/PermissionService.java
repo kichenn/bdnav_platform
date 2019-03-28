@@ -44,6 +44,9 @@ public interface PermissionService extends IService<Permission> {
     //根据名称查询所有列表
     List<Permission> findByTitle(String title);
 
+    //父级id查询部门信息
+    Permission findPermissionByParentId(Long parentId);
+
 
 
 }

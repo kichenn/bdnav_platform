@@ -82,8 +82,6 @@ public class PermissionController {
     @ApiOperation(value = "新增用户权限", response = Boolean.class)
     @ResponseBody
     public Object addPermission(@RequestBody AddPermissionDto addPermissionDto) {
-        /*Permission permission = new Permission();
-        BeanUtils.copyProperties(addPermissionDto, permission);*/
         return WrapMapper.ok(permissionService.addPermission(addPermissionDto));
     }
 
@@ -96,8 +94,6 @@ public class PermissionController {
     @ApiOperation(value = "修改用户权限", response = Boolean.class)
     @ResponseBody
     public Object modifyPermission(@RequestBody ModifyPermissionDto mdifyPermissionDto) {
-/*        Permission permission = new Permission();
-        BeanUtils.copyProperties(dto, permission);*/
         return WrapMapper.ok(permissionService.modifyPermission(mdifyPermissionDto));
     }
 
@@ -207,20 +203,6 @@ public class PermissionController {
     }
 
 
-    /**
-     * 保存并修改权限
-     * @return
-     */
-    @RequestMapping(value = "/test1", method = RequestMethod.POST)
-    @ApiOperation(value = "测试返回数据保存并修改权限", response = Boolean.class)
-    public Object test1(
-            @RequestParam(value = "roleId") Long roleId) {
-
-        List<RolePermissionDto> permissions = permissionService.theTreeMenu(roleId,2);
-
-        return WrapMapper.ok(permissions);
-    }
-
 
 
     @RequestMapping(value = "/thePermissionMenu", method = RequestMethod.GET)
@@ -232,7 +214,6 @@ public class PermissionController {
             for (Permission ps:permissions){
                 PermissionTreeVo treeVo = new PermissionTreeVo();
                 treeVo.setTitle(ps.getTitle());
-                treeVo.setName(ps.getName());
                 treeVo.setCreateDate(ps.getCreateDate());
                 BeanUtils.copyProperties(ps, treeVo);
                 treeVos.add(treeVo);
@@ -243,6 +224,27 @@ public class PermissionController {
         return WrapMapper.ok(result);
     }
 
+    /**
+     * 根据id查看菜单详情
+     * @return
+     */
+    @RequestMapping(value = "/findPermissionById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据id查看菜单详情", response = Boolean.class)
+    public Object findPermissionById(@RequestParam(value = "id") Long id) {
+      Permission permissions = permissionService.selectByKey(id);
+        return WrapMapper.ok(permissions);
+    }
+
+    /**
+     * 父id查询部门信息
+     * @param parentId
+     * @return
+     */
+    @RequestMapping(value = "/findPermissionByParentId", method = RequestMethod.GET)
+    @ApiOperation(value = "父id查询部门信息")
+    public Object findPermissionByParentId(@RequestParam("parentId") Long parentId) {
+        return WrapMapper.ok(permissionService.findPermissionByParentId(parentId));
+    }
 
 
 
