@@ -28,4 +28,6 @@ public interface PermissionMapper extends Mapper<Permission> {
 
     //父级id查询部门信息
     Permission findPermissionByParentId(Long parentId);
+
+
 }
