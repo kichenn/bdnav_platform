@@ -2,6 +2,7 @@ package com.bdxh.system.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
+import com.bdxh.system.entity.Permission;
 import com.bdxh.system.fallback.PermissionControllerClientFallback;
 import com.bdxh.system.vo.PermissionTreeVo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -51,7 +52,7 @@ public interface PermissionControllerClient {
      */
     @RequestMapping(value = "/permission/modifyPermission")
     @ResponseBody
-    Wrapper modifyPermission(@RequestBody ModifyPermissionDto dto);
+    Wrapper modifyPermission(@RequestBody ModifyPermissionDto modifyPermissionDto);
 
 
     /**
@@ -82,4 +83,28 @@ public interface PermissionControllerClient {
     @RequestMapping(value = "/permission/thePermissionMenu")
     @ResponseBody
     Wrapper<List<PermissionTreeVo>> thePermissionMenu();
+
+    /**
+     * 删除单个权限
+     */
+    @RequestMapping(value = "/permission/delPermissionById")
+    @ResponseBody
+    Wrapper delPermissionById(@RequestParam("id") Long id);
+
+    /**
+     * 根据id查询菜单详情
+     */
+    @RequestMapping(value = "/permission/findPermissionById")
+    @ResponseBody
+    Wrapper<Permission> findPermissionById(@RequestParam("id") Long id);
+
+    /**
+     * 父id查询部门信息
+     * @param parentId
+     * @return
+     */
+    @RequestMapping(value = "/permission/findPermissionByParentId")
+    @ResponseBody
+    Wrapper<Permission> findPermissionByParentId(@RequestParam("parentId") Long parentId);
+
 }

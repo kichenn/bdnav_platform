@@ -66,12 +66,6 @@ public class SchoolUser {
 
 
     /**
-     * 分配的角色id
-     */
-    @Column(name = "roleIds")
-    private String roleIds;
-
-    /**
      * 部门id
      */
     @Column(name = "dept_id")
@@ -364,23 +358,6 @@ public class SchoolUser {
      */
     public void setEmail(String email) {
         this.email = email == null ? null : email.trim();
-    }
-
-
-    /**
-     * 获取角色id
-     *
-     * @return
-     */
-    public String getRoleIds() {
-        return roleIds;
-    }
-
-    /**
-     * 设置角色id
-     */
-    public void setRoleIds(String roleIds) {
-        this.roleIds = roleIds;
     }
 
 

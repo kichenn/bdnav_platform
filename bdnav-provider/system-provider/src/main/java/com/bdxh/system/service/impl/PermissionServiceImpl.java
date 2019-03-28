@@ -2,6 +2,7 @@ package com.bdxh.system.service.impl;
 
 import com.bdxh.common.support.BaseService;
 import com.bdxh.system.dto.AddPermissionDto;
+import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.dto.RolePermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.system.persistence.PermissionMapper;
@@ -66,9 +67,19 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
 
     //修改权限列表信息
     @Override
-    public Boolean modifyPermission(Permission permission) {
+    public Boolean modifyPermission(ModifyPermissionDto mdifyPermissionDto) {
+        Permission permission = new Permission();
+        BeanUtils.copyProperties(mdifyPermissionDto, permission);
+        if (new Long("-1").equals(permission.getParentId())) {
+            permission.setParentIds("");
+        } else {
+            Permission sysPermissions = findPermissionById(permission.getParentId());
+            permission.setParentIds(sysPermissions.getParentIds() +","+ sysPermissions.getId());
+        }
         return permissionMapper.updateByPrimaryKeySelective(permission) > 0;
     }
+
+
 
     //Id删除权限列表信息
     @Override
@@ -100,7 +111,10 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         return permissionMapper.findByTitle(title);
     }
 
-
+    @Override
+    public Permission findPermissionByParentId(Long parentId) {
+        return permissionMapper.findPermissionByParentId(parentId);
+    }
 
 
 }

@@ -3,6 +3,7 @@ package com.bdxh.backend.controller.system;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
+import com.bdxh.system.entity.Permission;
 import com.bdxh.system.feign.PermissionControllerClient;
 import com.bdxh.system.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
@@ -115,5 +116,35 @@ public class SysPermissionController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+
+    @RequestMapping(value="/delPermissionById",method = RequestMethod.GET)
+    @ApiOperation("删除单个菜单权限")
+    public Object delPermissionById(@RequestParam("id") Long id){
+        try {
+            Permission permission=permissionControllerClient.findPermissionByParentId(id).getResult();
+         if (permission!=null){
+             return WrapMapper.error("该部门底下存在子部门不能删除");
+         }
+             Wrapper wrapper = permissionControllerClient.delPermissionById(id);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value="/findPermissionById",method = RequestMethod.GET)
+    @ApiOperation("根据id查询菜单详情")
+    public Object findPermissionById(@RequestParam("id") Long id){
+        try {
+            Wrapper wrapper = permissionControllerClient.findPermissionById(id);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 }

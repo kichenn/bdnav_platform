@@ -16,7 +16,6 @@ import java.util.Date;
 @Data
 public class ModifySinglePermission {
 
-    @NotEmpty(message = "id不能为空")
     @NotNull(message = "id不能为空")
     @ApiModelProperty("主键")
     private Long id;

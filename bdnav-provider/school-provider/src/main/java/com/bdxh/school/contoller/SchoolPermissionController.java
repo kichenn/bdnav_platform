@@ -2,6 +2,7 @@ package com.bdxh.school.contoller;
 
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.AddRolePermissionBindMenuDto;
 import com.bdxh.school.dto.AddSchoolPermissionDto;
 import com.bdxh.school.dto.ModifySchoolPermissionDto;
 import com.bdxh.school.entity.SchoolPermission;
@@ -70,7 +71,7 @@ public class SchoolPermissionController {
      * @Date: 2019/3/26 14:29
      */
     @RequestMapping(value = "/addSchoolPermission", method = RequestMethod.POST)
-    @ApiOperation(value = "新增用户权限", response = Boolean.class)
+    @ApiOperation(value = "新增用户权限菜单or按钮", response = Boolean.class)
     public Object addSchoolPermission(@Validated @RequestBody AddSchoolPermissionDto addSchoolPermissionDto) {
         SchoolPermission schoolPermission = new SchoolPermission();
         BeanUtils.copyProperties(addSchoolPermissionDto, schoolPermission);
@@ -85,7 +86,7 @@ public class SchoolPermissionController {
      * @Date: 2019/3/26 14:29
      */
     @RequestMapping(value = "/modifySchoolPermission", method = RequestMethod.POST)
-    @ApiOperation(value = "修改用户权限", response = Boolean.class)
+    @ApiOperation(value = "修改用户权限菜单or按钮", response = Boolean.class)
     public Object modifySchoolPermission(@Validated @RequestBody ModifySchoolPermissionDto ModifySchoolPermissionDto) {
         SchoolPermission schoolPermission = new SchoolPermission();
         BeanUtils.copyProperties(ModifySchoolPermissionDto, schoolPermission);
@@ -100,21 +101,21 @@ public class SchoolPermissionController {
      * @Date: 2019/3/26 14:29
      */
     @RequestMapping(value = "/delSchoolPermissionById", method = RequestMethod.POST)
-    @ApiOperation(value = "删除用户权限", response = Boolean.class)
+    @ApiOperation(value = "删除用户权限菜单or按钮", response = Boolean.class)
     public Object delSchoolPermissionById(@RequestParam("id") Long id) {
         return WrapMapper.ok(schoolPermissionService.delPermissionById(id));
     }
 
     /**
-     * @Description: 角色删除所有权限
+     * @Description: 角色与权限菜单的捆绑（addOrModify）
      * @Author: Kang
-     * @Date: 2019/3/26 14:29
+     * @Date: 2019/3/28 14:02
      */
-    @RequestMapping(value = "/delSchoolPermissionByRoleId", method = RequestMethod.POST)
-    @ApiOperation(value = "角色删除所有权限", response = Boolean.class)
-    public Object delSchoolPermissionByRoleId(@RequestParam("roleId") Long roleId) {
-        List<Long> permissionIds = schoolRolePermissionService.findPermissionIdByRoleId(roleId);
-        return WrapMapper.ok(schoolPermissionService.batchDelPermission(permissionIds));
+    @RequestMapping(value = "/addRolePermissionBindMenu", method = RequestMethod.POST)
+    @ApiOperation(value = "角色与权限菜单or按钮的捆绑")
+    public Object addRolePermissionBindMenu(@Validated @RequestBody AddRolePermissionBindMenuDto addRolePermissionBindMenu) {
+        schoolRolePermissionService.addRolePermissionBindMenu(addRolePermissionBindMenu);
+        return WrapMapper.ok();
     }
-
 }
+

@@ -16,7 +16,6 @@ import javax.validation.constraints.NotNull;
 public class ModifySchoolDeviceDto {
 
 
-    @NotEmpty(message = "id不能为空")
     @NotNull(message = "id不能为空")
     @ApiModelProperty("id")
     private Long id;

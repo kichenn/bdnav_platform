@@ -19,7 +19,6 @@ import java.util.Date;
 public class ModifyGroupPermissionDto {
 
 
-    @NotEmpty(message = "id不能为空")
     @NotNull(message = "id不能为空")
     @ApiModelProperty("id")
     private Long id;

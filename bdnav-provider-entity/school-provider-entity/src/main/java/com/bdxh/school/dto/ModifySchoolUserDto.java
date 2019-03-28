@@ -15,7 +15,6 @@ import java.io.Serializable;
 public class ModifySchoolUserDto {
 
 
-    @NotEmpty(message = "id不能为空")
     @NotNull(message = "id不能为空")
     @ApiModelProperty("id")
     private Long id;
