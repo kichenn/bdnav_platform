@@ -23,9 +23,6 @@ public class ModifyPermissionDto {
    @ApiModelProperty("父级菜单ids")
    private String parentIds;
 
-    @ApiModelProperty("启用开关 1开 2关")
-    private Integer RpSwitch;
-
     @ApiModelProperty("路由路径")
     private String name;
 

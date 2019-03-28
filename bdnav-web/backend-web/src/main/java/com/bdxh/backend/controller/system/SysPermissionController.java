@@ -116,4 +116,18 @@ public class SysPermissionController {
         }
     }
 
+
+    @RequestMapping(value="/delPermissionById",method = RequestMethod.GET)
+    @ApiOperation("删除单个菜单权限")
+    public Object delPermissionById(@RequestParam("id") Long id){
+        try {
+            Wrapper wrapper = permissionControllerClient.delPermissionById(id);
+            return wrapper;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
 }
