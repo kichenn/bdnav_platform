@@ -66,7 +66,7 @@
             <if test="permission.groupType !=null">
                 AND group_type=#{permission.groupType,jdbcType=BIGINT}
             </if>
-            <if test="permission.deviceCode !=null">
+            <if test="permission.deviceCode !=null and permission.deviceCode !=''">
                 AND device_code like CONCAT(CONCAT('%',#{permission.deviceCode,jdbcType=VARCHAR}),'%')
             </if>
         </where>
