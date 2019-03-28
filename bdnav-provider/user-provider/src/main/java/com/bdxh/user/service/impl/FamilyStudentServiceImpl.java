@@ -43,7 +43,7 @@ public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> impleme
         List<FamilyStudentVo> familyStudentVoList= familyStudentMapper.queryaAllFamilyStudent(familyStudentQueryDto);
         if(null!=familyStudentVoList) {
             for (int i = 0; i < familyStudentVoList.size(); i++) {
-                FamilyVo familyVo = familyMapper.selectByCodeAndCard(familyStudentVoList.get(i).getFCardNumber(), familyStudentVoList.get(i).getSchoolCode());
+                FamilyVo familyVo = familyMapper.selectByCodeAndCard(familyStudentVoList.get(i).getSchoolCode(),familyStudentVoList.get(i).getFCardNumber() );
                 familyStudentVoList.get(i).setFName(familyVo.getName());
                 familyStudentVoList.get(i).setSchoolName(familyVo.getSchoolName());
             }
