@@ -1,12 +1,15 @@
 package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.AddSinglePermission;
+import com.bdxh.school.dto.ModifySinglePermission;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.SchoolDevice;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
@@ -38,7 +41,12 @@ public class SinglePermissionController {
      */
     @PostMapping("/addSinglePermission")
     @ApiOperation(value = "增加门禁单信息", response = Boolean.class)
-    public Object addSinglePermission(@RequestBody SinglePermission singlePermission) {
+    public Object addSinglePermission(@Validated @RequestBody AddSinglePermission addSinglePermission) {
+        //复制实体
+        SinglePermission singlePermission = new SinglePermission();
+        BeanUtils.copyProperties(addSinglePermission, singlePermission);
+        //赋值用户类型
+        singlePermission.setUserType(addSinglePermission.getSingleUserTypeEnum().getKey());
         return WrapMapper.ok(singlePermissionService.save(singlePermission) > 0);
     }
 
@@ -49,7 +57,12 @@ public class SinglePermissionController {
      */
     @PostMapping("/modifySinglePermission")
     @ApiOperation(value = "修改门禁单信息", response = Boolean.class)
-    public Object modifySinglePermission(@RequestBody SinglePermission singlePermission) {
+    public Object modifySinglePermission(@Validated @RequestBody ModifySinglePermission modifySinglePermission) {
+        //复制实体
+        SinglePermission singlePermission = new SinglePermission();
+        BeanUtils.copyProperties(modifySinglePermission, singlePermission);
+        //赋值用户类型
+        singlePermission.setUserType(modifySinglePermission.getSingleUserTypeEnum().getKey());
         return WrapMapper.ok(singlePermissionService.update(singlePermission) > 0);
     }
 

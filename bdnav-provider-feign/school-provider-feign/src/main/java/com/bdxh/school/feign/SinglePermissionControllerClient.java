@@ -1,9 +1,7 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.SchoolClassDto;
-import com.bdxh.school.dto.SchoolClassModifyDto;
-import com.bdxh.school.dto.SinglePermissionQueryDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SinglePermission;
@@ -33,7 +31,7 @@ public interface SinglePermissionControllerClient {
      */
     @RequestMapping(value = "/singlePermission/addSinglePermission", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addSinglePermission(@RequestBody SinglePermission singlePermission);
+    Wrapper addSinglePermission(@RequestBody AddSinglePermission addSinglePermission);
 
     /**
      * @Description: 修改门禁单信息
@@ -42,7 +40,7 @@ public interface SinglePermissionControllerClient {
      */
     @RequestMapping(value = "/singlePermission/modifySinglePermission", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifySinglePermission(@RequestBody SinglePermission singlePermission);
+    Wrapper modifySinglePermission(@RequestBody ModifySinglePermission modifySinglePermission);
 
     /**
      * @Description: 删除门禁单信息

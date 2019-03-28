@@ -1,6 +1,8 @@
 package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.AddSchoolRoleDto;
+import com.bdxh.school.dto.ModifySchoolRoleDto;
 import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.service.SchoolRoleService;
@@ -9,6 +11,7 @@ import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -39,11 +42,13 @@ public class SchoolRoleController {
      */
     @ApiOperation(value = "添加学校角色信息", response = Boolean.class)
     @RequestMapping(value = "/addSchoolRole", method = RequestMethod.POST)
-    public Object addSchoolRole(@Valid @RequestBody SchoolRole schoolRole) {
-        SchoolRole roleData = schoolRoleService.getRoleByRole(schoolRole.getRole());
+    public Object addSchoolRole(@Validated @RequestBody AddSchoolRoleDto addSchoolRoleDto) {
+        SchoolRole roleData = schoolRoleService.getRoleByRole(addSchoolRoleDto.getRole());
         if(roleData!=null){
             return WrapMapper.error("角色已经存在");
         }
+        SchoolRole schoolRole = new SchoolRole();
+        BeanUtils.copyProperties(addSchoolRoleDto, schoolRole);
         return WrapMapper.ok(schoolRoleService.save(schoolRole) > 0);
     }
 
@@ -54,8 +59,10 @@ public class SchoolRoleController {
      */
     @ApiOperation(value = "修改学校角色信息", response = Boolean.class)
     @RequestMapping(value = "/modifySchoolRole", method = RequestMethod.POST)
-    public Object modifySchoolRole(@Valid @RequestBody SchoolRole updateRoleDto) {
-        return WrapMapper.ok((schoolRoleService.update(updateRoleDto) > 0));
+    public Object modifySchoolRole(@Validated @RequestBody ModifySchoolRoleDto ModifySchoolRoleDto) {
+        SchoolRole schoolRole = new SchoolRole();
+        BeanUtils.copyProperties(ModifySchoolRoleDto, schoolRole);
+        return WrapMapper.ok((schoolRoleService.update(schoolRole) > 0));
     }
 
     /**

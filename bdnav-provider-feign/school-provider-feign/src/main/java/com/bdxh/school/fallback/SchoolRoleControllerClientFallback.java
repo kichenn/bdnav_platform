@@ -2,6 +2,8 @@ package com.bdxh.school.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSchoolRoleDto;
+import com.bdxh.school.dto.ModifySchoolRoleDto;
 import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.feign.SchoolRoleControllerClient;
@@ -29,12 +31,12 @@ public class SchoolRoleControllerClientFallback implements SchoolRoleControllerC
     }
 
     @Override
-    public Wrapper addSchoolRole(SchoolRole schoolRole) {
+    public Wrapper addSchoolRole(AddSchoolRoleDto addSchoolRoleDto) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper modifySchoolRole(SchoolRole schoolRole) {
+    public Wrapper modifySchoolRole(ModifySchoolRoleDto ModifySchoolRoleDto) {
         return WrapMapper.error();
     }
 

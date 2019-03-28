@@ -2,6 +2,8 @@ package com.bdxh.school.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSinglePermission;
+import com.bdxh.school.dto.ModifySinglePermission;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.GroupPermission;
@@ -25,12 +27,12 @@ public class SinglePermissionControllerClientFallback implements SinglePermissio
 
 
     @Override
-    public Wrapper addSinglePermission(SinglePermission singlePermission) {
+    public Wrapper addSinglePermission(AddSinglePermission addSinglePermission) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper modifySinglePermission(SinglePermission singlePermission) {
+    public Wrapper modifySinglePermission(ModifySinglePermission modifySinglePermission) {
         return WrapMapper.error();
     }
 

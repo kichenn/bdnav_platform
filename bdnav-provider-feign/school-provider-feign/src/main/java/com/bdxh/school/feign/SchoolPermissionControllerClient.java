@@ -1,6 +1,8 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddSchoolPermissionDto;
+import com.bdxh.school.dto.ModifySchoolPermissionDto;
 import com.bdxh.school.entity.SchoolPermission;
 import com.bdxh.school.fallback.SchoolPermissionControllerClientFallback;
 import com.bdxh.school.vo.SchoolPermissionTreeVo;
@@ -35,7 +37,7 @@ public interface SchoolPermissionControllerClient {
      */
     @RequestMapping(value = "/schoolPermission/addSchoolPermission",method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addSchoolPermission(@RequestBody SchoolPermission schoolPermission);
+    Wrapper addSchoolPermission(@RequestBody AddSchoolPermissionDto addSchoolPermissionDto);
 
     /**
      * 修改权限信息
@@ -43,6 +45,6 @@ public interface SchoolPermissionControllerClient {
      */
     @RequestMapping(value = "/schoolPermission/modifySchoolPermission",method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifySchoolPermission(@RequestBody SchoolPermission schoolPermission);
+    Wrapper modifySchoolPermission(@RequestBody ModifySchoolPermissionDto modifySchoolPermissionDto);
 
 }
