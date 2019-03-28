@@ -15,7 +15,6 @@ import java.util.List;
 @Data
 public class AddRolePermissionBindMenuDto {
 
-    @NotEmpty(message = "学校id不能为空")
     @NotNull(message = "学校id不能为空")
     @ApiModelProperty("学校id")
     private Long schoolId;
@@ -25,7 +24,6 @@ public class AddRolePermissionBindMenuDto {
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
-    @NotEmpty(message = "角色id不能为空")
     @NotNull(message = "角色id不能为空")
     @ApiModelProperty("角色id")
     private Long roleId;
