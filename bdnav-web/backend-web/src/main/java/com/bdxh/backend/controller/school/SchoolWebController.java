@@ -1,5 +1,8 @@
 package com.bdxh.backend.controller.school;
 
+import com.bdxh.common.helper.excel.ExcelExportUtils;
+import com.bdxh.common.helper.excel.bean.SchoolExcelReportBean;
+import com.bdxh.common.helper.excel.utils.DateUtils;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -7,17 +10,30 @@ import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolExcelDto;
 import com.bdxh.school.dto.SchoolQueryDto;
+import com.bdxh.school.entity.School;
+import com.bdxh.school.enums.SchoolTypeEnum;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/schoolWebController")
@@ -28,6 +44,11 @@ public class SchoolWebController {
 
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+
+    /**
+     * @Description: 导出报表名称
+     */
+    private static final String title = "学校列表报表信息.xlsx";
 
     @RequestMapping(value = "/findSchoolsInConditionPaging", method = RequestMethod.POST)
     @ApiOperation(value = "学校信息列表数据[分页筛选]", response = SchoolShowVo.class)
@@ -83,11 +104,74 @@ public class SchoolWebController {
         return WrapMapper.ok(wrapper.getResult());
     }
 
-
+    /**
+     * @Description: 学校信息导出
+     * @Author: Kang
+     * @Date: 2019/2/27 18:31
+     */
     @RequestMapping(value = "/downloadReportSchoolExcel", method = RequestMethod.POST)
-    @ApiOperation(value = "导出学校列表信息", response = Boolean.class)
-    public Object downloadReportSchoolExcel(@RequestBody SchoolExcelDto schoolExcelDto) {
-        Wrapper wrapper = schoolControllerClient.downloadReportSchoolExcel(schoolExcelDto);
-        return wrapper;
+    @ApiOperation(value = "学校信息导出")
+    @ResponseBody
+    public Object downloadReportSchoolExcel(@Validated @RequestBody SchoolExcelDto schoolExcelDto) {
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        List<School> schools = new ArrayList<>();
+        switch (schoolExcelDto.getIsBy()) {
+            case 1:
+                //分页学校信息导出
+                List<SchoolShowVo> tempShowVo = schoolControllerClient.findSchoolsInConditionPaging(schoolExcelDto).getResult().getList();
+                if (CollectionUtils.isNotEmpty(tempShowVo)) {
+                    tempShowVo.stream().forEach(e -> {
+                        School school = new School();
+                        BeanUtils.copyProperties(e, school);
+                        schools.add(school);
+                    });
+                }
+                break;
+            case 2:
+                //id选择信息导出
+                schools.addAll(schoolControllerClient.findSchoolInIds(schoolExcelDto.getIds()).getResult());
+                break;
+            case 3:
+                //查询所有学校信息
+                List<SchoolShowVo> tempShowVo1 = schoolControllerClient.findSchools().getResult();
+                if (CollectionUtils.isNotEmpty(tempShowVo1)) {
+                    tempShowVo1.stream().forEach(e -> {
+                        School school = new School();
+                        BeanUtils.copyProperties(e, school);
+                        schools.add(school);
+                    });
+                }
+
+                break;
+            default:
+                return WrapMapper.error("不存在的选项，请检查");
+        }
+        if (CollectionUtils.isEmpty(schools)) {
+            return WrapMapper.error("抱歉，相关学校不存在。。");
+        }
+
+        List<SchoolExcelReportBean> schoolExcelReportBeans = schools.stream().map(e -> {
+            SchoolExcelReportBean tempBean = new SchoolExcelReportBean();
+            BeanUtils.copyProperties(e, tempBean);
+            tempBean.setSchoolTypeValue(SchoolTypeEnum.getValue(e.getSchoolType()));
+            tempBean.setCreateDate(DateUtils.date2Str(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
+            //分割省市县
+            if (StringUtils.isNotBlank(e.getSchoolArea()) && e.getSchoolArea().contains("/")) {
+                tempBean.setProvince(e.getSchoolArea().substring(0, e.getSchoolArea().indexOf("/")));
+                tempBean.setCity(e.getSchoolArea().substring(e.getSchoolArea().indexOf("/") + 1, e.getSchoolArea().lastIndexOf("/")));
+                tempBean.setAreaOrcounty(e.getSchoolArea().substring(e.getSchoolArea().lastIndexOf("/") + 1));
+            }
+            return tempBean;
+        }).collect(Collectors.toList());
+
+        try (OutputStream out = response.getOutputStream()) {
+            String fileName = URLEncoder.encode(title, StandardCharsets.UTF_8.toString());
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
+            ExcelExportUtils.getInstance().exportObjects2Excel(schoolExcelReportBeans, SchoolExcelReportBean.class, true, "北斗星航", true, out);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("导出失败：" + e.getMessage());
+        }
+        return WrapMapper.ok(true);
     }
 }

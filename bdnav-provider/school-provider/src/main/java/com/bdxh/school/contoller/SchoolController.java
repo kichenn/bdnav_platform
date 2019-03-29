@@ -139,6 +139,7 @@ public class SchoolController {
         //符合条件的学校信息
         return WrapMapper.ok(schoolService.findSchoolShowVoInConditionPaging(schoolQueryDto));
     }
+
     /**
      * @Description: 根据学校Code查询学校
      * @Author: bin
@@ -223,21 +224,17 @@ public class SchoolController {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         List<School> schools = new ArrayList<>();
         switch (schoolExcelDto.getIsBy()) {
-            case 0:
-                //全部，满足条件的学校信息导出
-                schools.addAll(schoolService.findSchoolsInCondition(schoolExcelDto));
-                break;
             case 1:
-                //全部，无条件，所有学校
-                schools.addAll(schoolService.findSchoolAll());
-                break;
-            case 2:
                 //分页学校信息导出
                 schools.addAll(schoolService.findSchoolsInConditionPaging(schoolExcelDto).getList());
                 break;
-            case 3:
+            case 2:
                 //id选择信息导出
                 schools.addAll(schoolService.findSchoolInIds(schoolExcelDto.getIds()));
+                break;
+            case 3:
+                //全部，满足条件的学校信息导出
+                schools.addAll(schoolService.findSchoolsInCondition(schoolExcelDto));
                 break;
             default:
                 return WrapMapper.error("不存在的选项，请检查");
@@ -269,6 +266,18 @@ public class SchoolController {
             log.error("导出失败：" + e.getMessage());
         }
         return WrapMapper.ok(true);
+    }
+
+    /**
+     * @Description: 根据id批量查询信息
+     * @Author: Kang
+     * @Date: 2019/3/29 12:08
+     */
+    @RequestMapping(value = "/findSchoolInIds", method = RequestMethod.GET)
+    @ApiOperation(value = "根据id批量查询信息")
+    @ResponseBody
+    public Object findSchoolInIds(@RequestParam("ids") List<Long> ids) {
+        return WrapMapper.ok(schoolService.findSchoolInIds(ids));
     }
 
 

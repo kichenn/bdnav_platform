@@ -64,7 +64,7 @@ public class SchoolControllerClientFallback implements SchoolControllerClient {
     }
 
     @Override
-    public Wrapper downloadReportSchoolExcel(SchoolExcelDto schoolExcelDto) {
+    public Wrapper<List<School>> findSchoolInIds(List<Long> ids) {
         return WrapMapper.error();
     }
 
