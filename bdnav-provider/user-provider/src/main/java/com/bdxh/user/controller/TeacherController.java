@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value = "老师信息管理接口API", tags = "老师信息管理接口API")
@@ -190,6 +191,17 @@ public class TeacherController {
     @RequestMapping(value = "/findTeacherBySchoolDeptId", method = RequestMethod.GET)
     public Object findTeacherBySchoolDeptId(@RequestParam("schoolCode") String schoolCode, @RequestParam("schoolId") Long schoolId, @RequestParam("deptId") Long deptId) {
         return WrapMapper.ok(teacherDeptService.findTeacherBySchoolDeptId(schoolCode, schoolId, deptId));
+    }
+    @ApiOperation(value = "批量新增老师信息")
+    @RequestMapping(value = "/batchSaveTeacherInfo", method = RequestMethod.POST)
+    public Object batchSaveTeacherInfo(@RequestBody List<Teacher> teacherList){
+        try {
+            teacherService.batchSaveTeacherInfo(teacherList);
+            return WrapMapper.ok();
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+
     }
 
 }

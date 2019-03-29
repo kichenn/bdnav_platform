@@ -18,6 +18,8 @@ import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
  * @Author： binzh
@@ -59,6 +61,11 @@ public class StudentControllerFallback implements StudentControllerClient {
 
     @Override
     public Wrapper<Student> findStudentBySchoolClassId(String schoolCode, Long schoolId, Long classId) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper batchSaveStudentInfo(List<Student> studentList) {
         return WrapMapper.error();
     }
 }

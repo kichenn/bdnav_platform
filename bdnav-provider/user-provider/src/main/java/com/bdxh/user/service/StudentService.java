@@ -4,6 +4,7 @@ import com.bdxh.common.support.IService;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
+import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
@@ -83,4 +84,11 @@ public interface StudentService extends IService<Student> {
      * @param student
      */
     void saveStudent(Student student);
+
+    /**
+     * 批量新增学生
+     * @param studentList
+     * @return
+     */
+    void batchSaveStudentInfo(List<Student> studentList);
 }

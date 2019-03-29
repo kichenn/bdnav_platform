@@ -4,11 +4,15 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
+import com.bdxh.user.entity.Family;
+import com.bdxh.user.entity.Student;
 import com.bdxh.user.fallback.FamilyControllerFallback;
 import com.bdxh.user.vo.FamilyVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -75,4 +79,13 @@ public interface FamilyControllerClient {
     @RequestMapping(value = "/family/queryFamilyListPage",method = RequestMethod.POST)
     @ResponseBody
     Wrapper queryFamilyListPage(@RequestBody  FamilyQueryDto familyQueryDto);
+
+    /**
+     * 批量新增家长信息
+     * @param familyList
+     * @return
+     */
+    @RequestMapping(value = "/family/batchSaveFamilyInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper batchSaveFamilyInfo(@RequestBody List<Family> familyList);
 }

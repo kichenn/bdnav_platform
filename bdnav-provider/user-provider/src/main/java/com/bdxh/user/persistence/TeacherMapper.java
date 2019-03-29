@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface TeacherMapper extends Mapper<Teacher> {
@@ -21,4 +22,9 @@ public interface TeacherMapper extends Mapper<Teacher> {
 
     List<Teacher> selectAllTeacherInfo(@Param("teacherQueryDto")TeacherQueryDto teacherQueryDto);
 
+    //批量删除老师信息
+    int batchRemoveTeacherInfo(@Param("list") List<Map<String,String>> list);
+
+    //批量新增老师
+    int  batchSaveTeacherInfo(List<Teacher> teacherList);
 }
