@@ -124,6 +124,7 @@ public class SchoolWebController {
                     tempShowVo.stream().forEach(e -> {
                         School school = new School();
                         BeanUtils.copyProperties(e, school);
+                        school.setSchoolType(Byte.valueOf(e.getSchoolType()));
                         school.setCreateDate(DateUtil.format(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
                         schools.add(school);
                     });
@@ -140,6 +141,7 @@ public class SchoolWebController {
                     tempShowVo1.stream().forEach(e -> {
                         School school = new School();
                         BeanUtils.copyProperties(e, school);
+                        school.setSchoolType(Byte.valueOf(e.getSchoolType()));
                         school.setCreateDate(DateUtil.format(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
                         schools.add(school);
                     });

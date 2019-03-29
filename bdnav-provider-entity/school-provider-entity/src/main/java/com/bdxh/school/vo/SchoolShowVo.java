@@ -23,6 +23,9 @@ public class SchoolShowVo {
     @ApiModelProperty("创建时间")
     private String createDate;
 
+    @ApiModelProperty("详情地址")
+    private String schoolArea;
+
     @ApiModelProperty("省")
     private String province;
 
