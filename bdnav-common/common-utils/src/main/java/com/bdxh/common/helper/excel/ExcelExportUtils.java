@@ -379,9 +379,15 @@ public class ExcelExportUtils {
     }
 
     public void exportObjects2Excel(List<?> data, Class clazz, boolean isWriteHeader, String sheetName, boolean isXSSF,
-                                    OutputStream os) throws Exception {
+                                    OutputStream os) {
 
-        exportExcelNoModuleHandler(data, clazz, isWriteHeader, sheetName, isXSSF).write(os);
+        Workbook workbook = null;
+        try {
+            workbook = exportExcelNoModuleHandler(data, clazz, isWriteHeader, sheetName, isXSSF);
+            workbook.write(os);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void exportObjects2Excel(List<?> data, Class clazz, boolean isWriteHeader, String targetPath)
