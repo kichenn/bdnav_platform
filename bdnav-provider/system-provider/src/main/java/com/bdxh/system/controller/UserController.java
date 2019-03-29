@@ -47,7 +47,7 @@ public class UserController {
      */
     @ApiOperation(value = "增加系统用户")
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
-    public Object addUser(@Valid @RequestBody AddUserDto addUserDto, BindingResult bindingResult) {
+    public Object addUser(@Validated @RequestBody AddUserDto addUserDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -73,7 +73,7 @@ public class UserController {
      */
     @ApiOperation("修改用户信息")
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
-    public Object updateUser(@Valid @RequestBody UpdateUserDto updateUserDto, BindingResult bindingResult) {
+    public Object updateUser(@Validated @RequestBody UpdateUserDto updateUserDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -181,7 +181,7 @@ public class UserController {
 
 
     @RequestMapping(value = "/finaUserRoleByUserId", method = RequestMethod.GET)
-    @ApiOperation(value = "根据用户id查询所有权限", response = Boolean.class)
+    @ApiOperation(value = "根据用户id查询角色值", response = Boolean.class)
     public Object findUserRoleByUserId(@RequestParam(value = "userId") Long userId) {
         List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
         List<Long> roles = new ArrayList<>();
@@ -198,6 +198,12 @@ public class UserController {
         return WrapMapper.ok(userService.enableAndDisable(userId,status));
     }
 
+    @RequestMapping(value = "/findUserRelationship", method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前用户所有权限菜单", response = Boolean.class)
+    public Object findUserRelationship(@RequestParam(value = "userId") Long userId) {
+        List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
+        return WrapMapper.ok(result);
+    }
 
 
 }

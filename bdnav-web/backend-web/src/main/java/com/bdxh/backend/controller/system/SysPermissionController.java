@@ -3,8 +3,9 @@ package com.bdxh.backend.controller.system;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
+import com.bdxh.system.entity.Permission;
+
 import com.bdxh.system.feign.PermissionControllerClient;
-import com.bdxh.system.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 
 @RestController
@@ -24,6 +24,7 @@ public class SysPermissionController {
 
     @Autowired
     private PermissionControllerClient permissionControllerClient;
+
 
 
     @RequestMapping(value="/findPermissionByRoleId",method = RequestMethod.GET)
@@ -115,5 +116,49 @@ public class SysPermissionController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+
+    @RequestMapping(value="/delPermissionById",method = RequestMethod.GET)
+    @ApiOperation("删除单个菜单权限")
+    public Object delPermissionById(@RequestParam("id") Long id){
+        try {
+            Permission permission=permissionControllerClient.findPermissionByParentId(id).getResult();
+         if (permission!=null){
+             return WrapMapper.error("该节点下存在子节点不能删除");
+         }
+             Wrapper wrapper = permissionControllerClient.delPermissionById(id);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value="/findPermissionById",method = RequestMethod.GET)
+    @ApiOperation("根据id查询菜单详情")
+    public Object findPermissionById(@RequestParam("id") Long id){
+        try {
+            Wrapper wrapper = permissionControllerClient.findPermissionById(id);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    @RequestMapping(value="/UserPermissionMenu",method = RequestMethod.GET)
+    @ApiOperation("当前用户所有菜单列表")
+    public Object UserPermissionMenu(@RequestParam("id") Long id){
+        try {
+
+            Wrapper wrapper = permissionControllerClient.findPermissionById(id);
+            return WrapMapper.ok(wrapper.getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 }

@@ -3,6 +3,7 @@ package com.bdxh.backend.controller.school;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddRolePermissionBindMenuDto;
 import com.bdxh.school.dto.AddSchoolPermissionDto;
 import com.bdxh.school.dto.ModifySchoolPermissionDto;
 import com.bdxh.school.entity.SchoolPermission;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/schoolWebPermissionController")
 @Validated
 @Slf4j
-@Api(value = "学校权限交互API", tags = "学校权限交互API")
+@Api(value = "学校权限操作菜单管理API", tags = "学校权限操作菜单管理API")
 public class SchoolPermissionWebController {
 
     @Autowired
@@ -39,6 +40,13 @@ public class SchoolPermissionWebController {
                                                @RequestParam(name = "type") Byte type,
                                                @RequestParam(name = "schoolId", required = false) Long schoolId) {
         Wrapper wrapper = schoolPermissionControllerClient.findSchoolPermissionByRoleId(roleId, type, schoolId);
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
+    @RequestMapping(value = "/findPermissionList", method = RequestMethod.GET)
+    @ApiOperation(value = "菜单or按钮权限列表", response = SchoolPermissionTreeVo.class)
+    public Object findPermissionList() {
+        Wrapper wrapper = schoolPermissionControllerClient.findPermissionList();
         return WrapMapper.ok(wrapper.getResult());
     }
 
@@ -67,8 +75,14 @@ public class SchoolPermissionWebController {
 
 
     /**
-     * @Description: 用户与权限菜单的捆绑（addOrModify）
+     * @Description: 角色与权限菜单的捆绑
      * @Author: Kang
      * @Date: 2019/3/28 12:01
      */
+    @RequestMapping(value = "/addRolePermissionBindMenu", method = RequestMethod.POST)
+    @ApiOperation(value = "角色与权限菜单or按钮的捆绑")
+    public Object addRolePermissionBindMenu(@Validated @RequestBody AddRolePermissionBindMenuDto addRolePermissionBindMenu) {
+        Wrapper wrapper = schoolPermissionControllerClient.addRolePermissionBindMenu(addRolePermissionBindMenu);
+        return wrapper;
+    }
 }

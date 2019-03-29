@@ -30,7 +30,7 @@ public class UserRoleServiceImpl extends BaseService<UserRole> implements UserRo
     }
 
     @Override
-    public List<UserRole> findUserRoleByUserId(Long user_Id) {
-        return userRoleMapper.findUserRoleByUserId(user_Id);
+    public List<UserRole> findUserRoleByUserId(Long userId) {
+        return userRoleMapper.findUserRoleByUserId(userId);
     }
 }

@@ -76,13 +76,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     @Override
     public void addUsers(AddUserDto addUserDto) {
         String [] roleIds=addUserDto.getRoleIds().split(",");
-        AddUserDto user = BeanMapUtils.map(addUserDto, AddUserDto.class);
-        user.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
-           userMapper.addUsers(user);
+   /*     AddUserDto user = BeanMapUtils.map(addUserDto, AddUserDto.class);*/
+        addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
+           userMapper.addUsers(addUserDto);
         if (roleIds != null&&roleIds.length>0){
             for (int i = 0; i <roleIds.length ; i++) {
                 UserRole userRole=new UserRole();
-                userRole.setUserId(user.getId());
+                userRole.setUserId(addUserDto.getId());
                 userRole.setRoleId(Long.valueOf(roleIds[i]));
                 userRoleMapper.insert(userRole);
             }

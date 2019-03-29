@@ -56,15 +56,6 @@ public interface RoleControllerClient {
 
 
     /**
-     *  修改角色启用状态
-     * @return
-     */
-    @RequestMapping(value = "/role/updateRSwitchRole")
-    @ResponseBody
-    Wrapper<Boolean> updateRSwitchRole(@RequestParam(name = "roleId") Long roleId,
-                                       @RequestParam(name = "rswitch")Integer rswitch);
-
-    /**
      *  删除角色管理信息
      * @return
      */

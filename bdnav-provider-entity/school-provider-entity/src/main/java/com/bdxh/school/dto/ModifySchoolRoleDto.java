@@ -8,12 +8,9 @@ import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @Data
-public class ModifySchoolRoleDto implements Serializable {
-
-    private static final long serialVersionUID = 9202976682572419808L;
+public class ModifySchoolRoleDto {
 
 
-    @NotEmpty(message = "id不能为空")
     @NotNull(message = "id不能为空")
     @ApiModelProperty("id")
     private Long id;
@@ -40,10 +37,10 @@ public class ModifySchoolRoleDto implements Serializable {
     /**
      * 操作人
      */
-    @ApiModelProperty("操作人")
+    @ApiModelProperty("操作人（前端无需传递，后端处理）")
     private Long operator;
 
-    @ApiModelProperty("操作人名称")
+    @ApiModelProperty("操作人名称（前端无需传递，后端处理）")
     private String operatorName;
     /**
      * 备注

@@ -63,7 +63,7 @@ public class SchoolController {
     @RequestMapping(value = "/addSchool", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校", response = Boolean.class)
     @ResponseBody
-    public Object addSchool(@Valid @RequestBody SchoolDto schoolDto) {
+    public Object addSchool(@Validated @RequestBody SchoolDto schoolDto) {
         Boolean result = schoolService.addSchool(schoolDto);
         return WrapMapper.ok(result);
     }
@@ -76,7 +76,7 @@ public class SchoolController {
     @RequestMapping(value = "/modifySchoolInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校信息", response = Boolean.class)
     @ResponseBody
-    public Object modifySchoolInfo(@Valid @RequestBody ModifySchoolDto school) {
+    public Object modifySchoolInfo(@Validated @RequestBody ModifySchoolDto school) {
         Boolean result = schoolService.modifySchool(school);
         return WrapMapper.ok(result);
     }
@@ -265,6 +265,7 @@ public class SchoolController {
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
             schoolService.downloadReportItemsExcel(schoolExcelReportBeans, out);
         } catch (Exception e) {
+            e.printStackTrace();
             log.error("导出失败：" + e.getMessage());
         }
         return WrapMapper.ok(true);

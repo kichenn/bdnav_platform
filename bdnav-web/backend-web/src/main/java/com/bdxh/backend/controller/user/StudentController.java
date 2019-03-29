@@ -283,10 +283,11 @@ public class StudentController {
                    addStudentDto.setClassName(columns[6]);
                    addStudentDto.setAdress(columns[7]);
                    addStudentDto.setName(columns[8]);
-                   addStudentDto.setGender(columns[9].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
-                   addStudentDto.setPhone(columns[10]);
-                   addStudentDto.setCardNumber(columns[11]);
-                   addStudentDto.setRemark(columns[12]);
+                   addStudentDto.setBirth(columns[9]);
+                   addStudentDto.setGender(columns[10].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
+                   addStudentDto.setPhone(columns[11]);
+                   addStudentDto.setCardNumber(columns[12]);
+                   addStudentDto.setRemark(columns[13]);
                    String classNames = "";
 
                    if (!("").equals(addStudentDto.getCollegeName()) && null != addStudentDto.getCollegeName()) {
