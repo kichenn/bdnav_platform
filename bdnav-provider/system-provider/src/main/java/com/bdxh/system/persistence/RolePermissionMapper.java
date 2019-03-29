@@ -45,6 +45,6 @@ public interface RolePermissionMapper extends Mapper<RolePermission> {
     /**
      * 批量添加用户关系
      */
-    Integer batchAddPermissions(@Param("rolePermissionDto") List<RolePermissionDto> rolePermissionDto);
+   // Integer batchAddPermissions(@Param("rolePermissionDto") List<RolePermissionDto> rolePermissionDto);
 
 }

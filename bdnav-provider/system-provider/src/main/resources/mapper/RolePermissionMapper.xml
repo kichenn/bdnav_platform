@@ -40,7 +40,15 @@
   </select>
 
 
+  <!-- 根据用户id查找用户关系-->
+  <select id="findUserRelationship">
+    SELECT
+    <include refid="BaseColumns"/>
+    FROM
+    sys_role_permission
+    WHERE
 
+  </select>
 
 
 

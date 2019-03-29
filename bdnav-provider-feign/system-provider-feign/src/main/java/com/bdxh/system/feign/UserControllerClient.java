@@ -91,5 +91,16 @@ public interface UserControllerClient {
     @ResponseBody
     Wrapper enableAndDisable(@RequestParam(value = "userId") Long userId,@RequestParam(name = "status") Byte status);
 
+    /**
+     * 查询当前用户所有权限菜单
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/user/findUserRelationship")
+    @ResponseBody
+    Wrapper<List<UserRole>> findUserRelationship(@RequestParam(value = "userId") Long userId);
+
+
+
 
 }

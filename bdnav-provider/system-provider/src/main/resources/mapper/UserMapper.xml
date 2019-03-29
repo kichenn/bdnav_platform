@@ -63,15 +63,14 @@
       <if test="userName !=null and userName!=''">
         AND sys_user.user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
       </if>
-
       <if test="sex !=null and sex!=0">
         AND sys_user.sex =#{sex}
       </if>
       <if test="phone !=null and phone!=''">
-        AND sys_user.phone =#{phone}
+        AND sys_user.phone LIKE CONCAT(CONCAT('%',#{phone},'%'))
       </if>
-      <if test="deptId !=null and deptId!=0">
-        AND  sys_user.dept_id =#{deptId}
+      <if test="email !=null and email!=''">
+        AND sys_user.email LIKE CONCAT(CONCAT('%',#{email},'%'))
       </if>
       <if test="status !=null and status!=0">
         AND sys_user.status =#{status}
