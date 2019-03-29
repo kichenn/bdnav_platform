@@ -69,5 +69,10 @@ public class PermissionControllerClientFallback implements PermissionControllerC
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper<List<PermissionTreeVo>> userPermissionMenu(Long userId) {
+        return WrapMapper.error();
+    }
+
 
 }

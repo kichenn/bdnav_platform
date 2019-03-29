@@ -52,6 +52,41 @@
         </collection>
     </resultMap>
 
+    <resultMap id="UpResultMap" type="com.bdxh.system.dto.UserPermissionDto">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
+        <result column="path" jdbcType="VARCHAR" property="path"/>
+        <result column="icon" jdbcType="VARCHAR" property="icon"/>
+        <result column="component" jdbcType="VARCHAR" property="component"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="level" jdbcType="INTEGER" property="level"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <collection property="userRolesList" ofType="com.bdxh.system.entity.UserRole">
+            <id column="id" jdbcType="BIGINT" property="id" />
+            <result column="user_id" jdbcType="BIGINT" property="userId" />
+            <result column="role_id" jdbcType="BIGINT" property="roleId" />
+        </collection>
+        <collection property="roleAuthority" ofType="com.bdxh.system.entity.RolePermission">
+            <id column="id" jdbcType="BIGINT" property="id" />
+            <result column="role_id" jdbcType="BIGINT" property="roleId" />
+            <result column="permission_id" jdbcType="BIGINT" property="permissionId" />
+            <result column="rp_switch" jdbcType="TINYINT" property="RpSwitch" />
+            <result column="selected" jdbcType="TINYINT" property="selected" />
+            <result column="checked" jdbcType="TINYINT" property="checked" />
+            <result column="indeterminate" jdbcType="TINYINT" property="indeterminate" />
+        </collection>
+    </resultMap>
+
     <sql id="BaseColumns">
     id, parent_id, parent_ids, `name`,title, path, icon, component, sort, `level`, `type`, create_date, update_date, operator, remark
   </sql>
@@ -126,4 +161,24 @@
     </select>
 
 
+    <select id="findUserRights" resultMap="UpResultMap">
+  SELECT
+	P.*, ur.*, rp.id,
+	rp.rp_switch,
+	rp.selected,
+	rp.indeterminate,
+	rp.checked,
+	rp.role_id,
+	COUNT(DISTINCT rp.permission_id)
+FROM
+	sys_permission p
+INNER JOIN sys_role_permission rp ON p.id = rp.permission_id
+INNER JOIN sys_user_role ur ON rp.role_id = ur.role_id
+WHERE
+	ur.user_id = #{userId}
+AND p.type = #{type}
+GROUP BY
+	rp.permission_id
+
+    </select>
 </mapper>
