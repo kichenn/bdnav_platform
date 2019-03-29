@@ -30,4 +30,7 @@ public interface SchoolPermissionService extends IService<SchoolPermission> {
 
     //根据id查询权限信息
     SchoolPermission findSchoolPermissionById(Long id);
+
+    //根据parentId查询子菜单
+    List<SchoolPermission> findSchoolPermissionByParentId(Long parentId);
 }

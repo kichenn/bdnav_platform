@@ -74,7 +74,7 @@ public class SchoolPermissionWebController {
     }
 
     @RequestMapping(value = "/delPermissionById", method = RequestMethod.POST)
-    @ApiOperation(value = "根据id权限菜单", response = Boolean.class)
+    @ApiOperation(value = "根据id删除权限菜单", response = Boolean.class)
     public Object delPermissionById(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolPermissionControllerClient.delSchoolPermissionById(id);
         return wrapper;
