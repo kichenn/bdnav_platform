@@ -128,6 +128,10 @@ public class SchoolPermissionController {
     @RequestMapping(value = "/delSchoolPermissionById", method = RequestMethod.POST)
     @ApiOperation(value = "删除用户权限菜单or按钮", response = Boolean.class)
     public Object delSchoolPermissionById(@RequestParam("id") Long id) {
+        List<SchoolPermission> childPermissions = schoolPermissionService.findSchoolPermissionByParentId(id);
+        if (CollectionUtils.isNotEmpty(childPermissions)) {
+            return WrapMapper.error("存在子菜单,不能被删除");
+        }
         return WrapMapper.ok(schoolPermissionService.delPermissionById(id));
     }
 

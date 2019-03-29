@@ -73,6 +73,13 @@ public class SchoolPermissionWebController {
         return wrapper;
     }
 
+    @RequestMapping(value = "/delPermissionById", method = RequestMethod.POST)
+    @ApiOperation(value = "根据id删除权限菜单", response = Boolean.class)
+    public Object delPermissionById(@RequestParam("id") Long id) {
+        Wrapper wrapper = schoolPermissionControllerClient.delSchoolPermissionById(id);
+        return wrapper;
+    }
+
 
     /**
      * @Description: 角色与权限菜单的捆绑

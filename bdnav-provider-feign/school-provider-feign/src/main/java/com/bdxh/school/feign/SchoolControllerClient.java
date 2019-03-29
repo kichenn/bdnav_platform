@@ -3,14 +3,12 @@ package com.bdxh.school.feign;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
-import com.bdxh.school.dto.SchoolExcelDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.fallback.SchoolControllerClientFallback;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -99,14 +97,15 @@ public interface SchoolControllerClient {
     @ResponseBody
     Wrapper<List<SchoolShowVo>> findSchools();
 
+
     /**
-     * @Description: 学校信息导出
+     * @Description: 根据id批量查询信息
      * @Author: Kang
-     * @Date: 2019/3/12 11:07
+     * @Date: 2019/3/29 12:08
      */
-    @RequestMapping(value = "/school/downloadReportSchoolExcel", method = RequestMethod.POST)
+    @RequestMapping(value = "/school/findSchoolInIds", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper downloadReportSchoolExcel(@RequestBody SchoolExcelDto schoolExcelDto);
+    Wrapper<List<School>> findSchoolInIds(@RequestParam("ids") List<Long> ids);
 
     /**
      * @Description: 根据学校Code查询学校

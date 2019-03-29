@@ -12,16 +12,16 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
-* @Description: 学校权限feign降级服务
-* @Author: Kang
-* @Date: 2019/3/28 14:54
-*/
+ * @Description: 学校权限feign降级服务
+ * @Author: Kang
+ * @Date: 2019/3/28 14:54
+ */
 @Component
 public class SchoolPermissionControllerClientFallback implements SchoolPermissionControllerClient {
 
 
     @Override
-    public Wrapper<List<SchoolPermissionTreeVo>> findSchoolPermissionByRoleId(Long roleId, Byte type,Long schoolId) {
+    public Wrapper<List<SchoolPermissionTreeVo>> findSchoolPermissionByRoleId(Long roleId, Byte type, Long schoolId) {
         return WrapMapper.error();
     }
 
@@ -37,6 +37,11 @@ public class SchoolPermissionControllerClientFallback implements SchoolPermissio
 
     @Override
     public Wrapper modifySchoolPermission(ModifySchoolPermissionDto modifySchoolPermissionDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper delSchoolPermissionById(Long id) {
         return WrapMapper.error();
     }
 

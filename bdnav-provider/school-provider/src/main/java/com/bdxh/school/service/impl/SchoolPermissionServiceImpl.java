@@ -2,6 +2,7 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.common.support.BaseService;
 import com.bdxh.school.entity.SchoolPermission;
+import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.persistence.SchoolPermissionMapper;
 import com.bdxh.school.service.SchoolPermissionService;
 import lombok.extern.slf4j.Slf4j;
@@ -82,5 +83,13 @@ public class SchoolPermissionServiceImpl extends BaseService<SchoolPermission> i
     @Override
     public SchoolPermission findSchoolPermissionById(Long id) {
         return schoolPermissionMapper.selectByPrimaryKey(id);
+    }
+
+    //根据parentId查询子菜单
+    @Override
+    public List<SchoolPermission> findSchoolPermissionByParentId(Long parentId) {
+        SchoolPermission schoolPermission = new SchoolPermission();
+        schoolPermission.setParentId(parentId);
+        return schoolPermissionMapper.select(schoolPermission);
     }
 }
