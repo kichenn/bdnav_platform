@@ -11,6 +11,8 @@ import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.TeacherVo;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * @description:
  * @author: binzh
@@ -50,6 +52,11 @@ public class TeacherControllerFallback implements TeacherControllerClient {
 
     @Override
     public Wrapper<TeacherDept> findTeacherBySchoolDeptId(String schoolCode, Long schoolId, Long deptId) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper batchSaveTeacherInfo(List<Teacher> teacherList) {
         return WrapMapper.error();
     }
 }

@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -169,5 +170,17 @@ public class FamilyController {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
+    }
+
+    @ApiOperation(value = "批量新增家长信息")
+    @RequestMapping(value = "/batchSaveFamilyInfo", method = RequestMethod.POST)
+    public Object batchSaveFamilyInfo(@RequestBody List<Family> familyList){
+        try {
+            familyService.batchSaveFamilyInfo(familyList);
+            return WrapMapper.ok();
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+
     }
 }

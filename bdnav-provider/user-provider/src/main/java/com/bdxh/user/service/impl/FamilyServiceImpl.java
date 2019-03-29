@@ -21,7 +21,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 家长信息service实现
@@ -66,12 +69,19 @@ private SnowflakeIdWorker snowflakeIdWorker;
              String[] schoolCodes=schoolCode.split(",");
              String[] cardNumbers=cardNumber.split(",");
              if(schoolCodes.length==cardNumbers.length) {
+                 List<Map<String,String>>list =new ArrayList<>();
                  for (int i = 0; i < cardNumbers.length; i++) {
-                     familyMapper.removeFamilyInfo(schoolCodes[i], cardNumbers[i]);
-                     familyStudentMapper.familyRemoveFamilyStudent(schoolCodes[i], cardNumbers[i],null);
-                     baseUserMapper.deleteBaseUserInfo(schoolCodes[i],cardNumbers[i]);
+                     Map<String,String> map=new HashMap<>();
+                     map.put("cardNumber",cardNumbers[i]);
+                     map.put("schoolCode",schoolCodes[i]);
+                     list.add(map);
+
                  }
+                 familyMapper.batchRemoveFamilyInfo(list);
+                 familyStudentMapper.batchRemoveFamilyStudentInfo(list);
+                 baseUserMapper.batchRemoveBaseUserInfo(list);
              }
+
     }
 
     @Override
@@ -110,4 +120,18 @@ private SnowflakeIdWorker snowflakeIdWorker;
         baseUser.setId(snowflakeIdWorker.nextId());
         baseUserMapper.insert(baseUser);
     }
+
+    @Override
+    public void batchSaveFamilyInfo(List<Family> familyList) {
+        List<BaseUser> baseUserlist = BeanMapUtils.mapList(familyList, BaseUser.class);
+        for (int i = 0; i < baseUserlist.size(); i++) {
+            familyList.get(i).setId(snowflakeIdWorker.nextId());
+            baseUserlist.get(i).setUserType(3);
+            baseUserlist.get(i).setUserId(familyList.get(i).getId());
+            baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
+        }
+        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+        familyMapper.batchSaveFamilyInfo(familyList);
+    }
+
 }

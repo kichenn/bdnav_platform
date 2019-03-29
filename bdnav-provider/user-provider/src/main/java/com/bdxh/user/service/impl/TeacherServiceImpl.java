@@ -20,7 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 /**
@@ -66,11 +69,16 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         String[] schoolCode=schoolCodes.split(",");
         String[] cardNumber=cardNumbers.split(",");
         if(schoolCode.length==cardNumber.length){
-            for (int i=0; i<cardNumber.length; i++){
-                teacherMapper.deleteTeacher(schoolCode[i],cardNumber[i]);
-                teacherDeptMapper.deleteTeacherDept(schoolCode[i],cardNumber[i]);
-                baseUserMapper.deleteBaseUserInfo(schoolCode[i],cardNumber[i]);
-            }
+            List<Map<String,String>>list =new ArrayList<>();
+            for (int i = 0; i < cardNumber.length; i++) {
+                Map<String,String> map=new HashMap<>();
+                map.put("cardNumber",schoolCode[i]);
+                map.put("schoolCode",cardNumber[i]);
+                list.add(map);
+             }
+                teacherMapper.batchRemoveTeacherInfo(list);
+                teacherDeptMapper.batchRemoveTeacherDeptInfo(list);
+                baseUserMapper.batchRemoveBaseUserInfo(list);
         }
     }
 
@@ -135,5 +143,19 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
             teacherDeptMapper.insert(teacherDept);
         }
+    }
+
+    @Override
+    @Transactional
+    public void batchSaveTeacherInfo(List<Teacher> teacherList)  {
+        List<BaseUser> baseUserlist=BeanMapUtils.mapList(teacherList,BaseUser.class);
+        for (int i = 0; i < baseUserlist.size(); i++) {
+            teacherList.get(i).setId(snowflakeIdWorker.nextId());
+            baseUserlist.get(i).setUserType(2);
+            baseUserlist.get(i).setUserId(teacherList.get(i).getId());
+            baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
+        }
+            baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+            teacherMapper.batchSaveTeacherInfo(teacherList);
     }
 }

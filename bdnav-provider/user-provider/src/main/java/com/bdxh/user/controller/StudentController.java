@@ -17,6 +17,7 @@ import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.service.StudentService;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
@@ -182,6 +183,18 @@ public class StudentController {
     @RequestMapping(value = "/findStudentBySchoolClassId", method = RequestMethod.GET)
     public Object findStudentBySchoolClassId(@RequestParam("schoolCode") String schoolCode, @RequestParam("schoolId") Long schoolId, @RequestParam("classId") Long classId) {
         return WrapMapper.ok(studentService.findStudentBySchoolClassId(schoolCode, schoolId, classId));
+    }
+
+    @ApiOperation(value = "批量新增学生信息")
+    @RequestMapping(value = "/batchSaveStudentInfo", method = RequestMethod.POST)
+    public Object batchSaveStudentInfo(@RequestBody List<Student> studentList){
+        try {
+            studentService.batchSaveStudentInfo(studentList);
+            return WrapMapper.ok();
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+
     }
 
 }

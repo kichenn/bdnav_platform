@@ -132,21 +132,97 @@
     select <include refid="BaseColumn"/> from t_teacher
     <where>
       <if test="teacherQueryDto.schoolName!=null and teacherQueryDto.schoolName!=''">
-        AND school_name=#{teacherQueryDto.schoolName}
+        AND school_name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.schoolName},'%'))
       </if>
       <if test="teacherQueryDto.name!=null and teacherQueryDto.name!=''">
-        AND name=#{teacherQueryDto.name}
+        AND name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.name},'%'))
       </if>
       <if test="teacherQueryDto.cardNumber!=null and teacherQueryDto.cardNumber!=''">
-        AND card_number=#{teacherQueryDto.cardNumber}
+        AND card_number  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.cardNumber},'%'))
       </if>
       <if test="teacherQueryDto.phone!=null and teacherQueryDto.phone!=''">
-        AND phone=#{teacherQueryDto.phone}
+        AND phone  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.phone},'%'))
       </if>
       <if test="teacherQueryDto.activate!=0 ">
-        AND activate=#{teacherQueryDto.activate}
+        AND activate  =#{teacherQueryDto.activate}
       </if>
     </where>
     order by create_date desc
   </select>
+
+  <!--批量删除老师信息-->
+  <delete id="batchRemoveTeacherInfo">
+    delete from t_teacher where (school_code,card_number)in
+    <foreach collection="list" separator="," open="(" close=")" item="list" >
+      (#{list.schoolCode},#{list.cardNumber})
+    </foreach>
+  </delete>
+
+  <!--批量新增老师信息-->
+  <insert id="batchSaveTeacherInfo">
+    INSERT INTO t_teacher (
+	id,
+	school_id,
+	school_code,
+	school_name,
+	campus_name,
+	name,
+	gender,
+	birth,
+	position,
+	phone,
+	card_number,
+	idcard,
+	qq_number,
+	wx_number,
+	email,
+	image,
+	image_name,
+	nation_name,
+	dormitory_address,
+	adress,
+	physical_number,
+	physical_chip_number,
+	activate,
+	create_date,
+	update_date,
+	operator,
+	operator_name,
+	remark
+)
+VALUES
+<foreach collection="list" index="index" separator="," item="teacherList">
+  (
+  #{teacherList.id},
+  #{teacherList.schoolId},
+  #{teacherList.schoolCode},
+  #{teacherList.schoolName},
+  #{teacherList.campusName},
+  #{teacherList.name},
+  #{teacherList.gender},
+  #{teacherList.birth},
+  #{teacherList.position},
+  #{teacherList.phone},
+  #{teacherList.cardNumber},
+  #{teacherList.idcard},
+  #{teacherList.qqNumber},
+  #{teacherList.wxNumber},
+  #{teacherList.email},
+  #{teacherList.image},
+  #{teacherList.imageName},
+  #{teacherList.nationName},
+  #{teacherList.dormitoryAddress},
+  #{teacherList.adress},
+  #{teacherList.physicalNumber},
+  #{teacherList.physicalChipNumber},
+  #{teacherList.activate},
+  #{teacherList.createDate},
+  #{teacherList.updateDate},
+  #{teacherList.operator},
+  #{teacherList.operatorName},
+  #{teacherList.remark}
+  )
+</foreach>
+
+  </insert>
 </mapper>

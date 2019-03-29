@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -173,6 +174,7 @@ public class FamilyController {
             }
             List<String[]> familyList= ExcelImportUtil.readExcel(file);
             School school=new School();
+            List<Family> families =new ArrayList<>();
             for (int i=1;i<familyList.size();i++) {
                 String[] columns = familyList.get(i);
                 if (StringUtils.isNotBlank(familyList.get(i)[0])) {
@@ -190,24 +192,29 @@ public class FamilyController {
                         redisTemplate.opsForValue().set("schoolInfoVo", school);
                     }
                     if (school != null) {
-                        AddFamilyDto addFamilyDto = new AddFamilyDto();
-                        addFamilyDto.setSchoolCode(school.getSchoolCode());
-                        addFamilyDto.setSchoolId(school.getId());
-                        addFamilyDto.setSchoolName(school.getSchoolName());
-                        addFamilyDto.setName(columns[1]);
-                        addFamilyDto.setGender(columns[2].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
-                        addFamilyDto.setPhone(columns[3]);
-                        addFamilyDto.setCardNumber(columns[4]);
-                        addFamilyDto.setWxNumber(columns[5]);
-                        addFamilyDto.setAdress(columns[6]);
-                        addFamilyDto.setRemark(columns[7]);
-                        familyControllerClient.addFamily(addFamilyDto);
+                        Family family = new Family();
+                        family.setActivate(Byte.valueOf("1"));
+                        family.setSchoolCode(school.getSchoolCode());
+                        family.setSchoolId(school.getId());
+                        family.setSchoolName(school.getSchoolName());
+                        family.setName(columns[1]);
+                        family.setGender(columns[2].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
+                        family.setPhone(columns[3]);
+                        family.setCardNumber(columns[4]);
+                        family.setWxNumber(columns[5]);
+                        family.setAdress(columns[6]);
+                        family.setBirth(columns[7]);
+                        family.setIdcard(columns[8]);
+                        family.setRemark(columns[9]);
+                        families.add(family);
+
                     } else {
                         return WrapMapper.error("第" + i + "条的学校数据不存在！请检查");
                     }
                 }
             }
-            return  WrapMapper.ok();
+            familyControllerClient.batchSaveFamilyInfo(families);
+            return  WrapMapper.ok("导入完成");
         }catch (Exception e){
             return WrapMapper.error(e.getMessage());
         }

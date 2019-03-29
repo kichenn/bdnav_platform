@@ -89,4 +89,12 @@
              AND
              `card_number`=#{familyStudentDto.cardNumber};
         </update>
+
+    <!--批量删除家长学生关系数据信息-->
+    <delete id="batchRemoveFamilyStudentInfo">
+        delete from t_family_student where (school_code,card_number)in
+        <foreach collection="list" separator="," open="(" close=")" item="list" >
+            (#{list.schoolCode},#{list.cardNumber})
+        </foreach>
+    </delete>
 </mapper>

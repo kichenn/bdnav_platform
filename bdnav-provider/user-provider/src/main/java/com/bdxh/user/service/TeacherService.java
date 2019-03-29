@@ -8,6 +8,8 @@ import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @description: 老师信息service
  * @author: xuyuan
@@ -69,4 +71,10 @@ public interface TeacherService extends IService<Teacher> {
      * @return： void
      **/
     void updateTeacherInfo(UpdateTeacherDto updateTeacherDto);
+
+    /**
+     * 批量新增老师
+     * @param teacherList
+     */
+    void batchSaveTeacherInfo(List<Teacher> teacherList);
 }

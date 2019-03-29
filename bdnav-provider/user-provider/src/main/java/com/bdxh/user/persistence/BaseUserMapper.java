@@ -1,6 +1,7 @@
 package com.bdxh.user.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
@@ -56,4 +57,10 @@ public interface BaseUserMapper extends Mapper<BaseUser> {
 	 * @return
 	 */
 	BaseUser queryBaseUserBySchoolCodeAndCardNumber(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cadNumber);
+
+	//批量删除用户信息
+	int batchRemoveBaseUserInfo(@Param("list") List<Map<String,String>> list);
+
+	//批量新增用户信息
+	int batchSaveBaseUserInfo(List<BaseUser> baseUserList);
 }
