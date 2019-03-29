@@ -4,6 +4,7 @@ import com.bdxh.common.support.BaseService;
 import com.bdxh.system.dto.AddPermissionDto;
 import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.dto.RolePermissionDto;
+import com.bdxh.system.dto.UserPermissionDto;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.system.persistence.PermissionMapper;
 import com.bdxh.system.service.PermissionService;
@@ -119,6 +120,11 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
     @Override
     public Permission findPermissionByParentId(Long parentId) {
         return permissionMapper.findPermissionByParentId(parentId);
+    }
+
+    @Override
+    public List<UserPermissionDto> findUserRights(Long userId, Byte type) {
+        return permissionMapper.findUserRights(userId,type);
     }
 
 

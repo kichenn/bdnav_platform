@@ -147,12 +147,11 @@ public class SysPermissionController {
     }
 
 
-    @RequestMapping(value="/UserPermissionMenu",method = RequestMethod.GET)
+    @RequestMapping(value="/userPermissionMenu",method = RequestMethod.GET)
     @ApiOperation("当前用户所有菜单列表")
-    public Object UserPermissionMenu(@RequestParam("id") Long id){
+    public Object UserPermissionMenu(@RequestParam("userId") Long userId){
         try {
-
-            Wrapper wrapper = permissionControllerClient.findPermissionById(id);
+            Wrapper wrapper = permissionControllerClient.userPermissionMenu(userId);
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();

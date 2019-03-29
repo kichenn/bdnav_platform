@@ -107,4 +107,15 @@ public interface PermissionControllerClient {
     @ResponseBody
     Wrapper<Permission> findPermissionByParentId(@RequestParam("parentId") Long parentId);
 
+    /**
+     * 查询当前用户权限
+     * @return
+     */
+    @RequestMapping(value = "/permission/userPermissionMenu")
+    @ResponseBody
+    Wrapper<List<PermissionTreeVo>> userPermissionMenu(@RequestParam("userId") Long userId);
+
+
+
+
 }
