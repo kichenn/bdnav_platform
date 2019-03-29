@@ -108,12 +108,12 @@ public class SchoolWebController {
     /**
      * @Description: 学校信息导出
      * @Author: Kang
-     * @Date: 2019/2/27 18:31
+     * @Date: 2019/2/27 18:31{}
      */
-    @RequestMapping(value = "/downloadReportSchoolExcel", method = RequestMethod.POST)
+    @RequestMapping(value = "/downloadReportSchoolExcel", method = {RequestMethod.POST, RequestMethod.GET})
     @ApiOperation(value = "学校信息导出")
     @ResponseBody
-    public Object downloadReportSchoolExcel(@Validated @RequestBody SchoolExcelDto schoolExcelDto) {
+    public Object downloadReportSchoolExcel(SchoolExcelDto schoolExcelDto) {
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         List<School> schools = new ArrayList<>();
         switch (schoolExcelDto.getIsBy()) {
@@ -124,7 +124,7 @@ public class SchoolWebController {
                     tempShowVo.stream().forEach(e -> {
                         School school = new School();
                         BeanUtils.copyProperties(e, school);
-                        school.setCreateDate(DateUtil.format(e.getCreateDate(),"yyyy/MM/dd HH:mm:ss"));
+                        school.setCreateDate(DateUtil.format(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
                         schools.add(school);
                     });
                 }
@@ -140,7 +140,7 @@ public class SchoolWebController {
                     tempShowVo1.stream().forEach(e -> {
                         School school = new School();
                         BeanUtils.copyProperties(e, school);
-                        school.setCreateDate(DateUtil.format(e.getCreateDate(),"yyyy/MM/dd HH:mm:ss"));
+                        school.setCreateDate(DateUtil.format(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
                         schools.add(school);
                     });
                 }
