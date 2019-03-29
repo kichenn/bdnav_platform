@@ -96,23 +96,17 @@ public class AddUserDto implements Serializable {
     @ApiModelProperty("文件地址")
     private String ImgFileAddress;
 
-
-
     /**
      * 分配的角色id
      */
     @ApiModelProperty("分配的角色ids")
     private String roleIds;
 
-
-
     /**
      * 类型 1 普通用户 2 管理员
      */
     @ApiModelProperty("类型 1 普通用户 2 管理员")
     private Byte type = 1;
-
-
 
     /**
      * 创建时间
