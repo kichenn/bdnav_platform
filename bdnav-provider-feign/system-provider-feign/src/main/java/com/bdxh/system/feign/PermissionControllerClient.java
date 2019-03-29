@@ -22,12 +22,11 @@ public interface PermissionControllerClient {
 
     /**
      * 根据用户id查询权限列表
-     * @param userId
      * @return
      */
-    @RequestMapping(value = "/permission/permissionMenus",method = RequestMethod.GET)
+    @RequestMapping(value = "/permission/permissionMenus",method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<List<String>> permissionMenus(Long userId);
+    Wrapper<List<String>> permissionMenus(Long roleId);
 
 
     /**
@@ -111,7 +110,7 @@ public interface PermissionControllerClient {
      * 查询当前用户权限
      * @return
      */
-    @RequestMapping(value = "/permission/userPermissionMenu")
+    @RequestMapping(value = "/permission/userPermissionMenu",method = RequestMethod.POST)
     @ResponseBody
     Wrapper<List<PermissionTreeVo>> userPermissionMenu(@RequestParam("userId") Long userId);
 

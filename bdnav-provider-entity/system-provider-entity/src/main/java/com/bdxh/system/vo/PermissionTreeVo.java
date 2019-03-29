@@ -7,8 +7,6 @@ import lombok.Data;
 @Data
 public class PermissionTreeVo extends TreeBean {
 
-    @ApiModelProperty("父级菜单id")
-    private Long parentId;
 
     @ApiModelProperty("父级菜单ids")
     private String parentIds;
@@ -28,20 +26,20 @@ public class PermissionTreeVo extends TreeBean {
     @ApiModelProperty("菜单名称")
     private String title;
 
-
     @ApiModelProperty("类型 1 菜单 2 按钮")
     private Byte type;
-
-
-    /*@ApiModelProperty("创建时间")
+    
+/*
+    @ApiModelProperty("创建时间")
     private Date createDate;
 
     @ApiModelProperty("修改时间")
     private Date updateDate;
 
     @ApiModelProperty("操作人")
-    private Long operator;*/
+    private Long operator;
+*/
 
-    @ApiModelProperty("备注")
+   @ApiModelProperty("备注")
     private String remark;
 }

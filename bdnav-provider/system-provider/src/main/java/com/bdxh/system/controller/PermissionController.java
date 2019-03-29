@@ -42,8 +42,6 @@ public class PermissionController {
     @Autowired
     private RolePermissionService rolePermissionService;
 
-    @Autowired
-    private UserRoleService userRoleService;
 
     /**
      * @Description: 角色id查询用户菜单or按钮权限
@@ -71,7 +69,7 @@ public class PermissionController {
         return WrapMapper.ok(result);
     }
 
-    @RequestMapping(value = "/permissionMenus", method = RequestMethod.GET)
+    @RequestMapping(value = "/permissionMenus", method = RequestMethod.POST)
     @ApiOperation(value = "角色id查询用户菜单", response = List.class)
     @ResponseBody
     public Object permissionMenus(@RequestParam("roleId") Long roleId) {
@@ -186,7 +184,6 @@ public class PermissionController {
    @RequestMapping(value = "/addOrUpdatePermission", method = RequestMethod.POST)
     @ApiOperation(value = "保存并修改权限", response = Boolean.class)
     public Object addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto) {
-       System.out.println(""+baPermissionsDto.getRoleId());
        try{
            //根据roid将所有权限进行删除
            rolePermissionService.delRolePermission(Long.valueOf(baPermissionsDto.getRoleId()));
@@ -205,7 +202,7 @@ public class PermissionController {
         }catch (Exception e){
         e.printStackTrace();
         return WrapMapper.error(e.getMessage());
-    }
+     }
     }
 
 
@@ -253,9 +250,9 @@ public class PermissionController {
     }
 
 
-    @RequestMapping(value="/userPermissionMenu",method = RequestMethod.GET)
+    @RequestMapping(value="/userPermissionMenu",method = RequestMethod.POST)
     @ApiOperation("当前用户所有菜单列表")
-    public Object UserPermissionMenu(@RequestParam("userId") Long userId){
+    public Object userPermissionMenu(@RequestParam("userId") Long userId){
         try {
             List<UserPermissionDto> permissions = permissionService.findUserRights(userId, new Byte("1"));
             List<PermissionTreeVo> treeVos = new ArrayList<>();

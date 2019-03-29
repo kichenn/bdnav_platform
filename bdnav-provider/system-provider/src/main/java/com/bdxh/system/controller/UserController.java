@@ -80,6 +80,8 @@ public class UserController {
             return WrapMapper.error(errors);
         }
         try {
+            User userData = userService.getByUserName(updateUserDto.getUserName());
+            Preconditions.checkArgument(userData == null, "用户名已经存在");
             userService.updateUsers(updateUserDto);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -203,6 +205,18 @@ public class UserController {
     public Object findUserRelationship(@RequestParam(value = "userId") Long userId) {
         List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
         return WrapMapper.ok(result);
+    }
+
+
+
+
+    @RequestMapping(value = "/test111", method = RequestMethod.GET)
+    @ApiOperation(value = "测试专用", response = Boolean.class)
+    public Object test111(@RequestParam(value = "userName") String userName) {
+        User userData = userService.getByUserName(userName);
+        Preconditions.checkArgument(userData == null, "用户名已经存在");
+/*        List<UserRole> result= userRoleService.findUserRoleByUserId(userId);*/
+        return WrapMapper.ok();
     }
 
 
