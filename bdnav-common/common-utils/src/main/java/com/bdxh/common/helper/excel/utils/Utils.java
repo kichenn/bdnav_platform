@@ -272,10 +272,7 @@ public class Utils {
             // 写入转换器
             object = writeConvertible.execWrite(object);
         }
-        if (object != null) {
-            return object.toString();
-        }
-        return "";
+        return object.toString();
     }
 
 }
