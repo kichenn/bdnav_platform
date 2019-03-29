@@ -36,9 +36,6 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     @Autowired
     private UserRoleMapper userRoleMapper;
 
-
-
-
     @Override
     public PageInfo<UserQueryDto> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
