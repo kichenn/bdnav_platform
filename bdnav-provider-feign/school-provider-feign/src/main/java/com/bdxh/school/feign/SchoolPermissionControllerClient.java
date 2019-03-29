@@ -61,6 +61,16 @@ public interface SchoolPermissionControllerClient {
     @ResponseBody
     Wrapper modifySchoolPermission(@RequestBody ModifySchoolPermissionDto modifySchoolPermissionDto);
 
+
+    /**
+     * @Description: 删除用户权限
+     * @Author: Kang
+     * @Date: 2019/3/29 14:39
+     */
+    @RequestMapping(value = "/schoolPermission/delSchoolPermissionById", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper delSchoolPermissionById(@RequestParam("id") Long id);
+
     /**
      * @Description: 角色与权限菜单的捆绑
      * @Author: Kang
