@@ -253,18 +253,11 @@ public class PermissionController {
     }
 
 
-    @RequestMapping(value="/UserPermissionMenu",method = RequestMethod.GET)
+    @RequestMapping(value="/userPermissionMenu",method = RequestMethod.GET)
     @ApiOperation("当前用户所有菜单列表")
     public Object UserPermissionMenu(@RequestParam("userId") Long userId){
         try {
-            List<UserRole> userRoleList=userRoleService.findUserRoleByUserId(userId);
-            for (int i = 0; i < userRoleList.size(); i++) {
-
-            }
-
-
-            List<Permission> permissions = permissionService.findPermissionByRoleId(userRoleList.get(0).getRoleId(), new Byte("1"));
-
+            List<UserPermissionDto> permissions = permissionService.findUserRights(userId, new Byte("1"));
             List<PermissionTreeVo> treeVos = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(permissions)) {
                 permissions.stream().forEach(e -> {
@@ -278,8 +271,6 @@ public class PermissionController {
             TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
             List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
             return WrapMapper.ok(result);
-
-       /*     return WrapMapper.ok();*/
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

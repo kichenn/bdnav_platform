@@ -5,6 +5,7 @@ import com.bdxh.common.support.IService;
 import com.bdxh.system.dto.AddPermissionDto;
 import com.bdxh.system.dto.ModifyPermissionDto;
 import com.bdxh.system.dto.RolePermissionDto;
+import com.bdxh.system.dto.UserPermissionDto;
 import com.bdxh.system.entity.Permission;
 
 
@@ -47,6 +48,8 @@ public interface PermissionService extends IService<Permission> {
     //父级id查询部门信息
     Permission findPermissionByParentId(Long parentId);
 
+    //根据用户id查询所有权限
+    List<UserPermissionDto> findUserRights(Long userId, Byte type);
 
 
 }

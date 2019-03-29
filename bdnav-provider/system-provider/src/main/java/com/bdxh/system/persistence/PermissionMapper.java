@@ -1,6 +1,7 @@
 package com.bdxh.system.persistence;
 
 import com.bdxh.system.dto.RolePermissionDto;
+import com.bdxh.system.dto.UserPermissionDto;
 import com.bdxh.system.entity.Permission;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -29,5 +30,7 @@ public interface PermissionMapper extends Mapper<Permission> {
     //父级id查询部门信息
     Permission findPermissionByParentId(Long parentId);
 
+    //根据用户id查询所有权限
+    List<UserPermissionDto> findUserRights(@Param("userId") Long userId, @Param("type") Byte type);
 
 }
