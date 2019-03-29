@@ -4,6 +4,7 @@ import com.bdxh.common.helper.excel.ExcelExportUtils;
 import com.bdxh.common.helper.excel.bean.SchoolExcelReportBean;
 import com.bdxh.common.helper.excel.utils.DateUtils;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.ModifySchoolDto;
@@ -123,6 +124,7 @@ public class SchoolWebController {
                     tempShowVo.stream().forEach(e -> {
                         School school = new School();
                         BeanUtils.copyProperties(e, school);
+                        school.setCreateDate(DateUtil.format(e.getCreateDate(),"yyyy/MM/dd HH:mm:ss"));
                         schools.add(school);
                     });
                 }
@@ -138,6 +140,7 @@ public class SchoolWebController {
                     tempShowVo1.stream().forEach(e -> {
                         School school = new School();
                         BeanUtils.copyProperties(e, school);
+                        school.setCreateDate(DateUtil.format(e.getCreateDate(),"yyyy/MM/dd HH:mm:ss"));
                         schools.add(school);
                     });
                 }
@@ -156,7 +159,7 @@ public class SchoolWebController {
             tempBean.setSchoolTypeValue(SchoolTypeEnum.getValue(e.getSchoolType()));
             tempBean.setCreateDate(DateUtils.date2Str(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
             //分割省市县
-            if (StringUtils.isNotBlank(e.getSchoolArea()) && e.getSchoolArea().contains("/")) {
+            if (StringUtils.isNotEmpty(e.getSchoolArea()) && e.getSchoolArea().contains("/")) {
                 tempBean.setProvince(e.getSchoolArea().substring(0, e.getSchoolArea().indexOf("/")));
                 tempBean.setCity(e.getSchoolArea().substring(e.getSchoolArea().indexOf("/") + 1, e.getSchoolArea().lastIndexOf("/")));
                 tempBean.setAreaOrcounty(e.getSchoolArea().substring(e.getSchoolArea().lastIndexOf("/") + 1));
