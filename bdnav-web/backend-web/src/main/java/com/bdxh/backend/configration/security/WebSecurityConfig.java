@@ -74,7 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .antMatchers("/swagger-ui.html","/webjars/springfox-swagger-ui/**","/swagger-resources/**","/v2/api-docs/**").permitAll()
                 .antMatchers("/authentication/**").permitAll()
-                .anyRequest().permitAll()
+                .anyRequest().authenticated()
                 .and().headers().cacheControl();
         httpSecurity.addFilterBefore(myAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         httpSecurity.exceptionHandling().authenticationEntryPoint(myUnauthorizedHandler).accessDeniedHandler(myAccessDeniedHandler);
