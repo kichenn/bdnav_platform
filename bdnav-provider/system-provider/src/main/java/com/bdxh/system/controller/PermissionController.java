@@ -263,6 +263,10 @@ public class PermissionController {
                 permissions.stream().forEach(e -> {
                     PermissionTreeVo treeVo = new PermissionTreeVo();
                     treeVo.setTitle(e.getTitle());
+                    treeVo.setPath(e.getPath());
+                    treeVo.setComponent(e.getComponent());
+                    treeVo.setIcon(e.getIcon());
+                    treeVo.setName(e.getName());
                     treeVo.setCreateDate(e.getCreateDate());
                     BeanUtils.copyProperties(e, treeVo);
                     treeVos.add(treeVo);
