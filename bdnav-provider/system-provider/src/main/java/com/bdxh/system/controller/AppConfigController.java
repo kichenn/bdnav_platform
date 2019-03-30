@@ -72,7 +72,7 @@ public class AppConfigController {
     }
 
     @ApiOperation("根据id删除应用配置")
-    @RequestMapping(value = "/delAppConfig",method = RequestMethod.POST)
+    @RequestMapping(value = "/delAppConfig",method = RequestMethod.GET)
     public Object delAppConfig(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
         try {
             AppConfig appConfig = appConfigService.selectByKey(id);
