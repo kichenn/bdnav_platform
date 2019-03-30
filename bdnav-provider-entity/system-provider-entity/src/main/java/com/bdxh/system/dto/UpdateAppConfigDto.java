@@ -1,10 +1,9 @@
 package com.bdxh.system.dto;
 
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 /**
@@ -20,7 +19,7 @@ public class UpdateAppConfigDto implements Serializable {
     /**
      * 应用配置主键
      */
-    @NotEmpty(message = "应用配置主键不能为空")
+    @NotNull(message = "应用配置主键不能为空")
     @ApiModelProperty("应用配置主键")
     private Long id;
 

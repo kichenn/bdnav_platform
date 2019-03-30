@@ -81,7 +81,7 @@ public class AppConfigController {
             Map<String,Object> param = new HashMap<>();
             param.put("appId",appConfig.getAppId());
             Integer isAppConfigSecretExist = appConfigSecretService.isAppConfigSecretExist(param);
-            Preconditions.checkArgument(isAppConfigSecretExist==null,"应用配置下已包含秘钥");
+            Preconditions.checkArgument(isAppConfigSecretExist==null,"该应用下已生成秘钥");
             appConfigService.deleteByKey(id);
             return WrapMapper.ok();
         }catch (Exception e){
