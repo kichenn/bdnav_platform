@@ -12,10 +12,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -36,42 +33,42 @@ public class AppConfigController {
     private AppConfigControllerClient appConfigControllerClient;
 
     @ApiOperation("增加应用配置")
-    @RequestMapping("/addAppConfig")
+    @RequestMapping(value="/addAppConfig", method = RequestMethod.POST)
     public Object addAppConfig(@Validated @RequestBody AddAppConfigDto addAppConfigDto){
         Wrapper wrapper = appConfigControllerClient.addAppConfig(addAppConfigDto);
         return wrapper;
     }
 
     @ApiOperation("根据id删除应用配置")
-    @RequestMapping("/delAppConfig")
+    @RequestMapping(value="/delAppConfig",method = RequestMethod.GET)
     public Object delAppConfig(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
         Wrapper wrapper = appConfigControllerClient.delAppConfig(id);
         return wrapper;
     }
 
     @ApiOperation("根据id更新应用配置")
-    @RequestMapping("/updateAppConfig")
+    @RequestMapping(value = "/updateAppConfig",method = RequestMethod.POST)
     public Object updateAppConfig(@Validated @RequestBody UpdateAppConfigDto updateAppConfigDto){
         Wrapper wrapper = appConfigControllerClient.updateAppConfig(updateAppConfigDto);
         return wrapper;
     }
 
     @ApiOperation("查询应用配置")
-    @RequestMapping("/queryAppConfig")
+    @RequestMapping(value = "/queryAppConfig",method = RequestMethod.GET)
     public Object queryAppConfig(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
         Wrapper<AppConfig> appConfig = appConfigControllerClient.queryAppConfig(id);
         return appConfig;
     }
 
     @ApiOperation("查询应用配置列表")
-    @RequestMapping("/queryAppConfigList")
+    @RequestMapping(value ="/queryAppConfigList",method = RequestMethod.POST)
     public Object queryAppConfigList(@Validated @RequestBody AppConfigQueryDto appConfigQueryDto){
         Wrapper<List<AppConfig>> appConfigList = appConfigControllerClient.queryAppConfigList(appConfigQueryDto);
         return appConfigList;
     }
 
     @ApiOperation("分页查询应用配置列表")
-    @RequestMapping("/queryAppConfigListPage")
+    @RequestMapping(value ="/queryAppConfigListPage",method = RequestMethod.POST)
     public Object queryAppConfigListPage(@Validated @RequestBody AppConfigQueryDto appConfigQueryDto){
         Wrapper<PageInfo<AppConfig>> appConfigListPage = appConfigControllerClient.queryAppConfigListPage(appConfigQueryDto);
         return appConfigListPage;

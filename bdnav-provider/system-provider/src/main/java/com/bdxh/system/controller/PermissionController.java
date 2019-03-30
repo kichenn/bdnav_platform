@@ -14,11 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -82,7 +85,12 @@ public class PermissionController {
     @RequestMapping(value = "/addPermission", method = RequestMethod.POST)
     @ApiOperation(value = "新增用户权限", response = Boolean.class)
     @ResponseBody
-    public Object addPermission(@RequestBody AddPermissionDto addPermissionDto) {
+    public Object addPermission(@Valid @RequestBody AddPermissionDto addPermissionDto, BindingResult bindingResult) {
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         return WrapMapper.ok(permissionService.addPermission(addPermissionDto));
     }
 
@@ -94,7 +102,12 @@ public class PermissionController {
     @RequestMapping(value = "/modifyPermission", method = RequestMethod.POST)
     @ApiOperation(value = "修改用户权限", response = Boolean.class)
     @ResponseBody
-    public Object modifyPermission(@RequestBody ModifyPermissionDto mdifyPermissionDto) {
+    public Object modifyPermission(@Valid @RequestBody ModifyPermissionDto mdifyPermissionDto, BindingResult bindingResult) {
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         return WrapMapper.ok(permissionService.modifyPermission(mdifyPermissionDto));
     }
 
@@ -180,7 +193,12 @@ public class PermissionController {
      */
    @RequestMapping(value = "/addOrUpdatePermission", method = RequestMethod.POST)
     @ApiOperation(value = "保存并修改权限", response = Boolean.class)
-    public Object addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto) {
+    public Object addOrUpdatePermission(@Valid @RequestBody BaPermissionsDto baPermissionsDto, BindingResult bindingResult) {
+       //检验参数
+       if(bindingResult.hasErrors()){
+           String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+           return WrapMapper.error(errors);
+       }
        try{
            //根据roid将所有权限进行删除
            rolePermissionService.delRolePermission(Long.valueOf(baPermissionsDto.getRoleId()));

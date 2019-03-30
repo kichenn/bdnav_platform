@@ -57,7 +57,7 @@ public class SysPermissionController {
 
     @RequestMapping(value="/addPermission",method = RequestMethod.POST)
     @ApiOperation("添加权限菜单")
-    public Object addPermission(@RequestBody AddPermissionDto addPermissionDto){
+    public Object addPermission(@Validated @RequestBody AddPermissionDto addPermissionDto){
         try {
             Wrapper wrapper = permissionControllerClient.addPermission(addPermissionDto);
             return wrapper;
@@ -70,7 +70,7 @@ public class SysPermissionController {
 
     @RequestMapping(value="/modifyPermission",method = RequestMethod.POST)
     @ApiOperation("修改权限菜单")
-    public Object modifyPermission(@RequestBody ModifyPermissionDto modifyPermissionDto){
+    public Object modifyPermission(@Validated @RequestBody ModifyPermissionDto modifyPermissionDto){
         try {
             Wrapper wrapper = permissionControllerClient.modifyPermission(modifyPermissionDto);
             return wrapper;
@@ -109,7 +109,7 @@ public class SysPermissionController {
 
     @RequestMapping(value="/addOrUpdatePermission",method = RequestMethod.POST)
     @ApiOperation("保存并修改权限")
-    public Object addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto){
+    public Object addOrUpdatePermission(@Validated @RequestBody BaPermissionsDto baPermissionsDto){
         try {
             Wrapper wrapper = permissionControllerClient.addOrUpdatePermission(baPermissionsDto);
             return wrapper;

@@ -115,7 +115,12 @@ public class DictDataController {
      */
     @ApiOperation("根据条件查询列表")
     @RequestMapping(value = "/queryList",method = RequestMethod.POST)
-    public Object queryList(@Valid @RequestBody DictDataQueryDto dictDataQueryDto){
+    public Object queryList(@Valid @RequestBody DictDataQueryDto dictDataQueryDto, BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(dictDataQueryDto);
             List<DictData> dictData = dictDataService.queryList(param);
@@ -133,7 +138,12 @@ public class DictDataController {
      */
     @ApiOperation("根据条件分页查找字典数据")
     @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
-    public Object queryListPage(@Valid @RequestBody DictDataQueryDto dictDataQueryDto){
+    public Object queryListPage(@Valid @RequestBody DictDataQueryDto dictDataQueryDto, BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(dictDataQueryDto);
             PageInfo<DictData> dictData = dictDataService.findListPage(param, 1,2);

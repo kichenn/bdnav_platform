@@ -164,7 +164,12 @@ public class UserController {
      */
     @ApiOperation("根据条件分页查找用户")
     @RequestMapping(value = "/queryListPage", method = RequestMethod.POST)
-    public Object queryListPage(@RequestBody UserQueryDto userQueryDto) {
+    public Object queryListPage(@RequestBody UserQueryDto userQueryDto,BindingResult bindingResult) {
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
             PageInfo<UserQueryDto> Users = userService.findListPage(param,userQueryDto.getPageNum(),userQueryDto.getPageSize());

@@ -58,7 +58,7 @@ public class SysDeptController {
      */
     @RequestMapping(value = "/queryDeptList", method = RequestMethod.POST)
     @ApiOperation("带条件的查询部门")
-    public Object queryDeptList(@Valid @RequestBody DeptQueryDto deptQueryDto, BindingResult bindingResult) {
+    public Object queryDeptList(@RequestBody DeptQueryDto deptQueryDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -98,7 +98,7 @@ public class SysDeptController {
      */
     @RequestMapping(value = "/addDept", method = RequestMethod.POST)
     @ApiOperation("增加部门")
-    public Object addDept(@Valid @RequestBody DeptDto deptDto, BindingResult bindingResult) {
+    public Object addDept(@Validated @RequestBody DeptDto deptDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -120,7 +120,7 @@ public class SysDeptController {
      */
     @RequestMapping(value = "/updateDept", method = RequestMethod.POST)
     @ApiOperation("修改部门信息")
-    public Object updateDept(@Valid @RequestBody DeptDto deptDto, BindingResult bindingResult) {
+    public Object updateDept(@Validated @RequestBody DeptDto deptDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
