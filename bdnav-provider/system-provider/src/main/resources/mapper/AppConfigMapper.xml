@@ -42,7 +42,7 @@
 		select <include refid="BaseColumns"/> from sys_app_config
 		<where>
 			<if test="appName!=null and appName!=''">
-				and app_name = #{appName}
+	         and app_name LIKE CONCAT(CONCAT('%',#{appName},'%'))
 			</if>
 		</where>
 	</select>
