@@ -1,15 +1,12 @@
 package com.bdxh.system.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.system.entity.RolePermission;
-import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.service.PermissionService;
 import com.bdxh.system.service.RolePermissionService;
-import com.bdxh.system.service.UserRoleService;
 import com.bdxh.system.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

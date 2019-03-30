@@ -6,7 +6,6 @@ import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.system.feign.PermissionControllerClient;
 import com.bdxh.system.vo.PermissionTreeVo;
-import com.bdxh.system.vo.UserPermissionTreeVo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
