@@ -149,7 +149,7 @@ public class SysPermissionController {
     }
 
 
-    @RequestMapping(value="/userPermissionMenu",method = RequestMethod.POST)
+    @RequestMapping(value="/userPermissionMenu",method = RequestMethod.GET)
     @ApiOperation("当前用户所有菜单列表")
     public Object userPermissionMenu(@RequestParam("userId") Long userId){
         try {

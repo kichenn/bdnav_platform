@@ -45,6 +45,7 @@
 	         and app_name LIKE CONCAT(CONCAT('%',#{appName},'%'))
 			</if>
 		</where>
+		order by create_date desc
 	</select>
 
 </mapper>

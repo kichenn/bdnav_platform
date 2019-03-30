@@ -59,7 +59,8 @@ public class AppConfigController {
         }
         try {
             AppConfig appConfigData = appConfigService.getByAppConfigName(addAppConfigDto.getAppName());
-            Preconditions.checkNotNull(appConfigData,"应用配置已存在");
+            Preconditions.checkArgument(appConfigData == null, "该应用已存在");
+       /*     Preconditions.checkNotNull(appConfigData,"应用已存在");*/
             AppConfig appConfig = BeanMapUtils.map(addAppConfigDto, AppConfig.class);
             long appId = snowflakeIdWorker.nextId();
             appConfig.setAppId(appId);
@@ -76,7 +77,7 @@ public class AppConfigController {
     public Object delAppConfig(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
         try {
             AppConfig appConfig = appConfigService.selectByKey(id);
-            Preconditions.checkArgument(appConfig!=null,"应用配置不存在");
+            Preconditions.checkArgument(appConfig!=null,"应用不存在");
             Map<String,Object> param = new HashMap<>();
             param.put("appId",appConfig.getAppId());
             Integer isAppConfigSecretExist = appConfigSecretService.isAppConfigSecretExist(param);

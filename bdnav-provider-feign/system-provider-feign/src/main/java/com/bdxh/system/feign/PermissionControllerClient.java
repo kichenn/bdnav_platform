@@ -110,7 +110,7 @@ public interface PermissionControllerClient {
      * 查询当前用户权限
      * @return
      */
-    @RequestMapping(value = "/permission/userPermissionMenu",method = RequestMethod.POST)
+    @RequestMapping(value = "/permission/userPermissionMenu",method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<PermissionTreeVo>> userPermissionMenu(@RequestParam("userId") Long userId);
 

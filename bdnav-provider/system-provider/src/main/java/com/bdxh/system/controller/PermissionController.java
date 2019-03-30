@@ -265,14 +265,14 @@ public class PermissionController {
     }
 
 
-    @RequestMapping(value="/userPermissionMenu",method = RequestMethod.POST)
+    @RequestMapping(value="/userPermissionMenu",method = RequestMethod.GET)
     @ApiOperation("当前用户所有菜单列表")
     public Object userPermissionMenu(@RequestParam("userId") Long userId){
         try {
             List<UserPermissionDto> permissions = permissionService.findUserRights(userId, new Byte("1"));
             List<PermissionTreeVo> treeVos = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(permissions)) {
-                permissions.stream().forEach(e -> {
+          /*      permissions.stream().forEach(e -> {
                     PermissionTreeVo treeVo = new PermissionTreeVo();
                     treeVo.setTitle(e.getTitle());
                     treeVo.setPath(e.getPath());
@@ -282,7 +282,18 @@ public class PermissionController {
                     treeVo.setCreateDate(e.getCreateDate());
                     BeanUtils.copyProperties(e, treeVo);
                     treeVos.add(treeVo);
-                });
+                });*/
+                for (UserPermissionDto ps:permissions){
+                    PermissionTreeVo treeVo = new PermissionTreeVo();
+                    treeVo.setTitle(ps.getTitle());
+                    treeVo.setPath(ps.getPath());
+                    treeVo.setComponent(ps.getComponent());
+                    treeVo.setIcon(ps.getIcon());
+                    treeVo.setName(ps.getName());
+                    treeVo.setCreateDate(ps.getCreateDate());
+                    BeanUtils.copyProperties(ps, treeVo);
+                    treeVos.add(treeVo);
+                }
             }
             TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
             List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
