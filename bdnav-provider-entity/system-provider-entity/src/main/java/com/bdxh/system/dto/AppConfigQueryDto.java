@@ -12,7 +12,6 @@ import java.util.Date;
  * @create: 2019-03-21 17:34
  **/
 @Data
-@ApiModel("查询应用配置dto")
 public class AppConfigQueryDto extends Query {
 
     /**

@@ -13,7 +13,6 @@ import java.io.Serializable;
  * @create: 2019-03-21 17:34
  **/
 @Data
-@ApiModel("修改应用配置dto")
 public class UpdateAppConfigDto implements Serializable {
 
     private static final long serialVersionUID = 6026287473270217575L;

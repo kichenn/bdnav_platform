@@ -14,7 +14,6 @@ import java.util.Date;
  * @author: xuyuan
  * @create: 2019-03-22 09:43
  **/
-@ApiModel("应用秘钥查询dto")
 @Data
 public class AppConfigSecretQueryDto extends Query {
 

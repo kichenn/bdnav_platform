@@ -13,7 +13,6 @@ import java.io.Serializable;
  * @author: xuyuan
  * @create: 2019-03-22 09:23
  **/
-@ApiModel("增加应用秘钥dto")
 @Data
 public class UpdateAppConfigSecretDto implements Serializable {
 
