@@ -48,48 +48,48 @@ public class AppConfigSecret implements Serializable {
 	 * 应用id
 	 */
 	@Column(name = "app_id")
-	private Long AppId;
+	private Long appId;
 
 	/**
 	 * 商户号
 	 */
 	@Column(name = "mch_id")
-	private Long MchId;
+	private Long mchId;
 
 	/**
 	 * 商户名称
 	 */
 	@Column(name = "mch_name")
-	private String MchName;
+	private String mchName;
 
 	/**
 	 * 秘钥
 	 */
 	@Column(name = "app_secret")
-	private String AppSecret;
+	private String appSecret;
 
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_date")
-	private Date CreateDate;
+	private Date createDate;
 
 	/**
 	 * 修改时间
 	 */
 	@Column(name = "update_date")
-	private Date UpdateDate;
+	private Date updateDate;
 
 	/**
 	 * 操作人
 	 */
 	@Column(name = "operator")
-	private Long Operator;
+	private Long operator;
 
 	/**
 	 * 备注
 	 */
 	@Column(name = "remark")
-	private String Remark;
+	private String remark;
 
 }

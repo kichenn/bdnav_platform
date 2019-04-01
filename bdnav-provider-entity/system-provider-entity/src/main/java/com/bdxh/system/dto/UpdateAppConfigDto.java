@@ -27,24 +27,24 @@ public class UpdateAppConfigDto implements Serializable {
      * 应用名称
      */
     @ApiModelProperty("应用配置名称")
-    private String AppName;
+    private String appName;
 
     /**
      * 应用描述
      */
     @ApiModelProperty("应用配置描述")
-    private String AppDesc;
+    private String appDesc;
 
     /**
      * 操作人
      */
     @ApiModelProperty("操作人")
-    private Long Operator;
+    private Long operator;
 
     /**
      * 备注
      */
     @ApiModelProperty("备注")
-    private String Remark;
+    private String remark;
 
 }

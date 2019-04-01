@@ -47,48 +47,48 @@ public class AppConfigSecretQueryDto extends Query {
      * 应用id
      */
     @ApiModelProperty("应用id")
-    private Long AppId;
+    private Long appId;
 
     /**
      * 商户号
      */
     @ApiModelProperty("商户号")
-    private Long MchId;
+    private Long mchId;
 
     /**
      * 商户名称
      */
     @ApiModelProperty("商户名称")
-    private String MchName;
+    private String mchName;
 
     /**
      * 秘钥
      */
     @ApiModelProperty("秘钥")
-    private String AppSecret;
+    private String appSecret;
 
     /**
      * 创建时间
      */
     @ApiModelProperty("创建时间")
-    private Date CreateDate;
+    private Date createDate;
 
     /**
      * 修改时间
      */
     @ApiModelProperty("修改时间")
-    private Date UpdateDate;
+    private Date updateDate;
 
     /**
      * 操作人
      */
     @ApiModelProperty("操作人")
-    private Long Operator;
+    private Long operator;
 
     /**
      * 备注
      */
     @ApiModelProperty("备注")
-    private String Remark;
+    private String remark;
 
 }

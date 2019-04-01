@@ -47,18 +47,18 @@ public class UpdateAppConfigSecretDto implements Serializable {
      * 商户名称
      */
     @ApiModelProperty("商户名称")
-    private String MchName;
+    private String mchName;
 
     /**
      * 操作人
      */
     @ApiModelProperty("操作人")
-    private Long Operator;
+    private Long operator;
 
     /**
      * 备注
      */
     @ApiModelProperty("备注")
-    private String Remark;
+    private String remark;
 
 }

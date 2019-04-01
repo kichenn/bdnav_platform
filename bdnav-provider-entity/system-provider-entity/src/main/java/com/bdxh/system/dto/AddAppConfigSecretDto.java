@@ -44,25 +44,25 @@ public class AddAppConfigSecretDto implements Serializable {
      */
     @NotNull(message = "应用id不能为空")
     @ApiModelProperty("应用id")
-    private Long AppId;
+    private Long appId;
 
     /**
      * 商户名称
      */
     @NotEmpty(message = "商户名称不能为空")
     @ApiModelProperty("商户名称")
-    private String MchName;
+    private String mchName;
 
     /**
      * 操作人
      */
     @ApiModelProperty("操作人")
-    private Long Operator;
+    private Long operator;
 
     /**
      * 备注
      */
     @ApiModelProperty("备注")
-    private String Remark;
+    private String remark;
 
 }
