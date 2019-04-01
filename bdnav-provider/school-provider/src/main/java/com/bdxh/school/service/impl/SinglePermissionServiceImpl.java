@@ -59,7 +59,9 @@ public class SinglePermissionServiceImpl extends BaseService<SinglePermission> i
         SinglePermission singlePermission = new SinglePermission();
         BeanUtils.copyProperties(singlePermissionQueryDto, singlePermission);
         //设置类型
-        singlePermission.setUserType(singlePermissionQueryDto.getSingleUserTypeEnum().getKey());
+        if (singlePermissionQueryDto.getSingleUserTypeEnum()!=null){
+            singlePermission.setUserType(singlePermissionQueryDto.getSingleUserTypeEnum().getKey());
+        }
         PageInfo<SinglePermission> pageInfo = new PageInfo(singlePermissionMapper.findSinglePermissionInConditionPage(singlePermission));
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
