@@ -251,29 +251,48 @@ public class StudentController {
                Student student = new Student();
                School school = new School();
                List<SchoolClass> schoolClassList = new ArrayList<>();
-
+               List<String> cardNumberList=new ArrayList<>();
                if (StringUtils.isNotBlank(studentList.get(i)[0])) {
                    if (i == 1) {
                        //第一条查询数据存到缓存中
                        Wrapper schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
                        Wrapper schoolClassWrapper = schoolClassControllerClient.queryClassUrlBySchoolCode(columns[0]);
+                       Wrapper studentNumberWrapper =studentControllerClient.queryCardNumberBySchoolCode(columns[0]);
                        schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
                        school = (School) schoolWrapper.getResult();
+                       cardNumberList=(List<String>) studentNumberWrapper.getResult();
                        redisTemplate.opsForValue().set("schoolInfoVo", school);
                        redisTemplate.opsForValue().set("schoolClassList", schoolClassList);
+                       redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
                        //判断当前schoolCode是否与上一条相同
                    } else if (studentList.get(i)[0].equals(i - 1 >= studentList.size() ? studentList.get(studentList.size())[0] : studentList.get(i - 1)[0])) {
                        //判断得出在同一个班级直接从缓存中拉取数据
                        school = (School) redisTemplate.opsForValue().get("schoolInfoVo");
                        schoolClassList = (List<SchoolClass>) redisTemplate.opsForValue().get("schoolClassList");
+                       cardNumberList=(List<String>)redisTemplate.opsForValue().get("cardNumberList");
                    } else {
                        //重新查询数据库进行缓存
                        Wrapper schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
                        Wrapper schoolClassWrapper = schoolClassControllerClient.queryClassUrlBySchoolCode(columns[0]);
+                       Wrapper studentNumberWrapper =studentControllerClient.queryCardNumberBySchoolCode(columns[0]);
                        schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
                        school = (School) schoolWrapper.getResult();
+                       cardNumberList=(List<String>) studentNumberWrapper.getResult();
                        redisTemplate.opsForValue().set("schoolInfoVo", school);
                        redisTemplate.opsForValue().set("schoolClassList", schoolClassList);
+                       redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
+                   }
+                   //判断当前学校是否有重复学号
+                   for (int j = 0; j < cardNumberList.size(); j++) {
+                       if(columns[12].equals(cardNumberList.get(j))){
+                            return WrapMapper.error("请检查" + i + "条数据学号重复");
+                       }else{
+                           student.setCardNumber(columns[12]);
+                           cardNumberList.add(columns[12]);
+                           redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
+                           break;
+                       }
+
                    }
                    student.setSchoolName(school.getSchoolName());
                    student.setSchoolId(school.getId());
@@ -290,7 +309,7 @@ public class StudentController {
                    student.setBirth(columns[9]);
                    student.setGender(columns[10].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
                    student.setPhone(columns[11]);
-                   student.setCardNumber(columns[12]);
+
                    student.setIdcard(columns[13]);
                    student.setRemark(columns[14]);
                    String classNames = "";

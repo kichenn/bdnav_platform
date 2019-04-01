@@ -167,4 +167,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         studentMapper.batchSaveStudentInfo(studentList);
     }
 
+    @Override
+    public List<String> queryCardNumberBySchoolCode(String schoolCode) {
+        return studentMapper.queryCardNumberBySchoolCode(schoolCode);
+    }
 }

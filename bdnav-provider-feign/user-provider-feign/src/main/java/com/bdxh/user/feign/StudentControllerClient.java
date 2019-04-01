@@ -104,4 +104,13 @@ public interface StudentControllerClient {
     @RequestMapping(value = "/student/batchSaveStudentInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper batchSaveStudentInfo(@RequestBody List<Student> studentList);
+
+    /**
+     * 根据学校Code查询所有学生学号
+     * @param schoolCode
+     * @return
+     */
+    @RequestMapping(value = "/student/queryCardNumberBySchoolCode", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper queryCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode);
 }

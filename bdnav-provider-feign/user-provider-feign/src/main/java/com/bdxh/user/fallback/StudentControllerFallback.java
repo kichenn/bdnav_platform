@@ -68,4 +68,9 @@ public class StudentControllerFallback implements StudentControllerClient {
     public Wrapper batchSaveStudentInfo(List<Student> studentList) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper queryCardNumberBySchoolCode(String schoolCode) {
+        return WrapMapper.error();
+    }
 }
