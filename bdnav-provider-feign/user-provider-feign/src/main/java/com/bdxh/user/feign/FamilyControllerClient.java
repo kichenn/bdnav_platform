@@ -94,7 +94,7 @@ public interface FamilyControllerClient {
      * @param schoolCode
      * @return
      */
-    @RequestMapping(value = "/teacher/queryFamilyCardNumberBySchoolCode", method = RequestMethod.POST)
+    @RequestMapping(value = "/family/queryFamilyCardNumberBySchoolCode", method = RequestMethod.POST)
     @ResponseBody
     Wrapper queryFamilyCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode);
 }

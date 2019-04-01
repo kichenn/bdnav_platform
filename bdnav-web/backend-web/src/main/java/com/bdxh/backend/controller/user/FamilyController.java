@@ -186,18 +186,18 @@ public class FamilyController {
                         school = (School) wrapper.getResult();
                         cardNumberList=(List<String>)familyWeapper.getResult();
                         redisTemplate.opsForValue().set("schoolInfoVo", school);
-                        redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
+                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
                         //判断得出在同一个班级直接从缓存中拉取数据
                     } else if (familyList.get(i)[0].equals(i - 1 >= familyList.size() ? familyList.get(familyList.size() - 1)[0] : familyList.get(i - 1)[0])) {
                         school = (School) redisTemplate.opsForValue().get("schoolInfoVo");
-                        cardNumberList = (List<String>)redisTemplate.opsForValue().get("cardNumberList");
+                        cardNumberList = (List<String>)redisTemplate.opsForValue().get("familyCardNumberList");
                     } else {
                         Wrapper wrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
                         Wrapper familyWeapper=familyControllerClient.queryFamilyCardNumberBySchoolCode(columns[0]);
                         school = (School) wrapper.getResult();
                         cardNumberList=(List<String>)familyWeapper.getResult();
                         redisTemplate.opsForValue().set("schoolInfoVo", school);
-                        redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
+                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
                     }
                     if (school != null) {
                         Family family = new Family();
@@ -209,16 +209,18 @@ public class FamilyController {
                         family.setGender(columns[2].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
                         family.setPhone(columns[3]);
                         //判断当前学校是否有重复卡号
-                        if(cardNumberList.size()>0) {
+                        if(null!=cardNumberList) {
                             for (int j = 0; j < cardNumberList.size(); j++) {
                                 if (columns[4].equals(cardNumberList.get(j))) {
                                     return WrapMapper.error("请检查" + i + "条数据卡号已存在");
                                 }
                             }
+                        }else{
+                            cardNumberList=new ArrayList<>();
                         }
                         family.setCardNumber(columns[4]);
                         cardNumberList.add(columns[4]);
-                        redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
+                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
                         family.setWxNumber(columns[5]);
                         family.setAdress(columns[6]);
                         family.setBirth(columns[7]);
