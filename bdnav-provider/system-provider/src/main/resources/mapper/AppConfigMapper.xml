@@ -46,7 +46,6 @@
 		<where>
 			<if test="appName!=null and appName!=''">
 			 app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
-
 			</if>
 		</where>
 		ORDER BY
