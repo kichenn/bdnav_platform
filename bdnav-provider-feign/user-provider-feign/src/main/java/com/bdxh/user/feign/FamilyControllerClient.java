@@ -88,4 +88,13 @@ public interface FamilyControllerClient {
     @RequestMapping(value = "/family/batchSaveFamilyInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper batchSaveFamilyInfo(@RequestBody List<Family> familyList);
+
+    /**
+     * 根据学校Code查询所有家长卡号
+     * @param schoolCode
+     * @return
+     */
+    @RequestMapping(value = "/teacher/queryFamilyCardNumberBySchoolCode", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper queryFamilyCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode);
 }

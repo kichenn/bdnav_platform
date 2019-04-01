@@ -104,4 +104,13 @@ public interface TeacherControllerClient {
     @RequestMapping(value = "/teacher/batchSaveTeacherInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper batchSaveTeacherInfo(@RequestBody List<Teacher> teacherList);
+
+    /**
+     * 根据学校Code查询所有老师卡号
+     * @param schoolCode
+     * @return
+     */
+    @RequestMapping(value = "/teacher/queryTeacherCardNumberBySchoolCode", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper queryTeacherCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode);
 }

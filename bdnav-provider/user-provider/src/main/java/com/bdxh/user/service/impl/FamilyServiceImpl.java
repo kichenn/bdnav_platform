@@ -134,4 +134,8 @@ private SnowflakeIdWorker snowflakeIdWorker;
         familyMapper.batchSaveFamilyInfo(familyList);
     }
 
+    @Override
+    public List<String> queryFamilyCardNumberBySchoolCode(String schoolCode) {
+        return familyMapper.queryFamilyCardNumberBySchoolCode(schoolCode);
+    }
 }

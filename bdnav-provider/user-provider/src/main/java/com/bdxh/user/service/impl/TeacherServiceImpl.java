@@ -158,4 +158,9 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
             teacherMapper.batchSaveTeacherInfo(teacherList);
     }
+
+    @Override
+    public List<String> queryTeacherCardNumberBySchoolCode(String schoolCode) {
+        return teacherMapper.queryTeacherCardNumberBySchoolCode(schoolCode);
+    }
 }

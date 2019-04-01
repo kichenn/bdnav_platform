@@ -118,7 +118,7 @@ public class StudentController {
                }
             }
             Wrapper wrapper=studentControllerClient.addStudent(addStudentDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return WrapMapper.ok(wrapper.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -292,7 +292,6 @@ public class StudentController {
                            redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
                            break;
                        }
-
                    }
                    student.setSchoolName(school.getSchoolName());
                    student.setSchoolId(school.getId());
@@ -309,7 +308,6 @@ public class StudentController {
                    student.setBirth(columns[9]);
                    student.setGender(columns[10].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
                    student.setPhone(columns[11]);
-
                    student.setIdcard(columns[13]);
                    student.setRemark(columns[14]);
                    String classNames = "";

@@ -31,4 +31,7 @@ public interface FamilyMapper extends Mapper<Family> {
 
     //批量新增家长信息
     int batchSaveFamilyInfo(List<Family> familyList);
+
+    //根据学校Code查询卡号
+    List<String> queryFamilyCardNumberBySchoolCode(@Param("schoolCode")String schoolCode);
 }
