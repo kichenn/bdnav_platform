@@ -27,7 +27,7 @@
     sys_dict_data
     <where>
       <if test="dataName !=null">
-        data_name LIKE CONCAT(CONCAT('%',#{dataName},'%'));
+        data_name LIKE CONCAT(CONCAT('%',#{dataName},'%'))
       </if>
     </where>
   </select>

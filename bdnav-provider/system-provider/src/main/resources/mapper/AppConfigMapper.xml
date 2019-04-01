@@ -38,18 +38,38 @@
 		from sys_app_config where app_name = #{appName} limit 1;
 	</select>
 
+<!--
 	<select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
 		SELECT
 		<include refid="BaseColumns"/>
 		FROM
 		sys_app_config
 		<where>
-			<if test="appName!=null and appName!=''">
-			 app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+			<if test="appName !=null and appName !=''">
+				AND app_name = #{appName}
+			/*app_name LIKE CONCAT(CONCAT('%',#{appName,jdbcType = VARCHAR},'%'))*/
+			/*	app_name LIKE concat('%',#{appName},'%')*/
+			/* app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')*/
 			</if>
 		</where>
 		ORDER BY
 		create_date DESC
 	</select>
+-->
+
+	<!--带条件的查询-->
+	<select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM
+		sys_app_config
+		<where>
+			<if test="appName !=null and appName !=''">
+				app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+			</if>
+		</where>
+		ORDER BY create_date DESC
+	</select>
+
 
 </mapper>
