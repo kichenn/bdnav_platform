@@ -163,8 +163,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             baseUserlist.get(i).setUserId(studentList.get(i).getId());
             baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
         }
-        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
         studentMapper.batchSaveStudentInfo(studentList);
+        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+
     }
 
     @Override

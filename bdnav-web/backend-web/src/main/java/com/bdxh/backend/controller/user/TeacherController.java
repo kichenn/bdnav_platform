@@ -216,16 +216,16 @@ public class TeacherController {
                     tacher.setNationName(columns[4]);
                     tacher.setPhone(columns[5]);
                     //判断当前学校是否有重复卡号
-                    for (int j = 0; j < cardNumberList.size(); j++) {
-                        if(columns[6].equals(cardNumberList.get(j))){
-                            return WrapMapper.error("请检查" + i + "条数据学号重复");
-                        }else{
-                            tacher.setCardNumber(columns[6]);
-                            cardNumberList.add(columns[6]);
-                            redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
-                            break;
+                    if(cardNumberList.size()>0) {
+                        for (int j = 0; j < cardNumberList.size(); j++) {
+                            if (columns[6].equals(cardNumberList.get(j))) {
+                                return WrapMapper.error("请检查" + i + "条数据卡号已存在");
+                            }
                         }
                     }
+                    tacher.setCardNumber(columns[6]);
+                    cardNumberList.add(columns[6]);
+                    redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
                     tacher.setBirth(columns[7]);
                     tacher.setIdcard(columns[8]);
                     tacher.setRemark(columns[9]);

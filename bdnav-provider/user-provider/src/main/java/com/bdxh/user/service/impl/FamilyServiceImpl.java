@@ -130,8 +130,9 @@ private SnowflakeIdWorker snowflakeIdWorker;
             baseUserlist.get(i).setUserId(familyList.get(i).getId());
             baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
         }
-        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
         familyMapper.batchSaveFamilyInfo(familyList);
+        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+
     }
 
     @Override

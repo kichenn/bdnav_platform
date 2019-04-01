@@ -283,16 +283,16 @@ public class StudentController {
                        redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
                    }
                    //判断当前学校是否有重复学号
-                   for (int j = 0; j < cardNumberList.size(); j++) {
-                       if(columns[12].equals(cardNumberList.get(j))){
-                            return WrapMapper.error("请检查" + i + "条数据学号重复");
-                       }else{
-                           student.setCardNumber(columns[12]);
-                           cardNumberList.add(columns[12]);
-                           redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
-                           break;
+                   if(cardNumberList.size()>0) {
+                       for (int j = 0; j < cardNumberList.size(); j++) {
+                           if (columns[12].equals(cardNumberList.get(j))) {
+                               return WrapMapper.error("请检查" + i + "条数据学号已存在");
+                           }
                        }
                    }
+                   student.setCardNumber(columns[12]);
+                   cardNumberList.add(columns[12]);
+                   redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
                    student.setSchoolName(school.getSchoolName());
                    student.setSchoolId(school.getId());
                    student.setSchoolCode(school.getSchoolCode());

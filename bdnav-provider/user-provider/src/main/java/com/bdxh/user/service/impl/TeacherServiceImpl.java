@@ -155,8 +155,9 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             baseUserlist.get(i).setUserId(teacherList.get(i).getId());
             baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
         }
-            baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
-            teacherMapper.batchSaveTeacherInfo(teacherList);
+        teacherMapper.batchSaveTeacherInfo(teacherList);
+        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+
     }
 
     @Override

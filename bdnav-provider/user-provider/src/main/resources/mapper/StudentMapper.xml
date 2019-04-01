@@ -344,7 +344,7 @@
     </insert>
 
     <!--根据学校Code查询学号-->
-    <select id="queryCardNumberBySchoolCode" >
+    <select id="queryCardNumberBySchoolCode"  resultType="java.lang.String">
         select card_number from t_student where school_code=#{schoolCode}
     </select>
 </mapper>

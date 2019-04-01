@@ -209,16 +209,16 @@ public class FamilyController {
                         family.setGender(columns[2].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
                         family.setPhone(columns[3]);
                         //判断当前学校是否有重复卡号
-                        for (int j = 0; j < cardNumberList.size(); j++) {
-                            if(columns[4].equals(cardNumberList.get(j))){
-                                return WrapMapper.error("请检查" + i + "条数据学号重复");
-                            }else{
-                                family.setCardNumber(columns[4]);
-                                cardNumberList.add(columns[4]);
-                                redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
-                                break;
+                        if(cardNumberList.size()>0) {
+                            for (int j = 0; j < cardNumberList.size(); j++) {
+                                if (columns[4].equals(cardNumberList.get(j))) {
+                                    return WrapMapper.error("请检查" + i + "条数据卡号已存在");
+                                }
                             }
                         }
+                        family.setCardNumber(columns[4]);
+                        cardNumberList.add(columns[4]);
+                        redisTemplate.opsForValue().set("cardNumberList", cardNumberList);
                         family.setWxNumber(columns[5]);
                         family.setAdress(columns[6]);
                         family.setBirth(columns[7]);
