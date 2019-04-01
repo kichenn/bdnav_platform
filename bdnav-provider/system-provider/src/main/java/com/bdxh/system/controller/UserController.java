@@ -81,7 +81,10 @@ public class UserController {
         }
         try {
             User userData = userService.getByUserName(updateUserDto.getUserName());
-            Preconditions.checkArgument(userData == null, "用户名已经存在");
+            if(userData.getUserName().equals(updateUserDto.getUserName())&&!userData.getId().equals(updateUserDto.getId())){
+                return WrapMapper.error("用户名已经存在,请更换用户名称");
+    /*            Preconditions.checkArgument(userData == null, "用户名已经存在"); */
+            }
             userService.updateUsers(updateUserDto);
             return WrapMapper.ok();
         } catch (Exception e) {
