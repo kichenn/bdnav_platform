@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
 import com.github.pagehelper.PageInfo;
@@ -21,7 +22,6 @@ public interface SchoolUserService extends IService<SchoolUser> {
      *
      * @return
      */
-    /*   PageInfo<User> findListPage(Map<String,Object> param,Integer pageNum, Integer pageSize);*/
     PageInfo<SchoolUser> findListPage(SchoolUserQueryDto schoolUserQueryDto);
 
     /**
@@ -55,9 +55,17 @@ public interface SchoolUserService extends IService<SchoolUser> {
     List<String> findUserRoleByUserId(Long userId);
 
     /**
-    * @Description:   用户id启用或者禁用信息
-    * @Author: Kang
-    * @Date: 2019/3/27 10:38
-    */
-    Boolean modifySchoolUserStatusById(Long id,Byte status);
+     * @Description: 用户id启用或者禁用信息
+     * @Author: Kang
+     * @Date: 2019/3/27 10:38
+     */
+    Boolean modifySchoolUserStatusById(Long id, Byte status);
+
+
+    /**
+     * @Description: 修改学校用户信息
+     * @Author: Kang
+     * @Date: 2019/4/2 11:34
+     */
+    void modifySchoolUser(ModifySchoolUserDto modifySchoolUserDto);
 }

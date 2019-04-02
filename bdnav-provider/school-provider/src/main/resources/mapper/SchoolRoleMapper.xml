@@ -45,6 +45,14 @@
     where  `user`.id = #{userId}
     </select>
 
+    <select id="findRoleByUserIdResultMap" resultType="java.util.Map">
+    SELECT role.id as id,role.role as name
+    FROM t_school_user `user`
+    INNER JOIN  t_school_user_role user_role ON `user`.id = user_role.user_id
+    INNER JOIN  t_school_role role ON  role.id = user_role.role_id
+    where  `user`.id = #{userId}
+    </select>
+
     <!-- 根据角色查询角色信息 -->
     <select id="getRoleByRole" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT

@@ -38,4 +38,11 @@ public interface SchoolUserRoleMapper extends Mapper<SchoolUserRole> {
      */
     Integer delBatchRoleByRoleIds(@Param("roleIds") List<Long> roleIds);
 
+    /**
+     * @Description: 用户id删除相关角色
+     * @Author: Kang
+     * @Date: 2019/4/2 11:39
+     */
+    Integer delRoleByUserId(@Param("userId") Long userId);
+
 }

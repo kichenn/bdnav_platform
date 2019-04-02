@@ -9,6 +9,8 @@ import lombok.Data;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -19,9 +21,11 @@ public class ModifySchoolUserDto {
     @ApiModelProperty("id")
     private Long id;
 
+    @NotNull(message = "学校id不能为空")
     @ApiModelProperty("学校id")
     private Long schoolId;
 
+    @NotEmpty(message = "学校编码不能为空")
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
@@ -56,6 +60,7 @@ public class ModifySchoolUserDto {
      * 出生日期
      */
     @ApiModelProperty("出生日期")
+    @NotEmpty(message = "出生日期不能为空")
     private String birth;
 
 
@@ -70,6 +75,7 @@ public class ModifySchoolUserDto {
      * 电子邮件
      */
     @ApiModelProperty("电子邮件")
+    @NotEmpty(message = "电子邮件")
     private String email;
 
     /**
@@ -131,4 +137,6 @@ public class ModifySchoolUserDto {
     @ApiModelProperty("备注")
     private String remark;
 
+    @ApiModelProperty("角色分配")
+    private Map<Long, String> roles;
 }

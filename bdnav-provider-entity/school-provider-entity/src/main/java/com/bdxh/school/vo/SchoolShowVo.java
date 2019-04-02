@@ -36,7 +36,7 @@ public class SchoolShowVo {
     private String areaOrcounty;
 
     @ApiModelProperty("学校类型key")
-    private String schoolType;
+    private Byte schoolType;
 
     @ApiModelProperty("学校类型value")
     private String schoolTypeValue;

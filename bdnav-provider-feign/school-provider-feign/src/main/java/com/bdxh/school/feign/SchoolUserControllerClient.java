@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
+import com.bdxh.school.dto.ShowSchoolUserModifyPrefixDto;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.fallback.SchoolUserControllerClientFallback;
@@ -49,7 +50,7 @@ public interface SchoolUserControllerClient {
      */
     @RequestMapping(value = "/schoolUser/findSchoolUserById", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper findSchoolUserById(@RequestParam(name = "id") Long id);
+    Wrapper<ShowSchoolUserModifyPrefixDto> findSchoolUserById(@RequestParam(name = "id") Long id);
 
     /**
      * 修改系统用户

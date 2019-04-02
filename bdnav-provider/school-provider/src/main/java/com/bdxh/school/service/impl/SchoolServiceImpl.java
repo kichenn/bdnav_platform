@@ -170,6 +170,6 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
 
     @Override
     public School findSchoolBySchoolCode(String schoolCode) {
-        return  schoolMapper.findSchoolBySchoolCode(schoolCode);
+        return schoolMapper.findSchoolBySchoolCode(schoolCode);
     }
 }

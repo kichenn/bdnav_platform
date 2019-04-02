@@ -1,7 +1,9 @@
 package com.bdxh.school.service.impl;
 
 import com.bdxh.common.support.BaseService;
+import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
+import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.entity.SchoolUserRole;
 import com.bdxh.school.persistence.SchoolUserMapper;
@@ -16,8 +18,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -35,14 +39,6 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
 
     @Autowired
     private SchoolUserRoleMapper schoolUserRoleMapper;
-
-
-  /*  @Override
-    public PageInfo<User> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<User> roleLogs = userMapper.getByCondition(param);
-        return new PageInfo(roleLogs);
-    }*/
 
 
     @Override
@@ -101,4 +97,35 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         return schoolUserMapper.updateByPrimaryKeySelective(schoolUser) > 0;
     }
 
+    /**
+     * @Description: 修改学校用户信息
+     * @Author: Kang
+     * @Date: 2019/4/2 11:35
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void modifySchoolUser(ModifySchoolUserDto modifySchoolUserDto) {
+        //更新基本信息
+        SchoolUser schoolUser = new SchoolUser();
+        BeanUtils.copyProperties(modifySchoolUserDto, schoolUser);
+        //设置类型值
+        schoolUser.setStatus(modifySchoolUserDto.getSchoolUserStatusEnum().getKey());
+        schoolUser.setType(modifySchoolUserDto.getSchoolUserTypeEnum().getKey());
+        schoolUser.setSex(modifySchoolUserDto.getSchoolUserSexEnum().getKey());
+        schoolUser.setUpdateDate(new Date());
+        schoolUserMapper.updateByPrimaryKeySelective(schoolUser);
+
+        //删除学校用户和角色的关系
+        schoolUserRoleMapper.delRoleByUserId(schoolUser.getId());
+
+        //增加学校用户和角色的关系
+        for (Long temp : modifySchoolUserDto.getRoles().keySet()) {
+            SchoolUserRole schoolUserRole = new SchoolUserRole();
+            schoolUserRole.setSchoolId(schoolUser.getSchoolId());
+            schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
+            schoolUserRole.setUserId(schoolUser.getId());
+            schoolUserRole.setRoleId(temp);
+            schoolUserRoleMapper.insertSelective(schoolUserRole);
+        }
+    }
 }
