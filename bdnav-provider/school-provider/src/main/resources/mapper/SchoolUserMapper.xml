@@ -36,30 +36,37 @@
     </select>
 
     <!-- 带条件查询用户列表 -->
-    <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-        SELECT * FROM t_school_user
-        LEFT JOIN t_school_dept ON t_school_user.dept_id = t_school_dept.id
+    <select id="getByCondition" resultMap="BaseResultMap">
+        SELECT * FROM t_school_user school_user
+        INNER JOIN t_school_dept dept ON school_user.dept_id = dept.id
         <where>
-            <if test="userName !=null and userName!=''">
-                AND user_name LIKE CONCAT(CONCAT('%',#{userName},'%'))
+            <if test="schoolUser.schoolCode !=null and schoolUser.schoolCode!=''">
+                AND school_user.school_code LIKE CONCAT(CONCAT('%',#{schoolUser.schoolCode,jdbcType=VARCHAR},'%'))
             </if>
-            <if test="sex !=null and sex!=0">
-                AND sex =#{sex}
+            <if test="deptName !=null and deptName!=''">
+                AND dept.name LIKE CONCAT(CONCAT('%',#{deptName,jdbcType=VARCHAR},'%'))
             </if>
-            <if test="phone !=null and phone!=''">
-                AND phone =#{phone}
+            <if test="schoolUser.userName !=null and schoolUser.userName!=''">
+                AND school_user.user_name LIKE CONCAT(CONCAT('%',#{schoolUser.userName,jdbcType=VARCHAR},'%'))
             </if>
-            <if test="deptId !=null and deptId!=0">
-                AND dept_id =#{deptId}
+            <if test="schoolUser.sex !=null">
+                AND school_user.sex =#{schoolUser.sex,jdbcType=TINYINT}
             </if>
-            <if test="status !=null and status!=0">
-                AND status =#{status}
+            <if test="schoolUser.phone !=null and schoolUser.phone!=''">
+                AND school_user.phone =#{schoolUser.phone,jdbcType=VARCHAR}
             </if>
-            <if test="type !=null and type!=0">
-                AND `type` =#{type}
+            <if test="schoolUser.deptId !=null">
+                AND school_user.dept_id =#{schoolUser.deptId,jdbcType=BIGINT}
+            </if>
+            <if test="schoolUser.status !=null">
+                AND school_user.status =#{schoolUser.status,jdbcType=BIGINT}
+            </if>
+            <if test="schoolUser.type !=null">
+                AND school_user.`type` =#{schoolUser.type,jdbcType=BIGINT}
             </if>
         </where>
-        order by t_school_user.create_date desc
+
+        ORDER BY school_user.create_date DESC
     </select>
 
 

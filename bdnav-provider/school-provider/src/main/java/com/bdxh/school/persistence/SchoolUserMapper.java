@@ -16,7 +16,7 @@ public interface SchoolUserMapper extends Mapper<SchoolUser> {
      * @param schoolUser
      * @return
      */
-    List<SchoolUser> getByCondition(SchoolUser schoolUser);
+    List<SchoolUser> getByCondition(@Param("schoolUser") SchoolUser schoolUser,@Param("deptName") String deptName);
 
 
     /**

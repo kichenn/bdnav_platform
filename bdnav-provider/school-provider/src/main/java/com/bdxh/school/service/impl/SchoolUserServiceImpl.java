@@ -48,8 +48,16 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         Page page = PageHelper.startPage(schoolUserQueryDto.getPageNum(), schoolUserQueryDto.getPageSize());
         SchoolUser schoolUser = new SchoolUser();
         BeanUtils.copyProperties(schoolUserQueryDto, schoolUser);
-        List<SchoolUser> roleLogs = schoolUserMapper.getByCondition(schoolUser);
-
+        if (schoolUserQueryDto.getSchoolUserSexEnum() != null) {
+            schoolUser.setSex(schoolUserQueryDto.getSchoolUserSexEnum().getKey());
+        }
+        if (schoolUserQueryDto.getSchoolUserStatusEnum() != null) {
+            schoolUser.setStatus(schoolUserQueryDto.getSchoolUserStatusEnum().getKey());
+        }
+        if (schoolUserQueryDto.getSchoolUserTypeEnum() != null) {
+            schoolUser.setType(schoolUserQueryDto.getSchoolUserTypeEnum().getKey());
+        }
+        List<SchoolUser> roleLogs = schoolUserMapper.getByCondition(schoolUser, schoolUserQueryDto.getDeptName());
         PageInfo<SchoolUser> pageInfo = new PageInfo(roleLogs);
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
