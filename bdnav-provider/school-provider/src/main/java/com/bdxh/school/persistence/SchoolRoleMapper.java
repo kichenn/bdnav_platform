@@ -32,7 +32,7 @@ public interface SchoolRoleMapper extends Mapper<SchoolRole> {
      * @param userId
      * @return
      */
-    Map<Long, String> findRoleByUserIdResultMap(@Param("userId") Long userId);
+    List<Map<Long, String>> findRoleByUserIdResultMap(@Param("userId") Long userId);
 
     /**
      * 根据角色查询角色对象

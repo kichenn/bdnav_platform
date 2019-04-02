@@ -138,5 +138,5 @@ public class ModifySchoolUserDto {
     private String remark;
 
     @ApiModelProperty("角色分配")
-    private Map<Long, String> roles;
+    private List<Map<Long, String>> roles;
 }

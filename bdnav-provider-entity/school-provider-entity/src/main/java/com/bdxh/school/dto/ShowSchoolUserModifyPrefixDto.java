@@ -11,6 +11,9 @@ public class ShowSchoolUserModifyPrefixDto {
     @ApiModelProperty("id")
     private Long id;
 
+    @ApiModelProperty("用户名")
+    private String userName;
+
     @ApiModelProperty("学校id")
     private Long schoolId;
 

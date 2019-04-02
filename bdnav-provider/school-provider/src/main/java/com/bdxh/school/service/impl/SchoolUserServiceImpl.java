@@ -119,12 +119,12 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         schoolUserRoleMapper.delRoleByUserId(schoolUser.getId());
 
         //增加学校用户和角色的关系
-        for (Long temp : modifySchoolUserDto.getRoles().keySet()) {
+        for (int i = 0; i < modifySchoolUserDto.getRoles().size(); i++) {
             SchoolUserRole schoolUserRole = new SchoolUserRole();
             schoolUserRole.setSchoolId(schoolUser.getSchoolId());
             schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
             schoolUserRole.setUserId(schoolUser.getId());
-            schoolUserRole.setRoleId(temp);
+            schoolUserRole.setRoleId(Long.valueOf(modifySchoolUserDto.getRoles().get(i).get("id")));
             schoolUserRoleMapper.insertSelective(schoolUserRole);
         }
     }

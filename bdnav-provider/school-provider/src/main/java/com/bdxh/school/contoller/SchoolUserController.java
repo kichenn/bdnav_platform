@@ -21,6 +21,7 @@ import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -126,9 +127,9 @@ public class SchoolUserController {
         SchoolDept schoolDept = schoolDeptService.selectByKey(ssumpd.getDeptId());
         ssumpd.setSchoolName(school.getSchoolName());
         ssumpd.setDeptName(schoolDept != null ? schoolDept.getName() : "");
-        Map<Long, String> map = schoolRoleService.findRoleByUserIdResultMap(ssumpd.getId());
-        if (map != null) {
-            ssumpd.setRoles(map.toString());
+        List<Map<Long, String>> maps = schoolRoleService.findRoleByUserIdResultMap(ssumpd.getId());
+        if (CollectionUtils.isNotEmpty(maps)) {
+            ssumpd.setRoles(maps.toString());
         }
         return WrapMapper.ok(ssumpd);
     }
