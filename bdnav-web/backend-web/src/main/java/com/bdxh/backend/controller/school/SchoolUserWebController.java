@@ -73,7 +73,6 @@ public class SchoolUserWebController {
     @RequestMapping(value = "/modifySchoolUser", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校用户信息", response = Boolean.class)
     public Object modifySchoolUser(@Validated @RequestBody ModifySchoolUserDto modifySchoolUserDto) {
-
         //密码加密
         if (StringUtils.isNotEmpty(modifySchoolUserDto.getPassword())) {
             modifySchoolUserDto.setPassword(new BCryptPasswordEncoder().encode(modifySchoolUserDto.getPassword()));

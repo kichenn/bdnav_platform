@@ -1,6 +1,7 @@
 package com.bdxh.school.service.impl;
 
 import com.bdxh.common.support.BaseService;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolRole;
@@ -14,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -112,6 +114,9 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         schoolUser.setStatus(modifySchoolUserDto.getSchoolUserStatusEnum().getKey());
         schoolUser.setType(modifySchoolUserDto.getSchoolUserTypeEnum().getKey());
         schoolUser.setSex(modifySchoolUserDto.getSchoolUserSexEnum().getKey());
+        if (StringUtils.isNotEmpty(schoolUser.getBirth())) {
+            schoolUser.setBirth(DateUtil.format(DateUtil.format(schoolUser.getBirth(), "yyyy/MM/dd HH:mm:ss"), "yyyy/MM/dd HH:mm:ss"));
+        }
         schoolUser.setUpdateDate(new Date());
         schoolUserMapper.updateByPrimaryKeySelective(schoolUser);
 

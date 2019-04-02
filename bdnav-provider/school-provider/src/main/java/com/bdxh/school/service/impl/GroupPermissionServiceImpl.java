@@ -65,8 +65,10 @@ public class GroupPermissionServiceImpl extends BaseService<GroupPermission> imp
         GroupPermission groupPermission = new GroupPermission();
         BeanUtils.copyProperties(groupPermissionQueryDto, groupPermission);
         //设置类型
-        groupPermission.setGroupType(groupPermissionQueryDto.getGroupTypeEnum().getKey());
-        PageInfo pageInfo = new PageInfo<GroupPermission>(groupPermissionMapper.findGroupPermissionInConditionPage(groupPermission));
+        if (groupPermissionQueryDto.getGroupTypeEnum() != null) {
+            groupPermission.setGroupType(groupPermissionQueryDto.getGroupTypeEnum().getKey());
+        }
+        PageInfo<GroupPermission> pageInfo = new PageInfo(groupPermissionMapper.findGroupPermissionInConditionPage(groupPermission));
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }

@@ -70,7 +70,8 @@
                 AND device_code like CONCAT(CONCAT('%',#{permission.deviceCode,jdbcType=VARCHAR}),'%')
             </if>
         </where>
-        Order BY　create_date　DESC
+
+              ORDER BY create_date DESC
     </select>
 
 </mapper>
