@@ -72,18 +72,24 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
     @Override
     public void addUsers(AddUserDto addUserDto) {
-        String [] roleIds=addUserDto.getRoleIds().split(",");
-   /*     AddUserDto user = BeanMapUtils.map(addUserDto, AddUserDto.class);*/
-        addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
-           userMapper.addUsers(addUserDto);
-        if (roleIds != null&&roleIds.length>0){
-            for (int i = 0; i <roleIds.length ; i++) {
-                UserRole userRole=new UserRole();
-                userRole.setUserId(addUserDto.getId());
-                userRole.setRoleId(Long.valueOf(roleIds[i]));
-                userRoleMapper.insert(userRole);
+        if (!addUserDto.getRoleIds().equals("")&&!addUserDto.getRoleIds().equals(null)){
+            String [] roleIds=addUserDto.getRoleIds().split(",");
+            /*     AddUserDto user = BeanMapUtils.map(addUserDto, AddUserDto.class);*/
+            addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
+            userMapper.addUsers(addUserDto);
+            if (roleIds != null&&roleIds.length>0){
+                for (int i = 0; i <roleIds.length ; i++) {
+                    UserRole userRole=new UserRole();
+                    userRole.setUserId(addUserDto.getId());
+                    userRole.setRoleId(Long.valueOf(roleIds[i]));
+                    userRoleMapper.insert(userRole);
+                }
             }
+        }else{
+            addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
+            userMapper.addUsers(addUserDto);
         }
+
 
     }
 
@@ -104,7 +110,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
 
     @Override
     public void updateUsers(UpdateUserDto updateUserDto) {
-        if (!updateUserDto.getRoleIds().equals("")){
+        if (!updateUserDto.getRoleIds().equals("")&&!updateUserDto.getRoleIds().equals(null)){
             String [] roleIds=updateUserDto.getRoleIds().split(",");
             List<String> Urbyids=findUserRoleByUserId(updateUserDto.getId());
            Boolean falg=stringArrayCompare(roleIds, Urbyids);
@@ -123,6 +129,9 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
                 userMapper.UpdateUsers(updateUserDto);
             }
         }else{
+            UserRole userRole = new UserRole();
+            userRole.setUserId(updateUserDto.getId());
+            userRoleMapper.delete(userRole);
             userMapper.UpdateUsers(updateUserDto);
         }
     }
