@@ -153,8 +153,8 @@ public class SysPermissionController {
     @ApiOperation("当前用户所有菜单列表")
     public Object userPermissionMenu(@RequestParam("userId") Long userId){
         try {
-            List<PermissionTreeVo> resultList = permissionControllerClient.userPermissionMenu(userId).getResult();
-            return WrapMapper.ok(resultList);
+            Wrapper<List<PermissionTreeVo>> wrapper = permissionControllerClient.userPermissionMenu(userId);
+            return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

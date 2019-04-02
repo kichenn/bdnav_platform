@@ -8,23 +8,6 @@ import lombok.Data;
 public class PermissionTreeVo extends TreeBean {
 
 
-    @ApiModelProperty("父级菜单ids")
-    private String parentIds;
-
-    @ApiModelProperty("路径")
-    private String path;
-
-    @ApiModelProperty("菜单图标")
-    private String icon;
-
-    @ApiModelProperty("前端组件")
-    private String component;
-
-    @ApiModelProperty("路由路径")
-    private String name;
-
-    @ApiModelProperty("菜单名称")
-    private String title;
 
     @ApiModelProperty("类型 1 菜单 2 按钮")
     private Byte type;
