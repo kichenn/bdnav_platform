@@ -25,11 +25,16 @@ public class TeacherQueryDto extends Query implements Serializable {
 
 
     /**
+     * 学校名称
+     */
+    @ApiModelProperty(value="学校名称")
+    private String schoolName;
+
+    /**
      * 学校编码
      */
     @ApiModelProperty(value="学校编码")
-    private String schoolName;
-
+    private String schoolCode;
 
     /**
      * 老师姓名

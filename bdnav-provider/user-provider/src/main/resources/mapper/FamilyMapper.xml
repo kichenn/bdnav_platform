@@ -45,6 +45,9 @@
         <if test="familyQueryDto.schoolName!=null and familyQueryDto.schoolName!=''">
             AND school_name LIKE CONCAT('%',CONCAT(#{familyQueryDto.schoolName},'%'))
         </if>
+        <if test="familyQueryDto.schoolCode!=null and familyQueryDto.schoolCode!=''">
+            AND school_code = #{familyQueryDto.schoolCode}
+        </if>
         <if test="familyQueryDto.name!=null and familyQueryDto.name!=''">
             AND name LIKE  CONCAT('%',CONCAT(#{familyQueryDto.name},'%'))
         </if>
