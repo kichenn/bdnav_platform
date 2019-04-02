@@ -30,6 +30,9 @@ public interface SchoolRoleService extends IService<SchoolRole> {
     //根据用户id查询角色列表
     List<String> getRoleListByUserId(Long userId);
 
+    //用户id查询角色id和角色名称
+    List<Map<Long, String>> findRoleByUserIdResultMap(Long UserId);
+
     //根据角色查询角色对象
     SchoolRole getRoleByRole(String role);
 

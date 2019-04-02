@@ -46,6 +46,9 @@ public class TreeBean {
     @ApiModelProperty("是否勾选(如果勾选，子节点也会全部勾选)")
     private Boolean checked=Boolean.FALSE;
 
+    @ApiModelProperty("父级ids")
+    private String parentIds;
+
     @ApiModelProperty("子节点")
     private List<? extends TreeBean> children;
 }

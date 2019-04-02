@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
+import com.bdxh.school.dto.ShowSchoolUserModifyPrefixDto;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.feign.SchoolUserControllerClient;
@@ -32,7 +33,7 @@ public class SchoolUserControllerClientFallback implements SchoolUserControllerC
     }
 
     @Override
-    public Wrapper findSchoolUserById(Long id) {
+    public Wrapper<ShowSchoolUserModifyPrefixDto> findSchoolUserById(Long id) {
         return WrapMapper.error();
     }
 

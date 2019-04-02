@@ -113,7 +113,24 @@ public class SchoolWebController {
     @RequestMapping(value = "/downloadReportSchoolExcel", method = RequestMethod.GET)
     @ApiOperation(value = "学校信息导出")
     @ResponseBody
-    public Object downloadReportSchoolExcel(SchoolExcelDto schoolExcelDto) {
+    public Object downloadReportSchoolExcel(@RequestParam("isBy") Byte isBy, @RequestParam(value = "ids", required = false) List<Long> ids,
+                                            @RequestParam(value = "schoolCode", required = false) String schoolCode,
+                                            @RequestParam(value = "schoolName", required = false) String schoolName,
+                                            @RequestParam(value = "schoolType", required = false) Byte schoolType,
+                                            @RequestParam(value = "schoolNature", required = false) String schoolNature,
+                                            @RequestParam(value = "text", required = false) String text,
+                                            @RequestParam(value = "pageNum", required = false, defaultValue = "1") Integer pageNum,
+                                            @RequestParam(value = "pageSize", required = false, defaultValue = "15") Integer pageSize) {
+        SchoolExcelDto schoolExcelDto = new SchoolExcelDto();
+        schoolExcelDto.setIsBy(isBy);
+        schoolExcelDto.setIds(ids);
+        schoolExcelDto.setSchoolCode(schoolCode);
+        schoolExcelDto.setSchoolName(schoolName);
+        schoolExcelDto.setSchoolType(schoolType);
+        schoolExcelDto.setSchoolNature(schoolNature);
+        schoolExcelDto.setText(text);
+        schoolExcelDto.setPageNum(pageNum);
+        schoolExcelDto.setPageSize(pageSize);
         HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
         List<School> schools = new ArrayList<>();
         switch (schoolExcelDto.getIsBy()) {
@@ -124,7 +141,6 @@ public class SchoolWebController {
                     tempShowVo.stream().forEach(e -> {
                         School school = new School();
                         BeanUtils.copyProperties(e, school);
-                        school.setSchoolType(Byte.valueOf(e.getSchoolType()));
                         school.setCreateDate(DateUtil.format(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
                         schools.add(school);
                     });
@@ -141,7 +157,6 @@ public class SchoolWebController {
                     tempShowVo1.stream().forEach(e -> {
                         School school = new School();
                         BeanUtils.copyProperties(e, school);
-                        school.setSchoolType(Byte.valueOf(e.getSchoolType()));
                         school.setCreateDate(DateUtil.format(e.getCreateDate(), "yyyy/MM/dd HH:mm:ss"));
                         schools.add(school);
                     });

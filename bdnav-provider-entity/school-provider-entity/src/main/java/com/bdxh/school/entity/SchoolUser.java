@@ -121,25 +121,7 @@ public class SchoolUser {
      */
     private String remark;
 
-    private List<SchoolUserRole> urList;
 
-    /**
-     * 获取用户角色关系
-     *
-     * @return
-     */
-    public List<SchoolUserRole> getUrList() {
-        return urList;
-    }
-
-    /**
-     * 设置用户角色关系
-     *
-     * @param urList
-     */
-    public void setUrList(List<SchoolUserRole> urList) {
-        this.urList = urList;
-    }
 
     /**
      * 获取主键id

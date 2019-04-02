@@ -39,7 +39,7 @@ public class SchoolDeptWebController {
     @RequestMapping(value = "/findSchoolDeptTreeBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "学校id递归查询部门关系", response = SchoolDeptTreeVo.class)
     public Object findSchoolDeptTreeBySchoolId(@RequestParam("schoolId") Long schoolId) {
-        Wrapper wrapper = schoolDeptControllerClient.findSchoolDeptTreeBySchoolId(schoolId);
+        Wrapper<List<SchoolDeptTreeVo>> wrapper = schoolDeptControllerClient.findSchoolDeptTreeBySchoolId(schoolId);
         return WrapMapper.ok(wrapper.getResult());
     }
 

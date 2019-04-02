@@ -43,4 +43,11 @@
             #{empId,jdbcType=BIGINT}
         </foreach>
     </delete>
+    <delete id="delRoleByUserId">
+        DELETE
+        FROM
+        t_school_user_role
+        WHERE
+        user_id =#{userId,jdbcType=BIGINT}
+    </delete>
 </mapper>

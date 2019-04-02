@@ -6,6 +6,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
+import com.bdxh.school.dto.ShowSchoolUserModifyPrefixDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
@@ -15,6 +16,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -64,7 +66,7 @@ public class SchoolUserWebController {
     @RequestMapping(value = "/findSchoolUserById", method = RequestMethod.GET)
     @ApiOperation(value = "根据id查询学校用户信息", response = SchoolUser.class)
     public Object findSchoolUserById(@RequestParam(name = "id") Long id) {
-        Wrapper wrapper = schoolUserControllerClient.findSchoolUserById(id);
+        Wrapper<ShowSchoolUserModifyPrefixDto> wrapper = schoolUserControllerClient.findSchoolUserById(id);
         return WrapMapper.ok(wrapper.getResult());
     }
 
@@ -73,7 +75,9 @@ public class SchoolUserWebController {
     public Object modifySchoolUser(@Validated @RequestBody ModifySchoolUserDto modifySchoolUserDto) {
 
         //密码加密
-        modifySchoolUserDto.setPassword(new BCryptPasswordEncoder().encode(modifySchoolUserDto.getPassword()));
+        if (StringUtils.isNotEmpty(modifySchoolUserDto.getPassword())) {
+            modifySchoolUserDto.setPassword(new BCryptPasswordEncoder().encode(modifySchoolUserDto.getPassword()));
+        }
         //设置操作人
         User user = SecurityUtils.getCurrentUser();
         modifySchoolUserDto.setOperator(user.getId());

@@ -1,25 +1,37 @@
 package com.bdxh.school.contoller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
+import com.bdxh.school.dto.ShowSchoolUserModifyPrefixDto;
+import com.bdxh.school.entity.School;
+import com.bdxh.school.entity.SchoolDept;
+import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
+import com.bdxh.school.service.SchoolDeptService;
+import com.bdxh.school.service.SchoolRoleService;
+import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.service.SchoolUserService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
+import com.netflix.discovery.converters.Auto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -31,6 +43,15 @@ public class SchoolUserController {
 
     @Autowired
     private SchoolUserService schoolUserService;
+
+    @Autowired
+    private SchoolService schoolService;
+
+    @Autowired
+    private SchoolDeptService schoolDeptService;
+
+    @Autowired
+    private SchoolRoleService schoolRoleService;
 
 
     /**
@@ -63,13 +84,8 @@ public class SchoolUserController {
     @ApiOperation(value = "修改学校用户信息", response = Boolean.class)
     @RequestMapping(value = "/modifySchoolUser", method = RequestMethod.POST)
     public Object modifySchoolUser(@Validated @RequestBody ModifySchoolUserDto modifySchoolUserDto) {
-        SchoolUser schoolUser = new SchoolUser();
-        BeanUtils.copyProperties(modifySchoolUserDto, schoolUser);
-        //设置类型值
-        schoolUser.setStatus(modifySchoolUserDto.getSchoolUserStatusEnum().getKey());
-        schoolUser.setType(modifySchoolUserDto.getSchoolUserTypeEnum().getKey());
-        schoolUser.setSex(modifySchoolUserDto.getSchoolUserSexEnum().getKey());
-        return WrapMapper.ok(schoolUserService.update(schoolUser) > 0);
+        schoolUserService.modifySchoolUser(modifySchoolUserDto);
+        return WrapMapper.ok();
     }
 
     /**
@@ -100,11 +116,23 @@ public class SchoolUserController {
      * @Author: Kang
      * @Date: 2019/3/26 15:26
      */
-    @ApiOperation(value = "根据id查询学校用户信息", response = SchoolUser.class)
+    @ApiOperation(value = "根据id查询学校用户信息", response = ShowSchoolUserModifyPrefixDto.class)
     @RequestMapping(value = "/findSchoolUserById", method = RequestMethod.GET)
     public Object findSchoolUserById(@RequestParam(name = "id") Long id) {
         SchoolUser user = schoolUserService.selectByKey(id);
-        return WrapMapper.ok(user);
+
+        //组装数据
+        ShowSchoolUserModifyPrefixDto ssumpd = new ShowSchoolUserModifyPrefixDto();
+        BeanUtils.copyProperties(user, ssumpd);
+        School school = schoolService.findSchoolById(ssumpd.getSchoolId()).orElse(new School());
+        SchoolDept schoolDept = schoolDeptService.selectByKey(ssumpd.getDeptId());
+        ssumpd.setSchoolName(school.getSchoolName());
+        ssumpd.setDeptName(schoolDept != null ? schoolDept.getName() : "");
+        List<Map<Long, String>> maps = schoolRoleService.findRoleByUserIdResultMap(ssumpd.getId());
+        if (CollectionUtils.isNotEmpty(maps)) {
+            ssumpd.setRoles(JSONArray.toJSONString(maps));
+        }
+        return WrapMapper.ok(ssumpd);
     }
 
     /**
