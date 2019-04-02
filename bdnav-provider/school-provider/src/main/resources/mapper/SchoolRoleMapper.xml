@@ -23,7 +23,7 @@
         <include refid="BaseColumns"/>
         FROM t_school_role
         <where>
-            <if test="schoolRole.role !=null">
+            <if test="schoolRole.role !=null and schoolRole.role !=''">
                 role=#{schoolRole.role,jdbcType=VARCHAR}
             </if>
             <if test="schoolRole.roleName != null and schoolRole.roleName != ''">
