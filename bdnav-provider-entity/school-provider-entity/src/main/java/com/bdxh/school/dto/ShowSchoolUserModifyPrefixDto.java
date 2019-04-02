@@ -1,5 +1,6 @@
 package com.bdxh.school.dto;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,6 +11,9 @@ public class ShowSchoolUserModifyPrefixDto {
 
     @ApiModelProperty("id")
     private Long id;
+
+    @ApiModelProperty("性别")
+    private Byte sex;
 
     @ApiModelProperty("用户名")
     private String userName;
