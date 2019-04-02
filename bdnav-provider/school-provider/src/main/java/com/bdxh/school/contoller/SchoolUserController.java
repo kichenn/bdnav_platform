@@ -1,5 +1,6 @@
 package com.bdxh.school.contoller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolUserDto;
@@ -129,7 +130,7 @@ public class SchoolUserController {
         ssumpd.setDeptName(schoolDept != null ? schoolDept.getName() : "");
         List<Map<Long, String>> maps = schoolRoleService.findRoleByUserIdResultMap(ssumpd.getId());
         if (CollectionUtils.isNotEmpty(maps)) {
-            ssumpd.setRoles(maps.toString());
+            ssumpd.setRoles(JSONArray.toJSONString(maps));
         }
         return WrapMapper.ok(ssumpd);
     }
