@@ -49,6 +49,18 @@ public class TreeBean {
     @ApiModelProperty("父级ids")
     private String parentIds;
 
+    @ApiModelProperty("路径")
+    private String path;
+
+    @ApiModelProperty("菜单图标")
+    private String icon;
+
+    @ApiModelProperty("前端组件")
+    private String component;
+
+    @ApiModelProperty("路由路径")
+    private String name;
+
     @ApiModelProperty("子节点")
     private List<? extends TreeBean> children;
 }
