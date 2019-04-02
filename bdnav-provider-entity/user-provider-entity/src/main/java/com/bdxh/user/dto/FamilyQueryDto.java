@@ -34,6 +34,12 @@ public class FamilyQueryDto extends Query implements Serializable {
     private String schoolName;
 
     /**
+     * 学校Code
+     */
+    @ApiModelProperty("学校Code")
+    private String schoolCode;
+
+    /**
      * 家长姓名
      */
     @ApiModelProperty("家长姓名")

@@ -69,7 +69,7 @@
                 AND activate= #{studentQueryDto.activate}
             </if>
             <if test="studentQueryDto.schoolCode!=null and studentQueryDto.schoolCode!=''">
-                AND school_code LIKE   CONCAT('%',CONCAT(#{studentQueryDto.schoolCode},'%'))
+                AND school_code =  #{studentQueryDto.schoolCode}
             </if>
             <if test="studentQueryDto.classIds!=null and studentQueryDto.classIds!=''">
                 AND class_ids like CONCAT(#{studentQueryDto.classIds},'%')
