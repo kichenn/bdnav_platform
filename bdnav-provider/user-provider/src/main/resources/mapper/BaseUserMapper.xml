@@ -165,4 +165,71 @@
 		select <include refid="BaseColumns" /> from t_base_user
 		where school_code=#{schoolCode} and card_number=#{cardNumber}
 	</select>
+
+	<!--批量删除用户信息-->
+	<delete id="batchRemoveBaseUserInfo">
+		delete from t_base_user where (school_code,card_number)in
+		<foreach collection="list" separator="," open="(" close=")" item="list" >
+			(#{list.schoolCode},#{list.cardNumber})
+		</foreach>
+	</delete>
+
+	<!--批量新增用户-->
+	<insert id="batchSaveBaseUserInfo">
+		INSERT INTO  t_base_user  (
+		id ,
+		school_id ,
+		school_code ,
+		school_name ,
+		user_type ,
+		user_id ,
+		name ,
+		gender ,
+		birth ,
+		phone ,
+		card_number ,
+		idcard ,
+		qq_number ,
+		wx_number ,
+		email ,
+		image ,
+		image_name ,
+		nation_name ,
+		adress ,
+		create_date ,
+		update_date ,
+		operator ,
+		operator_name ,
+		remark
+		)
+		VALUES
+	<foreach collection="list" separator="," item="baseUserList" index="index"  >
+	(
+		#{baseUserList.id},
+		#{baseUserList.schoolId},
+		#{baseUserList.schoolCode},
+		#{baseUserList.schoolName},
+		#{baseUserList.userType},
+		#{baseUserList.userId},
+		#{baseUserList.name},
+		#{baseUserList.gender},
+		#{baseUserList.birth},
+		#{baseUserList.phone},
+		#{baseUserList.cardNumber},
+		#{baseUserList.idcard},
+		#{baseUserList.qqNumber},
+		#{baseUserList.wxNumber},
+		#{baseUserList.email},
+		#{baseUserList.image},
+		#{baseUserList.imageName},
+		#{baseUserList.nationName},
+		#{baseUserList.adress},
+		#{baseUserList.createDate},
+		#{baseUserList.updateDate},
+		#{baseUserList.operator},
+		#{baseUserList.operatorName},
+		#{baseUserList.remark}
+	)
+	</foreach>
+	</insert>
 </mapper>

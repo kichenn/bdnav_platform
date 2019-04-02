@@ -30,7 +30,7 @@ public class SysUserController {
 
     @RequestMapping(value = "/findSchoolsInConditionPaging", method = RequestMethod.POST)
     @ApiOperation(value = "用户信息列表数据[分页筛选]")
-    public Object findSchoolsInConditionPaging(@RequestBody UserQueryDto userQueryDto) {
+    public Object findSchoolsInConditionPaging(@Validated @RequestBody UserQueryDto userQueryDto) {
         try {
         Wrapper wrapper = userControllerClient.queryListPage(userQueryDto);
             return WrapMapper.ok(wrapper.getResult());
@@ -43,7 +43,7 @@ public class SysUserController {
 
     @RequestMapping(value = "/addUser", method = RequestMethod.POST)
     @ApiOperation(value = "添加用户信息")
-    public Object addUser(@RequestBody AddUserDto addUserDto) {
+    public Object addUser(@Validated @RequestBody AddUserDto addUserDto) {
         try {
             Wrapper wrapper = userControllerClient.addUser(addUserDto);
             return wrapper;
@@ -55,7 +55,7 @@ public class SysUserController {
 
     @RequestMapping(value = "/updateUser", method = RequestMethod.POST)
     @ApiOperation(value = "修改用户信息")
-    public Object updateUser(@RequestBody UpdateUserDto updateUserDto) {
+    public Object updateUser(@Validated @RequestBody UpdateUserDto updateUserDto) {
         try {
             Wrapper wrapper = userControllerClient.updateUser(updateUserDto);
             return wrapper;

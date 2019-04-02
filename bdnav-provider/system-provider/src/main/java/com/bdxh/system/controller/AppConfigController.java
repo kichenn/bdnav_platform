@@ -18,11 +18,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.management.ValueExp;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
@@ -52,7 +50,7 @@ public class AppConfigController {
     private SnowflakeIdWorker snowflakeIdWorker;
 
     @ApiOperation("增加应用配置")
-    @RequestMapping("/addAppConfig")
+    @RequestMapping(value = "/addAppConfig",method = RequestMethod.POST)
     public Object addAppConfig(@Valid @RequestBody AddAppConfigDto addAppConfigDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -61,7 +59,8 @@ public class AppConfigController {
         }
         try {
             AppConfig appConfigData = appConfigService.getByAppConfigName(addAppConfigDto.getAppName());
-            Preconditions.checkNotNull(appConfigData,"应用配置已存在");
+            Preconditions.checkArgument(appConfigData == null, "该应用已存在");
+       /*     Preconditions.checkNotNull(appConfigData,"应用已存在");*/
             AppConfig appConfig = BeanMapUtils.map(addAppConfigDto, AppConfig.class);
             long appId = snowflakeIdWorker.nextId();
             appConfig.setAppId(appId);
@@ -74,15 +73,15 @@ public class AppConfigController {
     }
 
     @ApiOperation("根据id删除应用配置")
-    @RequestMapping("/delAppConfig")
+    @RequestMapping(value = "/delAppConfig",method = RequestMethod.GET)
     public Object delAppConfig(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
         try {
             AppConfig appConfig = appConfigService.selectByKey(id);
-            Preconditions.checkArgument(appConfig!=null,"应用配置不存在");
+            Preconditions.checkArgument(appConfig!=null,"应用不存在");
             Map<String,Object> param = new HashMap<>();
             param.put("appId",appConfig.getAppId());
             Integer isAppConfigSecretExist = appConfigSecretService.isAppConfigSecretExist(param);
-            Preconditions.checkArgument(isAppConfigSecretExist==null,"应用配置下已包含秘钥");
+            Preconditions.checkArgument(isAppConfigSecretExist==null,"该应用下已生成秘钥");
             appConfigService.deleteByKey(id);
             return WrapMapper.ok();
         }catch (Exception e){
@@ -92,7 +91,7 @@ public class AppConfigController {
     }
 
     @ApiOperation("根据id更新应用配置")
-    @RequestMapping("/updateAppConfig")
+    @RequestMapping(value = "/updateAppConfig",method = RequestMethod.POST)
     public Object updateAppConfig(@Valid @RequestBody UpdateAppConfigDto updateAppConfigDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -110,7 +109,7 @@ public class AppConfigController {
     }
 
     @ApiOperation("查询应用配置")
-    @RequestMapping("/queryAppConfig")
+    @RequestMapping(value = "/queryAppConfig",method = RequestMethod.GET)
     public Object queryAppConfig(@RequestParam(name = "id") @NotNull(message = "应用配置id不能为空") Long id){
         try {
             AppConfig appConfig = appConfigService.selectByKey(id);
@@ -122,7 +121,7 @@ public class AppConfigController {
     }
 
     @ApiOperation("查询应用配置列表")
-    @RequestMapping("/queryAppConfigList")
+    @RequestMapping(value = "/queryAppConfigList",method = RequestMethod.POST)
     public Object queryAppConfigList(@Valid @RequestBody AppConfigQueryDto appConfigQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -140,7 +139,7 @@ public class AppConfigController {
     }
 
     @ApiOperation("分页查询应用配置列表")
-    @RequestMapping("/queryAppConfigListPage")
+    @RequestMapping(value = "/queryAppConfigListPage",method = RequestMethod.POST)
     public Object queryAppConfigListPage(@Valid @RequestBody AppConfigQueryDto appConfigQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){

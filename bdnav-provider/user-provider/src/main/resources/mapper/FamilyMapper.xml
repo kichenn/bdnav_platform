@@ -37,24 +37,25 @@
         qq_number,wx_number,email,image,nation_name,adress,physical_number,physical_chip_number,
         activate,create_date,update_date,operator,operator_name,remark,image_name
     </sql>
+
     <!-- 查询所有家长数据 -->
 <select id="selectAllFamilyInfo" resultMap="BaseResultMap">
     select <include refid="familyColumn"/> from t_family
     <where>
         <if test="familyQueryDto.schoolName!=null and familyQueryDto.schoolName!=''">
-        AND school_name=#{familyQueryDto.schoolName}
+            AND school_name LIKE CONCAT('%',CONCAT(#{familyQueryDto.schoolName},'%'))
         </if>
         <if test="familyQueryDto.name!=null and familyQueryDto.name!=''">
-            AND name=#{familyQueryDto.name}
+            AND name LIKE  CONCAT('%',CONCAT(#{familyQueryDto.name},'%'))
         </if>
         <if test="familyQueryDto.phone!=null and familyQueryDto.phone!=''">
-            AND phone=#{familyQueryDto.phone}
+            AND phone LIKE  CONCAT('%',CONCAT(#{familyQueryDto.phone},'%'))
         </if>
         <if test="familyQueryDto.activate!=null and familyQueryDto.activate!=''">
-            AND activate=#{familyQueryDto.activate}
+            AND activate =#{familyQueryDto.activate}
         </if>
         <if test="familyQueryDto.cardNumber!=null and familyQueryDto.cardNumber!=''">
-            AND card_number=#{familyQueryDto.cardNumber}
+            AND card_number LIKE   CONCAT('%',CONCAT(#{familyQueryDto.cardNumber},'%'))
         </if>
 
     </where>
@@ -80,12 +81,21 @@
            and card_number=#{cardNumber}
      </select>
 
+    <!--批量删除家长信息-->
+    <delete id="batchRemoveFamilyInfo">
+    delete from t_family where (school_code,card_number)in
+        <foreach collection="list" separator="," open="(" close=")" item="list" >
+            (#{list.schoolCode},#{list.cardNumber})
+        </foreach>
+    </delete>
+
     <!-- 删除家长信息-->
     <delete id="removeFamilyInfo">
      DELETE FROM t_family
      WHERE school_code=#{schoolCode}
      AND card_number=#{cardNumber}
     </delete>
+
     <!--  修改家长信息     -->
     <update id="updateFamilyInfo">
         UPDATE t_family
@@ -148,7 +158,68 @@
          WHERE `school_code`=#{family.schoolCode} AND card_number=#{family.cardNumber};
     </update>
 
+    <!--批量新增家长-->
+    <insert id="batchSaveFamilyInfo">
+        INSERT INTO   t_family  (
+        id ,
+        school_id ,
+        school_code ,
+        school_name ,
+        name ,
+        gender ,
+        birth ,
+        phone ,
+        card_number ,
+        idcard ,
+        qq_number ,
+        wx_number ,
+        email ,
+        image ,
+        image_name ,
+        nation_name ,
+        adress ,
+        physical_number ,
+        physical_chip_number ,
+        activate ,
+        create_date ,
+        update_date ,
+        operator ,
+        operator_name ,
+        remark
+        )
+        VALUES
+        <foreach collection="list" index="index" separator="," item="familyList">
+            (   #{familyList.id},
+            #{familyList.schoolId},
+            #{familyList.schoolCode},
+            #{familyList.schoolName},
+            #{familyList.name},
+            #{familyList.gender},
+            #{familyList.birth},
+            #{familyList.phone},
+            #{familyList.cardNumber},
+            #{familyList.idcard},
+            #{familyList.qqNumber},
+            #{familyList.wxNumber},
+            #{familyList.email},
+            #{familyList.image},
+            #{familyList.imageName},
+            #{familyList.nationName},
+            #{familyList.adress},
+            #{familyList.physicalNumber},
+            #{familyList.physicalChipNumber},
+            #{familyList.activate},
+            #{familyList.createDate},
+            #{familyList.updateDate},
+            #{familyList.operator},
+            #{familyList.operatorName},
+            #{familyList.remark}
+            )
+        </foreach>
+    </insert>
 
-
-
+    <!--根据学校Code查询卡号-->
+    <select id="queryFamilyCardNumberBySchoolCode"  resultType="java.lang.String">
+        select card_number from t_family where school_code=#{schoolCode}
+    </select>
 </mapper>

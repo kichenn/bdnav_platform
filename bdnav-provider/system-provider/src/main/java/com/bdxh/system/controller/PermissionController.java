@@ -1,15 +1,12 @@
 package com.bdxh.system.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.Permission;
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.system.entity.RolePermission;
-import com.bdxh.system.entity.UserRole;
 import com.bdxh.system.service.PermissionService;
 import com.bdxh.system.service.RolePermissionService;
-import com.bdxh.system.service.UserRoleService;
 import com.bdxh.system.vo.PermissionTreeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -17,11 +14,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -42,8 +42,6 @@ public class PermissionController {
     @Autowired
     private RolePermissionService rolePermissionService;
 
-    @Autowired
-    private UserRoleService userRoleService;
 
     /**
      * @Description: 角色id查询用户菜单or按钮权限
@@ -71,7 +69,7 @@ public class PermissionController {
         return WrapMapper.ok(result);
     }
 
-    @RequestMapping(value = "/permissionMenus", method = RequestMethod.GET)
+    @RequestMapping(value = "/permissionMenus", method = RequestMethod.POST)
     @ApiOperation(value = "角色id查询用户菜单", response = List.class)
     @ResponseBody
     public Object permissionMenus(@RequestParam("roleId") Long roleId) {
@@ -87,7 +85,12 @@ public class PermissionController {
     @RequestMapping(value = "/addPermission", method = RequestMethod.POST)
     @ApiOperation(value = "新增用户权限", response = Boolean.class)
     @ResponseBody
-    public Object addPermission(@RequestBody AddPermissionDto addPermissionDto) {
+    public Object addPermission(@Valid @RequestBody AddPermissionDto addPermissionDto, BindingResult bindingResult) {
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         return WrapMapper.ok(permissionService.addPermission(addPermissionDto));
     }
 
@@ -99,7 +102,12 @@ public class PermissionController {
     @RequestMapping(value = "/modifyPermission", method = RequestMethod.POST)
     @ApiOperation(value = "修改用户权限", response = Boolean.class)
     @ResponseBody
-    public Object modifyPermission(@RequestBody ModifyPermissionDto mdifyPermissionDto) {
+    public Object modifyPermission(@Valid @RequestBody ModifyPermissionDto mdifyPermissionDto, BindingResult bindingResult) {
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         return WrapMapper.ok(permissionService.modifyPermission(mdifyPermissionDto));
     }
 
@@ -185,8 +193,12 @@ public class PermissionController {
      */
    @RequestMapping(value = "/addOrUpdatePermission", method = RequestMethod.POST)
     @ApiOperation(value = "保存并修改权限", response = Boolean.class)
-    public Object addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto) {
-       System.out.println(""+baPermissionsDto.getRoleId());
+    public Object addOrUpdatePermission(@Valid @RequestBody BaPermissionsDto baPermissionsDto, BindingResult bindingResult) {
+       //检验参数
+       if(bindingResult.hasErrors()){
+           String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+           return WrapMapper.error(errors);
+       }
        try{
            //根据roid将所有权限进行删除
            rolePermissionService.delRolePermission(Long.valueOf(baPermissionsDto.getRoleId()));
@@ -205,7 +217,7 @@ public class PermissionController {
         }catch (Exception e){
         e.printStackTrace();
         return WrapMapper.error(e.getMessage());
-    }
+     }
     }
 
 
@@ -255,12 +267,12 @@ public class PermissionController {
 
     @RequestMapping(value="/userPermissionMenu",method = RequestMethod.GET)
     @ApiOperation("当前用户所有菜单列表")
-    public Object UserPermissionMenu(@RequestParam("userId") Long userId){
+    public Object userPermissionMenu(@RequestParam("userId") Long userId){
         try {
             List<UserPermissionDto> permissions = permissionService.findUserRights(userId, new Byte("1"));
             List<PermissionTreeVo> treeVos = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(permissions)) {
-                permissions.stream().forEach(e -> {
+          /*      permissions.stream().forEach(e -> {
                     PermissionTreeVo treeVo = new PermissionTreeVo();
                     treeVo.setTitle(e.getTitle());
                     treeVo.setPath(e.getPath());
@@ -270,7 +282,18 @@ public class PermissionController {
                     treeVo.setCreateDate(e.getCreateDate());
                     BeanUtils.copyProperties(e, treeVo);
                     treeVos.add(treeVo);
-                });
+                });*/
+                for (UserPermissionDto ps:permissions){
+                    PermissionTreeVo treeVo = new PermissionTreeVo();
+                    treeVo.setTitle(ps.getTitle());
+                    treeVo.setPath(ps.getPath());
+                    treeVo.setComponent(ps.getComponent());
+                    treeVo.setIcon(ps.getIcon());
+                    treeVo.setName(ps.getName());
+                    treeVo.setCreateDate(ps.getCreateDate());
+                    BeanUtils.copyProperties(ps, treeVo);
+                    treeVos.add(treeVo);
+                }
             }
             TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
             List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);

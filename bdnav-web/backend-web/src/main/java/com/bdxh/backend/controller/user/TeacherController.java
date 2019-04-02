@@ -2,16 +2,16 @@ package com.bdxh.backend.controller.user;
 
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
-import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
+import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.feign.TeacherControllerClient;
-import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.TeacherVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -55,9 +56,9 @@ public class TeacherController {
     public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
         try {
 
-            teacherControllerClient.addTeacher(addTeacherDto);
+            Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
 
-            return WrapMapper.ok();
+            return WrapMapper.ok(wrapper.getMessage());
         }catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -178,40 +179,65 @@ public class TeacherController {
         try {
             List<String[]> teacherList= ExcelImportUtil.readExcelNums(teacherFile,0);
             School school=new School();
+            List<Teacher> saveTeacherList=new ArrayList<>();
+            List<String> cardNumberList=new ArrayList<>();
             for (int i = 1; i < teacherList.size(); i++) {
                 String[] columns= teacherList.get(i);
                 if(StringUtils.isNotBlank(teacherList.get(i)[0])){
                 if(i==1){
                     //第一条查询数据存到缓存中
                     Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                    Wrapper teacherWeapper=teacherControllerClient.queryTeacherCardNumberBySchoolCode(columns[0]);
                     school=(School)wrapper.getResult();
+                    cardNumberList=(List<String>)teacherWeapper.getResult();
                     redisTemplate.opsForValue().set("schoolInfoVo",school);
+                    redisTemplate.opsForValue().set("teacherCardNumberList",cardNumberList);
                     //判断得出在同一个班级直接从缓存中拉取数据
                 }else if(teacherList.get(i)[0].equals(i-1>=teacherList.size()?teacherList.get(teacherList.size()-1)[0]:teacherList.get(i-1)[0])){
                     school=(School)redisTemplate.opsForValue().get("schoolInfoVo");
+                    cardNumberList=(List<String>)redisTemplate.opsForValue().get("teacherCardNumberList");
                 }else{
                     Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                    Wrapper teacherWeapper=teacherControllerClient.queryTeacherCardNumberBySchoolCode(columns[0]);
                     school=(School)wrapper.getResult();
+                    cardNumberList=(List<String>)teacherWeapper.getResult();
                     redisTemplate.opsForValue().set("schoolInfoVo",school);
+                    redisTemplate.opsForValue().set("teacherCardNumberList",cardNumberList);
                 }
                 if(school!=null){
-                AddTeacherDto addTeacherDto=new AddTeacherDto();
-                addTeacherDto.setSchoolName(school.getSchoolName());
-                addTeacherDto.setSchoolId(school.getId());
-                addTeacherDto.setSchoolCode(school.getSchoolCode());
-                addTeacherDto.setCampusName(columns[1]);
-                addTeacherDto.setName(columns[2]);
-                addTeacherDto.setGender(columns[3].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
-                addTeacherDto.setNationName(columns[4]);
-                addTeacherDto.setPhone(columns[5]);
-                addTeacherDto.setCardNumber(columns[6]);
-                addTeacherDto.setRemark(columns[7]);
-                teacherControllerClient.addTeacher(addTeacherDto);
+                Teacher tacher=new Teacher();
+                    tacher.setActivate(Byte.valueOf("1"));
+                    tacher.setSchoolName(school.getSchoolName());
+                    tacher.setSchoolId(school.getId());
+                    tacher.setSchoolCode(school.getSchoolCode());
+                    tacher.setCampusName(columns[1]);
+                    tacher.setName(columns[2]);
+                    tacher.setGender(columns[3].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
+                    tacher.setNationName(columns[4]);
+                    tacher.setPhone(columns[5]);
+                    //判断当前学校是否有重复卡号
+                    if(null!=cardNumberList) {
+                        for (int j = 0; j < cardNumberList.size(); j++) {
+                            if (columns[6].equals(cardNumberList.get(j))) {
+                                return WrapMapper.error("请检查" + i + "条数据卡号已存在");
+                            }
+                        }
+                    }else{
+                        cardNumberList=new ArrayList<>();
+                    }
+                    tacher.setCardNumber(columns[6]);
+                    cardNumberList.add(columns[6]);
+                    redisTemplate.opsForValue().set("teacherCardNumberList", cardNumberList);
+                    tacher.setBirth(columns[7]);
+                    tacher.setIdcard(columns[8]);
+                    tacher.setRemark(columns[9]);
+                    saveTeacherList.add(tacher);
                 }else{
                     return WrapMapper.error("第"+i+"条不存在当前学校Code");
                 }
              }
             }
+            teacherControllerClient.batchSaveTeacherInfo(saveTeacherList);
             return WrapMapper.ok("导入完成");
         } catch (Exception e) {
             e.printStackTrace();

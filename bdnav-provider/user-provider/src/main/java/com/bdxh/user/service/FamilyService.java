@@ -8,6 +8,8 @@ import com.bdxh.user.entity.Family;
 import com.bdxh.user.vo.FamilyVo;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @description: 家长信息service
  * @author: xuyuan
@@ -72,4 +74,18 @@ public interface FamilyService extends IService<Family> {
      * @param family
      */
      void saveFamily(Family family);
+
+    /**
+     * 批量新增家长
+     * @param familyList
+     * @return
+     */
+    void batchSaveFamilyInfo(List<Family> familyList);
+
+ /**
+  * 根据学校Code查询所有卡号
+  * @param schoolCode
+  * @return
+  */
+   List<String> queryFamilyCardNumberBySchoolCode( String schoolCode);
 }

@@ -27,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,7 +59,7 @@ public class FamilyController {
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
         try {
             Wrapper wrapper=familyControllerClient.addFamily(addFamilyDto);
-            return WrapMapper.ok(wrapper.getResult());
+            return WrapMapper.ok(wrapper.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -173,41 +174,66 @@ public class FamilyController {
             }
             List<String[]> familyList= ExcelImportUtil.readExcel(file);
             School school=new School();
+            List<Family> families =new ArrayList<>();
+            List<String> cardNumberList=new ArrayList<>();
             for (int i=1;i<familyList.size();i++) {
                 String[] columns = familyList.get(i);
                 if (StringUtils.isNotBlank(familyList.get(i)[0])) {
                     if (i == 1) {
                         //第一条查询数据存到缓存中
                         Wrapper wrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                        Wrapper familyWeapper=familyControllerClient.queryFamilyCardNumberBySchoolCode(columns[0]);
                         school = (School) wrapper.getResult();
+                        cardNumberList=(List<String>)familyWeapper.getResult();
                         redisTemplate.opsForValue().set("schoolInfoVo", school);
+                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
                         //判断得出在同一个班级直接从缓存中拉取数据
                     } else if (familyList.get(i)[0].equals(i - 1 >= familyList.size() ? familyList.get(familyList.size() - 1)[0] : familyList.get(i - 1)[0])) {
                         school = (School) redisTemplate.opsForValue().get("schoolInfoVo");
+                        cardNumberList = (List<String>)redisTemplate.opsForValue().get("familyCardNumberList");
                     } else {
                         Wrapper wrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
+                        Wrapper familyWeapper=familyControllerClient.queryFamilyCardNumberBySchoolCode(columns[0]);
                         school = (School) wrapper.getResult();
+                        cardNumberList=(List<String>)familyWeapper.getResult();
                         redisTemplate.opsForValue().set("schoolInfoVo", school);
+                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
                     }
                     if (school != null) {
-                        AddFamilyDto addFamilyDto = new AddFamilyDto();
-                        addFamilyDto.setSchoolCode(school.getSchoolCode());
-                        addFamilyDto.setSchoolId(school.getId());
-                        addFamilyDto.setSchoolName(school.getSchoolName());
-                        addFamilyDto.setName(columns[1]);
-                        addFamilyDto.setGender(columns[2].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
-                        addFamilyDto.setPhone(columns[3]);
-                        addFamilyDto.setCardNumber(columns[4]);
-                        addFamilyDto.setWxNumber(columns[5]);
-                        addFamilyDto.setAdress(columns[6]);
-                        addFamilyDto.setRemark(columns[7]);
-                        familyControllerClient.addFamily(addFamilyDto);
+                        Family family = new Family();
+                        family.setActivate(Byte.valueOf("1"));
+                        family.setSchoolCode(school.getSchoolCode());
+                        family.setSchoolId(school.getId());
+                        family.setSchoolName(school.getSchoolName());
+                        family.setName(columns[1]);
+                        family.setGender(columns[2].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
+                        family.setPhone(columns[3]);
+                        //判断当前学校是否有重复卡号
+                        if(null!=cardNumberList) {
+                            for (int j = 0; j < cardNumberList.size(); j++) {
+                                if (columns[4].equals(cardNumberList.get(j))) {
+                                    return WrapMapper.error("请检查" + i + "条数据卡号已存在");
+                                }
+                            }
+                        }else{
+                            cardNumberList=new ArrayList<>();
+                        }
+                        family.setCardNumber(columns[4]);
+                        cardNumberList.add(columns[4]);
+                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
+                        family.setWxNumber(columns[5]);
+                        family.setAdress(columns[6]);
+                        family.setBirth(columns[7]);
+                        family.setIdcard(columns[8]);
+                        family.setRemark(columns[9]);
+                        families.add(family);
                     } else {
                         return WrapMapper.error("第" + i + "条的学校数据不存在！请检查");
                     }
                 }
             }
-            return  WrapMapper.ok();
+            familyControllerClient.batchSaveFamilyInfo(families);
+            return  WrapMapper.ok("导入完成");
         }catch (Exception e){
             return WrapMapper.error(e.getMessage());
         }

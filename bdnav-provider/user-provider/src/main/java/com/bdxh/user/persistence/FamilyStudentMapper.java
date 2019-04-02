@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
@@ -30,4 +31,7 @@ public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
 
     //修改学生名称
     int updateStudentInfo(@Param("addFamilyStudentDto") AddFamilyStudentDto addFamilyStudentDto);
+
+    //批量删除家长学生关系信息
+    int batchRemoveFamilyStudentInfo(@Param("list") List<Map<String,String>> list);
 }

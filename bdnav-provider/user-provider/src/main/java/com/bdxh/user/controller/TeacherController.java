@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value = "老师信息管理接口API", tags = "老师信息管理接口API")
@@ -64,13 +65,18 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
-            if(null!=addTeacherDto.getTeacherDeptDtoList()){
-            for (int i = 0; i < addTeacherDto.getTeacherDeptDtoList().size(); i++) {
-                String[] ids = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
-                String[] names = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
-                addTeacherDto.getTeacherDeptDtoList().get(i).setDeptId(Long.parseLong(ids[ids.length - 1]));
-                addTeacherDto.getTeacherDeptDtoList().get(i).setDeptName(names[names.length - 1]);
-            }}
+            TeacherVo teacherVo=teacherService.selectTeacherInfo(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber());
+            if(teacherVo!=null) {
+              return WrapMapper.ok("当前学校已有相同cardNumber(学号)");
+            }
+            if (null != addTeacherDto.getTeacherDeptDtoList()) {
+                for (int i = 0; i < addTeacherDto.getTeacherDeptDtoList().size(); i++) {
+                    String[] ids = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
+                    String[] names = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
+                    addTeacherDto.getTeacherDeptDtoList().get(i).setDeptId(Long.parseLong(ids[ids.length - 1]));
+                    addTeacherDto.getTeacherDeptDtoList().get(i).setDeptName(names[names.length - 1]);
+                }
+            }
             teacherService.saveTeacherDeptInfo(addTeacherDto);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -190,6 +196,27 @@ public class TeacherController {
     @RequestMapping(value = "/findTeacherBySchoolDeptId", method = RequestMethod.GET)
     public Object findTeacherBySchoolDeptId(@RequestParam("schoolCode") String schoolCode, @RequestParam("schoolId") Long schoolId, @RequestParam("deptId") Long deptId) {
         return WrapMapper.ok(teacherDeptService.findTeacherBySchoolDeptId(schoolCode, schoolId, deptId));
+    }
+    @ApiOperation(value = "批量新增老师信息")
+    @RequestMapping(value = "/batchSaveTeacherInfo", method = RequestMethod.POST)
+    public Object batchSaveTeacherInfo(@RequestBody List<Teacher> teacherList){
+        try {
+            teacherService.batchSaveTeacherInfo(teacherList);
+            return WrapMapper.ok();
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+
+    }
+
+    @ApiOperation(value = "根据学校Code查询所有老师卡号")
+    @RequestMapping(value = "/queryTeacherCardNumberBySchoolCode", method = RequestMethod.POST)
+    public Object queryTeacherCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
+        try {
+            return WrapMapper.ok(teacherService.queryTeacherCardNumberBySchoolCode(schoolCode));
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
     }
 
 }

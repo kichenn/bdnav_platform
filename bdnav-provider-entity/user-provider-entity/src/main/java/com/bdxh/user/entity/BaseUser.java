@@ -31,138 +31,138 @@ public class BaseUser implements Serializable {
 	 * 学校id
 	 */
 	@Column(name = "school_id")
-	private Long SchoolId;
+	private Long schoolId;
 
 	/**
 	 * 学校编码
 	 */
 	@Column(name = "school_code")
-	private String SchoolCode;
+	private String schoolCode;
 
 	/**
 	 * 学校名称
 	 */
 	@Column(name = "school_name")
-	private String SchoolName;
+	private String schoolName;
 
 	/**
 	 * 用户类型 1 学生 2 老师 3 家长
 	 */
 	@Column(name = "user_type")
-	private Integer UserType;
+	private Integer userType;
 
 	/**
 	 * 用户id
 	 */
 	@Column(name = "user_id")
-	private Long UserId;
+	private Long userId;
 
 	/**
 	 * 用户姓名
 	 */
 	@Column(name = "name")
-	private String Name;
+	private String name;
 
 	/**
 	 * 用户性别
 	 */
 	@Column(name = "gender")
-	private Integer Gender;
+	private Integer gender;
 
 	/**
 	 * 出身日期
 	 */
 	@Column(name = "birth")
-	private String Birth;
+	private String birth;
 
 	/**
 	 * 手机号
 	 */
 	@Column(name = "phone")
-	private String Phone;
+	private String phone;
 
 	/**
 	 * 学号
 	 */
 	@Column(name = "card_number")
-	private String CardNumber;
+	private String cardNumber;
 
 	/**
 	 * 身份证号
 	 */
 	@Column(name = "idcard")
-	private String Idcard;
+	private String idcard;
 
 	/**
 	 * qq号
 	 */
 	@Column(name = "qq_number")
-	private String QqNumber;
+	private String qqNumber;
 
 	/**
 	 * 微信号
 	 */
 	@Column(name = "wx_number")
-	private String WxNumber;
+	private String wxNumber;
 
 	/**
 	 * 邮箱
 	 */
 	@Column(name = "email")
-	private String Email;
+	private String email;
 
 	/**
 	 * 头像地址
 	 */
 	@Column(name = "image")
-	private String Image;
+	private String image;
 
 	/**
 	 * 头像名称
 	 */
 	@Column(name = "image_name")
-	private String ImageName;
+	private String imageName;
 
 	/**
 	 * 民族名称
 	 */
 	@Column(name = "nation_name")
-	private String NationName;
+	private String nationName;
 
 	/**
 	 * 家庭住址
 	 */
 	@Column(name = "adress")
-	private String Adress;
+	private String adress;
 
 	/**
 	 * 创建日期
 	 */
 	@Column(name = "create_date")
-	private Date CreateDate;
+	private Date createDate;
 
 	/**
 	 * 修改日期
 	 */
 	@Column(name = "update_date")
-	private Date UpdateDate;
+	private Date updateDate;
 
 	/**
 	 * 操作人
 	 */
 	@Column(name = "operator")
-	private Long Operator;
+	private Long operator;
 
 	/**
 	 * 操作人姓名
 	 */
 	@Column(name = "operator_name")
-	private String OperatorName;
+	private String operatorName;
 
 	/**
 	 * 备注
 	 */
 	@Column(name = "remark")
-	private String Remark;
+	private String remark;
 
 }

@@ -14,12 +14,15 @@ import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.fallback.StudentControllerFallback;
 import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Service
@@ -92,4 +95,22 @@ public interface StudentControllerClient {
     @RequestMapping(value = "/student/findStudentBySchoolClassId",method = RequestMethod.GET)
     @ResponseBody
     Wrapper<Student> findStudentBySchoolClassId(@RequestParam("schoolCode") String schoolCode, @RequestParam("schoolId") Long schoolId, @RequestParam("classId") Long classId);
+
+    /**
+     * 批量新增学生信息
+     * @param studentList
+     * @return
+     */
+    @RequestMapping(value = "/student/batchSaveStudentInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper batchSaveStudentInfo(@RequestBody List<Student> studentList);
+
+    /**
+     * 根据学校Code查询所有学生学号
+     * @param schoolCode
+     * @return
+     */
+    @RequestMapping(value = "/student/queryCardNumberBySchoolCode", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper queryCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode);
 }

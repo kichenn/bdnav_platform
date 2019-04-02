@@ -44,7 +44,7 @@ public class SysDictController {
 
     @RequestMapping(value="/queryList",method = RequestMethod.POST)
     @ApiOperation("根据条件查询字典")
-    public Object queryList(@RequestBody DictQueryDto dictQueryDto){
+    public Object queryList(@Validated @RequestBody DictQueryDto dictQueryDto){
         try {
             Wrapper wrapper = dictControllerClient.queryList(dictQueryDto);
             return WrapMapper.ok(wrapper.getResult());
@@ -56,7 +56,7 @@ public class SysDictController {
 
     @RequestMapping(value="/addDict",method = RequestMethod.POST)
     @ApiOperation("添加字典目录")
-    public Object addDict(@RequestBody DictDto dictDto){
+    public Object addDict(@Validated @RequestBody DictDto dictDto){
         try {
             Wrapper wrapper = dictControllerClient.addDict(dictDto);
             return wrapper;
@@ -68,7 +68,7 @@ public class SysDictController {
 
     @RequestMapping(value="/updateDict",method = RequestMethod.POST)
     @ApiOperation("修改字典目录")
-    public Object updateDict(@RequestBody UpdateDictDto updateDictDto){
+    public Object updateDict(@Validated @RequestBody UpdateDictDto updateDictDto){
         try {
             Wrapper wrapper = dictControllerClient.updateDict(updateDictDto);
             return wrapper;
@@ -93,7 +93,7 @@ public class SysDictController {
 
     @RequestMapping(value="/queryListPage",method = RequestMethod.POST)
     @ApiOperation("根据条件查询字典数据")
-    public Object queryListPage(@RequestBody DictDataQueryDto dictDataQueryDto){
+    public Object queryListPage(@Validated @RequestBody DictDataQueryDto dictDataQueryDto){
         try {
             Wrapper wrapper = dictDataControllerClient.queryListPage(dictDataQueryDto);
             return WrapMapper.ok(wrapper.getResult());
@@ -105,7 +105,7 @@ public class SysDictController {
 
     @RequestMapping(value="/addDictData",method = RequestMethod.POST)
     @ApiOperation("/添加字典数据")
-    public Object addDictData(@RequestBody DictDataDto dictDataDto){
+    public Object addDictData(@Validated @RequestBody DictDataDto dictDataDto){
         try {
             Wrapper wrapper = dictDataControllerClient.addDictData(dictDataDto);
             return wrapper;
@@ -119,7 +119,7 @@ public class SysDictController {
 
     @RequestMapping(value="/updateDictData",method = RequestMethod.POST)
     @ApiOperation("修改字典数据")
-    public Object updateDictData(@RequestBody UpdateDictDataDto updateDictDataDto){
+    public Object updateDictData(@Validated @RequestBody UpdateDictDataDto updateDictDataDto){
         try {
             Wrapper wrapper = dictDataControllerClient.updateDictData(updateDictDataDto);
             return wrapper;

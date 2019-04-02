@@ -70,10 +70,10 @@
             and   student_name like CONCAT('%',CONCAT(#{familyStudentQueryDto.studentName},'%'))
         </if>
             <if test="familyStudentQueryDto.cardNumber!=null and familyStudentQueryDto.cardNumber!=''">
-                and   card_number = #{familyStudentQueryDto.cardNumber}
+                and   card_number like CONCAT('%',CONCAT(#{familyStudentQueryDto.cardNumber},'%'))
             </if>
             <if test="familyStudentQueryDto.studentNumber!=null and familyStudentQueryDto.studentNumber!=''">
-                and   student_number = #{familyStudentQueryDto.studentNumber}
+                and   student_number like CONCAT('%',CONCAT(#{familyStudentQueryDto.studentNumber},'%'))
             </if>
         </where>
         order by create_date desc
@@ -89,4 +89,12 @@
              AND
              `card_number`=#{familyStudentDto.cardNumber};
         </update>
+
+    <!--批量删除家长学生关系数据信息-->
+    <delete id="batchRemoveFamilyStudentInfo">
+        delete from t_family_student where (school_code,card_number)in
+        <foreach collection="list" separator="," open="(" close=")" item="list" >
+            (#{list.schoolCode},#{list.cardNumber})
+        </foreach>
+    </delete>
 </mapper>

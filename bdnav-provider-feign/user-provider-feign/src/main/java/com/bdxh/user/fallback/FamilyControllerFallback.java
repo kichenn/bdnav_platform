@@ -5,9 +5,12 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
+import com.bdxh.user.entity.Family;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.vo.FamilyVo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @description:
@@ -44,5 +47,15 @@ public class FamilyControllerFallback implements FamilyControllerClient {
     @Override
     public Wrapper queryFamilyListPage(FamilyQueryDto familyQueryDto) {
         return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper batchSaveFamilyInfo(List<Family> familyList) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper queryFamilyCardNumberBySchoolCode(String schoolCode) {
+            return WrapMapper.error();
     }
 }

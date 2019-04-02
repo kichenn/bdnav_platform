@@ -8,7 +8,6 @@
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="role" jdbcType="VARCHAR" property="role" />
     <result column="role_name" jdbcType="VARCHAR" property="roleName" />
-    <result column="rswitch" jdbcType="TINYINT" property="rswitch" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />
@@ -16,7 +15,7 @@
   </resultMap>
 
   <sql id="BaseColumns">
-    id,role,role_name,rswitch,create_date,update_date,operator,remark
+    id,role,role_name,create_date,update_date,operator,remark
   </sql>
 
   <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">

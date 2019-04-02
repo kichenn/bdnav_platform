@@ -26,8 +26,6 @@ public class SysRoleController {
     @Autowired
     private RoleControllerClient roleControllerClient;
 
-    @Autowired
-    private PermissionControllerClient permissionControllerClient;
 
     @RequestMapping(value="/findPageRoleListAll",method = RequestMethod.GET)
     @ApiOperation("分页查询全部角色信息")
@@ -46,7 +44,7 @@ public class SysRoleController {
 
     @RequestMapping(value="/addRole",method = RequestMethod.POST)
     @ApiOperation("增加角色信息")
-    public Object addRole(@RequestBody AddRoleDto addRoleDto){
+    public Object addRole(@Validated @RequestBody AddRoleDto addRoleDto){
         try {
             Wrapper wrapper = roleControllerClient.addRole(addRoleDto);
             return wrapper;
@@ -60,7 +58,7 @@ public class SysRoleController {
 
     @RequestMapping(value="/updateRole",method = RequestMethod.POST)
     @ApiOperation("修改角色信息")
-    public Object updateRole(@RequestBody UpdateRoleDto updateRoleDto){
+    public Object updateRole(@Validated @RequestBody UpdateRoleDto updateRoleDto){
         try {
             Wrapper wrapper = roleControllerClient.updateRole(updateRoleDto);
             return wrapper;

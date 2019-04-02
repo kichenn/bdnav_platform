@@ -5,6 +5,7 @@ import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.persistence.BaseUserMapper;
 import com.bdxh.user.persistence.FamilyMapper;
@@ -21,7 +22,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 学生信息service实现
@@ -68,11 +72,17 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         String[] schoolCodes = schoolCode.split(",");
         String[] cardNumbers = cardNumber.split(",");
         if (schoolCodes.length == cardNumbers.length) {
+            List<Map<String,String>>list =new ArrayList<>();
             for (int i = 0; i < cardNumbers.length; i++) {
-                studentMapper.removeStudentInfo(schoolCodes[i], cardNumbers[i]);
-                familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCodes[i], cardNumbers[i]);
-                baseUserMapper.deleteBaseUserInfo(schoolCodes[i],cardNumbers[i]);
+                Map<String,String> map=new HashMap<>();
+                map.put("cardNumber",cardNumbers[i]);
+                map.put("schoolCode",schoolCodes[i]);
+                list.add(map);
+
             }
+            studentMapper.batchRemoveStudentInfo(list);
+            familyStudentMapper.batchRemoveFamilyStudentInfo(list);
+            baseUserMapper.batchRemoveBaseUserInfo(list);
         }
     }
 
@@ -142,5 +152,24 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         baseUser.setUserId(student.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
         baseUserMapper.insert(baseUser);
+    }
+
+    @Override
+    public void batchSaveStudentInfo(List<Student> studentList) {
+        List<BaseUser> baseUserlist=BeanMapUtils.mapList(studentList,BaseUser.class);
+        for (int i = 0; i < baseUserlist.size(); i++) {
+            studentList.get(i).setId(snowflakeIdWorker.nextId());
+            baseUserlist.get(i).setUserType(1);
+            baseUserlist.get(i).setUserId(studentList.get(i).getId());
+            baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
+        }
+        studentMapper.batchSaveStudentInfo(studentList);
+        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+
+    }
+
+    @Override
+    public List<String> queryCardNumberBySchoolCode(String schoolCode) {
+        return studentMapper.queryCardNumberBySchoolCode(schoolCode);
     }
 }

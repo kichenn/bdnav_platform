@@ -90,5 +90,11 @@
     AND `dept_id`=#{deptId,jdbcType=BIGINT}
     limit 1;
   </select>
-
+  <!--批量删除老师信息-->
+  <delete id="batchRemoveTeacherDeptInfo">
+    delete from t_teacher_dept where (school_code,card_number)in
+    <foreach collection="list" separator="," open="(" close=")" item="list" >
+      (#{list.schoolCode},#{list.cardNumber})
+    </foreach>
+  </delete>
 </mapper>

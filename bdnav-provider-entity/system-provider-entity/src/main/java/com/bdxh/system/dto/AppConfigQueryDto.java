@@ -1,7 +1,6 @@
 package com.bdxh.system.dto;
 
 import com.bdxh.common.base.page.Query;
-import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.util.Date;
@@ -12,7 +11,6 @@ import java.util.Date;
  * @create: 2019-03-21 17:34
  **/
 @Data
-@ApiModel("查询应用配置dto")
 public class AppConfigQueryDto extends Query {
 
     /**
@@ -25,43 +23,43 @@ public class AppConfigQueryDto extends Query {
      * 应用id
      */
     @ApiModelProperty("应用id")
-    private Long AppId;
+    private Long appId;
 
     /**
      * 应用名称
      */
     @ApiModelProperty("应用配置名称")
-    private String AppName;
+    private String appName;
 
     /**
      * 应用描述
      */
     @ApiModelProperty("应用配置描述")
-    private String AppDesc;
+    private String appDesc;
 
 
     /**
      * 创建时间
      */
     @ApiModelProperty("创建时间")
-    private Date CreateDate;
+    private Date createDate;
 
     /**
      * 修改时间
      */
     @ApiModelProperty("修改时间")
-    private Date UpdateDate;
+    private Date updateDate;
 
     /**
      * 操作人
      */
     @ApiModelProperty("操作人")
-    private Long Operator;
+    private Long operator;
 
     /**
      * 备注
      */
     @ApiModelProperty("备注")
-    private String Remark;
+    private String remark;
 
 }

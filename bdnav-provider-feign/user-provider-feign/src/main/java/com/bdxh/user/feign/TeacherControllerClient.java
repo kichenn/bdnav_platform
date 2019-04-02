@@ -8,9 +8,12 @@ import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.fallback.TeacherControllerFallback;
 import com.bdxh.user.vo.TeacherVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -92,4 +95,22 @@ public interface TeacherControllerClient {
     @RequestMapping(value = "/teacher/findTeacherBySchoolDeptId",method = RequestMethod.GET)
     @ResponseBody
     Wrapper<TeacherDept> findTeacherBySchoolDeptId(@RequestParam("schoolCode") String schoolCode, @RequestParam("schoolId") Long schoolId, @RequestParam("deptId") Long deptId);
+
+    /**
+     * 批量新增老师信息
+     * @param teacherList
+     * @return
+     */
+    @RequestMapping(value = "/teacher/batchSaveTeacherInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper batchSaveTeacherInfo(@RequestBody List<Teacher> teacherList);
+
+    /**
+     * 根据学校Code查询所有老师卡号
+     * @param schoolCode
+     * @return
+     */
+    @RequestMapping(value = "/teacher/queryTeacherCardNumberBySchoolCode", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper queryTeacherCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode);
 }
