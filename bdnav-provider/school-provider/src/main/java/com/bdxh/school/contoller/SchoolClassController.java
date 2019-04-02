@@ -53,7 +53,6 @@ public class SchoolClassController {
             SchoolClassTreeVo treeVo = new SchoolClassTreeVo();
             BeanUtils.copyProperties(e, treeVo);
             treeVo.setTitle(e.getName());
-            treeVo.setParentIds(e.getParentIds());
             treeVo.setCreateDate(e.getCreateDate());
             return treeVo;
         }).collect(Collectors.toList());

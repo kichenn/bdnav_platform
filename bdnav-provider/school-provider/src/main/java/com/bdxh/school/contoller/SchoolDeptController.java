@@ -41,13 +41,12 @@ public class SchoolDeptController {
     public Object findSchoolDeptTreeBySchoolId(@RequestParam("schoolId") Long schoolId) {
         List<SchoolDept> schoolDeptParents = schoolDeptService.findSchoolParentDeptBySchoolId(schoolId);
         if (CollectionUtils.isEmpty(schoolDeptParents)) {
-            return WrapMapper.error("该学校不存在院系关系，请检查！！！");
+            return WrapMapper.error("该学校不存在部门关系，请检查！！！");
         }
         List<SchoolDeptTreeVo> schoolDeptDtos = schoolDeptParents.stream().map(e -> {
             SchoolDeptTreeVo treeVo = new SchoolDeptTreeVo();
             BeanUtils.copyProperties(e, treeVo);
             treeVo.setTitle(e.getName());
-            treeVo.setParentIds(e.getParentIds());
             treeVo.setCreateDate(e.getCreateDate());
             return treeVo;
         }).collect(Collectors.toList());
