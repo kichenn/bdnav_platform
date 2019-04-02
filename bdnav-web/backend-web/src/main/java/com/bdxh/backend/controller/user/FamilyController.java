@@ -179,25 +179,11 @@ public class FamilyController {
             for (int i=1;i<familyList.size();i++) {
                 String[] columns = familyList.get(i);
                 if (StringUtils.isNotBlank(familyList.get(i)[0])) {
-                    if (i == 1) {
-                        //第一条查询数据存到缓存中
+                     if (!familyList.get(i)[0].equals(i - 1 >= familyList.size() ? familyList.get(familyList.size() - 1)[0] : familyList.get(i - 1)[0])|| i==1) {
                         Wrapper wrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
                         Wrapper familyWeapper=familyControllerClient.queryFamilyCardNumberBySchoolCode(columns[0]);
                         school = (School) wrapper.getResult();
                         cardNumberList=(List<String>)familyWeapper.getResult();
-                        redisTemplate.opsForValue().set("schoolInfoVo", school);
-                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
-                        //判断得出在同一个班级直接从缓存中拉取数据
-                    } else if (familyList.get(i)[0].equals(i - 1 >= familyList.size() ? familyList.get(familyList.size() - 1)[0] : familyList.get(i - 1)[0])) {
-                        school = (School) redisTemplate.opsForValue().get("schoolInfoVo");
-                        cardNumberList = (List<String>)redisTemplate.opsForValue().get("familyCardNumberList");
-                    } else {
-                        Wrapper wrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
-                        Wrapper familyWeapper=familyControllerClient.queryFamilyCardNumberBySchoolCode(columns[0]);
-                        school = (School) wrapper.getResult();
-                        cardNumberList=(List<String>)familyWeapper.getResult();
-                        redisTemplate.opsForValue().set("schoolInfoVo", school);
-                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
                     }
                     if (school != null) {
                         Family family = new Family();
@@ -220,7 +206,6 @@ public class FamilyController {
                         }
                         family.setCardNumber(columns[4]);
                         cardNumberList.add(columns[4]);
-                        redisTemplate.opsForValue().set("familyCardNumberList", cardNumberList);
                         family.setWxNumber(columns[5]);
                         family.setAdress(columns[6]);
                         family.setBirth(columns[7]);

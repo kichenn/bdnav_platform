@@ -177,6 +177,7 @@ public class TeacherController {
     @RequestMapping(value = "/importTeacherInfo",method = RequestMethod.POST)
     public Object importTeacherInfo(@RequestParam("teacherFile")MultipartFile teacherFile) {
         try {
+            long start=System.currentTimeMillis();
             List<String[]> teacherList= ExcelImportUtil.readExcelNums(teacherFile,0);
             School school=new School();
             List<Teacher> saveTeacherList=new ArrayList<>();
@@ -184,25 +185,11 @@ public class TeacherController {
             for (int i = 1; i < teacherList.size(); i++) {
                 String[] columns= teacherList.get(i);
                 if(StringUtils.isNotBlank(teacherList.get(i)[0])){
-                if(i==1){
-                    //第一条查询数据存到缓存中
+                if(!teacherList.get(i)[0].equals(i-1>=teacherList.size()?teacherList.get(teacherList.size()-1)[0]:teacherList.get(i-1)[0])||i==1){
                     Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
                     Wrapper teacherWeapper=teacherControllerClient.queryTeacherCardNumberBySchoolCode(columns[0]);
                     school=(School)wrapper.getResult();
                     cardNumberList=(List<String>)teacherWeapper.getResult();
-                    redisTemplate.opsForValue().set("schoolInfoVo",school);
-                    redisTemplate.opsForValue().set("teacherCardNumberList",cardNumberList);
-                    //判断得出在同一个班级直接从缓存中拉取数据
-                }else if(teacherList.get(i)[0].equals(i-1>=teacherList.size()?teacherList.get(teacherList.size()-1)[0]:teacherList.get(i-1)[0])){
-                    school=(School)redisTemplate.opsForValue().get("schoolInfoVo");
-                    cardNumberList=(List<String>)redisTemplate.opsForValue().get("teacherCardNumberList");
-                }else{
-                    Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
-                    Wrapper teacherWeapper=teacherControllerClient.queryTeacherCardNumberBySchoolCode(columns[0]);
-                    school=(School)wrapper.getResult();
-                    cardNumberList=(List<String>)teacherWeapper.getResult();
-                    redisTemplate.opsForValue().set("schoolInfoVo",school);
-                    redisTemplate.opsForValue().set("teacherCardNumberList",cardNumberList);
                 }
                 if(school!=null){
                 Teacher tacher=new Teacher();
@@ -227,7 +214,6 @@ public class TeacherController {
                     }
                     tacher.setCardNumber(columns[6]);
                     cardNumberList.add(columns[6]);
-                    redisTemplate.opsForValue().set("teacherCardNumberList", cardNumberList);
                     tacher.setBirth(columns[7]);
                     tacher.setIdcard(columns[8]);
                     tacher.setRemark(columns[9]);
@@ -238,6 +224,8 @@ public class TeacherController {
              }
             }
             teacherControllerClient.batchSaveTeacherInfo(saveTeacherList);
+            long end=System.currentTimeMillis();
+            log.info("导入10条数据总计用时："+(end-start));
             return WrapMapper.ok("导入完成");
         } catch (Exception e) {
             e.printStackTrace();
