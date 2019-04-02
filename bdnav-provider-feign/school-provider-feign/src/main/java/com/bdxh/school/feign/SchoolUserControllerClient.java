@@ -43,6 +43,15 @@ public interface SchoolUserControllerClient {
     Wrapper addSchoolUser(@RequestBody AddSchoolUserDto addSchoolUserDto);
 
     /**
+     * 根据id查询学校用户信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/schoolUser/findSchoolUserById", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper findSchoolUserById(@RequestParam(name = "id") Long id);
+
+    /**
      * 修改系统用户
      *
      * @return

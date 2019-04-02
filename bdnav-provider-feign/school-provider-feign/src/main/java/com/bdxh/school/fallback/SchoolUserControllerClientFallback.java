@@ -32,6 +32,11 @@ public class SchoolUserControllerClientFallback implements SchoolUserControllerC
     }
 
     @Override
+    public Wrapper findSchoolUserById(Long id) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper modifySchoolUser(ModifySchoolUserDto modifySchoolUserDto) {
         return WrapMapper.error();
     }

@@ -61,6 +61,13 @@ public class SchoolUserWebController {
         return wrapper;
     }
 
+    @RequestMapping(value = "/findSchoolUserById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据id查询学校用户信息", response = SchoolUser.class)
+    public Object findSchoolUserById(@RequestParam(name = "id") Long id) {
+        Wrapper wrapper = schoolUserControllerClient.findSchoolUserById(id);
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
     @RequestMapping(value = "/modifySchoolUser", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校用户信息", response = Boolean.class)
     public Object modifySchoolUser(@Validated @RequestBody ModifySchoolUserDto modifySchoolUserDto) {
