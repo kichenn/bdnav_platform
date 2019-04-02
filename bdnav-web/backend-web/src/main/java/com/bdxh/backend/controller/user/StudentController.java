@@ -184,10 +184,12 @@ public class StudentController {
         }
         try {
             StudentVo studentVo=(StudentVo)studentControllerClient.queryStudentInfo(updateStudentDto.getSchoolCode(),updateStudentDto.getCardNumber()).getResult();
+           if(null!=studentVo.getImage()){
             if (!studentVo.getImage().equals(updateStudentDto.getImage())) {
                 //删除腾讯云的以前图片
                 FileOperationUtils.deleteFile(studentVo.getImage(), null);
             }
+           }
             SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=updateStudentDto.getClassIds().split(",");
             for (int i = 0; i < ClassId.length; i++) {

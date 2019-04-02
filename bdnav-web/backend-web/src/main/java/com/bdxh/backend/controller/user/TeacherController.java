@@ -119,9 +119,11 @@ public class TeacherController {
         }
         try {
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
-            if (!teacherVo.getImage().equals(updateTeacherDto.getImage())) {
-                //删除腾讯云的以前图片
-                FileOperationUtils.deleteFile(teacherVo.getImage(), null);
+            if(null!=teacherVo.getImage()) {
+                if (!teacherVo.getImage().equals(updateTeacherDto.getImage())) {
+                    //删除腾讯云的以前图片
+                    FileOperationUtils.deleteFile(teacherVo.getImage(), null);
+                }
             }
             teacherControllerClient.updateTeacher(updateTeacherDto);
             return WrapMapper.ok();

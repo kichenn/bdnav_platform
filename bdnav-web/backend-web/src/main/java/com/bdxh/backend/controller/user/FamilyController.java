@@ -117,9 +117,11 @@ public class FamilyController {
     public Object updateFamily(@RequestBody UpdateFamilyDto updateFamilyDto){
         try {
             FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(updateFamilyDto.getSchoolCode(),updateFamilyDto.getCardNumber()).getResult();
-            if (!familyVo.getImage().equals(updateFamilyDto.getImage())) {
-                //删除腾讯云的以前图片
-                FileOperationUtils.deleteFile(familyVo.getImage(), null);
+            if(null!=familyVo.getImage()) {
+                if (!familyVo.getImage().equals(updateFamilyDto.getImage())) {
+                    //删除腾讯云的以前图片
+                    FileOperationUtils.deleteFile(familyVo.getImage(), null);
+                }
             }
             familyControllerClient.updateFamily(updateFamilyDto);
             return WrapMapper.ok();
