@@ -47,6 +47,7 @@ public class SchoolDeptController {
             SchoolDeptTreeVo treeVo = new SchoolDeptTreeVo();
             BeanUtils.copyProperties(e, treeVo);
             treeVo.setTitle(e.getName());
+            treeVo.setParentIds(e.getParentIds());
             treeVo.setCreateDate(e.getCreateDate());
             return treeVo;
         }).collect(Collectors.toList());
