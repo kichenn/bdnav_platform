@@ -8,6 +8,7 @@ import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -91,4 +92,11 @@ public interface StudentService extends IService<Student> {
      * @return
      */
     void batchSaveStudentInfo(List<Student> studentList);
+
+    /**
+     * 根据学校Code查询所有学生学号
+     * @param schoolCode
+     * @return
+     */
+    List<String> queryCardNumberBySchoolCode( String schoolCode);
 }

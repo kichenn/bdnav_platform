@@ -108,9 +108,9 @@ public class SchoolWebController {
     /**
      * @Description: 学校信息导出
      * @Author: Kang
-     * @Date: 2019/2/27 18:31{}
+     * @Date: 2019/2/27 18:31
      */
-    @RequestMapping(value = "/downloadReportSchoolExcel", method = {RequestMethod.POST, RequestMethod.GET})
+    @RequestMapping(value = "/downloadReportSchoolExcel", method = RequestMethod.GET)
     @ApiOperation(value = "学校信息导出")
     @ResponseBody
     public Object downloadReportSchoolExcel(SchoolExcelDto schoolExcelDto) {

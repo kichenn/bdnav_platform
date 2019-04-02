@@ -19,7 +19,7 @@ import java.util.List;
 public class PermissionControllerClientFallback implements PermissionControllerClient {
 
     @Override
-    public Wrapper<List<String>> permissionMenus(Long userId) {
+    public Wrapper<List<String>> permissionMenus(Long roleId) {
         return WrapMapper.error();
     }
 

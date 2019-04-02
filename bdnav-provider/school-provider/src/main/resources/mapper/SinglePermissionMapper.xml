@@ -26,13 +26,13 @@
     <sql id="BaseColumns">
 	  id,school_id,school_code,user_type,user_id,user_name,card_number,device_id,device_code,access_begin,access_end,access_day_mark,access_time_mark,create_date,update_date,operator,operator_name,remark
 	</sql>
-    <select id="getSinglePermissionAllCount" resultType="Integer">
+    <select id="getSinglePermissionAllCount" resultType="java.lang.Integer">
 	  SELECT 
 	   COUNT(1)
 	  FROM t_single_permission 
 	</select>
 
-    <delete id="delSinglePermissionInIds" parameterType="Integer">
+    <delete id="delSinglePermissionInIds" parameterType="java.lang.Integer">
         DELETE
         FROM t_single_permission
         WHERE
@@ -62,7 +62,7 @@
                 AND user_type =#{singlePermission.userType,jdbcType=TINYINT}
             </if>
         </where>
-        Order BY　create_date　DESC
+        ORDER BY create_date DESC
     </select>
 
 </mapper>

@@ -181,6 +181,15 @@ public class FamilyController {
         }catch (Exception e){
             return WrapMapper.error(e.getMessage());
         }
+    }
 
+    @ApiOperation(value = "根据学校Code查询所有家长卡号")
+    @RequestMapping(value = "/queryFamilyCardNumberBySchoolCode", method = RequestMethod.POST)
+    public Object queryFamilyCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
+        try {
+        return WrapMapper.ok(familyService.queryFamilyCardNumberBySchoolCode(schoolCode));
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
     }
 }

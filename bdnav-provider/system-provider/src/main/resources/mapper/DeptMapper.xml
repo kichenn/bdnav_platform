@@ -30,7 +30,7 @@
       sys_dept
      <where>
       <if test="deptFullName !=null">
-          dept_full_name LIKE CONCAT(CONCAT('%',#{deptFullName},'%'));
+          dept_full_name LIKE CONCAT(CONCAT('%',#{deptFullName}),'%')
       </if>
      </where>
   </select>

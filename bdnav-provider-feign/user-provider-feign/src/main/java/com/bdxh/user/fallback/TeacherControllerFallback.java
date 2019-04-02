@@ -59,4 +59,9 @@ public class TeacherControllerFallback implements TeacherControllerClient {
     public Wrapper batchSaveTeacherInfo(List<Teacher> teacherList) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper queryTeacherCardNumberBySchoolCode(String schoolCode)  {
+        return WrapMapper.error();
+    }
 }

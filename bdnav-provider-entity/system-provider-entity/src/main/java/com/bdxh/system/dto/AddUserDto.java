@@ -75,7 +75,6 @@ public class AddUserDto implements Serializable {
      * 部门id
      */
     @ApiModelProperty("部门id")
-    @NotNull(message = "部门id不能为空")
     private Long deptId;
 
     /**

@@ -35,4 +35,7 @@ public interface StudentMapper extends Mapper<Student> {
 
     //批量新增学生信息
     int batchSaveStudentInfo(List<Student> studentList);
+
+    //根据学校Code查询所有学生学号
+    List<String> queryCardNumberBySchoolCode(@Param("schoolCode") String schoolCode);
 }

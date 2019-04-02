@@ -180,7 +180,11 @@ public class DeptController {
      */
     @ApiOperation("根据条件查询列表")
     @RequestMapping(value = "/queryList", method = RequestMethod.POST)
-    public Object queryList(@Valid @RequestBody DeptQueryDto deptQueryDto) {
+    public Object queryList(@Valid @RequestBody DeptQueryDto deptQueryDto,BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(deptQueryDto);
             List<Dept> depts = deptService.queryList(param);
@@ -209,7 +213,11 @@ public class DeptController {
      */
     @ApiOperation("根据条件分页查找字典")
     @RequestMapping(value = "/queryListPage", method = RequestMethod.POST)
-    public Object queryListPage(@Valid @RequestBody DeptQueryDto deptQueryDto) {
+    public Object queryListPage(@Valid @RequestBody DeptQueryDto deptQueryDto,BindingResult bindingResult) {
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(deptQueryDto);
             PageInfo<Dept> depts = deptService.findListPage(param, deptQueryDto.getPageNum(), deptQueryDto.getPageSize());

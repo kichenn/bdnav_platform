@@ -189,7 +189,7 @@
         )
         VALUES
         <foreach collection="list" index="index" separator="," item="familyList">
-            #{familyList.id},
+            (   #{familyList.id},
             #{familyList.schoolId},
             #{familyList.schoolCode},
             #{familyList.schoolName},
@@ -217,4 +217,9 @@
             )
         </foreach>
     </insert>
+
+    <!--根据学校Code查询卡号-->
+    <select id="queryFamilyCardNumberBySchoolCode"  resultType="java.lang.String">
+        select card_number from t_family where school_code=#{schoolCode}
+    </select>
 </mapper>

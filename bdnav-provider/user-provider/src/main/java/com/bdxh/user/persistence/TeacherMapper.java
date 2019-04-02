@@ -27,4 +27,7 @@ public interface TeacherMapper extends Mapper<Teacher> {
 
     //批量新增老师
     int  batchSaveTeacherInfo(List<Teacher> teacherList);
+
+    //根据学校Code查询卡号
+    List<String> queryTeacherCardNumberBySchoolCode(@Param("schoolCode")String schoolCode);
 }

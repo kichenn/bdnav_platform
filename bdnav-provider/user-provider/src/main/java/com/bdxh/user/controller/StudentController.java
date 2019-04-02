@@ -197,4 +197,16 @@ public class StudentController {
 
     }
 
+    @ApiOperation(value = "根据学校Code查询所有学生学号")
+    @RequestMapping(value = "/queryCardNumberBySchoolCode", method = RequestMethod.POST)
+    public Object queryCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
+        try {
+
+        return WrapMapper.ok(studentService.queryCardNumberBySchoolCode(schoolCode));
+
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 }

@@ -11,12 +11,5 @@
 
     <artifactId>onecard-provider-feign</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.bdxh</groupId>
-            <artifactId>onecard-provider-entity</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 
 </project>

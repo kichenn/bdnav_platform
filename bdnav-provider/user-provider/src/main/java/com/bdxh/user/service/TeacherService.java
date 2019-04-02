@@ -77,4 +77,11 @@ public interface TeacherService extends IService<Teacher> {
      * @param teacherList
      */
     void batchSaveTeacherInfo(List<Teacher> teacherList);
+
+    /**
+     * 根据学校Code查询所有卡号
+     * @param schoolCode
+     * @return
+     */
+    List<String> queryTeacherCardNumberBySchoolCode( String schoolCode);
 }

@@ -46,7 +46,8 @@ public class DictController {
      */
     @ApiOperation("添加字典信息")
     @RequestMapping(value = "/addDict",method = RequestMethod.POST)
-    public Object addDict(@Valid @RequestBody DictDto dictDto, BindingResult bindingResult){   //检验参数
+    public Object addDict(@Valid @RequestBody DictDto dictDto, BindingResult bindingResult){
+        //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
@@ -110,7 +111,12 @@ public class DictController {
      */
     @ApiOperation("根据条件查询列表")
     @RequestMapping(value = "/queryList",method = RequestMethod.POST)
-    public Object queryList(@Valid @RequestBody DictQueryDto dictQueryDto){
+    public Object queryList(@Valid @RequestBody DictQueryDto dictQueryDto,BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(dictQueryDto);
             List<Dict> dicts = dictService.queryList(param);
@@ -128,7 +134,12 @@ public class DictController {
      */
     @ApiOperation("根据条件分页查找字典")
     @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
-    public Object queryListPage(@Valid @RequestBody DictQueryDto dictQueryDto){
+    public Object queryListPage(@Valid @RequestBody DictQueryDto dictQueryDto,BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(dictQueryDto);
             PageInfo<Dict> dicts = dictService.findListPage(param, dictQueryDto.getPageNum(),dictQueryDto.getPageSize());

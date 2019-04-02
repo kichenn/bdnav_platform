@@ -40,7 +40,7 @@ public class SchoolRoleWebController {
 
     @RequestMapping(value = "/findRolesInConditionPage", method = RequestMethod.POST)
     @ApiOperation(value = "分页条件筛选查询学校角色信息", response = SchoolRole.class)
-    public Object findRolesInConditionPage(@RequestBody SchoolRoleQueryDto roleQueryDto) {
+    public Object findRolesInConditionPage(@Validated @RequestBody SchoolRoleQueryDto roleQueryDto) {
         Wrapper<PageInfo<SchoolRole>> wrapper = schoolRoleControllerClient.findRolesInConditionPage(roleQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }

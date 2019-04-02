@@ -178,8 +178,13 @@ public class RoleController {
      * @return
      */
     @ApiOperation("根据条件查询列表")
-    @RequestMapping(value = "/queryList",method = RequestMethod.GET)
-    public Object queryList(@Valid @RequestBody RoleQueryDto roleQueryDto){
+    @RequestMapping(value = "/queryList",method = RequestMethod.POST)
+    public Object queryList(@Valid @RequestBody RoleQueryDto roleQueryDto, BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
             List<Role> Roles = roleService.findList(param);
@@ -196,8 +201,13 @@ public class RoleController {
      * @return
      */
     @ApiOperation("根据条件分页查找")
-    @RequestMapping(value = "/queryListPage",method = RequestMethod.GET)
-    public Object queryListPage(@Valid @RequestBody RoleQueryDto roleQueryDto){
+    @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
+    public Object queryListPage(@Valid @RequestBody RoleQueryDto roleQueryDto, BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(roleQueryDto);
             PageInfo<Role> Roles = roleService.findListPage(param, roleQueryDto.getPageNum(),roleQueryDto.getPageSize());

@@ -225,4 +225,9 @@ VALUES
 </foreach>
 
   </insert>
+
+  <!--根据学校Code查询卡号-->
+  <select id="queryTeacherCardNumberBySchoolCode"  resultType="java.lang.String">
+        select card_number from t_teacher where school_code=#{schoolCode}
+    </select>
 </mapper>

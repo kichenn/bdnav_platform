@@ -81,4 +81,11 @@ public interface FamilyService extends IService<Family> {
      * @return
      */
     void batchSaveFamilyInfo(List<Family> familyList);
+
+ /**
+  * 根据学校Code查询所有卡号
+  * @param schoolCode
+  * @return
+  */
+   List<String> queryFamilyCardNumberBySchoolCode( String schoolCode);
 }

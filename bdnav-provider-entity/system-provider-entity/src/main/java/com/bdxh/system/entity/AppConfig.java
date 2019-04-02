@@ -23,48 +23,48 @@ public class AppConfig implements Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long Id;
+	private Long id;
 
 	/**
 	 * 应用id
 	 */
 	@Column(name = "app_id")
-	private Long AppId;
+	private Long appId;
 
 	/**
 	 * 应用名称
 	 */
 	@Column(name = "app_name")
-	private String AppName;
+	private String appName;
 
 	/**
 	 * 应用描述
 	 */
 	@Column(name = "app_desc")
-	private String AppDesc;
+	private String appDesc;
 
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_date")
-	private Date CreateDate;
+	private Date createDate;
 
 	/**
 	 * 修改时间
 	 */
 	@Column(name = "update_date")
-	private Date UpdateDate;
+	private Date updateDate;
 
 	/**
 	 * 操作人
 	 */
 	@Column(name = "operator")
-	private Long Operator;
+	private Long operator;
 
 	/**
 	 * 备注
 	 */
 	@Column(name = "remark")
-	private String Remark;
+	private String remark;
 
 }

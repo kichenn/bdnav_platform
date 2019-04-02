@@ -53,4 +53,9 @@ public class FamilyControllerFallback implements FamilyControllerClient {
     public Wrapper batchSaveFamilyInfo(List<Family> familyList) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper queryFamilyCardNumberBySchoolCode(String schoolCode) {
+            return WrapMapper.error();
+    }
 }

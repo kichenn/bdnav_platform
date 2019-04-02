@@ -121,7 +121,7 @@ public class SchoolRoleController {
      */
     @ApiOperation(value = "根据条件查询角色列表", response = SchoolRole.class)
     @RequestMapping(value = "/findRolesInCondition", method = RequestMethod.POST)
-    public Object findRolesInCondition(@Valid @RequestBody SchoolRoleQueryDto roleQueryDto) {
+    public Object findRolesInCondition(@Validated @RequestBody SchoolRoleQueryDto roleQueryDto) {
         List<SchoolRole> Roles = schoolRoleService.findList(roleQueryDto);
         return WrapMapper.ok(Roles);
     }
@@ -133,7 +133,7 @@ public class SchoolRoleController {
      */
     @ApiOperation(value = "根据条件查询角色列表并分页", response = PageInfo.class)
     @RequestMapping(value = "/findRolesInConditionPage", method = RequestMethod.POST)
-    public Object findRolesInConditionPage(@Valid @RequestBody SchoolRoleQueryDto roleQueryDto) {
+    public Object findRolesInConditionPage(@Validated @RequestBody SchoolRoleQueryDto roleQueryDto) {
         PageInfo<SchoolRole> Roles = schoolRoleService.findListPage(roleQueryDto);
         return WrapMapper.ok(Roles);
     }

@@ -70,10 +70,10 @@
             and   student_name like CONCAT('%',CONCAT(#{familyStudentQueryDto.studentName},'%'))
         </if>
             <if test="familyStudentQueryDto.cardNumber!=null and familyStudentQueryDto.cardNumber!=''">
-                and   card_number = #{familyStudentQueryDto.cardNumber}
+                and   card_number like CONCAT('%',CONCAT(#{familyStudentQueryDto.cardNumber},'%'))
             </if>
             <if test="familyStudentQueryDto.studentNumber!=null and familyStudentQueryDto.studentNumber!=''">
-                and   student_number = #{familyStudentQueryDto.studentNumber}
+                and   student_number like CONCAT('%',CONCAT(#{familyStudentQueryDto.studentNumber},'%'))
             </if>
         </where>
         order by create_date desc

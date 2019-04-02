@@ -65,13 +65,18 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
-            if(null!=addTeacherDto.getTeacherDeptDtoList()){
-            for (int i = 0; i < addTeacherDto.getTeacherDeptDtoList().size(); i++) {
-                String[] ids = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
-                String[] names = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
-                addTeacherDto.getTeacherDeptDtoList().get(i).setDeptId(Long.parseLong(ids[ids.length - 1]));
-                addTeacherDto.getTeacherDeptDtoList().get(i).setDeptName(names[names.length - 1]);
-            }}
+            TeacherVo teacherVo=teacherService.selectTeacherInfo(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber());
+            if(teacherVo!=null) {
+              return WrapMapper.ok("当前学校已有相同cardNumber(学号)");
+            }
+            if (null != addTeacherDto.getTeacherDeptDtoList()) {
+                for (int i = 0; i < addTeacherDto.getTeacherDeptDtoList().size(); i++) {
+                    String[] ids = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
+                    String[] names = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
+                    addTeacherDto.getTeacherDeptDtoList().get(i).setDeptId(Long.parseLong(ids[ids.length - 1]));
+                    addTeacherDto.getTeacherDeptDtoList().get(i).setDeptName(names[names.length - 1]);
+                }
+            }
             teacherService.saveTeacherDeptInfo(addTeacherDto);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -202,6 +207,16 @@ public class TeacherController {
             return WrapMapper.error(e.getMessage());
         }
 
+    }
+
+    @ApiOperation(value = "根据学校Code查询所有老师卡号")
+    @RequestMapping(value = "/queryTeacherCardNumberBySchoolCode", method = RequestMethod.POST)
+    public Object queryTeacherCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
+        try {
+            return WrapMapper.ok(teacherService.queryTeacherCardNumberBySchoolCode(schoolCode));
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
     }
 
 }

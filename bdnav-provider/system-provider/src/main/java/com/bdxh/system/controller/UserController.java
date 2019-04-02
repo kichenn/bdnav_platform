@@ -80,6 +80,11 @@ public class UserController {
             return WrapMapper.error(errors);
         }
         try {
+            User userData = userService.getByUserName(updateUserDto.getUserName());
+            if(userData.getUserName().equals(updateUserDto.getUserName())&&!userData.getId().equals(updateUserDto.getId())){
+                return WrapMapper.error("用户名已经存在,请更换用户名称");
+    /*            Preconditions.checkArgument(userData == null, "用户名已经存在"); */
+            }
             userService.updateUsers(updateUserDto);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -162,7 +167,12 @@ public class UserController {
      */
     @ApiOperation("根据条件分页查找用户")
     @RequestMapping(value = "/queryListPage", method = RequestMethod.POST)
-    public Object queryListPage(@RequestBody UserQueryDto userQueryDto) {
+    public Object queryListPage(@RequestBody UserQueryDto userQueryDto,BindingResult bindingResult) {
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(userQueryDto);
             PageInfo<UserQueryDto> Users = userService.findListPage(param,userQueryDto.getPageNum(),userQueryDto.getPageSize());
@@ -203,6 +213,18 @@ public class UserController {
     public Object findUserRelationship(@RequestParam(value = "userId") Long userId) {
         List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
         return WrapMapper.ok(result);
+    }
+
+
+
+
+    @RequestMapping(value = "/test111", method = RequestMethod.GET)
+    @ApiOperation(value = "测试专用", response = Boolean.class)
+    public Object test111(@RequestParam(value = "userName") String userName) {
+        User userData = userService.getByUserName(userName);
+        Preconditions.checkArgument(userData == null, "用户名已经存在");
+/*        List<UserRole> result= userRoleService.findUserRoleByUserId(userId);*/
+        return WrapMapper.ok();
     }
 
 
