@@ -27,6 +27,9 @@ public class ShowSchoolUserModifyPrefixDto {
     @ApiModelProperty("学校名称")
     private String schoolName;
 
+    @ApiModelProperty("账号状态")
+    private Byte status;
+
     @ApiModelProperty("邮箱")
     private String email;
 
