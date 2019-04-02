@@ -129,6 +129,9 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
                 userMapper.UpdateUsers(updateUserDto);
             }
         }else{
+            UserRole userRole = new UserRole();
+            userRole.setUserId(updateUserDto.getId());
+            userRoleMapper.delete(userRole);
             userMapper.UpdateUsers(updateUserDto);
         }
     }
