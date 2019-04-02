@@ -10,6 +10,9 @@ import java.util.List;
 @Data
 public class SchoolDeptTreeVo extends TreeBean {
 
+    @ApiModelProperty("父级ids")
+    private String parentIds;
+
     @ApiModelProperty("父级部门names")
     private String parentNames;
 

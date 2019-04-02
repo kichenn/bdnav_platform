@@ -33,7 +33,7 @@ public class SchoolClassWebController {
     @RequestMapping(value = "/findSchoolClassTreeBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "学校id递归查询院校结构关系", response = SchoolClassTreeVo.class)
     public Object findSchoolsInConditionPaging(@RequestParam("schoolId") Long schoolId) {
-        Wrapper wrapper = schoolClassControllerClient.findSchoolClassTreeBySchoolId(schoolId);
+        Wrapper<List<SchoolClassTreeVo>> wrapper = schoolClassControllerClient.findSchoolClassTreeBySchoolId(schoolId);
         return WrapMapper.ok(wrapper.getResult());
     }
 
