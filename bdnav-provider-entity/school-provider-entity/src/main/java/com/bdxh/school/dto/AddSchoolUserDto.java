@@ -10,6 +10,8 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 @Data
@@ -131,4 +133,6 @@ public class AddSchoolUserDto implements Serializable {
     @ApiModelProperty("备注")
     private String remark;
 
+    @ApiModelProperty("角色分配")
+    private List<Map<Long, String>> roles;
 }

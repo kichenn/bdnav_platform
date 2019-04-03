@@ -2,6 +2,7 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.DateUtil;
+import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolRole;
@@ -108,6 +109,42 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
     }
 
     /**
+     * @Description: 新增学校用户信息
+     * @Author: Kang
+     * @Date: 2019/4/3 10:19
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void addSchoolUser(AddSchoolUserDto addSchoolUserDto) {
+        SchoolUser schoolUser = new SchoolUser();
+        BeanUtils.copyProperties(addSchoolUserDto, schoolUser);
+        //设置类型值
+        if (addSchoolUserDto.getSchoolUserSexEnum() != null) {
+            schoolUser.setSex(addSchoolUserDto.getSchoolUserSexEnum().getKey());
+        }
+        if (addSchoolUserDto.getSchoolUserStatusEnum() != null) {
+            schoolUser.setStatus(addSchoolUserDto.getSchoolUserStatusEnum().getKey());
+        }
+        if (addSchoolUserDto.getSchoolUserTypeEnum() != null) {
+            schoolUser.setType(addSchoolUserDto.getSchoolUserTypeEnum().getKey());
+        }
+        if (StringUtils.isNotEmpty(schoolUser.getBirth())) {
+            schoolUser.setBirth(DateUtil.format(DateUtil.format(schoolUser.getBirth(), "yyyy/MM/dd HH:mm:ss"), "yyyy/MM/dd HH:mm:ss"));
+        }
+        schoolUserMapper.insertSelective(schoolUser);
+
+        //增加学校用户和角色的关系
+        for (int i = 0; i < addSchoolUserDto.getRoles().size(); i++) {
+            SchoolUserRole schoolUserRole = new SchoolUserRole();
+            schoolUserRole.setSchoolId(schoolUser.getSchoolId());
+            schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
+            schoolUserRole.setUserId(schoolUser.getId());
+            schoolUserRole.setRoleId(Long.valueOf(addSchoolUserDto.getRoles().get(i).get("id")));
+            schoolUserRoleMapper.insertSelective(schoolUserRole);
+        }
+    }
+
+    /**
      * @Description: 修改学校用户信息
      * @Author: Kang
      * @Date: 2019/4/2 11:35
@@ -119,9 +156,15 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         SchoolUser schoolUser = new SchoolUser();
         BeanUtils.copyProperties(modifySchoolUserDto, schoolUser);
         //设置类型值
-        schoolUser.setStatus(modifySchoolUserDto.getSchoolUserStatusEnum().getKey());
-        schoolUser.setType(modifySchoolUserDto.getSchoolUserTypeEnum().getKey());
-        schoolUser.setSex(modifySchoolUserDto.getSchoolUserSexEnum().getKey());
+        if (modifySchoolUserDto.getSchoolUserSexEnum() != null) {
+            schoolUser.setSex(modifySchoolUserDto.getSchoolUserSexEnum().getKey());
+        }
+        if (modifySchoolUserDto.getSchoolUserStatusEnum() != null) {
+            schoolUser.setStatus(modifySchoolUserDto.getSchoolUserStatusEnum().getKey());
+        }
+        if (modifySchoolUserDto.getSchoolUserTypeEnum() != null) {
+            schoolUser.setType(modifySchoolUserDto.getSchoolUserTypeEnum().getKey());
+        }
         if (StringUtils.isNotEmpty(schoolUser.getBirth())) {
             schoolUser.setBirth(DateUtil.format(DateUtil.format(schoolUser.getBirth(), "yyyy/MM/dd HH:mm:ss"), "yyyy/MM/dd HH:mm:ss"));
         }

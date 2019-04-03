@@ -66,13 +66,8 @@ public class SchoolUserController {
         if (userData != null) {
             return WrapMapper.error("该用户名已经存在");
         }
-        SchoolUser schoolUser = new SchoolUser();
-        BeanUtils.copyProperties(addSchoolUserDto, schoolUser);
-        //设置类型值
-        schoolUser.setStatus(addSchoolUserDto.getSchoolUserStatusEnum().getKey());
-        schoolUser.setType(addSchoolUserDto.getSchoolUserTypeEnum().getKey());
-        schoolUser.setSex(addSchoolUserDto.getSchoolUserSexEnum().getKey());
-        return WrapMapper.ok(schoolUserService.save(schoolUser) > 0);
+        schoolUserService.addSchoolUser(addSchoolUserDto);
+        return WrapMapper.ok();
     }
 
 
@@ -84,6 +79,10 @@ public class SchoolUserController {
     @ApiOperation(value = "修改学校用户信息", response = Boolean.class)
     @RequestMapping(value = "/modifySchoolUser", method = RequestMethod.POST)
     public Object modifySchoolUser(@Validated @RequestBody ModifySchoolUserDto modifySchoolUserDto) {
+        SchoolUser userData = schoolUserService.getByUserName(modifySchoolUserDto.getUserName());
+        if (userData != null) {
+            return WrapMapper.error("该用户名已经存在");
+        }
         schoolUserService.modifySchoolUser(modifySchoolUserDto);
         return WrapMapper.ok();
     }

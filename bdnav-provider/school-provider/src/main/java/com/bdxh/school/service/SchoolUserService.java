@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
@@ -62,6 +63,12 @@ public interface SchoolUserService extends IService<SchoolUser> {
     Boolean modifySchoolUserStatusById(Long id, Byte status);
 
 
+    /**
+    * @Description: 新增学校用户信息
+    * @Author: Kang
+    * @Date: 2019/4/3 10:19
+    */
+    void addSchoolUser(AddSchoolUserDto addSchoolUserDto);
     /**
      * @Description: 修改学校用户信息
      * @Author: Kang
