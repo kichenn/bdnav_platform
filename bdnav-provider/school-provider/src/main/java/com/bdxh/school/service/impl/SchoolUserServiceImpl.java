@@ -117,7 +117,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addSchoolUser(AddSchoolUserDto addSchoolUserDto) {
-         SchoolUser schoolUser = new SchoolUser();
+        SchoolUser schoolUser = new SchoolUser();
         BeanUtils.copyProperties(addSchoolUserDto, schoolUser);
         //设置类型值
         if (addSchoolUserDto.getSchoolUserSexEnum() != null) {
@@ -132,13 +132,15 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         schoolUserMapper.insertSelective(schoolUser);
 
         //增加学校用户和角色的关系
-        for (int i = 0; i < addSchoolUserDto.getRoles().size(); i++) {
-            SchoolUserRole schoolUserRole = new SchoolUserRole();
-            schoolUserRole.setSchoolId(schoolUser.getSchoolId());
-            schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
-            schoolUserRole.setUserId(schoolUser.getId());
-            schoolUserRole.setRoleId(Long.valueOf(addSchoolUserDto.getRoles().get(i)));
-            schoolUserRoleMapper.insertSelective(schoolUserRole);
+        if (CollectionUtils.isNotEmpty(addSchoolUserDto.getRoles())) {
+            for (int i = 0; i < addSchoolUserDto.getRoles().size(); i++) {
+                SchoolUserRole schoolUserRole = new SchoolUserRole();
+                schoolUserRole.setSchoolId(schoolUser.getSchoolId());
+                schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
+                schoolUserRole.setUserId(schoolUser.getId());
+                schoolUserRole.setRoleId(Long.valueOf(addSchoolUserDto.getRoles().get(i)));
+                schoolUserRoleMapper.insertSelective(schoolUserRole);
+            }
         }
     }
 
@@ -163,6 +165,9 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         if (modifySchoolUserDto.getSchoolUserTypeEnum() != null) {
             schoolUser.setType(modifySchoolUserDto.getSchoolUserTypeEnum().getKey());
         }
+        if (StringUtils.isNotEmpty(modifySchoolUserDto.getBirth())) {
+            schoolUser.setBirth(DateUtil.format(DateUtil.format(schoolUser.getBirth(), "yyyy-MM-dd"), "yyyy-MM-dd"));
+        }
         schoolUser.setUpdateDate(new Date());
         schoolUserMapper.updateByPrimaryKeySelective(schoolUser);
 
@@ -170,13 +175,15 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         schoolUserRoleMapper.delRoleByUserId(schoolUser.getId());
 
         //增加学校用户和角色的关系
-        for (int i = 0; i < modifySchoolUserDto.getRoles().size(); i++) {
-            SchoolUserRole schoolUserRole = new SchoolUserRole();
-            schoolUserRole.setSchoolId(schoolUser.getSchoolId());
-            schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
-            schoolUserRole.setUserId(schoolUser.getId());
-            schoolUserRole.setRoleId(Long.valueOf(modifySchoolUserDto.getRoles().get(i)));
-            schoolUserRoleMapper.insertSelective(schoolUserRole);
+        if (CollectionUtils.isNotEmpty(modifySchoolUserDto.getRoles())) {
+            for (int i = 0; i < modifySchoolUserDto.getRoles().size(); i++) {
+                SchoolUserRole schoolUserRole = new SchoolUserRole();
+                schoolUserRole.setSchoolId(schoolUser.getSchoolId());
+                schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
+                schoolUserRole.setUserId(schoolUser.getId());
+                schoolUserRole.setRoleId(Long.valueOf(modifySchoolUserDto.getRoles().get(i)));
+                schoolUserRoleMapper.insertSelective(schoolUserRole);
+            }
         }
     }
 }
