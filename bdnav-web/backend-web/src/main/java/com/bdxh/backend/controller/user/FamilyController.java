@@ -1,5 +1,6 @@
 package com.bdxh.backend.controller.user;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -7,6 +8,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
+import com.bdxh.system.entity.User;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
@@ -58,10 +60,14 @@ public class FamilyController {
     @RequestMapping(value = "/addFamily",method = RequestMethod.POST)
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
         try {
+
             FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
             if(null!=familyVo){
                 return WrapMapper.error("当前学校已存在相同卡号");
             }
+            User user= SecurityUtils.getCurrentUser();
+            addFamilyDto.setOperator(user.getId());
+            addFamilyDto.setOperatorName(user.getUserName());
             Wrapper wrapper=familyControllerClient.addFamily(addFamilyDto);
             return WrapMapper.ok(wrapper.getMessage());
         } catch (Exception e) {
@@ -127,6 +133,9 @@ public class FamilyController {
                     FileOperationUtils.deleteFile(familyVo.getImage(), null);
                 }
             }
+            User user= SecurityUtils.getCurrentUser();
+            updateFamilyDto.setOperator(user.getId());
+            updateFamilyDto.setOperatorName(user.getUserName());
             familyControllerClient.updateFamily(updateFamilyDto);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -183,6 +192,9 @@ public class FamilyController {
             School school=new School();
             List<Family> families =new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
+            User user=SecurityUtils.getCurrentUser();
+            Long uId=user.getId();
+            String uName=user.getUserName();
             for (int i=1;i<familyList.size();i++) {
                 String[] columns = familyList.get(i);
                 if (StringUtils.isNotBlank(familyList.get(i)[0])) {
@@ -218,6 +230,8 @@ public class FamilyController {
                         family.setBirth(columns[7]);
                         family.setIdcard(columns[8]);
                         family.setRemark(columns[9]);
+                        family.setOperator(uId);
+                        family.setOperatorName(uName);
                         families.add(family);
                     } else {
                         return WrapMapper.error("第" + i + "条的学校数据不存在！请检查");

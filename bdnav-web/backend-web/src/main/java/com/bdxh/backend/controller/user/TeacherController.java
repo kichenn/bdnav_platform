@@ -1,5 +1,6 @@
 package com.bdxh.backend.controller.user;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
@@ -7,6 +8,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.system.entity.User;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
@@ -59,6 +61,9 @@ public class TeacherController {
            if(null!=teacherVo){
                return WrapMapper.error("当前学校已存在相同工号");
            }
+            User user= SecurityUtils.getCurrentUser();
+            addTeacherDto.setOperator(user.getId());
+            addTeacherDto.setOperatorName(user.getUserName());
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
 
             return WrapMapper.ok(wrapper.getMessage());
@@ -121,6 +126,9 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
+            User user= SecurityUtils.getCurrentUser();
+            updateTeacherDto.setOperator(user.getId());
+            updateTeacherDto.setOperatorName(user.getUserName());
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
             if(null!=teacherVo.getImage()) {
                 if (!teacherVo.getImage().equals(updateTeacherDto.getImage())) {
@@ -187,6 +195,9 @@ public class TeacherController {
             School school=new School();
             List<Teacher> saveTeacherList=new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
+            User user=SecurityUtils.getCurrentUser();
+            Long uId=user.getId();
+            String uName=user.getUserName();
             for (int i = 1; i < teacherList.size(); i++) {
                 String[] columns= teacherList.get(i);
                 if(StringUtils.isNotBlank(teacherList.get(i)[0])){
@@ -222,6 +233,8 @@ public class TeacherController {
                     tacher.setBirth(columns[7]);
                     tacher.setIdcard(columns[8]);
                     tacher.setRemark(columns[9]);
+                    tacher.setOperator(uId);
+                    tacher.setOperatorName(uName);
                     saveTeacherList.add(tacher);
                 }else{
                     return WrapMapper.error("第"+i+"条不存在当前学校Code");

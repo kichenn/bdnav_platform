@@ -8,6 +8,7 @@
  */
 package com.bdxh.backend.controller.user;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -16,6 +17,7 @@ import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.system.entity.User;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
@@ -98,10 +100,14 @@ public class StudentController {
     public Object addStudent(@Valid @RequestBody AddStudentDto addStudentDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
+
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
+            User user=SecurityUtils.getCurrentUser();
+            addStudentDto.setOperator(user.getId());
+            addStudentDto.setOperatorName(user.getUserName());
             StudentVo student=(StudentVo)studentControllerClient.queryStudentInfo(addStudentDto.getSchoolCode(),addStudentDto.getCardNumber()).getResult();
             if(null!= student){
                 return WrapMapper.error("当前学校已存在相同学号");
@@ -195,6 +201,9 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
+            User user=SecurityUtils.getCurrentUser();
+            updateStudentDto.setOperator(user.getId());
+            updateStudentDto.setOperatorName(user.getUserName());
             StudentVo studentVo=(StudentVo)studentControllerClient.queryStudentInfo(updateStudentDto.getSchoolCode(),updateStudentDto.getCardNumber()).getResult();
            if(null!=studentVo.getImage()){
             if (!studentVo.getImage().equals(updateStudentDto.getImage())) {
@@ -266,6 +275,9 @@ public class StudentController {
            List<SchoolClass>   schoolClassList =new ArrayList<>();
            List<String> cardNumberList=new ArrayList<>();
            School school = new School();
+           User user=SecurityUtils.getCurrentUser();
+           Long uId=user.getId();
+           String uName=user.getUserName();
            for (int i=1;i<studentList.size();i++) {
                String[] columns = studentList.get(i);
                    if (!studentList.get(i)[0].equals(i - 1 >= studentList.size() ? studentList.get(studentList.size())[0] : studentList.get(i - 1)[0])||i==1) {
@@ -308,6 +320,8 @@ public class StudentController {
                    student.setPhone(columns[11]);
                    student.setIdcard(columns[13]);
                    student.setRemark(columns[14]);
+                   student.setOperator(uId);
+                   student.setOperatorName(uName);
                    String classNames = "";
                    if (!("").equals(student.getCollegeName()) && null != student.getCollegeName()) {
                        classNames += student.getCollegeName() + "/";
