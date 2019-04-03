@@ -26,7 +26,8 @@ public interface UserRoleMapper extends Mapper<UserRole> {
      * @param userId
      * @return
      */
-    List<UserRole> findUserRoleByUserId(Long userId);
+    List<UserRole> findUserRoleByUserId(@Param("userId") Long userId);
 
-
+    //用户id查询所有权限
+    List<UserRole> findUserRoleOnly(@Param("userId") Long userId);
 }
