@@ -61,11 +61,11 @@ public class StudentController {
         }
         try {
             Student student = BeanMapUtils.map(addStudentDto, Student.class);
-            if (null==studentService.isNullStudent(student.getSchoolCode(), student.getCardNumber()) ) {
+/*            if (null==studentService.isNullStudent(student.getSchoolCode(), student.getCardNumber()) ) {*/
                 studentService.saveStudent(student);
                 return WrapMapper.ok();
-            }
-            return WrapMapper.ok("当前学校已有相同cardNumber(学号)");
+          /*  }
+            return WrapMapper.ok("当前学校已有相同cardNumber(学号)");*/
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

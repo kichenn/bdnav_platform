@@ -58,6 +58,10 @@ public class FamilyController {
     @RequestMapping(value = "/addFamily",method = RequestMethod.POST)
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
         try {
+            FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
+            if(null!=familyVo){
+                return WrapMapper.error("当前学校已存在相同卡号");
+            }
             Wrapper wrapper=familyControllerClient.addFamily(addFamilyDto);
             return WrapMapper.ok(wrapper.getMessage());
         } catch (Exception e) {
@@ -142,6 +146,7 @@ public class FamilyController {
     public Object queryFamilyInfo(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
                                   @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber) {
         try {
+
             FamilyVo familyVo=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
             return WrapMapper.ok(familyVo) ;
         } catch (Exception e) {
@@ -200,7 +205,7 @@ public class FamilyController {
                         if(null!=cardNumberList) {
                             for (int j = 0; j < cardNumberList.size(); j++) {
                                 if (columns[4].equals(cardNumberList.get(j))) {
-                                    return WrapMapper.error("请检查" + i + "条数据卡号已存在");
+                                    return WrapMapper.error("请检查第" + i + "条数据卡号已存在");
                                 }
                             }
                         }else{

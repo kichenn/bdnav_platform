@@ -95,6 +95,10 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
+            StudentVo student=(StudentVo)studentControllerClient.queryStudentInfo(addStudentDto.getSchoolCode(),addStudentDto.getCardNumber()).getResult();
+            if(null!= student){
+                return WrapMapper.error("当前学校已存在相同学号");
+            }
             SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=addStudentDto.getClassIds().split(",");
             for (int i = 0; i < ClassId.length; i++) {
@@ -120,6 +124,7 @@ public class StudentController {
                }
             }
             Wrapper wrapper=studentControllerClient.addStudent(addStudentDto);
+
             return WrapMapper.ok(wrapper.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
@@ -270,7 +275,7 @@ public class StudentController {
                    if(null!=cardNumberList) {
                        for (int j = 0; j < cardNumberList.size(); j++) {
                            if (columns[12].equals(cardNumberList.get(j))) {
-                               return WrapMapper.error("请检查" + i + "条数据学号已存在");
+                               return WrapMapper.error("请检查第" + i + "条数据学号已存在");
                            }
                        }
                    }else{

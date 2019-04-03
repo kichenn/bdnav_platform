@@ -65,10 +65,10 @@ public class TeacherController {
             return WrapMapper.error(errors);
         }
         try {
-            TeacherVo teacherVo=teacherService.selectTeacherInfo(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber());
+         /*   TeacherVo teacherVo=teacherService.selectTeacherInfo(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber());
             if(teacherVo!=null) {
               return WrapMapper.ok("当前学校已有相同cardNumber(学号)");
-            }
+            }*/
             if (null != addTeacherDto.getTeacherDeptDtoList()) {
                 for (int i = 0; i < addTeacherDto.getTeacherDeptDtoList().size(); i++) {
                     String[] ids = addTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");

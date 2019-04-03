@@ -55,7 +55,10 @@ public class TeacherController {
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
     public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
         try {
-
+            TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber()).getResult();
+           if(null!=teacherVo){
+               return WrapMapper.error("当前学校已存在相同工号");
+           }
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
 
             return WrapMapper.ok(wrapper.getMessage());
@@ -208,7 +211,7 @@ public class TeacherController {
                     if(null!=cardNumberList) {
                         for (int j = 0; j < cardNumberList.size(); j++) {
                             if (columns[6].equals(cardNumberList.get(j))) {
-                                return WrapMapper.error("请检查" + i + "条数据卡号已存在");
+                                return WrapMapper.error("请检查第" + i + "条数据卡号已存在");
                             }
                         }
                     }else{

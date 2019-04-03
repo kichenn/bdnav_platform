@@ -62,11 +62,8 @@ public class FamilyController {
         }
         try {
             Family family = BeanMapUtils.map(addFamilyDto, Family.class);
-            if (null == familyService.isNullFamily(family.getSchoolCode(),family.getCardNumber())){
                 familyService.saveFamily(family);
                 return WrapMapper.ok();
-            }
-            return WrapMapper.error("当前学校已有相同cardNumber(卡号)");
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
