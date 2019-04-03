@@ -95,6 +95,10 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
+            StudentVo student=(StudentVo)studentControllerClient.queryStudentInfo(addStudentDto.getSchoolCode(),addStudentDto.getCardNumber()).getResult();
+            if(null!= student){
+                return WrapMapper.error("当前学校已存在相同学号");
+            }
             SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=addStudentDto.getClassIds().split(",");
             for (int i = 0; i < ClassId.length; i++) {
@@ -120,6 +124,7 @@ public class StudentController {
                }
             }
             Wrapper wrapper=studentControllerClient.addStudent(addStudentDto);
+
             return WrapMapper.ok(wrapper.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
