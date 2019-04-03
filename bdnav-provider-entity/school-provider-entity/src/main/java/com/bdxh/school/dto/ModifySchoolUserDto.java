@@ -1,5 +1,6 @@
 package com.bdxh.school.dto;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bdxh.school.enums.SchoolUserSexEnum;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.enums.SchoolUserTypeEnum;
@@ -138,5 +139,5 @@ public class ModifySchoolUserDto {
     private String remark;
 
     @ApiModelProperty("角色分配")
-    private List<Map<Long, String>> roles;
+    private List<Long> roles;
 }

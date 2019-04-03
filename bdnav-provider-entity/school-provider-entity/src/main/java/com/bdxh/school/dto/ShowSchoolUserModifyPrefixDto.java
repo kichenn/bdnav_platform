@@ -48,7 +48,7 @@ public class ShowSchoolUserModifyPrefixDto {
     @ApiModelProperty("用户类型")
     private Byte type;
 
-    @ApiModelProperty("角色分配Id name  (Map<Long, String> (角色id,角色名称))")
+    @ApiModelProperty("角色分配Id name  (List<Map<Long, String>> (角色id,角色名称))")
     private String roles;
 
     @ApiModelProperty("备注")

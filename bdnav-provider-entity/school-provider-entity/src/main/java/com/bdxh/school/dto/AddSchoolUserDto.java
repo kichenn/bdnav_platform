@@ -134,5 +134,5 @@ public class AddSchoolUserDto implements Serializable {
     private String remark;
 
     @ApiModelProperty("角色分配")
-    private List<Map<Long, String>> roles;
+    private List<Long> roles;
 }

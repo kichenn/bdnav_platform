@@ -1,5 +1,6 @@
 package com.bdxh.school.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.DateUtil;
 import com.bdxh.school.dto.AddSchoolUserDto;
@@ -139,7 +140,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
             schoolUserRole.setSchoolId(schoolUser.getSchoolId());
             schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
             schoolUserRole.setUserId(schoolUser.getId());
-            schoolUserRole.setRoleId(Long.valueOf(addSchoolUserDto.getRoles().get(i).get("id")));
+            schoolUserRole.setRoleId(Long.valueOf(addSchoolUserDto.getRoles().get(i)));
             schoolUserRoleMapper.insertSelective(schoolUserRole);
         }
     }
@@ -180,7 +181,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
             schoolUserRole.setSchoolId(schoolUser.getSchoolId());
             schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
             schoolUserRole.setUserId(schoolUser.getId());
-            schoolUserRole.setRoleId(Long.valueOf(modifySchoolUserDto.getRoles().get(i).get("id")));
+            schoolUserRole.setRoleId(Long.valueOf(modifySchoolUserDto.getRoles().get(i)));
             schoolUserRoleMapper.insertSelective(schoolUserRole);
         }
     }
