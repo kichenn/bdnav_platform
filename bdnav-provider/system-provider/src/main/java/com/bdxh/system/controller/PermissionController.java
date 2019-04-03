@@ -157,7 +157,7 @@ public class PermissionController {
     @RequestMapping(value = "/theTreeMenu", method = RequestMethod.GET)
     @ApiOperation(value = "根据条件查询相对菜单", response = List.class)
     @ResponseBody
-    public Object theTreeMenu(@RequestParam(value = "roleId") Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
+    public Object theTreeMenu(@RequestParam(value = "roleId",required = false) Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
         List<RolePermissionDto> permissions= permissionService.theTreeMenu(roleId,selected);
         List<PermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)&&permissions.size()>0) {
@@ -291,6 +291,7 @@ public class PermissionController {
                     treeVo.setIcon(ps.getIcon());
                     treeVo.setName(ps.getName());
                     treeVo.setCreateDate(ps.getCreateDate());
+                    treeVo.setType(ps.getType());
                     BeanUtils.copyProperties(ps, treeVo);
                     treeVos.add(treeVo);
                 }
