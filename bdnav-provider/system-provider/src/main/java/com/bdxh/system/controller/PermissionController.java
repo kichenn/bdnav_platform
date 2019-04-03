@@ -175,12 +175,12 @@ public class PermissionController {
                         if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getSelected().equals(2)) {
                             treeVo.setSelected(Boolean.TRUE);
                         }
-              /*          if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getIndeterminate().equals(1)){
+                        if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getIndeterminate().equals(1)){
                             treeVo.setIndeterminate(Boolean.TRUE);
                         }
                         if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getChecked().equals(1)){
                             treeVo.setChecked(Boolean.TRUE);
-                        }*/
+                        }
                     }
 /*
                     if (ps.getId().equals(ps.getRplist().get(0).getPermissionId())&&ps.getRplist().get(0).getRoleId().equals(roleId)&&ps.getRplist().get(0).getSelected().equals(2)) {

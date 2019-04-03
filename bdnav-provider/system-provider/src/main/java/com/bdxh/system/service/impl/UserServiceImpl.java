@@ -68,14 +68,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         }
     }
 
-
     @Override
-    public void addUsers(AddUserDto addUserDto) {
+    public Boolean addUsers(AddUserDto addUserDto) {
+        Boolean falg;
         if (!addUserDto.getRoleIds().equals("")&&!addUserDto.getRoleIds().equals(null)){
             String [] roleIds=addUserDto.getRoleIds().split(",");
-            /*     AddUserDto user = BeanMapUtils.map(addUserDto, AddUserDto.class);*/
             addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
-            userMapper.addUsers(addUserDto);
             if (roleIds != null&&roleIds.length>0){
                 for (int i = 0; i <roleIds.length ; i++) {
                     UserRole userRole=new UserRole();
@@ -84,12 +82,12 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
                     userRoleMapper.insert(userRole);
                 }
             }
+            falg=userMapper.addUsers(addUserDto)>0;
         }else{
             addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
-            userMapper.addUsers(addUserDto);
+            falg=userMapper.addUsers(addUserDto)>0;
         }
-
-
+        return falg;
     }
 
     public static boolean stringArrayCompare(String[] b, List<String> c) {
@@ -108,12 +106,13 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     }
 
     @Override
-    public void updateUsers(UpdateUserDto updateUserDto) {
+    public Boolean updateUsers(UpdateUserDto updateUserDto) {
+        Boolean falgResult;
         if (!updateUserDto.getRoleIds().equals("")&&!updateUserDto.getRoleIds().equals(null)){
             String [] roleIds=updateUserDto.getRoleIds().split(",");
-            List<String> Urbyids=findUserRoleByUserId(updateUserDto.getId());
-           Boolean falg=stringArrayCompare(roleIds, Urbyids);
-         if (falg.equals(Boolean.FALSE)){
+            List<String> urbyIds=findUserRoleByUserId(updateUserDto.getId());
+            Boolean falg=stringArrayCompare(roleIds, urbyIds);
+            if (falg.equals(Boolean.FALSE)){
                 UserRole userRole = new UserRole();
                 userRole.setUserId(updateUserDto.getId());
                 userRoleMapper.delete(userRole);
@@ -123,17 +122,19 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
                     addUr.setRoleId(Long.valueOf(roleIds[i]));
                     userRoleMapper.insert(addUr);
                 }
-                userMapper.UpdateUsers(updateUserDto);
+                falgResult= userMapper.UpdateUsers(updateUserDto)>0;
             }else{
-                userMapper.UpdateUsers(updateUserDto);
+                falgResult= userMapper.UpdateUsers(updateUserDto)>0;
             }
         }else{
             UserRole userRole = new UserRole();
             userRole.setUserId(updateUserDto.getId());
             userRoleMapper.delete(userRole);
-            userMapper.UpdateUsers(updateUserDto);
+            falgResult= userMapper.UpdateUsers(updateUserDto)>0;
         }
+        return falgResult;
     }
+
 
     @Override
     public List<String> findUserRoleByUserId(Long userId) {
