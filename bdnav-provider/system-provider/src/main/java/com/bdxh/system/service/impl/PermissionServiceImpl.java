@@ -59,6 +59,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         BeanUtils.copyProperties(addPermissionDto, permission);
         if (new Long("-1").equals(permission.getParentId())) {
             permission.setParentIds("");
+            permission.setName(addPermissionDto.getPath());
             permission.setPath("/"+addPermissionDto.getPath());
 
         } else {
