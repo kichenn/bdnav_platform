@@ -48,8 +48,6 @@ public class FamilyController {
     private FamilyControllerClient familyControllerClient;
     @Autowired
     private SchoolControllerClient schoolControllerClient;
-    @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
 
     /**
      * 新增家庭成员信息
@@ -69,7 +67,7 @@ public class FamilyController {
             addFamilyDto.setOperator(user.getId());
             addFamilyDto.setOperatorName(user.getUserName());
             Wrapper wrapper=familyControllerClient.addFamily(addFamilyDto);
-            return WrapMapper.ok(wrapper.getMessage());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -85,12 +83,14 @@ public class FamilyController {
     @ApiOperation(value="删除家长信息")
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
     public Object removeFamily(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
-                               @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber){
+                               @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
+                               @RequestParam(name = "image" ) String image){
         try{
-            FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
-            FileOperationUtils.deleteFile(familyVo.getImage(), null);
-            familyControllerClient.removeFamily(schoolCode,cardNumber);
-            return WrapMapper.ok();
+           if(null!=image){
+               FileOperationUtils.deleteFile(image, null);
+           }
+            Wrapper wrapper=familyControllerClient.removeFamily(schoolCode,cardNumber);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -106,11 +106,18 @@ public class FamilyController {
     @ApiOperation(value="批量删除家长信息")
     @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
     public Object removeFamilys(@RequestParam(name = "schoolCodes") @NotNull(message="学校Code不能为空")String schoolCodes,
-                                @RequestParam(name = "cardNumbers") @NotNull(message="微校卡号不能为空")String cardNumbers
+                                @RequestParam(name = "cardNumbers") @NotNull(message="微校卡号不能为空")String cardNumbers,
+                                @RequestParam(name = "images") String images
     ){
         try{
-            familyControllerClient.removeFamilys(schoolCodes,cardNumbers);
-            return WrapMapper.ok();
+            String[]imageAttr =images.split(",");
+            for (int i = 0; i < imageAttr.length; i++) {
+                if(null!=imageAttr[i]) {
+                    FileOperationUtils.deleteFile(imageAttr[i], null);
+                }
+            }
+            Wrapper wrapper= familyControllerClient.removeFamilys(schoolCodes,cardNumbers);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -136,8 +143,8 @@ public class FamilyController {
             User user= SecurityUtils.getCurrentUser();
             updateFamilyDto.setOperator(user.getId());
             updateFamilyDto.setOperatorName(user.getUserName());
-            familyControllerClient.updateFamily(updateFamilyDto);
-            return WrapMapper.ok();
+            Wrapper wrapper=familyControllerClient.updateFamily(updateFamilyDto);
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

@@ -46,8 +46,6 @@ public class TeacherController {
     private TeacherControllerClient teacherControllerClient;
     @Autowired
     private SchoolControllerClient schoolControllerClient;
-    @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
     /**
      * 新增老师信息
      * @param addTeacherDto
@@ -66,7 +64,7 @@ public class TeacherController {
             addTeacherDto.setOperatorName(user.getUserName());
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
 
-            return WrapMapper.ok(wrapper.getMessage());
+            return wrapper;
         }catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -82,12 +80,14 @@ public class TeacherController {
     @ApiOperation(value="删除老师信息")
     @RequestMapping(value = "/removeTeacher",method = RequestMethod.POST)
     public Object removeTeacher(@RequestParam(name = "schoolCode") @NotNull(message="老师学校Code不能为空")String schoolCode,
-                                @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber){
+                                @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber,
+                                @RequestParam(name = "image" ) String image){
         try{
-            TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(schoolCode,cardNumber).getResult();
-            FileOperationUtils.deleteFile(teacherVo.getImage(), null);
-            teacherControllerClient.removeTeacher(schoolCode, cardNumber);
-            return WrapMapper.ok();
+            if(null!=image){
+                FileOperationUtils.deleteFile(image, null);
+            }
+            Wrapper wrapper=teacherControllerClient.removeTeacher(schoolCode, cardNumber);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -103,10 +103,17 @@ public class TeacherController {
     @ApiOperation(value="批量删除老师信息")
     @RequestMapping(value = "/removeTeachers",method = RequestMethod.POST)
     public Object removeTeachers(@RequestParam(name = "schoolCodes") @NotNull(message="老师学校Code不能为空")String schoolCodes,
-                                 @RequestParam(name = "cardNumbers") @NotNull(message="老师微校卡号不能为空")String cardNumbers){
+                                 @RequestParam(name = "cardNumbers") @NotNull(message="老师微校卡号不能为空")String cardNumbers,
+                                 @RequestParam(name = "images" ) String images){
         try{
-            teacherControllerClient.removeTeachers(schoolCodes, cardNumbers);
-            return WrapMapper.ok();
+            String[]imageAttr =images.split(",");
+            for (int i = 0; i < imageAttr.length; i++) {
+                if(null!=imageAttr[i]) {
+                    FileOperationUtils.deleteFile(imageAttr[i], null);
+                }
+            }
+            Wrapper wrapper= teacherControllerClient.removeTeachers(schoolCodes, cardNumbers);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -136,8 +143,8 @@ public class TeacherController {
                     FileOperationUtils.deleteFile(teacherVo.getImage(), null);
                 }
             }
-            teacherControllerClient.updateTeacher(updateTeacherDto);
-            return WrapMapper.ok();
+           Wrapper wrapper=teacherControllerClient.updateTeacher(updateTeacherDto);
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

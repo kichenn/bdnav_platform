@@ -148,15 +148,15 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     @Transactional
     public void batchSaveTeacherInfo(List<Teacher> teacherList)  {
-        List<BaseUser> baseUserlist=BeanMapUtils.mapList(teacherList,BaseUser.class);
-        for (int i = 0; i < baseUserlist.size(); i++) {
+        List<BaseUser> baseUserList=BeanMapUtils.mapList(teacherList,BaseUser.class);
+        for (int i = 0; i < baseUserList.size(); i++) {
             teacherList.get(i).setId(snowflakeIdWorker.nextId());
-            baseUserlist.get(i).setUserType(2);
-            baseUserlist.get(i).setUserId(teacherList.get(i).getId());
-            baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
+            baseUserList.get(i).setUserType(2);
+            baseUserList.get(i).setUserId(teacherList.get(i).getId());
+            baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
         teacherMapper.batchSaveTeacherInfo(teacherList);
-        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+        baseUserMapper.batchSaveBaseUserInfo(baseUserList);
 
     }
 

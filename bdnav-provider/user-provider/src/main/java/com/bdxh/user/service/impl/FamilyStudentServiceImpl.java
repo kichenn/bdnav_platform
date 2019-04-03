@@ -38,7 +38,7 @@ public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> impleme
     }
 
     @Override
-    public PageInfo<FamilyStudentVo> queryaAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto) {
+    public PageInfo<FamilyStudentVo> queryAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto) {
         PageHelper.startPage(familyStudentQueryDto.getPageNum(), familyStudentQueryDto.getPageSize());
         List<FamilyStudentVo> familyStudentVoList= familyStudentMapper.queryaAllFamilyStudent(familyStudentQueryDto);
         if(null!=familyStudentVoList) {

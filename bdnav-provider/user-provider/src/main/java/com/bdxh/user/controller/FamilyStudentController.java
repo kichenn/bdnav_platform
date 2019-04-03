@@ -98,7 +98,7 @@ private SnowflakeIdWorker snowflakeIdWorker;
     @RequestMapping(value = "queryAllFamilyStudent",method =RequestMethod.POST)
     public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
         try{
-            PageInfo<FamilyStudentVo> familyStudentVoPageInfo=familyStudentService.queryaAllFamilyStudent(familyStudentQueryDto);
+            PageInfo<FamilyStudentVo> familyStudentVoPageInfo=familyStudentService.queryAllFamilyStudent(familyStudentQueryDto);
             return  WrapMapper.ok(familyStudentVoPageInfo);
         }catch (Exception e){
             e.printStackTrace();
