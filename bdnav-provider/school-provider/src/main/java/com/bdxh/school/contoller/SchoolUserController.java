@@ -80,7 +80,7 @@ public class SchoolUserController {
     @RequestMapping(value = "/modifySchoolUser", method = RequestMethod.POST)
     public Object modifySchoolUser(@Validated @RequestBody ModifySchoolUserDto modifySchoolUserDto) {
         SchoolUser userData = schoolUserService.getByUserName(modifySchoolUserDto.getUserName());
-        if (userData != null) {
+        if (userData != null && (!modifySchoolUserDto.getId().equals(userData.getId()))) {
             return WrapMapper.error("该用户名已经存在");
         }
         schoolUserService.modifySchoolUser(modifySchoolUserDto);
