@@ -76,5 +76,5 @@ public interface SinglePermissionControllerClient {
      */
     @RequestMapping(value = "/singlePermission/findSinglePermissionInConditionPage", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<GroupPermission>> findSinglePermissionInConditionPage(@RequestBody SinglePermissionQueryDto singlePermissionQueryDto);
+    Wrapper<PageInfo<SinglePermission>> findSinglePermissionInConditionPage(@RequestBody SinglePermissionQueryDto singlePermissionQueryDto);
 }

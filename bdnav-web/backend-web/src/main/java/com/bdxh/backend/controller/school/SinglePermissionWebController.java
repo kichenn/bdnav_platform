@@ -6,6 +6,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.entity.SchoolDevice;
+import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
@@ -81,7 +82,7 @@ public class SinglePermissionWebController {
     @PostMapping("/findSinglePermissionInConditionPage")
     @ApiOperation(value = "门禁单信息根据条件分页查询", response = PageInfo.class)
     public Object findSinglePermissionInConditionPage(@RequestBody SinglePermissionQueryDto singlePermissionQueryDto) {
-        Wrapper<PageInfo<GroupPermission>> wrapper = singlePermissionControllerClient.findSinglePermissionInConditionPage(singlePermissionQueryDto);
+        Wrapper<PageInfo<SinglePermission>> wrapper = singlePermissionControllerClient.findSinglePermissionInConditionPage(singlePermissionQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 }

@@ -52,7 +52,7 @@ public class SinglePermissionControllerClientFallback implements SinglePermissio
     }
 
     @Override
-    public Wrapper<PageInfo<GroupPermission>> findSinglePermissionInConditionPage(SinglePermissionQueryDto singlePermissionQueryDto) {
+    public Wrapper<PageInfo<SinglePermission>> findSinglePermissionInConditionPage(SinglePermissionQueryDto singlePermissionQueryDto) {
         return WrapMapper.error();
     }
 }
