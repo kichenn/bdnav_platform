@@ -30,7 +30,7 @@ public interface FamilyStudentService extends IService<FamilyStudent> {
       * @Author：bin
       * @return
       */
-     PageInfo<FamilyStudentVo> queryaAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto);
+     PageInfo<FamilyStudentVo> queryAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto);
 
 
 

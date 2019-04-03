@@ -156,15 +156,15 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Override
     public void batchSaveStudentInfo(List<Student> studentList) {
-        List<BaseUser> baseUserlist=BeanMapUtils.mapList(studentList,BaseUser.class);
-        for (int i = 0; i<baseUserlist.size(); i++) {
+        List<BaseUser> baseUserList=BeanMapUtils.mapList(studentList,BaseUser.class);
+        for (int i = 0; i<baseUserList.size(); i++) {
             studentList.get(i).setId(snowflakeIdWorker.nextId());
-            baseUserlist.get(i).setUserType(1);
-            baseUserlist.get(i).setUserId(studentList.get(i).getId());
-            baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
+            baseUserList.get(i).setUserType(1);
+            baseUserList.get(i).setUserId(studentList.get(i).getId());
+            baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
         studentMapper.batchSaveStudentInfo(studentList);
-        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+        baseUserMapper.batchSaveBaseUserInfo(baseUserList);
 
     }
 

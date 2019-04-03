@@ -123,15 +123,15 @@ private SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
     public void batchSaveFamilyInfo(List<Family> familyList) {
-        List<BaseUser> baseUserlist = BeanMapUtils.mapList(familyList, BaseUser.class);
-        for (int i = 0; i < baseUserlist.size(); i++) {
+        List<BaseUser> baseUserList = BeanMapUtils.mapList(familyList, BaseUser.class);
+        for (int i = 0; i < baseUserList.size(); i++) {
             familyList.get(i).setId(snowflakeIdWorker.nextId());
-            baseUserlist.get(i).setUserType(3);
-            baseUserlist.get(i).setUserId(familyList.get(i).getId());
-            baseUserlist.get(i).setId(snowflakeIdWorker.nextId());
+            baseUserList.get(i).setUserType(3);
+            baseUserList.get(i).setUserId(familyList.get(i).getId());
+            baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
         familyMapper.batchSaveFamilyInfo(familyList);
-        baseUserMapper.batchSaveBaseUserInfo(baseUserlist);
+        baseUserMapper.batchSaveBaseUserInfo(baseUserList);
 
     }
 

@@ -138,7 +138,7 @@ public class StudentController {
             }
             Wrapper wrapper=studentControllerClient.addStudent(addStudentDto);
 
-            return WrapMapper.ok(wrapper.getMessage());
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -154,13 +154,16 @@ public class StudentController {
     @ApiOperation(value="删除学生信息")
     @RequestMapping(value = "/removeStudent",method = RequestMethod.POST)
     public Object removeStudent(@RequestParam(name = "schoolCode") @NotNull(message="学生学校Code不能为空")String schoolCode,
-                               @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber){
+                               @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber,
+                                @RequestParam(name = "image" ) String image){
         try{
-            StudentVo studentVo=(StudentVo)studentControllerClient.queryStudentInfo(schoolCode,cardNumber).getResult();
+
             //删除腾讯云的信息
-            FileOperationUtils.deleteFile(studentVo.getImage(),null);
+            if(null!=image){
+                FileOperationUtils.deleteFile(image, null);
+            }
             Wrapper wrapper=studentControllerClient.removeStudent(schoolCode,cardNumber);
-            return WrapMapper.ok(wrapper.getMessage());
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -176,10 +179,17 @@ public class StudentController {
     @ApiOperation(value="批量删除学生信息")
     @RequestMapping(value = "/removeStudents",method = RequestMethod.POST)
     public Object removeStudents(@RequestParam(name = "schoolCodes") @NotNull(message="学生学校Code不能为空")String schoolCodes,
-                                @RequestParam(name = "cardNumbers") @NotNull(message="学生微校卡号不能为空")String cardNumbers){
+                                @RequestParam(name = "cardNumbers") @NotNull(message="学生微校卡号不能为空")String cardNumbers,
+                                 @RequestParam(name = "images" ) String images){
         try{
+            String[]imageAttr =images.split(",");
+            for (int i = 0; i < imageAttr.length; i++) {
+                if(null!=imageAttr[i]) {
+                    FileOperationUtils.deleteFile(imageAttr[i], null);
+                }
+            }
             Wrapper wrapper=studentControllerClient.removeStudents(schoolCodes,cardNumbers);
-            return WrapMapper.ok(wrapper.getMessage());
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -235,8 +245,8 @@ public class StudentController {
                     return WrapMapper.error();
                 }
             }
-            studentControllerClient.updateStudent(updateStudentDto);
-            return WrapMapper.ok();
+            Wrapper  wrapper=studentControllerClient.updateStudent(updateStudentDto);
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -355,7 +365,7 @@ public class StudentController {
                    student.setClassId(Long.parseLong(idarr[idarr.length - 1]));
                    student.setClassNames(classNames);
                    students.add(student);
-                    System.out.println("已经添加完第"+i+"条");
+                   log.info("已经添加完第"+i+"条");
                }
            }
            studentControllerClient.batchSaveStudentInfo(students);
