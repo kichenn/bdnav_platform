@@ -58,10 +58,17 @@ public class StudentController {
     @Autowired
     private SchoolClassControllerClient schoolClassControllerClient;
 
-    @Autowired
-    private RedisTemplate redisTemplate;
-/*    @Autowired
-    private ValueOperations valueOperations;*/
+
+    //学院类型
+    private static final Byte COLLEGE_TYPE=1;
+    //系类型
+    private static final Byte FACULTY_TYPE=2;
+    //专业类型
+    private static final Byte PROFESSION_TYPE=3;
+    //年纪类型
+    private static final Byte GRADE_TYPE=4;
+    //班级类型
+    private static final Byte CLASS_TYPE=5;
     /**
      * 根据条件查询所有学生信息接口
      * @param studentQueryDto
@@ -107,15 +114,15 @@ public class StudentController {
                 schoolClass.setId(Long.parseLong(ClassId[i]));
                SchoolClass schoolClass1=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
                if(null!=schoolClass1) {
-                   if (schoolClass1.getType() == 1) {
+                   if (schoolClass1.getType() == COLLEGE_TYPE) {
                        addStudentDto.setCollegeName(schoolClass1.getName());
-                   } else if (schoolClass1.getType() == 2) {
+                   } else if (schoolClass1.getType() == FACULTY_TYPE) {
                        addStudentDto.setFacultyName(schoolClass1.getName());
-                   } else if (schoolClass1.getType() == 3) {
+                   } else if (schoolClass1.getType() == PROFESSION_TYPE) {
                        addStudentDto.setProfessionName(schoolClass1.getName());
-                   } else if (schoolClass1.getType() == 4) {
+                   } else if (schoolClass1.getType() == GRADE_TYPE) {
                        addStudentDto.setGradeName(schoolClass1.getName());
-                   } else if (schoolClass1.getType() == 5) {
+                   } else if (schoolClass1.getType() == CLASS_TYPE) {
                        addStudentDto.setClassName(schoolClass1.getName());
                        addStudentDto.setClassId(schoolClass1.getId());
                    }
@@ -203,15 +210,15 @@ public class StudentController {
                 schoolClass.setId(Long.parseLong(ClassId[i]));
                 SchoolClass schoolClass1=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
                 if(null!=schoolClass1) {
-                    if ( schoolClass1.getType() == 1) {
+                    if ( schoolClass1.getType() == COLLEGE_TYPE) {
                         updateStudentDto.setCollegeName(schoolClass1.getName());
-                    } else if (schoolClass1.getType() == 2) {
+                    } else if (schoolClass1.getType() == FACULTY_TYPE) {
                         updateStudentDto.setFacultyName(schoolClass1.getName());
-                    } else if (schoolClass1.getType() == 3) {
+                    } else if (schoolClass1.getType() == PROFESSION_TYPE) {
                         updateStudentDto.setProfessionName(schoolClass1.getName());
-                    } else if (schoolClass1.getType() == 4) {
+                    } else if (schoolClass1.getType() == GRADE_TYPE) {
                         updateStudentDto.setGradeName(schoolClass1.getName());
-                    } else if (schoolClass1.getType() == 5) {
+                    } else if (schoolClass1.getType() == CLASS_TYPE) {
                         updateStudentDto.setClassName(schoolClass1.getName());
                         updateStudentDto.setClassId(schoolClass1.getId());
                     }
