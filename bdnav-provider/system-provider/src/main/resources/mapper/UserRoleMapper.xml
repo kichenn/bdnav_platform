@@ -24,4 +24,15 @@
 	</select>
 
 
+    <select id="findUserRoleOnly" resultMap="BaseResultMap">
+	SELECT
+    id,user_id,role_id,
+	 COUNT(DISTINCT role_id)
+	 FROM
+	 sys_user_role
+	WHERE user_id= #{userId}
+	GROUP BY
+	role_id
+	</select>
+
 </mapper>

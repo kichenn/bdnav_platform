@@ -19,4 +19,5 @@ public interface UserRoleService extends IService<UserRole> {
       //根据用户id查询所有权限
       List<UserRole> findUserRoleByUserId(Long userId);
 
+      List<UserRole> findUserRoleOnly(Long userId);
 }

@@ -196,7 +196,7 @@ public class UserController {
     @RequestMapping(value = "/finaUserRoleByUserId", method = RequestMethod.GET)
     @ApiOperation(value = "根据用户id查询角色值", response = Boolean.class)
     public Object findUserRoleByUserId(@RequestParam(value = "userId") Long userId) {
-        List<UserRole> result= userRoleService.findUserRoleByUserId(userId);
+        List<UserRole> result= userRoleService.findUserRoleOnly(userId);
         List<Long> roles = new ArrayList<>();
         result.stream().forEach(e -> {
             roles.add(e.getRoleId());
