@@ -61,6 +61,9 @@ public class TreeBean {
     @ApiModelProperty("路由路径")
     private String name;
 
+    @ApiModelProperty("类型 1 菜单 2 按钮")
+    private Byte type;
+
     @ApiModelProperty("子节点")
     private List<? extends TreeBean> children;
 }
