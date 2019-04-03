@@ -117,7 +117,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addSchoolUser(AddSchoolUserDto addSchoolUserDto) {
-        SchoolUser schoolUser = new SchoolUser();
+         SchoolUser schoolUser = new SchoolUser();
         BeanUtils.copyProperties(addSchoolUserDto, schoolUser);
         //设置类型值
         if (addSchoolUserDto.getSchoolUserSexEnum() != null) {
@@ -128,9 +128,6 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         }
         if (addSchoolUserDto.getSchoolUserTypeEnum() != null) {
             schoolUser.setType(addSchoolUserDto.getSchoolUserTypeEnum().getKey());
-        }
-        if (StringUtils.isNotEmpty(schoolUser.getBirth())) {
-            schoolUser.setBirth(DateUtil.format(DateUtil.format(schoolUser.getBirth(), "yyyy/MM/dd HH:mm:ss"), "yyyy/MM/dd HH:mm:ss"));
         }
         schoolUserMapper.insertSelective(schoolUser);
 
@@ -165,9 +162,6 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         }
         if (modifySchoolUserDto.getSchoolUserTypeEnum() != null) {
             schoolUser.setType(modifySchoolUserDto.getSchoolUserTypeEnum().getKey());
-        }
-        if (StringUtils.isNotEmpty(schoolUser.getBirth())) {
-            schoolUser.setBirth(DateUtil.format(DateUtil.format(schoolUser.getBirth(), "yyyy/MM/dd HH:mm:ss"), "yyyy/MM/dd HH:mm:ss"));
         }
         schoolUser.setUpdateDate(new Date());
         schoolUserMapper.updateByPrimaryKeySelective(schoolUser);
