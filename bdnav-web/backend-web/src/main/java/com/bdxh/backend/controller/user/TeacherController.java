@@ -211,7 +211,7 @@ public class TeacherController {
                     if(null!=cardNumberList) {
                         for (int j = 0; j < cardNumberList.size(); j++) {
                             if (columns[6].equals(cardNumberList.get(j))) {
-                                return WrapMapper.error("请检查" + i + "条数据卡号已存在");
+                                return WrapMapper.error("请检查第" + i + "条数据卡号已存在");
                             }
                         }
                     }else{
