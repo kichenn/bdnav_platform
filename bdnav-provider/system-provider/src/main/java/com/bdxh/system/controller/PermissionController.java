@@ -151,39 +151,73 @@ public class PermissionController {
     }
 
     /**
-     *  查询全部菜单列表
+     *  根据条件查询相对菜单
      *   @return
      */
     @RequestMapping(value = "/theTreeMenu", method = RequestMethod.GET)
     @ApiOperation(value = "根据条件查询相对菜单", response = List.class)
     @ResponseBody
-    public Object theTreeMenu(@RequestParam(value = "roleId",required = false) Long roleId,@RequestParam(value = "selected",defaultValue = "2") Integer selected) {
-        List<RolePermissionDto> permissions= permissionService.theTreeMenu(roleId,selected);
-        List<PermissionTreeVo> treeVos = new ArrayList<>();
-        if (CollectionUtils.isNotEmpty(permissions)&&permissions.size()>0) {
-            permissions.stream().forEach(e -> {
-                PermissionTreeVo treeVo = new PermissionTreeVo();
-                treeVo.setTitle(e.getTitle());
-                treeVo.setCreateDate(e.getCreateDate());
-                if (!roleId.equals("")){
+    public Object theTreeMenu(@RequestParam(value = "roleId") Long roleId) {
+        List<RolePermission> resultList= rolePermissionService.findPermissionId(roleId);
+        if (CollectionUtils.isNotEmpty(resultList)&&resultList.size()>0){
+            List<Permission> permissions= permissionService.selectAll();
+          /*  List<RolePermissionDto> permissions= permissionService.theTreeMenu(roleId,selected);*/
+            List<PermissionTreeVo> treeVos = new ArrayList<>();
+            if (CollectionUtils.isNotEmpty(permissions)&&permissions.size()>0) {
+                for (Permission ps:permissions){
+                    PermissionTreeVo treeVo = new PermissionTreeVo();
+                    treeVo.setTitle(ps.getTitle());
+                    treeVo.setCreateDate(ps.getCreateDate());
+                    if (roleId!=null){
+                        treeVo.setExpand(Boolean.TRUE);
+                    }
+                    for (RolePermission rp:resultList){
+                        if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getSelected().equals(2)) {
+                            treeVo.setSelected(Boolean.TRUE);
+                        }
+              /*          if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getIndeterminate().equals(1)){
+                            treeVo.setIndeterminate(Boolean.TRUE);
+                        }
+                        if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getChecked().equals(1)){
+                            treeVo.setChecked(Boolean.TRUE);
+                        }*/
+                    }
+/*
+                    if (ps.getId().equals(ps.getRplist().get(0).getPermissionId())&&ps.getRplist().get(0).getRoleId().equals(roleId)&&ps.getRplist().get(0).getSelected().equals(2)) {
+                        treeVo.setSelected(Boolean.TRUE);
+                    }
+                    if (ps.getId().equals(ps.getRplist().get(0).getPermissionId())&&ps.getRplist().get(0).getRoleId().equals(roleId)&&ps.getRplist().get(0).getIndeterminate().equals(1)){
+                        treeVo.setIndeterminate(Boolean.TRUE);
+                    }
+                    if (ps.getId().equals(ps.getRplist().get(0).getPermissionId())&&ps.getRplist().get(0).getRoleId().equals(roleId)&&ps.getRplist().get(0).getChecked().equals(1)){
+                        treeVo.setChecked(Boolean.TRUE);
+                    }*/
+                    BeanUtils.copyProperties(ps, treeVo);
+                    treeVos.add(treeVo);
+                }
+            }
+            TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+            List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
+            return WrapMapper.ok(result);
+        }else{
+            List<Permission> permissionsResult= permissionService.selectAll();
+            List<PermissionTreeVo> treeVos = new ArrayList<>();
+            if (CollectionUtils.isNotEmpty(permissionsResult)&&permissionsResult.size()>0) {
+                for (Permission ps:permissionsResult){
+                    PermissionTreeVo treeVo = new PermissionTreeVo();
+                    treeVo.setTitle(ps.getTitle());
                     treeVo.setExpand(Boolean.TRUE);
+                    treeVo.setCreateDate(ps.getCreateDate());
+                    BeanUtils.copyProperties(ps, treeVo);
+                    treeVos.add(treeVo);
                 }
-                if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)&&e.getRplist().get(0).getSelected().equals(2)) {
-                    treeVo.setSelected(Boolean.TRUE);
-                }
-                if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)&&e.getRplist().get(0).getIndeterminate().equals(1)){
-                    treeVo.setIndeterminate(Boolean.TRUE);
-                }
-                if (e.getId().equals(e.getRplist().get(0).getPermissionId())&&e.getRplist().get(0).getRoleId().equals(roleId)&&e.getRplist().get(0).getChecked().equals(1)){
-                    treeVo.setChecked(Boolean.TRUE);
-                }
-                BeanUtils.copyProperties(e, treeVo);
-                treeVos.add(treeVo);
-            });
+            }
+            TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+            List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
+            return WrapMapper.ok(result);
         }
-        TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
-        List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
-        return WrapMapper.ok(result);
+
+
     }
 
 
@@ -272,17 +306,6 @@ public class PermissionController {
             List<UserPermissionDto> permissions = permissionService.findUserRights(userId, new Byte("1"));
             List<PermissionTreeVo> treeVos = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(permissions)) {
-          /*      permissions.stream().forEach(e -> {
-                    PermissionTreeVo treeVo = new PermissionTreeVo();
-                    treeVo.setTitle(e.getTitle());
-                    treeVo.setPath(e.getPath());
-                    treeVo.setComponent(e.getComponent());
-                    treeVo.setIcon(e.getIcon());
-                    treeVo.setName(e.getName());
-                    treeVo.setCreateDate(e.getCreateDate());
-                    BeanUtils.copyProperties(e, treeVo);
-                    treeVos.add(treeVo);
-                });*/
                 for (UserPermissionDto ps:permissions){
                     PermissionTreeVo treeVo = new PermissionTreeVo();
                     treeVo.setTitle(ps.getTitle());

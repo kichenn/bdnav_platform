@@ -83,10 +83,9 @@ public class SysPermissionController {
 
     @RequestMapping(value="/theTreeMenu",method = RequestMethod.GET)
     @ApiOperation("查询特定情况下菜单")
-    public Object theTreeMenu( @RequestParam(value = "roleId") Long roleId,
-                               @RequestParam(value = "selected",defaultValue = "2") Integer selected){
+    public Object theTreeMenu( @RequestParam(value = "roleId") Long roleId){
         try {
-            Wrapper wrapper = permissionControllerClient.theTreeMenu(roleId,selected);
+            Wrapper wrapper = permissionControllerClient.theTreeMenu(roleId);
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();

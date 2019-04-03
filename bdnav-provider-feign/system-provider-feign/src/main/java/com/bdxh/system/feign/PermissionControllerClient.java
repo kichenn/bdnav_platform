@@ -61,8 +61,7 @@ public interface PermissionControllerClient {
     @RequestMapping(value = "/permission/theTreeMenu",method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<PermissionTreeVo>> theTreeMenu(
-            @RequestParam("roleId") Long roleId,
-            @RequestParam(value = "selected") Integer selected);
+            @RequestParam("roleId") Long roleId);
 
 
     /**

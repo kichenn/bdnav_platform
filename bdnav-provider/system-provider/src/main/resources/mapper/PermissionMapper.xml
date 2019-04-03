@@ -94,7 +94,7 @@
     <sql id="BaseColumns1">
     perm.id, perm.parent_id, perm.parent_ids, perm.name,
     perm.path, perm.icon,perm.component, perm.sort, perm.level, perm.type, perm.create_date, perm.update_date, perm.operator, perm.remark
-  </sql>
+    </sql>
 
     <select id="findPermissionByRoleId" resultMap="BaseResultMap">
         SELECT
@@ -126,8 +126,8 @@
 	sys_permission
     LEFT JOIN sys_role_permission ON sys_permission.id = sys_role_permission.permission_id
         <where>
-            <if test="roleId!=null">AND  sys_role_permission.role_id=#{roleId,jdbcType=BIGINT} </if>
-            <if test="roleId!=selected">AND sys_role_permission.selected =#{selected}  </if>
+            <if test=" roleId !=null "> AND  sys_role_permission.role_id=#{roleId,jdbcType=BIGINT} </if>
+            <if test=" selected !=null"> AND sys_role_permission.selected =#{selected}  </if>
         </where>
     </select>
 
