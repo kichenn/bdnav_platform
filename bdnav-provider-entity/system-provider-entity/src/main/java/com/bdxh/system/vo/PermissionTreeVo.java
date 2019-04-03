@@ -9,9 +9,9 @@ public class PermissionTreeVo extends TreeBean {
 
 
 
-    @ApiModelProperty("类型 1 菜单 2 按钮")
+   /* @ApiModelProperty("类型 1 菜单 2 按钮")
     private Byte type;
-    
+    */
 /*
     @ApiModelProperty("创建时间")
     private Date createDate;
