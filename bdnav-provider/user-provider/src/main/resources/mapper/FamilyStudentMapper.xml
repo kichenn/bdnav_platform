@@ -64,6 +64,7 @@
           school_code AS schoolCode,
           id AS fsId,
           card_number as fCardNumber,
+          remark as remark,
           relation   from t_family_student
         <where>
             <if test="familyStudentQueryDto.studentName!=null and familyStudentQueryDto.studentName!=''">
