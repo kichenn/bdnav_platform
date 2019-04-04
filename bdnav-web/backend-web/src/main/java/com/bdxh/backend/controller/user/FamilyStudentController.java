@@ -1,10 +1,15 @@
 package com.bdxh.backend.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyStudentDto;
 import com.bdxh.user.dto.FamilyStudentQueryDto;
+import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
+import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.vo.FamilyVo;
+import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +35,13 @@ import java.util.stream.Collectors;
 public class FamilyStudentController {
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
+
+    @Autowired
+    private FamilyControllerClient familyControllerClient;
+
+    @Autowired
+    private StudentControllerClient studentControllerClient;
+
 
     /**
      * 家长绑定孩子
@@ -86,6 +98,21 @@ public class FamilyStudentController {
         try{
             Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
             return WrapMapper.ok(wrapper.getResult());
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+    @ApiOperation(value = "查询家长与孩子关系详细")
+    @RequestMapping(value = "/queryFamilyStudentDetails",method =RequestMethod.POST)
+    public Object queryFamilyStudentDetails(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
+        try{
+            JSONObject json =new JSONObject();
+            FamilyVo familyVo=familyControllerClient.queryFamilyInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getCardNumber()).getResult();
+            StudentVo studentVo= studentControllerClient.queryStudentInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getStudentNumber()).getResult();
+            json.put("family",familyVo);
+            json.put("student",studentVo);
+            return WrapMapper.ok(json);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
