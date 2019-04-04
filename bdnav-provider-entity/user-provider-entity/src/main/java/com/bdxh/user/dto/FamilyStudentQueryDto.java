@@ -32,6 +32,11 @@ public class FamilyStudentQueryDto  extends Query {
     @ApiModelProperty(name = "学生学号")
     private String studentNumber;
 
+    /**
+     * 学校Code
+     */
+    @ApiModelProperty(name="学校Code")
+    private String schoolCode;
 
 
 
