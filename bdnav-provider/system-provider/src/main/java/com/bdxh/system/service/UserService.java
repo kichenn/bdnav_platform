@@ -50,11 +50,11 @@ public interface UserService extends IService<User> {
     /**
      * 添加用户
      */
-    void addUsers(AddUserDto addUserDto);
+    Boolean addUsers(AddUserDto addUserDto);
     /**
      * 修改用户
      */
-    void updateUsers(UpdateUserDto updateUserDto);
+    Boolean updateUsers(UpdateUserDto updateUserDto);
 
    /**
     * 根据用户id查询所有关系
