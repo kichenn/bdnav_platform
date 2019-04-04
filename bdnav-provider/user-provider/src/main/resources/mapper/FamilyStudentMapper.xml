@@ -66,14 +66,17 @@
           card_number as fCardNumber,
           relation   from t_family_student
         <where>
-          <if test="familyStudentQueryDto.studentName!=null and familyStudentQueryDto.studentName!=''">
+            <if test="familyStudentQueryDto.studentName!=null and familyStudentQueryDto.studentName!=''">
             and   student_name like CONCAT('%',CONCAT(#{familyStudentQueryDto.studentName},'%'))
-        </if>
+            </if>
             <if test="familyStudentQueryDto.cardNumber!=null and familyStudentQueryDto.cardNumber!=''">
-                and   card_number like CONCAT('%',CONCAT(#{familyStudentQueryDto.cardNumber},'%'))
+                and   card_number = #{familyStudentQueryDto.cardNumber}
             </if>
             <if test="familyStudentQueryDto.studentNumber!=null and familyStudentQueryDto.studentNumber!=''">
-                and   student_number like CONCAT('%',CONCAT(#{familyStudentQueryDto.studentNumber},'%'))
+                and   student_number = #{familyStudentQueryDto.studentNumber}
+            </if>
+            <if test="familyStudentQueryDto.schoolCode!=null and familyStudentQueryDto.schoolCode!=''">
+                and   school_code = #{familyStudentQueryDto.schoolCode}
             </if>
         </where>
         order by create_date desc
