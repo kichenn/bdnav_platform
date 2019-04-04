@@ -18,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -84,6 +83,8 @@ public class UserController {
            if (userData!=null){
                if(userData.getUserName().equals(updateUserDto.getUserName())&&!userData.getId().equals(updateUserDto.getId())){
                    return WrapMapper.error("用户名已经存在,请更换用户名称");
+               }else{
+                   userService.updateUsers(updateUserDto);
                }
            }else{
                userService.updateUsers(updateUserDto);
