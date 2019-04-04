@@ -1,13 +1,16 @@
 package com.bdxh.backend.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.system.entity.User;
 import com.bdxh.user.dto.AddFamilyStudentDto;
 import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.vo.FamilyStudentDetailsVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
@@ -58,6 +61,9 @@ public class FamilyStudentController {
             return WrapMapper.error(errors);
         }
         try {
+            User user= SecurityUtils.getCurrentUser();
+            addFamilyStudentDto.setOperator(user.getId());
+            addFamilyStudentDto.setOperatorName(user.getUserName());
             familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -107,12 +113,12 @@ public class FamilyStudentController {
     @RequestMapping(value = "/queryFamilyStudentDetails",method =RequestMethod.POST)
     public Object queryFamilyStudentDetails(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
         try{
-            JSONObject json =new JSONObject();
             FamilyVo familyVo=familyControllerClient.queryFamilyInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getCardNumber()).getResult();
             StudentVo studentVo= studentControllerClient.queryStudentInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getStudentNumber()).getResult();
-            json.put("family",familyVo);
-            json.put("student",studentVo);
-            return WrapMapper.ok(json);
+            FamilyStudentDetailsVo familyStudentDetailsVo=new FamilyStudentDetailsVo();
+            familyStudentDetailsVo.setFamilyVo(familyVo);
+            familyStudentDetailsVo.setStudentVo(studentVo);
+            return WrapMapper.ok(familyStudentDetailsVo);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
