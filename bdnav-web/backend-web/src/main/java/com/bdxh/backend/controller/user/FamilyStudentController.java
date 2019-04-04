@@ -61,11 +61,19 @@ public class FamilyStudentController {
             return WrapMapper.error(errors);
         }
         try {
+            FamilyStudentQueryDto familyStudentQueryDto=new FamilyStudentQueryDto();
+            familyStudentQueryDto.setCardNumber(addFamilyStudentDto.getCardNumber());
+            familyStudentQueryDto.setStudentNumber(addFamilyStudentDto.getStudentNumber());
+            familyStudentQueryDto.setSchoolCode(addFamilyStudentDto.getSchoolCode());
+            Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
+            if(wrapper.getResult()!=null){
+                return WrapMapper.error("已存在绑定关系");
+            }
             User user= SecurityUtils.getCurrentUser();
             addFamilyStudentDto.setOperator(user.getId());
             addFamilyStudentDto.setOperatorName(user.getUserName());
-            familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
-            return WrapMapper.ok();
+            Wrapper wrappers =familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
+            return wrappers;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
