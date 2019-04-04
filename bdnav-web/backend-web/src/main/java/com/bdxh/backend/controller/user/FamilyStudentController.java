@@ -11,8 +11,10 @@ import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.FamilyStudentDetailsVo;
+import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -66,7 +68,8 @@ public class FamilyStudentController {
             familyStudentQueryDto.setStudentNumber(addFamilyStudentDto.getStudentNumber());
             familyStudentQueryDto.setSchoolCode(addFamilyStudentDto.getSchoolCode());
             Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
-            if(wrapper.getResult()!=null){
+            PageInfo pageInfo=(PageInfo)wrapper.getResult();
+            if(pageInfo.getTotal()!=0){
                 return WrapMapper.error("已存在绑定关系");
             }
             User user= SecurityUtils.getCurrentUser();
