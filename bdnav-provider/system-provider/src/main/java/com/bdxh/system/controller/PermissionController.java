@@ -172,9 +172,9 @@ public class PermissionController {
                         treeVo.setExpand(Boolean.TRUE);
                     }
                     for (RolePermission rp:resultList){
-                        if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getSelected().equals(2)) {
+                   /*     if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getSelected().equals(2)) {
                             treeVo.setSelected(Boolean.TRUE);
-                        }
+                        }*/
                         if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getIndeterminate().equals(1)){
                             treeVo.setIndeterminate(Boolean.TRUE);
                         }
