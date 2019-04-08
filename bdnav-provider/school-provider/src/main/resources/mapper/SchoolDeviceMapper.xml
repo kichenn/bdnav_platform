@@ -72,7 +72,7 @@
         <include refid="BaseColumns"/>
         FROM t_school_device
         WHERE
-        device_id=#{type,jdbcType=VARCHAR}
+        device_id=#{deviceId,jdbcType=VARCHAR}
         AND
         device_model=#{deviceModel,jdbcType=VARCHAR}
         limit 1
