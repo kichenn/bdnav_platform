@@ -77,6 +77,14 @@ public class PermissionController {
         return WrapMapper.ok(permissions);
     }
 
+    @RequestMapping(value = "/permissionMenusByUserId", method = RequestMethod.GET)
+    @ApiOperation(value = "用户id查询用户菜单、按钮", response = List.class)
+    @ResponseBody
+    public Object permissionMenusByUserId(@RequestParam("userId") Long userId) {
+        List<String> permissions = permissionService.permissionMenusByUserId(userId);
+        return WrapMapper.ok(permissions);
+    }
+
     /**
      * @Description: 增加用户权限
      * @Author: Kang

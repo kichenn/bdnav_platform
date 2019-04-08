@@ -46,8 +46,11 @@
         <include refid="BaseColumns"/>
         FROM t_school_device
         <where>
+            <if test="device.schoolId !=null">
+                school_id= #{device.schoolId,jdbcType=BIGINT}
+            </if>
             <if test="device.schoolCode !=null and device.schoolCode !=''">
-                school_code like CONCAT(CONCAT('%',#{device.schoolCode,jdbcType=VARCHAR}),'%')
+               AND school_code like CONCAT(CONCAT('%',#{device.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="device.deviceId !=null and device.deviceId!=''">
                 AND device_id like CONCAT(CONCAT('%',#{device.deviceId,jdbcType=VARCHAR}),'%')

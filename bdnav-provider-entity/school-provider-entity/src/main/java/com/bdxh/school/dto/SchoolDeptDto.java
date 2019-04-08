@@ -39,11 +39,11 @@ public class SchoolDeptDto  {
 //    @ApiModelProperty("修改时间")
 //    private Date updateDate;
 //
-//    @ApiModelProperty("操作人")
-//    private Long operator;
-//
-//    @ApiModelProperty("操作人姓名")
-//    private String operatorName;
+    @ApiModelProperty("操作人")
+    private Long operator;
+
+    @ApiModelProperty("操作人姓名")
+    private String operatorName;
 
     @ApiModelProperty("备注")
     private String remark;

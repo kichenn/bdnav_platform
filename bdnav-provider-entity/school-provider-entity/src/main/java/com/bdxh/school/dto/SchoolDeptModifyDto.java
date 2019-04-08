@@ -3,6 +3,8 @@ package com.bdxh.school.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.Date;
+
 
 /**
  * @Description: 学校部门修改dto
@@ -42,15 +44,15 @@ public class SchoolDeptModifyDto {
 
 //    @ApiModelProperty("创建时间")
 //    private Date createDate;
-//
-//    @ApiModelProperty("修改时间")
-//    private Date updateDate;
-//
-//    @ApiModelProperty("操作人")
-//    private Long operator;
-//
-//    @ApiModelProperty("操作人姓名")
-//    private String operatorName;
+
+    @ApiModelProperty("修改时间")
+    private Date updateDate;
+
+    @ApiModelProperty("操作人")
+    private Long operator;
+
+    @ApiModelProperty("操作人姓名")
+    private String operatorName;
 
     @ApiModelProperty("备注")
     private String remark;

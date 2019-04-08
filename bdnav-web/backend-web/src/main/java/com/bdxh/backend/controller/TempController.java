@@ -19,7 +19,6 @@ import javax.annotation.security.RolesAllowed;
 public class TempController {
 
     @DenyAll
-//    @SuppressWarnings({"USER"})
     @RequestMapping(value = "/temp1", method = RequestMethod.GET)
     public Object temp1() {
         return WrapMapper.ok("没有权限访问......");

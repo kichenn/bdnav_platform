@@ -40,11 +40,14 @@
         t_school_permission perm
         INNER JOIN t_school_role_permission roleperm ON perm.id=roleperm.permission_id
         <where>
-            roleperm.role_id=#{roleId,jdbcType=BIGINT}
-            AND
-            perm.type=#{type,jdbcType=TINYINT}
+            <if test="roleId !=null">
+                roleperm.role_id=#{roleId,jdbcType=BIGINT}
+            </if>
+            <if test="type !=null">
+                AND perm.type=#{type,jdbcType=TINYINT}
+            </if>
             <if test="schoolId !=null">
-                roleperm. school_id=#{schoolId,jdbcType=BIGINT}
+                AND perm.school_id=#{schoolId,jdbcType=BIGINT}
             </if>
         </where>
     </select>
@@ -65,5 +68,16 @@
         <include refid="BaseColumns"/>
         FROM
         t_school_permission role_id=#{roleId,jdbcType=BIGINT}
+    </select>
+
+    <select id="findPermissionByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns1"/>
+        FROM
+        t_school_permission perm
+        INNER JOIN t_school_role_permission roleperm ON perm.id=roleperm.permission_id
+        INNER JOIN t_school_user_role user_role ON user_role.role_id=roleperm.role_id
+        WHERE
+        user_role.user_id=#{userId,jdbcType=BIGINT}
     </select>
 </mapper>

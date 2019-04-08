@@ -29,6 +29,9 @@
             <if test="schoolRole.roleName != null and schoolRole.roleName != ''">
                 AND role_name like CONCAT(CONCAT('%',#{schoolRole.roleName,jdbcType=VARCHAR}),'%')
             </if>
+            <if test="schoolRole.schoolId !=null">
+               AND school_id= #{schoolRole.schoolId,jdbcType=BIGINT}
+            </if>
             <if test="schoolRole.schoolCode != null and schoolRole.schoolCode != ''">
                 AND school_code like CONCAT(CONCAT('%',#{schoolRole.schoolCode,jdbcType=VARCHAR}),'%')
             </if>

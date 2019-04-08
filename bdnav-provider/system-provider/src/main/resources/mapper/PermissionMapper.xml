@@ -45,7 +45,6 @@
             <id column="id" jdbcType="BIGINT" property="id" />
             <result column="role_id" jdbcType="BIGINT" property="roleId" />
             <result column="permission_id" jdbcType="BIGINT" property="permissionId" />
-            <result column="rp_switch" jdbcType="TINYINT" property="RpSwitch" />
             <result column="selected" jdbcType="TINYINT" property="selected" />
             <result column="checked" jdbcType="TINYINT" property="checked" />
             <result column="indeterminate" jdbcType="TINYINT" property="indeterminate" />
@@ -69,7 +68,6 @@
         <result column="type" jdbcType="TINYINT" property="type"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-        <result column="operator" jdbcType="BIGINT" property="operator"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <collection property="userRolesList" ofType="com.bdxh.system.entity.UserRole">
             <id column="id" jdbcType="BIGINT" property="id" />
@@ -80,7 +78,6 @@
             <id column="id" jdbcType="BIGINT" property="id" />
             <result column="role_id" jdbcType="BIGINT" property="roleId" />
             <result column="permission_id" jdbcType="BIGINT" property="permissionId" />
-            <result column="rp_switch" jdbcType="TINYINT" property="RpSwitch" />
             <result column="selected" jdbcType="TINYINT" property="selected" />
             <result column="checked" jdbcType="TINYINT" property="checked" />
             <result column="indeterminate" jdbcType="TINYINT" property="indeterminate" />
@@ -106,6 +103,17 @@
         roleperm.role_id=#{roleId,jdbcType=BIGINT}
         AND
         perm.type=#{type,jdbcType=TINYINT}
+    </select>
+
+    <select id="findPermissionByUserId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns1"/>
+        FROM
+        sys_permission perm
+        INNER JOIN sys_role_permission roleperm ON perm.id=roleperm.permission_id
+        INNER JOIN sys_user_role user_role ON user_role.role_id=roleperm.role_id
+        WHERE
+        user_role.user_id=#{userId,jdbcType=BIGINT}
     </select>
 
 

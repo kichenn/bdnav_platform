@@ -92,4 +92,17 @@ public class SchoolPermissionServiceImpl extends BaseService<SchoolPermission> i
         schoolPermission.setParentId(parentId);
         return schoolPermissionMapper.select(schoolPermission);
     }
+
+    //用户id查询权限菜单
+    @Override
+    public List<String> permissionMenusByUserId(Long userId) {
+        List<String> permissionMenus = new ArrayList<>();
+        List<SchoolPermission> permissions = schoolPermissionMapper.findPermissionByUserId(userId);
+        if (CollectionUtils.isNotEmpty(permissions)) {
+            permissions.stream().forEach(e -> {
+                permissionMenus.add(e.getName());
+            });
+        }
+        return permissionMenus;
+    }
 }

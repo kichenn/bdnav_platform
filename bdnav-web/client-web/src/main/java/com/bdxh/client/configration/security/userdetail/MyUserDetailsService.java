@@ -48,10 +48,10 @@ public class MyUserDetailsService implements UserDetailsService {
             roles.forEach(role->authorities.add(new SimpleGrantedAuthority(role)));
         }
         //根据用户id查询权限列表
-        Wrapper<List<String>> permissionWrapper = schoolPermissionControllerClient.();
+        Wrapper<List<String>> permissionWrapper = schoolPermissionControllerClient.permissionMenusByUserId(user.getId());
         List<String> permissions = permissionWrapper.getResult();
         if (permissions!=null && !permissions.isEmpty()){
-            permissions.forEach(permission->authorities.add(new SimpleGrantedAuthority(permission)));
+            permissions.forEach(permission->authorities.add(new SimpleGrantedAuthority("ROLE_"+permission)));
         }
         Byte status = user.getStatus();
         boolean isAccountNonLocked = true;

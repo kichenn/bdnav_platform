@@ -10,6 +10,9 @@ import java.util.Date;
 public class SchoolRoleQueryDto extends Query {
 
 
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 

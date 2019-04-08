@@ -33,7 +33,7 @@ public class Swagger2Config {
         );
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInfo()).globalOperationParameters(list).select()
-                .apis(RequestHandlerSelectors.basePackage("com.bdxh.backend"))
+                .apis(RequestHandlerSelectors.basePackage("com.bdxh.client"))
                 .paths(PathSelectors.any())
                 .build();
     }

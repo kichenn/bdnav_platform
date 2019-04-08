@@ -24,6 +24,9 @@ public interface PermissionService extends IService<Permission> {
     //角色id查询权限菜单
     List<String> permissionMenus(Long roleId);
 
+    //用户id查询权限菜单
+    List<String> permissionMenusByUserId(Long userId);
+
     //增加权限列表信息
     Boolean addPermission(AddPermissionDto addPermissionDto);
 

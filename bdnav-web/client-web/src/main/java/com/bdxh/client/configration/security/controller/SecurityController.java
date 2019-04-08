@@ -7,7 +7,7 @@ import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.system.entity.User;
+import com.bdxh.school.entity.SchoolUser;
 import com.google.common.base.Preconditions;
 import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
@@ -33,13 +33,13 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description:
- * @author: xuyuan
- * @create: 2019-02-28 10:47
- **/
+* @Description:  学校用户
+* @Author: Kang
+* @Date: 2019/4/8 11:21
+*/
 @RestController
 @Slf4j
-@Api(value = "用户登录", tags = "用户登录交互API")
+@Api(value = "学校管理员--用户登录", tags = "学校管理员--用户登录交互API")
 public class SecurityController {
 
     @Autowired
@@ -49,7 +49,7 @@ public class SecurityController {
     private RedisTemplate<String, Object> redisTemplate;
 
 
-    @RequestMapping(value = "/authentication/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/schoolAuthentication/schoolLogin", method = RequestMethod.POST)
     @ApiOperation(value = "获取token", response = String.class)
     public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) throws IOException {
         try {
@@ -64,8 +64,8 @@ public class SecurityController {
                 authorities.forEach(authority -> authorityList.add(authority.getAuthority()));
             }
             Map<String, Object> claims = new HashMap<>(16);
-            User user = myUserDetails.getUser();
-            User userTemp = BeanMapUtils.map(user, User.class);
+            SchoolUser user = myUserDetails.getSchoolUser();
+            SchoolUser userTemp = BeanMapUtils.map(user, SchoolUser.class);
             userTemp.setPassword("");
             claims.put(SecurityConstant.USER, JSON.toJSONString(userTemp));
             claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorityList));
@@ -104,7 +104,7 @@ public class SecurityController {
         }
     }
 
-    @GetMapping("/getUserInfoByToken")
+    @GetMapping("/getSchoolUserInfoByToken")
     @ApiOperation(value = "token获取用户信息", response = String.class)
     public Object getUserInfoByToken() {
         return WrapMapper.ok(SecurityUtils.getCurrentUser());

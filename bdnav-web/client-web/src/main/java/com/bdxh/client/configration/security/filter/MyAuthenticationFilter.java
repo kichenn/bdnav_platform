@@ -5,7 +5,7 @@ import com.bdxh.client.configration.security.properties.SecurityConstant;
 import com.bdxh.client.configration.security.userdetail.MyUserDetails;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.system.entity.User;
+import com.bdxh.school.entity.SchoolUser;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +57,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 if (securityContext != null) {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     if (authentication == null) {
-                        User user = JSON.parseObject(userStr, User.class);
+                        SchoolUser user = JSON.parseObject(userStr, SchoolUser.class);
                         List<String> authorityList = JSON.parseObject(authorityListStr, List.class);
                         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
                         if (authorityList != null && !authorityList.isEmpty()) {
@@ -110,7 +110,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         } else if (authHeader != null && authHeader.equals("BDXH_TEST")) {
-            User user = new User();
+            SchoolUser user = new SchoolUser();
             user.setUserName("xuyuan");
             user.setPassword(new BCryptPasswordEncoder().encode("123456"));
             user.setRealName("徐圆");

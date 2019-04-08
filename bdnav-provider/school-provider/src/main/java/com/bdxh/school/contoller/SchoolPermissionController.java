@@ -89,6 +89,30 @@ public class SchoolPermissionController {
         return WrapMapper.ok(result);
     }
 
+    /**
+     * @Description: 菜单or按钮权限列表(根据学校id)
+     * @Author: Kang
+     * @Date: 2019/4/8 12:08
+     */
+    @GetMapping("/findPermissionListBySchoolId")
+    @ApiOperation(value = "菜单or按钮权限列表(根据学校id)", response = List.class)
+    public Object findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId) {
+        List<SchoolPermission> permissions = schoolPermissionService.findPermissionByRoleId(null, null, schoolId);
+        List<SchoolPermissionTreeVo> treeVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(permissions)) {
+            permissions.stream().forEach(e -> {
+                SchoolPermissionTreeVo treeVo = new SchoolPermissionTreeVo();
+                treeVo.setTitle(e.getName());
+                treeVo.setCreateDate(e.getCreateDate());
+                BeanUtils.copyProperties(e, treeVo);
+                treeVos.add(treeVo);
+            });
+        }
+        TreeLoopUtils<SchoolPermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+        List<SchoolPermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
+        return WrapMapper.ok(result);
+    }
+
 
     /**
      * @Description: 增加用户权限
@@ -145,6 +169,14 @@ public class SchoolPermissionController {
     public Object addRolePermissionBindMenu(@Validated @RequestBody AddRolePermissionBindMenuDto addRolePermissionBindMenu) {
         schoolRolePermissionService.addRolePermissionBindMenu(addRolePermissionBindMenu);
         return WrapMapper.ok();
+    }
+
+    @RequestMapping(value = "/permissionMenusByUserId", method = RequestMethod.GET)
+    @ApiOperation(value = "用户id查询用户菜单、按钮", response = List.class)
+    @ResponseBody
+    public Object permissionMenusByUserId(@RequestParam("userId") Long userId) {
+        List<String> permissions = schoolPermissionService.permissionMenusByUserId(userId);
+        return WrapMapper.ok(permissions);
     }
 }
 

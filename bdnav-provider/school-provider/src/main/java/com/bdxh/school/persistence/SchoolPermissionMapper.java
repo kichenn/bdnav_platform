@@ -19,4 +19,6 @@ public interface SchoolPermissionMapper extends Mapper<SchoolPermission> {
     //角色id所有权限
     List<SchoolPermission> findPermission(@Param("roleId") Long roleId);
 
+    //用户id查询节点
+    List<SchoolPermission> findPermissionByUserId(@Param("userId") Long userId);
 }

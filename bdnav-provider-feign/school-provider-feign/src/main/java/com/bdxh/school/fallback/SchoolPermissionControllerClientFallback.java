@@ -21,12 +21,22 @@ public class SchoolPermissionControllerClientFallback implements SchoolPermissio
 
 
     @Override
+    public Wrapper<List<String>> permissionMenusByUserId(Long userId) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper<List<SchoolPermissionTreeVo>> findSchoolPermissionByRoleId(Long roleId, Byte type, Long schoolId) {
         return WrapMapper.error();
     }
 
     @Override
     public Wrapper<List<SchoolPermissionTreeVo>> findPermissionList() {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<SchoolPermissionTreeVo>> findPermissionListBySchoolId(Long schoolId) {
         return WrapMapper.error();
     }
 

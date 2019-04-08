@@ -18,6 +18,9 @@ import java.util.Date;
 @Data
 public class SchoolDeviceQueryDto extends Query {
 
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 

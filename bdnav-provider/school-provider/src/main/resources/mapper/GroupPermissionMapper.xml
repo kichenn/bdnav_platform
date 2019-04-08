@@ -57,8 +57,11 @@
         <include refid="BaseColumns"/>
         FROM t_group_permission
         <where>
+            <if test="permission.schoolId !=null">
+                school_id= #{permission.schoolId,jdbcType=BIGINT}
+            </if>
             <if test="permission.schoolCode !=null and permission.schoolCode !=''">
-                school_code like CONCAT(CONCAT('%',#{permission.schoolCode,jdbcType=VARCHAR}),'%')
+               AND school_code like CONCAT(CONCAT('%',#{permission.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="permission.groupId !=null">
                AND group_id=#{permission.groupId,jdbcType=BIGINT}

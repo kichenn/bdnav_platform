@@ -46,8 +46,11 @@
         <include refid="BaseColumns"/>
         FROM t_single_permission
         <where>
+            <if test="singlePermission.schoolId !=null">
+                school_id= #{singlePermission.schoolId,jdbcType=BIGINT}
+            </if>
             <if test="singlePermission.schoolCode !=null and singlePermission.schoolCode !=''">
-                school_code like CONCAT(CONCAT('%',#{singlePermission.schoolCode,jdbcType=VARCHAR}),'%')
+               AND school_code like CONCAT(CONCAT('%',#{singlePermission.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="singlePermission.userName !=null and singlePermission.userName!=''">
                 AND user_name like CONCAT(CONCAT('%',#{singlePermission.userName,jdbcType=VARCHAR}),'%')

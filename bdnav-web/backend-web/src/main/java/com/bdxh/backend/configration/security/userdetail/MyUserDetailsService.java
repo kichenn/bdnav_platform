@@ -38,28 +38,29 @@ public class MyUserDetailsService implements UserDetailsService {
         //根据用户名查询用户
         Wrapper<User> userWrapper = userControllerClient.queryUserByUserName(username);
         User user = userWrapper.getResult();
-        if (user == null){
+        if (user == null) {
             throw new UsernameNotFoundException("用户不存在");
         }
         List<SimpleGrantedAuthority> authorities = new ArrayList<>();
         //根据用户id查询角色列表
         Wrapper<List<String>> roleWrapper = roleControllerClient.queryRoleListByUserId(user.getId());
         List<String> roles = roleWrapper.getResult();
-        if (roles != null && !roles.isEmpty()){
-            roles.forEach(role->authorities.add(new SimpleGrantedAuthority(role)));
+        if (roles != null && !roles.isEmpty()) {
+            roles.forEach(role -> authorities.add(new SimpleGrantedAuthority(role)));
         }
         //根据用户id查询权限列表
-        Wrapper<List<String>> permissionWrapper = permissionControllerClient.permissionMenus(user.getId());
+        Wrapper<List<String>> permissionWrapper = permissionControllerClient.permissionMenusByUserId(user.getId());
         List<String> permissions = permissionWrapper.getResult();
-        if (permissions!=null && !permissions.isEmpty()){
-            permissions.forEach(permission->authorities.add(new SimpleGrantedAuthority(permission)));
+        if (permissions != null && !permissions.isEmpty()) {
+            //权限的菜单 也需要 以 ROLE_开头(我们库中未以ROLE开头 所以在此累加)
+            permissions.forEach(permission -> authorities.add(new SimpleGrantedAuthority("ROLE_" + permission)));
         }
         Byte status = user.getStatus();
         boolean isAccountNonLocked = true;
-        if (status.byteValue()==2){
+        if (status.byteValue() == 2) {
             isAccountNonLocked = false;
         }
-        MyUserDetails myUserDetails = new MyUserDetails(username,user.getPassword(),isAccountNonLocked,authorities,user);
+        MyUserDetails myUserDetails = new MyUserDetails(username, user.getPassword(), isAccountNonLocked, authorities, user);
         return myUserDetails;
     }
 

@@ -17,28 +17,39 @@ import java.util.List;
  * @create: 2019-02-28 12:29
  **/
 @Service
-@FeignClient(value = "system-provider-cluster",fallback= PermissionControllerClientFallback.class)
+@FeignClient(value = "system-provider-cluster", fallback = PermissionControllerClientFallback.class)
 public interface PermissionControllerClient {
 
     /**
-     * 根据用户id查询权限列表
+     * 根据角色id查询权限列表（菜单）
+     *
      * @return
      */
-    @RequestMapping(value = "/permission/permissionMenus",method = RequestMethod.POST)
+    @RequestMapping(value = "/permission/permissionMenus", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<List<String>> permissionMenus(Long roleId);
 
+    /**
+     * 根据用户id查询权限列表(菜单 and  按钮)
+     *
+     * @return
+     */
+    @RequestMapping(value = "/permission/permissionMenusByUserId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<String>> permissionMenusByUserId(@RequestParam("userId") Long userId);
 
     /**
      * 角色id查询用户菜单or按钮权限
+     *
      * @return
      */
-    @RequestMapping(value = "/permission/findPermissionByRoleId",method = RequestMethod.GET)
+    @RequestMapping(value = "/permission/findPermissionByRoleId", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<PermissionTreeVo>> findPermissionByRoleId(@RequestParam("roleId") Long roleId, @RequestParam("type") Byte type);
 
     /**
      * 添加权限信息
+     *
      * @return
      */
     @RequestMapping(value = "/permission/addPermission")
@@ -47,6 +58,7 @@ public interface PermissionControllerClient {
 
     /**
      * 修改权限信息
+     *
      * @return
      */
     @RequestMapping(value = "/permission/modifyPermission")
@@ -56,9 +68,10 @@ public interface PermissionControllerClient {
 
     /**
      * 查询全部菜单
+     *
      * @return
      */
-    @RequestMapping(value = "/permission/theTreeMenu",method = RequestMethod.GET)
+    @RequestMapping(value = "/permission/theTreeMenu", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<PermissionTreeVo>> theTreeMenu(
             @RequestParam("roleId") Long roleId);
@@ -66,16 +79,17 @@ public interface PermissionControllerClient {
 
     /**
      * 更改或保存权限
+     *
      * @return
      */
-    @RequestMapping(value = "/permission/addOrUpdatePermission",method = RequestMethod.POST)
+    @RequestMapping(value = "/permission/addOrUpdatePermission", method = RequestMethod.POST)
     @ResponseBody
     Wrapper addOrUpdatePermission(@RequestBody BaPermissionsDto baPermissionsDto);
 
 
-
     /**
      * 全部菜单权限
+     *
      * @return
      */
     @RequestMapping(value = "/permission/thePermissionMenu")
@@ -98,6 +112,7 @@ public interface PermissionControllerClient {
 
     /**
      * 父id查询部门信息
+     *
      * @param parentId
      * @return
      */
@@ -107,13 +122,12 @@ public interface PermissionControllerClient {
 
     /**
      * 查询当前用户权限
+     *
      * @return
      */
-    @RequestMapping(value = "/permission/userPermissionMenu",method = RequestMethod.GET)
+    @RequestMapping(value = "/permission/userPermissionMenu", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<PermissionTreeVo>> userPermissionMenu(@RequestParam("userId") Long userId);
-
-
 
 
 }

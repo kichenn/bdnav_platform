@@ -26,6 +26,16 @@ public interface SchoolPermissionControllerClient {
 
 
     /**
+     * 根据用户id查询权限列表(菜单 and  按钮)
+     *
+     * @return
+     */
+    @RequestMapping(value = "/schoolPermission/permissionMenusByUserId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<String>> permissionMenusByUserId(@RequestParam("userId") Long userId);
+
+
+    /**
      * 学校角色id查询用户菜单or按钮权限
      *
      * @return
@@ -42,6 +52,15 @@ public interface SchoolPermissionControllerClient {
     @RequestMapping(value = "/schoolPermission/findPermissionList", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<SchoolPermissionTreeVo>> findPermissionList();
+
+    /**
+     *  菜单or按钮权限列表(根据学校id)
+     *
+     * @return
+     */
+    @RequestMapping(value = "/schoolPermission/findPermissionListBySchoolId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolPermissionTreeVo>> findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId);
 
     /**
      * 添加权限信息

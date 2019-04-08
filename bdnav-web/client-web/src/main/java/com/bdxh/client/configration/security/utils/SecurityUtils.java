@@ -1,7 +1,7 @@
 package com.bdxh.client.configration.security.utils;
 
 import com.bdxh.client.configration.security.userdetail.MyUserDetails;
-import com.bdxh.system.entity.User;
+import com.bdxh.school.entity.SchoolUser;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
@@ -15,11 +15,11 @@ public class SecurityUtils {
      * 获取当前登录用户信息
      * @return
      */
-    public static User getCurrentUser(){
-        User user = null;
+    public static SchoolUser getCurrentUser(){
+        SchoolUser user = null;
         try {
             MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            user = myUserDetails.getUser();
+            user = myUserDetails.getSchoolUser();
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -31,7 +31,7 @@ public class SecurityUtils {
      * @return
      */
     public static String getUserName(){
-        User user = getCurrentUser();
+        SchoolUser user = getCurrentUser();
         String userName = null;
         if (user != null){
             userName = user.getUserName();
@@ -44,7 +44,7 @@ public class SecurityUtils {
      * @return
      */
     public static String getName(){
-        User user = getCurrentUser();
+        SchoolUser user = getCurrentUser();
         String name = null;
         if (user != null){
             name = user.getRealName();
@@ -57,7 +57,7 @@ public class SecurityUtils {
      * @return
      */
     public static Long getUserId(){
-        User user = getCurrentUser();
+        SchoolUser user = getCurrentUser();
         Long userId = null;
         if (user != null){
             userId = user.getId();

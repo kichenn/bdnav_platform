@@ -10,6 +10,9 @@ import lombok.Data;
 @Data
 public class SchoolUserQueryDto extends Query {
 
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 

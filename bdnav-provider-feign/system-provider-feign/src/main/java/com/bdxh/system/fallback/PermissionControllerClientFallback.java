@@ -24,6 +24,11 @@ public class PermissionControllerClientFallback implements PermissionControllerC
     }
 
     @Override
+    public Wrapper<List<String>> permissionMenusByUserId(Long userId) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper<List<PermissionTreeVo>> findPermissionByRoleId(Long roleId, Byte type) {
         return WrapMapper.error();
     }

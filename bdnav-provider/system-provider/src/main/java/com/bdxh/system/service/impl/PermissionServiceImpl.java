@@ -52,6 +52,19 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         return permissionMenus;
     }
 
+    //用户id查询权限菜单
+    @Override
+    public List<String> permissionMenusByUserId(Long userId) {
+        List<String> permissionMenus = new ArrayList<>();
+        List<Permission> permissions = permissionMapper.findPermissionByUserId(userId);
+        if (CollectionUtils.isNotEmpty(permissions)) {
+            permissions.stream().forEach(e -> {
+                permissionMenus.add(e.getName());
+            });
+        }
+        return permissionMenus;
+    }
+
     //增加权限列表信息
     @Override
     public Boolean addPermission(AddPermissionDto addPermissionDto) {
@@ -60,12 +73,12 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         if (new Long("-1").equals(permission.getParentId())) {
             permission.setParentIds("");
             permission.setName(addPermissionDto.getPath());
-            permission.setPath("/"+addPermissionDto.getPath());
+            permission.setPath("/" + addPermissionDto.getPath());
 
         } else {
             Permission sysPermissions = findPermissionById(permission.getParentId());
             permission.setName(addPermissionDto.getPath());
-            permission.setParentIds(sysPermissions.getParentIds() +","+ sysPermissions.getId());
+            permission.setParentIds(sysPermissions.getParentIds() + "," + sysPermissions.getId());
         }
         return permissionMapper.insertSelective(permission) > 0;
     }
@@ -77,15 +90,14 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
         BeanUtils.copyProperties(mdifyPermissionDto, permission);
         if (new Long("-1").equals(permission.getParentId())) {
             permission.setParentIds("");
-            permission.setPath("/"+mdifyPermissionDto.getPath());
+            permission.setPath("/" + mdifyPermissionDto.getPath());
         } else {
             Permission sysPermissions = findPermissionById(permission.getParentId());
             permission.setName(mdifyPermissionDto.getPath());
-            permission.setParentIds(sysPermissions.getParentIds() +","+ sysPermissions.getId());
+            permission.setParentIds(sysPermissions.getParentIds() + "," + sysPermissions.getId());
         }
         return permissionMapper.updateByPrimaryKeySelective(permission) > 0;
     }
-
 
 
     //Id删除权限列表信息
@@ -104,7 +116,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
 
     @Override
     public List<RolePermissionDto> theTreeMenu(Long roleId, Integer selected) {
-        return permissionMapper.theTreeMenu(roleId,selected);
+        return permissionMapper.theTreeMenu(roleId, selected);
     }
 
     //根据id查询权限信息
@@ -125,7 +137,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
 
     @Override
     public List<UserPermissionDto> findUserRights(Long userId, Byte type) {
-        return permissionMapper.findUserRights(userId,type);
+        return permissionMapper.findUserRights(userId, type);
     }
 
 

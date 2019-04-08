@@ -14,6 +14,9 @@ import lombok.Data;
 @Data
 public class SinglePermissionQueryDto extends Query {
 
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 

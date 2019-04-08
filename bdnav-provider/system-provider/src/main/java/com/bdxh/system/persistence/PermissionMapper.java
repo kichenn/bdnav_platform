@@ -12,8 +12,11 @@ import java.util.List;
 @Repository
 public interface PermissionMapper extends Mapper<Permission> {
 
-    //角色id查询父节点
+    //角色id查询节点
     List<Permission> findPermissionByRoleId(@Param("roleId") Long roleId, @Param("type") Byte type);
+
+    //用户id查询节点
+    List<Permission> findPermissionByUserId(@Param("userId") Long userId);
 
     //批量删除
     Integer batchDelPermissionInIds(@Param("ids") List<Long> ids);

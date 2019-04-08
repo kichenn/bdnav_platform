@@ -8,6 +8,8 @@ import lombok.Data;
 public class SchoolQueryDto extends Query {
 
 
+
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
