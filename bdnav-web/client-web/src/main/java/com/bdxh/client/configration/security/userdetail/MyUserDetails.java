@@ -1,16 +1,16 @@
 package com.bdxh.client.configration.security.userdetail;
 
-import com.bdxh.system.entity.User;
+import com.bdxh.school.entity.SchoolUser;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 
 /**
- * @description:
- * @author: xuyuan
- * @create: 2019-02-28 14:20
- **/
+* @Description:  学校用户
+* @Author: Kang
+* @Date: 2019/4/8 10:28
+*/
 public class MyUserDetails implements UserDetails {
 
     private String username;
@@ -21,14 +21,14 @@ public class MyUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    private User user;
+    private SchoolUser schoolUser;
 
-    public MyUserDetails(String username, String password, boolean isAccountNonLocked, Collection<? extends GrantedAuthority> authorities, User user) {
+    public MyUserDetails(String username, String password, boolean isAccountNonLocked, Collection<? extends GrantedAuthority> authorities, SchoolUser schoolUser) {
         this.username = username;
         this.password = password;
         this.isAccountNonLocked = isAccountNonLocked;
         this.authorities = authorities;
-        this.user = user;
+        this.schoolUser = schoolUser;
     }
 
     @Override
@@ -66,8 +66,8 @@ public class MyUserDetails implements UserDetails {
         return authorities;
     }
 
-    public User getUser(){
-        return user;
+    public SchoolUser getSchoolUser(){
+        return schoolUser;
     }
 
 }

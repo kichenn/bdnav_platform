@@ -108,6 +108,7 @@
         perm.type=#{type,jdbcType=TINYINT}
     </select>
 
+
     <delete id="batchDelPermissionInIds">
         DELETE
         FROM
