@@ -46,7 +46,7 @@ public class SysDictController {
     @ApiOperation("根据条件查询字典")
     public Object queryList(@Validated @RequestBody DictQueryDto dictQueryDto){
         try {
-            Wrapper wrapper = dictControllerClient.queryList(dictQueryDto);
+            Wrapper wrapper = dictControllerClient.queryDictList(dictQueryDto);
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();

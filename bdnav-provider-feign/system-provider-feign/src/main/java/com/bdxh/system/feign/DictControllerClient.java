@@ -27,6 +27,11 @@ public interface DictControllerClient {
     @ResponseBody
     Wrapper<List<Dict>> queryList(@RequestBody DictQueryDto dictQueryDto);
 
+    //带条件的分页查询
+    @RequestMapping("/dict/queryListPage")
+    @ResponseBody
+    Wrapper<List<Dict>> queryDictList(@RequestBody DictQueryDto dictQueryDto);
+
     //添加字典目录
     @RequestMapping("/dict/addDict")
     @ResponseBody

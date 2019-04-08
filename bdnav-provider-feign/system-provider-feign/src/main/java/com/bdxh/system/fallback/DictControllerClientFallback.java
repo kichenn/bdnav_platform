@@ -25,6 +25,11 @@ public class DictControllerClientFallback implements DictControllerClient {
     }
 
     @Override
+    public Wrapper<List<Dict>> queryDictList(DictQueryDto dictQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper addDict(DictDto dictDto) {
         return WrapMapper.error();
     }

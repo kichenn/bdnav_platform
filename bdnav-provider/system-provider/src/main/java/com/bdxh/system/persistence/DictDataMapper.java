@@ -23,4 +23,7 @@ public interface DictDataMapper extends Mapper<DictData> {
 
     //根据id删除
     void deleteDictDataById(@Param("id") Long id);
+
+    //根据字典数据名称查询当前数据
+    DictData getByDictDataName(@Param("dataName") String dataName);
 }

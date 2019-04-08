@@ -30,6 +30,10 @@
     </where>
   </select>
 
-
+  <!-- 根据字典名称查询字典 -->
+  <select id="getByDictName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  select <include refid="BaseColumns"/>
+  from sys_dict where `name` = #{name} limit 1;
+  </select>
 
 </mapper>

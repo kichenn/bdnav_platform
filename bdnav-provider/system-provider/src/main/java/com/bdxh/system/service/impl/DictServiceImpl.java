@@ -81,8 +81,10 @@ public class DictServiceImpl extends BaseService<Dict> implements DictService {
         return new PageInfo(dicts);
     }
 
-
-
+    @Override
+    public Dict getByDictName(String name) {
+        return dictMapper.getByDictName(name);
+    }
 
 
 }

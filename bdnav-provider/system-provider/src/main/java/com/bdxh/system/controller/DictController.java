@@ -10,6 +10,7 @@ import com.bdxh.system.dto.UpdateDictDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.service.DictService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -53,9 +54,11 @@ public class DictController {
             return WrapMapper.error(errors);
         }
         try {
+            Dict dictDate = dictService.getByDictName(dictDto.getName());
+            Preconditions.checkArgument(dictDate == null, "该字典已存在,请勿重复添加");
             Dict dict = BeanMapUtils.map(dictDto, Dict.class);
-            dictService.save(dict);
-            return WrapMapper.ok();
+            boolean result=dictService.save(dict)>0;
+            return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -77,9 +80,20 @@ public class DictController {
             return WrapMapper.error(errors);
         }
         try {
-          Dict dict= BeanMapUtils.map(updateDictDto, Dict.class);
-            dictService.update(dict);
-            return WrapMapper.ok();
+            Boolean result;
+            Dict dictDate = dictService.getByDictName(updateDictDto.getName());
+            Dict dict= BeanMapUtils.map(updateDictDto, Dict.class);
+            if (dictDate!=null){
+                if(dictDate.getName().equals(updateDictDto.getName())&&!dictDate.getId().equals(updateDictDto.getId())){
+                    return WrapMapper.error("该字典已存在,请勿重复添加");
+                }else{
+                    result =  dictService.update(dict)>0;;
+                }
+            }else{
+                result =  dictService.update(dict)>0;
+            }
+        /*  dictService.update(dict);*/
+            return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -204,8 +218,24 @@ public class DictController {
         }
     }
 
-
-
+  /*  *//**
+     *查询字典列表
+     * @return
+     *//*
+    @ApiOperation("根据字典名称查询对象")
+    @RequestMapping(value = "/getByDictName",method = RequestMethod.GET)
+    public Object getByDictName(@RequestParam(name = "dictName")String dictName){
+        try {
+            Dict dictDate = dictService.getByDictName(dictName);
+            Preconditions.checkArgument(dictDate == null, "该字典已存在,请勿重复添加");
+*//*            Boolean flag=*//*
+            return WrapMapper.ok(dictDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+*/
 
 
 }

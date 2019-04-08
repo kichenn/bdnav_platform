@@ -30,4 +30,9 @@ public interface DictService extends IService<Dict> {
     //分页查询全部字典
     PageInfo<Dict> findDictsInConditionPaging(int pageNum, int pageSize);
 
+    /**
+     * 根据字典名称查询用户对象
+     */
+    Dict getByDictName(String name);
+
 }
