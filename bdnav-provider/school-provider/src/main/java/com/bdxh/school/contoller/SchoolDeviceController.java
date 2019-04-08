@@ -51,11 +51,11 @@ public class SchoolDeviceController {
         //判断该设备型号,设备类型是否已存在
         SchoolDevice schoolDevice1 = schoolDeviceService.findSchoolDeviceByIdOnModel(addSchoolDeviceDto.getDeviceId(), null);
         if (schoolDevice1 != null && !(schoolDevice1.getId().equals(schoolDevice.getId()))) {
-            return WrapMapper.error("该设备型号已存在");
+            return WrapMapper.error("该设备编码已存在");
         }
         SchoolDevice schoolDevice2 = schoolDeviceService.findSchoolDeviceByIdOnModel(null, addSchoolDeviceDto.getDeviceModel());
         if (schoolDevice2 != null && !(schoolDevice2.getId().equals(schoolDevice.getId()))) {
-            return WrapMapper.error("设备类型已存在");
+            return WrapMapper.error("该设备型号已存在");
         }
 
 
@@ -78,11 +78,11 @@ public class SchoolDeviceController {
         //判断该设备型号,设备类型是否已存在
         SchoolDevice schoolDevice1 = schoolDeviceService.findSchoolDeviceByIdOnModel(modifySchoolDeviceDto.getDeviceId(), null);
         if (schoolDevice1 != null && !(schoolDevice1.getId().equals(schoolDevice.getId()))) {
-            return WrapMapper.error("该设备型号已存在");
+            return WrapMapper.error("该设备编码已存在");
         }
         SchoolDevice schoolDevice2 = schoolDeviceService.findSchoolDeviceByIdOnModel(null, modifySchoolDeviceDto.getDeviceModel());
         if (schoolDevice2 != null && !(schoolDevice2.getId().equals(schoolDevice.getId()))) {
-            return WrapMapper.error("设备类型已存在");
+            return WrapMapper.error("该设备型号已存在");
         }
 
         return WrapMapper.ok(schoolDeviceService.update(schoolDevice) > 0);
