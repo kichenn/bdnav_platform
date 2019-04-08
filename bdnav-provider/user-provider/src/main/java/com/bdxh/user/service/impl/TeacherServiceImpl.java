@@ -68,7 +68,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     public void deleteBatchesTeacherInfo(String schoolCodes,String cardNumbers) {
         String[] schoolCode=schoolCodes.split(",");
         String[] cardNumber=cardNumbers.split(",");
-        if(schoolCode.length==cardNumber.length){
+
             List<Map<String,String>>list =new ArrayList<>();
             for (int i = 0; i < cardNumber.length; i++) {
                 Map<String,String> map=new HashMap<>();
@@ -79,7 +79,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 teacherMapper.batchRemoveTeacherInfo(list);
                 teacherDeptMapper.batchRemoveTeacherDeptInfo(list);
                 baseUserMapper.batchRemoveBaseUserInfo(list);
-        }
+
     }
 
     @Override
