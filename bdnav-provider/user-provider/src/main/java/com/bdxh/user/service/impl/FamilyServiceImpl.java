@@ -68,19 +68,17 @@ private SnowflakeIdWorker snowflakeIdWorker;
     public void deleteBatchesFamilyInfo(String schoolCode,String cardNumber) {
              String[] schoolCodes=schoolCode.split(",");
              String[] cardNumbers=cardNumber.split(",");
-             if(schoolCodes.length==cardNumbers.length) {
                  List<Map<String,String>>list =new ArrayList<>();
                  for (int i = 0; i < cardNumbers.length; i++) {
                      Map<String,String> map=new HashMap<>();
                      map.put("cardNumber",cardNumbers[i]);
                      map.put("schoolCode",schoolCodes[i]);
                      list.add(map);
-
                  }
                  familyMapper.batchRemoveFamilyInfo(list);
                  familyStudentMapper.batchRemoveFamilyStudentInfo(list);
                  baseUserMapper.batchRemoveBaseUserInfo(list);
-             }
+
 
     }
 
