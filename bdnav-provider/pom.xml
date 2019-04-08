@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>onecard-provider</module>
+        <module>wallet-provider</module>
         <module>order-provider</module>
         <module>pay-provider</module>
         <module>product-provider</module>
@@ -23,6 +23,7 @@
         <module>user-provider</module>
         <module>appmarket-provider</module>
         <module>account-provider</module>
+        <module>wallet-provider</module>
     </modules>
 
     <dependencies>
