@@ -2,6 +2,7 @@ package com.bdxh.school.contoller;
 
 import com.bdxh.common.helper.excel.bean.SchoolExcelReportBean;
 import com.bdxh.common.helper.excel.utils.DateUtils;
+import com.bdxh.common.helper.tree.utils.LongUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
@@ -64,6 +65,10 @@ public class SchoolController {
     @ApiOperation(value = "增加学校", response = Boolean.class)
     @ResponseBody
     public Object addSchool(@Validated @RequestBody SchoolDto schoolDto) {
+        School school = schoolService.findSchoolBySchoolCode(schoolDto.getSchoolCode());
+        if (school != null) {
+            return WrapMapper.error("该学校编码已存在");
+        }
         Boolean result = schoolService.addSchool(schoolDto);
         return WrapMapper.ok(result);
     }
@@ -76,8 +81,12 @@ public class SchoolController {
     @RequestMapping(value = "/modifySchoolInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校信息", response = Boolean.class)
     @ResponseBody
-    public Object modifySchoolInfo(@Validated @RequestBody ModifySchoolDto school) {
-        Boolean result = schoolService.modifySchool(school);
+    public Object modifySchoolInfo(@Validated @RequestBody ModifySchoolDto schoolDto) {
+        School school = schoolService.findSchoolBySchoolCode(schoolDto.getSchoolCode());
+        if (school != null && !(school.getId().equals(schoolDto.getId()))) {
+            return WrapMapper.error("该学校编码已存在");
+        }
+        Boolean result = schoolService.modifySchool(schoolDto);
         return WrapMapper.ok(result);
     }
 
