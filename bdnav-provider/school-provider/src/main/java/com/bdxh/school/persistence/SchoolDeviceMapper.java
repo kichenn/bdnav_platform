@@ -31,4 +31,9 @@ public interface SchoolDeviceMapper extends Mapper<SchoolDevice> {
      * @return
      */
     List<SchoolDevice> findSchoolDeviceInConditionPage(@Param("device") SchoolDevice schoolDevice);
+
+    /**
+     * 设备类型，设备编码查询设备信息
+     */
+    SchoolDevice findSchoolDeviceByTypeOnModel(@Param("type") Byte type, @Param("deviceModel") String deviceModel);
 }
