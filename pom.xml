@@ -45,7 +45,6 @@
         <hibernate-validator.version>6.0.13.Final</hibernate-validator.version>
         <commons-codec.version>1.11</commons-codec.version>
         <commons-collections4.version>4.3</commons-collections4.version>
-        <swagger2.version>2.9.2</swagger2.version>
         <netty.version>4.1.34.Final</netty.version>
         <protobuf.version>3.0.0</protobuf.version>
         <threadlocal.version>2.10.2</threadlocal.version>
@@ -234,18 +233,6 @@
                 <groupId>net.sf.dozer</groupId>
                 <artifactId>dozer</artifactId>
                 <version>${dozer.version}</version>
-            </dependency>
-            <!-- swagger2依赖 -->
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger2</artifactId>
-                <version>${swagger2.version}</version>
-            </dependency>
-            <!-- springfox-swagger-ui依赖 -->
-            <dependency>
-                <groupId>io.springfox</groupId>
-                <artifactId>springfox-swagger-ui</artifactId>
-                <version>${swagger2.version}</version>
             </dependency>
             <!-- zk依赖 -->
             <dependency>

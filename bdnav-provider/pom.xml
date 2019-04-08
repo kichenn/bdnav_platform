@@ -23,7 +23,6 @@
         <module>user-provider</module>
         <module>appmarket-provider</module>
         <module>account-provider</module>
-        <module>wallet-provider</module>
     </modules>
 
     <dependencies>
