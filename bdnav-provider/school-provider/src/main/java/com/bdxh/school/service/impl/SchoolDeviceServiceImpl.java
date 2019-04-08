@@ -64,4 +64,12 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }
+
+    /**
+     * 设备类型，设备编码查询设备信息
+     */
+    @Override
+    public SchoolDevice findSchoolDeviceByTypeOnModel(Byte type, String deviceModel) {
+        return schoolDeviceMapper.findSchoolDeviceByTypeOnModel(type, deviceModel);
+    }
 }

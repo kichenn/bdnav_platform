@@ -46,6 +46,13 @@ public class SchoolDeviceController {
         BeanUtils.copyProperties(addSchoolDeviceDto, schoolDevice);
         //设置状态
         schoolDevice.setDeviceStatus(addSchoolDeviceDto.getDeviceStatusEnum().getKey());
+
+        //判断该设备型号,设备类型是否已存在
+        SchoolDevice schoolDevice1 = schoolDeviceService.findSchoolDeviceByTypeOnModel(addSchoolDeviceDto.getDeviceType(), addSchoolDeviceDto.getDeviceModel());
+        if (schoolDevice1 != null) {
+            WrapMapper.error("该设备型号，设备类型已存在");
+        }
+
         return WrapMapper.ok(schoolDeviceService.save(schoolDevice) > 0);
     }
 
@@ -62,6 +69,12 @@ public class SchoolDeviceController {
         BeanUtils.copyProperties(modifySchoolDeviceDto, schoolDevice);
         //设置状态
         schoolDevice.setDeviceStatus(modifySchoolDeviceDto.getDeviceStatusEnum().getKey());
+        //判断该设备型号,设备类型是否已存在
+        SchoolDevice schoolDevice1 = schoolDeviceService.findSchoolDeviceByTypeOnModel(modifySchoolDeviceDto.getDeviceType(), modifySchoolDeviceDto.getDeviceModel());
+        if (schoolDevice1 != null && !(schoolDevice1.getId().equals(schoolDevice.getId()))) {
+            WrapMapper.error("该设备型号，设备类型已存在");
+        }
+
         return WrapMapper.ok(schoolDeviceService.update(schoolDevice) > 0);
     }
 

@@ -30,4 +30,9 @@ public interface SchoolDeviceService extends IService<SchoolDevice> {
      * 门禁信息根据条件分页查询
      */
     PageInfo<SchoolDevice> findSchoolDeviceInConditionPage(SchoolDeviceQueryDto schoolDeviceQueryDto);
+
+    /**
+     * 设备类型，设备编码查询设备信息
+     */
+    SchoolDevice findSchoolDeviceByTypeOnModel(Byte type, String deviceModel);
 }

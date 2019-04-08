@@ -64,5 +64,15 @@
         </where>
         Order BY create_date DESC
     </select>
+    <select id="findSchoolDeviceByTypeOnModel" resultType="com.bdxh.school.entity.SchoolDevice">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_device
+        WHERE
+        device_type=#{type,jdbcType=TINYINT}
+        AND
+        device_model=#{deviceModel,jdbcType=VARCHAR}
+        limit 1
+    </select>
 
 </mapper>
