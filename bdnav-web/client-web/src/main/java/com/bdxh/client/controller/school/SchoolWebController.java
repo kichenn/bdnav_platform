@@ -1,4 +1,4 @@
-package com.bdxh.client.controller;
+package com.bdxh.client.controller.school;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.helper.excel.ExcelExportUtils;
