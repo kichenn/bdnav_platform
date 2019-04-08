@@ -69,7 +69,7 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
      * 设备类型，设备编码查询设备信息
      */
     @Override
-    public SchoolDevice findSchoolDeviceByTypeOnModel(Byte type, String deviceModel) {
-        return schoolDeviceMapper.findSchoolDeviceByTypeOnModel(type, deviceModel);
+    public SchoolDevice findSchoolDeviceByIdOnModel(String deviceId, String deviceModel) {
+        return schoolDeviceMapper.findSchoolDeviceByIdOnModel(deviceId, deviceModel);
     }
 }

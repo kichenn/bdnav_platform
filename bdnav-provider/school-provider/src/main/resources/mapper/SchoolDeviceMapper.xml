@@ -67,12 +67,12 @@
         </where>
         Order BY create_date DESC
     </select>
-    <select id="findSchoolDeviceByTypeOnModel" resultType="com.bdxh.school.entity.SchoolDevice">
+    <select id="findSchoolDeviceByIdOnModel" resultType="com.bdxh.school.entity.SchoolDevice">
         SELECT
         <include refid="BaseColumns"/>
         FROM t_school_device
         WHERE
-        device_type=#{type,jdbcType=TINYINT}
+        device_id=#{type,jdbcType=VARCHAR}
         AND
         device_model=#{deviceModel,jdbcType=VARCHAR}
         limit 1

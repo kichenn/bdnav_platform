@@ -34,5 +34,5 @@ public interface SchoolDeviceService extends IService<SchoolDevice> {
     /**
      * 设备类型，设备编码查询设备信息
      */
-    SchoolDevice findSchoolDeviceByTypeOnModel(Byte type, String deviceModel);
+    SchoolDevice findSchoolDeviceByIdOnModel(String deviceId, String deviceModel);
 }

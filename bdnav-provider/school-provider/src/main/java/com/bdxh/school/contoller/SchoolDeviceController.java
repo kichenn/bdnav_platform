@@ -48,7 +48,7 @@ public class SchoolDeviceController {
         schoolDevice.setDeviceStatus(addSchoolDeviceDto.getDeviceStatusEnum().getKey());
 
         //判断该设备型号,设备类型是否已存在
-        SchoolDevice schoolDevice1 = schoolDeviceService.findSchoolDeviceByTypeOnModel(addSchoolDeviceDto.getDeviceType(), addSchoolDeviceDto.getDeviceModel());
+        SchoolDevice schoolDevice1 = schoolDeviceService.findSchoolDeviceByIdOnModel(addSchoolDeviceDto.getDeviceId(), addSchoolDeviceDto.getDeviceModel());
         if (schoolDevice1 != null) {
             WrapMapper.error("该设备型号，设备类型已存在");
         }
@@ -70,7 +70,7 @@ public class SchoolDeviceController {
         //设置状态
         schoolDevice.setDeviceStatus(modifySchoolDeviceDto.getDeviceStatusEnum().getKey());
         //判断该设备型号,设备类型是否已存在
-        SchoolDevice schoolDevice1 = schoolDeviceService.findSchoolDeviceByTypeOnModel(modifySchoolDeviceDto.getDeviceType(), modifySchoolDeviceDto.getDeviceModel());
+        SchoolDevice schoolDevice1 = schoolDeviceService.findSchoolDeviceByIdOnModel(modifySchoolDeviceDto.getDeviceId(), modifySchoolDeviceDto.getDeviceModel());
         if (schoolDevice1 != null && !(schoolDevice1.getId().equals(schoolDevice.getId()))) {
             WrapMapper.error("该设备型号，设备类型已存在");
         }
