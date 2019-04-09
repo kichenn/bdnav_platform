@@ -41,7 +41,7 @@
         INNER JOIN t_school_dept dept ON school_user.dept_id = dept.id
         <where>
             <if test="schoolUser.schoolId !=null">
-                school_id= #{schoolUser.schoolId,jdbcType=BIGINT}
+                school_user.school_id= #{schoolUser.schoolId,jdbcType=BIGINT}
             </if>
             <if test="schoolUser.schoolCode !=null and schoolUser.schoolCode!=''">
                 AND school_user.school_code LIKE CONCAT(CONCAT('%',#{schoolUser.schoolCode,jdbcType=VARCHAR},'%'))
