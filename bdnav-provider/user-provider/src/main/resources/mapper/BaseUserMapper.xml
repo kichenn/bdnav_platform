@@ -87,9 +87,6 @@
 	<update id="updateBaseUserInfo">
 		UPDATE t_base_user
 		SET
-		 <if test="baseUser.id!=null and baseUser.id!=''">
-			 id= #{baseUser.id},
-		 </if>
 		<if test="baseUser.schoolId!=null and baseUser.schoolId!=''">
 			school_id= #{baseUser.schoolId},
 		</if>
