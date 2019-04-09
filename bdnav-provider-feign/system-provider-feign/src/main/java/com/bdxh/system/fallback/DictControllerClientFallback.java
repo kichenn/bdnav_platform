@@ -7,6 +7,7 @@ import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.dto.UpdateDictDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.feign.DictControllerClient;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,14 +21,16 @@ public class DictControllerClientFallback implements DictControllerClient {
     }
 
     @Override
-    public Wrapper<List<Dict>> queryList(DictQueryDto dictQueryDto) {
+    public Wrapper<PageInfo<Dict>> queryDictList(DictQueryDto dictQueryDto) {
         return WrapMapper.error();
     }
 
-    @Override
-    public Wrapper<List<Dict>> queryDictList(DictQueryDto dictQueryDto) {
+  /*  @Override
+    public Wrapper<List<Dict>> queryList(DictQueryDto dictQueryDto) {
         return WrapMapper.error();
-    }
+    }*/
+
+
 
     @Override
     public Wrapper addDict(DictDto dictDto) {
