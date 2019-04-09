@@ -86,7 +86,8 @@ public class RoleController {
         try {
             Boolean flag;
             Role role = BeanMapUtils.map(updateRoleDto, Role.class);
-            Role roleData = roleService.selectByKey(updateRoleDto.getId());
+            Role roleData = roleService.getRoleByRole(updateRoleDto.getRole());
+           /* Role roleData = roleService.selectByKey(updateRoleDto.getId());*/
            if (roleData!=null){
               if(roleData.getRole().equals(updateRoleDto.getRole())&&!roleData.getId().equals(updateRoleDto.getId())){
                   return WrapMapper.error("该角色已存在,请更换角色");
