@@ -126,11 +126,16 @@ public class DeptController {
         try {
             Boolean flag;
             Dept deptt= deptService.getByDeptName(deptDto.getDeptFullName());
-            if(deptt.getDeptFullName().equals(deptDto.getDeptFullName())&&!deptt.getId().equals(deptDto.getId())){
-                return WrapMapper.error("该部门名称已存在,请更换名称");
+            if (deptt!=null){
+                if(deptt.getDeptFullName().equals(deptDto.getDeptFullName())&&!deptt.getId().equals(deptDto.getId())){
+                    return WrapMapper.error("该部门名称已存在,请更换名称");
+                }else{
+                    flag =  deptService.modifyDept(deptDto);
+                }
             }else{
                 flag =  deptService.modifyDept(deptDto);
             }
+
             return WrapMapper.ok(flag);
         } catch (Exception e) {
             e.printStackTrace();
