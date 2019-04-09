@@ -87,12 +87,11 @@ public class DictController {
                 if(dictDate.getName().equals(updateDictDto.getName())&&!dictDate.getId().equals(updateDictDto.getId())){
                     return WrapMapper.error("该字典已存在,请勿重复添加");
                 }else{
-                    result =  dictService.update(dict)>0;;
+                    result =  dictService.update(dict)>0;
                 }
             }else{
                 result =  dictService.update(dict)>0;
             }
-        /*  dictService.update(dict);*/
             return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();

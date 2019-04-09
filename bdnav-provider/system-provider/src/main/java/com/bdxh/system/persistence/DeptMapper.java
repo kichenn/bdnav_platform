@@ -22,6 +22,9 @@ public interface DeptMapper extends Mapper<Dept> {
     List<Dept> selectByParentId(@Param("parentId") Long parentId);
 
 
+    //根据部门名称查询当前部门
+    Dept getByDeptName(@Param("deptFullName") String deptFullName);
+
 
 
 

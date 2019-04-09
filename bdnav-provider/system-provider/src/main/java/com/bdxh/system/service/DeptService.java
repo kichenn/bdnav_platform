@@ -1,10 +1,9 @@
 package com.bdxh.system.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.system.dto.DeptDto;
 import com.bdxh.system.entity.Dept;
-import com.bdxh.system.vo.DeptDetailsVo;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -30,5 +29,15 @@ public interface DeptService extends IService<Dept> {
     //根据id删除部门信息
     Boolean delDept(Long id);
 
+    //增加部门
+    Boolean addDept(DeptDto deptDto);
 
+    //修改部门
+    Boolean modifyDept(DeptDto deptDto);
+
+    //根据id查询对象
+    Dept findDeptById(Long id);
+
+    //根据部门名称查询当前部门
+    Dept getByDeptName(String deptFullName);
 }
