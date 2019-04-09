@@ -10,6 +10,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.MessageDigest;
+import java.util.Base64;
 
 /**
  * @description: AES加密工具类
@@ -24,6 +25,7 @@ public class HttpAesUtil {
 
     /**
      * 加密
+     *
      * @param contentParam 需要加密的内容
      * @param keyParam     加密密码
      * @param md5Key       是否对key进行md5加密
@@ -46,7 +48,8 @@ public class HttpAesUtil {
             IvParameterSpec ivps = new IvParameterSpec(iv);
             cipher.init(Cipher.ENCRYPT_MODE, skeySpec, ivps);
             byte[] bytes = cipher.doFinal(content);
-            return new BASE64Encoder().encode(bytes);
+             return new BASE64Encoder().encode(bytes);
+//            return Base64.getEncoder().encodeToString(bytes);
         } catch (Exception ex) {
             log.error("加密密码失败", ex);
             throw new RuntimeException("加密失败");
@@ -55,6 +58,7 @@ public class HttpAesUtil {
 
     /**
      * 解密
+     *
      * @param contentParam 需要解密的内容
      * @param keyParam     加密密码
      * @param md5Key       是否对key进行md5加密
@@ -67,6 +71,7 @@ public class HttpAesUtil {
                 return "";
             }
             byte[] content = new BASE64Decoder().decodeBuffer(contentParam);
+//            byte[] content = Base64.getDecoder().decode(contentParam);
             byte[] key = keyParam.getBytes(CHAR_SET);
             byte[] iv = ivParam.getBytes(CHAR_SET);
             if (md5Key) {

@@ -31,7 +31,7 @@ public interface DictDataService extends IService<DictData> {
     void deleteDictDataById(Long id);
 
     //根据字典数据名称查询当前数据
-    DictData getByDictDataName(String dataName);
+    DictData getByDictDataName(Long dictId,String dataName);
 
     //根据dictId查找字典列表
     List<DictData> getDictDataByIdList(Long dictId);

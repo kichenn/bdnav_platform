@@ -64,9 +64,10 @@ public class DictDataServiceImpl extends BaseService<DictData> implements DictDa
     }
 
     @Override
-    public DictData getByDictDataName(String dataName) {
-        return dictDataMapper.getByDictDataName(dataName);
+    public DictData getByDictDataName(Long dictId, String dataName) {
+         return dictDataMapper.getByDictDataName(dictId,dataName);
     }
+
 
     @Override
     public List<DictData> getDictDataByIdList(Long dictId) {
