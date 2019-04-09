@@ -109,7 +109,7 @@ public class StudentController {
             addStudentDto.setSchoolCode(user.getSchoolCode());
             StudentVo student=(StudentVo)studentControllerClient.queryStudentInfo(user.getSchoolCode(),addStudentDto.getCardNumber()).getResult();
             if(null!= student){
-                return WrapMapper.error("当前学校已存在相同学号");
+                return WrapMapper.error("当前学校已存在相同学生学号");
             }
             SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=addStudentDto.getClassIds().split(",");

@@ -57,7 +57,7 @@ public class TeacherController {
         try {
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber()).getResult();
            if(null!=teacherVo){
-               return WrapMapper.error("当前学校已存在相同工号");
+               return WrapMapper.error("当前学校已存在相同教师工号");
            }
             User user= SecurityUtils.getCurrentUser();
             addTeacherDto.setOperator(user.getId());

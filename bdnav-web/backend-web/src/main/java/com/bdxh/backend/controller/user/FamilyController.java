@@ -61,7 +61,7 @@ public class FamilyController {
 
             FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
             if(null!=familyVo){
-                return WrapMapper.error("当前学校已存在相同卡号");
+                return WrapMapper.error("当前学校已存在相同家长卡号");
             }
             User user= SecurityUtils.getCurrentUser();
             addFamilyDto.setOperator(user.getId());
