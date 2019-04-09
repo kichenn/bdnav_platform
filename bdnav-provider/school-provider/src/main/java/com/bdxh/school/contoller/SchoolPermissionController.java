@@ -76,9 +76,14 @@ public class SchoolPermissionController {
     public Object findPermissionList(@RequestParam(value = "roleId", required = false) Long roleId) {
         List<SchoolPermission> permissions = schoolPermissionService.selectAll();
         //如果当前roleId不为空查询 该角色底下的菜单
+//        List<Long> rolePermissionsIds = new ArrayList<>();
         List<SchoolPermission> rolePermissions = new ArrayList<>();
         if (roleId != null) {
             rolePermissions.addAll(schoolPermissionService.findPermissionByRoleId(roleId, null, null));
+//            List<SchoolPermission> rolePermissions = schoolPermissionService.findPermissionByRoleId(roleId, null, null);
+//            for (SchoolPermission temp : rolePermissions) {
+//                rolePermissionsIds.add(temp.getId());
+//            }
         }
         List<SchoolPermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)) {
@@ -86,6 +91,7 @@ public class SchoolPermissionController {
                 SchoolPermissionTreeVo treeVo = new SchoolPermissionTreeVo();
                 treeVo.setTitle(e.getName());
                 treeVo.setCreateDate(e.getCreateDate());
+//                if (roleId != null && rolePermissionsIds.contains(e.getId())) {
                 if (roleId != null && rolePermissions.contains(e)) {
                     treeVo.setChecked(true);
                 }
@@ -93,6 +99,7 @@ public class SchoolPermissionController {
                 treeVos.add(treeVo);
             });
         }
+
         TreeLoopUtils<SchoolPermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
         List<SchoolPermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
         return WrapMapper.ok(result);

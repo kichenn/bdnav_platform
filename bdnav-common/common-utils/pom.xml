@@ -111,6 +111,29 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
+
+
+        <!-- jaxb模块引用 - start java9之后模块化的概念使得JAXB默认没有加载-->
+        <!--<dependency>-->
+            <!--<groupId>javax.xml.bind</groupId>-->
+            <!--<artifactId>jaxb-api</artifactId>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>com.sun.xml.bind</groupId>-->
+            <!--<artifactId>jaxb-impl</artifactId>-->
+            <!--<version>2.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.glassfish.jaxb</groupId>-->
+            <!--<artifactId>jaxb-runtime</artifactId>-->
+            <!--<version>2.3.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>javax.activation</groupId>-->
+            <!--<artifactId>activation</artifactId>-->
+            <!--<version>1.1.1</version>-->
+        <!--</dependency>-->
+        <!-- jaxb模块引用 - end -->
     </dependencies>
 
 </project>
