@@ -1,23 +1,17 @@
 package com.bdxh.system.service.impl;
 
-import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.support.BaseService;
+import com.bdxh.system.dto.DeptDto;
 import com.bdxh.system.entity.Dept;
 import com.bdxh.system.persistence.DeptMapper;
 import com.bdxh.system.service.DeptService;
-import com.bdxh.system.vo.DeptDetailsVo;
-import com.bdxh.system.vo.DeptVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -91,6 +85,42 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
 
     }
 
+    @Override
+    public Boolean addDept(DeptDto deptDto) {
+        Dept dDo = new Dept();
+        BeanUtils.copyProperties(deptDto, Dept.class);
+        if (new Long("-1").equals(dDo.getParentId())) {
+            dDo.setParentIds("");
+        } else {
+            Dept depts=findDeptById(dDo.getParentId());
+            dDo.setParentIds(depts.getParentIds() + "," + depts.getId());
+        }
+        return deptMapper.insertSelective(dDo)>0;
+    }
 
 
+    @Override
+    public Boolean modifyDept(DeptDto deptDto) {
+        Dept dDo = new Dept();
+        BeanUtils.copyProperties(deptDto, Dept.class);
+        if (new Long("-1").equals(dDo.getParentId())) {
+            dDo.setParentIds("");
+        } else {
+            Dept depts=findDeptById(dDo.getParentId());
+            dDo.setParentIds(depts.getParentIds() + "," + depts.getId());
+        }
+        return deptMapper.updateByPrimaryKeySelective(dDo)>0;
+    }
+
+
+    //根据id查询权限信息
+    @Override
+    public Dept findDeptById(Long id) {
+        return deptMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public Dept getByDeptName(String deptFullName) {
+        return deptMapper.getByDeptName(deptFullName);
+    }
 }

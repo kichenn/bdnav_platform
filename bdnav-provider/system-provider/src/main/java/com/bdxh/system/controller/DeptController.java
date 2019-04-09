@@ -11,6 +11,7 @@ import com.bdxh.system.dto.DeptQueryDto;
 import com.bdxh.system.entity.Dept;
 import com.bdxh.system.service.DeptService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -96,10 +97,9 @@ public class DeptController {
             return WrapMapper.error(errors);
         }
         try {
-            Dept dept = BeanMapUtils.map(deptDto, Dept.class);
-
-            deptService.save(dept);
-            return WrapMapper.ok();
+            Dept deptt= deptService.getByDeptName(deptDto.getDeptFullName());
+            Preconditions.checkArgument(deptt == null, "该部门已存在,请勿重复添加");
+            return WrapMapper.ok(deptService.addDept(deptDto));
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -123,9 +123,14 @@ public class DeptController {
             return WrapMapper.error(errors);
         }
         try {
-            Dept dept = BeanMapUtils.map(deptDto, Dept.class);
-            deptService.update(dept);
-            return WrapMapper.ok();
+            Boolean flag;
+            Dept deptt= deptService.getByDeptName(deptDto.getDeptFullName());
+            if(deptt.getDeptFullName().equals(deptDto.getDeptFullName())&&!deptt.getId().equals(deptDto.getId())){
+                return WrapMapper.error("该部门名称已存在,请更换名称");
+            }else{
+                flag =  deptService.modifyDept(deptDto);
+            }
+            return WrapMapper.ok(flag);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

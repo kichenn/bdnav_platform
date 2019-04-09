@@ -59,7 +59,7 @@ public class RoleController {
         }
         try {
             Role roleData = roleService.getRoleByRole(addRoleDto.getRole());
-            Preconditions.checkArgument(roleData == null, "角色已经存在");
+            Preconditions.checkArgument(roleData == null, "该角色已经存在,请勿重复添加");
             Role role = BeanMapUtils.map(addRoleDto, Role.class);
             roleService.save(role);
             return WrapMapper.ok();
@@ -84,11 +84,16 @@ public class RoleController {
             return WrapMapper.error(errors);
         }
         try {
-            Role roleData = roleService.selectByKey(updateRoleDto.getId());
-           // Preconditions.checkArgument(!StringUtils.equals(roleData.getRole(),updateRoleDto.getRole()),"角色已经存在");
+            Boolean flag;
             Role role = BeanMapUtils.map(updateRoleDto, Role.class);
-            roleService.update(role);
-            return WrapMapper.ok();
+            Role roleData = roleService.selectByKey(updateRoleDto.getId());
+          // Preconditions.checkArgument(!StringUtils.equals(roleData.getRole(),updateRoleDto.getRole()),"角色已经存在");
+            if(roleData.getRole().equals(updateRoleDto.getRole())&&!roleData.getId().equals(updateRoleDto.getId())){
+                return WrapMapper.error("该角色已存在,请更换角色");
+            }else{
+                flag =roleService.update(role)>0;
+            }
+            return WrapMapper.ok(flag);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
