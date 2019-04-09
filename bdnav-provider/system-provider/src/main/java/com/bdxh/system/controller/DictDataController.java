@@ -62,14 +62,12 @@ public class DictDataController {
         try {
             DictData dictResult = dictDataService.getByDictDataName(dictDataDto.getDataName());
             Preconditions.checkArgument(dictResult == null, "该字典数据已存在,请勿重复添加");
-           if (dictResult!=null){
-               List<DictData> DataList=dictDataService.getDictDataByIdList(dictResult.getId());
+               List<DictData> DataList=dictDataService.getDictDataByIdList(dictDataDto.getDictId());
                for (int i = 0; i < DataList.size(); i++) {
                    if (dictDataDto.getDataValue().equals(DataList.get(i).getDataValue())){
-                       return WrapMapper.ok("请勿添加相同数据值");
+                       return WrapMapper.error("该字典下存在该数据值 请勿重复添加");
                    }
                }
-           }
             DictData dictData = BeanMapUtils.map(dictDataDto, DictData.class);
             Boolean flag =dictDataService.save(dictData)>0;
             return WrapMapper.ok(flag);
@@ -93,9 +91,21 @@ public class DictDataController {
             return WrapMapper.error(errors);
         }
         try {
+            Boolean result;
             DictData dictData= BeanMapUtils.map(updateDictDataDto, DictData .class);
-            dictDataService.update(dictData);
-            return WrapMapper.ok();
+            DictData dictResult = dictDataService.getByDictDataName(updateDictDataDto.getDataName());
+            if(dictResult.getDataName().equals(updateDictDataDto.getDataName())&&!dictResult.getId().equals(updateDictDataDto.getId())){
+                return WrapMapper.error("该字典数据已存在,请重新更换名称");
+            }else{
+                List<DictData> DataList=dictDataService.getDictDataByIdList(updateDictDataDto.getDictId());
+                for (int i = 0; i < DataList.size(); i++) {
+                    if (updateDictDataDto.getDataValue().equals(DataList.get(i).getDataValue())&&!updateDictDataDto.getId().equals(DataList.get(i).getId())){
+                        return WrapMapper.error("该字典下存在该数据值 请重新更换");
+                    }
+                }
+                result =dictDataService.update(dictData)>0;
+            }
+            return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
