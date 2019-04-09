@@ -25,6 +25,10 @@ import java.util.List;
 public interface SchoolPermissionControllerClient {
 
 
+    @RequestMapping(value = "/schoolPermission/permissionMenusById", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<SchoolPermission> permissionMenusById(@RequestParam("id") Long id);
+
     /**
      * 根据用户id查询权限列表(菜单 and  按钮)
      *
@@ -54,7 +58,7 @@ public interface SchoolPermissionControllerClient {
     Wrapper<List<SchoolPermissionTreeVo>> findPermissionList();
 
     /**
-     *  菜单or按钮权限列表(根据学校id)
+     * 菜单or按钮权限列表(根据学校id)
      *
      * @return
      */

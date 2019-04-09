@@ -28,7 +28,7 @@ public interface SchoolPermissionService extends IService<SchoolPermission> {
     //批量删除权限列表信息
     Boolean batchDelPermission(List<Long> ids);
 
-    //根据id查询权限信息
+    //根据id查询菜单或者按钮信息
     SchoolPermission findSchoolPermissionById(Long id);
 
     //根据parentId查询子菜单

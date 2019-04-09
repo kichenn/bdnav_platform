@@ -34,6 +34,13 @@ public class SchoolPermissionWebController {
     private SchoolPermissionControllerClient schoolPermissionControllerClient;
 
 
+    @RequestMapping(value = "/permissionMenusById", method = RequestMethod.GET)
+    @ApiOperation(value = "id查询菜单或者按钮详情", response = SchoolPermission.class)
+    public Object permissionMenusById(@RequestParam("id") Long id) {
+        SchoolPermission permissions = schoolPermissionControllerClient.permissionMenusById(id).getResult();
+        return WrapMapper.ok(permissions);
+    }
+
     @RequestMapping(value = "/findSchoolPermissionByRoleId", method = RequestMethod.GET)
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = SchoolPermissionTreeVo.class)
     public Object findSchoolPermissionByRoleId(@RequestParam(name = "roleId") Long roleId,

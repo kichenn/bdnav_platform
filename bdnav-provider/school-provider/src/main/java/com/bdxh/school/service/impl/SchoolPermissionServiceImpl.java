@@ -79,7 +79,7 @@ public class SchoolPermissionServiceImpl extends BaseService<SchoolPermission> i
         return schoolPermissionMapper.batchDelPermissionInIds(ids) > 0;
     }
 
-    //根据id查询权限信息
+    //根据id查询菜单或者按钮信息
     @Override
     public SchoolPermission findSchoolPermissionById(Long id) {
         return schoolPermissionMapper.selectByPrimaryKey(id);

@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddRolePermissionBindMenuDto;
 import com.bdxh.school.dto.AddSchoolPermissionDto;
 import com.bdxh.school.dto.ModifySchoolPermissionDto;
+import com.bdxh.school.entity.SchoolPermission;
 import com.bdxh.school.feign.SchoolPermissionControllerClient;
 import com.bdxh.school.vo.SchoolPermissionTreeVo;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,11 @@ import java.util.List;
 @Component
 public class SchoolPermissionControllerClientFallback implements SchoolPermissionControllerClient {
 
+
+    @Override
+    public Wrapper<SchoolPermission> permissionMenusById(Long id) {
+        return WrapMapper.error();
+    }
 
     @Override
     public Wrapper<List<String>> permissionMenusByUserId(Long userId) {

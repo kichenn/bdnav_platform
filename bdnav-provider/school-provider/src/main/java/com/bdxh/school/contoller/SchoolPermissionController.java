@@ -55,6 +55,7 @@ public class SchoolPermissionController {
                 SchoolPermissionTreeVo treeVo = new SchoolPermissionTreeVo();
                 treeVo.setTitle(e.getName());
                 treeVo.setCreateDate(e.getCreateDate());
+                treeVo.setChecked(true);
                 BeanUtils.copyProperties(e, treeVo);
                 treeVos.add(treeVo);
             });
@@ -176,6 +177,14 @@ public class SchoolPermissionController {
     @ResponseBody
     public Object permissionMenusByUserId(@RequestParam("userId") Long userId) {
         List<String> permissions = schoolPermissionService.permissionMenusByUserId(userId);
+        return WrapMapper.ok(permissions);
+    }
+
+    @RequestMapping(value = "/permissionMenusById", method = RequestMethod.GET)
+    @ApiOperation(value = "id查询菜单或者按钮详情", response = SchoolPermission.class)
+    @ResponseBody
+    public Object permissionMenusById(@RequestParam("id") Long id) {
+        SchoolPermission permissions = schoolPermissionService.findSchoolPermissionById(id);
         return WrapMapper.ok(permissions);
     }
 }
