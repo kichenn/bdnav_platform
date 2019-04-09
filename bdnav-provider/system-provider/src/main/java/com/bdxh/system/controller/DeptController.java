@@ -97,9 +97,10 @@ public class DeptController {
             return WrapMapper.error(errors);
         }
         try {
-            Dept deptt= deptService.getByDeptName(deptDto.getDeptFullName());
-            Preconditions.checkArgument(deptt == null, "该部门已存在,请勿重复添加");
-            return WrapMapper.ok(deptService.addDept(deptDto));
+            Dept deptss= deptService.getByDeptName(deptDto.getDeptFullName());
+            Preconditions.checkArgument(deptss == null, "该部门已存在,请勿重复添加");
+            Boolean flag=deptService.addDept(deptDto);
+            return WrapMapper.ok(flag);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

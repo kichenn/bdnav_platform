@@ -88,7 +88,8 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
     @Override
     public Boolean addDept(DeptDto deptDto) {
         Dept dDo = new Dept();
-        BeanUtils.copyProperties(deptDto, Dept.class);
+        BeanUtils.copyProperties(deptDto, dDo);
+        System.out.println();
         if (new Long("-1").equals(dDo.getParentId())) {
             dDo.setParentIds("");
         } else {
@@ -102,7 +103,7 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
     @Override
     public Boolean modifyDept(DeptDto deptDto) {
         Dept dDo = new Dept();
-        BeanUtils.copyProperties(deptDto, Dept.class);
+        BeanUtils.copyProperties(deptDto, dDo);
         if (new Long("-1").equals(dDo.getParentId())) {
             dDo.setParentIds("");
         } else {
