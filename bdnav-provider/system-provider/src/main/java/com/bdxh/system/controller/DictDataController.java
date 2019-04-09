@@ -60,8 +60,8 @@ public class DictDataController {
             return WrapMapper.error(errors);
         }
         try {
-            DictData dictResult = dictDataService.getByDictDataName(dictDataDto.getDataName());
-            Preconditions.checkArgument(dictResult == null, "该字典数据已存在,请勿重复添加");
+            DictData dictResult = dictDataService.getByDictDataName(dictDataDto.getDictId(),dictDataDto.getDataName());
+                Preconditions.checkArgument(dictResult == null, "该字典数据已存在,请勿重复添加");
                List<DictData> DataList=dictDataService.getDictDataByIdList(dictDataDto.getDictId());
                for (int i = 0; i < DataList.size(); i++) {
                    if (dictDataDto.getDataValue().equals(DataList.get(i).getDataValue())){
@@ -93,7 +93,7 @@ public class DictDataController {
         try {
             Boolean result;
             DictData dictData= BeanMapUtils.map(updateDictDataDto, DictData .class);
-            DictData dictResult = dictDataService.getByDictDataName(updateDictDataDto.getDataName());
+            DictData dictResult = dictDataService.getByDictDataName(updateDictDataDto.getDictId(),updateDictDataDto.getDataName());
             if(dictResult.getDataName().equals(updateDictDataDto.getDataName())&&!dictResult.getId().equals(updateDictDataDto.getId())){
                 return WrapMapper.error("该字典数据已存在,请重新更换名称");
             }else{

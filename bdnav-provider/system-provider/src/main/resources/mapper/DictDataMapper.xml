@@ -52,8 +52,8 @@
 
 
   <!-- 根据字典数据名称查询字典数据 -->
-  <select id="getByDictDataName" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="getByDictDataName" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/>
-    from sys_dict_data where data_name = #{dataName} limit 1;
+    from sys_dict_data where dict_id = #{dictId} and data_name = #{dataName} limit 1;
   </select>
 </mapper>
