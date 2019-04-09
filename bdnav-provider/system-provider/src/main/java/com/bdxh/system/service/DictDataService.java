@@ -1,11 +1,9 @@
 package com.bdxh.system.service;
 
 import com.bdxh.common.support.IService;
-import com.bdxh.system.entity.Dict;
 import com.bdxh.system.entity.DictData;
-import com.bdxh.system.entity.Role;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
+
 
 import java.util.List;
 import java.util.Map;
@@ -32,4 +30,9 @@ public interface DictDataService extends IService<DictData> {
     //根据id删除
     void deleteDictDataById(Long id);
 
+    //根据字典数据名称查询当前数据
+    DictData getByDictDataName(String dataName);
+
+    //根据dictId查找字典列表
+    List<DictData> getDictDataByIdList(Long dictId);
 }

@@ -55,8 +55,8 @@ public class UserController {
         try {
             User userData = userService.getByUserName(addUserDto.getUserName());
             Preconditions.checkArgument(userData == null, "用户名已经存在");
-            userService.addUsers(addUserDto);
-            return WrapMapper.ok();
+            Boolean result = userService.addUsers(addUserDto);
+            return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -79,18 +79,18 @@ public class UserController {
             return WrapMapper.error(errors);
         }
         try {
+            Boolean result;
             User userData = userService.getByUserName(updateUserDto.getUserName());
            if (userData!=null){
                if(userData.getUserName().equals(updateUserDto.getUserName())&&!userData.getId().equals(updateUserDto.getId())){
                    return WrapMapper.error("用户名已经存在,请更换用户名称");
                }else{
-                   userService.updateUsers(updateUserDto);
+                   result = userService.updateUsers(updateUserDto);
                }
            }else{
-               userService.updateUsers(updateUserDto);
+                result = userService.updateUsers(updateUserDto);
            }
-           
-            return WrapMapper.ok();
+            return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

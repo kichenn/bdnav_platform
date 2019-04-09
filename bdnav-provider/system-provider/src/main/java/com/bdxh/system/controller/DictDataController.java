@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.el.parser.BooleanNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
@@ -59,9 +60,19 @@ public class DictDataController {
             return WrapMapper.error(errors);
         }
         try {
+            DictData dictResult = dictDataService.getByDictDataName(dictDataDto.getDataName());
+            Preconditions.checkArgument(dictResult == null, "该字典数据已存在,请勿重复添加");
+           if (dictResult!=null){
+               List<DictData> DataList=dictDataService.getDictDataByIdList(dictResult.getId());
+               for (int i = 0; i < DataList.size(); i++) {
+                   if (dictDataDto.getDataValue().equals(DataList.get(i).getDataValue())){
+                       return WrapMapper.ok("请勿添加相同数据值");
+                   }
+               }
+           }
             DictData dictData = BeanMapUtils.map(dictDataDto, DictData.class);
-            dictDataService.save(dictData);
-            return WrapMapper.ok();
+            Boolean flag =dictDataService.save(dictData)>0;
+            return WrapMapper.ok(flag);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

@@ -6,6 +6,7 @@ import com.bdxh.system.dto.DictQueryDto;
 import com.bdxh.system.dto.UpdateDictDto;
 import com.bdxh.system.entity.Dict;
 import com.bdxh.system.fallback.DictControllerClientFallback;
+import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -22,10 +23,15 @@ public interface DictControllerClient {
     @ResponseBody
     Wrapper<List<Dict>> findDictListAll();
 
-    //带条件的查询
+/*    //带条件的查询
     @RequestMapping("/dict/queryList")
     @ResponseBody
-    Wrapper<List<Dict>> queryList(@RequestBody DictQueryDto dictQueryDto);
+    Wrapper<List<Dict>> queryList(@RequestBody DictQueryDto dictQueryDto);*/
+
+    //带条件的分页查询
+    @RequestMapping("/dict/queryListPage")
+    @ResponseBody
+    Wrapper<PageInfo<Dict>> queryDictList(@RequestBody DictQueryDto dictQueryDto);
 
     //添加字典目录
     @RequestMapping("/dict/addDict")

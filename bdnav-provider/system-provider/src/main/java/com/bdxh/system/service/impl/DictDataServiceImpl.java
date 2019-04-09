@@ -63,5 +63,15 @@ public class DictDataServiceImpl extends BaseService<DictData> implements DictDa
       dictDataMapper.deleteDictDataById(id);
     }
 
+    @Override
+    public DictData getByDictDataName(String dataName) {
+        return dictDataMapper.getByDictDataName(dataName);
+    }
+
+    @Override
+    public List<DictData> getDictDataByIdList(Long dictId) {
+        return dictDataMapper.getDictDataById(dictId);
+    }
+
 
 }

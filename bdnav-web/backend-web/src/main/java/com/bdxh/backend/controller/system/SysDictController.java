@@ -3,8 +3,10 @@ package com.bdxh.backend.controller.system;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
+import com.bdxh.system.entity.Dict;
 import com.bdxh.system.feign.DictControllerClient;
 import com.bdxh.system.feign.DictDataControllerClient;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -42,11 +44,11 @@ public class SysDictController {
     }
 
 
-    @RequestMapping(value="/queryList",method = RequestMethod.POST)
+    @RequestMapping(value="/queryDictList",method = RequestMethod.POST)
     @ApiOperation("根据条件查询字典")
-    public Object queryList(@Validated @RequestBody DictQueryDto dictQueryDto){
+    public Object queryDictList(@Validated @RequestBody DictQueryDto dictQueryDto){
         try {
-            Wrapper wrapper = dictControllerClient.queryList(dictQueryDto);
+            Wrapper<PageInfo<Dict>> wrapper = dictControllerClient.queryDictList(dictQueryDto);
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
