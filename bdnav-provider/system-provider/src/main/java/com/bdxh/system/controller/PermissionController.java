@@ -169,7 +169,8 @@ public class PermissionController {
         List<RolePermission> resultList= rolePermissionService.findPermissionId(roleId);
         if (CollectionUtils.isNotEmpty(resultList)&&resultList.size()>0){
             List<Permission> permissions= permissionService.selectAll();
-          /*  List<RolePermissionDto> permissions= permissionService.theTreeMenu(roleId,selected);*/
+            List<Long> resultPid=rolePermissionService.findPermissionIdByRoleId(roleId);
+            System.out.println(resultPid.toString());
             List<PermissionTreeVo> treeVos = new ArrayList<>();
             if (CollectionUtils.isNotEmpty(permissions)&&permissions.size()>0) {
                 for (Permission ps:permissions){
@@ -180,30 +181,22 @@ public class PermissionController {
                         treeVo.setExpand(Boolean.TRUE);
                     }
                     for (RolePermission rp:resultList){
-                   /*     if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getSelected().equals(2)) {
-                            treeVo.setSelected(Boolean.TRUE);
-                        }*/
                         if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getIndeterminate().equals(1)){
                             treeVo.setIndeterminate(Boolean.TRUE);
                         }
+                   /*
                         if (ps.getId().equals(rp.getPermissionId())&&rp.getRoleId().equals(roleId)&&rp.getChecked().equals(1)){
                             treeVo.setChecked(Boolean.TRUE);
-                        }
+                        }*/
                     }
-/*
-                    if (ps.getId().equals(ps.getRplist().get(0).getPermissionId())&&ps.getRplist().get(0).getRoleId().equals(roleId)&&ps.getRplist().get(0).getSelected().equals(2)) {
-                        treeVo.setSelected(Boolean.TRUE);
-                    }
-                    if (ps.getId().equals(ps.getRplist().get(0).getPermissionId())&&ps.getRplist().get(0).getRoleId().equals(roleId)&&ps.getRplist().get(0).getIndeterminate().equals(1)){
-                        treeVo.setIndeterminate(Boolean.TRUE);
-                    }
-                    if (ps.getId().equals(ps.getRplist().get(0).getPermissionId())&&ps.getRplist().get(0).getRoleId().equals(roleId)&&ps.getRplist().get(0).getChecked().equals(1)){
+                    if (roleId != null && resultPid.contains(ps.getId())) {
                         treeVo.setChecked(Boolean.TRUE);
-                    }*/
+                    }
                     BeanUtils.copyProperties(ps, treeVo);
                     treeVos.add(treeVo);
                 }
             }
+
             TreeLoopUtils<PermissionTreeVo> treeLoopUtils = new TreeLoopUtils<>();
             List<PermissionTreeVo> result = treeLoopUtils.getTree(treeVos);
             return WrapMapper.ok(result);
