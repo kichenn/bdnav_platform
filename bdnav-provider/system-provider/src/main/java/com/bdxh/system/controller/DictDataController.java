@@ -94,15 +94,19 @@ public class DictDataController {
             Boolean result;
             DictData dictData= BeanMapUtils.map(updateDictDataDto, DictData .class);
             DictData dictResult = dictDataService.getByDictDataName(updateDictDataDto.getDictId(),updateDictDataDto.getDataName());
-            if(dictResult.getDataName().equals(updateDictDataDto.getDataName())&&!dictResult.getId().equals(updateDictDataDto.getId())){
-                return WrapMapper.error("该字典数据已存在,请重新更换名称");
-            }else{
-                List<DictData> DataList=dictDataService.getDictDataByIdList(updateDictDataDto.getDictId());
-                for (int i = 0; i < DataList.size(); i++) {
-                    if (updateDictDataDto.getDataValue().equals(DataList.get(i).getDataValue())&&!updateDictDataDto.getId().equals(DataList.get(i).getId())){
-                        return WrapMapper.error("该字典下存在该数据值 请重新更换");
+            if (dictResult!=null){
+                if(dictResult.getDataName().equals(updateDictDataDto.getDataName())&&!dictResult.getId().equals(updateDictDataDto.getId())){
+                    return WrapMapper.error("该字典数据已存在,请重新更换名称");
+                }else{
+                    List<DictData> DataList=dictDataService.getDictDataByIdList(updateDictDataDto.getDictId());
+                    for (int i = 0; i < DataList.size(); i++) {
+                        if (updateDictDataDto.getDataValue().equals(DataList.get(i).getDataValue())&&!updateDictDataDto.getId().equals(DataList.get(i).getId())){
+                            return WrapMapper.error("该字典下存在该数据值 请重新更换");
+                        }
                     }
+                    result =dictDataService.update(dictData)>0;
                 }
+            }else{
                 result =dictDataService.update(dictData)>0;
             }
             return WrapMapper.ok(result);
