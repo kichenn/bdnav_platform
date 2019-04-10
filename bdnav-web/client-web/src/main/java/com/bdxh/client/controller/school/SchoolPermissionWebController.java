@@ -46,10 +46,10 @@ public class SchoolPermissionWebController {
 
     @RequestMapping(value = "/findPermissionList", method = RequestMethod.GET)
     @ApiOperation(value = "获取当前学校，菜单or按钮权限列表", response = SchoolPermissionTreeVo.class)
-    public Object findPermissionList() {
+    public Object findPermissionList(@RequestParam(value = "roleId", required = false) Long roleId) {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
-        Wrapper wrapper = schoolPermissionControllerClient.findPermissionListBySchoolId(user.getSchoolId());
+        Wrapper wrapper = schoolPermissionControllerClient.findPermissionListBySchoolId(user.getSchoolId(),roleId);
         return WrapMapper.ok(wrapper.getResult());
     }
 

@@ -64,7 +64,7 @@ public interface SchoolPermissionControllerClient {
      */
     @RequestMapping(value = "/schoolPermission/findPermissionListBySchoolId", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolPermissionTreeVo>> findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId);
+    Wrapper<List<SchoolPermissionTreeVo>> findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId,@RequestParam(value = "roleId", required = false) Long roleId);
 
     /**
      * 添加权限信息
