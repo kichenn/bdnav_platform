@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
+    public void configure(WebSecurity web) {
         //忽略静态文件
         web.ignoring().antMatchers("/**.html", "/**.css", "/**.js", "/img/**", "/third-party/**","/entity/**");
     }
@@ -60,4 +60,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.inMemoryAuthentication().passwordEncoder(bCryptPasswordEncoder()).withUser("admin").
                 password("$2a$10$kphDuyKOSTKUws2uIh4O6eTKVHOKktj4vg0odQCZn0fRltBCkzIP6").roles("system");
     }
+
 }
