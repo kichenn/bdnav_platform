@@ -74,15 +74,17 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
         if (!addUserDto.getRoleIds().equals("")&&!addUserDto.getRoleIds().equals(null)){
             String [] roleIds=addUserDto.getRoleIds().split(",");
             addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
+            falg=userMapper.addUsers(addUserDto)>0;
             if (roleIds != null&&roleIds.length>0){
                 for (int i = 0; i <roleIds.length ; i++) {
                     UserRole userRole=new UserRole();
+                    System.out.println("jknxishnishidj=="+addUserDto.getId());
                     userRole.setUserId(addUserDto.getId());
                     userRole.setRoleId(Long.valueOf(roleIds[i]));
                     userRoleMapper.insert(userRole);
                 }
             }
-            falg=userMapper.addUsers(addUserDto)>0;
+
         }else{
             addUserDto.setPassword(new BCryptPasswordEncoder().encode(addUserDto.getPassword()));
             falg=userMapper.addUsers(addUserDto)>0;
