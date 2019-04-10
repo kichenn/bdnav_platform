@@ -76,9 +76,12 @@ public class SchoolPermissionController {
     public Object findPermissionList(@RequestParam(value = "roleId", required = false) Long roleId) {
         List<SchoolPermission> permissions = schoolPermissionService.selectAll();
         //如果当前roleId不为空查询 该角色底下的菜单
-        List<SchoolPermission> rolePermissions = new ArrayList<>();
+        List<Long> rolePermissionsId = new ArrayList<>();
         if (roleId != null) {
-            rolePermissions.addAll(schoolPermissionService.findPermissionByRoleId(roleId, null, null));
+            List<SchoolPermission> rolePermissions = schoolPermissionService.findPermissionByRoleId(roleId, null, null);
+            for (SchoolPermission temp : rolePermissions) {
+                rolePermissionsId.add(temp.getId());
+            }
         }
         List<SchoolPermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)) {
@@ -86,7 +89,7 @@ public class SchoolPermissionController {
                 SchoolPermissionTreeVo treeVo = new SchoolPermissionTreeVo();
                 treeVo.setTitle(e.getName());
                 treeVo.setCreateDate(e.getCreateDate());
-                if (roleId != null && rolePermissions.contains(e)) {
+                if (roleId != null && rolePermissionsId.contains(e.getId())) {
                     treeVo.setChecked(true);
                 }
                 BeanUtils.copyProperties(e, treeVo);
@@ -106,12 +109,15 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findPermissionListBySchoolId")
     @ApiOperation(value = "菜单or按钮权限列表(根据学校id)", response = List.class)
-    public Object findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId,@RequestParam(value = "roleId", required = false) Long roleId) {
+    public Object findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId, @RequestParam(value = "roleId", required = false) Long roleId) {
         List<SchoolPermission> permissions = schoolPermissionService.findPermissionByRoleId(null, null, schoolId);
         //如果当前roleId不为空查询 该角色底下的菜单
-        List<SchoolPermission> rolePermissions = new ArrayList<>();
+        List<Long> rolePermissionsId = new ArrayList<>();
         if (roleId != null) {
-            rolePermissions.addAll(schoolPermissionService.findPermissionByRoleId(roleId, null, null));
+            List<SchoolPermission> rolePermissions = schoolPermissionService.findPermissionByRoleId(roleId, null, schoolId);
+            for (SchoolPermission temp : rolePermissions) {
+                rolePermissionsId.add(temp.getId());
+            }
         }
         List<SchoolPermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)) {
@@ -119,7 +125,7 @@ public class SchoolPermissionController {
                 SchoolPermissionTreeVo treeVo = new SchoolPermissionTreeVo();
                 treeVo.setTitle(e.getName());
                 treeVo.setCreateDate(e.getCreateDate());
-                if (roleId != null && rolePermissions.contains(e)) {
+                if (roleId != null && rolePermissionsId.contains(e.getId())) {
                     treeVo.setChecked(true);
                 }
                 BeanUtils.copyProperties(e, treeVo);
