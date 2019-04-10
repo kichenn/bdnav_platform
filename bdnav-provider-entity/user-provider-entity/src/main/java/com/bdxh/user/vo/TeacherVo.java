@@ -9,6 +9,7 @@
 
 package com.bdxh.user.vo;
 
+import com.bdxh.common.base.page.Query;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.Column;
@@ -17,7 +18,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class TeacherVo {
+public class TeacherVo extends Query {
     /**
      * 主键
      */
@@ -184,6 +185,15 @@ public class TeacherVo {
     @ApiModelProperty("备注")
     private String remark;
 
+    /**
+     * 部门名称
+     */
+    @ApiModelProperty("部门名称")
+    private String deptName;
+
+    /**
+     * 老师绑定部门关系信息集合
+     */
     @ApiModelProperty("老师绑定部门关系信息集合")
     private List<TeacherDeptVo> teacherDeptVos;
 }

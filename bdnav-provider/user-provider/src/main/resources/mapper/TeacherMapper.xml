@@ -50,7 +50,7 @@
 
     <!-- 查询出某个老师的详细信息-->
     <select id="selectTeacherDetails" resultMap="BaseResultMap">
-    SELECT *  FROM t_teacher where school_code=#{schoolCode} and card_number=#{cardNumber}
+    SELECT <include refid="BaseColumn"/>   FROM t_teacher where school_code=#{schoolCode} and card_number=#{cardNumber}
     </select>
 
   <!-- 修改老师信息 -->
@@ -128,29 +128,32 @@
     `school_code`=#{teacher.schoolCode} and `card_number`=#{teacher.cardNumber}
       </update>
 
-  <select id="selectAllTeacherInfo" resultMap="BaseResultMap">
-    select <include refid="BaseColumn"/> from t_teacher
+  <select id="selectAllTeacherInfo" resultType="com.bdxh.user.vo.TeacherVo">
+    select
+    <include refid="BaseColumn"/>
+    (select dept_name from t_teacher_dept where school_code=teacher.school_code and card_number=teacher.card_number limit 1) as deptName
+    from t_teacher as teacher
     <where>
       <if test="teacherQueryDto.schoolName!=null and teacherQueryDto.schoolName!=''">
-        AND school_name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.schoolName},'%'))
+        AND teacher.school_name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.schoolName},'%'))
       </if>
       <if test="teacherQueryDto.schoolCode!=null and teacherQueryDto.schoolCode!=''">
-        AND school_code = #{familyQueryDto.schoolCode}
+        AND teacher.school_code = #{familyQueryDto.schoolCode}
       </if>
       <if test="teacherQueryDto.name!=null and teacherQueryDto.name!=''">
-        AND name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.name},'%'))
+        AND teacher.name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.name},'%'))
       </if>
       <if test="teacherQueryDto.cardNumber!=null and teacherQueryDto.cardNumber!=''">
-        AND card_number  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.cardNumber},'%'))
+        AND teacher.card_number  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.cardNumber},'%'))
       </if>
       <if test="teacherQueryDto.phone!=null and teacherQueryDto.phone!=''">
-        AND phone  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.phone},'%'))
+        AND teacher.phone  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.phone},'%'))
       </if>
       <if test="teacherQueryDto.activate!=0 ">
-        AND activate  =#{teacherQueryDto.activate}
+        AND teacher.activate  =#{teacherQueryDto.activate}
       </if>
     </where>
-    order by create_date desc
+    order by teacher.create_date desc
   </select>
 
   <!--批量删除老师信息-->

@@ -22,8 +22,8 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
     private TeacherDeptMapper teacherDeptMapper;
 
     @Override
-    public void deleteTeacherDeptInfo(String schoolCode, String cardNumber, String id) {
-        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber);
+    public void deleteTeacherDeptInfo(String schoolCode, String cardNumber, Integer deptId) {
+        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber,deptId);
     }
 
     /**

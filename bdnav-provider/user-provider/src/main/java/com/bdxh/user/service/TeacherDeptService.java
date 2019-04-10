@@ -14,7 +14,7 @@ public interface TeacherDeptService extends IService<TeacherDept> {
      * @author: xuyuan
      * @create: 2019-02-26 10:46
      **/
-    void deleteTeacherDeptInfo(String schoolCode, String cardNumber, String id);
+    void deleteTeacherDeptInfo(String schoolCode, String cardNumber, Integer deptId);
 
     /**
      * @Description: 学校code，学校id，部门id查询老师信息

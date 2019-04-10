@@ -12,11 +12,9 @@ import java.util.Map;
 
 @Repository
 public interface TeacherDeptMapper extends Mapper<TeacherDept> {
-    int deleteTeacherDept(@Param("schoolCode") String schoolCode, @Param("cardNumber") String cardNumber);
+    int deleteTeacherDept(@Param("schoolCode") String schoolCode, @Param("cardNumber") String cardNumber,@Param("deptId")Integer deptId);
 
     List<TeacherDeptVo> selectTeacherDeptDetailsInfo(@Param("schoolCode") String schoolCode, @Param("cardNumber") String cardNumber);
-
-    TeacherDeptDto updateTeacherDept(TeacherDeptDto teacherDeptDto);
 
     //根据部门ID统计老师人数
     int queryTeacherCount(String schoolCode, String deptId);
