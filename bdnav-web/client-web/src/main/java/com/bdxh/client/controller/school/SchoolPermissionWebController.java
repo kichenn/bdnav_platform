@@ -6,6 +6,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddRolePermissionBindMenuDto;
 import com.bdxh.school.dto.AddSchoolPermissionDto;
 import com.bdxh.school.dto.ModifySchoolPermissionDto;
+import com.bdxh.school.entity.SchoolPermission;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolPermissionControllerClient;
 import com.bdxh.school.vo.SchoolPermissionTreeVo;
@@ -33,6 +34,13 @@ public class SchoolPermissionWebController {
     @Autowired
     private SchoolPermissionControllerClient schoolPermissionControllerClient;
 
+
+    @RequestMapping(value = "/permissionMenusById", method = RequestMethod.GET)
+    @ApiOperation(value = "id查询菜单或者按钮详情", response = SchoolPermission.class)
+    public Object permissionMenusById(@RequestParam("id") Long id) {
+        SchoolPermission permissions = schoolPermissionControllerClient.permissionMenusById(id).getResult();
+        return WrapMapper.ok(permissions);
+    }
 
     @RequestMapping(value = "/findSchoolPermissionByRoleId", method = RequestMethod.GET)
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = SchoolPermissionTreeVo.class)
