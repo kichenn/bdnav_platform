@@ -297,6 +297,9 @@ public class StudentController {
                         Wrapper  studentWeapper =studentControllerClient.queryCardNumberBySchoolCode(columns[0]);
                        schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
                        school = (School) schoolWrapper.getResult();
+                       if(null==school){
+                           return WrapMapper.error("第"+i+"条数据不存在该学校CODE");
+                       }
                        cardNumberList=(List<String>) studentWeapper.getResult();
                    }
                if (StringUtils.isNotBlank(studentList.get(i)[0])) {
