@@ -38,7 +38,7 @@
         <include refid="BaseColumns1"/>
         FROM
         t_school_permission perm
-        INNER JOIN t_school_role_permission roleperm ON perm.id=roleperm.permission_id
+        LEFT JOIN t_school_role_permission roleperm ON perm.id=roleperm.permission_id
         <where>
             <if test="roleId !=null">
                 roleperm.role_id=#{roleId,jdbcType=BIGINT}
