@@ -87,6 +87,8 @@ public class SchoolUserWebController {
         SchoolUser user = SecurityUtils.getCurrentUser();
         modifySchoolUserDto.setOperator(user.getId());
         modifySchoolUserDto.setOperatorName(user.getUserName());
+        modifySchoolUserDto.setSchoolId(user.getSchoolId());
+        modifySchoolUserDto.setSchoolCode(user.getSchoolCode());
         Wrapper wrapper = schoolUserControllerClient.modifySchoolUser(modifySchoolUserDto);
         return wrapper;
     }

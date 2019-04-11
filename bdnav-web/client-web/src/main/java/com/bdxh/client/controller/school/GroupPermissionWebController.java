@@ -56,6 +56,8 @@ public class GroupPermissionWebController {
         //设置操作人
         modifyGroupPermissionDto.setOperator(user.getId());
         modifyGroupPermissionDto.setOperatorName(user.getUserName());
+        modifyGroupPermissionDto.setSchoolId(user.getSchoolId());
+        modifyGroupPermissionDto.setSchoolCode(user.getSchoolCode());
         Wrapper wrapper = groupPermissionControllerClient.modifyGroupPermission(modifyGroupPermissionDto);
         return wrapper;
     }
@@ -76,7 +78,7 @@ public class GroupPermissionWebController {
         return wrapper;
     }
 
-    @GetMapping("/delBatchGroupPermissionInIds")
+    @GetMapping("/findGroupPermissionById")
     @ApiOperation(value = "id查询门禁组信息", response = GroupPermission.class)
     public Object findGroupPermissionById(@RequestParam("id") Long id) {
         Wrapper wrapper = groupPermissionControllerClient.findGroupPermissionById(id);

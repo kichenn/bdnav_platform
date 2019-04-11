@@ -114,6 +114,8 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
             user.setUserName("xuyuan");
             user.setPassword(new BCryptPasswordEncoder().encode("123456"));
             user.setRealName("徐圆");
+            user.setSchoolCode("111");
+            user.setSchoolId(new Long("3"));
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             MyUserDetails myUserDetails = new MyUserDetails(user.getUserName(), "", true, authorities, user);

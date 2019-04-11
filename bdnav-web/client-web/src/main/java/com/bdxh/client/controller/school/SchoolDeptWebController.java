@@ -77,6 +77,8 @@ public class SchoolDeptWebController {
         schoolDeptDto.setOperator(user.getId());
         schoolDeptDto.setOperatorName(user.getUserName());
         schoolDeptDto.setUpdateDate(new Date());
+        schoolDeptDto.setSchoolId(user.getSchoolId());
+        schoolDeptDto.setSchoolCode(user.getSchoolCode());
         Wrapper wrapper = schoolDeptControllerClient.modifySchoolDept(schoolDeptDto);
         return WrapMapper.ok(wrapper.getResult());
     }

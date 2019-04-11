@@ -69,6 +69,8 @@ public class SchoolRoleWebController {
         SchoolUser user = SecurityUtils.getCurrentUser();
         ModifySchoolRoleDto.setOperator(user.getId());
         ModifySchoolRoleDto.setOperatorName(user.getUserName());
+        ModifySchoolRoleDto.setSchoolId(user.getSchoolId());
+        ModifySchoolRoleDto.setSchoolCode(user.getSchoolCode());
         Wrapper wrapper = schoolRoleControllerClient.modifySchoolRole(ModifySchoolRoleDto);
         return wrapper;
     }

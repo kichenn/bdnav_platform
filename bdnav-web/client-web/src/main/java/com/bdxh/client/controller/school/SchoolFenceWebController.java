@@ -1,20 +1,20 @@
-package com.bdxh.school.contoller;
+package com.bdxh.client.controller.school;
 
+import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.school.dto.AddBlackUrlDto;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolFenceDto;
 import com.bdxh.school.dto.ModifySchoolFenceDto;
 import com.bdxh.school.dto.SchoolFenceQueryDto;
-import com.bdxh.school.entity.BlackUrl;
+import com.bdxh.school.entity.SchoolFence;
+import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.feign.SchoolFenceControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.bdxh.school.entity.SchoolFence;
-import com.bdxh.school.service.SchoolFenceService;
 
 import java.util.List;
 
@@ -24,68 +24,67 @@ import java.util.List;
  * @Date 2019-04-11 09:56:14
  */
 @RestController
-@RequestMapping("/schoolFence")
+@RequestMapping("/clientSchoolFenceWeb")
 @Slf4j
 @Validated
-@Api(value = "学校围栏", tags = "学校围栏交互API")
-public class SchoolFenceController {
+@Api(value = "学校管理--学校围栏", tags = "学校管理--学校围栏交互API")
+public class SchoolFenceWebController {
 
     @Autowired
-    private SchoolFenceService schoolFenceService;
+    private SchoolFenceControllerClient schoolFenceControllerClient;
 
     @RequestMapping(value = "/addFence", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校围栏", response = Boolean.class)
     public Object addFence(@Validated @RequestBody AddSchoolFenceDto addSchoolFenceDto) {
-        SchoolFence schoolFence = new SchoolFence();
-        BeanUtils.copyProperties(addSchoolFenceDto, schoolFence);
-        //设置状态值
-        schoolFence.setGroupType(addSchoolFenceDto.getGroupTypeEnum().getKey());
-        schoolFence.setRecursionPermission(addSchoolFenceDto.getRecursionPermissionStatusEnum().getKey());
-        schoolFence.setStatus(addSchoolFenceDto.getBlackStatusEnum().getKey());
-
-        return WrapMapper.ok(schoolFenceService.save(schoolFence) > 0);
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        addSchoolFenceDto.setOperator(user.getId());
+        addSchoolFenceDto.setOperatorName(user.getUserName());
+        addSchoolFenceDto.setSchoolCode(user.getSchoolCode());
+        addSchoolFenceDto.setSchoolId(user.getSchoolId());
+        Wrapper wapper = schoolFenceControllerClient.addFence(addSchoolFenceDto);
+        return wapper;
     }
 
     @RequestMapping(value = "/modifyFence", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校围栏", response = Boolean.class)
     public Object modifyFence(@Validated @RequestBody ModifySchoolFenceDto modifySchoolFenceDto) {
-        SchoolFence schoolFence = new SchoolFence();
-        BeanUtils.copyProperties(modifySchoolFenceDto, schoolFence);
-        //设置状态值
-        if (modifySchoolFenceDto.getGroupTypeEnum() != null) {
-            schoolFence.setGroupType(modifySchoolFenceDto.getGroupTypeEnum().getKey());
-        }
-        if (modifySchoolFenceDto.getRecursionPermissionStatusEnum() != null) {
-            schoolFence.setRecursionPermission(modifySchoolFenceDto.getRecursionPermissionStatusEnum().getKey());
-        }
-        if (modifySchoolFenceDto.getBlackStatusEnum() != null) {
-            schoolFence.setStatus(modifySchoolFenceDto.getBlackStatusEnum().getKey());
-        }
-        return WrapMapper.ok(schoolFenceService.update(schoolFence) > 0);
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        modifySchoolFenceDto.setOperator(user.getId());
+        modifySchoolFenceDto.setOperatorName(user.getUserName());
+        modifySchoolFenceDto.setSchoolCode(user.getSchoolCode());
+        modifySchoolFenceDto.setSchoolId(user.getSchoolId());
+        Wrapper wapper = schoolFenceControllerClient.modifyFence(modifySchoolFenceDto);
+        return wapper;
     }
 
     @RequestMapping(value = "/delFenceById", method = RequestMethod.POST)
     @ApiOperation(value = "删除学校围栏", response = Boolean.class)
     public Object delFenceById(@RequestParam("id") Long id) {
-        return WrapMapper.ok(schoolFenceService.deleteByKey(id) > 0);
+        Wrapper wapper = schoolFenceControllerClient.delFenceById(id);
+        return wapper;
     }
 
     @RequestMapping(value = "/delBatchFence", method = RequestMethod.POST)
     @ApiOperation(value = "批量删除学校围栏", response = Boolean.class)
     public Object delBatchFence(@RequestParam("ids") List<Long> ids) {
-        return WrapMapper.ok(schoolFenceService.batchDelSchoolFenceInIds(ids));
+        Wrapper wapper = schoolFenceControllerClient.delBatchFence(ids);
+        return wapper;
     }
 
     @RequestMapping(value = "/findFenceById", method = RequestMethod.GET)
     @ApiOperation(value = "id查询学校围栏", response = SchoolFence.class)
     public Object findFenceById(@RequestParam("id") Long id) {
-        return WrapMapper.ok(schoolFenceService.selectByKey(id));
+        Wrapper wapper = schoolFenceControllerClient.findFenceById(id);
+        return WrapMapper.ok(wapper.getResult());
     }
 
     @RequestMapping(value = "/findFenceInConditionPaging", method = RequestMethod.POST)
     @ApiOperation(value = "分页学校围栏查询", response = Boolean.class)
     public Object findFenceInConditionPaging(@Validated @RequestBody SchoolFenceQueryDto schoolFenceQueryDto) {
-        return WrapMapper.ok(schoolFenceService.findFenceInConditionPaging(schoolFenceQueryDto));
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        schoolFenceQueryDto.setSchoolId(user.getSchoolId());
+        Wrapper wapper = schoolFenceControllerClient.findFenceInConditionPaging(schoolFenceQueryDto);
+        return WrapMapper.ok(wapper.getResult());
     }
 
 }
