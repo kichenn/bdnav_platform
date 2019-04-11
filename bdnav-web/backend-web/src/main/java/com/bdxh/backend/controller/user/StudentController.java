@@ -27,6 +27,7 @@ import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -288,8 +289,10 @@ public class StudentController {
            User user=SecurityUtils.getCurrentUser();
            Long uId=user.getId();
            String uName=user.getUserName();
+            int addNumber=1;
            for (int i=1;i<studentList.size();i++) {
                String[] columns = studentList.get(i);
+
                    if (!studentList.get(i)[0].equals(i - 1 >= studentList.size() ? studentList.get(studentList.size())[0] : studentList.get(i - 1)[0])||i==1) {
                        //判断得出在同一个班级直接从缓存中拉取数据
                         Wrapper  schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
@@ -297,11 +300,9 @@ public class StudentController {
                         Wrapper  studentWeapper =studentControllerClient.queryCardNumberBySchoolCode(columns[0]);
                        schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
                        school = (School) schoolWrapper.getResult();
-                       if(null==school){
-                           return WrapMapper.error("第"+i+"条数据不存在该学校CODE");
-                       }
                        cardNumberList=(List<String>) studentWeapper.getResult();
                    }
+               if(null!=school){
                if (StringUtils.isNotBlank(studentList.get(i)[0])) {
                    //判断当前学校是否有重复学号
                    if(null!=cardNumberList) {
@@ -357,6 +358,7 @@ public class StudentController {
                    for (j = 0;j < schoolClassList.size(); j++) {
                        if (classNames.trim().equals(schoolClassList.get(j).getThisUrl().trim())) {
                            ids += schoolClassList.get(j).getParentIds();
+                           break;
                        }
                    }
                    if (ids.equals("")) {
@@ -369,12 +371,18 @@ public class StudentController {
                    student.setClassNames(classNames);
                    students.add(student);
                    log.info("已经添加完第"+i+"条");
+                   addNumber++;
+                  }else {
+                   return WrapMapper.ok("当前EXACLE文档为NULL，请检查");
+                 }
+               }else {
+                   return WrapMapper.ok("不存在当前学校");
                }
-           }
+               }
            studentControllerClient.batchSaveStudentInfo(students);
            long end=System.currentTimeMillis();
            log.info("导入一万条数据总计用时："+(end-start));
-           return  WrapMapper.ok("导入完成");
+           return  WrapMapper.ok("导入完成,成功导入了"+(addNumber-1)+"条数据");
        }catch (Exception e){
            log.error(e.getMessage());
            return WrapMapper.error(e.getMessage());

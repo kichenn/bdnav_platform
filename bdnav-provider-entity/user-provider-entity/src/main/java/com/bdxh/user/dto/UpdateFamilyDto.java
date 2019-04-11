@@ -15,8 +15,8 @@ import java.util.Date;
 @Data
 public class UpdateFamilyDto implements Serializable {
 
-    private static final long serialVersionUID = 2342455005199240692L;
 
+    private static final long serialVersionUID = -1013494855483528788L;
     @ApiModelProperty("家长Id")
     private String id;
 

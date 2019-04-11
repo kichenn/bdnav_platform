@@ -20,7 +20,7 @@ import java.io.Serializable;
 @Data
 public class FamilyQueryDto extends Query implements Serializable {
 
-    private static final long serialVersionUID = 2342455005199240692L;
+    private static final long serialVersionUID = 1973743633551660368L;
     /**
      * 家长卡号
      */

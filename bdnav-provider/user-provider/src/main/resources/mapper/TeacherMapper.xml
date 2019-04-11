@@ -130,9 +130,37 @@
 
   <select id="selectAllTeacherInfo" resultType="com.bdxh.user.vo.TeacherVo">
     select
-    <include refid="BaseColumn"/>
-    (select dept_name from t_teacher_dept where school_code=teacher.school_code and card_number=teacher.card_number limit 1) as deptName
-    from t_teacher as teacher
+    teacher.id,
+    teacher.school_id AS schoolId,
+    teacher.school_code AS schoolCode,
+    teacher.school_name AS schoolName,
+    teacher.NAME,
+    teacher.gender,
+    teacher.birth,
+    teacher.position,
+    teacher.phone,
+    teacher.card_number AS cardNumber,
+    teacher.idcard,
+    teacher.qq_number AS qqNumber,
+    teacher.wx_number AS wxNumber,
+    teacher.email,
+    teacher.image,
+    teacher.nation_name AS nationName,
+    teacher.dormitory_address AS dormitoryAddress,
+    teacher.adress,
+    teacher.physical_number AS physicalNumber,
+    teacher.physical_chip_number AS physicalChipNumber,
+    teacher.activate,
+    teacher.create_date AS createDate,
+    teacher.update_date AS updateDate,
+    teacher.operator,
+    teacher.operator_name AS operatorName,
+    teacher.remark,
+    image_name,
+    teacherDept.dept_name as deptName
+    FROM
+    t_teacher AS teacher
+    LEFT JOIN t_teacher_dept AS teacherDept on teacher.id=teacherDept.teacher_id
     <where>
       <if test="teacherQueryDto.schoolName!=null and teacherQueryDto.schoolName!=''">
         AND teacher.school_name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.schoolName},'%'))
@@ -149,7 +177,7 @@
       <if test="teacherQueryDto.phone!=null and teacherQueryDto.phone!=''">
         AND teacher.phone  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.phone},'%'))
       </if>
-      <if test="teacherQueryDto.activate!=0 ">
+      <if test="teacherQueryDto.activate!=null and teacherQueryDto.activate!=''">
         AND teacher.activate  =#{teacherQueryDto.activate}
       </if>
     </where>

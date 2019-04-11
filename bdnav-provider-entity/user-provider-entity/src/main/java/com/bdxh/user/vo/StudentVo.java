@@ -9,8 +9,12 @@
 package com.bdxh.user.vo;
 import lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.io.Serializable;
+
 @Data
-public class StudentVo {
+public class StudentVo implements Serializable {
+    private static final long serialVersionUID = -4694086728702829530L;
     @ApiModelProperty("学生Id")
     private  Long sId;
 

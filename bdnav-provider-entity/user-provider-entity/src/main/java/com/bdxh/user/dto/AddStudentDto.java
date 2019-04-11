@@ -12,11 +12,8 @@ import java.util.Date;
 @Data
 public class AddStudentDto implements Serializable {
 
-    private static final long serialVersionUID = -9120796138685156209L;
 
-
-
-
+    private static final long serialVersionUID = 4428905210769359015L;
     /**
      * 学校编码
      */

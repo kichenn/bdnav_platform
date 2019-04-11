@@ -10,16 +10,16 @@
  */
 package com.bdxh.user.vo;
 
-import com.bdxh.user.entity.Student;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.text.SimpleDateFormat;
+import java.io.Serializable;
 import java.util.List;
 
 @Data
-public class FamilyVo {
+public class FamilyVo implements Serializable {
 
+    private static final long serialVersionUID = -7907793665264570255L;
     //家长ID
     @ApiModelProperty("家长ID")
     private String id;

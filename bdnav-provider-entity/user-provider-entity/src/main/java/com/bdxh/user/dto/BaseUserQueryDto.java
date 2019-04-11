@@ -15,8 +15,8 @@ import java.util.Date;
 @Data
 public class BaseUserQueryDto implements Serializable {
 
-    private static final long serialVersionUID = 7986372297321464764L;
 
+    private static final long serialVersionUID = -8164781615600205843L;
     /**
      * 主键
      */
