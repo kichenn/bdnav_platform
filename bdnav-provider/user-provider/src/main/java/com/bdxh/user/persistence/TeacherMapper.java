@@ -20,7 +20,7 @@ public interface TeacherMapper extends Mapper<Teacher> {
 
     int updateTeacher(@Param("teacher") Teacher teacher);
 
-    List<Teacher> selectAllTeacherInfo(@Param("teacherQueryDto")TeacherQueryDto teacherQueryDto);
+    List<TeacherVo> selectAllTeacherInfo(@Param("teacherQueryDto")TeacherQueryDto teacherQueryDto);
 
     //批量删除老师信息
     int batchRemoveTeacherInfo(@Param("list") List<Map<String,String>> list);

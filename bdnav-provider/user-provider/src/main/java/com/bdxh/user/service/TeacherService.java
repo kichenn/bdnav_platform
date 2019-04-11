@@ -24,7 +24,7 @@ public interface TeacherService extends IService<Teacher> {
      * @Param： [teacherQueryDto]
      * @return： com.github.pagehelper.PageInfo<com.bdxh.user.entity.Teacher>
      **/
-    PageInfo<Teacher> getTeacherList(TeacherQueryDto teacherQueryDto);
+    PageInfo<TeacherVo> getTeacherList(TeacherQueryDto teacherQueryDto);
 
 
     /**

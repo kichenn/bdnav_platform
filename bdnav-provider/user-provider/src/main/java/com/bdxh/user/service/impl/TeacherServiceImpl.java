@@ -46,10 +46,10 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Autowired
     private BaseUserMapper baseUserMapper;
     @Override
-    public PageInfo<Teacher> getTeacherList(TeacherQueryDto teacherQueryDto) {
+    public PageInfo<TeacherVo> getTeacherList(TeacherQueryDto teacherQueryDto) {
         PageHelper.startPage(teacherQueryDto.getPageNum(), teacherQueryDto.getPageSize());
-        List<Teacher> listTeacher = teacherMapper.selectAllTeacherInfo(teacherQueryDto);
-        PageInfo<Teacher> pageInfoTeacher = new PageInfo<Teacher>(listTeacher);
+        List<TeacherVo> listTeacher = teacherMapper.selectAllTeacherInfo(teacherQueryDto);
+        PageInfo<TeacherVo> pageInfoTeacher = new PageInfo<TeacherVo>(listTeacher);
         return pageInfoTeacher;
     }
 
@@ -58,7 +58,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Transactional
     public void deleteTeacherInfo(String schoolCode,String cardNumber) {
         teacherMapper.deleteTeacher(schoolCode, cardNumber);
-        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber);
+        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber,0);
         baseUserMapper.deleteBaseUserInfo(schoolCode,cardNumber);
     }
 
@@ -127,7 +127,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         teacherMapper.updateTeacher(teacher);
         BaseUser updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, BaseUser.class);
         baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
-            teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
+            teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber(),0);
         for (int i=0;i<updateTeacherDto.getTeacherDeptDtoList().size();i++){
             TeacherDeptDto teacherDeptDto=new TeacherDeptDto();
             teacherDeptDto.setId(snowflakeIdWorker.nextId());

@@ -179,7 +179,7 @@ public class TeacherController {
     public Object queryTeacherListPage(@RequestBody TeacherQueryDto teacherQueryDto) {
         try {
             // 封装分页之后的数据
-            PageInfo<Teacher> teacher = teacherService.getTeacherList(teacherQueryDto);
+            PageInfo<TeacherVo> teacher = teacherService.getTeacherList(teacherQueryDto);
             return WrapMapper.ok(teacher);
         } catch (Exception e) {
             e.printStackTrace();
