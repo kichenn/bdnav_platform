@@ -19,9 +19,8 @@ import java.io.Serializable;
 @Data
 public class StudentQueryDto extends Query implements Serializable {
 
-    private static final long serialVersionUID = -9120796138685156209L;
 
-
+    private static final long serialVersionUID = -1551326503823454942L;
     /**
      * 学校名称
      */

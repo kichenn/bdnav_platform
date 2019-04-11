@@ -13,6 +13,7 @@ import lombok.Data;
 public class FamilyStudentQueryDto  extends Query {
 
 
+    private static final long serialVersionUID = 6597243504499522735L;
     /**
      * 家长号
      */

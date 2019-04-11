@@ -15,8 +15,8 @@ import java.util.List;
 @Data
 public class UpdateTeacherDto implements Serializable {
 
-    private static final long serialVersionUID = 2342455005199240692L;
 
+    private static final long serialVersionUID = -2157845844013847688L;
     /**
      * 主键
      */

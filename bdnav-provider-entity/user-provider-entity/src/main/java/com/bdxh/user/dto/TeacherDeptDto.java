@@ -13,8 +13,8 @@ import java.util.Date;
 @Data
 public class TeacherDeptDto implements Serializable {
 
-    private static final long serialVersionUID = 6769383748212626201L;
 
+    private static final long serialVersionUID = -8127703419855697533L;
     /**
      * 主键
      */

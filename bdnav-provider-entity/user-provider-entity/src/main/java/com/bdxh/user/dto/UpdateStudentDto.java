@@ -14,8 +14,8 @@ import java.util.Date;
 @Data
 public class UpdateStudentDto implements Serializable {
 
-    private static final long serialVersionUID = 2342455005199240692L;
 
+    private static final long serialVersionUID = 7186246502445878875L;
     /**
      * 主键
      */

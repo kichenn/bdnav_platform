@@ -21,9 +21,8 @@ import java.util.Date;
 @Data
 public class TeacherQueryDto extends Query implements Serializable {
 
-    private static final long serialVersionUID = 2921436647270652540L;
 
-
+    private static final long serialVersionUID = 9116556926740499311L;
     /**
      * 学校名称
      */

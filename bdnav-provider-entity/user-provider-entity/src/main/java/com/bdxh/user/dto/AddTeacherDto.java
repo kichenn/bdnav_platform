@@ -16,8 +16,8 @@ import java.util.List;
 @Data
 public class AddTeacherDto implements Serializable {
 
-    private static final long serialVersionUID = 2921436647270652540L;
 
+    private static final long serialVersionUID = -3487639627504367771L;
     @ApiModelProperty(value="主键")
     private Long Id;
     /**

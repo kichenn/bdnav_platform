@@ -2,6 +2,7 @@ package com.bdxh.user.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 
+import java.io.Serializable;
 import java.util.Date;
 import  lombok.Data;
 
@@ -11,7 +12,8 @@ import  lombok.Data;
  * @create: 2019-04-04 10:51
  **/
 @Data
-public class FamilyStudentDetailsVo {
+public class FamilyStudentDetailsVo implements Serializable {
+    private static final long serialVersionUID = 3953145400679544770L;
     /**
      * 主键
      */

@@ -14,11 +14,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.Column;
 import javax.persistence.Id;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Data
-public class TeacherVo extends Query {
+public class TeacherVo extends Query implements Serializable {
+    private static final long serialVersionUID = -1554572358517434246L;
     /**
      * 主键
      */
