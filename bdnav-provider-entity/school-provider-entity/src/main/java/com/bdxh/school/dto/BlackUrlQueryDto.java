@@ -6,7 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class BlackQueryDto extends Query {
+public class BlackUrlQueryDto extends Query {
 
     @ApiModelProperty("学校id")
     private Long schoolId;
@@ -15,7 +15,7 @@ public class BlackQueryDto extends Query {
     private String schoolCode;
 
     @ApiModelProperty("状态")
-    private BlackStatusEnum statusEnum;
+    private BlackStatusEnum blackStatusEnum;
 
     @ApiModelProperty("网站名称")
     private String name;

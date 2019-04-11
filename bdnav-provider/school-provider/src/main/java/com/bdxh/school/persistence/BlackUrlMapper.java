@@ -9,20 +9,26 @@ import org.springframework.stereotype.Repository;
 import com.bdxh.school.entity.BlackUrl;
 
 
-
 /**
-* @Description: Mapper
-* @Author Kang
-* @Date 2019-04-11 09:56:14
-*/
+ * @Description: Mapper
+ * @Author Kang
+ * @Date 2019-04-11 09:56:14
+ */
 @Repository
 public interface BlackUrlMapper extends Mapper<BlackUrl> {
-	/**
-	 *查询总条数
-	 */
-	 Integer getBlackUrlAllCount();
-	/**
-	 *批量删除方法
-	 */
-	 Integer delBlackUrlInIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 查询总条数
+     */
+    Integer getBlackUrlAllCount();
+
+    /**
+     * 批量删除方法
+     */
+    Integer delBlackUrlInIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 条件分页查询
+     */
+    List<BlackUrl> findBlackInConditionPaging(@Param("blackUrl") BlackUrl blackUrl);
 }

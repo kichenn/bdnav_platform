@@ -16,6 +16,7 @@ import com.bdxh.school.entity.SchoolFence;
  */
 @Repository
 public interface SchoolFenceMapper extends Mapper<SchoolFence> {
+
     /**
      * 查询总条数
      */
@@ -25,4 +26,6 @@ public interface SchoolFenceMapper extends Mapper<SchoolFence> {
      * 批量删除方法
      */
     Integer delSchoolFenceInIds(@Param("ids") List<Long> ids);
+
+    List<SchoolFence> findFenceInConditionPaging(@Param("schoolFence") SchoolFence schoolFence);
 }

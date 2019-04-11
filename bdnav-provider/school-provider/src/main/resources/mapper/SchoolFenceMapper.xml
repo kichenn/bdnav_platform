@@ -2,46 +2,63 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.school.persistence.SchoolFenceMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolFence">
-	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
-	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-	  <result column="group_type" jdbcType="TINYINT" property="groupType"/>
-	  <result column="group_id" jdbcType="BIGINT" property="groupId"/>
-	  <result column="recursion_permission" jdbcType="TINYINT" property="recursionPermission"/>
-	  <result column="recursion_permission_ids" jdbcType="VARCHAR" property="recursionPermissionIds"/>
-	  <result column="fence_id" jdbcType="INT" property="fenceId"/>
-	  <result column="name" jdbcType="VARCHAR" property="name"/>
-	  <result column="longitude" jdbcType="DECIMAL" property="longitude"/>
-	  <result column="latitude" jdbcType="DECIMAL" property="latitude"/>
-	  <result column="radius" jdbcType="DECIMAL" property="radius"/>
-	  <result column="coord_type" jdbcType="VARCHAR" property="coordType"/>
-	  <result column="denoise" jdbcType="INT" property="denoise"/>
-	  <result column="status" jdbcType="TINYINT" property="status"/>
-	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-	  <result column="operator" jdbcType="BIGINT" property="operator"/>
-	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
-	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
-	</resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolFence">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="group_type" jdbcType="TINYINT" property="groupType"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="recursion_permission" jdbcType="TINYINT" property="recursionPermission"/>
+        <result column="recursion_permission_ids" jdbcType="VARCHAR" property="recursionPermissionIds"/>
+        <result column="fence_id" jdbcType="INTEGER" property="fenceId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="longitude" jdbcType="DECIMAL" property="longitude"/>
+        <result column="latitude" jdbcType="DECIMAL" property="latitude"/>
+        <result column="radius" jdbcType="DECIMAL" property="radius"/>
+        <result column="coord_type" jdbcType="VARCHAR" property="coordType"/>
+        <result column="denoise" jdbcType="INTEGER" property="denoise"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
 
-	<sql id="BaseColumns">
+    <sql id="BaseColumns">
 	  id,school_id,school_code,group_type,group_id,recursion_permission,recursion_permission_ids,fence_id,name,longitude,latitude,radius,coord_type,denoise,status,create_date,update_date,operator,operator_name,remark
 	</sql>
-	<select id="getSchoolFenceAllCount" resultType="Integer">
+    <select id="getSchoolFenceAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
 	  FROM t_school_fence 
 	</select>
 
-	<delete id="delSchoolFenceInIds" parameterType="Integer">
-	  DELETE
-	   FROM t_school_fence
-	  WHERE
-	   id IN
-	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	          #{id, jdbcType = BIGINT}
-	     </foreach >
-	</delete>
+    <delete id="delSchoolFenceInIds" parameterType="Integer">
+        DELETE
+        FROM t_school_fence
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
+
+    <select id="findFenceInConditionPaging" resultType="com.bdxh.school.entity.SchoolFence">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_fence
+        <where>
+            <if test="schoolFence.schoolId !=null">
+                `school_id`=#{schoolFence.schoolId, jdbcType = BIGINT}
+            </if>
+            <if test="schoolFence.schoolCode !=null and schoolFence.schoolCode!=''">
+                `school_code` LIKE CONCAT(CONCAT('%',#{schoolFence.schoolCode,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="schoolFence.status !=null">
+                `status`=#{schoolFence.status, jdbcType = TINYINT}
+            </if>
+        </where>
+    </select>
 
 </mapper>

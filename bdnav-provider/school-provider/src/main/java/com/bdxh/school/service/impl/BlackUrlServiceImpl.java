@@ -1,6 +1,10 @@
 package com.bdxh.school.service.impl;
 
+import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.service.BlackUrlService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,34 +13,50 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import com.bdxh.school.entity.BlackUrl;
 import com.bdxh.school.persistence.BlackUrlMapper;
+
 import java.util.List;
 
 /**
-* @Description: 业务层实现
-* @Author Kang
-* @Date 2019-04-11 09:56:14
-*/
+ * @Description: 业务层实现
+ * @Author Kang
+ * @Date 2019-04-11 09:56:14
+ */
 @Service
 @Slf4j
 public class BlackUrlServiceImpl extends BaseService<BlackUrl> implements BlackUrlService {
 
-	@Autowired
-	private BlackUrlMapper blackUrlMapper;
+    @Autowired
+    private BlackUrlMapper blackUrlMapper;
 
-	/*
-	 *查询总条数
-	 */
-	@Override
-	public Integer getBlackUrlAllCount(){
-		return blackUrlMapper.getBlackUrlAllCount();
-	}
+    /*
+     *查询总条数
+     */
+    @Override
+    public Integer getBlackUrlAllCount() {
+        return blackUrlMapper.getBlackUrlAllCount();
+    }
 
-	/*
-	 *批量删除方法
-	 */
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public Boolean batchDelBlackUrlInIds(List<Long> ids){
-		return blackUrlMapper.delBlackUrlInIds(ids) > 0;
-	}
+    /*
+     *批量删除方法
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean batchDelBlackUrlInIds(List<Long> ids) {
+        return blackUrlMapper.delBlackUrlInIds(ids) > 0;
+    }
+
+    /**
+     * 分页查询黑名单信息
+     */
+    @Override
+    public PageInfo<BlackUrl> findBlackInConditionPaging(BlackUrlQueryDto blackQueryDto) {
+        BlackUrl blackUrl = new BlackUrl();
+        BeanUtils.copyProperties(blackQueryDto, blackUrl);
+        if (blackQueryDto.getBlackStatusEnum() != null) {
+            blackUrl.setStatus(blackQueryDto.getBlackStatusEnum().getKey());
+        }
+        PageHelper.startPage(blackQueryDto.getPageNum(), blackQueryDto.getPageSize());
+        List<BlackUrl> blackUrls = blackUrlMapper.findBlackInConditionPaging(blackUrl);
+        return new PageInfo<>(blackUrls);
+    }
 }
