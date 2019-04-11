@@ -11,6 +11,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -24,25 +25,25 @@ import java.util.List;
 @FeignClient(value = "appmarket-provider-cluster",fallback = AppControllerClientFallback.class)
 public interface AppControllerClient {
 
-    @RequestMapping("/app/addApp")
+    @RequestMapping(value = "/app/addApp",method = RequestMethod.POST)
     Wrapper addCategory(@RequestBody AddAppDto addAppDto);
 
-    @RequestMapping("/app/delApp")
+    @RequestMapping(value = "/app/delApp",method = RequestMethod.POST)
     Wrapper delApp(@RequestParam(name = "id") Long id);
 
-    @RequestMapping("/app/updateApp")
+    @RequestMapping(value = "/app/updateApp",method = RequestMethod.POST)
     Wrapper updateApp(@RequestBody UpdateAppDto updateAppDto);
 
-    @RequestMapping("/app/queryApp")
+    @RequestMapping(value = "/app/queryApp",method = RequestMethod.GET)
     Wrapper<App> queryApp(@RequestParam(name = "id") Long id);
 
-    @RequestMapping("/app/queryAppAndImages")
+    @RequestMapping(value = "/app/queryAppAndImages",method = RequestMethod.GET)
     Wrapper<String> queryAppAndImages(@RequestParam(name = "id") Long id);
 
-    @RequestMapping("/app/queryAppList")
+    @RequestMapping(value = "/app/queryAppList",method = RequestMethod.GET)
     Wrapper<List<App>> queryAppList(@RequestBody AppQueryDto appQueryDto);
 
-    @RequestMapping("/queryAppListPage")
+    @RequestMapping(value = "/queryAppListPage",method = RequestMethod.GET)
     Wrapper<PageInfo<App>> queryAppListPage(@RequestBody AppQueryDto appQueryDto);
 
 }

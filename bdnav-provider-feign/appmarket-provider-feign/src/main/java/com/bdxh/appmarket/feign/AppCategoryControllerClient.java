@@ -11,6 +11,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -25,22 +26,22 @@ import java.util.List;
 public interface AppCategoryControllerClient {
 
 
-    @RequestMapping("/appCategory/addCategory")
+    @RequestMapping(value = "/appCategory/addCategory",method = RequestMethod.POST)
     Wrapper addCategory(@RequestBody AddCategoryDto addCategoryDto);
 
-    @RequestMapping("/appCategory/delCategory")
+    @RequestMapping(value = "/appCategory/delCategory",method = RequestMethod.POST)
     Wrapper delCategory(@RequestParam(name = "id") Long id);
 
-    @RequestMapping("/appCategory/updateCategory")
+    @RequestMapping(value = "/appCategory/updateCategory",method = RequestMethod.POST)
     Wrapper updateCategory(@RequestBody UpdateCategoryDto updateCategoryDto);
 
-    @RequestMapping("/appCategory/queryCategory")
+    @RequestMapping(value = "/appCategory/queryCategory",method = RequestMethod.GET)
     Wrapper<AppCategory> queryCategory(@RequestParam(name = "id") Long id);
 
-    @RequestMapping("/appCategory/queryCategoryList")
+    @RequestMapping(value = "/appCategory/queryCategoryList",method = RequestMethod.GET)
     Wrapper<List<AppCategory>> queryCategoryList(@RequestBody CategoryQueryDto categoryQueryDto);
 
-    @RequestMapping("/appCategory/queryCategoryListPage")
+    @RequestMapping(value = "/appCategory/queryCategoryListPage",method = RequestMethod.GET)
     Wrapper<PageInfo<AppCategory>> queryCategoryListPage(@RequestBody CategoryQueryDto categoryQueryDto);
 
 }

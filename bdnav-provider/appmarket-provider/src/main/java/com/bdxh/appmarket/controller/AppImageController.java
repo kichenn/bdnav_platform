@@ -15,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -42,7 +39,7 @@ public class AppImageController {
     private AppImageService appImageService;
 
     @ApiOperation("增加应用图片")
-    @RequestMapping("/addImage")
+    @RequestMapping(value = "/addImage",method = RequestMethod.POST)
     public Object addImage(@Valid @RequestBody AddImageDto addImageDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -60,7 +57,7 @@ public class AppImageController {
     }
 
     @ApiOperation("根据id删除应用图片")
-    @RequestMapping("/delImage")
+    @RequestMapping(value = "/delImage",method = RequestMethod.POST)
     public Object delImage(@RequestParam(name = "id") @NotNull(message = "应用图片id不能为空") Long id){
         try {
             appImageService.deleteByKey(id);
@@ -72,7 +69,7 @@ public class AppImageController {
     }
 
     @ApiOperation("根据id更新应用图片")
-    @RequestMapping("/updateImage")
+    @RequestMapping(value = "/updateImage",method = RequestMethod.POST)
     public Object updateImage(@Valid @RequestBody UpdateImageDto updateImageDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -90,7 +87,7 @@ public class AppImageController {
     }
 
     @ApiOperation("查询应用图片")
-    @RequestMapping("/queryImage")
+    @RequestMapping(value = "/queryImage",method = RequestMethod.GET)
     public Object queryImage(@RequestParam(name = "id") @NotNull(message = "应用图片id不能为空") Long id){
         try {
             AppImage appImage = appImageService.selectByKey(id);
@@ -102,7 +99,7 @@ public class AppImageController {
     }
 
     @ApiOperation("查询应用图片列表")
-    @RequestMapping("/queryImageList")
+    @RequestMapping(value = "/queryImageList",method = RequestMethod.GET)
     public Object queryImageList(@Valid @RequestBody ImageQueryDto imageQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -120,7 +117,7 @@ public class AppImageController {
     }
 
     @ApiOperation("分页查询应用分类列表")
-    @RequestMapping("/queryImageListPage")
+    @RequestMapping(value = "/queryImageListPage",method = RequestMethod.GET)
     public Object queryImageListPage(@Valid @RequestBody ImageQueryDto imageQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){

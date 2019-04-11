@@ -11,6 +11,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -24,22 +25,22 @@ import java.util.List;
 @FeignClient(value = "appmarket-provider-cluster",fallback = AppImageControllerClientFallback.class)
 public interface AppImageControllerClient {
 
-    @RequestMapping("/appImage/addImage")
+    @RequestMapping(value = "/appImage/addImage",method = RequestMethod.POST)
     Wrapper addImage(@RequestBody AddImageDto addImageDto);
 
-    @RequestMapping("/appImage/delImage")
+    @RequestMapping(value = "/appImage/delImage",method = RequestMethod.POST)
     Wrapper delImage(@RequestParam(name = "id") Long id);
 
-    @RequestMapping("/appImage/updateImage")
+    @RequestMapping(value = "/appImage/updateImage",method = RequestMethod.POST)
     Wrapper updateImage(@RequestBody UpdateImageDto updateImageDto);
 
-    @RequestMapping("/appImage/queryImage")
+    @RequestMapping(value = "/appImage/queryImage",method = RequestMethod.GET)
     Wrapper<AppImage> queryImage(@RequestParam(name = "id") Long id);
 
-    @RequestMapping("/appImage/queryImageList")
+    @RequestMapping(value = "/appImage/queryImageList",method = RequestMethod.GET)
     Wrapper<List<AppImage>> queryImageList(@RequestBody ImageQueryDto imageQueryDto);
 
-    @RequestMapping("/appImage/queryImageListPage")
+    @RequestMapping(value = "/appImage/queryImageListPage",method = RequestMethod.GET)
     Wrapper<PageInfo<AppImage>> queryImageListPage(@RequestBody ImageQueryDto imageQueryDto);
 
 }

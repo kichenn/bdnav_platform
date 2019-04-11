@@ -17,10 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -47,7 +44,7 @@ public class AppCategoryController {
     private AppService appService;
 
     @ApiOperation("增加应用分类")
-    @RequestMapping("/addCategory")
+    @RequestMapping(value = "/addCategory",method = RequestMethod.POST)
     public Object addCategory(@Valid @RequestBody AddCategoryDto addCategoryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -67,7 +64,7 @@ public class AppCategoryController {
     }
 
     @ApiOperation("根据id删除应用分类")
-    @RequestMapping("/delCategory")
+    @RequestMapping(value = "/delCategory",method = RequestMethod.POST)
     public Object delCategory(@RequestParam(name = "id") @NotNull(message = "分类id不能为空") Long id){
         try {
             Integer isCategoryAppExist = appService.isCategoryAppExist(id);
@@ -81,7 +78,7 @@ public class AppCategoryController {
     }
 
     @ApiOperation("根据id更新应用分类")
-    @RequestMapping("/updateCategory")
+    @RequestMapping(value = "/updateCategory",method = RequestMethod.POST)
     public Object updateCategory(@Valid @RequestBody UpdateCategoryDto updateCategoryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -99,7 +96,7 @@ public class AppCategoryController {
     }
 
     @ApiOperation("查询应用分类")
-    @RequestMapping("/queryCategory")
+    @RequestMapping(value = "/queryCategory",method = RequestMethod.GET)
     public Object queryCategory(@RequestParam(name = "id") @NotNull(message = "分类id不能为空") Long id){
         try {
             AppCategory appCategory = appCategoryService.selectByKey(id);
@@ -111,7 +108,7 @@ public class AppCategoryController {
     }
 
     @ApiOperation("查询应用分类列表")
-    @RequestMapping("/queryCategoryList")
+    @RequestMapping(value = "/queryCategoryList",method = RequestMethod.GET)
     public Object queryCategoryList(@Valid @RequestBody CategoryQueryDto categoryQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -129,7 +126,7 @@ public class AppCategoryController {
     }
 
     @ApiOperation("分页查询应用分类列表")
-    @RequestMapping("/queryCategoryListPage")
+    @RequestMapping(value = "/queryCategoryListPage",method = RequestMethod.GET)
     public Object queryCategoryListPage(@Valid @RequestBody CategoryQueryDto categoryQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){

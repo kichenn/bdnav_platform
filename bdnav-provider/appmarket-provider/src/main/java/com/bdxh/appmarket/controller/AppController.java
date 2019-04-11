@@ -20,10 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -51,7 +48,7 @@ public class AppController {
     private AppImageService appImageService;
 
     @ApiOperation("增加应用")
-    @RequestMapping("/addApp")
+    @RequestMapping(value = "/addApp",method = RequestMethod.POST)
     public Object addCategory(@Valid @RequestBody AddAppDto addAppDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -73,7 +70,7 @@ public class AppController {
     }
 
     @ApiOperation("根据id删除应用")
-    @RequestMapping("/delApp")
+    @RequestMapping(value = "/delApp",method = RequestMethod.POST)
     public Object delApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
         try {
             appService.delApp(id);
@@ -85,7 +82,7 @@ public class AppController {
     }
 
     @ApiOperation("根据id更新应用")
-    @RequestMapping("/updateApp")
+    @RequestMapping(value = "/updateApp",method = RequestMethod.POST)
     public Object updateApp(@Valid @RequestBody UpdateAppDto updateAppDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -105,7 +102,7 @@ public class AppController {
     }
 
     @ApiOperation("查询应用")
-    @RequestMapping("/queryApp")
+    @RequestMapping(value = "/queryApp",method = RequestMethod.GET)
     public Object queryApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
         try {
             App app = appService.selectByKey(id);
@@ -117,7 +114,7 @@ public class AppController {
     }
 
     @ApiOperation("查询应用和图片")
-    @RequestMapping("/queryAppAndImages")
+    @RequestMapping(value = "/queryAppAndImages",method = RequestMethod.GET)
     public Object queryAppAndImages(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
         try {
             Map<String,Object> param = new HashMap<>();
@@ -136,7 +133,7 @@ public class AppController {
     }
 
     @ApiOperation("查询应用列表")
-    @RequestMapping("/queryAppList")
+    @RequestMapping(value = "/queryAppList",method = RequestMethod.GET)
     public Object queryAppList(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -154,7 +151,7 @@ public class AppController {
     }
 
     @ApiOperation("分页查询应用列表")
-    @RequestMapping("/queryAppListPage")
+    @RequestMapping(value = "/queryAppListPage",method = RequestMethod.GET)
     public Object queryAppListPage(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
