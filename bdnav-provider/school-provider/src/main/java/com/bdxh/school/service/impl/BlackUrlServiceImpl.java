@@ -2,6 +2,7 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.service.BlackUrlService;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
@@ -55,8 +56,11 @@ public class BlackUrlServiceImpl extends BaseService<BlackUrl> implements BlackU
         if (blackQueryDto.getBlackStatusEnum() != null) {
             blackUrl.setStatus(blackQueryDto.getBlackStatusEnum().getKey());
         }
-        PageHelper.startPage(blackQueryDto.getPageNum(), blackQueryDto.getPageSize());
+        Page page = PageHelper.startPage(blackQueryDto.getPageNum(), blackQueryDto.getPageSize());
         List<BlackUrl> blackUrls = blackUrlMapper.findBlackInConditionPaging(blackUrl);
-        return new PageInfo<>(blackUrls);
+
+        PageInfo pageInfo = new PageInfo<>(blackUrls);
+        pageInfo.setTotal(page.getTotal());
+        return pageInfo;
     }
 }

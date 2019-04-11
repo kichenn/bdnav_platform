@@ -2,7 +2,10 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.service.SchoolFenceService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -52,6 +55,21 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
     @Override
     public PageInfo<SchoolFence> findFenceInConditionPaging(SchoolFenceQueryDto schoolFenceQueryDto) {
 
-        return null;
+        SchoolFence schoolFence = new SchoolFence();
+        BeanUtils.copyProperties(schoolFenceQueryDto, schoolFence);
+        //设置状态值
+        if (schoolFenceQueryDto.getGroupTypeEnum() != null) {
+            schoolFence.setGroupType(schoolFenceQueryDto.getGroupTypeEnum().getKey());
+        }
+        if (schoolFenceQueryDto.getBlackStatusEnum() != null) {
+            schoolFence.setStatus(schoolFenceQueryDto.getBlackStatusEnum().getKey());
+        }
+
+        Page page = PageHelper.startPage(schoolFenceQueryDto.getPageNum(), schoolFenceQueryDto.getPageSize());
+        List<SchoolFence> schoolFences = schoolFenceMapper.findFenceInConditionPaging(schoolFence);
+
+        PageInfo pageInfo = new PageInfo<>(schoolFences);
+        pageInfo.setTotal(page.getTotal());
+        return pageInfo;
     }
 }
