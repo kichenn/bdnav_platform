@@ -56,6 +56,8 @@ public class GroupPermissionWebController {
         //设置操作人
         modifyGroupPermissionDto.setOperator(user.getId());
         modifyGroupPermissionDto.setOperatorName(user.getUserName());
+        modifyGroupPermissionDto.setSchoolId(user.getSchoolId());
+        modifyGroupPermissionDto.setSchoolCode(user.getSchoolCode());
         Wrapper wrapper = groupPermissionControllerClient.modifyGroupPermission(modifyGroupPermissionDto);
         return wrapper;
     }

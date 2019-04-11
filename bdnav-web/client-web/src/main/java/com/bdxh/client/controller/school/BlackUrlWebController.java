@@ -13,7 +13,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +26,7 @@ import java.util.List;
  * @Date 2019-04-11 09:56:14
  */
 @RestController
-@RequestMapping("/blackUrlWebController")
+@RequestMapping("/clientBlackUrlWeb")
 @Slf4j
 @Validated
 @Api(value = "学校管理--Url黑名单", tags = "学校管理--Url黑名单交互API")

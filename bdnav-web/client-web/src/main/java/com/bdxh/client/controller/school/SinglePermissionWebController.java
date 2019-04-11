@@ -60,6 +60,8 @@ public class SinglePermissionWebController {
         //设置操作人
         modifySinglePermission.setOperator(user.getId());
         modifySinglePermission.setOperatorName(user.getUserName());
+        modifySinglePermission.setSchoolCode(user.getSchoolCode());
+        modifySinglePermission.setSchoolId(user.getSchoolId());
         Wrapper wrapper = singlePermissionControllerClient.modifySinglePermission(modifySinglePermission);
         return wrapper;
     }

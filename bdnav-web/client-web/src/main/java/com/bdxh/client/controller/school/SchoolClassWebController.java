@@ -76,6 +76,8 @@ public class SchoolClassWebController {
         schoolClassModifyDto.setOperator(user.getId());
         schoolClassModifyDto.setOperatorName(user.getUserName());
         schoolClassModifyDto.setUpdateDate(new Date());
+        schoolClassModifyDto.setSchoolId(user.getSchoolId());
+        schoolClassModifyDto.setSchoolCode(user.getSchoolCode());
         Wrapper wrapper = schoolClassControllerClient.modifySchoolClass(schoolClassModifyDto);
         return wrapper;
     }

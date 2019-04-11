@@ -59,6 +59,8 @@ public class SchoolDeviceWebController {
         //设置操作人
         modifySchoolDeviceDto.setOperator(user.getId());
         modifySchoolDeviceDto.setOperatorName(user.getUserName());
+        modifySchoolDeviceDto.setSchoolId(user.getSchoolId());
+        modifySchoolDeviceDto.setSchoolCode(user.getSchoolCode());
         Wrapper wrapper = schoolDeviceControllerClient.modifySchoolDevice(modifySchoolDeviceDto);
         return wrapper;
     }

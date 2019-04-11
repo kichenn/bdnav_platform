@@ -83,6 +83,8 @@ public class SchoolPermissionWebController {
         SchoolUser user = SecurityUtils.getCurrentUser();
         mspd.setOperator(user.getId());
         mspd.setOperatorName(user.getUserName());
+        mspd.setSchoolId(user.getSchoolId());
+        mspd.setSchoolCode(user.getSchoolCode());
         Wrapper wrapper = schoolPermissionControllerClient.modifySchoolPermission(mspd);
         return wrapper;
     }
