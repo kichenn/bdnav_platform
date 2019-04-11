@@ -1,8 +1,9 @@
 package com.bdxh.appmarket.service.impl;
 
 import com.bdxh.appmarket.entity.App;
+import com.bdxh.appmarket.entity.AppImage;
+import com.bdxh.appmarket.persistence.AppImageMapper;
 import com.bdxh.appmarket.persistence.AppMapper;
-import com.bdxh.appmarket.persistence.AppVersionMapper;
 import com.bdxh.appmarket.service.AppService;
 import com.bdxh.common.support.BaseService;
 import com.github.pagehelper.PageHelper;
@@ -28,7 +29,7 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     private AppMapper appMapper;
 
     @Autowired
-    private AppVersionMapper appVersionMapper;
+    private AppImageMapper appImageMapper;
 
     public Integer isCategoryAppExist(Long categoryId){
         Integer isCategoryAppExist = appMapper.isCategoryAppExist(categoryId);
@@ -43,9 +44,36 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
+    public void saveApp(App app, List<AppImage> appImages) {
+        appMapper.insert(app);
+        if (appImages!=null&&appImages.size()>0){
+            for (int i=0;i<appImages.size();i++){
+                AppImage appImage = appImages.get(i);
+                appImage.setAppId(app.getId());
+            }
+            appImageMapper.batchSaveImage(appImages);
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
     public void delApp(Long id) {
         appMapper.deleteByPrimaryKey(id);
-        appVersionMapper.deleteByAppId(id);
+        appImageMapper.deleteByAppId(id);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void updateApp(App app, List<AppImage> appImages) {
+        appMapper.updateByPrimaryKey(app);
+        appImageMapper.deleteByAppId(app.getId());
+        if (appImages!=null&&appImages.size()>0){
+            for (int i=0;i<appImages.size();i++){
+                AppImage appImage = appImages.get(i);
+                appImage.setAppId(app.getId());
+            }
+            appImageMapper.batchSaveImage(appImages);
+        }
     }
 
     @Override

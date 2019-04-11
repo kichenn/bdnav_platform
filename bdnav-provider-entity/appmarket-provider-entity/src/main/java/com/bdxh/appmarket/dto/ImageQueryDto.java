@@ -5,22 +5,21 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @description: 更新应用版本dto
+ * @description: 应用图片查询dto
  * @author: xuyuan
- * @create: 2019-03-05 18:40
+ * @create: 2019-04-11 15:00
  **/
 @Data
-@ApiModel("增加应用版本dto")
-public class AppVersionQueryDto extends Query {
+@ApiModel("应用图片查询dto")
+public class ImageQueryDto extends Query {
 
     /**
-     * 应用版本id
+     * 主键
      */
-    @ApiModelProperty("应用版本")
+    @ApiModelProperty("主键")
     private Long id;
 
     /**
@@ -30,40 +29,22 @@ public class AppVersionQueryDto extends Query {
     private Long appId;
 
     /**
-     * 应用版本号
+     * 图片地址
      */
-    @ApiModelProperty("应用版本号")
-    private String appCode;
+    @ApiModelProperty("图片地址")
+    private String imageUrl;
 
     /**
-     * apk文件名称
+     * 图片名称
      */
-    @ApiModelProperty("apk文件名称")
-    private String apkName;
+    @ApiModelProperty("图片名称")
+    private String imageName;
 
     /**
-     * apk文件下载地址
+     * 图片顺序
      */
-    @ApiModelProperty("apk文件下载地址")
-    private String apkUrl;
-
-    /**
-     * apk文件大小
-     */
-    @ApiModelProperty("apk文件大小")
-    private Long apkSize;
-
-    /**
-     * apk描述
-     */
-    @ApiModelProperty("apk描述")
-    private String apkDesc;
-
-    /**
-     * apk状态 1 上架 2 下架
-     */
-    @ApiModelProperty("apk状态 1 上架 2 下架")
-    private Byte apkStatus = 2;
+    @ApiModelProperty("图片顺序")
+    private Byte sort;
 
     /**
      * 创建时间

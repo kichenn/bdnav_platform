@@ -4,9 +4,11 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: 修改应用dto
@@ -20,11 +22,29 @@ public class UpdateAppDto implements Serializable {
     private static final long serialVersionUID = -3181263357543618891L;
 
     /**
-     * 应用id
+     * 主键
      */
-    @NotNull(message = "应用id不能为空")
-    @ApiModelProperty("应用id")
+    @NotNull(message = "主键不能为空")
+    @ApiModelProperty("主键")
     private Long id;
+
+    /**
+     * 学校id
+     */
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+
+    /**
+     * 平台 1 andriod 2 ios
+     */
+    @ApiModelProperty("平台 1 andriod 2 ios")
+    private Byte platform;
 
     /**
      * 分类id
@@ -33,9 +53,9 @@ public class UpdateAppDto implements Serializable {
     private Long categoryId;
 
     /**
-     * 分类id
+     * 应用名称
      */
-    @ApiModelProperty("分类id")
+    @ApiModelProperty("应用名称")
     private String appName;
 
     /**
@@ -45,22 +65,58 @@ public class UpdateAppDto implements Serializable {
     private String appPackage;
 
     /**
-     * 应用图标
+     * 应用图标地址
      */
-    @ApiModelProperty("应用图标")
-    private String appIcon;
+    @ApiModelProperty("应用图标地址")
+    private String iconUrl;
 
     /**
-     * 应用图标
+     * 应用图标名称
      */
-    @ApiModelProperty("应用图标")
+    @ApiModelProperty("应用图标名称")
+    private String iconName;
+
+    /**
+     * 应用版本
+     */
+    @ApiModelProperty("应用版本")
+    private String appVersion;
+
+    /**
+     * 应用描述
+     */
+    @ApiModelProperty("应用描述")
     private String appDesc;
+
+    /**
+     * 文件名称
+     */
+    @ApiModelProperty("文件名称")
+    private String apkName;
+
+    /**
+     * 文件下载路径
+     */
+    @ApiModelProperty("文件下载路径")
+    private String apkUrl;
+
+    /**
+     * 文件服务器名称
+     */
+    @ApiModelProperty("文件服务器名称")
+    private String apkUrlName;
+
+    /**
+     * 文件大小
+     */
+    @ApiModelProperty("文件大小")
+    private Integer apkSize;
 
     /**
      *  状态 1 上架 2 下架
      */
     @ApiModelProperty("状态 1 上架 2 下架")
-    private Byte status = 2;
+    private Byte status;
 
     /**
      * 创建时间
@@ -91,5 +147,12 @@ public class UpdateAppDto implements Serializable {
      */
     @ApiModelProperty("备注")
     private String remark;
+
+    /**
+     * 图片列表
+     */
+    @Valid
+    @ApiModelProperty("图片列表")
+    List<AddImageDto> addImageDtos;
 
 }
