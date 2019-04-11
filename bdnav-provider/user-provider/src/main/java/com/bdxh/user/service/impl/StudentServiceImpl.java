@@ -6,6 +6,7 @@ import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Family;
+import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.persistence.BaseUserMapper;
 import com.bdxh.user.persistence.FamilyMapper;
@@ -98,11 +99,11 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         if (null != familyStudentVo && !("").equals(familyStudentVo)) {
             if (!updateStudentDto.getName().equals(familyStudentVo.getSName())) {
                 //修改关系表数据
-                AddFamilyStudentDto familyStudentDto = new AddFamilyStudentDto();
-                familyStudentDto.setStudentName(updateStudentDto.getName());
-                familyStudentDto.setCardNumber(familyStudentVo.getFCardNumber());
-                familyStudentDto.setSchoolCode(updateStudentDto.getSchoolCode());
-                familyStudentMapper.updateStudentInfo(familyStudentDto);
+                FamilyStudent familyStudent = new FamilyStudent();
+                familyStudent.setStudentName(updateStudentDto.getName());
+                familyStudent.setCardNumber(familyStudentVo.getFCardNumber());
+                familyStudent.setSchoolCode(updateStudentDto.getSchoolCode());
+                familyStudentMapper.updateStudentInfo(familyStudent);
 
             }
         }
