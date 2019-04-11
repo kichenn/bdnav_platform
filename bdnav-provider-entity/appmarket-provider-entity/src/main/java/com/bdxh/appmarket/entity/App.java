@@ -7,7 +7,7 @@ import java.util.Date;
 @Table(name = "t_app")
 public class App implements Serializable {
 
-    private static final long serialVersionUID = 4629676932760844172L;
+    private static final long serialVersionUID = 474899716964951260L;
 
     /**
      * 主键
@@ -15,6 +15,23 @@ public class App implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    /**
+     * 学校id
+     */
+    @Column(name = "school_id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @Column(name = "school_code")
+    private String schoolCode;
+
+    /**
+     * 平台 1 andriod 2 ios
+     */
+    private Byte platform;
 
     /**
      * 分类id
@@ -35,16 +52,52 @@ public class App implements Serializable {
     private String appPackage;
 
     /**
-     * 应用图标
+     * 应用图标地址
      */
-    @Column(name = "app_icon")
-    private String appIcon;
+    @Column(name = "icon_url")
+    private String iconUrl;
+
+    /**
+     * 应用图标名称
+     */
+    @Column(name = "icon_name")
+    private String iconName;
+
+    /**
+     * 应用版本
+     */
+    @Column(name = "app_version")
+    private String appVersion;
 
     /**
      * 应用描述
      */
     @Column(name = "app_desc")
     private String appDesc;
+
+    /**
+     * 文件名称
+     */
+    @Column(name = "apk_name")
+    private String apkName;
+
+    /**
+     * 文件下载路径
+     */
+    @Column(name = "apk_url")
+    private String apkUrl;
+
+    /**
+     * 文件服务器名称
+     */
+    @Column(name = "apk_url_name")
+    private String apkUrlName;
+
+    /**
+     * 文件大小
+     */
+    @Column(name = "apk_size")
+    private Integer apkSize;
 
     /**
      *  状态 1 上架 2 下架
@@ -95,6 +148,60 @@ public class App implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /**
+     * 获取学校id
+     *
+     * @return school_id - 学校id
+     */
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    /**
+     * 设置学校id
+     *
+     * @param schoolId 学校id
+     */
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
+    }
+
+    /**
+     * 获取学校编码
+     *
+     * @return school_code - 学校编码
+     */
+    public String getSchoolCode() {
+        return schoolCode;
+    }
+
+    /**
+     * 设置学校编码
+     *
+     * @param schoolCode 学校编码
+     */
+    public void setSchoolCode(String schoolCode) {
+        this.schoolCode = schoolCode == null ? null : schoolCode.trim();
+    }
+
+    /**
+     * 获取平台 1 andriod 2 ios
+     *
+     * @return platform - 平台 1 andriod 2 ios
+     */
+    public Byte getPlatform() {
+        return platform;
+    }
+
+    /**
+     * 设置平台 1 andriod 2 ios
+     *
+     * @param platform 平台 1 andriod 2 ios
+     */
+    public void setPlatform(Byte platform) {
+        this.platform = platform;
     }
 
     /**
@@ -152,21 +259,57 @@ public class App implements Serializable {
     }
 
     /**
-     * 获取应用图标
+     * 获取应用图标地址
      *
-     * @return app_icon - 应用图标
+     * @return icon_url - 应用图标地址
      */
-    public String getAppIcon() {
-        return appIcon;
+    public String getIconUrl() {
+        return iconUrl;
     }
 
     /**
-     * 设置应用图标
+     * 设置应用图标地址
      *
-     * @param appIcon 应用图标
+     * @param iconUrl 应用图标地址
      */
-    public void setAppIcon(String appIcon) {
-        this.appIcon = appIcon == null ? null : appIcon.trim();
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl == null ? null : iconUrl.trim();
+    }
+
+    /**
+     * 获取应用图标名称
+     *
+     * @return icon_name - 应用图标名称
+     */
+    public String getIconName() {
+        return iconName;
+    }
+
+    /**
+     * 设置应用图标名称
+     *
+     * @param iconName 应用图标名称
+     */
+    public void setIconName(String iconName) {
+        this.iconName = iconName == null ? null : iconName.trim();
+    }
+
+    /**
+     * 获取应用版本
+     *
+     * @return app_version - 应用版本
+     */
+    public String getAppVersion() {
+        return appVersion;
+    }
+
+    /**
+     * 设置应用版本
+     *
+     * @param appVersion 应用版本
+     */
+    public void setAppVersion(String appVersion) {
+        this.appVersion = appVersion == null ? null : appVersion.trim();
     }
 
     /**
@@ -185,6 +328,78 @@ public class App implements Serializable {
      */
     public void setAppDesc(String appDesc) {
         this.appDesc = appDesc == null ? null : appDesc.trim();
+    }
+
+    /**
+     * 获取文件名称
+     *
+     * @return apk_name - 文件名称
+     */
+    public String getApkName() {
+        return apkName;
+    }
+
+    /**
+     * 设置文件名称
+     *
+     * @param apkName 文件名称
+     */
+    public void setApkName(String apkName) {
+        this.apkName = apkName == null ? null : apkName.trim();
+    }
+
+    /**
+     * 获取文件下载路径
+     *
+     * @return apk_url - 文件下载路径
+     */
+    public String getApkUrl() {
+        return apkUrl;
+    }
+
+    /**
+     * 设置文件下载路径
+     *
+     * @param apkUrl 文件下载路径
+     */
+    public void setApkUrl(String apkUrl) {
+        this.apkUrl = apkUrl == null ? null : apkUrl.trim();
+    }
+
+    /**
+     * 获取文件服务器名称
+     *
+     * @return apk_url_name - 文件服务器名称
+     */
+    public String getApkUrlName() {
+        return apkUrlName;
+    }
+
+    /**
+     * 设置文件服务器名称
+     *
+     * @param apkUrlName 文件服务器名称
+     */
+    public void setApkUrlName(String apkUrlName) {
+        this.apkUrlName = apkUrlName == null ? null : apkUrlName.trim();
+    }
+
+    /**
+     * 获取文件大小
+     *
+     * @return apk_size - 文件大小
+     */
+    public Integer getApkSize() {
+        return apkSize;
+    }
+
+    /**
+     * 设置文件大小
+     *
+     * @param apkSize 文件大小
+     */
+    public void setApkSize(Integer apkSize) {
+        this.apkSize = apkSize;
     }
 
     /**
@@ -294,4 +509,5 @@ public class App implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
 }

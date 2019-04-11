@@ -30,10 +30,16 @@ public class UpdateCategoryDto implements Serializable {
     private String name;
 
     /**
-     * 图标
+     * 图标地址
      */
-    @ApiModelProperty("图标")
-    private String icon;
+    @ApiModelProperty("图标地址")
+    private String iconUrl;
+
+    /**
+     * 图标名称
+     */
+    @ApiModelProperty("图标名称")
+    private String iconName;
 
     /**
      * 创建时间

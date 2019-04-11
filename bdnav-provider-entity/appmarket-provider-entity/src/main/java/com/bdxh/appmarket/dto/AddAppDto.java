@@ -4,10 +4,12 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: 增加应用dto
@@ -19,6 +21,27 @@ import java.util.Date;
 public class AddAppDto implements Serializable {
 
     private static final long serialVersionUID = 6583889193391448618L;
+
+    /**
+     * 学校id
+     */
+    @NotNull(message = "学校id不能为空")
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @NotEmpty(message = "学校编码不能为空")
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+
+    /**
+     * 平台 1 andriod 2 ios
+     */
+    @NotNull(message = "平台不能为空")
+    @ApiModelProperty("平台")
+    private Byte platform;
 
     /**
      * 分类id
@@ -42,17 +65,59 @@ public class AddAppDto implements Serializable {
     private String appPackage;
 
     /**
-     * 应用图标
+     * 应用图标地址
      */
-    @NotEmpty(message = "应用图标不能为空")
-    @ApiModelProperty("应用图标")
-    private String appIcon;
+    @NotEmpty(message = "应用图标地址不能为空")
+    @ApiModelProperty("应用图标地址")
+    private String iconUrl;
+
+    /**
+     * 应用图标名称
+     */
+    @NotEmpty(message = "应用图标名称不能为空")
+    @ApiModelProperty("应用图标名称")
+    private String iconName;
+
+    /**
+     * 应用版本
+     */
+    @NotEmpty(message = "应用版本不能为空")
+    @ApiModelProperty("应用版本")
+    private String appVersion;
 
     /**
      * 应用描述
      */
     @ApiModelProperty("应用描述")
     private String appDesc;
+
+    /**
+     * 文件名称
+     */
+    @NotEmpty(message = "文件名称不能为空")
+    @ApiModelProperty("文件名称")
+    private String apkName;
+
+    /**
+     * 文件下载路径
+     */
+    @NotEmpty(message = "文件下载路径不能为空")
+    @ApiModelProperty("文件下载路径")
+    private String apkUrl;
+
+    /**
+     * 文件服务器名称
+     */
+    @NotEmpty(message = "文件服务器名称不能为空")
+    @ApiModelProperty("文件服务器名称")
+    private String apkUrlName;
+
+    /**
+     * 文件大小
+     */
+    @NotNull(message = "文件大小不能为空")
+    @ApiModelProperty("文件大小")
+    private Integer apkSize;
 
     /**
      *  状态 1 上架 2 下架
@@ -89,5 +154,12 @@ public class AddAppDto implements Serializable {
      */
     @ApiModelProperty("备注")
     private String remark;
+
+    /**
+     * 应用图片列表
+     */
+    @Valid
+    @ApiModelProperty("应用图片列表")
+    List<AddImageDto> addImageDtos;
 
 }

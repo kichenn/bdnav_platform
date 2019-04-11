@@ -4,10 +4,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table(name = "t_app_version")
-public class AppVersion implements Serializable {
+@Table(name = "t_app_image")
+public class AppImage implements Serializable {
 
-    private static final long serialVersionUID = 5948243605611144461L;
+    private static final long serialVersionUID = 8304264720872870451L;
 
     /**
      * 主键
@@ -23,40 +23,21 @@ public class AppVersion implements Serializable {
     private Long appId;
 
     /**
-     * 应用版本号
+     * 图片地址
      */
-    @Column(name = "app_code")
-    private String appCode;
+    @Column(name = "image_url")
+    private String imageUrl;
 
     /**
-     * apk文件名称
+     * 图片名称
      */
-    @Column(name = "apk_name")
-    private String apkName;
+    @Column(name = "image_name")
+    private String imageName;
 
     /**
-     * apk文件下载地址
+     * 图片顺序
      */
-    @Column(name = "apk_url")
-    private String apkUrl;
-
-    /**
-     * apk文件大小
-     */
-    @Column(name = "apk_size")
-    private Long apkSize;
-
-    /**
-     * apk描述
-     */
-    @Column(name = "apk_desc")
-    private String apkDesc;
-
-    /**
-     * apk状态 1 上架 2 下架
-     */
-    @Column(name = "apk_status")
-    private Byte apkStatus;
+    private Byte sort;
 
     /**
      * 创建时间
@@ -123,111 +104,57 @@ public class AppVersion implements Serializable {
     }
 
     /**
-     * 获取应用版本号
+     * 获取图片地址
      *
-     * @return app_code - 应用版本号
+     * @return image_url - 图片地址
      */
-    public String getAppCode() {
-        return appCode;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     /**
-     * 设置应用版本号
+     * 设置图片地址
      *
-     * @param appCode 应用版本号
+     * @param imageUrl 图片地址
      */
-    public void setAppCode(String appCode) {
-        this.appCode = appCode == null ? null : appCode.trim();
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl == null ? null : imageUrl.trim();
     }
 
     /**
-     * 获取apk文件名称
+     * 获取图片名称
      *
-     * @return apk_name - apk文件名称
+     * @return image_name - 图片名称
      */
-    public String getApkName() {
-        return apkName;
+    public String getImageName() {
+        return imageName;
     }
 
     /**
-     * 设置apk文件名称
+     * 设置图片名称
      *
-     * @param apkName apk文件名称
+     * @param imageName 图片名称
      */
-    public void setApkName(String apkName) {
-        this.apkName = apkName == null ? null : apkName.trim();
+    public void setImageName(String imageName) {
+        this.imageName = imageName == null ? null : imageName.trim();
     }
 
     /**
-     * 获取apk文件下载地址
+     * 获取图片顺序
      *
-     * @return apk_url - apk文件下载地址
+     * @return sort - 图片顺序
      */
-    public String getApkUrl() {
-        return apkUrl;
+    public Byte getSort() {
+        return sort;
     }
 
     /**
-     * 设置apk文件下载地址
+     * 设置图片顺序
      *
-     * @param apkUrl apk文件下载地址
+     * @param sort 图片顺序
      */
-    public void setApkUrl(String apkUrl) {
-        this.apkUrl = apkUrl == null ? null : apkUrl.trim();
-    }
-
-    /**
-     * 获取apk文件大小
-     *
-     * @return apk_size - apk文件大小
-     */
-    public Long getApkSize() {
-        return apkSize;
-    }
-
-    /**
-     * 设置apk文件大小
-     *
-     * @param apkSize apk文件大小
-     */
-    public void setApkSize(Long apkSize) {
-        this.apkSize = apkSize;
-    }
-
-    /**
-     * 获取apk描述
-     *
-     * @return apk_desc - apk描述
-     */
-    public String getApkDesc() {
-        return apkDesc;
-    }
-
-    /**
-     * 设置apk描述
-     *
-     * @param apkDesc apk描述
-     */
-    public void setApkDesc(String apkDesc) {
-        this.apkDesc = apkDesc == null ? null : apkDesc.trim();
-    }
-
-    /**
-     * 获取apk状态 1 上架 2 下架
-     *
-     * @return apk_status - apk状态 1 上架 2 下架
-     */
-    public Byte getApkStatus() {
-        return apkStatus;
-    }
-
-    /**
-     * 设置apk状态 1 上架 2 下架
-     *
-     * @param apkStatus apk状态 1 上架 2 下架
-     */
-    public void setApkStatus(Byte apkStatus) {
-        this.apkStatus = apkStatus;
+    public void setSort(Byte sort) {
+        this.sort = sort;
     }
 
     /**
@@ -319,4 +246,5 @@ public class AppVersion implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
 }

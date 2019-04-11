@@ -7,7 +7,7 @@ import java.util.Date;
 @Table(name = "t_app_category")
 public class AppCategory implements Serializable {
 
-    private static final long serialVersionUID = -1282604786572353599L;
+    private static final long serialVersionUID = 6400373609624086391L;
 
     /**
      * 主键
@@ -22,9 +22,16 @@ public class AppCategory implements Serializable {
     private String name;
 
     /**
-     * 图标
+     * 图标地址
      */
-    private String icon;
+    @Column(name = "icon_url")
+    private String iconUrl;
+
+    /**
+     * 图标名称
+     */
+    @Column(name = "icon_name")
+    private String iconName;
 
     /**
      * 创建时间
@@ -91,21 +98,39 @@ public class AppCategory implements Serializable {
     }
 
     /**
-     * 获取图标
+     * 获取图标地址
      *
-     * @return icon - 图标
+     * @return icon_url - 图标地址
      */
-    public String getIcon() {
-        return icon;
+    public String getIconUrl() {
+        return iconUrl;
     }
 
     /**
-     * 设置图标
+     * 设置图标地址
      *
-     * @param icon 图标
+     * @param iconUrl 图标地址
      */
-    public void setIcon(String icon) {
-        this.icon = icon == null ? null : icon.trim();
+    public void setIconUrl(String iconUrl) {
+        this.iconUrl = iconUrl == null ? null : iconUrl.trim();
+    }
+
+    /**
+     * 获取图标名称
+     *
+     * @return icon_name - 图标名称
+     */
+    public String getIconName() {
+        return iconName;
+    }
+
+    /**
+     * 设置图标名称
+     *
+     * @param iconName 图标名称
+     */
+    public void setIconName(String iconName) {
+        this.iconName = iconName == null ? null : iconName.trim();
     }
 
     /**
@@ -197,4 +222,5 @@ public class AppCategory implements Serializable {
     public void setRemark(String remark) {
         this.remark = remark == null ? null : remark.trim();
     }
+
 }
