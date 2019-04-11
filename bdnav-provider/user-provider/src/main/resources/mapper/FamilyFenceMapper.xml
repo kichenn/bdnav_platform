@@ -25,4 +25,92 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
+  <sql id="BaseColumns">
+    id,school_id,school_code,card_number,family_id,student_id,student_name,student_number,fence_id,fence_name,longitude,latitude,radius,coord_type,denoise,status,create_date,update_date,remark
+  </sql>
+  <!--获取围栏表所有信息-->
+  <select id="getFamilyFenceInfos" resultMap="BaseResultMap" >
+  select  <include refid="BaseColumns"/> from
+    t_family_fence
+  <where>
+    <if test="schoolCode!=null and schoolCode!=''">
+      AND school_code=#{schoolCode}
+    </if>
+    <if test="cardNumber!=null and cardNumber!=''">
+      AND card_number=#{cardNumber}
+    </if>
+    <if test="studentName!=null and studentName!=''">
+      AND student_name=#{studentName}
+    </if>
+    <if test="studentNumber!=null and studentNumber!=''">
+      AND student_number=#{studentNumber}
+    </if>
+    <if test="fenceName!=null and fenceName!=''">
+      AND fence_name=#{fenceName}
+    </if>
+    <if test="status!=null and status!=''">
+      AND status=#{status}
+    </if>
+  </where>
+  </select>
+
+  <!--获取围栏表单个信息-->
+  <select id="getFamilyFenceInfo"  resultMap="BaseResultMap">
+  select <include refid="BaseColumns"/> from t_family_fence where school_code=#{schoolCode} AND card_number=#{cardNumber}
+  </select>
+
+  <!--删除围栏表信息-->
+  <delete id="removeFamilyFenceInfo">
+delete from t_family_fence where school_code=#{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
+  </delete>
+
+  <!--修改围栏表信息-->
+  <update id="updateFamilyFenceInfo">
+    UPDATE t_family_fence
+    SET
+
+    <if test="studentId !=null and studentId !=''">
+      student_id = #{studentId},
+    </if>
+    <if test="studentName !=null and studentName !=''">
+      student_name = #{studentName},
+    </if>
+    <if test="fenceId !=null and fenceId !=''">
+      fence_id = #{fenceId},
+    </if>
+    <if test="fenceName !=null and fenceName !=''">
+      fence_name = #{fenceName},
+    </if>
+    <if test="studentNumber !=null and studentNumber !=''">
+      student_number = #{studentNumber},
+    </if>
+    <if test="longitude !=null and longitude !=''">
+      longitude = #{longitude},
+    </if>
+    <if test="latitude !=null and latitude !=''">
+      latitude = #{latitude},
+    </if>
+    <if test="radius !=null and radius !=''">
+      radius = #{radius},
+    </if>
+    <if test="coordType !=null and coordType !=''">
+      coord_type = #{coordType},
+    </if>
+    <if test="denoise !=null and denoise !=''">
+      denoise = #{denoise},
+    </if>
+    <if test="status !=null and status !=''">
+      status = #{status},
+    </if>
+    <if test="createDate !=null and createDate !=''">
+      create_date = #{createDate},
+    </if>
+    <if test="remark !=null and remark !=''">
+      remark = #{remark},
+    </if>
+    update_date = #{updateDate}
+WHERE
+	school_code=#{schoolCode} and card_number=#{cardNumber}
+  </update>
+
 </mapper>
