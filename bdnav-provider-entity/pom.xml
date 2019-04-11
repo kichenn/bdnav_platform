@@ -23,6 +23,7 @@
         <module>user-provider-entity</module>
         <module>appmarket-provider-entity</module>
         <module>account-provider-entity</module>
+        <module>appburied-provider-entity</module>
     </modules>
 
     <dependencies>
