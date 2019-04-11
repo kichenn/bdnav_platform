@@ -1,0 +1,9 @@
+server:
+  port: 9031
+spring:
+  application:
+    name: appburied-provider-cluster
+  profiles:
+    active: dev
+logging:
+  config: classpath:logback-spring.xml
