@@ -96,7 +96,7 @@ public class AppController {
             App app = BeanMapUtils.map(updateAppDto, App.class);
             List<AddImageDto> addImageDtos = updateAppDto.getAddImageDtos();
             List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
-            appService.saveApp(app,appImages);
+            appService.updateApp(app,appImages);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();

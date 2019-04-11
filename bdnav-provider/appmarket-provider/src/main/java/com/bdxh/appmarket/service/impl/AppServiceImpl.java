@@ -45,7 +45,7 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void saveApp(App app, List<AppImage> appImages) {
-        appMapper.insert(app);
+        appMapper.insertSelective(app);
         if (appImages!=null&&appImages.size()>0){
             for (int i=0;i<appImages.size();i++){
                 AppImage appImage = appImages.get(i);
@@ -65,7 +65,7 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateApp(App app, List<AppImage> appImages) {
-        appMapper.updateByPrimaryKey(app);
+        appMapper.updateByPrimaryKeySelective(app);
         appImageMapper.deleteByAppId(app.getId());
         if (appImages!=null&&appImages.size()>0){
             for (int i=0;i<appImages.size();i++){
