@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -87,6 +88,8 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     public PageInfo<Role> findRolesInConditionPaging(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
         List<Role> roles =roleMapper.selectAll();
+        Comparator<Role> comparator = (r1, r2) -> r1.getCreateDate().compareTo(r2.getCreateDate());
+        roles.sort(comparator.reversed());
         return new PageInfo(roles);
     }
 

@@ -233,7 +233,7 @@ public class RoleController {
      */
     @ApiOperation("分页查询角色列表")
     @RequestMapping(value = "/findPageRoleListAll",method = RequestMethod.GET)
-    public Object findPageDectListAll(@RequestParam(name = "pageNum")Integer pageNum,
+    public Object findPageRoleListAll(@RequestParam(name = "pageNum")Integer pageNum,
                                       @RequestParam(name = "pageSize")Integer pageSize){
         try {
             RoleQueryDto rqd=new RoleQueryDto();
