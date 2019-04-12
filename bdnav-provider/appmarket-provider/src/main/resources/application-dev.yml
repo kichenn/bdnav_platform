@@ -4,7 +4,7 @@ info:
   version: @project.version@
 eureka:
   instance:
-    hostname: appmarket-provider
+    hostname: appmarket-provider1
     instance-id: appmarket-provider:${server.port}
     prefer-ip-address: false
   client:
