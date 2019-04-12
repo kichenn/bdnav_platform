@@ -87,9 +87,9 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     @Override
     public PageInfo<Role> findRolesInConditionPaging(Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<Role> roles =roleMapper.selectAll();
-        Comparator<Role> comparator = (r1, r2) -> r1.getCreateDate().compareTo(r2.getCreateDate());
-        roles.sort(comparator.reversed());
+        List<Role> roles =roleMapper.getRoleList();
+       /* Comparator<Role> comparator = (r1, r2) -> r1.getCreateDate().compareTo(r2.getCreateDate());
+        roles.sort(comparator.reversed());*/
         return new PageInfo(roles);
     }
 

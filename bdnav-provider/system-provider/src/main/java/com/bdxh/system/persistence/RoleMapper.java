@@ -31,4 +31,9 @@ public interface RoleMapper extends Mapper<Role> {
      */
     Role getRoleByRole(String role);
 
+    /**
+     * 查询全部角色
+     */
+    List<Role> getRoleList();
+
 }
