@@ -19,7 +19,7 @@ public class Swagger2Config {
     public Docket buildDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("com.bdxh.user"))
+                .apis(RequestHandlerSelectors.basePackage("com.bdxh.appburied"))
                 .paths(PathSelectors.any())
                 .build();
     }

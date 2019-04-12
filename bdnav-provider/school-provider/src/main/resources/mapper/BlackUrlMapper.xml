@@ -54,6 +54,8 @@
                 `name` LIKE CONCAT(CONCAT('%',#{blackUrl.name,jdbcType=VARCHAR}),'%')
             </if>
         </where>
+
+         Order BY create_date DESC
     </select>
 
 </mapper>
