@@ -4,8 +4,10 @@ import com.bdxh.appmarket.dto.AddCategoryDto;
 import com.bdxh.appmarket.dto.CategoryQueryDto;
 import com.bdxh.appmarket.dto.UpdateCategoryDto;
 import com.bdxh.appmarket.feign.AppCategoryControllerClient;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +45,9 @@ public class AppCategoryWebController {
             return WrapMapper.error(errors);
         }
         try {
+            User user = SecurityUtils.getCurrentUser();
+            addCategoryDto.setOperator(user.getId());
+            addCategoryDto.setOperatorName(user.getUserName());
             Wrapper wrapper = appCategoryControllerClient.addCategory(addCategoryDto);
             return wrapper;
         }catch (Exception e){
@@ -72,6 +77,9 @@ public class AppCategoryWebController {
             return WrapMapper.error(errors);
         }
         try {
+            User user = SecurityUtils.getCurrentUser();
+            updateCategoryDto.setOperator(user.getId());
+            updateCategoryDto.setOperatorName(user.getUserName());
             Wrapper wrapper = appCategoryControllerClient.updateCategory(updateCategoryDto);
             return wrapper;
         }catch (Exception e){

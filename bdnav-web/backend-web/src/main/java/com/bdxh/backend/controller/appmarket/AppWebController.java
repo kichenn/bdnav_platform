@@ -4,8 +4,10 @@ import com.bdxh.appmarket.dto.AddAppDto;
 import com.bdxh.appmarket.dto.AppQueryDto;
 import com.bdxh.appmarket.dto.UpdateAppDto;
 import com.bdxh.appmarket.feign.AppControllerClient;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,9 @@ public class AppWebController {
             return WrapMapper.error(errors);
         }
         try {
+            User user = SecurityUtils.getCurrentUser();
+            addAppDto.setOperator(user.getId());
+            addAppDto.setOperatorName(user.getUserName());
             Wrapper wrapper = appControllerClient.addApp(addAppDto);
             return wrapper;
         }catch (Exception e){
@@ -71,6 +76,9 @@ public class AppWebController {
             return WrapMapper.error(errors);
         }
         try {
+            User user = SecurityUtils.getCurrentUser();
+            updateAppDto.setOperator(user.getId());
+            updateAppDto.setOperatorName(user.getUserName());
             Wrapper wrapper = appControllerClient.updateApp(updateAppDto);
             return wrapper;
         }catch (Exception e){

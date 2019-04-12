@@ -153,6 +153,6 @@ public class UpdateAppDto implements Serializable {
      */
     @Valid
     @ApiModelProperty("图片列表")
-    List<AddImageDto> addImageDtos;
+    List<AddAppImageDto> addImageDtos;
 
 }

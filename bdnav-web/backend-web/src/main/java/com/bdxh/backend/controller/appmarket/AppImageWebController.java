@@ -4,8 +4,10 @@ import com.bdxh.appmarket.dto.AddImageDto;
 import com.bdxh.appmarket.dto.ImageQueryDto;
 import com.bdxh.appmarket.dto.UpdateImageDto;
 import com.bdxh.appmarket.feign.AppImageControllerClient;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +44,9 @@ public class AppImageWebController {
             return WrapMapper.error(errors);
         }
         try {
+            User user = SecurityUtils.getCurrentUser();
+            addImageDto.setOperator(user.getId());
+            addImageDto.setOperatorName(user.getUserName());
             Wrapper wrapper = appImageControllerClient.addImage(addImageDto);
             return wrapper;
         }catch (Exception e){
@@ -71,6 +76,9 @@ public class AppImageWebController {
             return WrapMapper.error(errors);
         }
         try {
+            User user = SecurityUtils.getCurrentUser();
+            updateImageDto.setOperator(user.getId());
+            updateImageDto.setOperatorName(user.getUserName());
             Wrapper wrapper = appImageControllerClient.updateImage(updateImageDto);
             return wrapper;
         }catch (Exception e){

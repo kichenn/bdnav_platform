@@ -1,10 +1,7 @@
 package com.bdxh.appmarket.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.bdxh.appmarket.dto.AddAppDto;
-import com.bdxh.appmarket.dto.AddImageDto;
-import com.bdxh.appmarket.dto.AppQueryDto;
-import com.bdxh.appmarket.dto.UpdateAppDto;
+import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
 import com.bdxh.appmarket.service.AppImageService;
@@ -60,7 +57,7 @@ public class AppController {
             Integer isAppExist = appService.isAppExist(addAppDto.getAppPackage());
             Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
             App app = BeanMapUtils.map(addAppDto, App.class);
-            List<AddImageDto> addImageDtos = addAppDto.getAddImageDtos();
+            List<AddAppImageDto> addImageDtos = addAppDto.getAddImageDtos();
             List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
             appService.saveApp(app,appImages);
             return WrapMapper.ok();
@@ -98,7 +95,7 @@ public class AppController {
                 Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
             }
             App app = BeanMapUtils.map(updateAppDto, App.class);
-            List<AddImageDto> addImageDtos = updateAppDto.getAddImageDtos();
+            List<AddAppImageDto> addImageDtos = updateAppDto.getAddImageDtos();
             List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
             appService.updateApp(app,appImages);
             return WrapMapper.ok();
