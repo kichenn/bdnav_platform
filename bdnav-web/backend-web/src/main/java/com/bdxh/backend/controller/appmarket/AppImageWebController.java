@@ -3,13 +3,9 @@ package com.bdxh.backend.controller.appmarket;
 import com.bdxh.appmarket.dto.AddImageDto;
 import com.bdxh.appmarket.dto.ImageQueryDto;
 import com.bdxh.appmarket.dto.UpdateImageDto;
-import com.bdxh.appmarket.entity.AppImage;
 import com.bdxh.appmarket.feign.AppImageControllerClient;
-import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -33,7 +27,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/appImageWeb")
 @Validated
 @Slf4j
-@Api(value = "应用市场管理", tags = "应用市场管理")
+@Api(value = "应用图片管理", tags = "应用图片管理")
 public class AppImageWebController {
 
     @Autowired
