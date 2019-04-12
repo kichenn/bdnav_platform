@@ -23,7 +23,7 @@ spring:
   datasource:
     ds0:
       name : dataSource
-      url : jdbc:mysql://119.23.185.109:3306/bdxh_system?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_appmarket?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
       username : admin
       password : Abc_123456
       type : com.alibaba.druid.pool.DruidDataSource

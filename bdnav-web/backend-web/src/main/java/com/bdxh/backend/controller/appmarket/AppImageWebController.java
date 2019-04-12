@@ -1,13 +1,14 @@
-package com.bdxh.appmarket.controller;
+package com.bdxh.backend.controller.appmarket;
 
 import com.bdxh.appmarket.dto.AddImageDto;
 import com.bdxh.appmarket.dto.ImageQueryDto;
 import com.bdxh.appmarket.dto.UpdateImageDto;
 import com.bdxh.appmarket.entity.AppImage;
-import com.bdxh.appmarket.service.AppImageService;
+import com.bdxh.appmarket.feign.AppImageControllerClient;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,17 +27,17 @@ import java.util.stream.Collectors;
 /**
  * @description: 应用图片控制器
  * @author: xuyuan
- * @create: 2019-04-11 14:22
+ * @create: 2019-04-12 14:14
  **/
 @RestController
-@RequestMapping("/appImage")
-@Slf4j
+@RequestMapping("/appImageWeb")
 @Validated
-@Api(value = "应用图片接口文档", tags = "应用图片接口文档")
-public class AppImageController {
+@Slf4j
+@Api(value = "应用市场管理", tags = "应用市场管理")
+public class AppImageWebController {
 
     @Autowired
-    private AppImageService appImageService;
+    private AppImageControllerClient appImageControllerClient;
 
     @ApiOperation("增加应用图片")
     @RequestMapping(value = "/addImage",method = RequestMethod.POST)
@@ -47,9 +48,8 @@ public class AppImageController {
             return WrapMapper.error(errors);
         }
         try {
-            AppImage appImage = BeanMapUtils.map(addImageDto, AppImage.class);
-            appImageService.save(appImage);
-            return WrapMapper.ok();
+            Wrapper wrapper = appImageControllerClient.addImage(addImageDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -60,8 +60,8 @@ public class AppImageController {
     @RequestMapping(value = "/delImage",method = RequestMethod.POST)
     public Object delImage(@RequestParam(name = "id") @NotNull(message = "应用图片id不能为空") Long id){
         try {
-            appImageService.deleteByKey(id);
-            return WrapMapper.ok();
+            Wrapper wrapper = appImageControllerClient.delImage(id);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -77,9 +77,8 @@ public class AppImageController {
             return WrapMapper.error(errors);
         }
         try {
-            AppImage appImage = BeanMapUtils.map(updateImageDto, AppImage.class);
-            appImageService.update(appImage);
-            return WrapMapper.ok();
+            Wrapper wrapper = appImageControllerClient.updateImage(updateImageDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -90,8 +89,8 @@ public class AppImageController {
     @RequestMapping(value = "/queryImage",method = RequestMethod.GET)
     public Object queryImage(@RequestParam(name = "id") @NotNull(message = "应用图片id不能为空") Long id){
         try {
-            AppImage appImage = appImageService.selectByKey(id);
-            return WrapMapper.ok(appImage);
+            Wrapper wrapper = appImageControllerClient.queryImage(id);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -107,9 +106,8 @@ public class AppImageController {
             return WrapMapper.error(errors);
         }
         try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(imageQueryDto);
-            List<AppImage> appImages = appImageService.getAppImageList(param);
-            return WrapMapper.ok(appImages);
+            Wrapper wrapper = appImageControllerClient.queryImageList(imageQueryDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -125,9 +123,8 @@ public class AppImageController {
             return WrapMapper.error(errors);
         }
         try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(imageQueryDto);
-            PageInfo<AppImage> pageInfo = appImageService.getAppImageListPage(param, imageQueryDto.getPageNum(), imageQueryDto.getPageSize());
-            return WrapMapper.ok(pageInfo);
+            Wrapper wrapper = appImageControllerClient.queryImageListPage(imageQueryDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

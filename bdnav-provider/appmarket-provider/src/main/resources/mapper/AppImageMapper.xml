@@ -35,18 +35,16 @@
   </select>
 
   <insert id="batchSaveImage">
-      INSERT INTO t_app_image (app_id, image_url, image_name, sort, create_date, update_date, operator, operator_name, remark)
+      INSERT INTO t_app_image (app_id, image_url, image_name, sort, operator, operator_name, remark)
       VALUES
       <foreach collection="list" index="index" separator="," item="image">
           (
-          #{image.app_id},
-          #{image.image_url},
-          #{image.image_name},
+          #{image.appId},
+          #{image.imageUrl},
+          #{image.imageName},
           #{image.sort},
-          #{image.create_date},
-          #{image.update_date},
           #{image.operator},
-          #{image.operator_name},
+          #{image.operatorName},
           #{image.remark}
           )
       </foreach>

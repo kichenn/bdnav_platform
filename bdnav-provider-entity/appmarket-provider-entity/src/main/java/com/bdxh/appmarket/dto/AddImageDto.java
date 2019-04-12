@@ -44,9 +44,8 @@ public class AddImageDto implements Serializable {
     /**
      * 图片顺序
      */
-    @NotNull(message = "图片顺序不能为空")
     @ApiModelProperty("图片顺序")
-    private Byte sort;
+    private Byte sort = 0;
 
     /**
      * 创建时间

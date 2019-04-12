@@ -26,7 +26,7 @@ import java.util.List;
 public interface AppControllerClient {
 
     @RequestMapping(value = "/app/addApp",method = RequestMethod.POST)
-    Wrapper addCategory(@RequestBody AddAppDto addAppDto);
+    Wrapper addApp(@RequestBody AddAppDto addAppDto);
 
     @RequestMapping(value = "/app/delApp",method = RequestMethod.POST)
     Wrapper delApp(@RequestParam(name = "id") Long id);
