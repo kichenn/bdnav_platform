@@ -1,6 +1,7 @@
 package com.bdxh.appmarket.service;
 
 import com.bdxh.appmarket.entity.App;
+import com.bdxh.appmarket.entity.AppImage;
 import com.bdxh.common.support.IService;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
@@ -30,10 +31,24 @@ public interface AppService extends IService<App> {
     Integer isAppExist(@Param("appPackage") String appPackage);
 
     /**
+     * 新增应用
+     * @param app
+     * @param appImages
+     */
+    void saveApp(App app, List<AppImage> appImages);
+
+    /**
      * 根据id删除应用
      * @param id
      */
     void delApp(Long id);
+
+    /**
+     * 根据id更新应用
+     * @param app
+     * @param appImages
+     */
+    void updateApp(App app, List<AppImage> appImages);
 
     /**
      * 根据条件查询app列表

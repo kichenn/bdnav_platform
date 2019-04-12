@@ -19,7 +19,7 @@ public class Swagger2Config {
     public Docket buildDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInfo()).select()
-                .apis(RequestHandlerSelectors.basePackage("com.bdxh.system"))
+                .apis(RequestHandlerSelectors.basePackage("com.bdxh.appmarket"))
                 .paths(PathSelectors.any())
                 .build();
     }
@@ -27,7 +27,7 @@ public class Swagger2Config {
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
                 .title("北斗星航核心业务系统")
-                .description("系统管理模块接口文档")
+                .description("应用管理模块接口文档")
                 .version("1.0")
                 .build();
     }

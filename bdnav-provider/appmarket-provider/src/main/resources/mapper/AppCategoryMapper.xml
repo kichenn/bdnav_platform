@@ -7,7 +7,8 @@
     -->
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="icon" jdbcType="VARCHAR" property="icon" />
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
+    <result column="icon_name" jdbcType="VARCHAR" property="iconName" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="operator" jdbcType="BIGINT" property="operator" />
@@ -15,17 +16,17 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
 
-  <sql id="BaseCloumns">
-    id, name, icon, create_date, update_date, operator, operator_name, remark
+  <sql id="BaseColumns">
+    id, name, icon_url, icon_name,create_date, update_date, operator, operator_name, remark
   </sql>
 
   <select id="getByCategoryName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select <include refid="BaseCloumns"/>
+    select <include refid="BaseColumns"/>
     from t_app_category where name = #{categoryName} limit 1;
   </select>
 
   <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseCloumns"/> from t_app_category
+    select <include refid="BaseColumns"/> from t_app_category
     <where>
       <if test="name!=null and name!=''">
         and name = #{name}

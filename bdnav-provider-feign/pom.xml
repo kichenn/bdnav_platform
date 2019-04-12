@@ -20,6 +20,8 @@
         <module>user-provider-feign</module>
         <module>account-provider-feign</module>
         <module>onecard-provider-feign</module>
+        <module>appburied-provider-feign</module>
+        <module>appmarket-provider-feign</module>
     </modules>
 
     <dependencies>

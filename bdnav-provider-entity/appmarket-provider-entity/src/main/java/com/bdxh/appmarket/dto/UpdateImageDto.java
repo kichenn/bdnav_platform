@@ -4,42 +4,52 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @description: 增加应用分类dto
+ * @description: 增加应用图片dto
  * @author: xuyuan
- * @create: 2019-03-05 09:41
+ * @create: 2019-04-11 14:43
  **/
 @Data
-@ApiModel("增加应用分类dto")
-public class AddCategoryDto implements Serializable {
+@ApiModel("更新应用图片dto")
+public class UpdateImageDto implements Serializable {
 
-    private static final long serialVersionUID = 4667963106846256232L;
-
-    /**
-     * 分类名称
-     */
-    @NotEmpty(message = "分类名称不能为空")
-    @ApiModelProperty("分类名称")
-    private String name;
+    private static final long serialVersionUID = 4006160056908199375L;
 
     /**
-     * 图标地址
+     * 主键
      */
-    @NotEmpty(message = "图标不能为空")
-    @ApiModelProperty("图标地址")
-    private String iconUrl;
+    @NotNull(message = "主键不能为空")
+    @ApiModelProperty("主键")
+    private Long id;
 
     /**
-     * 图标名称
+     * 应用id
      */
-    @NotEmpty(message = "图标不能为空")
-    @ApiModelProperty("图标名称")
-    private String iconName;
+    @ApiModelProperty("应用id")
+    private Long appId;
+
+    /**
+     * 图片地址
+     */
+    @ApiModelProperty("图片地址")
+    private String imageUrl;
+
+    /**
+     * 图片名称
+     */
+    @ApiModelProperty("图片名称")
+    private String imageName;
+
+    /**
+     * 图片顺序
+     */
+    @ApiModelProperty("图片顺序")
+    private Byte sort;
 
     /**
      * 创建时间

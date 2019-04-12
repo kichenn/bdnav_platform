@@ -53,11 +53,11 @@ public class TeacherController {
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
     public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
         try {
-            TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber()).getResult();
+            SchoolUser user= SecurityUtils.getCurrentUser();
+            TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(user.getSchoolCode(),addTeacherDto.getCardNumber()).getResult();
            if(null!=teacherVo){
                return WrapMapper.error("当前学校已存在相同教师工号");
            }
-            SchoolUser user= SecurityUtils.getCurrentUser();
             addTeacherDto.setOperator(user.getId());
             addTeacherDto.setOperatorName(user.getUserName());
             addTeacherDto.setSchoolCode(user.getSchoolCode());
@@ -70,7 +70,7 @@ public class TeacherController {
     }
 
     /**
-     * 删除老师信息
+     * 删除老师 信息
      * @param cardNumber
      * @return
      */

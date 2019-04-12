@@ -1,9 +1,13 @@
 package com.bdxh.appmarket.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.bdxh.appmarket.dto.AddAppDto;
+import com.bdxh.appmarket.dto.AddImageDto;
 import com.bdxh.appmarket.dto.AppQueryDto;
 import com.bdxh.appmarket.dto.UpdateAppDto;
 import com.bdxh.appmarket.entity.App;
+import com.bdxh.appmarket.entity.AppImage;
+import com.bdxh.appmarket.service.AppImageService;
 import com.bdxh.appmarket.service.AppService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
@@ -16,13 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -42,8 +44,11 @@ public class AppController {
     @Autowired
     private AppService appService;
 
+    @Autowired
+    private AppImageService appImageService;
+
     @ApiOperation("增加应用")
-    @RequestMapping("/addApp")
+    @RequestMapping(value = "/addApp",method = RequestMethod.POST)
     public Object addCategory(@Valid @RequestBody AddAppDto addAppDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -54,7 +59,9 @@ public class AppController {
             Integer isAppExist = appService.isAppExist(addAppDto.getAppPackage());
             Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
             App app = BeanMapUtils.map(addAppDto, App.class);
-            appService.save(app);
+            List<AddImageDto> addImageDtos = addAppDto.getAddImageDtos();
+            List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
+            appService.saveApp(app,appImages);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -63,7 +70,7 @@ public class AppController {
     }
 
     @ApiOperation("根据id删除应用")
-    @RequestMapping("/delApp")
+    @RequestMapping(value = "/delApp",method = RequestMethod.POST)
     public Object delApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
         try {
             appService.delApp(id);
@@ -75,7 +82,7 @@ public class AppController {
     }
 
     @ApiOperation("根据id更新应用")
-    @RequestMapping("/updateApp")
+    @RequestMapping(value = "/updateApp",method = RequestMethod.POST)
     public Object updateApp(@Valid @RequestBody UpdateAppDto updateAppDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -84,7 +91,9 @@ public class AppController {
         }
         try {
             App app = BeanMapUtils.map(updateAppDto, App.class);
-            appService.update(app);
+            List<AddImageDto> addImageDtos = updateAppDto.getAddImageDtos();
+            List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
+            appService.updateApp(app,appImages);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -93,7 +102,7 @@ public class AppController {
     }
 
     @ApiOperation("查询应用")
-    @RequestMapping("/queryApp")
+    @RequestMapping(value = "/queryApp",method = RequestMethod.GET)
     public Object queryApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
         try {
             App app = appService.selectByKey(id);
@@ -104,8 +113,27 @@ public class AppController {
         }
     }
 
+    @ApiOperation("查询应用和图片")
+    @RequestMapping(value = "/queryAppAndImages",method = RequestMethod.GET)
+    public Object queryAppAndImages(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
+        try {
+            Map<String,Object> param = new HashMap<>();
+            App app = appService.selectByKey(id);
+            param.put("appId",id);
+            List<AppImage> appImageList = appImageService.getAppImageList(param);
+            param.clear();
+            param.put("app",app);
+            param.put("images",appImageList);
+            String jsonString = JSON.toJSONString(param);
+            return WrapMapper.ok(jsonString);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
     @ApiOperation("查询应用列表")
-    @RequestMapping("/queryAppList")
+    @RequestMapping(value = "/queryAppList",method = RequestMethod.GET)
     public Object queryAppList(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
@@ -123,7 +151,7 @@ public class AppController {
     }
 
     @ApiOperation("分页查询应用列表")
-    @RequestMapping("/queryAppListPage")
+    @RequestMapping(value = "/queryAppListPage",method = RequestMethod.GET)
     public Object queryAppListPage(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){

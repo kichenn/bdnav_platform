@@ -63,7 +63,7 @@ public class FamilyStudentController {
         try {
             SchoolUser user= SecurityUtils.getCurrentUser();
             FamilyStudentQueryDto familyStudentQueryDto=new FamilyStudentQueryDto();
-            familyStudentQueryDto.setCardNumber(addFamilyStudentDto.getCardNumber());
+         //   familyStudentQueryDto.setCardNumber(addFamilyStudentDto.getCardNumber());
             familyStudentQueryDto.setStudentNumber(addFamilyStudentDto.getStudentNumber());
             familyStudentQueryDto.setSchoolCode(user.getSchoolCode());
             Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);

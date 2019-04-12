@@ -4,61 +4,49 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * @description: 增加应用版本dto
+ * @description: 增加应用图片dto
  * @author: xuyuan
- * @create: 2019-03-05 18:40
+ * @create: 2019-04-11 14:43
  **/
 @Data
-@ApiModel("增加应用版本dto")
-public class AddAppVersionDto implements Serializable {
+@ApiModel("增加应用图片dto")
+public class AddImageDto implements Serializable {
 
-    private static final long serialVersionUID = 4578861875051593134L;
+    private static final long serialVersionUID = 1828494174554991965L;
 
     /**
      * 应用id
      */
+    @NotNull(message = "应用id不能为空")
     @ApiModelProperty("应用id")
     private Long appId;
 
     /**
-     * 应用版本号
+     * 图片地址
      */
-    @ApiModelProperty("应用版本号")
-    private String appCode;
+    @NotEmpty(message = "图片地址不能为空")
+    @ApiModelProperty("图片地址")
+    private String imageUrl;
 
     /**
-     * apk文件名称
+     * 图片名称
      */
-    @ApiModelProperty("apk文件名称")
-    private String apkName;
+    @NotEmpty(message = "图片名称不能为空")
+    @ApiModelProperty("图片名称")
+    private String imageName;
 
     /**
-     * apk文件下载地址
+     * 图片顺序
      */
-    @ApiModelProperty("apk文件下载地址")
-    private String apkUrl;
-
-    /**
-     * apk文件大小
-     */
-    @ApiModelProperty("apk文件大小")
-    private Long apkSize;
-
-    /**
-     * apk描述
-     */
-    @ApiModelProperty("apk描述")
-    private String apkDesc;
-
-    /**
-     * apk状态 1 上架 2 下架
-     */
-    @ApiModelProperty("apk状态 1 上架 2 下架")
-    private Byte apkStatus = 2;
+    @NotNull(message = "图片顺序不能为空")
+    @ApiModelProperty("图片顺序")
+    private Byte sort;
 
     /**
      * 创建时间
