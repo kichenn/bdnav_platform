@@ -48,5 +48,15 @@
     select <include refid="BaseColumns"/>
     from sys_role where role = #{role}
   </select>
+  <!-- 查询全部角色信息 -->
+  <select id="getRoleList" resultMap="BaseResultMap">
+    SELECT
+    <include refid="BaseColumns"/>
+    FROM
+    sys_role
+    ORDER BY
+    create_date
+    DESC
+  </select>
 
 </mapper>

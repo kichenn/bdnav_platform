@@ -1,15 +1,47 @@
 package com.bdxh.appburied.service.impl;
 
-import com.bdxh.appburied.entity.InstallApps;
+import com.bdxh.appburied.dto.InstallAppsQueryDto;
 import com.bdxh.appburied.service.InstallAppsService;
-import com.bdxh.common.support.BaseService;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.bdxh.common.support.BaseService;
+import lombok.extern.slf4j.Slf4j;
+import com.bdxh.appburied.entity.InstallApps;
+import com.bdxh.appburied.persistence.InstallAppsMapper;
+
+import java.util.List;
+
 /**
- * @description: 应用上报service
- * @author: xuyuan
- * @create: 2019-04-10 19:03
- **/
+ * @Description: 业务层实现
+ * @Author Kang
+ * @Date 2019-04-11 16:39:55
+ */
 @Service
+@Slf4j
 public class InstallAppsServiceImpl extends BaseService<InstallApps> implements InstallAppsService {
+
+    @Autowired
+    private InstallAppsMapper installAppsMapper;
+
+    /*
+     *查询总条数
+     */
+    @Override
+    public Integer getInstallAppsAllCount() {
+        return installAppsMapper.getInstallAppsAllCount();
+    }
+
+
+    /**
+     * 条件分页查询上报app应用
+     */
+    @Override
+    public PageInfo<InstallApps> findInstallAppsInContionPaging(InstallAppsQueryDto installAppsQueryDto) {
+        InstallApps installApps = new InstallApps();
+        BeanUtils.copyProperties(installAppsQueryDto, installApps);
+        return null;
+    }
 }

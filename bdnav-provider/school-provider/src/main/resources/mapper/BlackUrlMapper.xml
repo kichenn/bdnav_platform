@@ -45,15 +45,17 @@
                 `school_id`=#{blackUrl.schoolId, jdbcType = BIGINT}
             </if>
             <if test="blackUrl.schoolCode !=null and blackUrl.schoolCode!=''">
-                `school_code` LIKE CONCAT(CONCAT('%',#{blackUrl.schoolCode,jdbcType=VARCHAR}),'%')
+                AND `school_code` LIKE CONCAT(CONCAT('%',#{blackUrl.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="blackUrl.status !=null">
-                `status`=#{blackUrl.status, jdbcType = TINYINT}
+                AND `status`=#{blackUrl.status, jdbcType = TINYINT}
             </if>
             <if test="blackUrl.name !=null and blackUrl.name!=''">
-                `name` LIKE CONCAT(CONCAT('%',#{blackUrl.name,jdbcType=VARCHAR}),'%')
+                AND `name` LIKE CONCAT(CONCAT('%',#{blackUrl.name,jdbcType=VARCHAR}),'%')
             </if>
         </where>
+
+        Order BY create_date DESC
     </select>
 
 </mapper>

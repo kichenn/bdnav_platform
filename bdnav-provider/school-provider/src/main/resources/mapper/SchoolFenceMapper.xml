@@ -53,21 +53,23 @@
                 `school_id`=#{schoolFence.schoolId, jdbcType = BIGINT}
             </if>
             <if test="schoolFence.schoolCode !=null and schoolFence.schoolCode!=''">
-                `school_code` LIKE CONCAT(CONCAT('%',#{schoolFence.schoolCode,jdbcType=VARCHAR}),'%')
+                AND `school_code` LIKE CONCAT(CONCAT('%',#{schoolFence.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="schoolFence.groupType !=null">
-                group_type=#{schoolFence.groupType, jdbcType = TINYINT}
+                AND group_type=#{schoolFence.groupType, jdbcType = TINYINT}
             </if>
             <if test="schoolFence.groupId !=null">
-                group_id=#{schoolFence.groupId, jdbcType = BIGINT}
+                AND group_id=#{schoolFence.groupId, jdbcType = BIGINT}
             </if>
             <if test="schoolFence.status !=null">
-                `status`=#{schoolFence.status, jdbcType = TINYINT}
+                AND `status`=#{schoolFence.status, jdbcType = TINYINT}
             </if>
             <if test="schoolFence.name !=null and schoolFence.name!=''">
-                `name` LIKE CONCAT(CONCAT('%',#{schoolFence.name,jdbcType=VARCHAR}),'%')
+                AND `name` LIKE CONCAT(CONCAT('%',#{schoolFence.name,jdbcType=VARCHAR}),'%')
             </if>
         </where>
+
+        Order BY create_date DESC
     </select>
 
 </mapper>
