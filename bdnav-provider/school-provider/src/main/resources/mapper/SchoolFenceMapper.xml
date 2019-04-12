@@ -44,7 +44,7 @@
         </foreach>
     </delete>
 
-    <select id="findFenceInConditionPaging" resultType="com.bdxh.school.entity.SchoolFence">
+    <select id="findFenceInConditionPaging" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
         FROM t_school_fence

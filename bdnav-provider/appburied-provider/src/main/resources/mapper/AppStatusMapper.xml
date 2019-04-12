@@ -2,35 +2,47 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.appburied.persistence.AppStatusMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.appburied.entity.AppStatus">
-	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="platform" jdbcType="TINYINT" property="platform"/>
-	  <result column="account_id" jdbcType="BIGINT" property="accountId"/>
-	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
-	  <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
-	  <result column="app_status" jdbcType="TINYINT" property="appStatus"/>
-	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-	</resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.appburied.entity.AppStatus">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="platform" jdbcType="TINYINT" property="platform"/>
+        <result column="account_id" jdbcType="BIGINT" property="accountId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
+        <result column="app_status" jdbcType="TINYINT" property="appStatus"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+    </resultMap>
 
-	<sql id="BaseColumns">
+    <sql id="BaseColumns">
 	  id,platform,account_id,school_code,card_number,app_package,app_status,create_date,update_date
 	</sql>
-	<select id="getAppStatusAllCount" resultType="Integer">
+    <select id="getAppStatusAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
 	  FROM t_app_status 
 	</select>
 
-	<delete id="delAppStatusInIds" parameterType="Integer">
-	  DELETE
-	   FROM t_app_status
-	  WHERE
-	   id IN
-	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	          #{id, jdbcType = BIGINT}
-	     </foreach >
-	</delete>
+    <select id="findAppStatusInConationPaging" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_app_status
+        <where>
+            <if test="appStatus.platform !=null">
+                platform=#{appStatus.platform,jdbcType = TINYINT}
+            </if>
+            <if test="appStatus.schoolCode !=null and appStatus.schoolCode!=''">
+                AND school_code=#{appStatus.schoolCode,jdbcType = VARCHAR}
+            </if>
+            <if test="appStatus.cardNumber !=null and appStatus.cardNumber!=''">
+                AND card_number=#{appStatus.cardNumber,jdbcType = VARCHAR}
+            </if>
+            <if test="appStatus.appStatus !=null">
+                AND app_status=#{appStatus.appStatus,jdbcType = TINYINT}
+            </if>
+        </where>
+
+         ORDER BY create_date DESC
+    </select>
 
 </mapper>

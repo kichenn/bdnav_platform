@@ -21,8 +21,5 @@ public interface AppStatusMapper extends Mapper<AppStatus> {
 	 */
 	 Integer getAppStatusAllCount();
 
-	/**
-	 *批量删除方法
-	 */
-	 Integer delAppStatusInIds(@Param("ids") List<Long> ids);
+	List<AppStatus> findAppStatusInConationPaging(@Param("appStatus") AppStatus appStatus);
 }

@@ -2,6 +2,8 @@ package com.bdxh.appburied.service.impl;
 
 import com.bdxh.appburied.dto.InstallAppsQueryDto;
 import com.bdxh.appburied.service.InstallAppsService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,9 +41,17 @@ public class InstallAppsServiceImpl extends BaseService<InstallApps> implements 
      * 条件分页查询上报app应用
      */
     @Override
-    public PageInfo<InstallApps> findInstallAppsInContionPaging(InstallAppsQueryDto installAppsQueryDto) {
+    public PageInfo<InstallApps> findInstallAppsInConationPaging(InstallAppsQueryDto installAppsQueryDto) {
         InstallApps installApps = new InstallApps();
         BeanUtils.copyProperties(installAppsQueryDto, installApps);
-        return null;
+        if (installAppsQueryDto.getInstallAppsPlatformEnum() != null) {
+            installApps.setPlatform(installAppsQueryDto.getInstallAppsPlatformEnum().getKey());
+        }
+        Page page = PageHelper.startPage(installAppsQueryDto.getPageNum(), installAppsQueryDto.getPageSize());
+
+        List<InstallApps> installAppsList = installAppsMapper.findInstallAppsInContionPaging(installApps);
+        PageInfo pageInfo = new PageInfo<>(installAppsList);
+        pageInfo.setTotal(page.getTotal());
+        return pageInfo;
     }
 }

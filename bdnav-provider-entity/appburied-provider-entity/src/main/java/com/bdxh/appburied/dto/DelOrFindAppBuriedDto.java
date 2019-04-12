@@ -12,7 +12,7 @@ import javax.validation.constraints.NotEmpty;
  * @Date: 2019/4/12 10:26
  */
 @Data
-public class DelInstallAppsDto extends AppBuriedParentDto {
+public class DelOrFindAppBuriedDto extends AppBuriedParentDto {
 
     @ApiModelProperty("id")
     private Long id;

@@ -24,6 +24,6 @@ public interface InstallAppsService extends IService<InstallApps> {
     /**
      * 条件分页查询上报app应用
      */
-    PageInfo<InstallApps> findInstallAppsInContionPaging(InstallAppsQueryDto installAppsQueryDto);
+    PageInfo<InstallApps> findInstallAppsInConationPaging(InstallAppsQueryDto installAppsQueryDto);
 
 }

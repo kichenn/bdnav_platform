@@ -2,45 +2,76 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.appburied.persistence.ApplyLogMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.appburied.entity.ApplyLog">
-	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="platform" jdbcType="TINYINT" property="platform"/>
-	  <result column="account_id" jdbcType="BIGINT" property="accountId"/>
-	  <result column="push_sign" jdbcType="VARCHAR" property="pushSign"/>
-	  <result column="model" jdbcType="TINYINT" property="model"/>
-	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-	  <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
-	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
-	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
-	  <result column="app_name" jdbcType="VARCHAR" property="appName"/>
-	  <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
-	  <result column="operator_code" jdbcType="VARCHAR" property="operatorCode"/>
-	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
-	  <result column="operator_status" jdbcType="TINYINT" property="operatorStatus"/>
-	  <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
-	  <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
-	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
-	</resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.appburied.entity.ApplyLog">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="platform" jdbcType="TINYINT" property="platform"/>
+        <result column="account_id" jdbcType="BIGINT" property="accountId"/>
+        <result column="push_sign" jdbcType="VARCHAR" property="pushSign"/>
+        <result column="model" jdbcType="TINYINT" property="model"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+        <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
+        <result column="operator_code" jdbcType="VARCHAR" property="operatorCode"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="operator_status" jdbcType="TINYINT" property="operatorStatus"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
 
-	<sql id="BaseColumns">
+    <sql id="BaseColumns">
 	  id,platform,account_id,push_sign,model,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark
 	</sql>
-	<select id="getApplyLogAllCount" resultType="Integer">
+    <select id="getApplyLogAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
 	  FROM t_apply_log 
 	</select>
 
-	<delete id="delApplyLogInIds" parameterType="Integer">
-	  DELETE
-	   FROM t_apply_log
-	  WHERE
-	   id IN
-	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	          #{id, jdbcType = BIGINT}
-	     </foreach >
-	</delete>
+    <select id="findApplyLogInConationPaging" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_apply_log
+        <where>
+            <if test="applyLog.platform !=null">
+                platform=#{applyLog.platform,jdbcType = TINYINT}
+            </if>
+            <if test="applyLog.model !=null">
+                AND model=#{applyLog.model,jdbcType = TINYINT}
+            </if>
+            <if test="applyLog.schoolCode !=null and applyLog.schoolCode!=''">
+                AND school_code=#{applyLog.schoolCode,jdbcType = VARCHAR}
+            </if>
+            <if test="applyLog.schoolName !=null and applyLog.schoolName!=''">
+                AND school_name like CONCAT(CONCAT('%',#{applyLog.schoolName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="applyLog.cardNumber !=null and applyLog.cardNumber!=''">
+                AND card_number=#{applyLog.cardNumber,jdbcType = VARCHAR}
+            </if>
+            <if test="applyLog.userName !=null and applyLog.userName!=''">
+                AND user_name like CONCAT(CONCAT('%',#{applyLog.userName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="applyLog.appName !=null and applyLog.appName!=''">
+                AND app_name like CONCAT(CONCAT('%',#{applyLog.appName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="applyLog.operatorCode !=null and applyLog.operatorCode!=''">
+                AND operator_code=#{applyLog.operatorCode,jdbcType = VARCHAR}
+            </if>
+            <if test="applyLog.operatorName !=null and applyLog.operatorName!=''">
+                AND operator_name like CONCAT(CONCAT('%',#{applyLog.operatorName,jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="applyLog.operatorStatus !=null">
+                operator_status=#{applyLog.operatorStatus,jdbcType = TINYINT}
+            </if>
+        </where>
+
+        ORDER BY create_date DESC
+    </select>
+
 
 </mapper>

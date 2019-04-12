@@ -36,7 +36,7 @@
         </foreach>
     </delete>
 
-    <select id="findBlackInConditionPaging" resultType="com.bdxh.school.entity.BlackUrl">
+    <select id="findBlackInConditionPaging" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
         FROM t_black_url

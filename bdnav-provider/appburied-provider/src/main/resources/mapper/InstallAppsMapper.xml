@@ -25,7 +25,7 @@
 	   COUNT(1)
 	  FROM t_install_apps 
 	</select>
-    <select id="findInstallAppsInContionPaging" resultType="com.bdxh.appburied.entity.InstallApps">
+    <select id="findInstallAppsInContionPaging" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
         FROM t_install_apps
