@@ -22,7 +22,7 @@ public class AppControllerClientFallback implements AppControllerClient {
 
 
     @Override
-    public Wrapper addCategory(AddAppDto addAppDto) {
+    public Wrapper addApp(AddAppDto addAppDto) {
         return WrapMapper.error();
     }
 

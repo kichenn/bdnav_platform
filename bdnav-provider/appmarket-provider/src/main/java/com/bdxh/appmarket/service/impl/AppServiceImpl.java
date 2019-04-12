@@ -50,6 +50,8 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
             for (int i=0;i<appImages.size();i++){
                 AppImage appImage = appImages.get(i);
                 appImage.setAppId(app.getId());
+                appImage.setOperator(app.getOperator());
+                appImage.setOperatorName(app.getOperatorName());
             }
             appImageMapper.batchSaveImage(appImages);
         }
@@ -71,6 +73,8 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
             for (int i=0;i<appImages.size();i++){
                 AppImage appImage = appImages.get(i);
                 appImage.setAppId(app.getId());
+                appImage.setOperator(app.getOperator());
+                appImage.setOperatorName(app.getOperatorName());
             }
             appImageMapper.batchSaveImage(appImages);
         }

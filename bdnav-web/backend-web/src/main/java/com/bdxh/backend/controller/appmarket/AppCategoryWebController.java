@@ -1,20 +1,16 @@
-package com.bdxh.appmarket.controller;
+package com.bdxh.backend.controller.appmarket;
 
 import com.bdxh.appmarket.dto.AddCategoryDto;
 import com.bdxh.appmarket.dto.CategoryQueryDto;
 import com.bdxh.appmarket.dto.UpdateCategoryDto;
-import com.bdxh.appmarket.entity.AppCategory;
-import com.bdxh.appmarket.service.AppCategoryService;
-import com.bdxh.appmarket.service.AppService;
-import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.BeanToMapUtil;
+import com.bdxh.appmarket.feign.AppCategoryControllerClient;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.github.pagehelper.PageInfo;
-import com.google.common.base.Preconditions;
+import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,27 +18,23 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
  * @description: 应用分类控制器
  * @author: xuyuan
- * @create: 2019-03-05 09:36
+ * @create: 2019-04-12 12:18
  **/
 @RestController
-@RequestMapping("/appCategory")
-@Slf4j
+@RequestMapping("/appCategoryWeb")
 @Validated
-@Api(value = "应用分类接口文档", tags = "应用分类接口文档")
-public class AppCategoryController {
+@Slf4j
+@Api(value = "应用分类管理", tags = "应用分类管理")
+public class AppCategoryWebController {
 
     @Autowired
-    private AppCategoryService appCategoryService;
+    private AppCategoryControllerClient appCategoryControllerClient;
 
-    @Autowired
-    private AppService appService;
 
     @ApiOperation("增加应用分类")
     @RequestMapping(value = "/addCategory",method = RequestMethod.POST)
@@ -53,11 +45,11 @@ public class AppCategoryController {
             return WrapMapper.error(errors);
         }
         try {
-            AppCategory appCategoryData = appCategoryService.getByCategoryName(addCategoryDto.getName());
-            Preconditions.checkArgument(appCategoryData==null,"应用分类已经存在");
-            AppCategory appCategory = BeanMapUtils.map(addCategoryDto, AppCategory.class);
-            appCategoryService.save(appCategory);
-            return WrapMapper.ok();
+            User user = SecurityUtils.getCurrentUser();
+            addCategoryDto.setOperator(user.getId());
+            addCategoryDto.setOperatorName(user.getUserName());
+            Wrapper wrapper = appCategoryControllerClient.addCategory(addCategoryDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -68,10 +60,8 @@ public class AppCategoryController {
     @RequestMapping(value = "/delCategory",method = RequestMethod.POST)
     public Object delCategory(@RequestParam(name = "id") @NotNull(message = "分类id不能为空") Long id){
         try {
-            Integer isCategoryAppExist = appService.isCategoryAppExist(id);
-            Preconditions.checkArgument(isCategoryAppExist==null,"分类下已包含应用");
-            appCategoryService.deleteByKey(id);
-            return WrapMapper.ok();
+            Wrapper wrapper = appCategoryControllerClient.delCategory(id);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -87,15 +77,11 @@ public class AppCategoryController {
             return WrapMapper.error(errors);
         }
         try {
-            AppCategory category = appCategoryService.selectByKey(updateCategoryDto.getId());
-            Preconditions.checkNotNull(category,"应用分类不存在");
-            if (!StringUtils.equals(updateCategoryDto.getName(),category.getName())){
-                AppCategory appCategoryData = appCategoryService.getByCategoryName(updateCategoryDto.getName());
-                Preconditions.checkArgument(appCategoryData==null,"应用分类已经存在");
-            }
-            AppCategory appCategory = BeanMapUtils.map(updateCategoryDto, AppCategory.class);
-            appCategoryService.update(appCategory);
-            return WrapMapper.ok();
+            User user = SecurityUtils.getCurrentUser();
+            updateCategoryDto.setOperator(user.getId());
+            updateCategoryDto.setOperatorName(user.getUserName());
+            Wrapper wrapper = appCategoryControllerClient.updateCategory(updateCategoryDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -106,8 +92,8 @@ public class AppCategoryController {
     @RequestMapping(value = "/queryCategory",method = RequestMethod.GET)
     public Object queryCategory(@RequestParam(name = "id") @NotNull(message = "分类id不能为空") Long id){
         try {
-            AppCategory appCategory = appCategoryService.selectByKey(id);
-            return WrapMapper.ok(appCategory);
+            Wrapper wrapper = appCategoryControllerClient.queryCategory(id);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -123,9 +109,8 @@ public class AppCategoryController {
             return WrapMapper.error(errors);
         }
         try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(categoryQueryDto);
-            List<AppCategory> pageInfo = appCategoryService.getAppCategoryList(param);
-            return WrapMapper.ok(pageInfo);
+            Wrapper wrapper = appCategoryControllerClient.queryCategoryList(categoryQueryDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -141,9 +126,8 @@ public class AppCategoryController {
             return WrapMapper.error(errors);
         }
         try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(categoryQueryDto);
-            PageInfo<AppCategory> pageInfo = appCategoryService.getAppCategoryListPage(param, categoryQueryDto.getPageNum(), categoryQueryDto.getPageSize());
-            return WrapMapper.ok(pageInfo);
+            Wrapper wrapper = appCategoryControllerClient.queryCategoryListPage(categoryQueryDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

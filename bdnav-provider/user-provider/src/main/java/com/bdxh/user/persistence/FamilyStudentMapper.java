@@ -30,7 +30,7 @@ public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
     FamilyStudentVo studentQueryInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
 
     //修改学生名称
-    int updateStudentInfo(@Param("FamilyStudentDto") FamilyStudent FamilyStudentDto);
+    int updateStudentInfo(@Param("familyStudentDto") FamilyStudent FamilyStudentDto);
 
     //批量删除家长学生关系信息
     int batchRemoveFamilyStudentInfo(@Param("list") List<Map<String,String>> list);

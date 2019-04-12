@@ -16,16 +16,9 @@ import java.util.Date;
  **/
 @Data
 @ApiModel("增加应用图片dto")
-public class AddImageDto implements Serializable {
+public class AddAppImageDto implements Serializable {
 
     private static final long serialVersionUID = 1828494174554991965L;
-
-    /**
-     * 应用id
-     */
-    @NotNull(message = "应用id不能为空")
-    @ApiModelProperty("应用id")
-    private Long appId;
 
     /**
      * 图片地址

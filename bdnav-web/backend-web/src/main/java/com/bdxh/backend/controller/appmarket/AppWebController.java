@@ -1,20 +1,16 @@
-package com.bdxh.appmarket.controller;
+package com.bdxh.backend.controller.appmarket;
 
-import com.alibaba.fastjson.JSON;
-import com.bdxh.appmarket.dto.*;
-import com.bdxh.appmarket.entity.App;
-import com.bdxh.appmarket.entity.AppImage;
-import com.bdxh.appmarket.service.AppImageService;
-import com.bdxh.appmarket.service.AppService;
-import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.BeanToMapUtil;
+import com.bdxh.appmarket.dto.AddAppDto;
+import com.bdxh.appmarket.dto.AppQueryDto;
+import com.bdxh.appmarket.dto.UpdateAppDto;
+import com.bdxh.appmarket.feign.AppControllerClient;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.github.pagehelper.PageInfo;
-import com.google.common.base.Preconditions;
+import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -22,45 +18,37 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @description: 应用分类控制器
+ * @description: 应用市场管理控制器
  * @author: xuyuan
- * @create: 2019-03-05 11:26
+ * @create: 2019-04-12 14:07
  **/
 @RestController
-@RequestMapping("/app")
-@Slf4j
+@RequestMapping("/appWeb")
 @Validated
-@Api(value = "应用管理接口文档", tags = "应用管理接口文档")
-public class AppController {
+@Slf4j
+@Api(value = "应用市场管理", tags = "应用市场管理")
+public class AppWebController {
 
     @Autowired
-    private AppService appService;
-
-    @Autowired
-    private AppImageService appImageService;
+    private AppControllerClient appControllerClient;
 
     @ApiOperation("增加应用")
     @RequestMapping(value = "/addApp",method = RequestMethod.POST)
-    public Object addApp(@Valid @RequestBody AddAppDto addAppDto, BindingResult bindingResult){
+    public Object addCategory(@Valid @RequestBody AddAppDto addAppDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            Integer isAppExist = appService.isAppExist(addAppDto.getAppPackage());
-            Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
-            App app = BeanMapUtils.map(addAppDto, App.class);
-            List<AddAppImageDto> addImageDtos = addAppDto.getAddImageDtos();
-            List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
-            appService.saveApp(app,appImages);
-            return WrapMapper.ok();
+            User user = SecurityUtils.getCurrentUser();
+            addAppDto.setOperator(user.getId());
+            addAppDto.setOperatorName(user.getUserName());
+            Wrapper wrapper = appControllerClient.addApp(addAppDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -71,8 +59,8 @@ public class AppController {
     @RequestMapping(value = "/delApp",method = RequestMethod.POST)
     public Object delApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
         try {
-            appService.delApp(id);
-            return WrapMapper.ok();
+            Wrapper wrapper = appControllerClient.delApp(id);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -88,17 +76,11 @@ public class AppController {
             return WrapMapper.error(errors);
         }
         try {
-            App appData = appService.selectByKey(updateAppDto.getId());
-            Preconditions.checkNotNull(appData,"应用不存在");
-            if (!StringUtils.equals(updateAppDto.getAppPackage(),appData.getAppPackage())){
-                Integer isAppExist = appService.isAppExist(updateAppDto.getAppPackage());
-                Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
-            }
-            App app = BeanMapUtils.map(updateAppDto, App.class);
-            List<AddAppImageDto> addImageDtos = updateAppDto.getAddImageDtos();
-            List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
-            appService.updateApp(app,appImages);
-            return WrapMapper.ok();
+            User user = SecurityUtils.getCurrentUser();
+            updateAppDto.setOperator(user.getId());
+            updateAppDto.setOperatorName(user.getUserName());
+            Wrapper wrapper = appControllerClient.updateApp(updateAppDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -109,8 +91,8 @@ public class AppController {
     @RequestMapping(value = "/queryApp",method = RequestMethod.GET)
     public Object queryApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
         try {
-            App app = appService.selectByKey(id);
-            return WrapMapper.ok(app);
+            Wrapper wrapper = appControllerClient.queryApp(id);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -121,15 +103,8 @@ public class AppController {
     @RequestMapping(value = "/queryAppAndImages",method = RequestMethod.GET)
     public Object queryAppAndImages(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
         try {
-            Map<String,Object> param = new HashMap<>();
-            App app = appService.selectByKey(id);
-            param.put("appId",id);
-            List<AppImage> appImageList = appImageService.getAppImageList(param);
-            param.clear();
-            param.put("app",app);
-            param.put("images",appImageList);
-            String jsonString = JSON.toJSONString(param);
-            return WrapMapper.ok(jsonString);
+            Wrapper wrapper = appControllerClient.queryAppAndImages(id);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -145,9 +120,8 @@ public class AppController {
             return WrapMapper.error(errors);
         }
         try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(appQueryDto);
-            List<App> apps = appService.getAppList(param);
-            return WrapMapper.ok(apps);
+            Wrapper wrapper = appControllerClient.queryAppList(appQueryDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -163,9 +137,8 @@ public class AppController {
             return WrapMapper.error(errors);
         }
         try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(appQueryDto);
-            PageInfo<App> appListPage = appService.getAppListPage(param, appQueryDto.getPageNum(), appQueryDto.getPageSize());
-            return WrapMapper.ok(appListPage);
+            Wrapper wrapper = appControllerClient.queryAppListPage(appQueryDto);
+            return wrapper;
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
