@@ -1,6 +1,7 @@
 package com.bdxh.user.persistence;
 
 import com.bdxh.user.entity.FamilyFence;
+import com.bdxh.user.vo.FamilyFenceVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -17,7 +18,7 @@ public interface FamilyFenceMapper extends Mapper<FamilyFence> {
     int removeFamilyFenceInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("id")String id);
 
     // 获取围栏表所有信息
-    List<FamilyFence> getFamilyFenceInfos(@Param("familyFence") FamilyFence familyFence);
+    List<FamilyFenceVo> getFamilyFenceInfos(@Param("familyFence") FamilyFence familyFence);
 
     //获取围栏表单个信息
     FamilyFence getFamilyFenceInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("id")String id);

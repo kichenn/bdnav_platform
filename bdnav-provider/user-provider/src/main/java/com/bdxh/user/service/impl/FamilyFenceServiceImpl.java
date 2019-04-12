@@ -8,6 +8,7 @@ import com.bdxh.user.dto.UpdateFamilyFenceDto;
 import com.bdxh.user.entity.FamilyFence;
 import com.bdxh.user.persistence.FamilyFenceMapper;
 import com.bdxh.user.service.FamilyFenceService;
+import com.bdxh.user.vo.FamilyFenceVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +38,11 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
     }
 
     @Override
-    public PageInfo<FamilyFence> getFamilyFenceInfos(FamilyFenceQueryDto familyFenceQueryDto) {
+    public PageInfo<FamilyFenceVo> getFamilyFenceInfos(FamilyFenceQueryDto familyFenceQueryDto) {
         PageHelper.startPage(familyFenceQueryDto.getPageNum(), familyFenceQueryDto.getPageSize());
         FamilyFence familyFence = BeanMapUtils.map(familyFenceQueryDto, FamilyFence.class);
-        List<FamilyFence> listFamilyFence = familyFenceMapper.getFamilyFenceInfos(familyFence);
-        PageInfo<FamilyFence> pageInfoFamily = new PageInfo<>(listFamilyFence);
+        List<FamilyFenceVo> listFamilyFence = familyFenceMapper.getFamilyFenceInfos(familyFence);
+        PageInfo<FamilyFenceVo> pageInfoFamily = new PageInfo<>(listFamilyFence);
         return pageInfoFamily;
     }
 

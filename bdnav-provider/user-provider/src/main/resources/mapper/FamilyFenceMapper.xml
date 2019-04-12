@@ -29,29 +29,53 @@
     id,school_id,school_code,card_number,family_id,student_id,student_name,student_number,fence_id,fence_name,longitude,latitude,radius,coord_type,denoise,status,create_date,update_date,remark
   </sql>
   <!--获取围栏表所有信息-->
-  <select id="getFamilyFenceInfos" resultMap="BaseResultMap" >
-  select  <include refid="BaseColumns"/> from
-    t_family_fence
+  <select id="getFamilyFenceInfos" resultType="com.bdxh.user.vo.FamilyFenceVo" >
+    SELECT
+    familyFence.id,
+    familyFence.school_id as schoolId,
+    familyFence.school_code as schoolCode,
+    familyFence.card_number as cardNumber,
+    familyFence.family_id as familyId,
+    familyFence.student_id as studentId,
+    familyFence.student_name as studentName,
+    familyFence.student_number as studentNumber,
+    familyFence.fence_id as fenceId,
+    familyFence.fence_name as fenceName,
+    familyFence.longitude,
+    familyFence.latitude,
+    familyFence.radius,
+    familyFence.coord_type as coordType,
+    familyFence.denoise,
+    familyFence.status,
+    familyFence.create_date as createDate,
+    familyFence.update_date as updateDate,
+    familyFence.remark,
+    family.school_name as schoolName,
+    family.name as familyName
+    FROM
+    t_family_fence AS familyFence
+    LEFT JOIN t_family AS family ON family.id = familyFence.family_id
   <where>
     <if test="familyFence.schoolCode!=null and familyFence.schoolCode!=''">
-      AND school_code=#{familyFence.schoolCode}
+      AND familyFence.school_code=#{familyFence.schoolCode}
     </if>
     <if test="familyFence.cardNumber!=null and familyFence.cardNumber!=''">
-      AND card_number=#{familyFence.cardNumber}
+      AND familyFence.card_number=#{familyFence.cardNumber}
     </if>
     <if test="familyFence.studentName!=null and familyFence.studentName!=''">
-      AND student_name=#{familyFence.studentName}
+      AND familyFence.student_name=#{familyFence.studentName}
     </if>
     <if test="familyFence.studentNumber!=null and familyFence.studentNumber!=''">
-      AND student_number=#{familyFence.studentNumber}
+      AND familyFence.student_number=#{familyFence.studentNumber}
     </if>
     <if test="familyFence.fenceName!=null and familyFence.fenceName!=''">
-      AND fence_name=#{familyFence.fenceName}
+      AND familyFence.fence_name=#{familyFence.fenceName}
     </if>
     <if test="familyFence.status!=null and familyFence.status!=''">
-      AND status=#{familyFence.status}
+      AND familyFence.status=#{familyFence.status}
     </if>
   </where>
+    order by familyFence.create_date desc
   </select>
 
   <!--获取围栏表单个信息-->

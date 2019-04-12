@@ -5,6 +5,7 @@ import com.bdxh.user.dto.AddFamilyFenceDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.UpdateFamilyFenceDto;
 import com.bdxh.user.entity.FamilyFence;
+import com.bdxh.user.vo.FamilyFenceVo;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -38,7 +39,7 @@ public interface FamilyFenceService extends IService<FamilyFence> {
      * @param familyFenceQueryDto
      * @return
      */
-    PageInfo<FamilyFence> getFamilyFenceInfos(FamilyFenceQueryDto familyFenceQueryDto);
+    PageInfo<FamilyFenceVo> getFamilyFenceInfos(FamilyFenceQueryDto familyFenceQueryDto);
 
     /**
      * 获取围栏表单个信息
