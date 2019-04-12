@@ -4,8 +4,11 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.AddSchoolRoleDto;
 import com.bdxh.school.dto.ModifySchoolRoleDto;
 import com.bdxh.school.dto.SchoolRoleQueryDto;
+import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.service.SchoolRoleService;
+import com.bdxh.school.service.SchoolService;
+import com.bdxh.school.vo.SchoolRoleInfoVo;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
@@ -35,6 +38,9 @@ public class SchoolRoleController {
     @Autowired
     private SchoolRoleService schoolRoleService;
 
+    @Autowired
+    private SchoolService schoolService;
+
     /**
      * @Description: 添加学校角色信息
      * @Author: Kang
@@ -44,7 +50,7 @@ public class SchoolRoleController {
     @RequestMapping(value = "/addSchoolRole", method = RequestMethod.POST)
     public Object addSchoolRole(@Validated @RequestBody AddSchoolRoleDto addSchoolRoleDto) {
         SchoolRole roleData = schoolRoleService.getRoleByRole(addSchoolRoleDto.getRole());
-        if(roleData!=null){
+        if (roleData != null) {
             return WrapMapper.error("角色已经存在");
         }
         SchoolRole schoolRole = new SchoolRole();
@@ -99,6 +105,14 @@ public class SchoolRoleController {
     @RequestMapping(value = "/findSchoolRoleById", method = RequestMethod.GET)
     public Object findSchoolRoleById(@RequestParam(name = "id") Long id) {
         SchoolRole role = schoolRoleService.selectByKey(id);
+
+        SchoolRoleInfoVo schoolRoleInfoVo = new SchoolRoleInfoVo();
+        BeanUtils.copyProperties(role, schoolRoleInfoVo);
+
+        if (schoolRoleInfoVo != null) {
+            School school = schoolService.findSchoolById(schoolRoleInfoVo.getSchoolId()).orElse(new School());
+            schoolRoleInfoVo.setSchoolName(school.getSchoolName());
+        }
         return WrapMapper.ok(role);
     }
 

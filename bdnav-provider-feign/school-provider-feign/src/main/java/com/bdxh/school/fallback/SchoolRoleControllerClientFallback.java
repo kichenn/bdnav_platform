@@ -7,6 +7,7 @@ import com.bdxh.school.dto.ModifySchoolRoleDto;
 import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.feign.SchoolRoleControllerClient;
+import com.bdxh.school.vo.SchoolRoleInfoVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,11 @@ public class SchoolRoleControllerClientFallback implements SchoolRoleControllerC
 
     @Override
     public Wrapper<List<String>> findSchoolRolesByUserId(Long userId) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<SchoolRoleInfoVo> findSchoolRoleById(Long id) {
         return WrapMapper.error();
     }
 

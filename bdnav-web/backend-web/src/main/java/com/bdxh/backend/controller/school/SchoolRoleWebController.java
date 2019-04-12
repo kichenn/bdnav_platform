@@ -8,14 +8,12 @@ import com.bdxh.school.dto.ModifySchoolRoleDto;
 import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.feign.SchoolRoleControllerClient;
-import com.bdxh.system.dto.UpdateRoleDto;
+import com.bdxh.school.vo.SchoolRoleInfoVo;
 import com.bdxh.system.entity.User;
-import com.bdxh.system.feign.PermissionControllerClient;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +35,13 @@ public class SchoolRoleWebController {
     @Autowired
     private SchoolRoleControllerClient schoolRoleControllerClient;
 
+
+    @RequestMapping(value = "/findSchoolRoleById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据id查询角色信息", response = SchoolRoleInfoVo.class)
+    public Object findSchoolRoleById(@RequestParam(name = "id") Long id) {
+        Wrapper<SchoolRoleInfoVo> wrapper = schoolRoleControllerClient.findSchoolRoleById(id);
+        return WrapMapper.ok(wrapper.getResult());
+    }
 
     @RequestMapping(value = "/findRolesInConditionPage", method = RequestMethod.POST)
     @ApiOperation(value = "分页条件筛选查询学校角色信息", response = SchoolRole.class)
