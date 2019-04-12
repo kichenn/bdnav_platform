@@ -113,7 +113,7 @@ public class SchoolRoleController {
             School school = schoolService.findSchoolById(schoolRoleInfoVo.getSchoolId()).orElse(new School());
             schoolRoleInfoVo.setSchoolName(school.getSchoolName());
         }
-        return WrapMapper.ok(role);
+        return WrapMapper.ok(schoolRoleInfoVo);
     }
 
     /**
