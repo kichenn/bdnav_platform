@@ -1,5 +1,7 @@
 package com.bdxh.user.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Column;
@@ -18,6 +20,7 @@ public class Student implements Serializable {
      */
     @Id
     @ApiModelProperty("主键")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     /**

@@ -2,6 +2,8 @@ package com.bdxh.user.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -25,6 +27,7 @@ public class BaseUser implements Serializable {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonSerialize(using= ToStringSerializer.class)
 	private Long id;
 
 	/**

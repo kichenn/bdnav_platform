@@ -1,5 +1,7 @@
 package com.bdxh.user.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 
 import java.io.Serializable;
@@ -18,6 +20,7 @@ public class FamilyStudentDetailsVo implements Serializable {
      * 主键
      */
     @ApiModelProperty(value="学生家长关系id")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     /**

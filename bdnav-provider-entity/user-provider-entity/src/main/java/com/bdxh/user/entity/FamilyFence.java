@@ -1,5 +1,8 @@
 package com.bdxh.user.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,6 +19,7 @@ public class FamilyFence implements Serializable {
      * 主键
      */
     @Id
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     /**

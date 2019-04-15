@@ -10,6 +10,8 @@
  */
 package com.bdxh.user.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -22,6 +24,7 @@ public class FamilyVo implements Serializable {
     private static final long serialVersionUID = -7907793665264570255L;
     //家长ID
     @ApiModelProperty("家长ID")
+    @JsonSerialize(using= ToStringSerializer.class)
     private String id;
 
     //家长姓名
