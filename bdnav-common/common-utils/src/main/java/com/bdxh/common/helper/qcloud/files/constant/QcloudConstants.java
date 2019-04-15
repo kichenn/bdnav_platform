@@ -17,7 +17,7 @@ public class QcloudConstants {
      * @Author: Kang
      * @Date: 2019/3/12 17:23
      */
-    public static final int N_THREADS = 32;
+    public static final int N_THREADS = 500;//200;//32;
 
     //所上传资源路径的文件夹(图片)
     public static final String RESOURCES_PREFIX = "data/";
