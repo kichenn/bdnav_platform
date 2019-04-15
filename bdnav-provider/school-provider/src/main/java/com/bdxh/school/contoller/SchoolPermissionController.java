@@ -47,7 +47,7 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findSchoolPermissionByRoleId")
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = List.class)
-    public Object findPermissionByRoleId(@RequestParam("roleId") Long roleId, @RequestParam("type") Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId) {
+    public Object findPermissionByRoleId(@RequestParam(name = "roleId", required = false) Long roleId, @RequestParam(name = "type", required = false) Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId) {
         List<SchoolPermission> permissions = schoolPermissionService.findPermissionByRoleId(roleId, type, schoolId);
         List<SchoolPermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)) {
