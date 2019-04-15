@@ -7,6 +7,8 @@
  * History:
  */
 package com.bdxh.user.vo;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -16,6 +18,7 @@ import java.io.Serializable;
 public class StudentVo implements Serializable {
     private static final long serialVersionUID = -4694086728702829530L;
     @ApiModelProperty("学生Id")
+    @JsonSerialize(using= ToStringSerializer.class)
     private  Long sId;
 
     @ApiModelProperty("学生姓名")

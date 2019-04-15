@@ -1,5 +1,7 @@
 package com.bdxh.user.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -19,6 +21,7 @@ public class FamilyFenceVo implements Serializable {
      * 主键
      */
     @ApiModelProperty("围栏表主键")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     /**

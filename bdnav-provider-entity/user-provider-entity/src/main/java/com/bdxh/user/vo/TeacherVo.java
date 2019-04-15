@@ -10,6 +10,8 @@
 package com.bdxh.user.vo;
 
 import com.bdxh.common.base.page.Query;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.Column;
@@ -26,6 +28,7 @@ public class TeacherVo extends Query implements Serializable {
      */
     @Id
     @ApiModelProperty("主键")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     /**
