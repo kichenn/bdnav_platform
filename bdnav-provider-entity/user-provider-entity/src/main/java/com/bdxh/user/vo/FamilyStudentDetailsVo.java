@@ -45,12 +45,14 @@ public class FamilyStudentDetailsVo implements Serializable {
      * 家长id
      */
     @ApiModelProperty(value="家长id")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long familyId;
 
     /**
      * 学生id
      */
     @ApiModelProperty(value="学生id")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long studentId;
 
     /**
