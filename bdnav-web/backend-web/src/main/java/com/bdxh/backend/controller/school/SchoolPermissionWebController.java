@@ -43,8 +43,8 @@ public class SchoolPermissionWebController {
 
     @RequestMapping(value = "/findSchoolPermissionByRoleId", method = RequestMethod.GET)
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = SchoolPermissionTreeVo.class)
-    public Object findSchoolPermissionByRoleId(@RequestParam(name = "roleId") Long roleId,
-                                               @RequestParam(name = "type") Byte type,
+    public Object findSchoolPermissionByRoleId(@RequestParam(name = "roleId", required = false) Long roleId,
+                                               @RequestParam(name = "type", required = false) Byte type,
                                                @RequestParam(name = "schoolId", required = false) Long schoolId) {
         Wrapper wrapper = schoolPermissionControllerClient.findSchoolPermissionByRoleId(roleId, type, schoolId);
         return WrapMapper.ok(wrapper.getResult());
@@ -52,7 +52,7 @@ public class SchoolPermissionWebController {
 
     @RequestMapping(value = "/findPermissionList", method = RequestMethod.GET)
     @ApiOperation(value = "菜单or按钮权限列表", response = SchoolPermissionTreeVo.class)
-    public Object findPermissionList(@RequestParam(value = "roleId",required = false) Long roleId) {
+    public Object findPermissionList(@RequestParam(value = "roleId", required = false) Long roleId) {
         Wrapper wrapper = schoolPermissionControllerClient.findPermissionList(roleId);
         return WrapMapper.ok(wrapper.getResult());
     }
