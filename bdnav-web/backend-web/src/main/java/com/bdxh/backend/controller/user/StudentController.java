@@ -83,6 +83,8 @@ public class StudentController {
     public Object queryStudentListPage(@RequestBody StudentQueryDto studentQueryDto){
         try {
             Wrapper wrapper =studentControllerClient.queryStudentListPage(studentQueryDto);
+            log.info("wrapper.getResult()======"+wrapper.getResult());
+            log.info("WrapMapper.ok(wrapper.getResult())======="+WrapMapper.ok(wrapper.getResult()));
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
@@ -292,7 +294,6 @@ public class StudentController {
             int addNumber=1;
            for (int i=1;i<studentList.size();i++) {
                String[] columns = studentList.get(i);
-
                    if (!studentList.get(i)[0].equals(i - 1 >= studentList.size() ? studentList.get(studentList.size())[0] : studentList.get(i - 1)[0])||i==1) {
                        //判断得出在同一个班级直接从缓存中拉取数据
                         Wrapper  schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
@@ -378,7 +379,7 @@ public class StudentController {
                }else {
                    return WrapMapper.ok("不存在当前学校");
                }
-               }
+           }
            studentControllerClient.batchSaveStudentInfo(students);
            long end=System.currentTimeMillis();
            log.info("导入一万条数据总计用时："+(end-start));
