@@ -19,8 +19,10 @@ public class QcloudConstants {
      */
     public static final int N_THREADS = 32;
 
-    //所上传资源路径的文件夹
+    //所上传资源路径的文件夹(图片)
     public static final String RESOURCES_PREFIX = "data/";
+
+    public static final String RESOURCES_PREFIX1 = "files/";
 
     // bucket 的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
     public static final String BUCKET_NAME = "bdnav-1258570075-1258570075";

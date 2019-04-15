@@ -9,8 +9,8 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 10Mb
-      max-request-size: 100Mb
+      max-file-size: 200Mb
+      max-request-size: 1000Mb
   #jackson配置
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss

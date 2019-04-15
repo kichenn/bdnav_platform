@@ -74,7 +74,12 @@ public class FileOperationUtils {
         objectMetadata.setHeader("Pragma", "no-cache");
         objectMetadata.setContentType(getcontentType(extName));
         objectMetadata.setContentDisposition("inline;filename=" + key);
-        PutObjectRequest putObjectRequest = new PutObjectRequest(buckentNameFinal, QcloudConstants.RESOURCES_PREFIX + key, multipartFile.getInputStream(), objectMetadata);
+        //图片存储到data里，apk存储到files里
+        String finalKey = QcloudConstants.RESOURCES_PREFIX + key;
+        if (extName.equals("apk")) {
+            finalKey = QcloudConstants.RESOURCES_PREFIX1 + key;
+        }
+        PutObjectRequest putObjectRequest = new PutObjectRequest(buckentNameFinal, finalKey, multipartFile.getInputStream(), objectMetadata);
         putObjectRequest.setMetadata(objectMetadata);
         // putobjectResult会返回文件的etag
         PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
@@ -104,10 +109,16 @@ public class FileOperationUtils {
         if (StringUtils.isNotEmpty(buckentName)) {
             buckentNameFinal = buckentName;
         }
-        String key = QcloudConstants.RESOURCES_PREFIX + fileName;
+        // 文件后缀
+        String extName = FilenameUtils.getExtension(fileName);
+        //图片存储到data里，apk存储到files里
+        String finalKey = QcloudConstants.RESOURCES_PREFIX + fileName;
+        if (extName.equals("apk")) {
+            finalKey = QcloudConstants.RESOURCES_PREFIX1 + fileName;
+        }
         COSClient cosClient = new COSClient(cred, clientConfig);
         // 获取下载输入流
-        GetObjectRequest getObjectRequest = new GetObjectRequest(buckentNameFinal, key);
+        GetObjectRequest getObjectRequest = new GetObjectRequest(buckentNameFinal, finalKey);
         COSObject cosObject = cosClient.getObject(getObjectRequest);
         COSObjectInputStream cosObjectInput = cosObject.getObjectContent();
         return cosObjectInput;
@@ -153,10 +164,17 @@ public class FileOperationUtils {
         if (StringUtils.isNotEmpty(buckentName)) {
             buckentNameFinal = buckentName;
         }
-        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(buckentNameFinal, QcloudConstants.RESOURCES_PREFIX + fileName, HttpMethodName.GET);
+        // 文件后缀
+        String extName = FilenameUtils.getExtension(fileName);
+        //图片存储到data里，apk存储到files里
+        String finalKey = QcloudConstants.RESOURCES_PREFIX + fileName;
+        if (extName.equals("apk")) {
+            finalKey = QcloudConstants.RESOURCES_PREFIX1 + fileName;
+        }
+        GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(buckentNameFinal, finalKey, HttpMethodName.GET);
         // 设置签名过期时间(可选), 过期时间不做限制，只需比当前时间大, 若未进行设置, 则默认使用ClientConfig中的签名过期时间(5分钟)
         // 这里设置签名在10年后过期
-        Date expirationDate = new Date(System.currentTimeMillis() + 3600L * 1000 * 24 * 365 * 10);
+        Date expirationDate = new Date(System.currentTimeMillis() + 3600L * 1000L * 24L * 365L * 10L);
         req.setExpiration(expirationDate);
         URL url = cosClient.generatePresignedUrl(req);
         if (url != null) {
@@ -187,30 +205,24 @@ public class FileOperationUtils {
     private static String getcontentType(String FilenameExtension) {
         if (".bmp".equalsIgnoreCase(FilenameExtension)) {
             return "image/bmp";
-        }
-        if (".gif".equalsIgnoreCase(FilenameExtension)) {
+        } else if (".gif".equalsIgnoreCase(FilenameExtension)) {
             return "image/gif";
-        }
-        if (".jpeg".equalsIgnoreCase(FilenameExtension) || ".jpg".equalsIgnoreCase(FilenameExtension) || ".png".equalsIgnoreCase(FilenameExtension)) {
+        } else if (".jpeg".equalsIgnoreCase(FilenameExtension) || ".jpg".equalsIgnoreCase(FilenameExtension) || ".png".equalsIgnoreCase(FilenameExtension)) {
             return "image/jpeg";
-        }
-        if (".html".equalsIgnoreCase(FilenameExtension)) {
+        } else if (".html".equalsIgnoreCase(FilenameExtension)) {
             return "text/html";
-        }
-        if (".txt".equalsIgnoreCase(FilenameExtension)) {
+        } else if (".txt".equalsIgnoreCase(FilenameExtension)) {
             return "text/plain";
-        }
-        if (".vsd".equalsIgnoreCase(FilenameExtension)) {
+        } else if (".vsd".equalsIgnoreCase(FilenameExtension)) {
             return "application/vnd.visio";
-        }
-        if (".pptx".equalsIgnoreCase(FilenameExtension) || ".ppt".equalsIgnoreCase(FilenameExtension)) {
+        } else if (".pptx".equalsIgnoreCase(FilenameExtension) || ".ppt".equalsIgnoreCase(FilenameExtension)) {
             return "application/vnd.ms-powerpoint";
-        }
-        if (".docx".equalsIgnoreCase(FilenameExtension) || ".doc".equalsIgnoreCase(FilenameExtension)) {
+        } else if (".docx".equalsIgnoreCase(FilenameExtension) || ".doc".equalsIgnoreCase(FilenameExtension)) {
             return "application/msword";
-        }
-        if (".xml".equalsIgnoreCase(FilenameExtension)) {
+        } else if (".xml".equalsIgnoreCase(FilenameExtension)) {
             return "text/xml";
+        } else if (".apk".equalsIgnoreCase(FilenameExtension)) {
+            return "application/vnd.android.package-archive";
         }
         return "image/jpeg";
     }

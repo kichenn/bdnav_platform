@@ -21,7 +21,7 @@ import java.util.Date;
  */
 public class DateUtil {
 
-    public static String DATE_FORMAT_SHORT = "yyyyMMdd";
+    public static String DATE_FORMAT_SHORT = "yyyyMMddHHmmss";
 
     /**
      * 将日期格式化为字符串
