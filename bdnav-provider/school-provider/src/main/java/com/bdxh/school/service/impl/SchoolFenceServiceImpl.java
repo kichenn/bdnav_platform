@@ -100,6 +100,7 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
                     SchoolDept schoolDept = schoolDeptMapper.selectByPrimaryKey(e.getGroupId());
                     temp.setGroupName(schoolDept != null ? schoolDept.getName() : "");
                 }
+                resultFenceShow.add(temp);
             });
         }
 

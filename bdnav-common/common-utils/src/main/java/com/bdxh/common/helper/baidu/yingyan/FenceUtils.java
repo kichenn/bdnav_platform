@@ -36,7 +36,7 @@ public class FenceUtils {
     }
 
     /**
-     * @Description: 删除围栏
+     * @Description: 删除圆形围栏
      * @Author: Kang
      * @Date: 2019/4/16 14:12
      */
@@ -49,7 +49,7 @@ public class FenceUtils {
         map.put("fence_ids", fenceIds);
         String result = "";
         try {
-            result = HttpClientUtils.doPost(FenceConstant.CREATE_ROUND_URL, map);
+            result = HttpClientUtils.doPost(FenceConstant.DELETE_ROUND_URL, map);
             log.info(result);
         } catch (Exception e) {
             e.printStackTrace();
