@@ -33,7 +33,25 @@ public interface SchoolFenceService extends IService<SchoolFence> {
      * @param schoolFence
      * @return
      */
-    Boolean addFence(SchoolFence schoolFence);
+    Boolean addFence(SchoolFence schoolFence) throws RuntimeException;
+
+
+    /**
+     * 修改学校围栏
+     *
+     * @param schoolFence
+     * @return
+     * @throws RuntimeException
+     */
+    Boolean modifyFence(SchoolFence schoolFence) throws RuntimeException;
+
+    /**
+     * 删除学校围栏
+     *
+     * @param id
+     * @return
+     */
+    Boolean delFence(Long id) throws RuntimeException;
 
     /**
      * 围栏分页条件查询

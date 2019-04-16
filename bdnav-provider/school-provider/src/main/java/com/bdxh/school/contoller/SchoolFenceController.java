@@ -42,8 +42,13 @@ public class SchoolFenceController {
         schoolFence.setGroupType(addSchoolFenceDto.getGroupTypeEnum().getKey());
         schoolFence.setRecursionPermission(addSchoolFenceDto.getRecursionPermissionStatusEnum().getKey());
         schoolFence.setStatus(addSchoolFenceDto.getBlackStatusEnum().getKey());
-
-        return WrapMapper.ok(schoolFenceService.save(schoolFence) > 0);
+        try {
+            Boolean result = schoolFenceService.addFence(schoolFence);
+            return WrapMapper.ok(result);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/modifyFence", method = RequestMethod.POST)
@@ -61,13 +66,26 @@ public class SchoolFenceController {
         if (modifySchoolFenceDto.getBlackStatusEnum() != null) {
             schoolFence.setStatus(modifySchoolFenceDto.getBlackStatusEnum().getKey());
         }
-        return WrapMapper.ok(schoolFenceService.update(schoolFence) > 0);
+
+        try {
+            Boolean result = schoolFenceService.modifyFence(schoolFence);
+            return WrapMapper.ok(result);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/delFenceById", method = RequestMethod.POST)
     @ApiOperation(value = "删除学校围栏", response = Boolean.class)
     public Object delFenceById(@RequestParam("id") Long id) {
-        return WrapMapper.ok(schoolFenceService.deleteByKey(id) > 0);
+        try {
+            Boolean result = schoolFenceService.delFence(id);
+            return WrapMapper.ok(result);
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
     }
 
     @RequestMapping(value = "/delBatchFence", method = RequestMethod.POST)
