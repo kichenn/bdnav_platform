@@ -1,5 +1,9 @@
 package com.bdxh.school.service.impl;
 
+import com.bdxh.common.helper.baidu.yingyan.FenceUtils;
+import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
+import com.bdxh.common.helper.baidu.yingyan.request.CreateFenceRoundRequest;
+import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
 import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolClass;
@@ -62,6 +66,37 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
     @Transactional(rollbackFor = Exception.class)
     public Boolean batchDelSchoolFenceInIds(List<Long> ids) {
         return schoolFenceMapper.delSchoolFenceInIds(ids) > 0;
+    }
+
+    /**
+     * 增加学校围栏
+     *
+     * @param schoolFence
+     * @return
+     */
+    @Override
+    @Transactional
+    public Boolean addFence(SchoolFence schoolFence) {
+        CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
+        entityRequest.setAk(FenceConstant.AK);
+        entityRequest.setService_id(FenceConstant.SERVICE_ID);
+        entityRequest.setEntity_name("测试监控对象一");
+        entityRequest.setEntity_desc("测试用的yin");
+        String entityResult = FenceUtils.createNewEntity(entityRequest);
+
+
+        CreateFenceRoundRequest request = new CreateFenceRoundRequest();
+        request.setAk(FenceConstant.AK);
+        request.setService_id(FenceConstant.SERVICE_ID);
+        request.setDenoise(0);
+        request.setCoord_type("bd09ll");
+        request.setFence_name("测试围栏一");
+        request.setLatitude(22.548);
+        request.setLongitude(114.10987);
+        request.setRadius(1603);
+        request.setMonitored_person("测试监控对象一");
+        FenceUtils.createRoundFence(request);
+        return null;
     }
 
     /**

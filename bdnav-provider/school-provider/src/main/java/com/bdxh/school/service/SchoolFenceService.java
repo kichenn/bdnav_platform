@@ -28,6 +28,14 @@ public interface SchoolFenceService extends IService<SchoolFence> {
     Boolean batchDelSchoolFenceInIds(List<Long> id);
 
     /**
+     * 增加学校围栏
+     *
+     * @param schoolFence
+     * @return
+     */
+    Boolean addFence(SchoolFence schoolFence);
+
+    /**
      * 围栏分页条件查询
      *
      * @param schoolFenceQueryDto

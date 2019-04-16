@@ -3,6 +3,7 @@ package com.bdxh.common.helper.baidu.yingyan;
 import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.helper.baidu.yingyan.request.CreateFenceRoundRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
+import com.bdxh.common.helper.baidu.yingyan.request.ModifyFenceRoundRequest;
 import com.bdxh.common.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanMap;
@@ -27,6 +28,24 @@ public class FenceUtils {
         String result = "";
         try {
             result = HttpClientUtils.doPost(FenceConstant.CREATE_ROUND_URL, map);
+            log.info(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * @Description: 修改百度圆形围栏
+     * @Author: Kang
+     * @Date: 2019/4/16 10:59
+     */
+    public static String modifyRoundFence(ModifyFenceRoundRequest request) {
+        Map<String, Object> map = toMap(request);
+        String result = "";
+        try {
+            result = HttpClientUtils.doPost(FenceConstant.DELETE_ROUND_URL, map);
             log.info(result);
         } catch (Exception e) {
             e.printStackTrace();
