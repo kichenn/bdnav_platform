@@ -90,6 +90,7 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         if (CollectionUtils.isNotEmpty(schoolFences)) {
             schoolFences.forEach(e -> {
                 SchoolFenceShowVo temp = new SchoolFenceShowVo();
+                BeanUtils.copyProperties(e, temp);
                 School school = schoolMapper.selectByPrimaryKey(temp.getSchoolId());
                 temp.setSchoolName(school != null ? school.getSchoolName() : "");
                 // 用户群类型 1 学生 2 老师
