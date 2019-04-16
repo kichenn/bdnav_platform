@@ -38,10 +38,10 @@ public interface AppCategoryControllerClient {
     @RequestMapping(value = "/appCategory/queryCategory",method = RequestMethod.GET)
     Wrapper<AppCategory> queryCategory(@RequestParam(name = "id") Long id);
 
-    @RequestMapping(value = "/appCategory/queryCategoryList",method = RequestMethod.GET)
+    @RequestMapping(value = "/appCategory/queryCategoryList",method = RequestMethod.POST)
     Wrapper<List<AppCategory>> queryCategoryList(@RequestBody CategoryQueryDto categoryQueryDto);
 
-    @RequestMapping(value = "/appCategory/queryCategoryListPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/appCategory/queryCategoryListPage",method = RequestMethod.POST)
     Wrapper<PageInfo<AppCategory>> queryCategoryListPage(@RequestBody CategoryQueryDto categoryQueryDto);
 
 }
