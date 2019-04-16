@@ -25,14 +25,12 @@ public class AddAppDto implements Serializable {
     /**
      * 学校id
      */
-    @NotNull(message = "学校id不能为空")
     @ApiModelProperty("学校id")
     private Long schoolId;
 
     /**
      * 学校编码
      */
-    @NotEmpty(message = "学校编码不能为空")
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
