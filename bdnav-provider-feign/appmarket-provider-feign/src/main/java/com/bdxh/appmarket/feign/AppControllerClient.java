@@ -40,10 +40,10 @@ public interface AppControllerClient {
     @RequestMapping(value = "/app/queryAppAndImages",method = RequestMethod.GET)
     Wrapper<String> queryAppAndImages(@RequestParam(name = "id") Long id);
 
-    @RequestMapping(value = "/app/queryAppList",method = RequestMethod.GET)
+    @RequestMapping(value = "/app/queryAppList",method = RequestMethod.POST)
     Wrapper<List<App>> queryAppList(@RequestBody AppQueryDto appQueryDto);
 
-    @RequestMapping(value = "/queryAppListPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/app/queryAppListPage",method = RequestMethod.POST)
     Wrapper<PageInfo<App>> queryAppListPage(@RequestBody AppQueryDto appQueryDto);
 
 }

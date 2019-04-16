@@ -37,10 +37,10 @@ public interface AppImageControllerClient {
     @RequestMapping(value = "/appImage/queryImage",method = RequestMethod.GET)
     Wrapper<AppImage> queryImage(@RequestParam(name = "id") Long id);
 
-    @RequestMapping(value = "/appImage/queryImageList",method = RequestMethod.GET)
+    @RequestMapping(value = "/appImage/queryImageList",method = RequestMethod.POST)
     Wrapper<List<AppImage>> queryImageList(@RequestBody ImageQueryDto imageQueryDto);
 
-    @RequestMapping(value = "/appImage/queryImageListPage",method = RequestMethod.GET)
+    @RequestMapping(value = "/appImage/queryImageListPage",method = RequestMethod.POST)
     Wrapper<PageInfo<AppImage>> queryImageListPage(@RequestBody ImageQueryDto imageQueryDto);
 
 }
