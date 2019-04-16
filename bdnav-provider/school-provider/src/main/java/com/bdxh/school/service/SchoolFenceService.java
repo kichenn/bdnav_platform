@@ -3,6 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.entity.SchoolFence;
+import com.bdxh.school.vo.SchoolFenceShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -27,11 +28,19 @@ public interface SchoolFenceService extends IService<SchoolFence> {
     Boolean batchDelSchoolFenceInIds(List<Long> id);
 
     /**
+     * 增加学校围栏
+     *
+     * @param schoolFence
+     * @return
+     */
+    Boolean addFence(SchoolFence schoolFence);
+
+    /**
      * 围栏分页条件查询
      *
      * @param schoolFenceQueryDto
      * @return
      */
-    PageInfo<SchoolFence> findFenceInConditionPaging(SchoolFenceQueryDto schoolFenceQueryDto);
+    PageInfo<SchoolFenceShowVo> findFenceInConditionPaging(SchoolFenceQueryDto schoolFenceQueryDto);
 
 }

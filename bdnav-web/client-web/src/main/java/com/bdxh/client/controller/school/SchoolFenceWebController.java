@@ -9,6 +9,7 @@ import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.entity.SchoolFence;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolFenceControllerClient;
+import com.bdxh.school.vo.SchoolFenceShowVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -79,7 +80,7 @@ public class SchoolFenceWebController {
     }
 
     @RequestMapping(value = "/findFenceInConditionPaging", method = RequestMethod.POST)
-    @ApiOperation(value = "分页学校围栏查询", response = Boolean.class)
+    @ApiOperation(value = "分页学校围栏查询", response = SchoolFenceShowVo.class)
     public Object findFenceInConditionPaging(@Validated @RequestBody SchoolFenceQueryDto schoolFenceQueryDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
         schoolFenceQueryDto.setSchoolId(user.getSchoolId());

@@ -7,6 +7,7 @@ import com.bdxh.school.dto.ModifySchoolFenceDto;
 import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.entity.SchoolFence;
 import com.bdxh.school.feign.SchoolFenceControllerClient;
+import com.bdxh.school.vo.SchoolFenceShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +46,7 @@ public class SchoolFenceControllerClientFallback implements SchoolFenceControlle
     }
 
     @Override
-    public Wrapper<PageInfo<SchoolFence>> findFenceInConditionPaging(SchoolFenceQueryDto schoolFenceQueryDto) {
+    public Wrapper<PageInfo<SchoolFenceShowVo>> findFenceInConditionPaging(SchoolFenceQueryDto schoolFenceQueryDto) {
         return WrapMapper.error();
     }
 }

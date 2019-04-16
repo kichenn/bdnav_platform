@@ -7,6 +7,7 @@ import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.entity.SchoolFence;
 import com.bdxh.school.fallback.SchoolDeviceControllerClientFallback;
 import com.bdxh.school.fallback.SchoolFenceControllerClientFallback;
+import com.bdxh.school.vo.SchoolFenceShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,6 @@ public interface SchoolFenceControllerClient {
      */
     @RequestMapping(value = "/schoolFence/findFenceInConditionPaging", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<SchoolFence>> findFenceInConditionPaging(@Validated @RequestBody SchoolFenceQueryDto schoolFenceQueryDto);
+    Wrapper<PageInfo<SchoolFenceShowVo>> findFenceInConditionPaging(@Validated @RequestBody SchoolFenceQueryDto schoolFenceQueryDto);
 
 }

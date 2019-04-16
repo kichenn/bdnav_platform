@@ -38,7 +38,7 @@
     <!-- 带条件查询用户列表 -->
     <select id="getByCondition" resultMap="BaseResultMap">
         SELECT * FROM t_school_user school_user
-        INNER JOIN t_school_dept dept ON school_user.dept_id = dept.id
+        LEFT JOIN t_school_dept dept ON school_user.dept_id = dept.id
         <where>
             <if test="schoolUser.schoolId !=null">
                 school_user.school_id= #{schoolUser.schoolId,jdbcType=BIGINT}
