@@ -83,7 +83,7 @@ public class SchoolFenceController {
     }
 
     @RequestMapping(value = "/findFenceInConditionPaging", method = RequestMethod.POST)
-    @ApiOperation(value = "分页学校围栏查询", response = Boolean.class)
+    @ApiOperation(value = "分页学校围栏查询", response = SchoolFence.class)
     public Object findFenceInConditionPaging(@Validated @RequestBody SchoolFenceQueryDto schoolFenceQueryDto) {
         return WrapMapper.ok(schoolFenceService.findFenceInConditionPaging(schoolFenceQueryDto));
     }
