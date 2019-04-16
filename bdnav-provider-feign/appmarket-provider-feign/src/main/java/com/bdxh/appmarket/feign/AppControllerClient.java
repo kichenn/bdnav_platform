@@ -43,7 +43,7 @@ public interface AppControllerClient {
     @RequestMapping(value = "/app/queryAppList",method = RequestMethod.POST)
     Wrapper<List<App>> queryAppList(@RequestBody AppQueryDto appQueryDto);
 
-    @RequestMapping(value = "/queryAppListPage",method = RequestMethod.POST)
+    @RequestMapping(value = "/app/queryAppListPage",method = RequestMethod.POST)
     Wrapper<PageInfo<App>> queryAppListPage(@RequestBody AppQueryDto appQueryDto);
 
 }
