@@ -80,7 +80,7 @@ public interface FamilyService extends IService<Family> {
      * @param familyList
      * @return
      */
-    void batchSaveFamilyInfo(List<Family> familyList);
+    void batchSaveFamilyInfo(List<AddFamilyDto> familyList);
 
  /**
   * 根据学校Code查询所有卡号

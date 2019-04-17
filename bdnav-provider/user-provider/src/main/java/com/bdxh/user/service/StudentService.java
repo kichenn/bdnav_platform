@@ -91,7 +91,7 @@ public interface StudentService extends IService<Student> {
      * @param studentList
      * @return
      */
-    void batchSaveStudentInfo(List<Student> studentList);
+    void batchSaveStudentInfo(List<AddStudentDto> studentList);
 
     /**
      * 根据学校Code查询所有学生学号

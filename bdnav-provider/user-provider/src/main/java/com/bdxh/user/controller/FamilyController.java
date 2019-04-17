@@ -171,7 +171,7 @@ public class FamilyController {
 
     @ApiOperation(value = "批量新增家长信息")
     @RequestMapping(value = "/batchSaveFamilyInfo", method = RequestMethod.POST)
-    public Object batchSaveFamilyInfo(@RequestBody List<Family> familyList){
+    public Object batchSaveFamilyInfo(@RequestBody List<AddFamilyDto> familyList){
         try {
             familyService.batchSaveFamilyInfo(familyList);
             return WrapMapper.ok();
