@@ -90,7 +90,7 @@ public class FamilyController {
                                @RequestParam(name = "image" ) String image){
         try{
            if(null!=image){
-               if(!image.equals(IMG_NAME)){
+               if(!IMG_NAME.equals(image)){
                    FileOperationUtils.deleteFile(image, null);
                }
            }
@@ -119,7 +119,7 @@ public class FamilyController {
             String[]imageAttr =images.split(",");
             for (int i = 0; i < imageAttr.length; i++) {
                 if(null!=imageAttr[i]) {
-                    if(!imageAttr[i].equals(IMG_NAME)){
+                    if(!IMG_NAME.equals(imageAttr[i])){
                         FileOperationUtils.deleteFile(imageAttr[i], null);
                     }
                 }

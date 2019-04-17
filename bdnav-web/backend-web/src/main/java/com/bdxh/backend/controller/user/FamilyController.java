@@ -108,7 +108,7 @@ public class FamilyController {
               return   WrapMapper.error("当前家长存在围栏设置请先删除围栏设置");
            }
             if(null!=image){
-                if(!image.equals(IMG_NAME)){
+                if(!IMG_NAME.equals(image)){
                     FileOperationUtils.deleteFile(image, null);
                 }
            }

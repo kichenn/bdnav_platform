@@ -157,7 +157,7 @@ public class TeacherController {
             updateTeacherDto.setSchoolCode(user.getSchoolCode());
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
             if(null!=teacherVo.getImage()) {
-                if (!teacherVo.getImage().equals(updateTeacherDto.getImage())) {
+                if (!updateTeacherDto.getImage().equals(teacherVo.getImage())) {
                     //删除腾讯云的以前图片
                     if(!teacherVo.getImageName().equals(IMG_NAME)){
                         FileOperationUtils.deleteFile(teacherVo.getImageName(), null);

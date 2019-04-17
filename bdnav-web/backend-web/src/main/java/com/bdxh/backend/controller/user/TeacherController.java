@@ -117,7 +117,7 @@ public class TeacherController {
             String[]imageAttr =images.split(",");
             for (int i = 0; i < imageAttr.length; i++) {
                 if(null!=imageAttr[i]) {
-                    if(!imageAttr[i].equals(IMG_NAME)){
+                    if(!IMG_NAME.equals(imageAttr[i])){
                         FileOperationUtils.deleteFile(imageAttr[i], null);
                     }
                 }
@@ -148,7 +148,7 @@ public class TeacherController {
             updateTeacherDto.setOperatorName(user.getUserName());
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
             if(null!=teacherVo.getImage()) {
-                if (!teacherVo.getImage().equals(updateTeacherDto.getImage())) {
+                if (!updateTeacherDto.getImage().equals(teacherVo.getImage())) {
                     //删除腾讯云的以前图片
                     if(!teacherVo.getImageName().equals(IMG_NAME)){
                         FileOperationUtils.deleteFile(teacherVo.getImageName(), null);
