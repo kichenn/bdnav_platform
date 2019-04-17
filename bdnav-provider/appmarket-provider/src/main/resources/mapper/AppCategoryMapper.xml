@@ -29,7 +29,7 @@
     select <include refid="BaseColumns"/> from t_app_category
     <where>
       <if test="name!=null and name!=''">
-        and name = #{name}
+        name LIKE CONCAT(CONCAT('%',#{name},'%'))
       </if>
     </where>
   </select>

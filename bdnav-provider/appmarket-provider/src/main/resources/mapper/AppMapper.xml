@@ -49,10 +49,10 @@
         and category_id = #{categoryId}
       </if>
       <if test="appName!= null and appName!=''">
-        and app_name = #{appName}
+        app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
       </if>
       <if test="appPackage!=null and appPackage!=''">
-        and app_package = #{appPackage}
+        app_package LIKE CONCAT(CONCAT('%',#{appPackage}),'%')
       </if>
       <if test="status!=null">
         and status = #{status}
