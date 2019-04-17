@@ -184,7 +184,7 @@ public class StudentController {
 
     @ApiOperation(value = "批量新增学生信息")
     @RequestMapping(value = "/batchSaveStudentInfo", method = RequestMethod.POST)
-    public Object batchSaveStudentInfo(@RequestBody List<Student> studentList){
+    public Object batchSaveStudentInfo(@RequestBody List<AddStudentDto> studentList){
         try {
             studentService.batchSaveStudentInfo(studentList);
             return WrapMapper.ok();

@@ -65,7 +65,7 @@ public class StudentControllerFallback implements StudentControllerClient {
     }
 
     @Override
-    public Wrapper batchSaveStudentInfo(List<Student> studentList) {
+    public Wrapper batchSaveStudentInfo(List<AddStudentDto> studentList) {
         return WrapMapper.error();
     }
 

@@ -50,7 +50,7 @@ public class FamilyControllerFallback implements FamilyControllerClient {
     }
 
     @Override
-    public Wrapper batchSaveFamilyInfo(List<Family> familyList) {
+    public Wrapper batchSaveFamilyInfo(List<AddFamilyDto> familyList) {
         return WrapMapper.error();
     }
 

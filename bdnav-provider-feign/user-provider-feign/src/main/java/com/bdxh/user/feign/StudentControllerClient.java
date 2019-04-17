@@ -103,7 +103,7 @@ public interface StudentControllerClient {
      */
     @RequestMapping(value = "/student/batchSaveStudentInfo", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper batchSaveStudentInfo(@RequestBody List<Student> studentList);
+    Wrapper batchSaveStudentInfo(@RequestBody List<AddStudentDto> studentList);
 
     /**
      * 根据学校Code查询所有学生学号

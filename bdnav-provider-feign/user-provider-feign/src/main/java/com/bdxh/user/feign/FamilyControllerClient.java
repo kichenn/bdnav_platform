@@ -87,7 +87,7 @@ public interface FamilyControllerClient {
      */
     @RequestMapping(value = "/family/batchSaveFamilyInfo", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper batchSaveFamilyInfo(@RequestBody List<Family> familyList);
+    Wrapper batchSaveFamilyInfo(@RequestBody List<AddFamilyDto> familyList);
 
     /**
      * 根据学校Code查询所有家长卡号

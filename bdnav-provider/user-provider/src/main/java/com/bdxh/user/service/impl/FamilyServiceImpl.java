@@ -3,6 +3,7 @@ package com.bdxh.user.service.impl;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
@@ -122,7 +123,8 @@ private SnowflakeIdWorker snowflakeIdWorker;
     }
 
     @Override
-    public void batchSaveFamilyInfo(List<Family> familyList) {
+    public void batchSaveFamilyInfo(List<AddFamilyDto> addFamilyDtoList) {
+        List<Family> familyList = BeanMapUtils.mapList(addFamilyDtoList, Family.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(familyList, BaseUser.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             familyList.get(i).setId(snowflakeIdWorker.nextId());

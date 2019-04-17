@@ -104,13 +104,6 @@ public class FamilyController {
                                @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
                                @RequestParam(name = "image" ) String image){
         try{
-            FamilyFenceQueryDto familyFenceQueryDto =new FamilyFenceQueryDto();
-            familyFenceQueryDto.setSchoolCode(schoolCode);
-            familyFenceQueryDto.setCardNumber(cardNumber);
-            PageInfo<FamilyFence> pageInfo=( PageInfo<FamilyFence>)familyFenceControllerClient.getFamilyFenceInfos(familyFenceQueryDto).getResult();
-           if(pageInfo.getTotal()>0){
-              return   WrapMapper.error("当前家长存在围栏设置请先删除围栏设置");
-           }
             if(null!=image){
                 if(!IMG_NAME.equals(image)){
                     FileOperationUtils.deleteFile(image, null);
@@ -143,7 +136,6 @@ public class FamilyController {
                                 @RequestParam(name = "cardNumbers") @NotNull(message="微校卡号不能为空")String cardNumbers,
                                 @RequestParam(name = "images") String images
     ){
-        //
         try{
             String[]imageAttr =images.split(",");
             for (int i = 0; i < imageAttr.length; i++) {
@@ -151,7 +143,6 @@ public class FamilyController {
                     if(!imageAttr[i].equals(IMG_NAME)){
                         FileOperationUtils.deleteFile(imageAttr[i], null);
                     }
-
                 }
             }
             Wrapper wrapper= familyControllerClient.removeFamilys(schoolCodes,cardNumbers);
@@ -237,7 +228,7 @@ public class FamilyController {
             }
             List<String[]> familyList= ExcelImportUtil.readExcel(file);
             School school=new School();
-            List<Family> families =new ArrayList<>();
+            List<AddFamilyDto> families =new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
             User user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
@@ -252,7 +243,7 @@ public class FamilyController {
                         cardNumberList=(List<String>)familyWeapper.getResult();
                     }
                     if (school != null) {
-                        Family family = new Family();
+                        AddFamilyDto family = new AddFamilyDto();
                         family.setActivate(Byte.valueOf("1"));
                         family.setSchoolCode(school.getSchoolCode());
                         family.setSchoolId(school.getId());
