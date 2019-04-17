@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.mapper.FenceAlarmMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.school.entity.FenceAlarm">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="fence_id" jdbcType="INT" property="fenceId"/>
+	  <result column="fence_name" jdbcType="VARCHAR" property="fenceName"/>
+	  <result column="type" jdbcType="TINYINT" property="type"/>
+	  <result column="monitored_person" jdbcType="VARCHAR" property="monitoredPerson"/>
+	  <result column="action" jdbcType="VARCHAR" property="action"/>
+	  <result column="alarm_point" jdbcType="VARCHAR" property="alarmPoint"/>
+	  <result column="pre_point" jdbcType="VARCHAR" property="prePoint"/>
+	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,fence_id,fence_name,type,monitored_person,action,alarm_point,pre_point,school_id,school_code,card_number,create_date,update_date,remark
+	</sql>
+	<select id="getFenceAlarmAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_fence_alarm 
+	</select>
+
+	<delete id="delFenceAlarmInIds" parameterType="Integer">
+	  DELETE
+	   FROM t_fence_alarm
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>
