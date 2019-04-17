@@ -24,6 +24,7 @@
         <module>appmarket-provider</module>
         <module>account-provider</module>
         <module>appburied-provider</module>
+        <module>weixiao-provider</module>
     </modules>
 
     <dependencies>

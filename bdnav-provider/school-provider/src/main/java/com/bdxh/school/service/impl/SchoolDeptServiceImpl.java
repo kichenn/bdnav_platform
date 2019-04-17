@@ -55,6 +55,7 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
 
     //修改学校组织信息
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean modifySchoolDept(SchoolDeptModifyDto schoolDeptDto) {
         SchoolDept schoolDept = new SchoolDept();
         BeanUtils.copyProperties(schoolDeptDto, schoolDept);
@@ -70,6 +71,18 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             schoolDept.setThisUrl(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName() + "/" + schoolDept.getName());
             schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
         }
+
+        //查询当前节点的子节点
+        // 修改当前组织，  子部门组织的 url parentnames 要跟着修改
+        List<SchoolDept> depts = findSchoolByParentId(schoolDept.getId());
+        if (CollectionUtils.isNotEmpty(depts)) {
+            depts.forEach(e -> {
+                e.setParentNames(schoolDept.getParentNames() + "/" + schoolDept.getName());
+                e.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName() + "/" + e.getName());
+                schoolDeptMapper.updateByPrimaryKeySelective(e);
+            });
+        }
+
         return schoolDeptMapper.updateByPrimaryKeySelective(schoolDept) > 0;
     }
 
@@ -114,7 +127,7 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
 
     //父级id查询部门信息
     @Override
-    public SchoolDept findSchoolByParentId(Long parentId) {
+    public List<SchoolDept> findSchoolByParentId(Long parentId) {
         return schoolDeptMapper.findSchoolByParentId(parentId);
     }
 }

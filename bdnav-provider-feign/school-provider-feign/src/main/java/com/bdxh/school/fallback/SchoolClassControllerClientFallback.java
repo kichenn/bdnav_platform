@@ -68,7 +68,7 @@ public class SchoolClassControllerClientFallback implements SchoolClassControlle
     }
 
     @Override
-    public Wrapper<SchoolClass> findSchoolClassByParentId(Long id) {
+    public Wrapper<List<SchoolClass>> findSchoolClassByParentId(Long id) {
         return WrapMapper.error();
     }
 

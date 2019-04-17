@@ -60,7 +60,7 @@ public class SchoolDeptControllerClientFallback implements SchoolDeptControllerC
     }
 
     @Override
-    public Wrapper<SchoolDept> findSchoolDeptByParentId(Long parentId) {
+    public Wrapper<List<SchoolDept>> findSchoolDeptByParentId(Long parentId) {
         return WrapMapper.error();
     }
 }

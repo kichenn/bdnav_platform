@@ -1,0 +1,9 @@
+server:
+  port: 9030
+spring:
+  application:
+    name: weixiao-provider-cluster
+  profiles:
+    active: dev
+logging:
+  config: classpath:logback-spring.xml

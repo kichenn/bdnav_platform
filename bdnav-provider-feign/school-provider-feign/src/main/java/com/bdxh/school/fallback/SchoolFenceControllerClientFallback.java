@@ -36,11 +36,6 @@ public class SchoolFenceControllerClientFallback implements SchoolFenceControlle
     }
 
     @Override
-    public Wrapper delBatchFence(List<Long> ids) {
-        return WrapMapper.error();
-    }
-
-    @Override
     public Wrapper<SchoolFence> findFenceById(Long id) {
         return WrapMapper.error();
     }

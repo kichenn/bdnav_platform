@@ -17,5 +17,5 @@ public interface SchoolDeptMapper extends Mapper<SchoolDept> {
     Integer delSchoolDeptBySchoolId(@Param("schoolId") Long schoolId);
 
 
-    SchoolDept findSchoolByParentId(@Param("parentId") Long parentId);
+    List<SchoolDept> findSchoolByParentId(@Param("parentId") Long parentId);
 }

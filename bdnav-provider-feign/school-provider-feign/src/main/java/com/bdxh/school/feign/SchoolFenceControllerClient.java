@@ -47,13 +47,6 @@ public interface SchoolFenceControllerClient {
     Wrapper delFenceById(@RequestParam("id") Long id);
 
     /**
-     * 批量删除学校围栏
-     */
-    @RequestMapping(value = "/schoolFence/delBatchFence", method = RequestMethod.POST)
-    @ResponseBody
-    Wrapper delBatchFence(@RequestParam("ids") List<Long> ids);
-
-    /**
      * id查询学校围栏
      */
     @RequestMapping(value = "/schoolFence/findFenceById", method = RequestMethod.GET)

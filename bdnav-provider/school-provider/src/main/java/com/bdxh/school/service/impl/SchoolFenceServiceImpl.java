@@ -98,11 +98,11 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         entityRequest.setAk(FenceConstant.AK);
         entityRequest.setService_id(FenceConstant.SERVICE_ID);
         entityRequest.setEntity_name(groupName);
-        entityRequest.setEntity_desc(groupTypeStr + "组，名称：" + groupName + ",的监控对象创建。");
+        entityRequest.setEntity_desc("");
         String entityResult = FenceUtils.createNewEntity(entityRequest);
         JSONObject entityJson = JSONObject.parseObject(entityResult);
         if (entityJson.getInteger("status") != 0) {
-            throw new RuntimeException("生成监控对象失败， " + groupTypeStr + "组，名称：" + groupName + "失败,状态码" + entityJson.getInteger("status") + "原因:" + entityJson.getString("message"));
+            throw new RuntimeException("生成监控对象失败， " + groupTypeStr + "组，名称：" + groupName + "失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
         }
         //增加围栏
         CreateFenceRoundRequest request = new CreateFenceRoundRequest();
@@ -118,7 +118,7 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         String createRoundResult = FenceUtils.createRoundFence(request);
         JSONObject createRoundJson = JSONObject.parseObject(createRoundResult);
         if (createRoundJson.getInteger("status") != 0) {
-            throw new RuntimeException("生成围栏失败,状态码" + createRoundJson.getInteger("status") + "原因:" + createRoundJson.getString("message"));
+            throw new RuntimeException("生成围栏失败,状态码" + createRoundJson.getInteger("status") + "，原因:" + createRoundJson.getString("message"));
         }
         schoolFence.setFenceId(createRoundJson.getInteger("fence_id"));
 
@@ -159,7 +159,7 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         String modifyRoundResult = FenceUtils.modifyRoundFence(request);
         JSONObject modifyRoundJson = JSONObject.parseObject(modifyRoundResult);
         if (modifyRoundJson.getInteger("status") != 0) {
-            throw new RuntimeException("修改学校围栏失败,状态码" + modifyRoundJson.getInteger("status") + "原因:" + modifyRoundJson.getString("message"));
+            throw new RuntimeException("修改学校围栏失败,状态码" + modifyRoundJson.getInteger("status") + "，原因:" + modifyRoundJson.getString("message"));
         }
         return schoolFenceMapper.updateByPrimaryKeySelective(schoolFence) > 0;
     }
@@ -180,7 +180,7 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         String delResult = FenceUtils.deleteRoundFence(schoolFence.getFenceId());
         JSONObject delResultJson = JSONObject.parseObject(delResult);
         if (delResultJson.getInteger("status") != 0) {
-            throw new RuntimeException("删除围栏失败,状态码" + delResultJson.getInteger("status") + "原因:" + delResultJson.getString("message"));
+            throw new RuntimeException("删除围栏失败,状态码" + delResultJson.getInteger("status") + "，原因:" + delResultJson.getString("message"));
         }
         return schoolFenceMapper.deleteByPrimaryKey(id) > 0;
     }

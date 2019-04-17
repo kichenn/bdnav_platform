@@ -16,6 +16,7 @@ import com.bdxh.user.feign.TeacherControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -71,13 +72,13 @@ public class SchoolDeptWebController {
     @ApiOperation(value = "根据id删除部门关系信息", response = Boolean.class)
     public Object delSchoolDeptById(@RequestParam("id") Long id) {
         //删除该部门时，查看部门底下是否还存在子部门
-        SchoolDept schoolDept = schoolDeptControllerClient.findSchoolDeptByParentId(id).getResult();
+        List<SchoolDept> schoolDept = schoolDeptControllerClient.findSchoolDeptByParentId(id).getResult();
         TeacherDept teacherDept = null;
-        if (schoolDept == null) {
+        if (CollectionUtils.isEmpty(schoolDept)) {
             SchoolDept thisSchoolDept = schoolDeptControllerClient.findSchoolDeptById(id).getResult();
             teacherDept = teacherControllerClient.findTeacherBySchoolDeptId(thisSchoolDept.getSchoolCode(), thisSchoolDept.getSchoolId(), id).getResult();
         }
-        if (schoolDept != null) {
+        if (CollectionUtils.isNotEmpty(schoolDept)) {
             return WrapMapper.error("该部门底下存在子部门不能删除");
         } else if (teacherDept != null) {
             return WrapMapper.error("该部门底下存在人员不能删除");

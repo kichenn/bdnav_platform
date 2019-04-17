@@ -88,12 +88,6 @@ public class SchoolFenceController {
         }
     }
 
-    @RequestMapping(value = "/delBatchFence", method = RequestMethod.POST)
-    @ApiOperation(value = "批量删除学校围栏", response = Boolean.class)
-    public Object delBatchFence(@RequestParam("ids") List<Long> ids) {
-        return WrapMapper.ok(schoolFenceService.batchDelSchoolFenceInIds(ids));
-    }
-
     @RequestMapping(value = "/findFenceById", method = RequestMethod.GET)
     @ApiOperation(value = "id查询学校围栏", response = SchoolFence.class)
     public Object findFenceById(@RequestParam("id") Long id) {

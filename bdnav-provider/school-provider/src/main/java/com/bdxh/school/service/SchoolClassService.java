@@ -44,7 +44,7 @@ public interface SchoolClassService extends IService<SchoolClass> {
     SchoolClass findSchoolClassBySchoolClass(SchoolClass schoolClass);
 
     //父id查询院系信息
-    SchoolClass findSchoolByParentId(Long parentId);
+    List<SchoolClass> findSchoolByParentId(Long parentId);
 
     //查询单个学校院系路径和Ids
     List<SchoolClass> queryClassBySchoolCode(String schoolCode);

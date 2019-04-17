@@ -102,6 +102,6 @@ public interface SchoolDeptControllerClient {
      */
     @RequestMapping(value = "/schoolDept/findSchoolDeptByParentId", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<SchoolDept> findSchoolDeptByParentId(@RequestParam("parentId") Long parentId);
+    Wrapper<List<SchoolDept>> findSchoolDeptByParentId(@RequestParam("parentId") Long parentId);
 
 }

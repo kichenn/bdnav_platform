@@ -8,6 +8,7 @@ import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.persistence.SchoolClassMapper;
 import com.bdxh.school.service.SchoolClassService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +66,16 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             schoolClass.setThisUrl(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName() + "/" + schoolClass.getName());
             schoolClass.setParentIds(schoolClassTemp.getParentIds() + "," + schoolClassTemp.getId());
         }
+        //查询当前节点的子节点
+        // 修改当前组织，  子部门组织的 url parentnames 要跟着修改
+        List<SchoolClass> depts = findSchoolByParentId(schoolClass.getId());
+        if (CollectionUtils.isNotEmpty(depts)) {
+            depts.forEach(e -> {
+                e.setParentNames(schoolClass.getParentNames() + "/" + schoolClass.getName());
+                e.setThisUrl(schoolClass.getParentNames() + "/" + schoolClass.getName() + "/" + e.getName());
+                schoolClassMapper.updateByPrimaryKeySelective(e);
+            });
+        }
         return schoolClassMapper.updateByPrimaryKeySelective(schoolClass) > 0;
     }
 
@@ -114,7 +125,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
 
     //父id查询院系信息
     @Override
-    public SchoolClass findSchoolByParentId(Long parentId) {
+    public List<SchoolClass> findSchoolByParentId(Long parentId) {
         return schoolClassMapper.findSchoolByParentId(parentId);
     }
 

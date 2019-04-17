@@ -41,5 +41,5 @@ public interface SchoolDeptService extends IService<SchoolDept> {
     List<SchoolDept> findSchoolDeptAll();
 
     //父级id查询部门信息
-    SchoolDept findSchoolByParentId(Long parentId);
+    List<SchoolDept> findSchoolByParentId(Long parentId);
 }

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.service.SchoolDeviceService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -73,6 +74,7 @@ public class SchoolDeviceController {
         //复制实体
         SchoolDevice schoolDevice = new SchoolDevice();
         BeanUtils.copyProperties(modifySchoolDeviceDto, schoolDevice);
+        schoolDevice.setUpdateDate(new Date());
         //设置状态
         schoolDevice.setDeviceStatus(modifySchoolDeviceDto.getDeviceStatusEnum().getKey());
         //判断该设备型号,设备类型是否已存在
