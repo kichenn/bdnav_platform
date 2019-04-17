@@ -46,4 +46,8 @@ public class FenceConstant {
      */
     public static final String CREATE_NEW_ENTITY = "http://yingyan.baidu.com/api/v3/entity/add";
 
+    /**
+     * 删除监控对象url,post请求
+     */
+    public static final String DELETE_NEW_ENTITY = "http://yingyan.baidu.com/api/v3/fence/deletemonitoredperson";
 }

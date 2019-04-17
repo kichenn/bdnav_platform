@@ -177,6 +177,13 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         if (schoolFence == null) {
             throw new RuntimeException("该学校围栏不存在");
         }
+        //删除监控对象
+        String entityResult = FenceUtils.deleteNewEntity(schoolFence.getFenceId());
+        JSONObject entityResultJson = JSONObject.parseObject(entityResult);
+        if (entityResultJson.getInteger("status") != 0) {
+            throw new RuntimeException("删除围栏中监控对象失败,状态码" + entityResultJson.getInteger("status") + "，原因:" + entityResultJson.getString("message"));
+        }
+        //删除围栏
         String delResult = FenceUtils.deleteRoundFence(schoolFence.getFenceId());
         JSONObject delResultJson = JSONObject.parseObject(delResult);
         if (delResultJson.getInteger("status") != 0) {

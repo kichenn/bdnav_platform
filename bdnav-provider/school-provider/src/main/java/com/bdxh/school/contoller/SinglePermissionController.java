@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +48,16 @@ public class SinglePermissionController {
         BeanUtils.copyProperties(addSinglePermission, singlePermission);
         //赋值用户类型
         singlePermission.setUserType(addSinglePermission.getSingleUserTypeEnum().getKey());
-        return WrapMapper.ok(singlePermissionService.save(singlePermission) > 0);
+        try {
+            singlePermissionService.save(singlePermission);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //学校id，用户id，设备id
+                return WrapMapper.error("该门禁单不能重复(请检查)");
+            }
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
     }
 
     /**
@@ -63,7 +73,16 @@ public class SinglePermissionController {
         BeanUtils.copyProperties(modifySinglePermission, singlePermission);
         //赋值用户类型
         singlePermission.setUserType(modifySinglePermission.getSingleUserTypeEnum().getKey());
-        return WrapMapper.ok(singlePermissionService.update(singlePermission) > 0);
+        try {
+            singlePermissionService.update(singlePermission);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //学校id，用户id，设备id
+                return WrapMapper.error("该门禁单不能重复(请检查)");
+            }
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
     }
 
     /**

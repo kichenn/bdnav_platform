@@ -94,6 +94,27 @@ public class FenceUtils {
         return result;
     }
 
+    /**
+     * @Description: 删除监控对象
+     * @Author: Kang
+     * @Date: 2019/4/17 15:55
+     */
+    public static String deleteNewEntity(int fenceId) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("ak", FenceConstant.AK);
+        map.put("service_id", FenceConstant.SERVICE_ID);
+        map.put("fence_id", fenceId);
+        map.put("monitored_person", "#clearentity");
+        String result = "";
+        try {
+            result = HttpClientUtils.doPost(FenceConstant.DELETE_NEW_ENTITY, map);
+            log.info(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
     private static Map<String, Object> toMap(Object obj) {
         Map<String, Object> map = new HashMap<>();
