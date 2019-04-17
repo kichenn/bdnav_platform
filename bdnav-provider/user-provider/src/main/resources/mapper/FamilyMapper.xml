@@ -19,7 +19,6 @@
     <result column="wx_number" jdbcType="VARCHAR" property="wxNumber" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="image" jdbcType="VARCHAR" property="image" />
-      <result column="image_name" jdbcType="VARCHAR" property="imageName" />
     <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
     <result column="adress" jdbcType="VARCHAR" property="adress" />
     <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber" />
@@ -30,6 +29,7 @@
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+      <result column="image_name" jdbcType="VARCHAR" property="imageName" />
   </resultMap>
 
     <sql id="familyColumn">

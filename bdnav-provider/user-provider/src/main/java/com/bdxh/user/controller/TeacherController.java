@@ -199,7 +199,7 @@ public class TeacherController {
     }
     @ApiOperation(value = "批量新增老师信息")
     @RequestMapping(value = "/batchSaveTeacherInfo", method = RequestMethod.POST)
-    public Object batchSaveTeacherInfo(@RequestBody List<Teacher> teacherList){
+    public Object batchSaveTeacherInfo(@RequestBody List<AddTeacherDto> teacherList){
         try {
             teacherService.batchSaveTeacherInfo(teacherList);
             return WrapMapper.ok();

@@ -56,7 +56,7 @@ public class TeacherControllerFallback implements TeacherControllerClient {
     }
 
     @Override
-    public Wrapper batchSaveTeacherInfo(List<Teacher> teacherList) {
+    public Wrapper batchSaveTeacherInfo(List<AddTeacherDto> teacherList) {
         return WrapMapper.error();
     }
 

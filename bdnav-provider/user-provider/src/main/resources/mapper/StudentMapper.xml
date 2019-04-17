@@ -28,7 +28,6 @@
         <result column="wx_number" jdbcType="VARCHAR" property="wxNumber"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="image" jdbcType="VARCHAR" property="image"/>
-        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
         <result column="nation_name" jdbcType="VARCHAR" property="nationName"/>
         <result column="dormitory_address" jdbcType="VARCHAR" property="dormitoryAddress"/>
         <result column="adress" jdbcType="VARCHAR" property="adress"/>
@@ -40,6 +39,7 @@
         <result column="operator" jdbcType="BIGINT" property="operator"/>
         <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
     </resultMap>
     <sql id="studentCloumn">
      id,school_id,school_code,school_name,campus_name,college_name,faculty_name,profession_name,

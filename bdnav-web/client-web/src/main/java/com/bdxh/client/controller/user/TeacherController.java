@@ -222,7 +222,7 @@ public class TeacherController {
         try {
             long start=System.currentTimeMillis();
             List<String[]> teacherList= ExcelImportUtil.readExcelNums(teacherFile,0);
-            List<Teacher> saveTeacherList=new ArrayList<>();
+            List<AddTeacherDto> saveTeacherList=new ArrayList<>();
             SchoolUser user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
             String uName=user.getUserName();
@@ -234,7 +234,7 @@ public class TeacherController {
                 String[] columns= teacherList.get(i);
                 if(StringUtils.isNotBlank(teacherList.get(i)[0])){
                 if(school!=null){
-                Teacher tacher=new Teacher();
+                    AddTeacherDto tacher=new AddTeacherDto();
                     tacher.setActivate(Byte.valueOf("1"));
                     tacher.setSchoolName(school.getSchoolName());
                     tacher.setSchoolId(school.getId());
@@ -242,7 +242,7 @@ public class TeacherController {
                     tacher.setCampusName(columns[0]);
                     tacher.setName(columns[1]);
                     tacher.setGender(columns[2].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
-                    tacher.setNationName(columns[3]);
+                    tacher.setPosition(columns[3]);
                     tacher.setPhone(columns[4]);
                     tacher.setImageName(IMG_NAME);
                     tacher.setImage(IMG_URL);

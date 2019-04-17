@@ -212,7 +212,7 @@ public class TeacherController {
             long start=System.currentTimeMillis();
             List<String[]> teacherList= ExcelImportUtil.readExcelNums(teacherFile,0);
             School school=new School();
-            List<Teacher> saveTeacherList=new ArrayList<>();
+            List<AddTeacherDto> saveTeacherList=new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
             User user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
@@ -227,7 +227,7 @@ public class TeacherController {
                     cardNumberList=(List<String>)teacherWeapper.getResult();
                 }
                 if(school!=null){
-                Teacher tacher=new Teacher();
+                AddTeacherDto tacher=new AddTeacherDto();
                     tacher.setActivate(Byte.valueOf("1"));
                     tacher.setSchoolName(school.getSchoolName());
                     tacher.setSchoolId(school.getId());
@@ -235,7 +235,7 @@ public class TeacherController {
                     tacher.setCampusName(columns[1]);
                     tacher.setName(columns[2]);
                     tacher.setGender(columns[3].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
-                    tacher.setNationName(columns[4]);
+                    tacher.setPosition(columns[4]);
                     tacher.setPhone(columns[5]);
                     //判断当前学校是否有重复卡号
                     if(null!=cardNumberList) {

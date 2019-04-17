@@ -76,7 +76,7 @@ public interface TeacherService extends IService<Teacher> {
      * 批量新增老师
      * @param teacherList
      */
-    void batchSaveTeacherInfo(List<Teacher> teacherList);
+    void batchSaveTeacherInfo(List<AddTeacherDto> teacherList);
 
     /**
      * 根据学校Code查询所有卡号
