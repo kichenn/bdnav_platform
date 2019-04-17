@@ -73,6 +73,7 @@
          gender AS fGender,
          phone,
          image,
+         image_name as imageName,
          birth,
          remark,
          school_code AS schoolCode,
