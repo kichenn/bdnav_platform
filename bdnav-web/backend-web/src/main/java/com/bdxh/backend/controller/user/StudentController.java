@@ -61,7 +61,10 @@ public class StudentController {
     @Autowired
     private SchoolClassControllerClient schoolClassControllerClient;
 
-
+    //图片路径
+    private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
+    //图片名称
+    private static final String IMG_NAME="20190416_be0c86bea84d477f814e797d1fa51378.jpg";
     //学院类型
     private static final Byte COLLEGE_TYPE=1;
     //系类型
@@ -108,6 +111,10 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
+            if(addStudentDto.getImage().equals("")||addStudentDto.getImageName().equals("")){
+                addStudentDto.setImageName(IMG_NAME);
+                addStudentDto.setImage(IMG_URL);
+            }
             User user=SecurityUtils.getCurrentUser();
             addStudentDto.setOperator(user.getId());
             addStudentDto.setOperatorName(user.getUserName());
@@ -163,7 +170,9 @@ public class StudentController {
 
             //删除腾讯云的信息
             if(null!=image){
-                FileOperationUtils.deleteFile(image, null);
+                if(!image.equals(IMG_NAME)){
+                    FileOperationUtils.deleteFile(image, null);
+                }
             }
             Wrapper wrapper=studentControllerClient.removeStudent(schoolCode,cardNumber);
             return wrapper;
@@ -188,7 +197,9 @@ public class StudentController {
             String[]imageAttr =images.split(",");
             for (int i = 0; i < imageAttr.length; i++) {
                 if(null!=imageAttr[i]) {
-                    FileOperationUtils.deleteFile(imageAttr[i], null);
+                    if(!imageAttr[i].equals(IMG_NAME)){
+                        FileOperationUtils.deleteFile(imageAttr[i], null);
+                    }
                 }
             }
             Wrapper wrapper=studentControllerClient.removeStudents(schoolCodes,cardNumbers);
@@ -221,7 +232,9 @@ public class StudentController {
            if(null!=studentVo.getImage()){
             if (!studentVo.getImage().equals(updateStudentDto.getImage())) {
                 //删除腾讯云的以前图片
-                FileOperationUtils.deleteFile(studentVo.getImage(), null);
+                if(!studentVo.getImageName().equals(IMG_NAME)){
+                    FileOperationUtils.deleteFile(studentVo.getImageName(), null);
+                }
             }
            }
             SchoolClass schoolClass=new SchoolClass();
@@ -337,6 +350,8 @@ public class StudentController {
                    student.setRemark(columns[14]);
                    student.setOperator(uId);
                    student.setOperatorName(uName);
+                   student.setImageName(IMG_NAME);
+                   student.setImage(IMG_URL);
                    String classNames = "";
                    if (!("").equals(student.getCollegeName()) && null != student.getCollegeName()) {
                        classNames += student.getCollegeName() + "/";
