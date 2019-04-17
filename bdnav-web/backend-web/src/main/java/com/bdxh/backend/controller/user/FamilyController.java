@@ -228,7 +228,7 @@ public class FamilyController {
             }
             List<String[]> familyList= ExcelImportUtil.readExcel(file);
             School school=new School();
-            List<Family> families =new ArrayList<>();
+            List<AddFamilyDto> families =new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
             User user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
@@ -243,7 +243,7 @@ public class FamilyController {
                         cardNumberList=(List<String>)familyWeapper.getResult();
                     }
                     if (school != null) {
-                        Family family = new Family();
+                        AddFamilyDto family = new AddFamilyDto();
                         family.setActivate(Byte.valueOf("1"));
                         family.setSchoolCode(school.getSchoolCode());
                         family.setSchoolId(school.getId());
