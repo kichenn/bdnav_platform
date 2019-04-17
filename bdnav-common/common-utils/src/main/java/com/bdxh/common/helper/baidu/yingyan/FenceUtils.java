@@ -78,7 +78,7 @@ public class FenceUtils {
     }
 
     /**
-     * @Description: 创建监控对象
+     * @Description: 增加监控终端实体
      * @Author: Kang
      * @Date: 2019/4/16 11:55
      */
@@ -95,16 +95,15 @@ public class FenceUtils {
     }
 
     /**
-     * @Description: 删除监控对象
+     * @Description: 删除监控终端实体
      * @Author: Kang
      * @Date: 2019/4/17 15:55
      */
-    public static String deleteNewEntity(int fenceId) {
+    public static String deleteNewEntity(String entityName) {
         Map<String, Object> map = new HashMap<>();
         map.put("ak", FenceConstant.AK);
         map.put("service_id", FenceConstant.SERVICE_ID);
-        map.put("fence_id", fenceId);
-        map.put("monitored_person", "#clearentity");
+        map.put("entity_name", entityName);
         String result = "";
         try {
             result = HttpClientUtils.doPost(FenceConstant.DELETE_NEW_ENTITY, map);

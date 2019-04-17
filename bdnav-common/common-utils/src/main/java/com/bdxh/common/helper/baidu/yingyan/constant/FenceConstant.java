@@ -42,12 +42,12 @@ public class FenceConstant {
     public static final String DELETE_ROUND_URL = "http://yingyan.baidu.com/api/v3/fence/delete";
 
     /**
-     * 创建监控对象url，post请求
+     * 创建终端实体url，post请求
      */
     public static final String CREATE_NEW_ENTITY = "http://yingyan.baidu.com/api/v3/entity/add";
 
     /**
-     * 删除监控对象url,post请求
+     * 删除终端实体url,post请求
      */
-    public static final String DELETE_NEW_ENTITY = "http://yingyan.baidu.com/api/v3/fence/deletemonitoredperson";
+    public static final String DELETE_NEW_ENTITY = "http://yingyan.baidu.com/api/v3/entity/delete";
 }

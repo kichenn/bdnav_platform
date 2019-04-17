@@ -20,6 +20,7 @@ public class CreateNewEntityRequest {
      */
     private int service_id;
 
+
     /**
      * entity名称，座位其唯一标识
      */
@@ -29,4 +30,8 @@ public class CreateNewEntityRequest {
      * entity描述
      */
     private String entity_desc;
+
+
+
+
 }

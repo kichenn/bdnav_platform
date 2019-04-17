@@ -93,7 +93,7 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
             groupName = schoolDept != null ? schoolDept.getName() : "";
             groupTypeStr = "老师";
         }
-        //增加监控对象
+        //增加监控终端实体
         CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
         entityRequest.setAk(FenceConstant.AK);
         entityRequest.setService_id(FenceConstant.SERVICE_ID);
@@ -102,8 +102,9 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         String entityResult = FenceUtils.createNewEntity(entityRequest);
         JSONObject entityJson = JSONObject.parseObject(entityResult);
         if (entityJson.getInteger("status") != 0) {
-            throw new RuntimeException("生成监控对象失败， " + groupTypeStr + "组，名称：" + groupName + "失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
+            throw new RuntimeException("增加监控终端实体失败， " + groupTypeStr + "组，名称：" + groupName + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
         }
+
         //增加围栏
         CreateFenceRoundRequest request = new CreateFenceRoundRequest();
         request.setAk(FenceConstant.AK);
@@ -121,6 +122,7 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
             throw new RuntimeException("生成围栏失败,状态码" + createRoundJson.getInteger("status") + "，原因:" + createRoundJson.getString("message"));
         }
         schoolFence.setFenceId(createRoundJson.getInteger("fence_id"));
+
 
         return schoolFenceMapper.insertSelective(schoolFence) > 0;
     }
@@ -177,8 +179,18 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         if (schoolFence == null) {
             throw new RuntimeException("该学校围栏不存在");
         }
+        //部门或者院系名称
+        String groupName = "";
+        // 用户群类型 1 学生 2 老师
+        if (new Byte("1").equals(schoolFence.getGroupType())) {
+            SchoolClass schoolClass = schoolClassMapper.selectByPrimaryKey(schoolFence.getGroupId());
+            groupName = schoolClass != null ? schoolClass.getName() : "";
+        } else if (new Byte("2").equals(schoolFence.getGroupType())) {
+            SchoolDept schoolDept = schoolDeptMapper.selectByPrimaryKey(schoolFence.getGroupId());
+            groupName = schoolDept != null ? schoolDept.getName() : "";
+        }
         //删除监控对象
-        String entityResult = FenceUtils.deleteNewEntity(schoolFence.getFenceId());
+        String entityResult = FenceUtils.deleteNewEntity(groupName);
         JSONObject entityResultJson = JSONObject.parseObject(entityResult);
         if (entityResultJson.getInteger("status") != 0) {
             throw new RuntimeException("删除围栏中监控对象失败,状态码" + entityResultJson.getInteger("status") + "，原因:" + entityResultJson.getString("message"));
