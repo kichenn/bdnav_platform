@@ -310,7 +310,7 @@ public class StudentController {
            }
            long start=System.currentTimeMillis();
            List<String[]> studentList= ExcelImportUtil.readExcelNums(file,0);
-           List<Student> students=new ArrayList<>();
+           List<AddStudentDto> students=new ArrayList<>();
            List<SchoolClass>   schoolClassList =new ArrayList<>();
            List<String> cardNumberList=new ArrayList<>();
            School school = new School();
@@ -341,11 +341,11 @@ public class StudentController {
                    }else{
                         cardNumberList=new ArrayList<>();
                    }
-                   Student student = new Student();
+                   AddStudentDto student = new AddStudentDto();
                    student.setCardNumber(columns[12]);
                    cardNumberList.add(columns[12]);
                    student.setSchoolName(school.getSchoolName());
-                   student.setSchoolId(school.getId());
+                   student.setSchoolId(school.getId()+"");
                    student.setSchoolCode(school.getSchoolCode());
                    student.setActivate(Byte.valueOf("1"));
                    student.setCampusName(columns[1]);
