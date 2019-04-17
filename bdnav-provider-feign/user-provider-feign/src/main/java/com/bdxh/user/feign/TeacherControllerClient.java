@@ -103,7 +103,7 @@ public interface TeacherControllerClient {
      */
     @RequestMapping(value = "/teacher/batchSaveTeacherInfo", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper batchSaveTeacherInfo(@RequestBody List<Teacher> teacherList);
+    Wrapper batchSaveTeacherInfo(@RequestBody List<AddTeacherDto> teacherList);
 
     /**
      * 根据学校Code查询所有老师卡号

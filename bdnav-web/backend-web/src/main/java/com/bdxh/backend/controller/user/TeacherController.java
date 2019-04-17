@@ -5,8 +5,10 @@ import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.feign.SinglePermissionControllerClient;
 import com.bdxh.system.entity.User;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
@@ -14,6 +16,7 @@ import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.TeacherVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +47,8 @@ public class TeacherController {
     private TeacherControllerClient teacherControllerClient;
     @Autowired
     private SchoolControllerClient schoolControllerClient;
-
+    @Autowired
+    private SinglePermissionControllerClient singlePermissionControllerClient;
     //图片路径
     private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
     //图片名称
@@ -93,6 +97,13 @@ public class TeacherController {
                 if(!image.equals(IMG_NAME)){
                     FileOperationUtils.deleteFile(image, null);
                 }
+            }
+            SinglePermissionQueryDto singlePermissionQueryDto=new SinglePermissionQueryDto();
+            singlePermissionQueryDto.setCardNumber(cardNumber);
+            singlePermissionQueryDto.setSchoolCode(schoolCode);
+            PageInfo pageInfos= singlePermissionControllerClient.findSinglePermissionInConditionPage(singlePermissionQueryDto).getResult();
+            if(pageInfos.getTotal()>0){
+                return WrapMapper.error("请先删除卡号为"+cardNumber+"的老师门禁单信息");
             }
             Wrapper wrapper=teacherControllerClient.removeTeacher(schoolCode, cardNumber);
             return wrapper;
@@ -212,7 +223,7 @@ public class TeacherController {
             long start=System.currentTimeMillis();
             List<String[]> teacherList= ExcelImportUtil.readExcelNums(teacherFile,0);
             School school=new School();
-            List<Teacher> saveTeacherList=new ArrayList<>();
+            List<AddTeacherDto> saveTeacherList=new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
             User user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
@@ -227,7 +238,7 @@ public class TeacherController {
                     cardNumberList=(List<String>)teacherWeapper.getResult();
                 }
                 if(school!=null){
-                Teacher tacher=new Teacher();
+                AddTeacherDto tacher=new AddTeacherDto();
                     tacher.setActivate(Byte.valueOf("1"));
                     tacher.setSchoolName(school.getSchoolName());
                     tacher.setSchoolId(school.getId());
@@ -235,7 +246,7 @@ public class TeacherController {
                     tacher.setCampusName(columns[1]);
                     tacher.setName(columns[2]);
                     tacher.setGender(columns[3].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
-                    tacher.setNationName(columns[4]);
+                    tacher.setPosition(columns[4]);
                     tacher.setPhone(columns[5]);
                     //判断当前学校是否有重复卡号
                     if(null!=cardNumberList) {

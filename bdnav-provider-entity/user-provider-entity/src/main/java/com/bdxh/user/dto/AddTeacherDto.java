@@ -31,7 +31,7 @@ public class AddTeacherDto implements Serializable {
      * 学校编码
      */
     @ApiModelProperty(value="学校编码")
-    @NotBlank(message ="手机号不能为空")
+    @NotBlank(message ="学校编码不能为空")
     private String schoolCode;
 
     /**

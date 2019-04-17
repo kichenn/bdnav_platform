@@ -21,7 +21,6 @@
     <result column="wx_number" jdbcType="VARCHAR" property="wxNumber" />
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="image_name" jdbcType="VARCHAR" property="imageName" />
     <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
     <result column="dormitory_address" jdbcType="VARCHAR" property="dormitoryAddress" />
     <result column="adress" jdbcType="VARCHAR" property="adress" />
@@ -33,6 +32,7 @@
     <result column="operator" jdbcType="BIGINT" property="operator" />
     <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="image_name" jdbcType="VARCHAR" property="imageName" />
   </resultMap>
 <sql id="BaseColumn">
   id,school_id,school_code,school_name,name,gender,birth,position,phone,card_number,idcard,qq_number,wx_number,
@@ -156,7 +156,7 @@
     teacher.operator,
     teacher.operator_name AS operatorName,
     teacher.remark,
-    image_name  AS imageName,
+    teacher.image_name  AS imageName,
     teacherDept.dept_name as deptName
     FROM
     t_teacher AS teacher

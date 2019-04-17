@@ -13,17 +13,20 @@ import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.feign.SinglePermissionControllerClient;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -56,6 +59,8 @@ public class StudentController {
 
     @Autowired
     private SchoolClassControllerClient schoolClassControllerClient;
+    @Autowired
+    private SinglePermissionControllerClient singlePermissionControllerClient;
 
     //图片路径
     private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
@@ -164,6 +169,13 @@ public class StudentController {
                 FileOperationUtils.deleteFile(image, null);
             }
             SchoolUser user=SecurityUtils.getCurrentUser();
+            SinglePermissionQueryDto singlePermissionQueryDto=new SinglePermissionQueryDto();
+            singlePermissionQueryDto.setCardNumber(cardNumber);
+            singlePermissionQueryDto.setSchoolCode(user.getSchoolCode());
+            PageInfo pageInfo= singlePermissionControllerClient.findSinglePermissionInConditionPage(singlePermissionQueryDto).getResult();
+            if(pageInfo.getTotal()>0){
+                return WrapMapper.error("请先删除卡号为\"+cardNumber+\"的学生门禁单信息");
+            }
             Wrapper wrapper=studentControllerClient.removeStudent(user.getSchoolCode(),cardNumber);
             return wrapper;
         }catch (Exception e){
