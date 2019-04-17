@@ -6,11 +6,13 @@ import com.bdxh.school.dto.GroupPermissionQueryDto;
 import com.bdxh.school.dto.ModifyGroupPermissionDto;
 import com.bdxh.school.enums.GroupTypeEnum;
 import com.github.pagehelper.PageInfo;
+import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bdxh.school.entity.GroupPermission;
@@ -49,7 +51,16 @@ public class GroupPermissionController {
         groupPermission.setGroupType(addGroupPermissionDto.getGroupTypeEnum().getKey());
         groupPermission.setAccessFlag(addGroupPermissionDto.getAccessFlagEnum().getKey());
         groupPermission.setRecursionPermission(addGroupPermissionDto.getRecursionPermissionStatusEnum().getKey());
-        return WrapMapper.ok(groupPermissionService.save(groupPermission) > 0);
+        try {
+            groupPermissionService.save(groupPermission);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //部门类型，部门id，设备不能重复
+                return WrapMapper.error("该门禁组不能重复(请检查)");
+            }
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
     }
 
     /**
@@ -67,7 +78,17 @@ public class GroupPermissionController {
         groupPermission.setGroupType(modifyGroupPermissionDto.getGroupTypeEnum().getKey());
         groupPermission.setAccessFlag(modifyGroupPermissionDto.getAccessFlagEnum().getKey());
         groupPermission.setRecursionPermission(modifyGroupPermissionDto.getRecursionPermissionStatusEnum().getKey());
-        return WrapMapper.ok(groupPermissionService.update(groupPermission) > 0);
+
+        try {
+            groupPermissionService.update(groupPermission);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //部门类型，部门id，设备不能重复
+                return WrapMapper.error("该门禁组不能重复(请检查)");
+            }
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
     }
 
     /**
