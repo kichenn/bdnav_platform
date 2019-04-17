@@ -3,7 +3,6 @@ package com.bdxh.backend.controller.user;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
-import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
@@ -20,7 +19,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +44,11 @@ public class TeacherController {
     private TeacherControllerClient teacherControllerClient;
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+
+    //图片路径
+    private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
+    //图片名称
+    private static final String IMG_NAME="20190416_be0c86bea84d477f814e797d1fa51378.jpg";
     /**
      * 新增老师信息
      * @param addTeacherDto
@@ -59,11 +62,14 @@ public class TeacherController {
            if(null!=teacherVo){
                return WrapMapper.error("当前学校已存在相同教师工号");
            }
+            if(addTeacherDto.getImage().equals("")||addTeacherDto.getImageName().equals("")){
+                addTeacherDto.setImageName(IMG_NAME);
+                addTeacherDto.setImage(IMG_URL);
+            }
             User user= SecurityUtils.getCurrentUser();
             addTeacherDto.setOperator(user.getId());
             addTeacherDto.setOperatorName(user.getUserName());
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
-
             return wrapper;
         }catch (Exception e) {
             e.printStackTrace();
@@ -84,7 +90,9 @@ public class TeacherController {
                                 @RequestParam(name = "image" ) String image){
         try{
             if(null!=image){
-                FileOperationUtils.deleteFile(image, null);
+                if(!image.equals(IMG_NAME)){
+                    FileOperationUtils.deleteFile(image, null);
+                }
             }
             Wrapper wrapper=teacherControllerClient.removeTeacher(schoolCode, cardNumber);
             return wrapper;
@@ -109,7 +117,9 @@ public class TeacherController {
             String[]imageAttr =images.split(",");
             for (int i = 0; i < imageAttr.length; i++) {
                 if(null!=imageAttr[i]) {
-                    FileOperationUtils.deleteFile(imageAttr[i], null);
+                    if(!IMG_NAME.equals(imageAttr[i])){
+                        FileOperationUtils.deleteFile(imageAttr[i], null);
+                    }
                 }
             }
             Wrapper wrapper= teacherControllerClient.removeTeachers(schoolCodes, cardNumbers);
@@ -138,9 +148,11 @@ public class TeacherController {
             updateTeacherDto.setOperatorName(user.getUserName());
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
             if(null!=teacherVo.getImage()) {
-                if (!teacherVo.getImage().equals(updateTeacherDto.getImage())) {
+                if (!updateTeacherDto.getImage().equals(teacherVo.getImage())) {
                     //删除腾讯云的以前图片
-                    FileOperationUtils.deleteFile(teacherVo.getImage(), null);
+                    if(!teacherVo.getImageName().equals(IMG_NAME)){
+                        FileOperationUtils.deleteFile(teacherVo.getImageName(), null);
+                    }
                 }
             }
            Wrapper wrapper=teacherControllerClient.updateTeacher(updateTeacherDto);
@@ -242,6 +254,8 @@ public class TeacherController {
                     tacher.setRemark(columns[9]);
                     tacher.setOperator(uId);
                     tacher.setOperatorName(uName);
+                    tacher.setImageName(IMG_NAME);
+                    tacher.setImage(IMG_URL);
                     saveTeacherList.add(tacher);
                 }else{
                     return WrapMapper.error("第"+i+"条不存在当前学校Code");

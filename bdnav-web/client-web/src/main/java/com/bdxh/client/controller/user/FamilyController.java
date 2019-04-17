@@ -45,6 +45,10 @@ public class FamilyController {
     @Autowired
     private SchoolControllerClient schoolControllerClient;
 
+    //图片路径
+    private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
+    //图片名称
+    private static final String IMG_NAME="20190416_be0c86bea84d477f814e797d1fa51378.jpg";
     /**
      * 新增家庭成员信息
      * @param addFamilyDto
@@ -59,6 +63,10 @@ public class FamilyController {
             if(null!=familyVo){
                 return WrapMapper.error("当前学校已存在相同家长卡号");
             }
+            if(addFamilyDto.getImage().equals("")||addFamilyDto.getImageName().equals("")){
+                addFamilyDto.setImageName(IMG_NAME);
+                addFamilyDto.setImage(IMG_URL);
+            }
             SchoolUser user= SecurityUtils.getCurrentUser();
             addFamilyDto.setOperator(user.getId());
             addFamilyDto.setOperatorName(user.getUserName());
@@ -70,7 +78,6 @@ public class FamilyController {
             return WrapMapper.error(e.getMessage());
         }
     }
-
     /**
      * 删除家长信息
      * @param cardNumber
@@ -83,7 +90,9 @@ public class FamilyController {
                                @RequestParam(name = "image" ) String image){
         try{
            if(null!=image){
-               FileOperationUtils.deleteFile(image, null);
+               if(!IMG_NAME.equals(image)){
+                   FileOperationUtils.deleteFile(image, null);
+               }
            }
             SchoolUser user= SecurityUtils.getCurrentUser();
             Wrapper wrapper=familyControllerClient.removeFamily(user.getSchoolCode(),cardNumber);
@@ -110,7 +119,9 @@ public class FamilyController {
             String[]imageAttr =images.split(",");
             for (int i = 0; i < imageAttr.length; i++) {
                 if(null!=imageAttr[i]) {
-                    FileOperationUtils.deleteFile(imageAttr[i], null);
+                    if(!IMG_NAME.equals(imageAttr[i])){
+                        FileOperationUtils.deleteFile(imageAttr[i], null);
+                    }
                 }
             }
             String schoolCodes="";
@@ -245,6 +256,8 @@ public class FamilyController {
                         family.setRemark(columns[8]);
                         family.setOperator(uId);
                         family.setOperatorName(uName);
+                        family.setImageName(IMG_NAME);
+                        family.setImage(IMG_URL);
                         families.add(family);
                     } else {
                         return WrapMapper.error("第" + i + "条的学校数据不存在！请检查");

@@ -10,11 +10,15 @@ import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.system.entity.User;
 import com.bdxh.user.dto.AddFamilyDto;
+import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.Family;
+import com.bdxh.user.entity.FamilyFence;
 import com.bdxh.user.feign.FamilyControllerClient;
+import com.bdxh.user.feign.FamilyFenceControllerClient;
 import com.bdxh.user.vo.FamilyVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -48,7 +52,13 @@ public class FamilyController {
     private FamilyControllerClient familyControllerClient;
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+    @Autowired
+    private FamilyFenceControllerClient familyFenceControllerClient;
 
+    //图片路径
+    private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
+    //图片名称
+    private static final String IMG_NAME="20190416_be0c86bea84d477f814e797d1fa51378.jpg";
     /**
      * 新增家庭成员信息
      * @param addFamilyDto
@@ -62,6 +72,10 @@ public class FamilyController {
             FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
             if(null!=familyVo){
                 return WrapMapper.error("当前学校已存在相同家长卡号");
+            }
+            if(addFamilyDto.getImage().equals("")||addFamilyDto.getImageName().equals("")){
+            addFamilyDto.setImageName(IMG_NAME);
+            addFamilyDto.setImage(IMG_URL);
             }
             User user= SecurityUtils.getCurrentUser();
             addFamilyDto.setOperator(user.getId());
@@ -86,8 +100,17 @@ public class FamilyController {
                                @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
                                @RequestParam(name = "image" ) String image){
         try{
-           if(null!=image){
-               FileOperationUtils.deleteFile(image, null);
+            FamilyFenceQueryDto familyFenceQueryDto =new FamilyFenceQueryDto();
+            familyFenceQueryDto.setSchoolCode(schoolCode);
+            familyFenceQueryDto.setCardNumber(cardNumber);
+            PageInfo<FamilyFence> pageInfo=( PageInfo<FamilyFence>)familyFenceControllerClient.getFamilyFenceInfos(familyFenceQueryDto).getResult();
+           if(pageInfo.getTotal()>0){
+              return   WrapMapper.error("当前家长存在围栏设置请先删除围栏设置");
+           }
+            if(null!=image){
+                if(!IMG_NAME.equals(image)){
+                    FileOperationUtils.deleteFile(image, null);
+                }
            }
             Wrapper wrapper=familyControllerClient.removeFamily(schoolCode,cardNumber);
             return wrapper;
@@ -109,11 +132,15 @@ public class FamilyController {
                                 @RequestParam(name = "cardNumbers") @NotNull(message="微校卡号不能为空")String cardNumbers,
                                 @RequestParam(name = "images") String images
     ){
+        //
         try{
             String[]imageAttr =images.split(",");
             for (int i = 0; i < imageAttr.length; i++) {
                 if(null!=imageAttr[i]) {
-                    FileOperationUtils.deleteFile(imageAttr[i], null);
+                    if(!imageAttr[i].equals(IMG_NAME)){
+                        FileOperationUtils.deleteFile(imageAttr[i], null);
+                    }
+
                 }
             }
             Wrapper wrapper= familyControllerClient.removeFamilys(schoolCodes,cardNumbers);
@@ -137,7 +164,9 @@ public class FamilyController {
             if(null!=familyVo.getImage()) {
                 if (!familyVo.getImage().equals(updateFamilyDto.getImage())) {
                     //删除腾讯云的以前图片
-                    FileOperationUtils.deleteFile(familyVo.getImage(), null);
+                    if(!familyVo.getImageName().equals(IMG_NAME)){
+                        FileOperationUtils.deleteFile(familyVo.getImageName(), null);
+                    }
                 }
             }
             User user= SecurityUtils.getCurrentUser();
@@ -220,6 +249,8 @@ public class FamilyController {
                         family.setName(columns[1]);
                         family.setGender(columns[2].trim().equals("男") ? Byte.valueOf("1") : Byte.valueOf("2"));
                         family.setPhone(columns[3]);
+                        family.setImageName(IMG_NAME);
+                        family.setImage(IMG_URL);
                         //判断当前学校是否有重复卡号
                         if(null!=cardNumberList) {
                             for (int j = 0; j < cardNumberList.size(); j++) {

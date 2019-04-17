@@ -44,6 +44,11 @@ public class TeacherController {
     private TeacherControllerClient teacherControllerClient;
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+
+    //图片路径
+    private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
+    //图片名称
+    private static final String IMG_NAME="20190416_be0c86bea84d477f814e797d1fa51378.jpg";
     /**
      * 新增老师信息
      * @param addTeacherDto
@@ -58,6 +63,10 @@ public class TeacherController {
            if(null!=teacherVo){
                return WrapMapper.error("当前学校已存在相同教师工号");
            }
+            if(addTeacherDto.getImage().equals("")||addTeacherDto.getImageName().equals("")){
+                addTeacherDto.setImageName(IMG_NAME);
+                addTeacherDto.setImage(IMG_URL);
+            }
             addTeacherDto.setOperator(user.getId());
             addTeacherDto.setOperatorName(user.getUserName());
             addTeacherDto.setSchoolCode(user.getSchoolCode());
@@ -81,7 +90,9 @@ public class TeacherController {
                                 @RequestParam(name = "image" ) String image){
         try{
             if(null!=image){
-                FileOperationUtils.deleteFile(image, null);
+                if(!image.equals(IMG_NAME)){
+                    FileOperationUtils.deleteFile(image, null);
+                }
             }
             SchoolUser user= SecurityUtils.getCurrentUser();
             Wrapper wrapper=teacherControllerClient.removeTeacher(user.getSchoolCode(), cardNumber);
@@ -105,7 +116,7 @@ public class TeacherController {
             SchoolUser user= SecurityUtils.getCurrentUser();
             String[]imageAttr =images.split(",");
             for (int i = 0; i < imageAttr.length; i++) {
-                if(null!=imageAttr[i]) {
+                if(!imageAttr[i].equals(IMG_NAME)){
                     FileOperationUtils.deleteFile(imageAttr[i], null);
                 }
             }
@@ -146,9 +157,11 @@ public class TeacherController {
             updateTeacherDto.setSchoolCode(user.getSchoolCode());
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
             if(null!=teacherVo.getImage()) {
-                if (!teacherVo.getImage().equals(updateTeacherDto.getImage())) {
+                if (!updateTeacherDto.getImage().equals(teacherVo.getImage())) {
                     //删除腾讯云的以前图片
-                    FileOperationUtils.deleteFile(teacherVo.getImage(), null);
+                    if(!teacherVo.getImageName().equals(IMG_NAME)){
+                        FileOperationUtils.deleteFile(teacherVo.getImageName(), null);
+                    }
                 }
             }
            Wrapper wrapper=teacherControllerClient.updateTeacher(updateTeacherDto);
@@ -231,6 +244,8 @@ public class TeacherController {
                     tacher.setGender(columns[2].trim().equals("男")?Byte.valueOf("1"):Byte.valueOf("2"));
                     tacher.setNationName(columns[3]);
                     tacher.setPhone(columns[4]);
+                    tacher.setImageName(IMG_NAME);
+                    tacher.setImage(IMG_URL);
                     //判断当前学校是否有重复卡号
                     if(null!=cardNumberList) {
                         for (int j = 0; j < cardNumberList.size(); j++) {
