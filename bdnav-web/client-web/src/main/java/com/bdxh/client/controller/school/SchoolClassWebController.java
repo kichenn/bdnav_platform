@@ -14,11 +14,13 @@ import com.bdxh.user.feign.StudentControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -87,14 +89,14 @@ public class SchoolClassWebController {
     @ApiOperation(value = "根据id删除院校关系（需学校admin权限）", response = Boolean.class)
     public Object delSchoolClassById(@RequestParam("id") Long id) {
         //删除该院系时，查看院系底下是否还存在子院系
-        SchoolClass schoolClass = schoolClassControllerClient.findSchoolClassByParentId(id).getResult();
+        List<SchoolClass> schoolClass = schoolClassControllerClient.findSchoolClassByParentId(id).getResult();
         Student student = null;
         //院系底下不存在子院系，查看当前院系是否存在人员
-        if (schoolClass == null) {
+        if (CollectionUtils.isEmpty(schoolClass)) {
             SchoolClass thisSchoolClass = schoolClassControllerClient.findSchoolClassById(id).getResult();
             student = studentControllerClient.findStudentBySchoolClassId(thisSchoolClass.getSchoolCode(), thisSchoolClass.getSchoolId(), id).getResult();
         }
-        if (schoolClass != null) {
+        if (CollectionUtils.isNotEmpty(schoolClass)) {
             return WrapMapper.error("该院系底下存在子院系不能删除");
         } else if (student != null) {
             return WrapMapper.error("该院系底下存在人员不能删除");
