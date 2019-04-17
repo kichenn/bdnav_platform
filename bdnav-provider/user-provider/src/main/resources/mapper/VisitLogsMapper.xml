@@ -7,6 +7,7 @@
 	  <result column="school_id" jdbcType="INT" property="schoolId"/>
 	  <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
 	  <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+		<result column="student_id" jdbcType="BIGINT" property="studentId"/>
 	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
 	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
 	  <result column="url" jdbcType="VARCHAR" property="url"/>
@@ -17,7 +18,7 @@
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,school_id,school_name,school_code,card_number,user_name,url,create_date,update_date,status,remark
+	  id,school_id,school_name,school_code,student_id,card_number,user_name,url,create_date,update_date,status,remark
 	</sql>
 	<select id="getVisitLogsAllCount" resultType="Integer">
 	  SELECT 

@@ -49,7 +49,11 @@ public class VisitLogs {
 	 */
 	@Column(name = "card_number")
 	private String cardNumber;
-
+	/**
+	 * 学生卡号
+	 */
+	@Column(name = "student_id")
+	private String studentId;
 	/**
 	 * 学生姓名
 	 */

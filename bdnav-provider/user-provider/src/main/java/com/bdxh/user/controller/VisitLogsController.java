@@ -9,15 +9,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
-* @Description: 控制器
+* @Description: 学生网站访问日志控制器
 * @Author Kang
 * @Date 2019-04-17 17:29:24
 */
 @Controller
-@RequestMapping("/visitLogs")
+@RequestMapping("/visitLogsController")
 @Slf4j
 @Validated
-@Api(value = "VisitLogs控制器", tags = "VisitLogs")
+@Api(value = "学生网站访问日志控制器", tags = "学生网站访问日志控制器")
 public class VisitLogsController {
 
 	@Autowired

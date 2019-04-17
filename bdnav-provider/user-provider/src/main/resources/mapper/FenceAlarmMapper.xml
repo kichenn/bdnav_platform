@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.school.mapper.FenceAlarmMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.school.entity.FenceAlarm">
+	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.FenceAlarm">
 	  <id column="id" jdbcType="BIGINT" property="id"/>
 	  <result column="fence_id" jdbcType="INT" property="fenceId"/>
 	  <result column="fence_name" jdbcType="VARCHAR" property="fenceName"/>
@@ -13,6 +13,7 @@
 	  <result column="pre_point" jdbcType="VARCHAR" property="prePoint"/>
 	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
 	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+		<result column="student_id" jdbcType="BIGINT" property="studentId"/>
 	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
 	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
 	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
@@ -20,12 +21,27 @@
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,fence_id,fence_name,type,monitored_person,action,alarm_point,pre_point,school_id,school_code,card_number,create_date,update_date,remark
+	  id,fence_id,fence_name,type,monitored_person,action,alarm_point,pre_point,school_id,school_code,student_id,card_number,create_date,update_date,remark
 	</sql>
-	<select id="getFenceAlarmAllCount" resultType="Integer">
-	  SELECT 
-	   COUNT(1)
-	  FROM t_fence_alarm 
+	<select id="getAllFenceAlarmInfo" resultType="com.bdxh.user.vo.FenceAlarmVo">
+SELECT
+t_fence_alarm.id as id,
+t_fence_alarm.fence_id as fenceId,
+t_fence_alarm.fence_name as fenceName,
+t_fence_alarm.type as type,
+t_fence_alarm.monitored_person as monitoredPerson,
+t_fence_alarm.action as action,
+t_fence_alarm.alarm_point as alarmPoint,
+t_fence_alarm.pre_point as prePoint,
+t_fence_alarm.school_id as schoolId,
+t_fence_alarm.school_code as schoolCode,
+t_fence_alarm.card_number as cardNumber,
+t_fence_alarm.create_date as createDate,
+t_fence_alarm.update_date as updateDate,
+t_fence_alarm.remark as remark,
+FROM
+t_fence_alarm inner join
+
 	</select>
 
 	<delete id="delFenceAlarmInIds" parameterType="Integer">
