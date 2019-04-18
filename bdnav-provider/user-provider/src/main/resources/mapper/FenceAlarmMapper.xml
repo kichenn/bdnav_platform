@@ -4,7 +4,7 @@
 
 	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.FenceAlarm">
 	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="fence_id" jdbcType="INT" property="fenceId"/>
+	  <result column="fence_id" jdbcType="BIGINT" property="fenceId"/>
 	  <result column="fence_name" jdbcType="VARCHAR" property="fenceName"/>
 	  <result column="type" jdbcType="TINYINT" property="type"/>
 	  <result column="monitored_person" jdbcType="VARCHAR" property="monitoredPerson"/>

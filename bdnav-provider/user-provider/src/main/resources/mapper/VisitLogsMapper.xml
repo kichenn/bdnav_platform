@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.school.mapper.VisitLogsMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.school.entity.VisitLogs">
+	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.VisitLogs">
 	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="school_id" jdbcType="INT" property="schoolId"/>
+	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
 	  <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
 	  <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
 		<result column="student_id" jdbcType="BIGINT" property="studentId"/>
