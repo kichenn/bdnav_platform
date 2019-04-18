@@ -24,6 +24,17 @@ public class UpdateCategoryDto implements Serializable {
     private Long id;
 
     /**
+     * 学校id
+     */
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+    /**
      * 分类名称
      */
     @ApiModelProperty("分类名称")
