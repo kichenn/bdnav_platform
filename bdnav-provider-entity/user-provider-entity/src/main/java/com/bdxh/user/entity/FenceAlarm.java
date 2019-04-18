@@ -82,6 +82,11 @@ public class FenceAlarm {
 	/**
 	 * 学生卡号
 	 */
+	@Column(name = "student_id")
+	private String studentId;
+	/**
+	 * 学生卡号
+	 */
 	@Column(name = "card_number")
 	private String cardNumber;
 

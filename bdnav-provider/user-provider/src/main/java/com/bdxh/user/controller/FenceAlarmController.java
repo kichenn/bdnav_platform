@@ -9,15 +9,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
-* @Description: 控制器
+* @Description: 家长围栏警报控制器
 * @Author Kang
 * @Date 2019-04-17 17:29:24
 */
 @Controller
-@RequestMapping("/fenceAlarm")
+@RequestMapping("/fenceAlarmController")
 @Slf4j
 @Validated
-@Api(value = "FenceAlarm控制器", tags = "FenceAlarm")
+@Api(value = "家长围栏警报控制器", tags = "家长围栏警报控制器")
 public class FenceAlarmController {
 
 	@Autowired
