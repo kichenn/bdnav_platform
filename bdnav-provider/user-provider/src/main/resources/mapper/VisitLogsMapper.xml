@@ -20,20 +20,71 @@
 	<sql id="BaseColumns">
 	  id,school_id,school_name,school_code,student_id,card_number,user_name,url,create_date,update_date,status,remark
 	</sql>
-	<select id="getVisitLogsAllCount" resultType="Integer">
-	  SELECT 
-	   COUNT(1)
-	  FROM t_visit_logs 
+
+	<!--查询所有学生访问日志记录信息-->
+	<select id="getVisitLogsInfos">
+		SELECT
+		<include refid="BaseColumns" />
+		FROM
+		t_visit_logs
+		<where>
+			<if test="schoolName!=null and schoolName!=''">
+				and school_name like CONCAT('%',CONCAT(#{schoolName},'%'))
+			</if>
+			<if test="userName!=null and userName!=''">
+				and user_name like CONCAT('%',CONCAT(#{userName},'%'))
+			</if>
+			<if test="status!=null and status!=''">
+                and status =status
+			</if>
+			<if test="schoolCode!=null and schoolCode!=''">
+				AND school_code =#{schoolCode, jdbcType = VARCHAR}
+			</if>
+			<if test="cardNumber!=null and cardNumber!=''">
+				AND card_number =  #{cardNumber, jdbcType = VARCHAR}
+			</if>
+		</where>
+		order by create_date desc
 	</select>
 
-	<delete id="delVisitLogsInIds" parameterType="Integer">
-	  DELETE
-	   FROM t_visit_logs
-	  WHERE
-	   id IN
-	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	          #{id, jdbcType = BIGINT}
-	     </foreach >
+	<!--根据条件查询单个学生访问日志记录信息-->
+	<select id="getVisitLogsInfo">
+		SELECT
+		<include refid="BaseColumns" />
+		FROM
+		t_visit_logs where school_code=#{schoolCode} and card_number=#{cardNumber} and id=#{id}
+	</select>
+
+	<!--修改学生访问日志记录信息-->
+	<update id="updateVisitLogsInfo">
+		UPDATE t_visit_logs
+		SET
+		<if test="url!=null and url!=''">
+			url=#{url},
+		</if>
+		<if test="status!=null and status!=''">
+			status=#{status},
+		</if>
+		<if test="remark!=null and remark!=''">
+			remark=#{remark},
+		</if>
+		 update_date =NOW()
+		WHERE
+			id = #{id} and school_code=#{schoolCode} and card_number=#{cardNumber}
+	</update>
+
+	<!--删除学生访问日志记录信息-->
+	<delete id="removeVisitLogsInfo">
+		delete from t_visit_logs WHERE
+		id = #{id} and school_code=#{schoolCode} and card_number=#{cardNumber}
 	</delete>
 
+	<!--批量删除学生访问日志记录信息-->
+	<delete id="batchRemoveVisitLogsInfo">
+		  delete from t_visit_logs where (id,schoo_code,card_number) in
+		<foreach collection="list" separator="," open="(" close=")" item="list" >
+			(#{list.id},#{list.schoolCode},#{list.cardNumber})
+		</foreach>
+
+	</delete>
 </mapper>

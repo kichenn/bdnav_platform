@@ -1,7 +1,11 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.user.dto.UpdateVisitLogsDto;
+import com.bdxh.user.dto.VisitLogsQueryDto;
 import com.bdxh.user.entity.VisitLogs;
+import com.bdxh.user.vo.VisitLogsVo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -14,13 +18,45 @@ import java.util.List;
 public interface VisitLogsService extends IService<VisitLogs> {
 
 	/**
-	 *查询所有数量
+	 * 根据条件查询所有信息
+	 * @param visitLogsQueryDto
+	 * @return
 	 */
- 	Integer getVisitLogsAllCount();
+	PageInfo<VisitLogsVo> getVisitLogsInfos(VisitLogsQueryDto visitLogsQueryDto);
 
 	/**
-	 *批量删除方法
+	 * 查询单个信息
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @param id
+	 * @return
 	 */
- 	Boolean batchDelVisitLogsInIds(List<Long> id);
+	VisitLogsVo	getVisitLogsInfo( String schoolCode, String cardNumber, String id);
+
+	/**
+	 * 修改信息
+	 * @param updateVisitLogsDto
+	 * @return
+	 */
+	void updateVisitLogsInfo(UpdateVisitLogsDto updateVisitLogsDto);
+
+	/**
+	 * 删除单个
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @param id
+	 * @return
+	 */
+	void removeVisitLogsInfo( String schoolCode,String cardNumber, String id);
+
+	/**
+	 * 批量删除
+	 * @param schoolCodes
+	 * @param cardNumbers
+	 * @param ids
+	 * @return
+	 */
+	void batchRemoveVisitLogsInfo(String schoolCodes,String cardNumbers, String ids);
+
 
 }

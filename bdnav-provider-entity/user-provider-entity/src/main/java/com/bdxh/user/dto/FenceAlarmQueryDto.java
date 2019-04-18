@@ -43,6 +43,12 @@ public class FenceAlarmQueryDto extends Query implements Serializable {
     private String schoolCode;
 
     /**
+     * 学生姓名
+     */
+    @ApiModelProperty("学生姓名")
+    private String studentName;
+
+    /**
      * 学生卡号
      */
     @ApiModelProperty("学生卡号")

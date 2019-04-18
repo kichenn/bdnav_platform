@@ -13,7 +13,7 @@
 	  <result column="pre_point" jdbcType="VARCHAR" property="prePoint"/>
 	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
 	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-		<result column="student_id" jdbcType="BIGINT" property="studentId"/>
+	  <result column="student_id" jdbcType="BIGINT" property="studentId"/>
 	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
 	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
 	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
@@ -23,35 +23,122 @@
 	<sql id="BaseColumns">
 	  id,fence_id,fence_name,type,monitored_person,action,alarm_point,pre_point,school_id,school_code,student_id,card_number,create_date,update_date,remark
 	</sql>
-	<select id="getAllFenceAlarmInfo" resultType="com.bdxh.user.vo.FenceAlarmVo">
-SELECT
-t_fence_alarm.id as id,
-t_fence_alarm.fence_id as fenceId,
-t_fence_alarm.fence_name as fenceName,
-t_fence_alarm.type as type,
-t_fence_alarm.monitored_person as monitoredPerson,
-t_fence_alarm.action as action,
-t_fence_alarm.alarm_point as alarmPoint,
-t_fence_alarm.pre_point as prePoint,
-t_fence_alarm.school_id as schoolId,
-t_fence_alarm.school_code as schoolCode,
-t_fence_alarm.card_number as cardNumber,
-t_fence_alarm.create_date as createDate,
-t_fence_alarm.update_date as updateDate,
-t_fence_alarm.remark as remark,
-FROM
-t_fence_alarm inner join
-
+	<!-- 查询所有围栏警报信息 -->
+	<select id="getAllFenceAlarmInfos" resultType="com.bdxh.user.vo.FenceAlarmVo">
+		SELECT
+		tFenceAlarm.id as id,
+		tFenceAlarm.fence_id as fenceId,
+		tFenceAlarm.fence_name as fenceName,
+		tFenceAlarm.type as type,
+		tFenceAlarm.monitored_person as monitoredPerson,
+		tFenceAlarm.action as action,
+		tFenceAlarm.alarm_point as alarmPoint,
+		tFenceAlarm.pre_point as prePoint,
+		tFenceAlarm.school_id as schoolId,
+		tFenceAlarm.school_code as schoolCode,
+		tFenceAlarm.student_id as studentId
+		tFenceAlarm.card_number as cardNumber,
+		tFenceAlarm.create_date as createDate,
+		tFenceAlarm.update_date as updateDate,
+		tFenceAlarm.remark as remark,
+		tStudent.name as studentName,
+		tStudent.school_name as schoolName
+		FROM
+		t_fence_alarm as tFenceAlarm inner join t_student as tStudent on tFenceAlarm.student_id = tStudent.id
+		<where>
+			<if test="fenceName!=null and fenceName!=''">
+				AND tFenceAlarm.fence_name like  CONCAT('%',CONCAT(#{fenceAlarmQueryDto.fenceName, jdbcType = VARCHAR},'%'))
+			</if>
+			<if test="type!=null and type!=''">
+				AND tFenceAlarm.type =#{fenceAlarmQueryDto.type}
+			</if>
+			<if test="monitoredPerson!=null and monitoredPerson!=''">
+				AND tStudent.monitored_person like  CONCAT('%',CONCAT(#{fenceAlarmQueryDto.monitoredPerson, jdbcType = VARCHAR},'%'))
+			</if>
+			<if test="schoolCode!=null and schoolCode!=''">
+				AND tFenceAlarm.school_code =#{fenceAlarmQueryDto.schoolCode, jdbcType = VARCHAR}
+			</if>
+			<if test="cardNumber!=null and cardNumber!=''">
+				AND tFenceAlarm.card_number =  #{fenceAlarmQueryDto.cardNumber, jdbcType = VARCHAR}
+			</if>
+			<if test="studentName!=null and studentName!=''">
+				AND tStudent.name like  CONCAT('%',CONCAT(#{fenceAlarmQueryDto.studentName, jdbcType = VARCHAR},'%'))
+			</if>
+		</where>
+		order by tFenceAlarm.create_date desc
 	</select>
 
-	<delete id="delFenceAlarmInIds" parameterType="Integer">
-	  DELETE
-	   FROM t_fence_alarm
-	  WHERE
-	   id IN
-	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	          #{id, jdbcType = BIGINT}
-	     </foreach >
+	<!--根据条件查询单个学生围栏警报信息-->
+	<select id="getFenceAlarmInfo" resultType="com.bdxh.user.vo.FenceAlarmVo">
+		SELECT
+		tFenceAlarm.id as id,
+		tFenceAlarm.fence_id as fenceId,
+		tFenceAlarm.fence_name as fenceName,
+		tFenceAlarm.type as type,
+		tFenceAlarm.monitored_person as monitoredPerson,
+		tFenceAlarm.action as action,
+		tFenceAlarm.alarm_point as alarmPoint,
+		tFenceAlarm.pre_point as prePoint,
+		tFenceAlarm.school_id as schoolId,
+		tFenceAlarm.school_code as schoolCode,
+		tFenceAlarm.student_id as studentId
+		tFenceAlarm.card_number as cardNumber,
+		tFenceAlarm.create_date as createDate,
+		tFenceAlarm.update_date as updateDate,
+		tFenceAlarm.remark as remark,
+		tStudent.name as studentName,
+		tStudent.school_name as schoolName
+		FROM
+		t_fence_alarm as tFenceAlarm inner join t_student as tStudent on tFenceAlarm.student_id = tStudent.id
+		where tFenceAlarm.school_code =#{schoolCode} and tFenceAlarm.card_number=#{cardNumber} and tFenceAlarm.id=#{id}
+	</select>
+
+	<!--删除学生围栏警报信息-->
+	<delete id="removeFenceAlarmInfo">
+		DELETE FROM t_fence_alarm WHERE id =#{id} and school_code =#{schoolCode, jdbcType = VARCHAR} AND card_number=#{cardNumber, jdbcType = VARCHAR}
 	</delete>
+
+	<!--批量删除学生围栏警报信息-->
+	<delete id="batchRemoveFenceAlarmInfo">
+		DELETE FROM t_fence_alarm WHERE (id,school_code,card_number)IN
+		<foreach collection="list" separator="," open="(" close=")" item="list" >
+			(#{list.id}#{list.schoolCode,jdbcType = VARCHAR},#{list.cardNumber, jdbcType = VARCHAR})
+		</foreach>
+	</delete>
+
+	<!--修改学生围栏警报信息-->
+	<update id="updateFenceAlarmInfo">
+			UPDATE t_fence_alarm
+				SET
+			<if test="fenceId!=null and fenceId!=''">
+				fence_id = #{fenceId},
+			</if>
+			<if test="fenceName!=null and fenceName!=''">
+				fence_name = #{fenceName},
+			</if>
+			<if test="type!=null and type!=''">
+				type = #{type},
+			</if>
+			<if test="monitoredPerson!=null and monitoredPerson!=''">
+				monitored_person = #{monitoredPerson},
+			</if>
+			<if test="action!=null and action!=''">
+				action = #{action},
+			</if>
+			<if test="alarmPoint!=null and alarmPoint!=''">
+				alarm_point = #{alarmPoint},
+			</if>
+			<if test="prePoint!=null and prePoint!=''">
+				pre_point = #{prePoint},
+			</if>
+			<if test="remark!=null and remark!=''">
+				remark = #{remark},
+			</if>
+				 update_date = NOW(),
+			WHERE
+				school_code=#{schoolCode}
+				and card_number=#{cardNumber}
+				and id=#{id}
+	</update>
 
 </mapper>
