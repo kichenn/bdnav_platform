@@ -3,6 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.entity.BlackUrl;
+import com.bdxh.school.vo.BlackUrlShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,6 @@ public interface BlackUrlService extends IService<BlackUrl> {
     /**
      * 分页查询黑名单信息
      */
-    PageInfo<BlackUrl> findBlackInConditionPaging(BlackUrlQueryDto blackQueryDto);
+    PageInfo<BlackUrlShowVo> findBlackInConditionPaging(BlackUrlQueryDto blackQueryDto);
 
 }

@@ -1,6 +1,7 @@
 package com.bdxh.school.persistence;
 
 import com.bdxh.school.entity.SchoolRole;
+import com.bdxh.school.vo.SchoolRoleShowVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -16,7 +17,7 @@ public interface SchoolRoleMapper extends Mapper<SchoolRole> {
      * @param schoolRole
      * @return
      */
-    List<SchoolRole> getByCondition(@Param("schoolRole") SchoolRole schoolRole);
+    List<SchoolRoleShowVo> getByCondition(@Param("schoolRole") SchoolRole schoolRole);
 
     /**
      * 根据用户id查询角色列表

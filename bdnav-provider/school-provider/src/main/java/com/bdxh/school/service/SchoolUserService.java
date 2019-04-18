@@ -5,6 +5,7 @@ import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public interface SchoolUserService extends IService<SchoolUser> {
      *
      * @return
      */
-    PageInfo<SchoolUser> findListPage(SchoolUserQueryDto schoolUserQueryDto);
+    PageInfo<SchoolUserShowVo> findListPage(SchoolUserQueryDto schoolUserQueryDto);
 
     /**
      * 根据用户名查询用户对象

@@ -10,6 +10,7 @@ import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.GroupTypeEnum;
 import com.bdxh.school.feign.GroupPermissionControllerClient;
+import com.bdxh.school.vo.GroupPermissionShowVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -98,7 +99,7 @@ public class GroupPermissionWebController {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
         groupPermissionQueryDto.setSchoolId(user.getSchoolId());
-        Wrapper<PageInfo<GroupPermission>> wrapper = groupPermissionControllerClient.findGroupPermissionInConditionPage(groupPermissionQueryDto);
+        Wrapper<PageInfo<GroupPermissionShowVo>> wrapper = groupPermissionControllerClient.findGroupPermissionInConditionPage(groupPermissionQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 }

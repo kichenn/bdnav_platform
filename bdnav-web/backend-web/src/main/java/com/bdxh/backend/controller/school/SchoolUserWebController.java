@@ -11,6 +11,7 @@ import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.feign.SchoolUserControllerClient;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -45,7 +46,7 @@ public class SchoolUserWebController {
     @RequestMapping(value = "/findSchoolsInConditionPaging", method = RequestMethod.POST)
     @ApiOperation(value = "学校用户信息列表数据[分页筛选]", response = SchoolRole.class)
     public Object findSchoolsInConditionPaging(@RequestBody SchoolUserQueryDto userQueryDto) {
-        Wrapper<PageInfo<SchoolUser>> wrapper = schoolUserControllerClient.findSchoolUsersInConditionPage(userQueryDto);
+        Wrapper<PageInfo<SchoolUserShowVo>> wrapper = schoolUserControllerClient.findSchoolUsersInConditionPage(userQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 

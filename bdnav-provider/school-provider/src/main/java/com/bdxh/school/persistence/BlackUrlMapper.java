@@ -3,6 +3,7 @@ package com.bdxh.school.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.bdxh.school.vo.BlackUrlShowVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -30,5 +31,5 @@ public interface BlackUrlMapper extends Mapper<BlackUrl> {
     /**
      * 条件分页查询
      */
-    List<BlackUrl> findBlackInConditionPaging(@Param("blackUrl") BlackUrl blackUrl);
+    List<BlackUrlShowVo> findBlackInConditionPaging(@Param("blackUrl") BlackUrl blackUrl);
 }

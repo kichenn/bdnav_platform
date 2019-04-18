@@ -1,6 +1,7 @@
 package com.bdxh.school.persistence;
 
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -16,7 +17,7 @@ public interface SchoolUserMapper extends Mapper<SchoolUser> {
      * @param schoolUser
      * @return
      */
-    List<SchoolUser> getByCondition(@Param("schoolUser") SchoolUser schoolUser,@Param("deptName") String deptName);
+    List<SchoolUserShowVo> getByCondition(@Param("schoolUser") SchoolUser schoolUser, @Param("deptName") String deptName);
 
 
     /**

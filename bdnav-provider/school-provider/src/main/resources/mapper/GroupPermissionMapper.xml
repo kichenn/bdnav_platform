@@ -24,8 +24,44 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
+    <!--门禁组列表resultMap-->
+    <resultMap id="BaseResultMap1" type="com.bdxh.school.vo.GroupPermissionShowVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="group_type" jdbcType="TINYINT" property="groupType"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="recursion_permission" jdbcType="TINYINT" property="recursionPermission"/>
+        <result column="recursion_permission_ids" jdbcType="VARCHAR" property="recursionPermissionIds"/>
+        <result column="device_id" jdbcType="BIGINT" property="deviceId"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="access_flag" jdbcType="TINYINT" property="accessFlag"/>
+        <result column="access_begin" jdbcType="TIMESTAMP" property="accessBegin"/>
+        <result column="access_end" jdbcType="TIMESTAMP" property="accessEnd"/>
+        <result column="access_day_mark" jdbcType="VARCHAR" property="accessDayMark"/>
+        <result column="access_time_mark" jdbcType="VARCHAR" property="accessTimeMark"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+
+        <!--扩展字段-->
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+    </resultMap>
+
     <sql id="BaseColumns">
 	  id,school_id,school_code,group_type,group_id,recursion_permission,recursion_permission_ids,device_id,device_code,access_flag,access_begin,access_end,access_day_mark,access_time_mark,create_date,update_date,operator,operator_name,remark
+	</sql>
+
+    <sql id="BaseColumns1">
+	  group_permission.id,group_permission.school_id,group_permission.school_code,
+	  group_permission.group_type,group_permission.group_id,group_permission.recursion_permission,
+	  group_permission.recursion_permission_ids,group_permission.device_id,group_permission.device_code,
+	  group_permission.access_flag,group_permission.access_begin,group_permission.access_end,
+	  group_permission.access_day_mark,group_permission.access_time_mark,group_permission.create_date,
+	  group_permission.update_date,group_permission.operator,group_permission.operator_name,group_permission.remark,
+	  school.school_name
 	</sql>
 
     <select id="getGroupPermissionAllCount" resultType="Integer">
@@ -52,29 +88,30 @@
         group_id =#{groupId,jdbcType=BIGINT}
         AND group_type=#{groupId,jdbcType=TINYINT}
     </select>
-    <select id="findGroupPermissionInConditionPage" resultMap="BaseResultMap">
+    <select id="findGroupPermissionInConditionPage" resultMap="BaseResultMap1">
         SELECT
-        <include refid="BaseColumns"/>
-        FROM t_group_permission
+        <include refid="BaseColumns1"/>
+        FROM t_group_permission group_permission
+        INNER JOIN t_school school ON school.id=group_permission.school_id
         <where>
             <if test="permission.schoolId !=null">
-                school_id= #{permission.schoolId,jdbcType=BIGINT}
+                group_permission.school_id= #{permission.schoolId,jdbcType=BIGINT}
             </if>
             <if test="permission.schoolCode !=null and permission.schoolCode !=''">
-               AND school_code like CONCAT(CONCAT('%',#{permission.schoolCode,jdbcType=VARCHAR}),'%')
+                AND group_permission.school_code like CONCAT(CONCAT('%',#{permission.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="permission.groupId !=null">
-               AND group_id=#{permission.groupId,jdbcType=BIGINT}
+                AND group_permission.group_id=#{permission.groupId,jdbcType=BIGINT}
             </if>
             <if test="permission.groupType !=null">
-                AND group_type=#{permission.groupType,jdbcType=BIGINT}
+                AND group_permission.group_type=#{permission.groupType,jdbcType=BIGINT}
             </if>
             <if test="permission.deviceCode !=null and permission.deviceCode !=''">
-                AND device_code like CONCAT(CONCAT('%',#{permission.deviceCode,jdbcType=VARCHAR}),'%')
+                AND group_permission.device_code like CONCAT(CONCAT('%',#{permission.deviceCode,jdbcType=VARCHAR}),'%')
             </if>
         </where>
 
-              ORDER BY create_date DESC
+        ORDER BY group_permission.create_date DESC
     </select>
 
 </mapper>

@@ -12,6 +12,7 @@ import com.bdxh.school.entity.SchoolUserRole;
 import com.bdxh.school.persistence.SchoolUserMapper;
 import com.bdxh.school.persistence.SchoolUserRoleMapper;
 import com.bdxh.school.service.SchoolUserService;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -46,7 +47,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
 
 
     @Override
-    public PageInfo<SchoolUser> findListPage(SchoolUserQueryDto schoolUserQueryDto) {
+    public PageInfo<SchoolUserShowVo> findListPage(SchoolUserQueryDto schoolUserQueryDto) {
         Page page = PageHelper.startPage(schoolUserQueryDto.getPageNum(), schoolUserQueryDto.getPageSize());
         SchoolUser schoolUser = new SchoolUser();
         BeanUtils.copyProperties(schoolUserQueryDto, schoolUser);
@@ -59,8 +60,8 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         if (schoolUserQueryDto.getSchoolUserTypeEnum() != null) {
             schoolUser.setType(schoolUserQueryDto.getSchoolUserTypeEnum().getKey());
         }
-        List<SchoolUser> roleLogs = schoolUserMapper.getByCondition(schoolUser, schoolUserQueryDto.getDeptName());
-        PageInfo<SchoolUser> pageInfo = new PageInfo(roleLogs);
+        List<SchoolUserShowVo> roleLogs = schoolUserMapper.getByCondition(schoolUser, schoolUserQueryDto.getDeptName());
+        PageInfo<SchoolUserShowVo> pageInfo = new PageInfo(roleLogs);
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }

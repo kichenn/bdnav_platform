@@ -4,7 +4,11 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.AddGroupPermissionDto;
 import com.bdxh.school.dto.GroupPermissionQueryDto;
 import com.bdxh.school.dto.ModifyGroupPermissionDto;
+import com.bdxh.school.entity.*;
 import com.bdxh.school.enums.GroupTypeEnum;
+import com.bdxh.school.persistence.SchoolDeviceMapper;
+import com.bdxh.school.service.*;
+import com.bdxh.school.vo.GroupPermissionInfoVo;
 import com.github.pagehelper.PageInfo;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import io.swagger.annotations.Api;
@@ -15,9 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.bdxh.school.entity.GroupPermission;
-import com.bdxh.school.service.GroupPermissionService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,6 +37,18 @@ public class GroupPermissionController {
 
     @Autowired
     private GroupPermissionService groupPermissionService;
+
+    @Autowired
+    private SchoolDeviceService schoolDeviceService;
+
+    @Autowired
+    private SchoolService schoolService;
+
+    @Autowired
+    private SchoolClassService schoolClassService;
+
+    @Autowired
+    private SchoolDeptService schoolDeptService;
 
 
     /**
@@ -121,7 +136,27 @@ public class GroupPermissionController {
     @GetMapping("/findGroupPermissionById")
     @ApiOperation(value = "id查询学校组门禁", response = Boolean.class)
     public Object findGroupPermissionById(@RequestParam("id") Long id) {
-        return WrapMapper.ok(groupPermissionService.selectByKey(id));
+        //门禁组信息
+        GroupPermission groupPermission = groupPermissionService.selectByKey(id);
+        //设置名称
+        GroupPermissionInfoVo groupPermissionInfoVos = new GroupPermissionInfoVo();
+        if (groupPermission != null) {
+            BeanUtils.copyProperties(groupPermission, groupPermissionInfoVos);
+            SchoolDevice device = schoolDeviceService.selectByKey(groupPermissionInfoVos.getDeviceId());
+            groupPermissionInfoVos.setDeviceName(device != null ? device.getDeviceName() : "");
+            School school = schoolService.findSchoolById(groupPermissionInfoVos.getSchoolId()).orElse(new School());
+            groupPermissionInfoVos.setSchoolName(school.getSchoolName());
+            if (new Byte("1").equals(groupPermissionInfoVos.getGroupType())) {
+                //学生
+                SchoolClass schoolClass = schoolClassService.selectByKey(groupPermissionInfoVos.getGroupId());
+                groupPermissionInfoVos.setGroupName(schoolClass != null ? schoolClass.getName() : "");
+            } else if (new Byte("2").equals(groupPermissionInfoVos.getGroupType())) {
+                //老师
+                SchoolDept schoolDept = schoolDeptService.selectByKey(groupPermissionInfoVos.getGroupId());
+                groupPermissionInfoVos.setGroupName(schoolDept != null ? schoolDept.getName() : "");
+            }
+        }
+        return WrapMapper.ok(groupPermissionInfoVos);
     }
 
     /**

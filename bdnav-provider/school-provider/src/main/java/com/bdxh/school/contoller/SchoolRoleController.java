@@ -9,6 +9,7 @@ import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.service.SchoolRoleService;
 import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.vo.SchoolRoleInfoVo;
+import com.bdxh.school.vo.SchoolRoleShowVo;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
@@ -129,18 +130,6 @@ public class SchoolRoleController {
     }
 
     /**
-     * @Description: 根据条件查询角色列表
-     * @Author: Kang
-     * @Date: 2019/3/26 15:07
-     */
-    @ApiOperation(value = "根据条件查询角色列表", response = SchoolRole.class)
-    @RequestMapping(value = "/findRolesInCondition", method = RequestMethod.POST)
-    public Object findRolesInCondition(@Validated @RequestBody SchoolRoleQueryDto roleQueryDto) {
-        List<SchoolRole> Roles = schoolRoleService.findList(roleQueryDto);
-        return WrapMapper.ok(Roles);
-    }
-
-    /**
      * @Description: 根据条件查询角色列表 并分页
      * @Author: Kang
      * @Date: 2019/3/26 15:07
@@ -148,7 +137,7 @@ public class SchoolRoleController {
     @ApiOperation(value = "根据条件查询角色列表并分页", response = PageInfo.class)
     @RequestMapping(value = "/findRolesInConditionPage", method = RequestMethod.POST)
     public Object findRolesInConditionPage(@Validated @RequestBody SchoolRoleQueryDto roleQueryDto) {
-        PageInfo<SchoolRole> Roles = schoolRoleService.findListPage(roleQueryDto);
+        PageInfo<SchoolRoleShowVo> Roles = schoolRoleService.findListPage(roleQueryDto);
         return WrapMapper.ok(Roles);
     }
 

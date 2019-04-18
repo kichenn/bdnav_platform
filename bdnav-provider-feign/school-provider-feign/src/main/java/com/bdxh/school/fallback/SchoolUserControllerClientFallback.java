@@ -9,6 +9,7 @@ import com.bdxh.school.dto.ShowSchoolUserModifyPrefixDto;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.feign.SchoolUserControllerClient;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -43,7 +44,7 @@ public class SchoolUserControllerClientFallback implements SchoolUserControllerC
     }
 
     @Override
-    public Wrapper<PageInfo<SchoolUser>> findSchoolUsersInConditionPage(SchoolUserQueryDto schoolUserQueryDto) {
+    public Wrapper<PageInfo<SchoolUserShowVo>> findSchoolUsersInConditionPage(SchoolUserQueryDto schoolUserQueryDto) {
         return WrapMapper.error();
     }
 

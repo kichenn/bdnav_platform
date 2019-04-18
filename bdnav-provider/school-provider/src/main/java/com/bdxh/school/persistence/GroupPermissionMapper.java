@@ -3,6 +3,7 @@ package com.bdxh.school.persistence;
 import java.security.acl.Group;
 import java.util.List;
 
+import com.bdxh.school.vo.GroupPermissionShowVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -37,5 +38,5 @@ public interface GroupPermissionMapper extends Mapper<GroupPermission> {
      * @param groupPermission
      * @return
      */
-    List<GroupPermission> findGroupPermissionInConditionPage(@Param("permission") GroupPermission groupPermission);
+    List<GroupPermissionShowVo> findGroupPermissionInConditionPage(@Param("permission") GroupPermission groupPermission);
 }

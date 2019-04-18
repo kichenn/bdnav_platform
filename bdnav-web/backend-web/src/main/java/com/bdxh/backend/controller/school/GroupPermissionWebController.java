@@ -7,6 +7,7 @@ import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.enums.GroupTypeEnum;
 import com.bdxh.school.feign.GroupPermissionControllerClient;
+import com.bdxh.school.vo.GroupPermissionShowVo;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -84,7 +85,7 @@ public class GroupPermissionWebController {
     @PostMapping("/findGroupPermissionInConditionPage")
     @ApiOperation(value = "门禁组信息根据条件分页查询", response = PageInfo.class)
     public Object findGroupPermissionInConditionPage(@RequestBody GroupPermissionQueryDto groupPermissionQueryDto) {
-        Wrapper<PageInfo<GroupPermission>> wrapper = groupPermissionControllerClient.findGroupPermissionInConditionPage(groupPermissionQueryDto);
+        Wrapper<PageInfo<GroupPermissionShowVo>> wrapper = groupPermissionControllerClient.findGroupPermissionInConditionPage(groupPermissionQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 }

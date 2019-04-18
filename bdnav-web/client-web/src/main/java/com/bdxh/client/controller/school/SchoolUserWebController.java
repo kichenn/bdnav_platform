@@ -11,6 +11,7 @@ import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.feign.SchoolUserControllerClient;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +48,7 @@ public class SchoolUserWebController {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
         userQueryDto.setSchoolId(user.getSchoolId());
-        Wrapper<PageInfo<SchoolUser>> wrapper = schoolUserControllerClient.findSchoolUsersInConditionPage(userQueryDto);
+        Wrapper<PageInfo<SchoolUserShowVo>> wrapper = schoolUserControllerClient.findSchoolUsersInConditionPage(userQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 
