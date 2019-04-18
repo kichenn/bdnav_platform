@@ -3,6 +3,7 @@ package com.bdxh.user.dto;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  * @author: binzh
  * @create: 2019-04-17 19:10
  **/
+@Data
 public class UpdateVisitLogsDto implements Serializable {
     private static final long serialVersionUID = 5501087422192873102L;
 

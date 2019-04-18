@@ -4,15 +4,16 @@ import com.bdxh.common.base.page.Query;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * @description:
  * @author: binzh
  * @create: 2019-04-17 19:10
  **/
+@Data
 public class VisitLogsQueryDto extends Query implements Serializable {
     private static final long serialVersionUID = 2568343079579673024L;
 
