@@ -146,11 +146,11 @@ public class GroupPermissionController {
             groupPermissionInfoVos.setDeviceName(device != null ? device.getDeviceName() : "");
             School school = schoolService.findSchoolById(groupPermissionInfoVos.getSchoolId()).orElse(new School());
             groupPermissionInfoVos.setSchoolName(school.getSchoolName());
-            if (new Long("1").equals(groupPermissionInfoVos.getGroupType())) {
+            if (new Byte("1").equals(groupPermissionInfoVos.getGroupType())) {
                 //学生
                 SchoolClass schoolClass = schoolClassService.selectByKey(groupPermissionInfoVos.getGroupId());
                 groupPermissionInfoVos.setGroupName(schoolClass != null ? schoolClass.getName() : "");
-            } else if (new Long("2").equals(groupPermissionInfoVos.getGroupType())) {
+            } else if (new Byte("2").equals(groupPermissionInfoVos.getGroupType())) {
                 //老师
                 SchoolDept schoolDept = schoolDeptService.selectByKey(groupPermissionInfoVos.getGroupId());
                 groupPermissionInfoVos.setGroupName(schoolDept != null ? schoolDept.getName() : "");

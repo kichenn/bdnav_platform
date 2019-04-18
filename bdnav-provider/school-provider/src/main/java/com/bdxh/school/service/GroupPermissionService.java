@@ -3,6 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.GroupPermissionQueryDto;
 import com.bdxh.school.entity.GroupPermission;
+import com.bdxh.school.vo.GroupPermissionShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +36,5 @@ public interface GroupPermissionService extends IService<GroupPermission> {
     /**
      * 分页查询学校组门禁信息
      */
-    PageInfo<GroupPermission> findGroupPermissionInConditionPage(GroupPermissionQueryDto groupPermissionQueryDto);
+    PageInfo<GroupPermissionShowVo> findGroupPermissionInConditionPage(GroupPermissionQueryDto groupPermissionQueryDto);
 }

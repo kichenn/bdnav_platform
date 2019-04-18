@@ -2,6 +2,7 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.school.dto.GroupPermissionQueryDto;
 import com.bdxh.school.service.GroupPermissionService;
+import com.bdxh.school.vo.GroupPermissionShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -60,7 +61,7 @@ public class GroupPermissionServiceImpl extends BaseService<GroupPermission> imp
      * 分页查询学校组门禁信息
      */
     @Override
-    public PageInfo<GroupPermission> findGroupPermissionInConditionPage(GroupPermissionQueryDto groupPermissionQueryDto) {
+    public PageInfo<GroupPermissionShowVo> findGroupPermissionInConditionPage(GroupPermissionQueryDto groupPermissionQueryDto) {
         Page page = PageHelper.startPage(groupPermissionQueryDto.getPageNum(), groupPermissionQueryDto.getPageSize());
         GroupPermission groupPermission = new GroupPermission();
         BeanUtils.copyProperties(groupPermissionQueryDto, groupPermission);
@@ -68,7 +69,7 @@ public class GroupPermissionServiceImpl extends BaseService<GroupPermission> imp
         if (groupPermissionQueryDto.getGroupTypeEnum() != null) {
             groupPermission.setGroupType(groupPermissionQueryDto.getGroupTypeEnum().getKey());
         }
-        PageInfo<GroupPermission> pageInfo = new PageInfo(groupPermissionMapper.findGroupPermissionInConditionPage(groupPermission));
+        PageInfo<GroupPermissionShowVo> pageInfo = new PageInfo(groupPermissionMapper.findGroupPermissionInConditionPage(groupPermission));
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }
