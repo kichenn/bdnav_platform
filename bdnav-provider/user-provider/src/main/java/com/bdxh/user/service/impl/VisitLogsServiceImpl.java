@@ -7,15 +7,16 @@ import com.bdxh.user.persistence.VisitLogsMapper;
 import com.bdxh.user.service.VisitLogsService;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Service;
 
 import com.bdxh.common.support.BaseService;
-import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import tk.mybatis.mapper.common.Mapper;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
 * @Description: 业务层实现
@@ -29,9 +30,23 @@ public class VisitLogsServiceImpl extends BaseService<VisitLogs> implements Visi
 	@Autowired
 	private VisitLogsMapper visitLogsMapper;
 
-
+	@Autowired
+	private MongoTemplate mongoTemplate;
 	@Override
 	public PageInfo<VisitLogsVo> getVisitLogsInfos(VisitLogsQueryDto visitLogsQueryDto) {
+		Criteria schoolName=null;
+		Criteria userName=null;
+		Criteria status=null;
+		ArrayList<Criteria> paramList=new ArrayList<>();
+	/*	if(StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolName())){
+			//schoolName = Criteria.where(VisitLogsVo).is(vo.getCatalog1());
+		}
+		if(StringUtils.isNotEmpty(visitLogsQueryDto.getStatus().toString())){
+
+		}
+		if (StringUtils.isNotEmpty(visitLogsQueryDto.getUserName())){
+
+		}*/
 		return null;
 	}
 
