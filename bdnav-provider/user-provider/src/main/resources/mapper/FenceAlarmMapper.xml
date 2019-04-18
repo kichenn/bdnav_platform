@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdxh.school.mapper.FenceAlarmMapper">
+<mapper namespace="com.bdxh.user.mapper.FenceAlarmMapper">
 
 	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.FenceAlarm">
 	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="fence_id" jdbcType="BIGINT" property="fenceId"/>
+	  <result column="fence_id" jdbcType="INTEGER" property="fenceId"/>
 	  <result column="fence_name" jdbcType="VARCHAR" property="fenceName"/>
 	  <result column="type" jdbcType="TINYINT" property="type"/>
 	  <result column="monitored_person" jdbcType="VARCHAR" property="monitoredPerson"/>
@@ -21,6 +21,7 @@
 	</resultMap>
 
 	<sql id="BaseColumns">
+
 	  id,fence_id,fence_name,type,monitored_person,action,alarm_point,pre_point,school_id,school_code,student_id,card_number,create_date,update_date,remark
 	</sql>
 	<!-- 查询所有围栏警报信息 -->
