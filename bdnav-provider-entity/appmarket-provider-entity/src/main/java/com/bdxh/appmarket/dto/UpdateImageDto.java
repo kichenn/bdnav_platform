@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
@@ -26,6 +25,18 @@ public class UpdateImageDto implements Serializable {
     @NotNull(message = "主键不能为空")
     @ApiModelProperty("主键")
     private Long id;
+    /**
+     * 学校id
+     */
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+
 
     /**
      * 应用id
