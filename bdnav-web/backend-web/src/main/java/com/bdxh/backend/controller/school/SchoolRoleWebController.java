@@ -9,6 +9,7 @@ import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.feign.SchoolRoleControllerClient;
 import com.bdxh.school.vo.SchoolRoleInfoVo;
+import com.bdxh.school.vo.SchoolRoleShowVo;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -46,7 +47,7 @@ public class SchoolRoleWebController {
     @RequestMapping(value = "/findRolesInConditionPage", method = RequestMethod.POST)
     @ApiOperation(value = "分页条件筛选查询学校角色信息", response = SchoolRole.class)
     public Object findRolesInConditionPage(@Validated @RequestBody SchoolRoleQueryDto roleQueryDto) {
-        Wrapper<PageInfo<SchoolRole>> wrapper = schoolRoleControllerClient.findRolesInConditionPage(roleQueryDto);
+        Wrapper<PageInfo<SchoolRoleShowVo>> wrapper = schoolRoleControllerClient.findRolesInConditionPage(roleQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 

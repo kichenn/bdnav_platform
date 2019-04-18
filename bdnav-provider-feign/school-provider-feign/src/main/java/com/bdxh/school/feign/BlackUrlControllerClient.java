@@ -7,6 +7,7 @@ import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.dto.ModifyBlackUrlDto;
 import com.bdxh.school.entity.BlackUrl;
 import com.bdxh.school.fallback.BlackUrlControllerClientFallback;
+import com.bdxh.school.vo.BlackUrlShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -77,5 +78,5 @@ public interface BlackUrlControllerClient {
      */
     @RequestMapping(value = "/blackUrl/findBlackInConditionPaging", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<BlackUrl>> findBlackInConditionPaging(@Validated @RequestBody BlackUrlQueryDto blackUrlQueryDto);
+    Wrapper<PageInfo<BlackUrlShowVo>> findBlackInConditionPaging(@Validated @RequestBody BlackUrlQueryDto blackUrlQueryDto);
 }

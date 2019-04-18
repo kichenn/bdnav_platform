@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.AddBlackUrlDto;
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.dto.ModifyBlackUrlDto;
+import com.bdxh.school.vo.BlackUrlShowVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -103,7 +104,7 @@ public class BlackUrlController {
      * @Date: 2019/4/11 10:10
      */
     @RequestMapping(value = "/findBlackInConditionPaging", method = RequestMethod.POST)
-    @ApiOperation(value = "分页查询", response = BlackUrl.class)
+    @ApiOperation(value = "分页查询", response = BlackUrlShowVo.class)
     public Object findBlackInConditionPaging(@Validated @RequestBody BlackUrlQueryDto blackUrlQueryDto) {
         return WrapMapper.ok(blackUrlService.findBlackInConditionPaging(blackUrlQueryDto));
     }

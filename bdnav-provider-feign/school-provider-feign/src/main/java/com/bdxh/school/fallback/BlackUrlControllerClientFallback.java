@@ -8,6 +8,7 @@ import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.dto.ModifyBlackUrlDto;
 import com.bdxh.school.entity.BlackUrl;
 import com.bdxh.school.feign.BlackUrlControllerClient;
+import com.bdxh.school.vo.BlackUrlShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 import tk.mybatis.mapper.common.Mapper;
@@ -48,7 +49,7 @@ public class BlackUrlControllerClientFallback implements BlackUrlControllerClien
     }
 
     @Override
-    public Wrapper<PageInfo<BlackUrl>>  findBlackInConditionPaging(BlackUrlQueryDto blackUrlQueryDto) {
+    public Wrapper<PageInfo<BlackUrlShowVo>>  findBlackInConditionPaging(BlackUrlQueryDto blackUrlQueryDto) {
         return WrapMapper.error();
     }
 }

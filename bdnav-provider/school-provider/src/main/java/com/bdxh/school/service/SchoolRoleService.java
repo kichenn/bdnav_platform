@@ -3,6 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
+import com.bdxh.school.vo.SchoolRoleShowVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -21,11 +22,9 @@ public interface SchoolRoleService extends IService<SchoolRole> {
     //角色id批量删除权限
     void delBatchRole(List<Long> roleIds);
 
-    //条件搜索
-    List<SchoolRole> findList(SchoolRoleQueryDto roleQueryDto);
 
     //条件搜索-分页
-    PageInfo<SchoolRole> findListPage(SchoolRoleQueryDto roleQueryDto);
+    PageInfo<SchoolRoleShowVo> findListPage(SchoolRoleQueryDto roleQueryDto);
 
     //根据用户id查询角色列表
     List<String> getRoleListByUserId(Long userId);

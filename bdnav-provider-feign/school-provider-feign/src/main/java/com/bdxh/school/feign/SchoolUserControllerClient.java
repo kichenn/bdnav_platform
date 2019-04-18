@@ -8,6 +8,7 @@ import com.bdxh.school.dto.ShowSchoolUserModifyPrefixDto;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.fallback.SchoolUserControllerClientFallback;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -67,7 +68,7 @@ public interface SchoolUserControllerClient {
      */
     @RequestMapping(value = "/schoolUser/findSchoolUsersInConditionPage", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<SchoolUser>> findSchoolUsersInConditionPage(@RequestBody SchoolUserQueryDto schoolUserQueryDto);
+    Wrapper<PageInfo<SchoolUserShowVo>> findSchoolUsersInConditionPage(@RequestBody SchoolUserQueryDto schoolUserQueryDto);
 
     /**
      * 删除系统用户

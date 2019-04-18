@@ -8,6 +8,7 @@ import com.bdxh.school.dto.ModifyGroupPermissionDto;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.enums.GroupTypeEnum;
 import com.bdxh.school.feign.GroupPermissionControllerClient;
+import com.bdxh.school.vo.GroupPermissionInfoVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -41,7 +42,7 @@ public class GroupPermissionControllerClientFallback implements GroupPermissionC
     }
 
     @Override
-    public Wrapper<GroupPermission> findGroupPermissionById(Long id) {
+    public Wrapper<GroupPermissionInfoVo> findGroupPermissionById(Long id) {
         return WrapMapper.error();
     }
 

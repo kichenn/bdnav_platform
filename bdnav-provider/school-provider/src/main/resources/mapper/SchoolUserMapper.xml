@@ -24,8 +24,43 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
+    <!--列表 resultMap-->
+    <resultMap id="BaseResultMap1" type="com.bdxh.school.vo.SchoolUserShowVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="real_name" jdbcType="VARCHAR" property="realName"/>
+        <result column="sex" jdbcType="TINYINT" property="sex"/>
+        <result column="birth" jdbcType="VARCHAR" property="birth"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <!--附加项-->
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+    </resultMap>
+
     <sql id="BaseColumns">
     id,school_id,school_code,user_name,`password`, real_name, sex, birth, phone, email,dept_id, `status`, `type`,image, image_name, create_date, update_date, operator,operator_name, remark
+  </sql>
+
+    <sql id="BaseColumns1">
+    school_user.id,school_user.school_id,school_user.school_code,
+    school_user.user_name,school_user.`password`, school_user.real_name,school_user.sex,
+    school_user.birth, school_user.phone, school_user.email,school_user.dept_id, school_user.`status`,
+    school_user.`type`,school_user.image, school_user.image_name,
+    school_user.create_date, school_user.update_date, school_user.operator,
+    school_user.operator_name, school_user.remark,school.school_name
   </sql>
 
     <select id="getByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -36,8 +71,11 @@
     </select>
 
     <!-- 带条件查询用户列表 -->
-    <select id="getByCondition" resultMap="BaseResultMap">
-        SELECT * FROM t_school_user school_user
+    <select id="getByCondition" resultMap="BaseResultMap1">
+        SELECT
+          <include refid="BaseColumns1"/>
+        FROM t_school_user school_user
+        INNER JOIN t_school school  ON  shcool_user.school_id =school.id
         LEFT JOIN t_school_dept dept ON school_user.dept_id = dept.id
         <where>
             <if test="schoolUser.schoolId !=null">

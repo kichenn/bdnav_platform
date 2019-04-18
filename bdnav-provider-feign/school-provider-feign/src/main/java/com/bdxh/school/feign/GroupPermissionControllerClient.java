@@ -7,6 +7,7 @@ import com.bdxh.school.dto.ModifyGroupPermissionDto;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.enums.GroupTypeEnum;
 import com.bdxh.school.fallback.GroupPermissionControllerClientFallback;
+import com.bdxh.school.vo.GroupPermissionInfoVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public interface GroupPermissionControllerClient {
      */
     @RequestMapping(value = "/groupPermission/findGroupPermissionById", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<GroupPermission> findGroupPermissionById(@RequestParam("id") Long id);
+    Wrapper<GroupPermissionInfoVo> findGroupPermissionById(@RequestParam("id") Long id);
 
     /**
      * @Description: 部门id+部门类型查询学校组门禁

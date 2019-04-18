@@ -14,29 +14,53 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
+
+    <!--列表resultMap-->
+    <resultMap id="BaseResultMap1" type="com.bdxh.school.vo.SchoolRoleShowVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="role" jdbcType="VARCHAR" property="role"/>
+        <result column="role_name" jdbcType="VARCHAR" property="roleName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <!--附加项-->
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+    </resultMap>
+
     <sql id="BaseColumns">
     id,school_id,school_code,role,role_name,create_date,update_date,operator,operator_name,remark
     </sql>
 
-    <select id="getByCondition" parameterType="com.bdxh.school.entity.SchoolRole" resultMap="BaseResultMap">
+    <sql id="BaseColumns1">
+    role.id,role.school_id,role.school_code,role.role,role.role_name,
+    role.create_date,role.update_date,role.operator,role.operator_name,role.remark,
+    school.school_name
+    </sql>
+
+    <select id="getByCondition" parameterType="com.bdxh.school.entity.SchoolRole" resultMap="BaseResultMap1">
         SELECT
-        <include refid="BaseColumns"/>
-        FROM t_school_role
+        <include refid="BaseColumns1"/>
+        FROM t_school_role role
+        INNER JOIN t_school school ON school.id = role.school_id
         <where>
             <if test="schoolRole.role !=null and schoolRole.role !=''">
-                role=#{schoolRole.role,jdbcType=VARCHAR}
+                role.role=#{schoolRole.role,jdbcType=VARCHAR}
             </if>
             <if test="schoolRole.roleName != null and schoolRole.roleName != ''">
-                AND role_name like CONCAT(CONCAT('%',#{schoolRole.roleName,jdbcType=VARCHAR}),'%')
+                AND role.role_name like CONCAT(CONCAT('%',#{schoolRole.roleName,jdbcType=VARCHAR}),'%')
             </if>
             <if test="schoolRole.schoolId !=null">
-               AND school_id= #{schoolRole.schoolId,jdbcType=BIGINT}
+                AND role.school_id= #{schoolRole.schoolId,jdbcType=BIGINT}
             </if>
             <if test="schoolRole.schoolCode != null and schoolRole.schoolCode != ''">
-                AND school_code like CONCAT(CONCAT('%',#{schoolRole.schoolCode,jdbcType=VARCHAR}),'%')
+                AND role.school_code like CONCAT(CONCAT('%',#{schoolRole.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
         </where>
-        ORDER BY create_date DESC
+        ORDER BY role.create_date DESC
     </select>
 
     <!-- 根据用户id查询角色列表 -->

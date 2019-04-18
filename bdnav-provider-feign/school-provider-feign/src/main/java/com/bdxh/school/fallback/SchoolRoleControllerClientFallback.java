@@ -8,6 +8,7 @@ import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.feign.SchoolRoleControllerClient;
 import com.bdxh.school.vo.SchoolRoleInfoVo;
+import com.bdxh.school.vo.SchoolRoleShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +33,7 @@ public class SchoolRoleControllerClientFallback implements SchoolRoleControllerC
     }
 
     @Override
-    public Wrapper<PageInfo<SchoolRole>> findRolesInConditionPage(SchoolRoleQueryDto roleQueryDto) {
+    public Wrapper<PageInfo<SchoolRoleShowVo>> findRolesInConditionPage(SchoolRoleQueryDto roleQueryDto) {
         return WrapMapper.error();
     }
 

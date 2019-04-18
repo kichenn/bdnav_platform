@@ -16,6 +16,7 @@ import com.bdxh.school.service.SchoolDeptService;
 import com.bdxh.school.service.SchoolRoleService;
 import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.service.SchoolUserService;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.netflix.discovery.converters.Auto;
@@ -142,7 +143,7 @@ public class SchoolUserController {
     @ApiOperation(value = "根据条件分页查找学校系统用户", response = PageInfo.class)
     @RequestMapping(value = "/findSchoolUsersInConditionPage", method = RequestMethod.POST)
     public Object findSchoolUsersInConditionPage(@RequestBody SchoolUserQueryDto schoolUserQueryDto) {
-        PageInfo<SchoolUser> Users = schoolUserService.findListPage(schoolUserQueryDto);
+        PageInfo<SchoolUserShowVo> Users = schoolUserService.findListPage(schoolUserQueryDto);
         return WrapMapper.ok(Users);
     }
 

@@ -2,6 +2,7 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.service.BlackUrlService;
+import com.bdxh.school.vo.BlackUrlShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -50,14 +51,14 @@ public class BlackUrlServiceImpl extends BaseService<BlackUrl> implements BlackU
      * 分页查询黑名单信息
      */
     @Override
-    public PageInfo<BlackUrl> findBlackInConditionPaging(BlackUrlQueryDto blackQueryDto) {
+    public PageInfo<BlackUrlShowVo> findBlackInConditionPaging(BlackUrlQueryDto blackQueryDto) {
         BlackUrl blackUrl = new BlackUrl();
         BeanUtils.copyProperties(blackQueryDto, blackUrl);
         if (blackQueryDto.getBlackStatusEnum() != null) {
             blackUrl.setStatus(blackQueryDto.getBlackStatusEnum().getKey());
         }
         Page page = PageHelper.startPage(blackQueryDto.getPageNum(), blackQueryDto.getPageSize());
-        List<BlackUrl> blackUrls = blackUrlMapper.findBlackInConditionPaging(blackUrl);
+        List<BlackUrlShowVo> blackUrls = blackUrlMapper.findBlackInConditionPaging(blackUrl);
 
         PageInfo pageInfo = new PageInfo<>(blackUrls);
         pageInfo.setTotal(page.getTotal());

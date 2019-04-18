@@ -7,6 +7,7 @@ import com.bdxh.school.persistence.SchoolRoleMapper;
 import com.bdxh.school.persistence.SchoolRolePermissionMapper;
 import com.bdxh.school.persistence.SchoolUserRoleMapper;
 import com.bdxh.school.service.SchoolRoleService;
+import com.bdxh.school.vo.SchoolRoleShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -56,21 +57,13 @@ public class SchoolRoleServiceImpl extends BaseService<SchoolRole> implements Sc
         schoolRolePermissionMapper.delBatchRoleByRoleIds(roleIds);
     }
 
-
     @Override
-    public List<SchoolRole> findList(SchoolRoleQueryDto roleQueryDto) {
-        SchoolRole schoolRole = new SchoolRole();
-        BeanUtils.copyProperties(roleQueryDto, schoolRole);
-        return schoolRoleMapper.getByCondition(schoolRole);
-    }
-
-    @Override
-    public PageInfo<SchoolRole> findListPage(SchoolRoleQueryDto roleQueryDto) {
+    public PageInfo<SchoolRoleShowVo> findListPage(SchoolRoleQueryDto roleQueryDto) {
         PageHelper.startPage(roleQueryDto.getPageNum(), roleQueryDto.getPageSize());
         SchoolRole schoolRole = new SchoolRole();
         BeanUtils.copyProperties(roleQueryDto, schoolRole);
-        List<SchoolRole> roleLogs = schoolRoleMapper.getByCondition(schoolRole);
-        PageInfo<SchoolRole> pageInfo = new PageInfo<>(roleLogs);
+        List<SchoolRoleShowVo> roleLogs = schoolRoleMapper.getByCondition(schoolRole);
+        PageInfo<SchoolRoleShowVo> pageInfo = new PageInfo<>(roleLogs);
         return pageInfo;
     }
 

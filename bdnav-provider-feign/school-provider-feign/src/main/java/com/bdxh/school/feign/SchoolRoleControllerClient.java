@@ -7,6 +7,7 @@ import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.fallback.SchoolRoleControllerClientFallback;
 import com.bdxh.school.vo.SchoolRoleInfoVo;
+import com.bdxh.school.vo.SchoolRoleShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -48,7 +49,7 @@ public interface SchoolRoleControllerClient {
      */
     @RequestMapping(value = "/schoolRole/findRolesInConditionPage", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<SchoolRole>> findRolesInConditionPage(@RequestBody SchoolRoleQueryDto roleQueryDto);
+    Wrapper<PageInfo<SchoolRoleShowVo>> findRolesInConditionPage(@RequestBody SchoolRoleQueryDto roleQueryDto);
 
     /**
      * 增加角色管理

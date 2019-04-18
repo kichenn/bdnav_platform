@@ -9,6 +9,7 @@ import com.bdxh.school.dto.SchoolRoleQueryDto;
 import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolRoleControllerClient;
+import com.bdxh.school.vo.SchoolRoleShowVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -42,7 +43,7 @@ public class SchoolRoleWebController {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
         roleQueryDto.setSchoolId(user.getSchoolId());
-        Wrapper<PageInfo<SchoolRole>> wrapper = schoolRoleControllerClient.findRolesInConditionPage(roleQueryDto);
+        Wrapper<PageInfo<SchoolRoleShowVo>> wrapper = schoolRoleControllerClient.findRolesInConditionPage(roleQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 

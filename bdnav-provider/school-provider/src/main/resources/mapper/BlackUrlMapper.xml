@@ -16,9 +16,33 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
+    <!--url列表展示resultMap-->
+    <resultMap id="BaseResultMap1" type="com.bdxh.school.vo.BlackUrlShowVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="ip" jdbcType="VARCHAR" property="ip"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <!--增加字段-->
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+    </resultMap>
+
     <sql id="BaseColumns">
 	  id,school_id,school_code,name,ip,status,create_date,update_date,operator,operator_name,remark
 	</sql>
+
+    <sql id="BaseColumns1">
+	  url.id,url.school_id,url.school_code,url.name,url.ip,url.status,url.create_date,url.update_date,
+	  url.operator,url.operator_name,url.remark,school.school_name
+	</sql>
+
+
     <select id="getBlackUrlAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
@@ -36,26 +60,27 @@
         </foreach>
     </delete>
 
-    <select id="findBlackInConditionPaging" resultMap="BaseResultMap">
+    <select id="findBlackInConditionPaging" resultMap="BaseResultMap1">
         SELECT
-        <include refid="BaseColumns"/>
-        FROM t_black_url
+        <include refid="BaseColumns1"/>
+        FROM t_black_url url
+        INNER JOIN t_school school ON school.id = url.school_id
         <where>
             <if test="blackUrl.schoolId !=null">
-                `school_id`=#{blackUrl.schoolId, jdbcType = BIGINT}
+                url.`school_id`=#{blackUrl.schoolId, jdbcType = BIGINT}
             </if>
             <if test="blackUrl.schoolCode !=null and blackUrl.schoolCode!=''">
-                AND `school_code` LIKE CONCAT(CONCAT('%',#{blackUrl.schoolCode,jdbcType=VARCHAR}),'%')
+                AND url.`school_code` LIKE CONCAT(CONCAT('%',#{blackUrl.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="blackUrl.status !=null">
-                AND `status`=#{blackUrl.status, jdbcType = TINYINT}
+                AND url.`status`=#{blackUrl.status, jdbcType = TINYINT}
             </if>
             <if test="blackUrl.name !=null and blackUrl.name!=''">
-                AND `name` LIKE CONCAT(CONCAT('%',#{blackUrl.name,jdbcType=VARCHAR}),'%')
+                AND url.`name` LIKE CONCAT(CONCAT('%',#{blackUrl.name,jdbcType=VARCHAR}),'%')
             </if>
         </where>
 
-        Order BY create_date DESC
+        Order BY url.create_date DESC
     </select>
 
 </mapper>
