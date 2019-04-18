@@ -1,14 +1,20 @@
 package com.bdxh.user.service.impl;
 
+import com.bdxh.user.dto.UpdateVisitLogsDto;
+import com.bdxh.user.dto.VisitLogsQueryDto;
 import com.bdxh.user.entity.VisitLogs;
 import com.bdxh.user.persistence.VisitLogsMapper;
 import com.bdxh.user.service.VisitLogsService;
+import com.bdxh.user.vo.VisitLogsVo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bdxh.common.support.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
+import tk.mybatis.mapper.common.Mapper;
+
 import java.util.List;
 
 /**
@@ -23,20 +29,29 @@ public class VisitLogsServiceImpl extends BaseService<VisitLogs> implements Visi
 	@Autowired
 	private VisitLogsMapper visitLogsMapper;
 
-	/*
-	 *查询总条数
-	 */
+
 	@Override
-	public Integer getVisitLogsAllCount(){
-		return visitLogsMapper.getVisitLogsAllCount();
+	public PageInfo<VisitLogsVo> getVisitLogsInfos(VisitLogsQueryDto visitLogsQueryDto) {
+		return null;
 	}
 
-	/*
-	 *批量删除方法
-	 */
 	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public Boolean batchDelVisitLogsInIds(List<Long> ids){
-		return visitLogsMapper.delVisitLogsInIds(ids) > 0;
+	public VisitLogsVo getVisitLogsInfo(String schoolCode, String cardNumber, String id) {
+		return null;
+	}
+
+	@Override
+	public void updateVisitLogsInfo(UpdateVisitLogsDto updateVisitLogsDto) {
+
+	}
+
+	@Override
+	public void removeVisitLogsInfo(String schoolCode, String cardNumber, String id) {
+
+	}
+
+	@Override
+	public void batchRemoveVisitLogsInfo(String schoolCodes, String cardNumbers, String ids) {
+
 	}
 }

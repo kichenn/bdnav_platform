@@ -21,7 +21,17 @@ public class UpdateVisitLogsDto implements Serializable {
     @ApiModelProperty("id")
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
+    /**
+     * 学校Code
+     */
+    @ApiModelProperty("学校Code")
+    private String schoolCode;
 
+    /**
+     * 学生学号
+     */
+    @ApiModelProperty("学生学号")
+    private String cardNumber;
     /**
      * 访问的URL
      */

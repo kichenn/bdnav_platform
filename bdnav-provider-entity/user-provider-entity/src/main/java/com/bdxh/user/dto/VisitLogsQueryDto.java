@@ -18,6 +18,26 @@ public class VisitLogsQueryDto extends Query implements Serializable {
 
 
     /**
+     * 学校姓名
+     */
+    @ApiModelProperty("学校姓名")
+    private String schoolName;
+
+
+    /**
+     * 学生姓名
+     */
+    @ApiModelProperty("学生姓名")
+    private String userName;
+
+
+    /**
+     * 状态，是否拦截： 0未拦截  1拦截
+     */
+    @ApiModelProperty("状态，是否拦截： 0未拦截  1拦截")
+    private Byte status;
+
+    /**
      * 学校CODE
      */
     @ApiModelProperty("学校CODE")
@@ -28,26 +48,6 @@ public class VisitLogsQueryDto extends Query implements Serializable {
      */
     @ApiModelProperty("学生卡号")
     private String cardNumber;
-
-    /**
-     * 学生姓名
-     */
-    @ApiModelProperty("学生姓名")
-    private String userName;
-
-
-
-    /**
-     * 访问时间
-     */
-    @ApiModelProperty("访问时间")
-    private Date createDate;
-
-    /**
-     * 状态，是否拦截： 0未拦截  1拦截
-     */
-    @ApiModelProperty("状态，是否拦截： 0未拦截  1拦截")
-    private Byte status;
 
 
 }

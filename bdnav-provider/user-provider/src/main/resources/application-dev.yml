@@ -20,8 +20,9 @@ management:
       show-details: ALWAYS
 #数据源配置
 spring:
-  mongodb:
-    uri: mongodb://admin:Abc_123456@47.107.253.90:27017/admin
+  data:
+    mongodb:
+      uri: mongodb://admin:Abc_123456@47.107.253.90:27017/admin
   datasource:
     ds0:
       name: dataSource

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -26,21 +29,25 @@ public class AddFenceAlarmDto implements Serializable {
      */
     @ApiModelProperty("围栏ID")
     @JsonSerialize(using= ToStringSerializer.class)
+    @NotEmpty(message = "围栏ID不能为空")
     private Integer fenceId;
     /**
      * 围栏名称
      */
     @ApiModelProperty("围栏名称")
+    @NotEmpty(message = "围栏名称不能为空")
     private String fenceName;
     /**
      * 消息类型
      */
     @ApiModelProperty("消息类型")
+    @NotEmpty(message = "消息类型不能为空")
     private Byte type;
     /**
      * 监控对象
      */
     @ApiModelProperty("监控对象")
+    @NotEmpty(message = "监控对象不能为空")
     private String monitoredPerson;
     /**
      * 出入动作
@@ -61,22 +68,26 @@ public class AddFenceAlarmDto implements Serializable {
      * 学校ID
      */
     @ApiModelProperty("学校ID")
+    @NotEmpty(message = "学校ID不能为空")
     private Long schoolId;
     /**
      * 学校CODE
      */
     @ApiModelProperty("学校CODE")
+    @NotEmpty(message = "学校CODE不能为空")
     private String schoolCode;
 
     /**
      * 学生ID
      */
     @ApiModelProperty("学生ID")
+    @NotEmpty(message = "学生ID不能为空")
     private Long studentId;
     /**
      * 学生卡号
      */
     @ApiModelProperty("学生卡号")
+    @NotEmpty(message = "学生卡号不能为空")
     private String cardNumber;
 
 

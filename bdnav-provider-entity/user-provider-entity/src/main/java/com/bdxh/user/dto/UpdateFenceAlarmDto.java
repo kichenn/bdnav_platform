@@ -76,4 +76,16 @@ public class UpdateFenceAlarmDto implements Serializable {
      */
     @ApiModelProperty("备注")
     private String remark;
+
+    /**
+     * 学校Code
+     */
+    @ApiModelProperty("学校Code")
+    private String schoolCode;
+
+    /**
+     * 学生学号
+     */
+    @ApiModelProperty("学生学号")
+    private String cardNumber;
 }
