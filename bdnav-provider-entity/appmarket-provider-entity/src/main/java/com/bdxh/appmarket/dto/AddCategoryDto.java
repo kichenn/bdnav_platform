@@ -20,6 +20,18 @@ public class AddCategoryDto implements Serializable {
     private static final long serialVersionUID = 4667963106846256232L;
 
     /**
+     * 学校id
+     */
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+
+    /**
      * 分类名称
      */
     @NotEmpty(message = "分类名称不能为空")
