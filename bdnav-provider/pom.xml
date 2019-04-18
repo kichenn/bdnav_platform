@@ -69,6 +69,12 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
+        <!--mongodb依赖项-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>2.0.11.RELEASE</version>
+        </dependency>
     </dependencies>
 
 </project>
