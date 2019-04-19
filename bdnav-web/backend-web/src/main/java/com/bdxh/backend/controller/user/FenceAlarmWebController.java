@@ -65,7 +65,7 @@ public class FenceAlarmWebController {
                                     @RequestParam(name="cardNumber")@NotNull(message = "cardNumber不能为空")  String cardNumber,
                                     @RequestParam(name="id") @NotNull(message = "id不能为空")  String id){
         try {
-            return WrapMapper.ok(fenceAlarmControllerClient.getFenceAlarmInfo(schoolCode,cardNumber,id).getResult());
+            return fenceAlarmControllerClient.getFenceAlarmInfo(schoolCode,cardNumber,id).getResult();
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

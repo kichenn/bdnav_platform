@@ -30,6 +30,11 @@ public class AddVisitLogsDto implements Serializable {
     @ApiModelProperty("学校ID")
     private Integer schoolId;
 
+    /**
+     * 学校名称
+     */
+    @ApiModelProperty("学校名称")
+    private String schoolName;
 
     /**
      * 学校CODE

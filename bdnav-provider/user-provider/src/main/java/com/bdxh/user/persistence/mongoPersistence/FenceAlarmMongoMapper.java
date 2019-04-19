@@ -93,6 +93,9 @@ public class FenceAlarmMongoMapper{
         criteria.and("id").is(id);
         query.addCriteria(criteria);
         FenceAlarmMongo fenceAlarmMongo=mongoTemplate.findOne(query,FenceAlarmMongo.class);
+        if(null==fenceAlarmMongo){
+            return null;
+        }
         FenceAlarmVo fenceAlarmVo=BeanMapUtils.map(fenceAlarmMongo,FenceAlarmVo.class);
         return fenceAlarmVo;
     }

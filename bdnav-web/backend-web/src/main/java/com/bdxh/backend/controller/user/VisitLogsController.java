@@ -14,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -28,7 +25,7 @@ import java.util.stream.Collectors;
  * @author: binzh
  * @create: 2019-04-19 16:17
  **/
-@Controller
+@RestController
 @RequestMapping("/visitLogs")
 @Slf4j
 @Validated
@@ -72,7 +69,7 @@ public class VisitLogsController {
                                    @RequestParam(name="cardNumber")@NotNull(message = "cardNumber不能为空")  String cardNumber,
                                    @RequestParam(name="id") @NotNull(message = "id不能为空")  String id){
         try {
-            return WrapMapper.ok(visitLogsControllerClient.getVisitLogsInfo(schoolCode,cardNumber,id));
+            return visitLogsControllerClient.getVisitLogsInfo(schoolCode,cardNumber,id);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

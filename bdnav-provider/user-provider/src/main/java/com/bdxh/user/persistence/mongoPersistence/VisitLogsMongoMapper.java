@@ -82,8 +82,13 @@ public class VisitLogsMongoMapper {
         criteria.and("id").is(id);
         query.addCriteria(criteria);
         VisitLogsMongo visitLogsMongo=mongoTemplate.findOne(query,VisitLogsMongo.class);
+        if(null==visitLogsMongo){
+            return null;
+        }
         VisitLogsVo visitLogsVo=BeanMapUtils.map(visitLogsMongo,VisitLogsVo.class);
         return visitLogsVo;
+
+
     }
 
     /**
