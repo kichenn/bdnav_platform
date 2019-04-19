@@ -46,10 +46,19 @@
 -->
 
 	<select id="getSchoolModeAllCount" resultType="Integer">
-        SELECT 
+        SELECT
         COUNT(1)
-        FROM t_school_mode 
+        FROM t_school_mode
 	</select>
+
+    <!-- 根据名称查询模式-->
+    <select id="getSchoolModesByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_mode
+        WHERE `name`= #{name} limit 1;
+	</select>
+
 
     <!--带条件的分页查询-->
     <select id="getByCondition" resultMap="BResultMap" parameterType="java.util.Map" >

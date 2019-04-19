@@ -9,6 +9,7 @@ import com.bdxh.school.dto.SchoolModeDto;
 import com.bdxh.school.entity.SchoolMode;
 import com.bdxh.school.service.SchoolModeService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -63,9 +64,11 @@ public class SchoolModeController {
 			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
 			return WrapMapper.error(errors);
 		}
-        SchoolMode schoolMode = new SchoolMode();
-        BeanUtils.copyProperties(addSchoolModeDto, schoolMode);
-		Boolean result = schoolModeService.addSchoolMode(schoolMode);
+        SchoolMode schoolModeLogs=new SchoolMode();
+        SchoolMode schoolMode = schoolModeService.getSchoolModesByName(addSchoolModeDto.getName());
+        Preconditions.checkArgument(schoolMode == null, "该模式已存在,请更换后添加");
+        BeanUtils.copyProperties(addSchoolModeDto, schoolModeLogs);
+		Boolean result = schoolModeService.addSchoolMode(schoolModeLogs);
 		return WrapMapper.ok(result);
     }
 
@@ -82,9 +85,22 @@ public class SchoolModeController {
 			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
 			return WrapMapper.error(errors);
 		}
-        SchoolMode schoolMode = new SchoolMode();
+        Boolean result;
+        SchoolMode schoolMode = schoolModeService.getSchoolModesByName(modifySchoolModeDto.getName());
+        SchoolMode schoolModeLogs=new SchoolMode();
+        BeanUtils.copyProperties(modifySchoolModeDto, schoolModeLogs);
+        if (schoolMode!=null){
+            if(schoolMode.getName().equals(modifySchoolModeDto.getName())&&!schoolMode.getId().equals(modifySchoolModeDto.getId())){
+                return WrapMapper.error("该模式已存在,请更换模式名称");
+            }else{
+                result =  schoolModeService.modifySchoolMode(schoolModeLogs);
+            }
+        }else{
+            result =  schoolModeService.modifySchoolMode(schoolModeLogs);;
+        }
+/*
         BeanUtils.copyProperties(modifySchoolModeDto, schoolMode);
-		Boolean result = schoolModeService.modifySchoolMode(schoolMode);
+		 schoolModeService.modifySchoolMode(schoolMode);*/
         return WrapMapper.ok(result);
     }
 
@@ -128,12 +144,23 @@ public class SchoolModeController {
 	@RequestMapping(value = "/getModesById", method = RequestMethod.GET)
 	@ApiOperation(value = "根据id查询", response = Boolean.class)
 	public Object getModesById(@RequestParam("id")Long id) {
-		return WrapMapper.ok(schoolModeService.selectByKey(id));
+		return WrapMapper.ok(schoolModeService.findSchoolModeById(id));
 	}
 
 
+    /**
+     * @Description: 模式全部列表
+     * @Date 2019-04-18 09:52:43
+     */
+    @RequestMapping(value = "/getModesAll", method = RequestMethod.GET)
+    @ApiOperation(value = "全部模式列表")
+    public Object getModesAll() {
+        return WrapMapper.ok(schoolModeService.selectAll());
+    }
 
-	/**
+
+
+    /**
 	* @Description: 批量删除
 	* @Date 2019-04-18 09:52:43
 	*/

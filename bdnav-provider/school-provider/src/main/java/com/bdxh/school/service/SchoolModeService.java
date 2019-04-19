@@ -35,8 +35,10 @@ public interface SchoolModeService extends IService<SchoolMode> {
 	Boolean batchDelSchoolModeInIds(List<Long> id);
 
 	//根据ID查询对象的方法
-	public SchoolMode findSchoolModeById(Long id);
+	SchoolMode findSchoolModeById(Long id);
 
+	//根据模式名称查询模式
+	SchoolMode getSchoolModesByName(String name);
 
 	//根据条件分页查询用户列表
 	PageInfo<QuerySchoolMode> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);

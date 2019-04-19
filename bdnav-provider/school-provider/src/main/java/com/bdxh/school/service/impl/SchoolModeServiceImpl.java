@@ -68,6 +68,11 @@ public class SchoolModeServiceImpl extends BaseService<SchoolMode> implements Sc
         return schoolModeMapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    public SchoolMode getSchoolModesByName(String name) {
+        SchoolMode schoolMode=schoolModeMapper.getSchoolModesByName(name);
+        return schoolMode;
+    }
 
 
     @Override
@@ -76,5 +81,6 @@ public class SchoolModeServiceImpl extends BaseService<SchoolMode> implements Sc
         List<QuerySchoolMode> schoolModeLogs = schoolModeMapper.getByCondition(param);
         return new PageInfo(schoolModeLogs);
     }
+
 
 }

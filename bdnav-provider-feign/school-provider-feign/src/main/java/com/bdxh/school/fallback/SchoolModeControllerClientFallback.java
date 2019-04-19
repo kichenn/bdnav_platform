@@ -5,9 +5,12 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolModeDto;
 import com.bdxh.school.dto.ModifySchoolModeDto;
 import com.bdxh.school.dto.QuerySchoolMode;
+import com.bdxh.school.entity.SchoolMode;
 import com.bdxh.school.feign.SchoolModeControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class SchoolModeControllerClientFallback implements SchoolModeControllerClient {
@@ -34,6 +37,11 @@ public class SchoolModeControllerClientFallback implements SchoolModeControllerC
 
     @Override
     public Wrapper<PageInfo<QuerySchoolMode>> findModesInConditionPage(QuerySchoolMode querySchoolMode) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<SchoolMode>> getModesAll() {
         return WrapMapper.error();
     }
 }
