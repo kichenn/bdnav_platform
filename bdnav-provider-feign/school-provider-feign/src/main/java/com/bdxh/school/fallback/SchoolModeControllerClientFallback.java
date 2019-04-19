@@ -4,7 +4,9 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolModeDto;
 import com.bdxh.school.dto.ModifySchoolModeDto;
+import com.bdxh.school.dto.QuerySchoolMode;
 import com.bdxh.school.feign.SchoolModeControllerClient;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -22,6 +24,16 @@ public class SchoolModeControllerClientFallback implements SchoolModeControllerC
 
     @Override
     public Wrapper delSchoolModesById(Long id) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper getModesById(Long id) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<PageInfo<QuerySchoolMode>> findModesInConditionPage(QuerySchoolMode querySchoolMode) {
         return WrapMapper.error();
     }
 }

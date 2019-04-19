@@ -115,11 +115,22 @@ public class SchoolModeController {
 	* @Description: 删除信息
 	* @Date 2019-04-18 09:52:43
 	*/
-	@RequestMapping(value = "/delModesById", method = RequestMethod.POST)
+	@RequestMapping(value = "/delModesById", method = RequestMethod.GET)
 	@ApiOperation(value = "删除信息", response = Boolean.class)
 	public Object delModesById(@RequestParam("id")Long id) {
 		return WrapMapper.ok(schoolModeService.delSchoolModeById(id));
 	}
+
+	/**
+	 * @Description: 根据id查询所需信息
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/getModesById", method = RequestMethod.GET)
+	@ApiOperation(value = "根据id查询", response = Boolean.class)
+	public Object getModesById(@RequestParam("id")Long id) {
+		return WrapMapper.ok(schoolModeService.selectByKey(id));
+	}
+
 
 
 	/**
