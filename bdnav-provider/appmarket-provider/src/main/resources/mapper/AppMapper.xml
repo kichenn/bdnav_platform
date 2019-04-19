@@ -61,4 +61,27 @@
     order by create_date desc
   </select>
 
+  <select id="getApplicationOfCollection" parameterType="java.util.Map" resultMap="BaseResultMap">
+    select
+    id,school_id,school_code,app_name
+    from
+    t_app
+    where school_id IS NULL
+    UNION
+    SELECT
+    id,school_id,school_code,app_name
+    FROM
+    t_app
+    WHERE
+    school_id=#{schoolId}
+<!--    <where>
+      <if test="schoolId!=null">
+        school_id=#{schoolId} and
+      </if>
+      <if test="schoolId!=null AND schoolId!=0">
+        school_id=#{schoolId} AND
+      </if>
+    </where>-->
+  </select>
+
 </mapper>

@@ -64,4 +64,13 @@ public interface AppService extends IService<App> {
      */
     PageInfo<App> getAppListPage(Map<String,Object> param, int pageNum, int pageSize);
 
+    /**
+     * 分页查询全部应用or学校特定应用
+     * @param schoolId
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    PageInfo<App> getApplicationOfCollection(Long schoolId, Integer pageNum, Integer pageSize);
+
 }

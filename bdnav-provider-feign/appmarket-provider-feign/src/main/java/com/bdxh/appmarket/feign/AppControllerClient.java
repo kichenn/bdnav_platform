@@ -9,10 +9,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -46,4 +43,7 @@ public interface AppControllerClient {
     @RequestMapping(value = "/app/queryAppListPage",method = RequestMethod.POST)
     Wrapper<PageInfo<App>> queryAppListPage(@RequestBody AppQueryDto appQueryDto);
 
+    @RequestMapping(value = "/app/getApplicationOfCollection",method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<PageInfo<App>> getApplicationOfCollection(@RequestBody AppQueryDto appQueryDto);
 }

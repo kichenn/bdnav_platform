@@ -55,4 +55,11 @@ public class AppControllerClientFallback implements AppControllerClient {
     public Wrapper<PageInfo<App>> queryAppListPage(AppQueryDto appQueryDto) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<PageInfo<App>> getApplicationOfCollection(AppQueryDto appQueryDto) {
+        return WrapMapper.error();
+    }
+
+
 }

@@ -145,4 +145,17 @@ public class AppWebController {
         }
     }
 
+    @ApiOperation("分页查询特定应用列表")
+    @RequestMapping(value = "/getApplicationOfCollection",method = RequestMethod.POST)
+    public Object getApplicationOfCollection(@RequestBody AppQueryDto appQueryDto){
+        try {
+            Wrapper wrapper = appControllerClient.getApplicationOfCollection(appQueryDto);
+            return wrapper;
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
 }

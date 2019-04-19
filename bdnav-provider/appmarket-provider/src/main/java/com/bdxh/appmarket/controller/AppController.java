@@ -172,4 +172,24 @@ public class AppController {
         }
     }
 
+
+    @ApiOperation("显示全部应用or学校特定应用")
+    @RequestMapping(value = "/getApplicationOfCollection",method = RequestMethod.POST)
+    public Object getApplicationOfCollection(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult){
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
+        try {
+            PageInfo<App> appListPage = appService.getApplicationOfCollection(appQueryDto.getSchoolId(),appQueryDto.getPageNum(), appQueryDto.getPageSize());
+            return WrapMapper.ok(appListPage);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+
 }
