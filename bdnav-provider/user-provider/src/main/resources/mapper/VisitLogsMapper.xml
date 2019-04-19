@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdxh.user.mapper.VisitLogsMapper">
+<mapper namespace="com.bdxh.user.persistence.VisitLogsMapper">
 
 	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.VisitLogs">
 	  <id column="id" jdbcType="BIGINT" property="id"/>
@@ -21,7 +21,7 @@
 	  id,school_id,school_name,school_code,student_id,card_number,user_name,url,create_date,update_date,status,remark
 	</sql>
 
-	<!--查询所有学生访问日志记录信息-->
+<!--	查询所有学生访问日志记录信息
 	<select id="getVisitLogsInfos">
 		SELECT
 		<include refid="BaseColumns" />
@@ -47,7 +47,7 @@
 		order by create_date desc
 	</select>
 
-	<!--根据条件查询单个学生访问日志记录信息-->
+	&lt;!&ndash;根据条件查询单个学生访问日志记录信息&ndash;&gt;
 	<select id="getVisitLogsInfo">
 		SELECT
 		<include refid="BaseColumns" />
@@ -55,7 +55,7 @@
 		t_visit_logs where school_code=#{schoolCode} and card_number=#{cardNumber} and id=#{id}
 	</select>
 
-	<!--修改学生访问日志记录信息-->
+	&lt;!&ndash;修改学生访问日志记录信息&ndash;&gt;
 	<update id="updateVisitLogsInfo">
 		UPDATE t_visit_logs
 		SET
@@ -73,18 +73,18 @@
 			id = #{id} and school_code=#{schoolCode} and card_number=#{cardNumber}
 	</update>
 
-	<!--删除学生访问日志记录信息-->
+	&lt;!&ndash;删除学生访问日志记录信息&ndash;&gt;
 	<delete id="removeVisitLogsInfo">
 		delete from t_visit_logs WHERE
 		id = #{id} and school_code=#{schoolCode} and card_number=#{cardNumber}
 	</delete>
 
-	<!--批量删除学生访问日志记录信息-->
+	&lt;!&ndash;批量删除学生访问日志记录信息&ndash;&gt;
 	<delete id="batchRemoveVisitLogsInfo">
 		  delete from t_visit_logs where (id,schoo_code,card_number) in
 		<foreach collection="list" separator="," open="(" close=")" item="list" >
 			(#{list.id},#{list.schoolCode},#{list.cardNumber})
 		</foreach>
 
-	</delete>
+	</delete>-->
 </mapper>

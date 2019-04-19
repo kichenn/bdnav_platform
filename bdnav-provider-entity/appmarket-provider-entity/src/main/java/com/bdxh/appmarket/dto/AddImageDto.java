@@ -28,6 +28,18 @@ public class AddImageDto implements Serializable {
     private Long appId;
 
     /**
+     * 学校id
+     */
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
+    /**
+     * 学校编码
+     */
+    @ApiModelProperty("学校编码")
+    private String schoolCode;
+
+    /**
      * 图片地址
      */
     @NotEmpty(message = "图片地址不能为空")

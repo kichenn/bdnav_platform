@@ -55,7 +55,6 @@ public class VisitLogsVo implements Serializable {
 	 * 学生ID
 	 */
 	@ApiModelProperty("学生ID")
-	@JsonSerialize(using= ToStringSerializer.class)
 	private Long studentId;
 
 	/**

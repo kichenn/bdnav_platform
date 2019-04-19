@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.persistence.SchoolModeMapper">
+
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolMode">
+        <id column="id" jdbcType="BIGINT" property="Id"/>
+        <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
+        <result column="name" jdbcType="VARCHAR" property="Name"/>
+        <result column="priority" jdbcType="TINYINT" property="Priority"/>
+        <result column="usable_app" jdbcType="VARCHAR" property="UsableApp"/>
+        <result column="usable_device" jdbcType="VARCHAR" property="UsableDevice"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="Operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="Remark"/>
+    </resultMap>
+
+    <resultMap id="BResultMap" type="com.bdxh.school.dto.QuerySchoolMode">
+        <id column="id" jdbcType="BIGINT" property="Id"/>
+        <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
+        <result column="name" jdbcType="VARCHAR" property="Name"/>
+        <result column="priority" jdbcType="TINYINT" property="Priority"/>
+        <result column="usable_app" jdbcType="VARCHAR" property="UsableApp"/>
+        <result column="usable_device" jdbcType="VARCHAR" property="UsableDevice"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="Operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="Remark"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCodeList"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolNameList"/>
+    </resultMap>
+
+	<sql id="BaseColumns">
+	id,school_id,school_code,`name`,priority,usable_app,usable_device,create_date,update_date,operator,operator_name,remark
+	</sql>
+
+<!--
+
+    <sql id="BaseColumns1">
+	id,school_id,school_code,name,priority,usable_app,usable_device,create_date,update_date,operator,operator_name,remark,school_code,school_name
+   </sql>
+-->
+
+	<select id="getSchoolModeAllCount" resultType="Integer">
+        SELECT
+        COUNT(1)
+        FROM t_school_mode
+	</select>
+
+    <!-- 根据名称查询模式-->
+    <select id="getSchoolModesByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_mode
+        WHERE `name`= #{name} limit 1;
+	</select>
+
+
+    <!--带条件的分页查询-->
+    <select id="getByCondition" resultMap="BResultMap" parameterType="java.util.Map" >
+       SELECT
+         *
+        FROM
+        t_school_mode
+        INNER JOIN t_school ON t_school_mode.school_id=t_school.id
+        <where>
+            <if test="Name !=null and Name !=''">
+                t_school_mode.name LIKE CONCAT(CONCAT('%',#{Name}),'%')
+            </if>
+            <if test="schoolNameList !=null and schoolNameList!=''">
+             AND t_school.school_name LIKE CONCAT(CONCAT('%',#{schoolNameList}),'%')
+            </if>
+        </where>
+        ORDER BY t_school_mode.create_date DESC
+    </select>
+
+
+	<delete id="delSchoolModeInIds" parameterType="Integer">
+        DELETE
+        FROM t_school_mode
+        WHERE
+        id IN
+        <foreach collection = "ids" item = "empId" separator = "," open = "(" close = ")" >
+             #{mpId, jdbcType = BIGINT}
+        </foreach >
+	</delete>
+
+</mapper>

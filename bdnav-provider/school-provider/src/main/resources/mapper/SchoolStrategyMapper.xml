@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.netintech.automation.mapper.SchoolStrategyMapper">
+
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolStrategy">
+        <id column="id" jdbcType="BIGINT" property="Id"/>
+        <result column="name" jdbcType="VARCHAR" property="Name"/>
+        <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
+        <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
+        <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
+        <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
+        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
+        <result column="mode_id" jdbcType="BIGINT" property="ModeId"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
+        <result column="day_mark" jdbcType="VARCHAR" property="DayMark"/>
+        <result column="time_mark" jdbcType="VARCHAR" property="TimeMark"/>
+        <result column="exclusion_days" jdbcType="VARCHAR" property="ExclusionDays"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="Operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="Remark"/>
+    </resultMap>
+
+	<sql id="BaseColumns">
+	id,name,school_id,school_code,group_id,recursion_permission,recursion_permission_ids,platform,mode_id,start_date,end_date,day_mark,time_mark,exclusion_days,create_date,update_date,operator,operator_name,remark
+	</sql>
+	<select id="getSchoolStrategyAllCount" resultType="Integer">
+        SELECT 
+        COUNT(1)
+        FROM t_school_strategy 
+	</select>
+
+	<delete id="delSchoolStrategyInIds" parameterType="Integer">
+        DELETE
+        FROM t_school_strategy
+        WHERE
+        id IN
+        <foreach collection = "ids" item = "empId" separator = "," open = "(" close = ")" >
+             #{mpId, jdbcType = BIGINT}
+        </foreach >
+	</delete>
+
+</mapper>
