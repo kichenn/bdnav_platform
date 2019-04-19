@@ -70,14 +70,11 @@ public class MybatisConfig {
 		shardingRuleConfig.getTableRuleConfigs().add(getTeacherDeptTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getBaseUserTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getFamilyFenceTableRuleConfiguration());
-		shardingRuleConfig.getTableRuleConfigs().add(getFenceAlarmTableRuleConfiguration());
-		shardingRuleConfig.getTableRuleConfigs().add(getVisitLogsTableRuleConfiguration());
+
 		//级联绑定表，用于优化查询
 		shardingRuleConfig.getBindingTableGroups().add("t_family,t_family_student");
 		shardingRuleConfig.getBindingTableGroups().add("t_family,t_family_fence");
 		shardingRuleConfig.getBindingTableGroups().add("t_teacher,t_teacher_dept");
-		shardingRuleConfig.getBindingTableGroups().add("t_student,t_fence_alarm");
-		shardingRuleConfig.getBindingTableGroups().add("t_student,t_visit_logs");
 		Map<String, DataSource> dataSourceMap = new HashMap<>();
 		dataSourceMap.put("ds_0", dataSource0);
 		dataSourceMap.put("ds_1", dataSource1);
@@ -198,23 +195,5 @@ public class MybatisConfig {
 		return result;
 	}
 
-	@Bean
-	public TableRuleConfiguration getFenceAlarmTableRuleConfiguration() {
-		TableRuleConfiguration result = new TableRuleConfiguration();
-		result.setLogicTable("t_fence_alarm");
-		result.setActualDataNodes("ds_${0..3}.t_fence_alarm${0..3}");
-		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
-		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
-		return result;
-	}
 
-	@Bean
-	public TableRuleConfiguration getVisitLogsTableRuleConfiguration() {
-		TableRuleConfiguration result = new TableRuleConfiguration();
-		result.setLogicTable("t_visit_logs");
-		result.setActualDataNodes("ds_${0..3}.t_visit_logs${0..3}");
-		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
-		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
-		return result;
-	}
 }

@@ -1,13 +1,14 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateVisitLogsDto;
 import com.bdxh.user.dto.VisitLogsQueryDto;
 import com.bdxh.user.entity.VisitLogs;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 
 /**
 * @Description: 业务层接口
@@ -59,4 +60,9 @@ public interface VisitLogsService extends IService<VisitLogs> {
 	void batchRemoveVisitLogsInfo(String schoolCodes,String cardNumbers, String ids);
 
 
+	/**
+	 * 新增日志
+	 * @param addVisitLogsDto
+	 */
+	void insertVisitLogsInfo(AddVisitLogsDto addVisitLogsDto);
 }

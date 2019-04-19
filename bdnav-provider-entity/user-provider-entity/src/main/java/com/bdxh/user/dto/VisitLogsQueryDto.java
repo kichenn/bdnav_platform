@@ -42,7 +42,7 @@ public class VisitLogsQueryDto extends Query implements Serializable {
      * 学校CODE
      */
     @ApiModelProperty("学校CODE")
-    private String schoolCode;
+    private Long schoolCode;
 
     /**
      * 学生卡号

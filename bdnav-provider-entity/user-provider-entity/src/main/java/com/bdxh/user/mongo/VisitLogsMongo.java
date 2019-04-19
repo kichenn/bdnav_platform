@@ -19,36 +19,36 @@ import java.util.Date;
 public class VisitLogsMongo  implements Serializable {
     private static final long serialVersionUID = 7114096798856564807L;
 
-    @Id
+
     @Field("id")
     private Long id;
 
-    @Field("schoolId")
-    private Long school_id;
+    @Field("school_id")
+    private Long schoolId;
 
-    @Field("schoolName")
-    private String school_name;
+    @Field("school_name")
+    private String schoolName;
 
-    @Field("schoolCode")
-    private String school_code;
+    @Field("school_code")
+    private String schoolCode;
 
-    @Field("studentId")
-    private Long student_id;
+    @Field("student_id")
+    private Long studentId;
 
-    @Field("cardNumber")
-    private String card_number;
+    @Field("card_number")
+    private String cardNumber;
 
-    @Field("userName")
-    private String user_name;
+    @Field("user_name")
+    private String userName;
 
     @Field("url")
     private String url;
 
-    @Field("createDate")
-    private Date create_date;
+    @Field("create_date")
+    private Date createDate;
 
-    @Field("updateDate")
-    private Date update_date;
+    @Field("update_date")
+    private Date updateDate;
 
     @Field("status")
     private Byte status;

@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
 */
 @Repository
 public interface FenceAlarmMapper extends Mapper<FenceAlarm> {
-	//查询所有
+/*	//查询所有
 	List<FenceAlarmVo> getAllFenceAlarmInfos(@Param("fenceAlarmQueryDto") FenceAlarm fenceAlarm);
 
 	//查询单个
@@ -32,5 +32,5 @@ public interface FenceAlarmMapper extends Mapper<FenceAlarm> {
 	int batchRemoveFenceAlarmInfo(@Param("list") List<Map<String,String>> list);
 
 	//修改数据
-	int updateFenceAlarmInfo(FenceAlarm fenceAlarm);
+	int updateFenceAlarmInfo(FenceAlarm fenceAlarm);*/
 }

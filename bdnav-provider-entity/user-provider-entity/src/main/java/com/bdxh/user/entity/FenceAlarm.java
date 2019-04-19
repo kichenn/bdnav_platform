@@ -80,7 +80,12 @@ public class FenceAlarm {
 	private String schoolCode;
 
 	/**
-	 * 学生卡号
+	 * 学校名称
+	 */
+	@Column(name = "school_name")
+	private String schoolName;
+	/**
+	 * 学生id
 	 */
 	@Column(name = "student_id")
 	private String studentId;
@@ -90,6 +95,11 @@ public class FenceAlarm {
 	@Column(name = "card_number")
 	private String cardNumber;
 
+	/**
+	 * 姓名
+	 */
+	@Column(name = "student_name")
+	private String studentName;
 	/**
 	 * 创建时间
 	 */
