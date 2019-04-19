@@ -63,7 +63,7 @@ public class FamilyController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="新增家庭成员信息")
+    @ApiOperation(value="新增家庭成员信息", response = Boolean.class)
     @RequestMapping(value = "/addFamily",method = RequestMethod.POST)
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
         try {
@@ -93,7 +93,7 @@ public class FamilyController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="删除家长信息")
+    @ApiOperation(value="删除家长信息", response = Boolean.class)
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
     public Object removeFamily(
                                @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
@@ -126,7 +126,7 @@ public class FamilyController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="批量删除家长信息")
+    @ApiOperation(value="批量删除家长信息", response = Boolean.class)
     @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
     public Object removeFamilys(
                                 @RequestParam(name = "cardNumbers") @NotNull(message="微校卡号不能为空")String cardNumbers,
@@ -166,7 +166,7 @@ public class FamilyController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="修改家长信息")
+    @ApiOperation(value="修改家长信息", response = Boolean.class)
     @RequestMapping(value = "/updateFamily",method = RequestMethod.POST)
     public Object updateFamily(@RequestBody UpdateFamilyDto updateFamilyDto){
         try {
@@ -227,7 +227,7 @@ public class FamilyController {
         }
     }
     @RolesAllowed({"ADMIN"})
-    @ApiOperation("导入家长数据")
+    @ApiOperation(value="导入家长数据" , response = Boolean.class)
     @RequestMapping(value="/importFamilyInfo",method = RequestMethod.POST)
     public Object importStudentInfo( @RequestParam("familyFile") MultipartFile file) throws IOException {
         try {

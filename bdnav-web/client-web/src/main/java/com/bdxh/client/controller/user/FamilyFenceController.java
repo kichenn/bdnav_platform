@@ -38,7 +38,7 @@ public class FamilyFenceController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="修改围栏信息")
+    @ApiOperation(value="修改围栏信息", response = Boolean.class)
     @RequestMapping(value = "/updateFamilyFenceInfo",method = RequestMethod.POST)
     public Object updateFamilyFenceInfo(@Valid @RequestBody UpdateFamilyFenceDto updateFamilyFenceDto){
         try {
@@ -60,7 +60,7 @@ public class FamilyFenceController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="删除围栏信息")
+    @ApiOperation(value="删除围栏信息", response = Boolean.class)
     @RequestMapping(value = "/removeFamilyFenceInfo",method = RequestMethod.POST)
     public Object removeFamilyFenceInfo(@RequestParam("cardNumber") String cardNumber,
                                         @RequestParam("id") String id){
@@ -119,7 +119,7 @@ public class FamilyFenceController {
      * @param addFamilyFenceDto
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="新增围栏设置")
+    @ApiOperation(value="新增围栏设置", response = Boolean.class)
     @RequestMapping(value = "/addFamilyFenceInfo",method = RequestMethod.POST)
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto){
         try {

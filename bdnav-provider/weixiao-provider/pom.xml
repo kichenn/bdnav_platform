@@ -14,7 +14,7 @@
     <dependencies>
         <dependency>
             <groupId>com.bdxh</groupId>
-            <artifactId>weixiao-provider-entity</artifactId>
+            <artifactId>bdnav-provider-entity</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

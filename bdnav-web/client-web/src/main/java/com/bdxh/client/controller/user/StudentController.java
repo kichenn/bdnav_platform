@@ -104,7 +104,7 @@ public class StudentController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="新增学生信息")
+    @ApiOperation(value="新增学生信息", response = Boolean.class)
     @RequestMapping(value = "/addStudent",method = RequestMethod.POST)
     public Object addStudent(@Valid @RequestBody AddStudentDto addStudentDto, BindingResult bindingResult){
         //检验参数
@@ -162,7 +162,7 @@ public class StudentController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="删除学生信息")
+    @ApiOperation(value="删除学生信息", response = Boolean.class)
     @RequestMapping(value = "/removeStudent",method = RequestMethod.POST)
     public Object removeStudent(@RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber,
                                 @RequestParam(name = "image" ) String image){
@@ -192,7 +192,7 @@ public class StudentController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="批量删除学生信息")
+    @ApiOperation(value="批量删除学生信息", response = Boolean.class)
     @RequestMapping(value = "/removeStudents",method = RequestMethod.POST)
     public Object removeStudents(@RequestParam(name = "cardNumbers") @NotNull(message="学生微校卡号不能为空")String cardNumbers,
                                  @RequestParam(name = "images" ) String images){
@@ -229,7 +229,7 @@ public class StudentController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="修改学生信息")
+    @ApiOperation(value="修改学生信息", response = Boolean.class)
     @RequestMapping(value = "/updateStudent",method = RequestMethod.POST)
     public Object updateStudent(@Valid @RequestBody UpdateStudentDto updateStudentDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -301,7 +301,7 @@ public class StudentController {
         }
     }
     @RolesAllowed({"ADMIN"})
-    @ApiOperation("导入学生数据")
+    @ApiOperation(value="导入学生数据", response = Boolean.class)
     @RequestMapping(value="/importStudentInfo",method = RequestMethod.POST)
     public Object importStudentInfo(@RequestParam("studentFile") MultipartFile file) throws IOException {
        try {

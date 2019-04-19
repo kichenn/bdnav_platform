@@ -1,5 +1,6 @@
 package com.bdxh.client.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.SchoolUser;
@@ -13,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -158,6 +160,7 @@ public class VisitLogsController {
             }
             SchoolUser schoolUser= SecurityUtils.getCurrentUser();
             addVisitLogsDto.setSchoolCode(schoolUser.getSchoolCode());
+
             return   visitLogsControllerClient.insertVisitLogsInfo(addVisitLogsDto);
         }catch (Exception e){
             e.printStackTrace();

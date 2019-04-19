@@ -54,7 +54,7 @@ public class FamilyStudentController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="家长绑定孩子接口")
+    @ApiOperation(value="家长绑定孩子接口", response = Boolean.class)
     @RequestMapping(value = "/bindingStudent",method = RequestMethod.POST)
     public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult){
         //检验参数
@@ -91,7 +91,7 @@ public class FamilyStudentController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value = "删除学生家长绑定关系")
+    @ApiOperation(value = "删除学生家长绑定关系", response = Boolean.class)
     @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.GET)
     public Object removeFamilyOrStudent(@RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
                                         @RequestParam(name = "id") @NotNull(message="id不能为空")String id){

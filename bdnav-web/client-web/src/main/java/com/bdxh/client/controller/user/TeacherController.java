@@ -60,7 +60,7 @@ public class TeacherController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="新增老师信息")
+    @ApiOperation(value="新增老师信息",response = Boolean.class)
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
     public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
         try {
@@ -90,7 +90,7 @@ public class TeacherController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="删除老师信息")
+    @ApiOperation(value="删除老师信息",response = Boolean.class)
     @RequestMapping(value = "/removeTeacher",method = RequestMethod.POST)
     public Object removeTeacher(
                                 @RequestParam(name = "cardNumber") @NotNull(message="老师微校卡号不能为空")String cardNumber,
@@ -123,7 +123,7 @@ public class TeacherController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="批量删除老师信息")
+    @ApiOperation(value="批量删除老师信息",response = Boolean.class)
     @RequestMapping(value = "/removeTeachers",method = RequestMethod.POST)
     public Object removeTeachers(@RequestParam(name = "cardNumbers") @NotNull(message="老师微校卡号不能为空")String cardNumbers,
                                  @RequestParam(name = "images" ) String images){
@@ -159,7 +159,7 @@ public class TeacherController {
      * @return
      */
     @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="修改老师信息")
+    @ApiOperation(value="修改老师信息",response = Boolean.class)
     @RequestMapping(value = "/updateTeacher",method = RequestMethod.POST)
     public Object updateTeacher(@RequestBody UpdateTeacherDto updateTeacherDto, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -233,7 +233,7 @@ public class TeacherController {
      */
     @RolesAllowed({"ADMIN"})
     @CrossOrigin
-    @ApiOperation(value="导入老师信息")
+    @ApiOperation(value="导入老师信息",response = Boolean.class)
     @RequestMapping(value = "/importTeacherInfo",method = RequestMethod.POST)
     public Object importTeacherInfo(@RequestParam("teacherFile")MultipartFile teacherFile) {
         try {
