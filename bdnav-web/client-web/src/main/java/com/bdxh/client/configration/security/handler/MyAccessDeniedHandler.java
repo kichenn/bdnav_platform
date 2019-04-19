@@ -23,7 +23,7 @@ import java.io.IOException;
 public class MyAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
-    public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException exception) throws IOException, ServletException {
+    public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException exception) throws IOException {
         Wrapper wrapper = WrapMapper.wrap(403, "没有相关权限");
         String str = JSON.toJSONString(wrapper);
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
