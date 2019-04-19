@@ -21,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
@@ -52,6 +53,7 @@ public class FamilyStudentController {
      * @param bindingResult
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="家长绑定孩子接口")
     @RequestMapping(value = "/bindingStudent",method = RequestMethod.POST)
     public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult){
@@ -88,6 +90,7 @@ public class FamilyStudentController {
      * @param id
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value = "删除学生家长绑定关系")
     @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.GET)
     public Object removeFamilyOrStudent(@RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,

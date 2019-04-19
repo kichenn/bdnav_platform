@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 /**
@@ -36,6 +37,7 @@ public class FamilyFenceController {
      * @param updateFamilyFenceDto
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="修改围栏信息")
     @RequestMapping(value = "/updateFamilyFenceInfo",method = RequestMethod.POST)
     public Object updateFamilyFenceInfo(@Valid @RequestBody UpdateFamilyFenceDto updateFamilyFenceDto){
@@ -57,6 +59,7 @@ public class FamilyFenceController {
      * @param id
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="删除围栏信息")
     @RequestMapping(value = "/removeFamilyFenceInfo",method = RequestMethod.POST)
     public Object removeFamilyFenceInfo(@RequestParam("cardNumber") String cardNumber,
@@ -76,6 +79,7 @@ public class FamilyFenceController {
      * @param familyFenceQueryDto
      * @return
      */
+
     @ApiOperation(value="获取围栏表所有信息")
     @RequestMapping(value = "/getFamilyFenceInfos",method = RequestMethod.POST)
     public Object getFamilyFenceInfos(@Valid @RequestBody FamilyFenceQueryDto familyFenceQueryDto){
@@ -114,6 +118,7 @@ public class FamilyFenceController {
      * 新增围栏设置
      * @param addFamilyFenceDto
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="新增围栏设置")
     @RequestMapping(value = "/addFamilyFenceInfo",method = RequestMethod.POST)
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto){

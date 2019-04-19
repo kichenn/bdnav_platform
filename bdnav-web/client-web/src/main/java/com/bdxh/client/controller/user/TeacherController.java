@@ -27,6 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +59,7 @@ public class TeacherController {
      * @param addTeacherDto
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="新增老师信息")
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
     public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
@@ -87,6 +89,7 @@ public class TeacherController {
      * @param cardNumber
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="删除老师信息")
     @RequestMapping(value = "/removeTeacher",method = RequestMethod.POST)
     public Object removeTeacher(
@@ -119,6 +122,7 @@ public class TeacherController {
      * @param cardNumbers
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="批量删除老师信息")
     @RequestMapping(value = "/removeTeachers",method = RequestMethod.POST)
     public Object removeTeachers(@RequestParam(name = "cardNumbers") @NotNull(message="老师微校卡号不能为空")String cardNumbers,
@@ -154,6 +158,7 @@ public class TeacherController {
      * @param updateTeacherDto
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="修改老师信息")
     @RequestMapping(value = "/updateTeacher",method = RequestMethod.POST)
     public Object updateTeacher(@RequestBody UpdateTeacherDto updateTeacherDto, BindingResult bindingResult){
@@ -226,6 +231,7 @@ public class TeacherController {
      * @param teacherFile
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @CrossOrigin
     @ApiOperation(value="导入老师信息")
     @RequestMapping(value = "/importTeacherInfo",method = RequestMethod.POST)

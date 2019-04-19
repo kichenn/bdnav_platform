@@ -28,6 +28,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,6 +62,7 @@ public class FamilyController {
      * @param addFamilyDto
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="新增家庭成员信息")
     @RequestMapping(value = "/addFamily",method = RequestMethod.POST)
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
@@ -90,6 +92,7 @@ public class FamilyController {
      * @param cardNumber
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="删除家长信息")
     @RequestMapping(value = "/removeFamily",method = RequestMethod.POST)
     public Object removeFamily(
@@ -122,6 +125,7 @@ public class FamilyController {
      * @param cardNumbers
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="批量删除家长信息")
     @RequestMapping(value = "/removeFamilys",method = RequestMethod.POST)
     public Object removeFamilys(
@@ -161,6 +165,7 @@ public class FamilyController {
      * @param updateFamilyDto
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="修改家长信息")
     @RequestMapping(value = "/updateFamily",method = RequestMethod.POST)
     public Object updateFamily(@RequestBody UpdateFamilyDto updateFamilyDto){
@@ -221,6 +226,7 @@ public class FamilyController {
             return WrapMapper.error(e.getMessage());
         }
     }
+    @RolesAllowed({"ADMIN"})
     @ApiOperation("导入家长数据")
     @RequestMapping(value="/importFamilyInfo",method = RequestMethod.POST)
     public Object importStudentInfo( @RequestParam("familyFile") MultipartFile file) throws IOException {

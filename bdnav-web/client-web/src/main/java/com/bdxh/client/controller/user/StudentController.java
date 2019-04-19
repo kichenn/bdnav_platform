@@ -37,6 +37,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -102,6 +103,7 @@ public class StudentController {
      * @param bindingResult
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="新增学生信息")
     @RequestMapping(value = "/addStudent",method = RequestMethod.POST)
     public Object addStudent(@Valid @RequestBody AddStudentDto addStudentDto, BindingResult bindingResult){
@@ -159,6 +161,7 @@ public class StudentController {
      * @param cardNumber
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="删除学生信息")
     @RequestMapping(value = "/removeStudent",method = RequestMethod.POST)
     public Object removeStudent(@RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber,
@@ -188,7 +191,7 @@ public class StudentController {
      * @param cardNumbers
      * @return
      */
-    @CrossOrigin
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="批量删除学生信息")
     @RequestMapping(value = "/removeStudents",method = RequestMethod.POST)
     public Object removeStudents(@RequestParam(name = "cardNumbers") @NotNull(message="学生微校卡号不能为空")String cardNumbers,
@@ -225,7 +228,7 @@ public class StudentController {
      * @param bindingResult
      * @return
      */
-    @CrossOrigin
+    @RolesAllowed({"ADMIN"})
     @ApiOperation(value="修改学生信息")
     @RequestMapping(value = "/updateStudent",method = RequestMethod.POST)
     public Object updateStudent(@Valid @RequestBody UpdateStudentDto updateStudentDto, BindingResult bindingResult){
@@ -297,7 +300,7 @@ public class StudentController {
             return WrapMapper.error(e.getMessage());
         }
     }
-    @CrossOrigin
+    @RolesAllowed({"ADMIN"})
     @ApiOperation("导入学生数据")
     @RequestMapping(value="/importStudentInfo",method = RequestMethod.POST)
     public Object importStudentInfo(@RequestParam("studentFile") MultipartFile file) throws IOException {
