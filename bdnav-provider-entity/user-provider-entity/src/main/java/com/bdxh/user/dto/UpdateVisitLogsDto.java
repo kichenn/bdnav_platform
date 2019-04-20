@@ -22,7 +22,7 @@ public class UpdateVisitLogsDto implements Serializable {
      */
     @ApiModelProperty("id")
     @JsonSerialize(using= ToStringSerializer.class)
-    private Long id;
+    private String id;
     /**
      * 学校Code
      */

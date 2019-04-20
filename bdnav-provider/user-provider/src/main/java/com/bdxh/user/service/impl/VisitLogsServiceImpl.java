@@ -1,10 +1,13 @@
 package com.bdxh.user.service.impl;
 
+import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateVisitLogsDto;
 import com.bdxh.user.dto.VisitLogsQueryDto;
 import com.bdxh.user.entity.VisitLogs;
+import com.bdxh.user.mongo.FenceAlarmMongo;
+import com.bdxh.user.mongo.VisitLogsMongo;
 import com.bdxh.user.persistence.mongoPersistence.VisitLogsMongoMapper;
 import com.bdxh.user.service.VisitLogsService;
 import com.bdxh.user.vo.VisitLogsVo;
@@ -28,8 +31,6 @@ public class VisitLogsServiceImpl extends BaseService<VisitLogs> implements Visi
 	private VisitLogsMongoMapper visitLogsMongoMapper;
 
 
-	@Autowired
-	private SnowflakeIdWorker snowflakeIdWorker;
 
 
 
@@ -45,7 +46,8 @@ public class VisitLogsServiceImpl extends BaseService<VisitLogs> implements Visi
 
 	@Override
 	public void updateVisitLogsInfo(UpdateVisitLogsDto updateVisitLogsDto) {
-		visitLogsMongoMapper.updateVisitLogsInfo(updateVisitLogsDto);
+		VisitLogsMongo visitLogsMongo=BeanMapUtils.map(updateVisitLogsDto,VisitLogsMongo.class);
+		visitLogsMongoMapper.updateVisitLogsInfo(visitLogsMongo);
 	}
 
 	@Override
@@ -60,7 +62,7 @@ public class VisitLogsServiceImpl extends BaseService<VisitLogs> implements Visi
 
 	@Override
 	public void insertVisitLogsInfo(AddVisitLogsDto addVisitLogsDto) {
-		addVisitLogsDto.setId(snowflakeIdWorker.nextId());
-		visitLogsMongoMapper.insertVisitLogsInfo(addVisitLogsDto);
+		VisitLogsMongo visitLogsMongo=BeanMapUtils.map(addVisitLogsDto,VisitLogsMongo.class);
+		visitLogsMongoMapper.insertVisitLogsInfo(visitLogsMongo);
 	}
 }

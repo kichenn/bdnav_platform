@@ -17,12 +17,7 @@ import java.util.Date;
 public class AddVisitLogsDto implements Serializable {
     private static final long serialVersionUID = 9220114474810581110L;
 
-    /**
-     * id
-     */
-    @ApiModelProperty("id")
-    @JsonSerialize(using= ToStringSerializer.class)
-    private Long id;
+
 
     /**
      * 学校ID

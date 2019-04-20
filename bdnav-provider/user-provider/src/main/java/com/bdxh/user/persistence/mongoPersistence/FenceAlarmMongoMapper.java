@@ -19,6 +19,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -86,12 +87,9 @@ public class FenceAlarmMongoMapper{
      * @return
      */
     public FenceAlarmVo getFenceAlarmInfo(String schoolCode, String cardNumber, String id) {
-        Query query=new Query();
-        Criteria criteria=new Criteria();
-        criteria.and("school_code").is(schoolCode);
-        criteria.and("card_number").is(cardNumber);
-        criteria.and("id").is(id);
-        query.addCriteria(criteria);
+        Query query=new Query(Criteria.where("school_code").is(schoolCode)
+                .and("card_number").is(cardNumber)
+                .and("id").is(id));
         FenceAlarmMongo fenceAlarmMongo=mongoTemplate.findOne(query,FenceAlarmMongo.class);
         if(null==fenceAlarmMongo){
             return null;
@@ -102,22 +100,21 @@ public class FenceAlarmMongoMapper{
 
     /**
      * 修改学生围栏警报数据
-     * @param updateFenceAlarmDto
+     * @param fenceAlarmMongo
      */
-    public void updateFenceAlarmInfo(UpdateFenceAlarmDto updateFenceAlarmDto) {
+    public void updateFenceAlarmInfo(FenceAlarmMongo fenceAlarmMongo) {
         Query query =new Query();
-        query.addCriteria(Criteria.where("id").is(updateFenceAlarmDto.getId())
-                .and("school_code").is(updateFenceAlarmDto.getSchoolCode())
-                .and("card_number").is(updateFenceAlarmDto.getCardNumber()));
+        query.addCriteria(Criteria.where("id").is(fenceAlarmMongo.getId())
+                .and("school_code").is(fenceAlarmMongo.getSchoolCode())
+                .and("card_number").is(fenceAlarmMongo.getCardNumber()));
         Update update=new Update();
-        if(StringUtils.isNotEmpty(updateFenceAlarmDto.getAction())){
-            update.set("url",updateFenceAlarmDto.getAction());
+        if(StringUtils.isNotEmpty(fenceAlarmMongo.getAction())){
+            update.set("url",fenceAlarmMongo.getAction());
         }
-        if(StringUtils.isNotEmpty(updateFenceAlarmDto.getAlarmPoint())){
-            update.set("status",updateFenceAlarmDto.getAlarmPoint());
+        if(StringUtils.isNotEmpty(fenceAlarmMongo.getAlarmPoint())){
+            update.set("status",fenceAlarmMongo.getAlarmPoint());
         }
-        update.set("update_date",new Date(DateUtils.DATE_FORMAT_DAY));
-        FenceAlarmMongo fenceAlarmMongo=BeanMapUtils.map(updateFenceAlarmDto,FenceAlarmMongo.class);
+        update.set("update_date",fenceAlarmMongo.getUpdateDate());
         mongoTemplate.updateFirst(query,update,FenceAlarmMongo.class);
     }
 
@@ -150,16 +147,15 @@ public class FenceAlarmMongoMapper{
                     .and("card_number").is(cardNumber[i])
                     .and("id").is(id[i]);
             query.addCriteria(criteria);
-            mongoTemplate.remove(query,FenceAlarmMongo.class);
+             mongoTemplate.remove(query,FenceAlarmMongo.class);
         }
     }
 
     /**
      * 新增学生围栏警报数据
-     * @param addFenceAlarmDto
+     * @param fenceAlarmMongo
      */
-    public void insertFenceAlarmInfo(AddFenceAlarmDto addFenceAlarmDto) {
-        FenceAlarmMongo fenceAlarmMongo=BeanMapUtils.map(addFenceAlarmDto,FenceAlarmMongo.class);
+    public void insertFenceAlarmInfo(FenceAlarmMongo fenceAlarmMongo) {
         mongoTemplate.save(fenceAlarmMongo);
     }
 

@@ -19,8 +19,8 @@ public class FenceAlarmMongo implements Serializable {
     private static final long serialVersionUID = 1873366085946013169L;
 
 
-    @Field("id")
-    private Long id;
+    @Id
+    private String id;
 
     @Field("fence_id")
     private Long  fenceId;

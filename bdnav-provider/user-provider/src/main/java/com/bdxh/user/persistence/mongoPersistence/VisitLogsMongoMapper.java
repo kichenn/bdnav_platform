@@ -18,8 +18,10 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.SimpleTimeZone;
 import java.util.regex.Pattern;
 
 /**
@@ -49,7 +51,7 @@ public class VisitLogsMongoMapper {
         if(null!=visitLogsQueryDto.getStatus()){
             criteria.and("status").is(visitLogsQueryDto.getStatus());
         }
-        if(LongUtils.isNotEmpty(visitLogsQueryDto.getSchoolCode())){
+        if(StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolCode())){
             criteria.and("school_code").is(visitLogsQueryDto.getSchoolCode());
         }
         if (StringUtils.isNotEmpty(visitLogsQueryDto.getUserName())){
@@ -75,12 +77,8 @@ public class VisitLogsMongoMapper {
      * @return
      */
     public VisitLogsVo getVisitLogsInfo(String schoolCode, String cardNumber, String id) {
-        Query query=new Query();
-        Criteria criteria=new Criteria();
-        criteria.and("school_code").is(schoolCode);
-        criteria.and("card_number").is(cardNumber);
-        criteria.and("id").is(id);
-        query.addCriteria(criteria);
+        Query query=new Query(Criteria.where("school_code").is(schoolCode)
+                .and("card_number").is(cardNumber).and("id").is(id));
         VisitLogsMongo visitLogsMongo=mongoTemplate.findOne(query,VisitLogsMongo.class);
         if(null==visitLogsMongo){
             return null;
@@ -93,25 +91,24 @@ public class VisitLogsMongoMapper {
 
     /**
      * 修改学生浏览网页数据
-     * @param updateVisitLogsDto
+     * @param visitLogsMongo
      */
-    public void updateVisitLogsInfo(UpdateVisitLogsDto updateVisitLogsDto) {
+    public void updateVisitLogsInfo(VisitLogsMongo visitLogsMongo) {
         Query query =new Query();
-        query.addCriteria(Criteria.where("id").is(updateVisitLogsDto.getId())
-                .and("school_code").is(updateVisitLogsDto.getSchoolCode())
-                .and("card_number").is(updateVisitLogsDto.getCardNumber()));
+        query.addCriteria(Criteria.where("id").is(visitLogsMongo.getId())
+                .and("school_code").is(visitLogsMongo.getSchoolCode())
+                .and("card_number").is(visitLogsMongo.getCardNumber()));
         Update update=new Update();
-        if(StringUtils.isNotEmpty(updateVisitLogsDto.getUrl())){
-            update.set("url",updateVisitLogsDto.getUrl());
+        if(StringUtils.isNotEmpty(visitLogsMongo.getUrl())){
+            update.set("url",visitLogsMongo.getUrl());
         }
-        if(StringUtils.isNotEmpty(updateVisitLogsDto.getStatus().toString())){
-            update.set("status",updateVisitLogsDto.getStatus());
+        if(null!=visitLogsMongo.getStatus()){
+            update.set("status",visitLogsMongo.getStatus());
         }
-        if(StringUtils.isNotEmpty(updateVisitLogsDto.getRemark())){
-            update.set("remark",updateVisitLogsDto.getRemark());
+        if(StringUtils.isNotEmpty(visitLogsMongo.getRemark())){
+            update.set("remark",visitLogsMongo.getRemark());
         }
-        update.set("update_date",new Date(DateUtils.DATE_FORMAT_DAY));
-        VisitLogsMongo visitLogsMongo=BeanMapUtils.map(updateVisitLogsDto,VisitLogsMongo.class);
+        update.set("update_date",visitLogsMongo.getUpdateDate());
         mongoTemplate.updateFirst(query,update,VisitLogsMongo.class);
     }
 
@@ -150,10 +147,9 @@ public class VisitLogsMongoMapper {
 
     /**
      * 新增学生浏览网页数据
-     * @param addVisitLogsDto
+     * @param visitLogsMongo
      */
-    public void insertVisitLogsInfo(AddVisitLogsDto addVisitLogsDto) {
-        VisitLogsMongo visitLogsMongo=BeanMapUtils.map(addVisitLogsDto,VisitLogsMongo.class);
+    public void insertVisitLogsInfo(VisitLogsMongo visitLogsMongo) {
         mongoTemplate.save(visitLogsMongo);
     }
 

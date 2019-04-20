@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -18,18 +19,13 @@ import java.util.Date;
 @Data
 public class AddFenceAlarmDto implements Serializable {
     private static final long serialVersionUID = -4378044104909154928L;
-    /**
-     * id
-     */
-    @ApiModelProperty("id")
-    @JsonSerialize(using= ToStringSerializer.class)
-    private Long id;
+
     /**
      * 围栏ID
      */
     @ApiModelProperty("围栏ID")
     @JsonSerialize(using= ToStringSerializer.class)
-    @NotEmpty(message = "围栏ID不能为空")
+    @NotNull(message = "围栏ID不能为空")
     private Integer fenceId;
     /**
      * 围栏名称
@@ -41,13 +37,13 @@ public class AddFenceAlarmDto implements Serializable {
      * 消息类型
      */
     @ApiModelProperty("消息类型")
-    @NotEmpty(message = "消息类型不能为空")
+    @NotNull(message = "消息类型不能为空")
     private Byte type;
     /**
      * 监控对象
      */
     @ApiModelProperty("监控对象")
-    @NotEmpty(message = "监控对象不能为空")
+    @NotNull(message = "监控对象不能为空")
     private String monitoredPerson;
     /**
      * 出入动作
@@ -68,20 +64,20 @@ public class AddFenceAlarmDto implements Serializable {
      * 学校ID
      */
     @ApiModelProperty("学校ID")
-    @NotEmpty(message = "学校ID不能为空")
+    @NotNull(message = "学校ID不能为空")
     private Long schoolId;
     /**
      * 学校CODE
      */
     @ApiModelProperty("学校CODE")
-    @NotEmpty(message = "学校CODE不能为空")
+    @NotNull(message = "学校CODE不能为空")
     private String schoolCode;
 
     /**
      * 学生ID
      */
     @ApiModelProperty("学生ID")
-    @NotEmpty(message = "学生ID不能为空")
+    @NotNull(message = "学生ID不能为空")
     private Long studentId;
     /**
      * 学生卡号
@@ -105,6 +101,7 @@ public class AddFenceAlarmDto implements Serializable {
 
     /**
      * 备注
+     *
      */
     @ApiModelProperty("备注")
     private String remark;

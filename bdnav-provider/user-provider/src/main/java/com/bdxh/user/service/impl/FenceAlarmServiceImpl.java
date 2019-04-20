@@ -6,6 +6,7 @@ import com.bdxh.user.dto.AddFenceAlarmDto;
 import com.bdxh.user.dto.FenceAlarmQueryDto;
 import com.bdxh.user.dto.UpdateFenceAlarmDto;
 import com.bdxh.user.entity.FenceAlarm;
+import com.bdxh.user.mongo.FenceAlarmMongo;
 import com.bdxh.user.persistence.FenceAlarmMapper;
 import com.bdxh.user.persistence.mongoPersistence.FenceAlarmMongoMapper;
 import com.bdxh.user.service.FenceAlarmService;
@@ -35,8 +36,6 @@ public class FenceAlarmServiceImpl extends BaseService<FenceAlarm> implements Fe
 	@Autowired
 	private FenceAlarmMongoMapper fenceAlarmMongoMapper;
 
-	@Autowired
-	private SnowflakeIdWorker snowflakeIdWorker;
 
 	@Override
 	public PageInfo<FenceAlarmVo> getAllFenceAlarmInfos(FenceAlarmQueryDto fenceAlarmQueryDto) {
@@ -60,12 +59,13 @@ public class FenceAlarmServiceImpl extends BaseService<FenceAlarm> implements Fe
 
 	@Override
 	public void updateFenceAlarmInfo(UpdateFenceAlarmDto updateFenceAlarmDto) {
-		 fenceAlarmMongoMapper.updateFenceAlarmInfo(updateFenceAlarmDto);
+		FenceAlarmMongo fenceAlarmMongo=BeanMapUtils.map(updateFenceAlarmDto,FenceAlarmMongo.class);
+		 fenceAlarmMongoMapper.updateFenceAlarmInfo(fenceAlarmMongo);
 	}
 
 	@Override
 	public void insertFenceAlarmInfo(AddFenceAlarmDto addFenceAlarmDto) {
-		addFenceAlarmDto.setId(snowflakeIdWorker.nextId());
-		 fenceAlarmMongoMapper.insertFenceAlarmInfo(addFenceAlarmDto);
+		FenceAlarmMongo fenceAlarmMongo=BeanMapUtils.map(addFenceAlarmDto,FenceAlarmMongo.class);
+		 fenceAlarmMongoMapper.insertFenceAlarmInfo(fenceAlarmMongo);
 	}
 }

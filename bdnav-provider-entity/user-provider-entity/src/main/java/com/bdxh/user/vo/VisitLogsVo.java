@@ -6,7 +6,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -25,7 +24,7 @@ public class VisitLogsVo implements Serializable {
 	 */
 	@ApiModelProperty("id")
 	@JsonSerialize(using= ToStringSerializer.class)
-	private Long id;
+	private String id;
 
 	/**
 	 * 学校ID

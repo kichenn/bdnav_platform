@@ -21,7 +21,7 @@ public class UpdateFenceAlarmDto implements Serializable {
      */
     @ApiModelProperty("id")
     @JsonSerialize(using= ToStringSerializer.class)
-    private Long id;
+    private String id;
     /**
      * 围栏ID
      */
