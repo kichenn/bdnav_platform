@@ -35,7 +35,6 @@
     familyFence.id,
     familyFence.school_id as schoolId,
     familyFence.school_code as schoolCode,
-    familyFence.school_name as schoolName,
     familyFence.card_number as cardNumber,
     familyFence.family_id as familyId,
     familyFence.student_id as studentId,
