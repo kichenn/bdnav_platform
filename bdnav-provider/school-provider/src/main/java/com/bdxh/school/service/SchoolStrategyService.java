@@ -1,9 +1,12 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.entity.SchoolStrategy;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -32,5 +35,9 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 	Boolean batchDelSchoolStrategyInIds(List<Long> id);
 
 	//根据ID查询对象的方法
-	public SchoolStrategy findSchoolStrategyById(Long id);
+	SchoolStrategy findSchoolStrategyById(Long id);
+
+	//根据条件分页查询用户列表
+	PageInfo<QuerySchoolStrategy> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);
+
 }

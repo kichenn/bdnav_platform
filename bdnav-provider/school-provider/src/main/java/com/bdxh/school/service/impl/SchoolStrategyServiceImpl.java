@@ -1,15 +1,19 @@
 package com.bdxh.school.service.impl;
 
 import com.bdxh.common.support.BaseService;
+import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.persistence.SchoolStrategyMapper;
 import com.bdxh.school.service.SchoolStrategyService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author admin
@@ -65,6 +69,13 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
     @Override
     public SchoolStrategy findSchoolStrategyById(Long id){
         return schoolStrategyMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public PageInfo<QuerySchoolStrategy> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<QuerySchoolStrategy> schoolModeLogs = schoolStrategyMapper.getByCondition(param);
+        return new PageInfo(schoolModeLogs);
     }
 
 }
