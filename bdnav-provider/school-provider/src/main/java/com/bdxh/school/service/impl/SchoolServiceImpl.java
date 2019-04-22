@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +59,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     public Boolean modifySchool(ModifySchoolDto schoolDto) {
         School school = new School();
         BeanUtils.copyProperties(schoolDto, school);
+        school.setUpdateDate(new Date());
         Boolean result = schoolMapper.updateByPrimaryKey(school) > 0;
         /*if (result) {
             //删除列表缓存
