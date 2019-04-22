@@ -74,6 +74,11 @@ public class AddFenceAlarmDto implements Serializable {
     private String schoolCode;
 
     /**
+     * 学校名称
+     */
+    @ApiModelProperty("学校名称")
+    private String schoolName;
+    /**
      * 学生ID
      */
     @ApiModelProperty("学生ID")
@@ -85,7 +90,11 @@ public class AddFenceAlarmDto implements Serializable {
     @ApiModelProperty("学生卡号")
     @NotEmpty(message = "学生卡号不能为空")
     private String cardNumber;
-
+    /**
+     * 学生名称
+     */
+    @ApiModelProperty("学生名称")
+    private String studengName;
 
     /**
      * 创建时间

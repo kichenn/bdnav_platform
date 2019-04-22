@@ -6,6 +6,7 @@ import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.fallback.FamilyStudentControllerFallback;
 import com.bdxh.user.vo.FamilyStudentVo;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -47,4 +48,8 @@ public interface FamilyStudentControllerClient {
     @ResponseBody
     @RequestMapping(value = "/familyStudent/queryAllFamilyStudent",method =RequestMethod.POST)
     Wrapper<PageInfo<FamilyStudentVo>>  queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto);
+
+    @ResponseBody
+    @RequestMapping(value = "/familyStudent/familyFindStudentList",method = RequestMethod.POST)
+    Wrapper<PageInfo<FamilyStudentVo>> familyFindStudentList(@RequestParam("schoolCode") String schoolCode,@RequestParam("cardNumber")String cardNumber);
 }
