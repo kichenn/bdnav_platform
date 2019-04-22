@@ -45,6 +45,7 @@ public class FenceAlarmWebController {
                 String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
                 return WrapMapper.error(errors);
             }
+            log.info(fenceAlarmControllerClient.getAllFenceAlarmInfos(fenceAlarmQueryDto).getResult()+"");
             return WrapMapper.ok(fenceAlarmControllerClient.getAllFenceAlarmInfos(fenceAlarmQueryDto).getResult());
         }catch (Exception e){
             e.printStackTrace();

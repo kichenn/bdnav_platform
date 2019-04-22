@@ -35,7 +35,7 @@ public class VisitLogsQueryDto extends Query implements Serializable {
     /**
      * 状态，是否拦截： 0未拦截  1拦截
      */
-    @ApiModelProperty("状态，是否拦截： 0未拦截  1拦截")
+    @ApiModelProperty("状态，是否拦截： 1未拦截  2拦截")
     private Byte status;
 
     /**

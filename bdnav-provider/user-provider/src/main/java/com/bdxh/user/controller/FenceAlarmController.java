@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 * @Date 2019-04-17 17:29:24
 */
 @RestController
-@RequestMapping("/fenceAlarmController")
+@RequestMapping("/fenceAlarm")
 @Slf4j
 @Validated
 @Api(value = "家长围栏警报控制器", tags = "家长围栏警报控制器")

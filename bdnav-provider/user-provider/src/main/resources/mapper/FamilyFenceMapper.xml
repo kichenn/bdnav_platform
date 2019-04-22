@@ -64,13 +64,13 @@
       AND familyFence.card_number=#{familyFence.cardNumber}
     </if>
     <if test="familyFence.studentName!=null and familyFence.studentName!=''">
-      AND familyFence.student_name=#{familyFence.studentName}
+      AND familyFence.student_name LIKE   CONCAT('%',CONCAT(#{familyFence.studentName},'%'))
     </if>
     <if test="familyFence.studentNumber!=null and familyFence.studentNumber!=''">
       AND familyFence.student_number=#{familyFence.studentNumber}
     </if>
     <if test="familyFence.fenceName!=null and familyFence.fenceName!=''">
-      AND familyFence.fence_name=#{familyFence.fenceName}
+      AND familyFence.fence_name LIKE   CONCAT('%',CONCAT(#{familyFence.fenceName},'%'))
     </if>
     <if test="familyFence.status!=null and familyFence.status!=''">
       AND familyFence.status=#{familyFence.status}
