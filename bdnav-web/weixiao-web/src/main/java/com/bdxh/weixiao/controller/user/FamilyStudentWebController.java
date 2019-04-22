@@ -98,17 +98,16 @@ public class FamilyStudentWebController {
     }
 
     /**
-     * 微校平台----查询所有关系
-     * @param familyStudentQueryDto
+     * 微校平台----家长查询孩子列表
+     * @param schoolCode
+     * @param cardNumber
      * @return
      */
     @ApiOperation(value = "微校平台----家长查询孩子列表")
     @RequestMapping(value = "/familyFindStudentList",method =RequestMethod.POST)
-    public Object familyFindStudentList(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
+    public Object familyFindStudentList(@RequestParam("schoolCode") String schoolCode,@RequestParam("cardNumber")String cardNumber){
         try{
-            familyStudentQueryDto.setSchoolCode("");
-            familyStudentQueryDto.setCardNumber("");
-            Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
+            Wrapper wrapper =familyStudentControllerClient.familyFindStudentList(schoolCode,cardNumber);
             return WrapMapper.ok(wrapper.getResult());
         }catch (Exception e){
             e.printStackTrace();

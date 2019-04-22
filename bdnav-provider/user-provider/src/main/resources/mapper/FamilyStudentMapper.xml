@@ -101,4 +101,25 @@
             (#{list.schoolCode},#{list.cardNumber})
         </foreach>
     </delete>
+
+    <!--微校端家长查询学生信息-->
+    <select id="familyFindStudentList" resultType="com.bdxh.user.vo.FamilyStudentDetailsVo">
+        SELECT
+            familyStudent.id,
+            familyStudent.school_id as schoolId,
+            familyStudent.school_code as schoolCode,
+            familyStudent.card_number as cardNumber,
+            familyStudent.family_id as familyId,
+            familyStudent.student_id as studentId,
+            familyStudent.student_name as studentName,
+            familyStudent.student_number as studentNumber,
+            familyStudent.relation,
+            familyStudent.create_date as createDate,
+            familyStudent.update_date as updateDate,
+            familyStudent.operator,
+            familyStudent.operator_name as operatorName,
+            familyStudent.remark
+        FROM
+            t_family_student as  familyStudent INNER JOIN t_family
+    </select>
 </mapper>
