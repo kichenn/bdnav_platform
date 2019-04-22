@@ -1,6 +1,5 @@
 package com.bdxh.user.persistence;
 
-import com.bdxh.user.dto.AddFamilyStudentDto;
 import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.vo.FamilyStudentVo;

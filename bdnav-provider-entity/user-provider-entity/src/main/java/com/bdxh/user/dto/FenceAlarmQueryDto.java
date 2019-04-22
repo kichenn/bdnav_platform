@@ -18,6 +18,13 @@ import java.util.Date;
 public class FenceAlarmQueryDto extends Query implements Serializable {
     private static final long serialVersionUID = -6943761111879222942L;
 
+
+    /**
+     * 出入类型
+     */
+    @ApiModelProperty("出入类型")
+    private String action;
+
     /**
      * 围栏名称
      */
