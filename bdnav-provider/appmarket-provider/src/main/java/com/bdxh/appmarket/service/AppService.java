@@ -73,4 +73,12 @@ public interface AppService extends IService<App> {
      */
     PageInfo<App> getApplicationOfCollection(Long schoolId, Integer pageNum, Integer pageSize);
 
+    /**
+     * 分页查询所有信息
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    PageInfo<App> findAppList(Integer pageNum, Integer pageSize);
+
 }

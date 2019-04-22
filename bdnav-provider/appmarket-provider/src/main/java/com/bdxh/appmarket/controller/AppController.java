@@ -182,7 +182,12 @@ public class AppController {
             return WrapMapper.error(errors);
         }
         try {
-            PageInfo<App> appListPage = appService.getApplicationOfCollection(appQueryDto.getSchoolId(),appQueryDto.getPageNum(), appQueryDto.getPageSize());
+            PageInfo<App> appListPage;
+            if(appQueryDto.getSchoolId()==null){
+             appListPage  = appService.findAppList(appQueryDto.getPageNum(), appQueryDto.getPageSize());
+            }else{
+             appListPage = appService.getApplicationOfCollection(appQueryDto.getSchoolId(),appQueryDto.getPageNum(), appQueryDto.getPageSize());
+            }
             return WrapMapper.ok(appListPage);
         }catch (Exception e){
             e.printStackTrace();

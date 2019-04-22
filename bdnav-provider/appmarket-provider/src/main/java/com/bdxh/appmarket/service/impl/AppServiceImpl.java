@@ -101,4 +101,11 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
         return new PageInfo(apps);
     }
 
+    @Override
+    public PageInfo<App> findAppList(Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<App> apps = appMapper.selectAll();
+        return new PageInfo(apps);
+    }
+
 }
