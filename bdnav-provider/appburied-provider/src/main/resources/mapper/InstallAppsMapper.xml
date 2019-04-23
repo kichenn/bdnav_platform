@@ -34,8 +34,8 @@
             <if test="installApps.platform !=null">
                 platform=#{installApps.platform,jdbcType = TINYINT}
             </if>
-            <if test="appStatus.schoolId !=null and appStatus.schoolId!=''">
-                AND school_id=#{appStatus.schoolId,jdbcType = BIGINT}
+            <if test="installApps.schoolId !=null and installApps.schoolId!=''">
+                AND school_id=#{installApps.schoolId,jdbcType = BIGINT}
             </if>
             <if test="installApps.schoolCode !=null and installApps.schoolCode!=''">
                 AND school_code=#{installApps.schoolCode,jdbcType = VARCHAR}
