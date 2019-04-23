@@ -8,7 +8,7 @@ spring:
 
 #apollo配置
 app:
-  id: school-provider
+  id: ${spring.application.name}
 apollo:
   meta: http://47.107.255.252:8080
   bootstrap:

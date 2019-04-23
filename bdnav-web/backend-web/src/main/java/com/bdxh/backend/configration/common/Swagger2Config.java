@@ -26,6 +26,7 @@ public class Swagger2Config {
         List<Parameter> list = Arrays.asList(
                 new ParameterBuilder()
                         .name("Authorization")
+                        .defaultValue("BDXH_TEST")
                         .description("访问令牌")
                         .modelRef(new ModelRef("string"))
                         .parameterType("header")
