@@ -73,7 +73,7 @@ public class SchoolModeController {
 			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(addSchoolModeDto.getName());
 			Preconditions.checkArgument(schoolMode == null, "该模式已存在,请更换后添加");
 			BeanUtils.copyProperties(addSchoolModeDto, schoolModeLogs);
-			Boolean result = schoolModeService.addSchoolMode(schoolModeLogs);
+			Boolean result = schoolModeService.save(schoolModeLogs)>0;
 			return WrapMapper.ok(result);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
@@ -104,10 +104,10 @@ public class SchoolModeController {
 				if(schoolMode.getName().equals(modifySchoolModeDto.getName())&&!schoolMode.getId().equals(modifySchoolModeDto.getId())){
 					return WrapMapper.error("该模式已存在,请更换模式名称");
 				}else{
-					result =  schoolModeService.modifySchoolMode(schoolModeLogs);
+					result =  schoolModeService.update(schoolModeLogs)>0;
 				}
 			}else{
-				result =  schoolModeService.modifySchoolMode(schoolModeLogs);
+				result =  schoolModeService.update(schoolModeLogs)>0;
 			}
 			return WrapMapper.ok(result);
 		} catch (RuntimeException e) {
