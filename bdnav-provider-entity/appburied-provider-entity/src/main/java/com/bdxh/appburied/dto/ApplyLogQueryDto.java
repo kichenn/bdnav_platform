@@ -21,22 +21,25 @@ import java.util.Date;
 @Data
 public class ApplyLogQueryDto extends Query {
 
-    @NotNull(message = "应用平台不能为空")
+
     @ApiModelProperty("平台 1 android 2 ios")
     private InstallAppsPlatformEnum installAppsPlatformEnum;
 
-    @NotNull(message = "APP应用日志模式不能为空")
+
     @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")
     private ApplyLogModelEnum applyLogModelEnum;
 
-    @NotEmpty(message = "学校编码不能为空")
+
+    @ApiModelProperty("学校ID")
+    private Long schoolId;
+
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
     @ApiModelProperty("学校名称")
     private String schoolName;
 
-    @NotEmpty(message = "用户学号不能为空")
     @ApiModelProperty("用户学号")
     private String cardNumber;
 

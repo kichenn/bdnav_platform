@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/visitLogs")
 @Slf4j
 @Validated
-@Api(value = "学生网站访问日志控制器", tags = "学生网站访问日志控制器")
+@Api(value = "学生网站访问日志API", tags = "学生网站访问日志API")
 public class VisitLogsController {
     @Autowired
     private VisitLogsControllerClient visitLogsControllerClient;

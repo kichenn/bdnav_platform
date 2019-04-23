@@ -37,6 +37,12 @@ public class InstallApps {
 	private Long accountId;
 
 	/**
+	 * 学校ID
+	 */
+	@Column(name = "school_id")
+	private Long schoolId;
+
+	/**
 	 * 学校编码
 	 */
 	@Column(name = "school_code")

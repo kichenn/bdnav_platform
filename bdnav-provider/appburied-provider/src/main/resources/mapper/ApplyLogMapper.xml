@@ -8,6 +8,7 @@
         <result column="account_id" jdbcType="BIGINT" property="accountId"/>
         <result column="push_sign" jdbcType="VARCHAR" property="pushSign"/>
         <result column="model" jdbcType="TINYINT" property="model"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
         <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
@@ -25,7 +26,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,platform,account_id,push_sign,model,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark
+	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark
 	</sql>
     <select id="getApplyLogAllCount" resultType="Integer">
 	  SELECT 

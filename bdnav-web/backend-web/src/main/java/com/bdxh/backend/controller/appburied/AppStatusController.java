@@ -34,27 +34,6 @@ public class AppStatusController {
     private AppStatusControllerClient appStatusControllerClient;
 
 
-    @RequestMapping(value = "/addAppStatus", method = RequestMethod.POST)
-    @ApiOperation(value = "增加APP上报状态信息", response = Boolean.class)
-    public Object addAppStatus(@Validated @RequestBody AddAppStatusDto addAppStatusDto) {
-        Wrapper wrapper= appStatusControllerClient.addAppStatus(addAppStatusDto);
-        return wrapper;
-    }
-
-    @RequestMapping(value = "/modifyAppStatus", method = RequestMethod.POST)
-    @ApiOperation(value = "修改APP上报状态信息", response = Boolean.class)
-    public Object modifyAppStatus(@Validated @RequestBody ModifyAppStatusDto modifyAppStatusDto) {
-        Wrapper wrapper= appStatusControllerClient.modifyAppStatus(modifyAppStatusDto);
-        return wrapper;
-    }
-
-    @RequestMapping(value = "/delAppStatusById", method = RequestMethod.POST)
-    @ApiOperation(value = "删除APP上报状态信息", response = Boolean.class)
-    public Object delAppStatusById(@Validated @RequestBody DelOrFindAppBuriedDto appStatusDto) {
-        Wrapper wrapper=  appStatusControllerClient.delAppStatusById(appStatusDto);
-        return wrapper;
-    }
-
     @RequestMapping(value = "/findAppStatusById", method = RequestMethod.POST)
     @ApiOperation(value = "根据id查询APP上报状态信息", response = AppStatus.class)
     public Object findAppStatusById(@Validated @RequestBody DelOrFindAppBuriedDto findAppStatusDto) {

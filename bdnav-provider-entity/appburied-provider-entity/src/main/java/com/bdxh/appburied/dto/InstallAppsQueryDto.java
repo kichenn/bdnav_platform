@@ -18,6 +18,9 @@ public class InstallAppsQueryDto extends Query {
     @ApiModelProperty("平台 1 android 2 ios")
     private InstallAppsPlatformEnum installAppsPlatformEnum;
 
+    @ApiModelProperty("学校ID")
+    private Long schoolId;
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 

@@ -6,6 +6,7 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="platform" jdbcType="TINYINT" property="platform"/>
         <result column="account_id" jdbcType="BIGINT" property="accountId"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
         <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
@@ -18,7 +19,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,platform,account_id,school_code,school_name,card_number,user_name,app_name,app_package,icon_url,icon_name,create_date
+	  id,platform,account_id,school_id,school_code,school_name,card_number,user_name,app_name,app_package,icon_url,icon_name,create_date
 	</sql>
     <select id="getInstallAppsAllCount" resultType="Integer">
 	  SELECT 

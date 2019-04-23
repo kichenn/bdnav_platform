@@ -16,4 +16,7 @@ public class DelOrFindAppBuriedDto extends AppBuriedParentDto {
 
     @ApiModelProperty("id")
     private Long id;
+
+    @ApiModelProperty("学校编号")
+    private Long schoolId;
 }
