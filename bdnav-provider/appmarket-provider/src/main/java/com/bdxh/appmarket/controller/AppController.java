@@ -195,6 +195,16 @@ public class AppController {
         }
     }
 
-
+    @ApiOperation("根据ids查询应用列表")
+    @RequestMapping(value = "/getAppListByids",method = RequestMethod.GET)
+    public Object getAppListByids(@RequestParam(name = "ids")String ids){
+        try {
+          List<App> app=appService.getAppListByids(ids);
+            return WrapMapper.ok(app);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 
 }

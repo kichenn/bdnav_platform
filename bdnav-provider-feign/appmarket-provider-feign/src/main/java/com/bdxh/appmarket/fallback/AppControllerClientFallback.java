@@ -61,5 +61,10 @@ public class AppControllerClientFallback implements AppControllerClient {
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper<List<App>> getAppListByids(String ids) {
+        return WrapMapper.error();
+    }
+
 
 }
