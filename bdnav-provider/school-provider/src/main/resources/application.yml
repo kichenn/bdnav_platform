@@ -5,5 +5,18 @@ spring:
     name: school-provider-cluster
   profiles:
     active: dev
+
+#apollo配置
+app:
+  id: school-provider
+apollo:
+  meta: http://47.107.255.252:8080
+  bootstrap:
+    enabled: true
+    eagerLoad:
+      enabled: true
+    namespaces: application
+
+#日志
 logging:
   config: classpath:logback-spring.xml

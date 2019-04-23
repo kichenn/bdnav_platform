@@ -51,8 +51,9 @@
         <disruptor.version>3.4.2</disruptor.version>
         <smscore.version>3.3.1</smscore.version>
         <smsdysmsapi.version>1.0.0</smsdysmsapi.version>
-        <apollo-client.version>1.0.0</apollo-client.version>
-        <apollo-core.version>1.0.0</apollo-core.version>
+        <apollo-client.version>1.3.0</apollo-client.version>
+        <apollo-core.version>1.3.0</apollo-core.version>
+        <mongodb.version>2.0.11.RELEASE</mongodb.version>
     </properties>
 
     <modules>
@@ -338,6 +339,12 @@
                 <groupId>com.ctrip.framework.apollo</groupId>
                 <artifactId>apollo-client</artifactId>
                 <version>${apollo-client.version}</version>
+            </dependency>
+            <!--MongoDB-->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-mongodb</artifactId>
+                <version>${mongodb.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
