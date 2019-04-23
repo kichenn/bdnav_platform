@@ -1,5 +1,7 @@
-server:
-  port: 9022
+info:
+  groupId: @project.groupId@
+  artifactId: @project.artifactId@
+  version: @project.version@
 spring:
   application:
     name: school-provider-cluster
@@ -8,14 +10,14 @@ spring:
 
 #apollo配置
 app:
-  id: ${spring.application.name}
+  id: school-provider-cluster1
 apollo:
   meta: http://47.107.255.252:8080
   bootstrap:
     enabled: true
     eagerLoad:
       enabled: true
-    namespaces: application
+    namespaces: application,BASE.public-hikari-ds,BASE.public-redis,BASE.public.eureka
 
 #日志
 logging:
