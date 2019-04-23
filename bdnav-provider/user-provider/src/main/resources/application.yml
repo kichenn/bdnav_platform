@@ -1,3 +1,7 @@
+info:
+  groupId: @project.groupId@
+  artifactId: @project.artifactId@
+  version: @project.version@
 server:
   port: 9023
 spring:
@@ -5,5 +9,16 @@ spring:
     name: user-provider-cluster
   profiles:
     active: dev
+#apollo配置
+app:
+  id: user-provider-cluster1
+apollo:
+  meta: http://47.107.255.252:8080
+  bootstrap:
+    enabled: true
+    eagerLoad:
+      enabled: true
+    namespaces: application,BASE.public-hikari-ds,BASE.public-redis,BASE.public.eureka
+
 logging:
   config: classpath:logback-spring.xml
