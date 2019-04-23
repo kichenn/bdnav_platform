@@ -69,11 +69,6 @@
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
         </dependency>
-        <!--mongodb依赖项-->
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-mongodb</artifactId>
-        </dependency>
         <!--apollo依赖项-->
         <dependency>
             <groupId>com.ctrip.framework.apollo</groupId>
@@ -82,6 +77,12 @@
         <dependency>
             <groupId>com.ctrip.framework.apollo</groupId>
             <artifactId>apollo-core</artifactId>
+        </dependency>
+        <!--MongoDB-->
+        <dependency>
+            <groupId>org.springframework.data</groupId>
+            <artifactId>spring-data-mongodb</artifactId>
+            <version>2.0.11.RELEASE</version>
         </dependency>
     </dependencies>
 
