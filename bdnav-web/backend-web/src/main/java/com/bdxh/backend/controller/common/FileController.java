@@ -41,6 +41,20 @@ public class FileController {
         return WrapMapper.ok(resultMap);
     }
 
+    @PostMapping("/saveBatchFile")
+    @ApiOperation(value = "分块上传文件", response = String.class)
+    public Object saveBatchFile(MultipartFile multipartFile) {
+        Map<String, String> resultMap = null;
+        try {
+            resultMap = FileOperationUtils.saveBatchFile(multipartFile, null);
+            log.info("----------上传成功-----------");
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("----------上传失败-----------");
+        }
+        return WrapMapper.ok(resultMap);
+    }
+
     @PostMapping("/downloadFile")
     @ApiOperation(value = "下载文件", response = Boolean.class)
     public Object downloadFile(@RequestParam("fileName") String fileName, HttpServletResponse response) {

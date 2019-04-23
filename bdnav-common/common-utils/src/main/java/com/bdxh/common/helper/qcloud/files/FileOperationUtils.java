@@ -13,6 +13,7 @@ import com.qcloud.cos.http.HttpMethodName;
 import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
 import com.qcloud.cos.transfer.TransferManager;
+import com.qcloud.cos.transfer.Upload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,10 +23,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,15 +56,10 @@ public class FileOperationUtils {
         ExecutorService threadPool = Executors.newFixedThreadPool(QcloudConstants.N_THREADS);
         // 传入一个 threadpool, 若不传入线程池, 默认 TransferManager 中会生成一个单线程的线程池。
         TransferManager transferManager = new TransferManager(cosClient, threadPool);
-//        CommonsMultipartFile cf = (CommonsMultipartFile) multipartFile;
-//        DiskFileItem fi = (DiskFileItem) cf.getFileItem();
-//
-//        File f = fi.getStoreLocation();
         // 文件名
         String fileName = multipartFile.getOriginalFilename();
         // 文件后缀
         String extName = FilenameUtils.getExtension(fileName);
-//        File localFile = (File) multipartFile;//multipartFileToFile(multipartFile);
         String key = getDestPath(extName);
         ObjectMetadata objectMetadata = new ObjectMetadata();
         objectMetadata.setContentLength(multipartFile.getSize());
@@ -89,6 +82,53 @@ public class FileOperationUtils {
         transferManager.shutdownNow();
 
         if (StringUtils.isNotEmpty(etag)) {
+            Map<String, String> map = new HashMap<>();
+            map.put("name", key);
+            map.put("url", getUrl(key, null));
+            return map;
+        }
+        return null;
+    }
+
+    /**
+     * @Description: 分块上传
+     * @Author: Kang
+     * @Date: 2019/4/23 16:13
+     */
+    public static Map<String, String> saveBatchFile(MultipartFile multipartFile, String buckentName) throws Exception {
+        //设置存储桶名称，不传使用默认存储名
+        String buckentNameFinal = QcloudConstants.BUCKET_NAME;
+        if (StringUtils.isNotEmpty(buckentName)) {
+            buckentNameFinal = buckentName;
+        }
+        // 文件名
+        String fileName = multipartFile.getOriginalFilename();
+        // 文件后缀
+        String extName = FilenameUtils.getExtension(fileName);
+        String key = getDestPath(extName);
+
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentLength(multipartFile.getSize());
+        objectMetadata.setCacheControl("no-cache");
+        objectMetadata.setHeader("Pragma", "no-cache");
+        objectMetadata.setContentType(getcontentType(extName));
+        objectMetadata.setContentDisposition("inline;filename=" + key);
+        //图片存储到data里，apk存储到files里
+        String finalKey = QcloudConstants.RESOURCES_PREFIX + key;
+        if (extName.equals("apk")) {
+            finalKey = QcloudConstants.RESOURCES_PREFIX1 + key;
+        }
+        // 对于使用公网传输且网络带宽质量不高的情况，建议减小该值，避免因网速过慢，造成请求超时。
+        ExecutorService threadPool = Executors.newFixedThreadPool(QcloudConstants.N_THREADS);
+        // 传入一个 threadpool, 若不传入线程池, 默认 TransferManager 中会生成一个单线程的线程池。
+        TransferManager transferManager = new TransferManager(cosClient, threadPool);
+        PutObjectRequest putObjectRequest = new PutObjectRequest(buckentNameFinal, finalKey, multipartFile.getInputStream(), objectMetadata);
+        // 本地文件上传
+        Upload upload = transferManager.upload(putObjectRequest);
+        // 等待传输结束（如果想同步的等待上传结束，则调用 waitForCompletion）
+        UploadResult uploadResult = upload.waitForUploadResult();
+
+        if (StringUtils.isNotEmpty(uploadResult.getETag())) {
             Map<String, String> map = new HashMap<>();
             map.put("name", key);
             map.put("url", getUrl(key, null));
@@ -122,10 +162,6 @@ public class FileOperationUtils {
         COSObject cosObject = cosClient.getObject(getObjectRequest);
         COSObjectInputStream cosObjectInput = cosObject.getObjectContent();
         return cosObjectInput;
-//        //下载到本地
-//        File downFile = new File("C:\\用户\\Administrator\\Desktop\\1.jpg");
-//        GetObjectRequest getObjectRequest = new GetObjectRequest(QcloudConstants.BUCKET_NAME, key);
-//        ObjectMetadata downObjectMeta = cosClient.getObject(getObjectRequest, downFile);
     }
 
 
@@ -173,7 +209,7 @@ public class FileOperationUtils {
         }
         GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(buckentNameFinal, finalKey, HttpMethodName.GET);
         // 设置签名过期时间(可选), 过期时间不做限制，只需比当前时间大, 若未进行设置, 则默认使用ClientConfig中的签名过期时间(5分钟)
-        // 这里设置签名在10年后过期
+        // 这里设置签名在1000年后过期
         Date expirationDate = new Date(System.currentTimeMillis() + 3600L * 1000 * 24 * 365 * 1000);
         req.setExpiration(expirationDate);
         URL url = cosClient.generatePresignedUrl(req);

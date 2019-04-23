@@ -14,7 +14,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @SpringBootApplication
 @ServletComponentScan
 @EnableEurekaClient
-@EnableApolloConfig
+//@EnableApolloConfig
 public class SchoolApplication {
     public static void main(String[] args) {
         SpringApplication.run(SchoolApplication.class, args);
