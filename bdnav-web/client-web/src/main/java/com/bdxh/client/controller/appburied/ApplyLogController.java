@@ -53,6 +53,6 @@ public class ApplyLogController {
         SchoolUser schoolUser= SecurityUtils.getCurrentUser();
         applyLogQueryDto.setSchoolCode(schoolUser.getSchoolCode());
         applyLogQueryDto.setSchoolId(schoolUser.getSchoolId());
-        return WrapMapper.ok(applyLogControllerClient.findApplyLogInContionPaging(applyLogQueryDto));
+        return applyLogControllerClient.findApplyLogInContionPaging(applyLogQueryDto);
     }
 }

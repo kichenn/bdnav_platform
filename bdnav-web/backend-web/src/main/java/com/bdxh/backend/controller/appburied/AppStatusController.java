@@ -44,6 +44,6 @@ public class AppStatusController {
     @RequestMapping(value = "/findAppStatusInContionPaging", method = RequestMethod.POST)
     @ApiOperation(value = "分页上报App状态信息查询", response = AppStatus.class)
     public Object findAppStatusInContionPaging(@Validated @RequestBody AppStatusQueryDto appStatusQueryDto) {
-        return WrapMapper.ok(appStatusControllerClient.findAppStatusInContionPaging(appStatusQueryDto));
+        return appStatusControllerClient.findAppStatusInContionPaging(appStatusQueryDto);
     }
 }

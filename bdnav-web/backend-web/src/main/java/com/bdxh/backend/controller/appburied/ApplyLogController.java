@@ -47,6 +47,6 @@ public class ApplyLogController {
     @RequestMapping(value = "/findApplyLogInContionPaging", method = RequestMethod.POST)
     @ApiOperation(value = "分页上报App状态日志查询", response = AppStatus.class)
     public Object findAppStatusInContionPaging(@Validated @RequestBody ApplyLogQueryDto applyLogQueryDto) {
-        return WrapMapper.ok(applyLogControllerClient.findApplyLogInContionPaging(applyLogQueryDto));
+        return applyLogControllerClient.findApplyLogInContionPaging(applyLogQueryDto);
     }
 }

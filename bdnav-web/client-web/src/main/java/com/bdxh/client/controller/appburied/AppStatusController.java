@@ -51,6 +51,6 @@ public class AppStatusController {
         SchoolUser schoolUser= SecurityUtils.getCurrentUser();
         appStatusQueryDto.setSchoolCode(schoolUser.getSchoolCode());
         appStatusQueryDto.setSchoolId(schoolUser.getSchoolId());
-        return WrapMapper.ok(appStatusControllerClient.findAppStatusInContionPaging(appStatusQueryDto));
+        return appStatusControllerClient.findAppStatusInContionPaging(appStatusQueryDto);
     }
 }
