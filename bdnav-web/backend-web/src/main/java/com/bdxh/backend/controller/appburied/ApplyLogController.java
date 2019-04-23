@@ -37,28 +37,6 @@ public class ApplyLogController {
     private ApplyLogControllerClient applyLogControllerClient;
 
 
-    @RequestMapping(value = "/addApplyLog", method = RequestMethod.POST)
-    @ApiOperation(value = "增加APP上报日志信息", response = Boolean.class)
-    public Object addApplyLog(@Validated @RequestBody AddApplyLogDto addApplyLogDto) {
-
-        Wrapper wrapper=applyLogControllerClient.addApplyLog(addApplyLogDto);
-        return wrapper;
-    }
-
-    @RequestMapping(value = "/modifyApplyLog", method = RequestMethod.POST)
-    @ApiOperation(value = "修改APP上报日志信息", response = Boolean.class)
-    public Object modifyApplyLog(@Validated @RequestBody ModifyApplyLogDto modifyApplyLogDto) {
-        Wrapper wrapper=applyLogControllerClient.modifyApplyLog(modifyApplyLogDto);
-        return wrapper;
-    }
-
-    @RequestMapping(value = "/delApplyLogById", method = RequestMethod.POST)
-    @ApiOperation(value = "删除APP上报日志信息", response = Boolean.class)
-    public Object delApplyLogById(@Validated @RequestBody DelOrFindAppBuriedDto AddapplyLogDto) {
-       Wrapper wrapper= applyLogControllerClient.delApplyLogById(AddapplyLogDto);
-        return wrapper;
-    }
-
     @RequestMapping(value = "/findApplyLogById", method = RequestMethod.POST)
     @ApiOperation(value = "根据id查询APP上报日志信息", response = AppStatus.class)
     public Object findApplyLogById(@Validated @RequestBody DelOrFindAppBuriedDto findApplyLogDto) {

@@ -36,6 +36,9 @@ public class ModifyApplyLogDto {
     @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")
     private ApplyLogModelEnum applyLogModelEnum;
 
+    @ApiModelProperty("学校ID")
+    private Long schoolId;
+
     @NotEmpty(message = "学校编码不能为空")
     @ApiModelProperty("学校编码")
     private String schoolCode;

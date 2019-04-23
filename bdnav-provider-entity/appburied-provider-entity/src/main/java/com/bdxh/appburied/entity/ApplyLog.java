@@ -1,6 +1,8 @@
 package com.bdxh.appburied.entity;
 
 import javax.persistence.Table;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
@@ -48,6 +50,11 @@ public class ApplyLog {
 	@Column(name = "model")
 	private Byte model;
 
+	/**
+	 * 学校ID
+	 */
+	@Column(name = "school_id")
+	private Long schoolId;
 	/**
 	 * 学校编码
 	 */

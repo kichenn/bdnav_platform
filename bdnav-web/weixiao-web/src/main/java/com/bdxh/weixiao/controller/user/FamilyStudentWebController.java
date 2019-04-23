@@ -10,7 +10,6 @@ import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.FamilyStudentDetailsVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
-import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -107,8 +106,7 @@ public class FamilyStudentWebController {
     @RequestMapping(value = "/familyFindStudentList",method =RequestMethod.POST)
     public Object familyFindStudentList(@RequestParam("schoolCode") String schoolCode,@RequestParam("cardNumber")String cardNumber){
         try{
-            Wrapper wrapper =familyStudentControllerClient.familyFindStudentList(schoolCode,cardNumber);
-            return WrapMapper.ok(wrapper.getResult());
+            return WrapMapper.ok(familyStudentControllerClient.familyFindStudentList(schoolCode,cardNumber).getResult());
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

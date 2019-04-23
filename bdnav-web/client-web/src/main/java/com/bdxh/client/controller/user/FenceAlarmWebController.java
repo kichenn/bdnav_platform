@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/fenceAlarm")
 @Slf4j
 @Validated
-@Api(value = "家长围栏警报控制器", tags = "家长围栏警报控制器")
+@Api(value = "家长围栏警报API", tags = "家长围栏警报API")
 public class FenceAlarmWebController {
 
     @Autowired

@@ -35,27 +35,6 @@ public class InstallAppsController {
 
 
 
-    @RequestMapping(value = "/addInstallApp", method = RequestMethod.POST)
-    @ApiOperation(value = "增加上报APP信息", response = Boolean.class)
-    public Object addInstallApp(@Validated @RequestBody AddInstallAppsDto addInstallAppsDto) {
-        Wrapper wrapper= installAppsControllerClient.addInstallApp(addInstallAppsDto);
-        return wrapper;
-    }
-
-    @RequestMapping(value = "/modifyInstallApp", method = RequestMethod.POST)
-    @ApiOperation(value = "修改上报APP信息", response = Boolean.class)
-    public Object modifyInstallApp(@Validated @RequestBody ModifyInstallAppsDto modifyInstallAppsDto) {
-        Wrapper wrapper= installAppsControllerClient.modifyInstallApp(modifyInstallAppsDto);
-        return wrapper;
-    }
-
-    @RequestMapping(value = "/delInstallAppById", method = RequestMethod.POST)
-    @ApiOperation(value = "删除上报APP信息", response = Boolean.class)
-    public Object delInstallAppById(@Validated @RequestBody DelOrFindAppBuriedDto delInstallAppsDto) {
-        Wrapper wrapper= installAppsControllerClient.delInstallAppById(delInstallAppsDto);
-        return wrapper;
-    }
-
     @RequestMapping(value = "/findInstallAppById", method = RequestMethod.POST)
     @ApiOperation(value = "根据id查询上报APP信息", response = InstallApps.class)
     public Object findInstallAppById(@Validated @RequestBody DelOrFindAppBuriedDto findInstallAppsDto) {

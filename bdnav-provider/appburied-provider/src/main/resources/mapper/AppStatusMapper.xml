@@ -6,6 +6,7 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="platform" jdbcType="TINYINT" property="platform"/>
         <result column="account_id" jdbcType="BIGINT" property="accountId"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
         <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
@@ -15,7 +16,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,platform,account_id,school_code,card_number,app_package,app_status,create_date,update_date
+	  id,platform,account_id,school_id,school_code,card_number,app_package,app_status,create_date,update_date
 	</sql>
     <select id="getAppStatusAllCount" resultType="Integer">
 	  SELECT 

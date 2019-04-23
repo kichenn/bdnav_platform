@@ -33,14 +33,14 @@ public class Swagger2Config {
         );
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInfo()).globalOperationParameters(list).select()
-                .apis(RequestHandlerSelectors.basePackage("com.bdxh.backend"))
+                .apis(RequestHandlerSelectors.basePackage("com.bdxh.weixiao"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
-                .title("北斗星航核心业务系统")
+                .title("北斗星航微校平台")
                 .description("接口文档")
                 .version("1.0")
                 .build();

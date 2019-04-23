@@ -26,6 +26,9 @@ public class ModifyInstallAppsDto {
     @ApiModelProperty("账户id")
     private Long accountId;
 
+    @ApiModelProperty("学校ID")
+    private Long schoolId;
+
     @NotEmpty(message = "学校编码不能为空")
     @ApiModelProperty("学校编码")
     private String schoolCode;

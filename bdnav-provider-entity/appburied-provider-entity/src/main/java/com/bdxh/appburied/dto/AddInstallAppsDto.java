@@ -24,14 +24,16 @@ public class AddInstallAppsDto {
 	@ApiModelProperty("账户id")
 	private Long accountId;
 
-	@NotEmpty(message = "学校编码不能为空")
+	@ApiModelProperty("学校ID")
+	private Long schoolId;
+
+
 	@ApiModelProperty("学校编码")
 	private String schoolCode;
 
 	@ApiModelProperty("学校名称")
 	private String schoolName;
 
-	@NotEmpty(message = "用户学号不能为空")
 	@ApiModelProperty("用户学号")
 	private String cardNumber;
 
