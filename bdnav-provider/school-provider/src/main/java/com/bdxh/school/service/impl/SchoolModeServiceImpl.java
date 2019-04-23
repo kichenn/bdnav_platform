@@ -69,8 +69,8 @@ public class SchoolModeServiceImpl extends BaseService<SchoolMode> implements Sc
     }
 
     @Override
-    public SchoolMode getSchoolModesByName(String name) {
-        SchoolMode schoolMode=schoolModeMapper.getSchoolModesByName(name);
+    public SchoolMode getSchoolModesByName(String name,Long SchoolId) {
+        SchoolMode schoolMode=schoolModeMapper.getSchoolModesByName(name,SchoolId);
         return schoolMode;
     }
 

@@ -70,7 +70,7 @@ public class SchoolModeController {
 
 		try{
 			SchoolMode schoolModeLogs=new SchoolMode();
-			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(addSchoolModeDto.getName());
+			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(addSchoolModeDto.getName(),addSchoolModeDto.getSchoolId());
 			Preconditions.checkArgument(schoolMode == null, "该模式已存在,请更换后添加");
 			BeanUtils.copyProperties(addSchoolModeDto, schoolModeLogs);
 			Boolean result = schoolModeService.save(schoolModeLogs)>0;
@@ -97,7 +97,7 @@ public class SchoolModeController {
 		}
 		try{
 			Boolean result;
-			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(modifySchoolModeDto.getName());
+			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(modifySchoolModeDto.getName(),modifySchoolModeDto.getSchoolId());
 			SchoolMode schoolModeLogs=new SchoolMode();
 			BeanUtils.copyProperties(modifySchoolModeDto, schoolModeLogs);
 			if (schoolMode!=null){
