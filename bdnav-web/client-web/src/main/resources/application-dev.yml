@@ -5,6 +5,12 @@ eureka:
     serviceUrl:
       defaultZone: http://eureka-server1:9001/eureka/,http://eureka-server2:9002/eureka/,http://eureka-server3:9003/eureka/
 spring:
+  #文件上传大小配置
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200Mb
+      max-request-size: 1000Mb
   #jackson配置
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
