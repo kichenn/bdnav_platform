@@ -1,6 +1,7 @@
 package com.bdxh.appburied.service.impl;
 
 import com.bdxh.appburied.dto.AppStatusQueryDto;
+import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.service.AppStatusService;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -54,13 +55,9 @@ public class AppStatusServiceImpl extends BaseService<AppStatus> implements AppS
             appStatus.setPlatform(appStatusQueryDto.getInstallAppsPlatformEnum().getKey());
         }
 
-        Page page = PageHelper.startPage(appStatusQueryDto.getPageNum(), appStatusQueryDto.getPageSize());
-
+      PageHelper.startPage(appStatusQueryDto.getPageNum(), appStatusQueryDto.getPageSize());
         List<AppStatus> appStatuses = appStatusMapper.findAppStatusInConationPaging(appStatus);
-
-        PageInfo pageInfo = new PageInfo<>(appStatuses);
-        pageInfo.setTotal(page.getTotal());
-
-        return pageInfo;
+        PageInfo<AppStatus> pageInfoFamily = new PageInfo<>(appStatuses);
+        return pageInfoFamily;
     }
 }

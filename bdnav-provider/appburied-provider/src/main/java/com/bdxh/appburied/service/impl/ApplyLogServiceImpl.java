@@ -53,11 +53,10 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
         if (applyLogQueryDto.getApplyLogOperatorStatusEnum() != null) {
             applyLog.setOperatorStatus(applyLogQueryDto.getApplyLogOperatorStatusEnum().getKey());
         }
-        Page page = PageHelper.startPage(applyLogQueryDto.getPageNum(), applyLogQueryDto.getPageSize());
+        PageHelper.startPage(applyLogQueryDto.getPageNum(), applyLogQueryDto.getPageSize());
         List<ApplyLog> appStatuses = applyLogMapper.findApplyLogInConationPaging(applyLog);
-        PageInfo pageInfo = new PageInfo<>(appStatuses);
-        pageInfo.setTotal(page.getTotal());
-        return pageInfo;
+        PageInfo<ApplyLog> pageInfoFamily = new PageInfo<>(appStatuses);
+        return pageInfoFamily;
     }
 
 }

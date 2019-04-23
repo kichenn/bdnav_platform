@@ -32,6 +32,9 @@
             <if test="appStatus.platform !=null">
                 platform=#{appStatus.platform,jdbcType = TINYINT}
             </if>
+            <if test="appStatus.schoolId !=null and appStatus.schoolId!=''">
+                AND school_id=#{appStatus.schoolId,jdbcType = BIGINT}
+            </if>
             <if test="appStatus.schoolCode !=null and appStatus.schoolCode!=''">
                 AND school_code=#{appStatus.schoolCode,jdbcType = VARCHAR}
             </if>

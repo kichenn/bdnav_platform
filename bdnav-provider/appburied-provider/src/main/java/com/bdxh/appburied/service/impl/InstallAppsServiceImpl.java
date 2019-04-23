@@ -47,11 +47,9 @@ public class InstallAppsServiceImpl extends BaseService<InstallApps> implements 
         if (installAppsQueryDto.getInstallAppsPlatformEnum() != null) {
             installApps.setPlatform(installAppsQueryDto.getInstallAppsPlatformEnum().getKey());
         }
-        Page page = PageHelper.startPage(installAppsQueryDto.getPageNum(), installAppsQueryDto.getPageSize());
-
-        List<InstallApps> installAppsList = installAppsMapper.findInstallAppsInContionPaging(installApps);
-        PageInfo pageInfo = new PageInfo<>(installAppsList);
-        pageInfo.setTotal(page.getTotal());
-        return pageInfo;
+        PageHelper.startPage(installAppsQueryDto.getPageNum(), installAppsQueryDto.getPageSize());
+        List<InstallApps> appStatuses = installAppsMapper.findInstallAppsInContionPaging(installApps);
+        PageInfo<InstallApps> pageInfoFamily = new PageInfo<>(appStatuses);
+        return pageInfoFamily;
     }
 }
