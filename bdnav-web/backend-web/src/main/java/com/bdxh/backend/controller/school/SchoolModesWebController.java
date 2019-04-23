@@ -29,8 +29,14 @@ public class SchoolModesWebController {
     @RequestMapping(value = "/addModesInCondition", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校模式", response = Boolean.class)
     public Object findSchoolsInConditionPaging(@Validated @RequestBody AddSchoolModeDto addSchoolModeDto) {
-        Wrapper wrapper = schoolModeControllerClient.addSchoolModes(addSchoolModeDto);
-        return wrapper;
+        try {
+            Wrapper wrapper = schoolModeControllerClient.addSchoolModes(addSchoolModeDto);
+            return wrapper;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+
     }
 
 
@@ -38,8 +44,13 @@ public class SchoolModesWebController {
     @RequestMapping(value = "/modifySchoolModes", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校模式", response = Boolean.class)
     public Object findSchoolsInConditionPaging(@Validated @RequestBody ModifySchoolModeDto modifySchoolModeDto) {
+        try{
         Wrapper wrapper = schoolModeControllerClient.modifySchoolModes(modifySchoolModeDto);
         return wrapper;
+       } catch (Exception e) {
+        e.printStackTrace();
+        return WrapMapper.error(e.getMessage());
+      }
     }
 
     /**
