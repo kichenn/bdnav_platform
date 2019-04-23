@@ -52,6 +52,6 @@ public class InstallAppsController {
         SchoolUser schoolUser= SecurityUtils.getCurrentUser();
         installAppsQueryDto.setSchoolCode(schoolUser.getSchoolCode());
         installAppsQueryDto.setSchoolId(schoolUser.getSchoolId());
-        return WrapMapper.ok(installAppsControllerClient.findInstallAppsInContionPaging(installAppsQueryDto));
+        return installAppsControllerClient.findInstallAppsInContionPaging(installAppsQueryDto);
     }
 }

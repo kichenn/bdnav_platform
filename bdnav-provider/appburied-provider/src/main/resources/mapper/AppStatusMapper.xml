@@ -8,7 +8,9 @@
         <result column="account_id" jdbcType="BIGINT" property="accountId"/>
         <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
         <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
         <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
         <result column="app_status" jdbcType="TINYINT" property="appStatus"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
@@ -16,7 +18,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,platform,account_id,school_id,school_code,card_number,app_package,app_status,create_date,update_date
+	  id,platform,account_id,school_id,school_code,school_name,card_number,user_name,app_package,app_status,create_date,update_date
 	</sql>
     <select id="getAppStatusAllCount" resultType="Integer">
 	  SELECT 
@@ -31,6 +33,15 @@
         <where>
             <if test="appStatus.platform !=null">
                 platform=#{appStatus.platform,jdbcType = TINYINT}
+            </if>
+            <if test="appStatus.schoolId !=null and appStatus.schoolId!=''">
+                AND school_id=#{appStatus.schoolId,jdbcType = BIGINT}
+            </if>
+            <if test="appStatus.schoolName !=null and appStatus.schoolName!=''">
+                AND school_name  like CONCAT(CONCAT('%',#{appStatus.schoolName,jdbcType = VARCHAR}),'%')
+            </if>
+            <if test="appStatus.userName !=null and appStatus.userName!=''">
+                AND user_name  like CONCAT(CONCAT('%',#{appStatus.userName,jdbcType = VARCHAR}),'%')
             </if>
             <if test="appStatus.schoolCode !=null and appStatus.schoolCode!=''">
                 AND school_code=#{appStatus.schoolCode,jdbcType = VARCHAR}

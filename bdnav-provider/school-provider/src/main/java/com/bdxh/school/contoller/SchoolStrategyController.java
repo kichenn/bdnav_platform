@@ -105,13 +105,18 @@ public class SchoolStrategyController {
 			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
 			return WrapMapper.error(errors);
 		}
+		try{
+			SchoolStrategy schoolStrategy=new SchoolStrategy();
+			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
+			schoolStrategy.setRecursionPermission(Integer.valueOf(addPolicyDto.getRecursionPermission().getKey()));
+			schoolStrategy.setPlatform(String.valueOf(addPolicyDto.getPlatform().getKey()));
+			Boolean result = schoolStrategyService.save(schoolStrategy)>0;
+			return WrapMapper.ok(result);
+		} catch (RuntimeException e) {
+		e.printStackTrace();
+		return WrapMapper.error(e.getMessage());
+	  }
 
-		SchoolStrategy schoolStrategy=new SchoolStrategy();
-		BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
-		schoolStrategy.setRecursionPermission(Integer.valueOf(addPolicyDto.getRecursionPermission().getKey()));
-		schoolStrategy.setPlatform(String.valueOf(addPolicyDto.getPlatform().getKey()));
-		Boolean result = schoolStrategyService.addSchoolStrategy(schoolStrategy);
-		return WrapMapper.ok(result);
 	}
 
 
@@ -127,12 +132,18 @@ public class SchoolStrategyController {
 			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
 			return WrapMapper.error(errors);
 		}
-		SchoolStrategy schoolStrategy=new SchoolStrategy();
-		BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
-		schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
-		schoolStrategy.setPlatform(String.valueOf(modifyPolicyDto.getPlatform().getKey()));
-		Boolean result =  schoolStrategyService.modifySchoolStrategy(schoolStrategy);
-		return WrapMapper.ok(result);
+		try{
+			SchoolStrategy schoolStrategy=new SchoolStrategy();
+			BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
+			schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
+			schoolStrategy.setPlatform(String.valueOf(modifyPolicyDto.getPlatform().getKey()));
+			Boolean result =  schoolStrategyService.update(schoolStrategy)>0;
+			return WrapMapper.ok(result);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
+
 	}
 
 

@@ -45,6 +45,9 @@
             <if test="applyLog.model !=null">
                 AND model=#{applyLog.model,jdbcType = TINYINT}
             </if>
+            <if test="applyLog.schoolId !=null and applyLog.schoolId!=''">
+                AND school_id=#{applyLog.schoolId,jdbcType = BIGINT}
+            </if>
             <if test="applyLog.schoolCode !=null and applyLog.schoolCode!=''">
                 AND school_code=#{applyLog.schoolCode,jdbcType = VARCHAR}
             </if>

@@ -54,10 +54,6 @@ public class QuerySchoolMode extends Query {
     @ApiModelProperty("备注")
     private String Remark;
 
-/*
-    @ApiModelProperty("学校列表")
-    private List<School> getSchoolList;
-*/
 
    @ApiModelProperty("学校code列表")
     private String schoolCodeList;

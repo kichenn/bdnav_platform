@@ -45,6 +45,6 @@ public class InstallAppsController {
     @RequestMapping(value = "/findInstallAppsInContionPaging", method = RequestMethod.POST)
     @ApiOperation(value = "分页上报App信息查询", response = InstallApps.class)
     public Object findInstallAppsInContionPaging(@Validated @RequestBody InstallAppsQueryDto installAppsQueryDto) {
-        return WrapMapper.ok(installAppsControllerClient.findInstallAppsInContionPaging(installAppsQueryDto));
+        return installAppsControllerClient.findInstallAppsInContionPaging(installAppsQueryDto);
     }
 }

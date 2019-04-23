@@ -50,7 +50,7 @@ public class FenceAlarmMongoMapper{
             Pattern pattern = Pattern.compile("^.*"+fenceAlarmQueryDto.getSchoolName()+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("school_name").regex(pattern);
         }
-        if(StringUtils.isNotEmpty(fenceAlarmQueryDto.getSchoolName())){
+        if(StringUtils.isNotEmpty(fenceAlarmQueryDto.getAction())){
             criteria.and("action").is(fenceAlarmQueryDto.getAction());
         }
         if(StringUtils.isNotEmpty(fenceAlarmQueryDto.getSchoolCode())){

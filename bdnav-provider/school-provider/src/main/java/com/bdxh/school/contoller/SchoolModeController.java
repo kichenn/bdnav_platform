@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jdk.internal.org.objectweb.asm.tree.TryCatchBlockNode;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -59,18 +61,25 @@ public class SchoolModeController {
      */
     @RequestMapping(value = "/addModesInCondition", method = RequestMethod.POST)
     @ApiOperation(value = "添加应用模式", response = SchoolMode.class)
-    public Object addModesInCondition(@Validated @RequestBody AddSchoolModeDto addSchoolModeDto, BindingResult bindingResult) {
+    public Object addModesInCondition(@Valid @RequestBody AddSchoolModeDto addSchoolModeDto, BindingResult bindingResult) {
 		//检验参数
 		if(bindingResult.hasErrors()){
 			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
 			return WrapMapper.error(errors);
 		}
-        SchoolMode schoolModeLogs=new SchoolMode();
-        SchoolMode schoolMode = schoolModeService.getSchoolModesByName(addSchoolModeDto.getName());
-        Preconditions.checkArgument(schoolMode == null, "该模式已存在,请更换后添加");
-        BeanUtils.copyProperties(addSchoolModeDto, schoolModeLogs);
-		Boolean result = schoolModeService.addSchoolMode(schoolModeLogs);
-		return WrapMapper.ok(result);
+
+		try{
+			SchoolMode schoolModeLogs=new SchoolMode();
+			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(addSchoolModeDto.getName());
+			Preconditions.checkArgument(schoolMode == null, "该模式已存在,请更换后添加");
+			BeanUtils.copyProperties(addSchoolModeDto, schoolModeLogs);
+			Boolean result = schoolModeService.save(schoolModeLogs)>0;
+			return WrapMapper.ok(result);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
+
     }
 
 
@@ -80,26 +89,32 @@ public class SchoolModeController {
      */
     @RequestMapping(value = "/updateModesInCondition", method = RequestMethod.POST)
     @ApiOperation(value = "修改应用模式", response = SchoolMode.class)
-    public Object updateModesInCondition(@Validated @RequestBody ModifySchoolModeDto modifySchoolModeDto, BindingResult bindingResult) {
+    public Object updateModesInCondition(@Valid @RequestBody ModifySchoolModeDto modifySchoolModeDto, BindingResult bindingResult) {
 		//检验参数
 		if(bindingResult.hasErrors()){
 			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
 			return WrapMapper.error(errors);
 		}
-        Boolean result;
-        SchoolMode schoolMode = schoolModeService.getSchoolModesByName(modifySchoolModeDto.getName());
-        SchoolMode schoolModeLogs=new SchoolMode();
-        BeanUtils.copyProperties(modifySchoolModeDto, schoolModeLogs);
-        if (schoolMode!=null){
-            if(schoolMode.getName().equals(modifySchoolModeDto.getName())&&!schoolMode.getId().equals(modifySchoolModeDto.getId())){
-                return WrapMapper.error("该模式已存在,请更换模式名称");
-            }else{
-                result =  schoolModeService.modifySchoolMode(schoolModeLogs);
-            }
-        }else{
-            result =  schoolModeService.modifySchoolMode(schoolModeLogs);
-        }
-        return WrapMapper.ok(result);
+		try{
+			Boolean result;
+			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(modifySchoolModeDto.getName());
+			SchoolMode schoolModeLogs=new SchoolMode();
+			BeanUtils.copyProperties(modifySchoolModeDto, schoolModeLogs);
+			if (schoolMode!=null){
+				if(schoolMode.getName().equals(modifySchoolModeDto.getName())&&!schoolMode.getId().equals(modifySchoolModeDto.getId())){
+					return WrapMapper.error("该模式已存在,请更换模式名称");
+				}else{
+					result =  schoolModeService.update(schoolModeLogs)>0;
+				}
+			}else{
+				result =  schoolModeService.update(schoolModeLogs)>0;
+			}
+			return WrapMapper.ok(result);
+		} catch (RuntimeException e) {
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
+
     }
 
 

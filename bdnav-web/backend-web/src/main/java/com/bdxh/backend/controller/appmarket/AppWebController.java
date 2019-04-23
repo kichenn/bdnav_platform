@@ -157,5 +157,17 @@ public class AppWebController {
         }
     }
 
+    @ApiOperation("根据ids查询应用列表")
+    @RequestMapping(value = "/getAppListByids",method = RequestMethod.GET)
+    public Object getAppListByids(@RequestParam(name = "ids")String ids){
+        try {
+            Wrapper wrapper = appControllerClient.getAppListByids(ids);
+            return wrapper;
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 }

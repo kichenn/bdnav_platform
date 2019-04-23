@@ -30,13 +30,6 @@ public class AddSchoolModeDto {
     private String UsableDevice;
 
 
-    @ApiModelProperty("创建时间")
-    private Date CreateDate;
-
-
-    @ApiModelProperty("修改时间")
-    private Date UpdateDate;
-
 
     @ApiModelProperty("操作人")
     private Long Operator;

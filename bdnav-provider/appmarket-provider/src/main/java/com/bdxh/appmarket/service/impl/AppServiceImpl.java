@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -106,6 +107,17 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
         PageHelper.startPage(pageNum,pageSize);
         List<App> apps = appMapper.selectAll();
         return new PageInfo(apps);
+    }
+
+    @Override
+    public List<App> getAppListByids(String ids) {
+        String [] appIds=ids.split(",");
+        List<App> appLists=new ArrayList<>();
+        for (String s:appIds){
+            App apps=appMapper.selectByPrimaryKey(Long.valueOf(s));
+            appLists.add(apps);
+        }
+        return appLists;
     }
 
 }

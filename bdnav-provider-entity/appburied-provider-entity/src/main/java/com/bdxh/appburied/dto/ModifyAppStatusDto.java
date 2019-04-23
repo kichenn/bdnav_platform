@@ -34,6 +34,13 @@ public class ModifyAppStatusDto {
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
+    @ApiModelProperty("学校名称")
+    private String schoolName;
+
+
+    @ApiModelProperty("学生名称")
+    private String userName;
+
     @NotEmpty(message = "用户学号不能为空")
     @ApiModelProperty("用户学号")
     private String cardNumber;
