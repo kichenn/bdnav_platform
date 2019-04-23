@@ -23,8 +23,14 @@ public class AppStatusQueryDto extends Query {
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
+    @ApiModelProperty("学校名称")
+    private String schoolName;
+
     @ApiModelProperty("用户学号")
     private String cardNumber;
+
+    @ApiModelProperty("学生名称")
+    private String userName;
 
     @ApiModelProperty("应用状态1.正常 2.锁定")
     private AppStatusEnum appStatusEnum;

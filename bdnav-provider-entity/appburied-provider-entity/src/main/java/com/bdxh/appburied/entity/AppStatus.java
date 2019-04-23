@@ -1,6 +1,8 @@
 package com.bdxh.appburied.entity;
 
 import javax.persistence.Table;
+
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
@@ -47,6 +49,19 @@ public class AppStatus {
 	 */
 	@Column(name = "school_code")
 	private String schoolCode;
+
+	/**
+	 * 学校名称
+	 */
+	@Column(name = "school_name")
+	private String schoolName;
+
+	/**
+	 * 学生名称
+	 */
+	@Column(name = "user_name")
+	private String userName;
+
 
 	/**
 	 * 用户卡号
