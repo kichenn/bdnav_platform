@@ -46,4 +46,7 @@ public interface AppControllerClient {
     @RequestMapping(value = "/app/getApplicationOfCollection",method = RequestMethod.POST)
     @ResponseBody
     Wrapper<PageInfo<App>> getApplicationOfCollection(@RequestBody AppQueryDto appQueryDto);
+
+    @RequestMapping(value = "/app/getAppListByids",method = RequestMethod.GET)
+    Wrapper<List<App>> getAppListByids(@RequestParam(name = "ids")String ids);
 }

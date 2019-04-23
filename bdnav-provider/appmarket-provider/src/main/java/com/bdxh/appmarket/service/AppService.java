@@ -81,4 +81,10 @@ public interface AppService extends IService<App> {
      */
     PageInfo<App> findAppList(Integer pageNum, Integer pageSize);
 
+
+    /**
+     * 根据ids查询所匹配的app列表
+     * @return
+     */
+    List<App> getAppListByids(String ids);
 }
