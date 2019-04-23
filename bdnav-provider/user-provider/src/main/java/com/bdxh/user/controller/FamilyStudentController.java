@@ -11,7 +11,7 @@ package com.bdxh.user.controller;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.user.configration.idgenerator.IdGeneratorProperties;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyStudentDto;
 import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.entity.FamilyStudent;
@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value ="家长学生绑定接口API", tags = "家长学生绑定接口API")
@@ -95,7 +96,7 @@ private SnowflakeIdWorker snowflakeIdWorker;
      * @return
      */
     @ApiOperation(value = "查询所有家长与孩子关系")
-    @RequestMapping(value = "queryAllFamilyStudent",method =RequestMethod.POST)
+    @RequestMapping(value = "/queryAllFamilyStudent",method =RequestMethod.POST)
     public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
         try{
             PageInfo<FamilyStudentVo> familyStudentVoPageInfo=familyStudentService.queryAllFamilyStudent(familyStudentQueryDto);
@@ -105,4 +106,23 @@ private SnowflakeIdWorker snowflakeIdWorker;
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 微校平台----家长查询孩子列表
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    @ApiOperation(value = "微校平台----家长查询孩子列表")
+    @RequestMapping(value = "/familyFindStudentList",method =RequestMethod.POST)
+    public Object familyFindStudentList(@RequestParam("schoolCode") String schoolCode,@RequestParam("cardNumber")String cardNumber){
+        try{
+            List<FamilyStudentVo> familyStudentVoPageInfo=familyStudentService.familyFindStudentList(schoolCode,cardNumber);
+            return WrapMapper.ok(familyStudentVoPageInfo);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 }

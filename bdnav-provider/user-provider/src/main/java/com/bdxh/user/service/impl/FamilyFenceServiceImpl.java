@@ -8,6 +8,7 @@ import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.ModifyFenceRoundRequest;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.AddFamilyFenceDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.UpdateFamilyFenceDto;
@@ -32,6 +33,9 @@ import java.util.List;
 public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements FamilyFenceService {
    @Autowired
    private FamilyFenceMapper familyFenceMapper;
+
+   @Autowired
+   private SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -120,6 +124,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
         }
         addFamilyFenceDto.setFenceId(createRoundJson.getInteger("fence_id"));
         FamilyFence familyFence = BeanMapUtils.map(addFamilyFenceDto, FamilyFence.class);
+        familyFence.setId(snowflakeIdWorker.nextId());
         familyFenceMapper.insert(familyFence);
     }
 }

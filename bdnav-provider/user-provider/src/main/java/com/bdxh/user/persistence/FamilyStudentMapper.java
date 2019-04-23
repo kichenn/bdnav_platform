@@ -33,4 +33,7 @@ public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
 
     //批量删除家长学生关系信息
     int batchRemoveFamilyStudentInfo(@Param("list") List<Map<String,String>> list);
+
+    //微校端家长查询子女信息列表
+    List<FamilyStudentVo> familyFindStudentList(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
 }

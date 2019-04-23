@@ -29,13 +29,12 @@
   <sql id="BaseColumns">
     id,school_id,school_code,school_name,card_number,family_id,student_id,student_name,student_number,fence_id,fence_name,longitude,latitude,radius,coord_type,denoise,status,create_date,update_date,remark
   </sql>
-  <!--&lt;!&ndash;获取围栏表所有信息&ndash;&gt;
+  <!--获取围栏表所有信息-->
   <select id="getFamilyFenceInfos" resultType="com.bdxh.user.vo.FamilyFenceVo" >
     SELECT
     familyFence.id,
     familyFence.school_id as schoolId,
     familyFence.school_code as schoolCode,
-    familyFence.school_name as schoolName,
     familyFence.card_number as cardNumber,
     familyFence.family_id as familyId,
     familyFence.student_id as studentId,
@@ -59,38 +58,38 @@
     LEFT JOIN t_family AS family ON family.id = familyFence.family_id
   <where>
     <if test="familyFence.schoolCode!=null and familyFence.schoolCode!=''">
-      AND familyFence.school_code=#{familyFence.schoolCode}
+      AND familyFence.school_code LIKE   CONCAT('%',CONCAT(#{familyFence.schoolCode},'%'))
     </if>
     <if test="familyFence.cardNumber!=null and familyFence.cardNumber!=''">
-      AND familyFence.card_number=#{familyFence.cardNumber}
+      AND familyFence.card_number LIKE   CONCAT('%',CONCAT(#{familyFence.cardNumber},'%'))
     </if>
     <if test="familyFence.studentName!=null and familyFence.studentName!=''">
-      AND familyFence.student_name=#{familyFence.studentName}
+      AND familyFence.student_name LIKE   CONCAT('%',CONCAT(#{familyFence.studentName},'%'))
     </if>
     <if test="familyFence.studentNumber!=null and familyFence.studentNumber!=''">
-      AND familyFence.student_number=#{familyFence.studentNumber}
+      AND familyFence.student_number LIKE   CONCAT('%',CONCAT(#{familyFence.studentNumber},'%'))
     </if>
     <if test="familyFence.fenceName!=null and familyFence.fenceName!=''">
-      AND familyFence.fence_name=#{familyFence.fenceName}
+      AND familyFence.fence_name LIKE   CONCAT('%',CONCAT(#{familyFence.fenceName},'%'))
     </if>
     <if test="familyFence.status!=null and familyFence.status!=''">
-      AND familyFence.status=#{familyFence.status}
+      AND familyFence.status LIKE   CONCAT('%',CONCAT(#{familyFence.status},'%'))
     </if>
   </where>
     order by familyFence.create_date desc
   </select>
 
-  &lt;!&ndash;获取围栏表单个信息&ndash;&gt;
+   <!--获取围栏表单个信息-->
   <select id="getFamilyFenceInfo"  resultMap="BaseResultMap">
   select <include refid="BaseColumns"/> from t_family_fence where school_code=#{schoolCode} AND card_number=#{cardNumber}
   </select>
 
-  &lt;!&ndash;删除围栏表信息&ndash;&gt;
+   <!--删除围栏表信息-->
   <delete id="removeFamilyFenceInfo">
 delete from t_family_fence where school_code=#{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
   </delete>
 
-  &lt;!&ndash;修改围栏表信息&ndash;&gt;
+   <!--修改围栏表信息-->
   <update id="updateFamilyFenceInfo">
     UPDATE t_family_fence
     SET
@@ -137,6 +136,6 @@ delete from t_family_fence where school_code=#{schoolCode} AND card_number=#{car
     update_date = #{familyFence.updateDate}
 WHERE
 	school_code=#{familyFence.schoolCode} and card_number=#{familyFence.cardNumber}
-  </update>-->
+  </update>
 
 </mapper>

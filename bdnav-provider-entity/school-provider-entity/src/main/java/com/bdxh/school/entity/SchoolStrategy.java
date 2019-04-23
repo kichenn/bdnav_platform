@@ -20,9 +20,9 @@ public class SchoolStrategy {
 	@ApiModelProperty("主键")
 	private Long Id;
 
-	@Column(name = "name")
+	@Column(name = "policy_name")
 	@ApiModelProperty("策略名称")
-	private String Name;
+	private String PolicyName;
 
 	@Column(name = "school_id")
 	@ApiModelProperty("学校ID")

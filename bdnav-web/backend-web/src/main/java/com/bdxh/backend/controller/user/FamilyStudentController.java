@@ -1,6 +1,5 @@
 package com.bdxh.backend.controller.user;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -11,7 +10,6 @@ import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.FamilyStudentDetailsVo;
-import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
@@ -22,11 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import sun.applet.Main;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 /**
@@ -66,7 +62,6 @@ public class FamilyStudentController {
         }
         try {
             FamilyStudentQueryDto familyStudentQueryDto=new FamilyStudentQueryDto();
-            //familyStudentQueryDto.setCardNumber(addFamilyStudentDto.getCardNumber());
             familyStudentQueryDto.setStudentNumber(addFamilyStudentDto.getStudentNumber());
             familyStudentQueryDto.setSchoolCode(addFamilyStudentDto.getSchoolCode());
             Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);

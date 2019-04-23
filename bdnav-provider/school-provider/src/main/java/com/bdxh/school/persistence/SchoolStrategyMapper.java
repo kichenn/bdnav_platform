@@ -1,12 +1,13 @@
 package com.bdxh.school.persistence;
 
+import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.entity.SchoolStrategy;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
-
+import java.util.Map;
 
 
 /**
@@ -19,4 +20,6 @@ public interface SchoolStrategyMapper extends Mapper<SchoolStrategy> {
 	public Integer getSchoolStrategyAllCount();
 	//批量删除方法
 	public Integer delSchoolStrategyInIds(@Param("ids") List<Long> ids);
+	//带条件查询
+	List<QuerySchoolStrategy> getByCondition(Map<String,Object> param);
 }

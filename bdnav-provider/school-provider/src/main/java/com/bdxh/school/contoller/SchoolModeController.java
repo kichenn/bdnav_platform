@@ -43,6 +43,7 @@ public class SchoolModeController {
 	* @Description: 查询列表信息
 	* @Date 2019-04-18 09:52:43
 	*/
+
 	@RequestMapping(value = "/findModesInCondition", method = RequestMethod.GET)
 	@ApiOperation(value = "根据条件查询列表", response = SchoolMode.class)
 	public Object findModesInCondition(SchoolModeDto schoolModeDto) {
@@ -96,11 +97,8 @@ public class SchoolModeController {
                 result =  schoolModeService.modifySchoolMode(schoolModeLogs);
             }
         }else{
-            result =  schoolModeService.modifySchoolMode(schoolModeLogs);;
+            result =  schoolModeService.modifySchoolMode(schoolModeLogs);
         }
-/*
-        BeanUtils.copyProperties(modifySchoolModeDto, schoolMode);
-		 schoolModeService.modifySchoolMode(schoolMode);*/
         return WrapMapper.ok(result);
     }
 
@@ -110,7 +108,8 @@ public class SchoolModeController {
      * @Date 2019-04-18 09:52:43
      */
     @RequestMapping(value = "/findModesInConditionPage", method = RequestMethod.POST)
-    @ApiOperation(value = "带条件分页查询列表信息", response = SchoolMode.class)
+    @ApiOperation(value = "带条件分页查询列表信息")
+    @ResponseBody
     public Object findModesInConditionPage(@Validated @RequestBody QuerySchoolMode querySchoolMode, BindingResult bindingResult) {
 		//检验参数
 		if(bindingResult.hasErrors()){
@@ -119,8 +118,8 @@ public class SchoolModeController {
 		}
 		try{
 			Map<String, Object> param = BeanToMapUtil.objectToMap(querySchoolMode);
-			PageInfo<QuerySchoolMode> Users = schoolModeService.findListPage(param,querySchoolMode.getPageNum(),querySchoolMode.getPageSize());
-			return WrapMapper.ok(Users);
+			PageInfo<QuerySchoolMode> schoolModes = schoolModeService.findListPage(param,querySchoolMode.getPageNum(),querySchoolMode.getPageSize());
+			return WrapMapper.ok(schoolModes);
 	       } catch (Exception e) {
 		     e.printStackTrace();
 		    return WrapMapper.error(e.getMessage());

@@ -31,4 +31,9 @@ public class FamilyStudentControllerFallback implements FamilyStudentControllerC
     public Wrapper<PageInfo<FamilyStudentVo>> queryAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<PageInfo<FamilyStudentVo>> familyFindStudentList(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
 }
