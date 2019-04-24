@@ -109,7 +109,6 @@ public class SchoolStrategyController {
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
 			schoolStrategy.setRecursionPermission(Integer.valueOf(addPolicyDto.getRecursionPermission().getKey()));
-			schoolStrategy.setPlatform(String.valueOf(addPolicyDto.getPlatform().getKey()));
 			Boolean result = schoolStrategyService.save(schoolStrategy)>0;
 			return WrapMapper.ok(result);
 		} catch (RuntimeException e) {
@@ -136,7 +135,6 @@ public class SchoolStrategyController {
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
 			schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
-			schoolStrategy.setPlatform(String.valueOf(modifyPolicyDto.getPlatform().getKey()));
 			Boolean result =  schoolStrategyService.update(schoolStrategy)>0;
 			return WrapMapper.ok(result);
 		} catch (RuntimeException e) {
