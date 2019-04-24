@@ -11,6 +11,7 @@ import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
+import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
@@ -79,7 +80,10 @@ public class FamilyController {
             SchoolUser user= SecurityUtils.getCurrentUser();
             addFamilyDto.setOperator(user.getId());
             addFamilyDto.setOperatorName(user.getUserName());
-            addFamilyDto.setSchoolCode(user.getSchoolCode());
+            SchoolInfoVo school= schoolControllerClient.findSchoolById(user.getSchoolId()).getResult();
+            addFamilyDto.setSchoolCode(school.getSchoolCode());
+            addFamilyDto.setSchoolId(school.getId());
+            addFamilyDto.setSchoolName(school.getSchoolName());
             Wrapper wrapper=familyControllerClient.addFamily(addFamilyDto);
             return wrapper;
         } catch (Exception e) {

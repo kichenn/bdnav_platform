@@ -3,6 +3,8 @@ package com.bdxh.client.controller.user;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddFenceAlarmDto;
 import com.bdxh.user.dto.FenceAlarmQueryDto;
 import com.bdxh.user.dto.UpdateFenceAlarmDto;
@@ -34,6 +36,8 @@ public class FenceAlarmWebController {
 
     @Autowired
     private FenceAlarmControllerClient fenceAlarmControllerClient;
+    @Autowired
+    private SchoolControllerClient schoolControllerClient;
     /**
      * 查询所有
      * @param fenceAlarmQueryDto
@@ -157,7 +161,10 @@ public class FenceAlarmWebController {
                 return WrapMapper.error(errors);
             }
             SchoolUser schoolUser= SecurityUtils.getCurrentUser();
-            addFenceAlarmDto.setSchoolCode(schoolUser.getSchoolCode());
+            SchoolInfoVo school= schoolControllerClient.findSchoolById(schoolUser.getSchoolId()).getResult();
+            addFenceAlarmDto.setSchoolCode(school.getSchoolCode());
+            addFenceAlarmDto.setSchoolId(school.getId());
+            addFenceAlarmDto.setSchoolName(school.getSchoolName());
             return fenceAlarmControllerClient.insertFenceAlarmInfo(addFenceAlarmDto);
         }catch (Exception e){
             e.printStackTrace();

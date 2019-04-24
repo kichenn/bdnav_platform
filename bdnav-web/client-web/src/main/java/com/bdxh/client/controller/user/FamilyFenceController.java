@@ -125,6 +125,7 @@ public class FamilyFenceController {
         try {
             SchoolUser user= SecurityUtils.getCurrentUser();
             addFamilyFenceDto.setSchoolCode(user.getSchoolCode());
+            addFamilyFenceDto.setSchoolId(user.getSchoolId());
             Wrapper wrapper =  familyFenceControllerClient.addFamilyFenceInfo(addFamilyFenceDto);
             return wrapper;
         }catch (Exception e){

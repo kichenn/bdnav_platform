@@ -20,6 +20,7 @@ import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
+import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
@@ -120,7 +121,10 @@ public class StudentController {
             SchoolUser user=SecurityUtils.getCurrentUser();
             addStudentDto.setOperator(user.getId());
             addStudentDto.setOperatorName(user.getUserName());
+            SchoolInfoVo school= schoolControllerClient.findSchoolById(user.getSchoolId()).getResult();
             addStudentDto.setSchoolCode(user.getSchoolCode());
+            addStudentDto.setSchoolId(school.getId()+"");
+            addStudentDto.setSchoolName(school.getSchoolName());
             StudentVo student=(StudentVo)studentControllerClient.queryStudentInfo(user.getSchoolCode(),addStudentDto.getCardNumber()).getResult();
             if(null!= student){
                 return WrapMapper.error("当前学校已存在相同学生学号");
