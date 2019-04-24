@@ -5,10 +5,12 @@ import com.bdxh.backend.configration.security.properties.SecurityConstant;
 import com.bdxh.backend.configration.security.userdetail.MyUserDetails;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.entity.User;
 import com.google.common.base.Preconditions;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.CompressionCodecs;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -27,6 +29,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
@@ -110,4 +113,20 @@ public class SecurityController {
         return WrapMapper.ok(SecurityUtils.getCurrentUser());
     }
 
+
+    @GetMapping("/authentication/getTokenTime")
+    @ApiOperation(value = "token的有效时间", response = String.class)
+    public Object getTokenTime(HttpServletRequest httpServletRequest) {
+        String authHeader = httpServletRequest.getHeader(SecurityConstant.TOKEN_REQUEST_HEADER);
+        if (StringUtils.isEmpty(authHeader)) {
+            authHeader = httpServletRequest.getParameter(SecurityConstant.TOKEN_REQUEST_PARAM);
+        }
+        if (authHeader != null && authHeader.startsWith(SecurityConstant.TOKEN_SPLIT)) {
+            String auth = authHeader.substring(SecurityConstant.TOKEN_SPLIT.length());
+            Claims claims = Jwts.parser().setSigningKey(SecurityConstant.TOKEN_SIGN_KEY).parseClaimsJws(auth).getBody();
+            String resultDate = DateUtil.format(claims.getExpiration(), "yyyy-MM-dd HH:mm:ss");
+            return WrapMapper.ok(resultDate);
+        }
+        return WrapMapper.error();
+    }
 }

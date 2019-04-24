@@ -8,6 +8,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.SchoolUser;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,6 +47,9 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String authHeader = httpServletRequest.getHeader(SecurityConstant.TOKEN_REQUEST_HEADER);
+        if (StringUtils.isEmpty(authHeader)) {
+            authHeader = httpServletRequest.getParameter(SecurityConstant.TOKEN_REQUEST_PARAM);
+        }
         if (authHeader != null && authHeader.startsWith(SecurityConstant.TOKEN_SPLIT)) {
             String auth = authHeader.substring(SecurityConstant.TOKEN_SPLIT.length());
             try {
@@ -85,6 +89,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                             .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))
                             .signWith(SignatureAlgorithm.HS512, SecurityConstant.TOKEN_SIGN_KEY)
                             .compressWith(CompressionCodecs.GZIP).compact();
+                    //允许前端从headers里拿到我的Token
                     httpServletResponse.setHeader("Access-Control-Expose-Headers", SecurityConstant.TOKEN_RESPONSE_HEADER);
                     httpServletResponse.addHeader(SecurityConstant.TOKEN_RESPONSE_HEADER, token);
                 }

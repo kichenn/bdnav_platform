@@ -89,6 +89,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                             .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))
                             .signWith(SignatureAlgorithm.HS512, SecurityConstant.TOKEN_SIGN_KEY)
                             .compressWith(CompressionCodecs.GZIP).compact();
+                    //允许前端从headers里拿到我的Token
                     httpServletResponse.setHeader("Access-Control-Expose-Headers", SecurityConstant.TOKEN_RESPONSE_HEADER);
                     httpServletResponse.addHeader(SecurityConstant.TOKEN_RESPONSE_HEADER, token);
                 }

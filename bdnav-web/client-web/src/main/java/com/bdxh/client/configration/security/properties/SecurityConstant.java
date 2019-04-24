@@ -33,6 +33,11 @@ public interface SecurityConstant {
     String TOKEN_REQUEST_HEADER = "Authorization";
 
     /**
+     * token请求param
+     */
+    String TOKEN_REQUEST_PARAM = "token";
+
+    /**
      * token响应header
      */
     String TOKEN_RESPONSE_HEADER = "Token";
