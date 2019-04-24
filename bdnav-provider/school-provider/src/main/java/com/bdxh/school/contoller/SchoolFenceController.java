@@ -1,5 +1,7 @@
 package com.bdxh.school.contoller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.AddBlackUrlDto;
 import com.bdxh.school.dto.AddSchoolFenceDto;
@@ -100,4 +102,15 @@ public class SchoolFenceController {
         return WrapMapper.ok(schoolFenceService.findFenceInConditionPaging(schoolFenceQueryDto));
     }
 
+    @RequestMapping(value = "/fencePush", method = RequestMethod.POST)
+    @ApiOperation(value = "围栏报警推送消息", response = SchoolFence.class)
+    public Object fencePush() {
+        System.err.println("报警小推送。。。。。。。。");
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", 1);
+        jsonObject.put("service_id", FenceConstant.SERVICE_ID);
+//        jsonObject.put("SignId", "baidu_yingyan");
+        return jsonObject.toJSONString();
+    }
 }

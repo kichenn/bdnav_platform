@@ -10,6 +10,7 @@
         <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
         <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
         <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
+        <result column="title" jdbcType="VARCHAR" property="title"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="path" jdbcType="VARCHAR" property="path"/>
         <result column="icon" jdbcType="VARCHAR" property="icon"/>
@@ -25,11 +26,11 @@
     </resultMap>
 
     <sql id="BaseColumns">
-    id,school_id,school_code, parent_id, parent_ids, name, path, icon, component, sort, level, type, create_date, update_date, operator,operator_name, remark
+    id,school_id,school_code, parent_id, parent_ids,title, name, path, icon, component, sort, level, type, create_date, update_date, operator,operator_name, remark
     </sql>
 
     <sql id="BaseColumns1">
-    perm.id,perm.school_id,perm.school_code, perm.parent_id, perm.parent_ids, perm.name,
+    perm.id,perm.school_id,perm.school_code, perm.parent_id, perm.parent_ids,perm.title, perm.name,
     perm.path, perm.icon,perm.component, perm.sort, perm.level, perm.type, perm.create_date, perm.update_date, perm.operator,perm.operator_name, perm.remark
     </sql>
 

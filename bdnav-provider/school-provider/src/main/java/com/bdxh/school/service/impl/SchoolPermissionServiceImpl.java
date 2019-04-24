@@ -48,6 +48,7 @@ public class SchoolPermissionServiceImpl extends BaseService<SchoolPermission> i
             permission.setParentIds(schoolPermission.getParentIds() + "," + schoolPermission.getId());
 //            permission.setPath(schoolPermission.getPath() + "/" + schoolPermission.getName() + "/" + permission.getName());
         }
+        permission.setPath("/" + permission.getName());
         return schoolPermissionMapper.insertSelective(permission) > 0;
     }
 
@@ -63,6 +64,7 @@ public class SchoolPermissionServiceImpl extends BaseService<SchoolPermission> i
             permission.setParentIds(schoolPermission.getParentIds() + "," + schoolPermission.getId());
 //            permission.setPath(schoolPermission.getPath() + "/" + schoolPermission.getName() + "/" + permission.getName());
         }
+        permission.setPath("/" + permission.getName());
         return schoolPermissionMapper.updateByPrimaryKeySelective(permission) > 0;
     }
 

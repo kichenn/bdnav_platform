@@ -31,6 +31,9 @@ public class ModifySchoolPermissionDto {
     private String schoolCode;
 
     @ApiModelProperty("菜单名称")
+    private String title;
+
+    @ApiModelProperty("路由地址")
     private String name;
 
     @ApiModelProperty("路径")
