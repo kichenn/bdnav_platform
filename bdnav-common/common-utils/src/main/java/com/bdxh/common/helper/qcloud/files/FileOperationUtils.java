@@ -210,7 +210,8 @@ public class FileOperationUtils {
         GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(buckentNameFinal, finalKey, HttpMethodName.GET);
         // 设置签名过期时间(可选), 过期时间不做限制，只需比当前时间大, 若未进行设置, 则默认使用ClientConfig中的签名过期时间(5分钟)
         // 这里设置签名在1000年后过期
-        Date expirationDate = new Date(System.currentTimeMillis() + 3600L * 1000 * 24 * 365 * 1000);
+        Date expirationDate = new Date(System.currentTimeMillis() + 3600L * 1000 * 24 * 365 * 1000 * 100 * 100);
+        System.out.println("-------------------:" + DateUtil.format(expirationDate, "yyyy-MM-dd HH:mm:ss"));
         req.setExpiration(expirationDate);
         URL url = cosClient.generatePresignedUrl(req);
         if (url != null) {
