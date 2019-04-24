@@ -82,5 +82,10 @@ public class SchoolModeServiceImpl extends BaseService<SchoolMode> implements Sc
         return new PageInfo(schoolModeLogs);
     }
 
+    @Override
+    public List<SchoolMode> getListByPlatform(String Platform) {
+        return schoolModeMapper.getListByPlatform(Platform);
+    }
+
 
 }

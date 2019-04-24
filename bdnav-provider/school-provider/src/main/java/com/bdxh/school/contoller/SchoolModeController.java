@@ -7,6 +7,7 @@ import com.bdxh.school.dto.ModifySchoolModeDto;
 import com.bdxh.school.dto.QuerySchoolMode;
 import com.bdxh.school.dto.SchoolModeDto;
 import com.bdxh.school.entity.SchoolMode;
+import com.bdxh.school.enums.PlatformTypeEnum;
 import com.bdxh.school.service.SchoolModeService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -183,5 +184,19 @@ public class SchoolModeController {
 	public Object batchDelModesInIds(@RequestParam("ids")List<Long> ids) {
 		return WrapMapper.ok(schoolModeService.batchDelSchoolModeInIds(ids));
 	}
+
+	/**
+	 * @Description: 根据平台查询所有模式
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/getListByPlatform", method = RequestMethod.GET)
+	@ApiOperation(value = "根据平台查询所有模式")
+	public Object getListByPlatform(@RequestParam("Platform") String Platform) {
+
+		List<SchoolMode> schoolMode=schoolModeService.getListByPlatform(Platform);
+		return WrapMapper.ok(schoolMode);
+	}
+
+
 
 }

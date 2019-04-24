@@ -7,6 +7,7 @@
         <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
         <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
         <result column="name" jdbcType="VARCHAR" property="Name"/>
+        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
         <result column="priority" jdbcType="TINYINT" property="Priority"/>
         <result column="usable_app" jdbcType="VARCHAR" property="UsableApp"/>
         <result column="usable_device" jdbcType="VARCHAR" property="UsableDevice"/>
@@ -22,6 +23,7 @@
         <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
         <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
         <result column="name" jdbcType="VARCHAR" property="Name"/>
+        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
         <result column="priority" jdbcType="TINYINT" property="Priority"/>
         <result column="usable_app" jdbcType="VARCHAR" property="UsableApp"/>
         <result column="usable_device" jdbcType="VARCHAR" property="UsableDevice"/>
@@ -35,7 +37,7 @@
     </resultMap>
 
 	<sql id="BaseColumns">
-	id,school_id,school_code,`name`,priority,usable_app,usable_device,create_date,update_date,operator,operator_name,remark
+	id,school_id,school_code,`name`,platform,priority,usable_app,usable_device,create_date,update_date,operator,operator_name,remark
 	</sql>
 
 <!--
@@ -88,5 +90,14 @@
              #{mpId, jdbcType = BIGINT}
         </foreach >
 	</delete>
+
+
+    <select id="getListByPlatform" resultMap="BaseResultMap">
+       SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_mode
+        WHERE
+        platform=#{Platform}
+    </select>
 
 </mapper>

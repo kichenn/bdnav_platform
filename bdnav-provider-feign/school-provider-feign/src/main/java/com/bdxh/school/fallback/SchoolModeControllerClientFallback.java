@@ -44,4 +44,9 @@ public class SchoolModeControllerClientFallback implements SchoolModeControllerC
     public Wrapper<List<SchoolMode>> getModesAll() {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<SchoolMode>> getListByPlatform(String Platform) {
+        return WrapMapper.error();
+    }
 }

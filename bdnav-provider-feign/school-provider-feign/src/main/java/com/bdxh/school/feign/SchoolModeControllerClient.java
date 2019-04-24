@@ -61,4 +61,12 @@ public interface SchoolModeControllerClient {
     @ResponseBody
     Wrapper<List<SchoolMode>> getModesAll();
 
+
+    /**
+     * @Description: 根据平台查询模式列表
+     */
+    @RequestMapping(value = "/schoolMode/getListByPlatform", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolMode>> getListByPlatform(@RequestParam("Platform") String Platform);
+
 }

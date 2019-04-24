@@ -42,4 +42,7 @@ public interface SchoolModeService extends IService<SchoolMode> {
 
 	//根据条件分页查询用户列表
 	PageInfo<QuerySchoolMode> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);
+
+	//根据适用平台查询
+	List<SchoolMode> getListByPlatform(String Platform);
 }
