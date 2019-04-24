@@ -83,7 +83,7 @@ public class FenceAlarmWebController {
     @RequestMapping(value="/removeFenceAlarmInfo",method = RequestMethod.GET)
     public Object removeFenceAlarmInfo(@RequestParam("id")String id,@RequestParam("schoolCode")String schoolCode,@RequestParam("cardNumber") String  cardNumber){
         try {
-            return fenceAlarmControllerClient.getFenceAlarmInfo(schoolCode,cardNumber,id);
+            return fenceAlarmControllerClient.removeFenceAlarmInfo(id,schoolCode,cardNumber);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
