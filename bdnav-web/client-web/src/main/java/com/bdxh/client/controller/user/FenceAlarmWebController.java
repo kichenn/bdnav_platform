@@ -86,7 +86,7 @@ public class FenceAlarmWebController {
     public Object removeFenceAlarmInfo(@RequestParam("id")String id,@RequestParam("cardNumber") String  cardNumber){
         try {
             SchoolUser schoolUser= SecurityUtils.getCurrentUser();
-            return fenceAlarmControllerClient.getFenceAlarmInfo(schoolUser.getSchoolCode(),cardNumber,id);
+            return fenceAlarmControllerClient.removeFenceAlarmInfo(schoolUser.getSchoolCode(),cardNumber,id);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
