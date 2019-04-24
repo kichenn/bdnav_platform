@@ -2,6 +2,7 @@ package com.bdxh.appmarket.fallback;
 
 import com.bdxh.appmarket.dto.AddAppDto;
 import com.bdxh.appmarket.dto.AppQueryDto;
+import com.bdxh.appmarket.dto.QueryAppDto;
 import com.bdxh.appmarket.dto.UpdateAppDto;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.feign.AppControllerClient;
@@ -63,6 +64,11 @@ public class AppControllerClientFallback implements AppControllerClient {
 
     @Override
     public Wrapper<List<App>> getAppListByids(String ids) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<PageInfo<App>> getAppOfCollection(QueryAppDto queryAppDto) {
         return WrapMapper.error();
     }
 

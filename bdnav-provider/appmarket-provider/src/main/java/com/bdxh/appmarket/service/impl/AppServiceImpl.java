@@ -120,4 +120,11 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
         return appLists;
     }
 
+/*    @Override
+    public PageInfo<App> getAppOfCollection(Map<String,Object> param, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum,pageSize);
+        List<App> apps = appMapper.getByCondition(param);
+        return new PageInfo(apps);
+    }*/
+
 }
