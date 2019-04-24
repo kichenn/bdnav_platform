@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -45,7 +46,16 @@ public class BlackUrlController {
         BlackUrl blackUrl = new BlackUrl();
         BeanUtils.copyProperties(addBlackUrlDto, blackUrl);
         blackUrl.setStatus(addBlackUrlDto.getBlackStatusEnum().getKey());
-        return WrapMapper.ok(blackUrlService.save(blackUrl) > 0);
+        try {
+            blackUrlService.save(blackUrl);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //学校id，黑名单ip
+                return WrapMapper.error("该学校黑名单已存在此条url，无需再添加！");
+            }
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
     }
 
     /**
@@ -61,7 +71,16 @@ public class BlackUrlController {
         if (modifyBlackUrlDto.getBlackStatusEnum() != null) {
             blackUrl.setStatus(modifyBlackUrlDto.getBlackStatusEnum().getKey());
         }
-        return WrapMapper.ok(blackUrlService.update(blackUrl) > 0);
+        try {
+            blackUrlService.update(blackUrl);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //学校id，黑名单ip
+                return WrapMapper.error("该学校黑名单已存在此条url，无需再添加！");
+            }
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
     }
 
     /**

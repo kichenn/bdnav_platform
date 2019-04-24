@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 /**
@@ -34,6 +35,7 @@ public class SchoolFenceWebController {
     @Autowired
     private SchoolFenceControllerClient schoolFenceControllerClient;
 
+    @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/addFence", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校围栏", response = Boolean.class)
     public Object addFence(@Validated @RequestBody AddSchoolFenceDto addSchoolFenceDto) {
@@ -46,6 +48,7 @@ public class SchoolFenceWebController {
         return wapper;
     }
 
+    @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/modifyFence", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校围栏", response = Boolean.class)
     public Object modifyFence(@Validated @RequestBody ModifySchoolFenceDto modifySchoolFenceDto) {
@@ -58,6 +61,7 @@ public class SchoolFenceWebController {
         return wapper;
     }
 
+    @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/delFenceById", method = RequestMethod.POST)
     @ApiOperation(value = "删除学校围栏", response = Boolean.class)
     public Object delFenceById(@RequestParam("id") Long id) {
