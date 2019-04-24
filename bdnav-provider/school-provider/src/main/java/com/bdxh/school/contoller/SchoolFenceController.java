@@ -1,5 +1,6 @@
 package com.bdxh.school.contoller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import com.bdxh.school.entity.SchoolFence;
 import com.bdxh.school.service.SchoolFenceService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -104,13 +107,17 @@ public class SchoolFenceController {
 
     @RequestMapping(value = "/fencePush", method = RequestMethod.POST)
     @ApiOperation(value = "围栏报警推送消息", response = SchoolFence.class)
-    public Object fencePush() {
+    public void fencePush(HttpServletResponse httpServletResponse) throws IOException {
         System.err.println("报警小推送。。。。。。。。");
 
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", 1);
         jsonObject.put("service_id", FenceConstant.SERVICE_ID);
-//        jsonObject.put("SignId", "baidu_yingyan");
-        return jsonObject.toJSONString();
+        String str = jsonObject.toJSONString();
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
+        httpServletResponse.setCharacterEncoding("utf-8");
+        httpServletResponse.setContentType("application/json;charset=utf-8");
+        httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
     }
 }
