@@ -76,6 +76,7 @@ public class FamilyStudentController {
             addFamilyStudentDto.setOperator(user.getId());
             addFamilyStudentDto.setOperatorName(user.getUserName());
             addFamilyStudentDto.setSchoolCode(user.getSchoolCode());
+            addFamilyStudentDto.setSchoolId(user.getSchoolId());
             Wrapper wrappers =familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
             return wrappers;
         } catch (Exception e) {

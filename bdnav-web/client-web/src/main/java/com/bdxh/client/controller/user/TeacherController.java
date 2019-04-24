@@ -10,6 +10,7 @@ import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
+import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
@@ -73,9 +74,12 @@ public class TeacherController {
                 addTeacherDto.setImageName(IMG_NAME);
                 addTeacherDto.setImage(IMG_URL);
             }
+            SchoolInfoVo school= schoolControllerClient.findSchoolById(user.getSchoolId()).getResult();
             addTeacherDto.setOperator(user.getId());
             addTeacherDto.setOperatorName(user.getUserName());
             addTeacherDto.setSchoolCode(user.getSchoolCode());
+            addTeacherDto.setSchoolId(school.getId());
+            addTeacherDto.setSchoolName(school.getSchoolName());
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
             return wrapper;
         }catch (Exception e) {
