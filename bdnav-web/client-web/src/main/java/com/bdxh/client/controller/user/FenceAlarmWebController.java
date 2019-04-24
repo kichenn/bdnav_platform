@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
@@ -81,12 +82,13 @@ public class FenceAlarmWebController {
      * @param id
      * @param cardNumber
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation("删除单个围栏警报接口")
     @RequestMapping(value="/removeFenceAlarmInfo",method = RequestMethod.GET)
     public Object removeFenceAlarmInfo(@RequestParam("id")String id,@RequestParam("cardNumber") String  cardNumber){
         try {
             SchoolUser schoolUser= SecurityUtils.getCurrentUser();
-            return fenceAlarmControllerClient.removeFenceAlarmInfo(schoolUser.getSchoolCode(),cardNumber,id);
+            return fenceAlarmControllerClient.removeFenceAlarmInfo(id,schoolUser.getSchoolCode(),cardNumber);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

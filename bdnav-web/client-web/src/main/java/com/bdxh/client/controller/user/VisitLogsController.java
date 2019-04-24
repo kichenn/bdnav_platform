@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
@@ -83,6 +84,7 @@ public class VisitLogsController {
      * @param id
      * @param cardNumber
      */
+    @RolesAllowed({"ADMIN"})
     @ApiOperation("删除单个浏览网站日志接口")
     @RequestMapping(value="/removeVisitLogsInfo",method = RequestMethod.GET)
     public Object removeVisitLogsInfo(@RequestParam("id")String id,@RequestParam("cardNumber") String  cardNumber){
