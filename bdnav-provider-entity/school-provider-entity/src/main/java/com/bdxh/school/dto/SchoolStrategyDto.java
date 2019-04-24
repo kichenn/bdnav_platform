@@ -36,9 +36,6 @@ public class SchoolStrategyDto {
     private String RecursionPermissionIds;
 
 
-    @ApiModelProperty("适用平台 1安卓  2苹果")
-    private String Platform;
-
 
     @ApiModelProperty("模式主键")
     private Long ModeId;

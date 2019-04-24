@@ -10,7 +10,6 @@
         <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
         <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
         <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
-        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
         <result column="mode_id" jdbcType="BIGINT" property="ModeId"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
@@ -32,7 +31,6 @@
         <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
         <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
         <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
-        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
         <result column="mode_id" jdbcType="BIGINT" property="ModeId"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
@@ -51,7 +49,7 @@
 
 
 	<sql id="BaseColumns">
-	id,policy_name,school_id,school_code,group_id,recursion_permission,recursion_permission_ids,platform,mode_id,start_date,end_date,day_mark,time_mark,exclusion_days,create_date,update_date,operator,operator_name,remark
+	id,policy_name,school_id,school_code,group_id,recursion_permission,recursion_permission_ids,mode_id,start_date,end_date,day_mark,time_mark,exclusion_days,create_date,update_date,operator,operator_name,remark
 	</sql>
 	<select id="getSchoolStrategyAllCount" resultType="Integer">
         SELECT 

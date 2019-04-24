@@ -38,8 +38,6 @@ public class QuerySchoolStrategy extends Query {
     private String RecursionPermissionIds;
 
 
-    @ApiModelProperty("适用平台 1安卓  2苹果")
-    private String Platform;
 
 
     @ApiModelProperty("模式主键")

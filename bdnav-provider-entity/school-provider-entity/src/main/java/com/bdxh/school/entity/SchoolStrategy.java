@@ -44,9 +44,7 @@ public class SchoolStrategy {
 	@ApiModelProperty("递归权限ids")
 	private String RecursionPermissionIds;
 
-	@Column(name = "platform")
-	@ApiModelProperty("适用平台 1安卓  2苹果")
-	private String Platform;
+
 
 	@Column(name = "mode_id")
 	@ApiModelProperty("模式主键")
