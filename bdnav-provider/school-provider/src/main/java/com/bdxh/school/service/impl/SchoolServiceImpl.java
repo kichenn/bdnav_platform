@@ -60,8 +60,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         School school = new School();
         BeanUtils.copyProperties(schoolDto, school);
         school.setUpdateDate(new Date());
-        school.setCreateDate(null);
-        Boolean result = schoolMapper.updateByPrimaryKey(school) > 0;
+        Boolean result = schoolMapper.updateByPrimaryKeySelective(school) > 0;
         /*if (result) {
             //删除列表缓存
             redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
