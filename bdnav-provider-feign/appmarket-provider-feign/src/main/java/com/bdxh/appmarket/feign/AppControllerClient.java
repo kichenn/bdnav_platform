@@ -2,6 +2,7 @@ package com.bdxh.appmarket.feign;
 
 import com.bdxh.appmarket.dto.AddAppDto;
 import com.bdxh.appmarket.dto.AppQueryDto;
+import com.bdxh.appmarket.dto.QueryAppDto;
 import com.bdxh.appmarket.dto.UpdateAppDto;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.fallback.AppControllerClientFallback;
@@ -49,4 +50,7 @@ public interface AppControllerClient {
 
     @RequestMapping(value = "/app/getAppListByids",method = RequestMethod.GET)
     Wrapper<List<App>> getAppListByids(@RequestParam(name = "ids")String ids);
+
+    @RequestMapping(value = "/app/getAppOfCollection",method = RequestMethod.POST)
+    Wrapper<PageInfo<App>> getAppOfCollection(@RequestBody QueryAppDto queryAppDto);
 }
