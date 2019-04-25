@@ -367,7 +367,7 @@
             </if>
             <choose>
                 <when test="type==5">
-                    and class_id=#{parentIds}
+                    and class_ids=#{parentIds}
                 </when>
                 <otherwise>
                     and   class_ids Like  CONCAT(#{parentIds},'%')
