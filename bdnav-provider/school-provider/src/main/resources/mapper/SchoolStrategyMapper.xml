@@ -46,6 +46,7 @@
         <result column="remark" jdbcType="VARCHAR" property="Remark"/>
         <result column="name" jdbcType="VARCHAR" property="GroupName"/>
         <result column="model_name" jdbcType="VARCHAR" property="ModelName"/>
+        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
     </resultMap>
 
 

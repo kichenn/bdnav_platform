@@ -97,4 +97,8 @@ public class QuerySchoolStrategy extends Query {
     private String ModelName;
 
 
+    @ApiModelProperty("适用平台 1安卓  2苹果")
+    private String Platform;
+
+
 }
