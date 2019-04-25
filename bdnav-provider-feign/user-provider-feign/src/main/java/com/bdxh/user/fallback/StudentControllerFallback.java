@@ -73,4 +73,9 @@ public class StudentControllerFallback implements StudentControllerClient {
     public Wrapper queryCardNumberBySchoolCode(String schoolCode) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper findStudentInfoByClassOrg(String schoolCode, String parentIds, String type) {
+        return WrapMapper.error();
+    }
 }
