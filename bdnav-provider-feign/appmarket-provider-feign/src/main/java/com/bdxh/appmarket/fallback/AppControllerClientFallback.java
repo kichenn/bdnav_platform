@@ -67,10 +67,10 @@ public class AppControllerClientFallback implements AppControllerClient {
         return WrapMapper.error();
     }
 
-    @Override
+  /*  @Override
     public Wrapper<PageInfo<App>> getAppOfCollection(QueryAppDto queryAppDto) {
         return WrapMapper.error();
     }
-
+*/
 
 }

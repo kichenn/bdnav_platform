@@ -70,13 +70,20 @@
     from
     t_app
     where school_id IS NULL
+    <if test="appName!= null and appName!=''">
+      and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+    </if>
     UNION
     SELECT
     <include refid="BaseColumns"/>
     FROM
     t_app
-   WHERE
-   school_id=#{schoolId}
+    <where>
+      school_id=#{schoolId}
+    <if test="appName!= null and appName!=''">
+      and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+    </if>
+    </where>
   </select>
 
 
