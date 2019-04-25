@@ -25,7 +25,7 @@ public interface SchoolModeMapper extends Mapper<SchoolMode> {
      //根据名称查询模式信息
 	SchoolMode getSchoolModesByName(@Param("ModelName")String ModelName,@Param("SchoolId")Long SchoolId);
 	//根据模式平台查询模式
-	List<SchoolMode> getListByPlatform(@Param("Platform") String Platform);
+	List<SchoolMode> getListByPlatform(@Param("SchoolId") Long SchoolId,@Param("Platform") String Platform);
 
 
 }
