@@ -267,7 +267,7 @@ VALUES
 
   <!--查询出某个部门下面的老师-->
   <select id="findTeacherInfoByDeptOrg" resultMap="BaseResultMap">
-    SELECTteacher.id,
+    SELECT teacher.id,
     teacher.school_id,
     teacher.school_code,
     teacher.school_name,
