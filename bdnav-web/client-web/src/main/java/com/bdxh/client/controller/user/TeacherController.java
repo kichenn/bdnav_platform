@@ -188,7 +188,7 @@ public class TeacherController {
                 }
             }
             //判断是否已激活 已激活需要同步微校未激活修改不需要同步微校
-            if(teacherVo.getActivate().equals(2)) {
+            if(teacherVo.getActivate().equals(Byte.parseByte("2"))) {
                 updateTeacherDto.setActivate(updateTeacherDto.getActivate());
                 School school = schoolControllerClient.findSchoolBySchoolCode(teacherVo.getSchoolCode()).getResult();
                 updateTeacherDto.setAppKey(school.getAppKey());

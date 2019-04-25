@@ -2,6 +2,7 @@ package com.bdxh.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
+import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
@@ -118,8 +119,8 @@ private SnowflakeIdWorker snowflakeIdWorker;
                 synUserInfoRequest.setName(updateFamilyDto.getName());
                 synUserInfoRequest.setSchool_code(updateFamilyDto.getSchoolCode());
                 synUserInfoRequest.setCard_number(updateFamilyDto.getCardNumber());
-                synUserInfoRequest.setIdentity_type("家长");
-                synUserInfoRequest.setIdentity_title("家长");
+                synUserInfoRequest.setIdentity_type(AuthenticationConstant.FAMILY);
+                synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);
                 synUserInfoRequest.setHead_image(updateFamilyDto.getImage());
                 synUserInfoRequest.setGender(updateFamilyDto.getGender()==1?"男":"女");
                 synUserInfoRequest.setCollege(updateFamilyDto.getSchoolName());

@@ -162,7 +162,7 @@ public class TeacherController {
             updateTeacherDto.setOperatorName(user.getUserName());
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
             //判断是否已激活 已激活需要同步微校未激活修改不需要同步微校
-            if(teacherVo.getActivate().equals(2)) {
+            if(teacherVo.getActivate().equals(Byte.parseByte("2"))) {
                 School school = schoolControllerClient.findSchoolBySchoolCode(teacherVo.getSchoolCode()).getResult();
                 updateTeacherDto.setAppKey(school.getAppKey());
                 updateTeacherDto.setAppSecret(school.getAppSecret());

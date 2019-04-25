@@ -13,6 +13,13 @@ public class AuthenticationConstant {
     //测试用APPSECRET
     public static final String APP_SECRET="6F2A7B2332534486324109D9EBC50102";
 
+    public static final String TEACHER="教职工";
+
+    public static final String STUDENT="学生";
+
+    public static final String FAMILY="家长";
+
+
     //跳转微校指定页面获取wxcode接口地址
     public static final String WEIXIAO_LOGIN_URL="https://weixiao.qq.com/apps/school-auth/login";
 
