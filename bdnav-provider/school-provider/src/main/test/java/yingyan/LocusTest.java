@@ -28,10 +28,15 @@ public class LocusTest {
     private static String status = "http://yingyan.baidu.com/api/v3/fence/querystatusbylocation";
 
     /**
+     * 查询某监控对象的围栏报警信息
+     */
+    private static String historyalarm = "http://yingyan.baidu.com/api/v3/fence/historyalarm";
+
+    /**
      * 查询监控对象状态
      */
     @Test
-    public void selStatus(){
+    public void selStatus() {
         Map<String, Object> map = new HashMap<>();
         map.put("ak", FenceConstant.AK);
         map.put("service_id", FenceConstant.SERVICE_ID);
@@ -42,6 +47,25 @@ public class LocusTest {
         String result = "";
         try {
             result = HttpClientUtils.doGet(status, map);
+            System.out.println(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /**
+     * 查询某监控对象的围栏报警信息
+     */
+    @Test
+    public void selHistoryalarm(){
+        Map<String, Object> map = new HashMap<>();
+        map.put("ak", FenceConstant.AK);
+        map.put("service_id", FenceConstant.SERVICE_ID);
+        map.put("monitored_person", "恐龙学");
+        String result = "";
+        try {
+            result = HttpClientUtils.doGet(historyalarm, map);
             System.out.println(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,8 +93,8 @@ public class LocusTest {
         map.put("ak", FenceConstant.AK);
         map.put("service_id", FenceConstant.SERVICE_ID);
         map.put("entity_name", "恐龙学");
-        map.put("latitude", 10);
-        map.put("longitude", 80);
+        map.put("latitude", 25);
+        map.put("longitude", 117);
         map.put("loc_time", epoch);
         map.put("coord_type_input", "bd09ll");
         String result = "";

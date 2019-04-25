@@ -10,10 +10,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.SchoolUser;
 import com.google.common.base.Preconditions;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.CompressionCodecs;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -114,18 +111,19 @@ public class SecurityController {
     }
 
 
-    @GetMapping("/schoolAuthentication/getTokenTime")
+    @GetMapping("/getTokenTime")
     @ApiOperation(value = "token的有效时间", response = String.class)
-    public Object getTokenTime(HttpServletRequest httpServletRequest) {
-        String authHeader = httpServletRequest.getHeader(SecurityConstant.TOKEN_REQUEST_HEADER);
-        if (StringUtils.isEmpty(authHeader)) {
-            authHeader = httpServletRequest.getParameter(SecurityConstant.TOKEN_REQUEST_PARAM);
-        }
+    public Object getTokenTime(HttpServletRequest httpServletRequest, @RequestParam(name = "loseToken") String loseToken) {
+        String authHeader = loseToken;
         if (authHeader != null && authHeader.startsWith(SecurityConstant.TOKEN_SPLIT)) {
             String auth = authHeader.substring(SecurityConstant.TOKEN_SPLIT.length());
-            Claims claims = Jwts.parser().setSigningKey(SecurityConstant.TOKEN_SIGN_KEY).parseClaimsJws(auth).getBody();
-            String resultDate = DateUtil.format(claims.getExpiration(), "yyyy-MM-dd HH:mm:ss");
-            return WrapMapper.ok(resultDate);
+            try {
+                Claims claims = Jwts.parser().setSigningKey(SecurityConstant.TOKEN_SIGN_KEY).parseClaimsJws(auth).getBody();
+                String resultDate = DateUtil.format(claims.getExpiration(), "yyyy-MM-dd HH:mm:ss");
+                return WrapMapper.ok(resultDate);
+            } catch (ExpiredJwtException e) {
+                return WrapMapper.ok(e.getClaims().getExpiration());
+            }
         }
         return WrapMapper.error();
     }

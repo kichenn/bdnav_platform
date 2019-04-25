@@ -31,6 +31,7 @@ import com.bdxh.school.persistence.SchoolFenceMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 业务层实现
@@ -52,6 +53,8 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
 
     @Autowired
     private SchoolDeptMapper schoolDeptMapper;
+
+//    private
 
     /*
      *查询总条数
@@ -80,30 +83,26 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
     @Transactional(rollbackFor = Exception.class)
     public Boolean addFence(SchoolFence schoolFence) throws RuntimeException {
 
-        //部门或者院系名称
-        String groupName = "";
-        String groupTypeStr = "";
+        //实体对象list
+        List<Map<String, Object>> entityMap = new ArrayList<>();
+
         // 用户群类型 1 学生 2 老师
         if (new Byte("1").equals(schoolFence.getGroupType())) {
             SchoolClass schoolClass = schoolClassMapper.selectByPrimaryKey(schoolFence.getGroupId());
-            groupName = schoolClass != null ? schoolClass.getName() : "";
-            groupTypeStr = "学生";
         } else if (new Byte("2").equals(schoolFence.getGroupType())) {
             SchoolDept schoolDept = schoolDeptMapper.selectByPrimaryKey(schoolFence.getGroupId());
-            groupName = schoolDept != null ? schoolDept.getName() : "";
-            groupTypeStr = "老师";
         }
         //增加监控终端实体
         CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
         entityRequest.setAk(FenceConstant.AK);
         entityRequest.setService_id(FenceConstant.SERVICE_ID);
-        entityRequest.setEntity_name(groupName);
-        entityRequest.setEntity_desc("");
-        String entityResult = FenceUtils.createNewEntity(entityRequest);
-        JSONObject entityJson = JSONObject.parseObject(entityResult);
-        if (entityJson.getInteger("status") != 0) {
-            throw new RuntimeException("增加监控终端实体失败， " + groupTypeStr + "组，名称：" + groupName + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
-        }
+//        entityRequest.setEntity_name(groupName);
+//        entityRequest.setEntity_desc("");
+//        String entityResult = FenceUtils.createNewEntity(entityRequest);
+//        JSONObject entityJson = JSONObject.parseObject(entityResult);
+//        if (entityJson.getInteger("status") != 0) {
+//            throw new RuntimeException("增加监控终端实体失败， " + groupTypeStr + "组，名称：" + groupName + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
+//        }
 
         //增加围栏
         CreateFenceRoundRequest request = new CreateFenceRoundRequest();
@@ -115,7 +114,7 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         request.setLatitude(Double.valueOf(schoolFence.getLatitude().toString()));
         request.setLongitude(Double.valueOf(schoolFence.getLongitude().toString()));
         request.setRadius(Double.valueOf(schoolFence.getRadius().toString()));
-        request.setMonitored_person(groupName);
+//        request.setMonitored_person(groupName);
         String createRoundResult = FenceUtils.createRoundFence(request);
         JSONObject createRoundJson = JSONObject.parseObject(createRoundResult);
         if (createRoundJson.getInteger("status") != 0) {
