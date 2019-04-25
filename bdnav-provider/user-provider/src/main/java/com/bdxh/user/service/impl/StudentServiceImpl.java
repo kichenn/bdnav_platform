@@ -174,7 +174,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     }
 
     @Override
-    public List<Student> findStudentInfoByClassOrg(String schoolCode, String parentIds, String type) {
+    public List<Student> findStudentInfoByClassOrg(String schoolCode, String parentIds, Byte type) {
         return studentMapper.findStudentInfoByClassOrg(schoolCode,parentIds,type);
     }
 }

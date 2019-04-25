@@ -211,7 +211,7 @@ public class StudentController {
     @RequestMapping(value = "/findStudentInfoByClassOrg", method = RequestMethod.POST)
     public Object findStudentInfoByClassOrg(@RequestParam("schoolCode") String schoolCode,
                                             @RequestParam("parentIds") String parentIds,
-                                            @RequestParam("type") String type) {
+                                            @RequestParam("type") Byte type) {
         try {
             return WrapMapper.ok(studentService.findStudentInfoByClassOrg(schoolCode,parentIds,type));
         }catch (Exception e){

@@ -40,5 +40,5 @@ public interface StudentMapper extends Mapper<Student> {
     List<String> queryCardNumberBySchoolCode(@Param("schoolCode") String schoolCode);
 
     //根据学校CODE和组织架构查询学生
-    List<Student> findStudentInfoByClassOrg(@Param("schoolCode")String schoolCode,@Param("parentIds")String parentIds,@Param("type")String type);
+    List<Student> findStudentInfoByClassOrg(@Param("schoolCode")String schoolCode,@Param("parentIds")String parentIds,@Param("type")Byte type);
 }
