@@ -5,11 +5,7 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.BaseUser;
-import com.bdxh.user.entity.Family;
 import com.bdxh.user.persistence.BaseUserMapper;
-import com.bdxh.user.persistence.FamilyMapper;
-import com.bdxh.user.persistence.StudentMapper;
-import com.bdxh.user.persistence.TeacherMapper;
 import com.bdxh.user.service.BaseUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,5 +43,15 @@ private BaseUserMapper baseUserMapper;
     @Override
     public BaseUser queryBaseUserBySchoolCodeAndCardNumber(String schoolCode, String cadNumber) {
         return baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode,cadNumber);
+    }
+
+    @Override
+    public List<String> queryAllUserPhone() {
+        return baseUserMapper.queryAllUserPhone();
+    }
+
+    @Override
+    public Integer queryUserPhoneByPhone(BaseUserQueryDto baseUserQueryDto) {
+        return baseUserMapper.queryUserPhoneByPhone(baseUserQueryDto);
     }
 }

@@ -13,7 +13,7 @@ import java.util.Date;
  * @create: 2019-03-11 17:40
  **/
 @Data
-public class UpdateFamilyDto implements Serializable {
+public class UpdateFamilyDto extends BaseDto implements Serializable {
 
 
     private static final long serialVersionUID = -1013494855483528788L;

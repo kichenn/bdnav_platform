@@ -4,6 +4,7 @@ import com.bdxh.common.support.IService;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.BaseUser;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -42,4 +43,17 @@ public interface BaseUserService extends IService<BaseUser> {
      * @return
      */
     BaseUser queryBaseUserBySchoolCodeAndCardNumber(String schoolCode,String cadNumber);
+
+    /**
+     * 查询所有用户手机号
+     * @return
+     */
+    List<String> queryAllUserPhone();
+
+    /**
+     * 根据手机号查询有没有重复的手机号
+     * @param baseUserQueryDto
+     * @return
+     */
+    Integer queryUserPhoneByPhone(BaseUserQueryDto baseUserQueryDto);
 }

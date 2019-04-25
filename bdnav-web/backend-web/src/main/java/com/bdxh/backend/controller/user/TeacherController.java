@@ -14,6 +14,7 @@ import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.entity.Teacher;
+import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageInfo;
@@ -49,6 +50,8 @@ public class TeacherController {
     private SchoolControllerClient schoolControllerClient;
     @Autowired
     private SinglePermissionControllerClient singlePermissionControllerClient;
+    @Autowired
+    private BaseUserControllerClient baseUserControllerClient;
     //图片路径
     private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
     //图片名称
@@ -158,6 +161,13 @@ public class TeacherController {
             updateTeacherDto.setOperator(user.getId());
             updateTeacherDto.setOperatorName(user.getUserName());
             TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber()).getResult();
+            //判断是否已激活 已激活需要同步微校未激活修改不需要同步微校
+            if(teacherVo.getActivate().equals(2)) {
+                School school = schoolControllerClient.findSchoolBySchoolCode(teacherVo.getSchoolCode()).getResult();
+                updateTeacherDto.setAppKey(school.getAppKey());
+                updateTeacherDto.setAppSecret(school.getAppSecret());
+                updateTeacherDto.setActivate(teacherVo.getActivate());
+            }
             if(null!=teacherVo.getImage()) {
                 if (!updateTeacherDto.getImage().equals(teacherVo.getImage())) {
                     //删除腾讯云的以前图片
@@ -166,6 +176,7 @@ public class TeacherController {
                     }
                 }
             }
+
            Wrapper wrapper=teacherControllerClient.updateTeacher(updateTeacherDto);
             return wrapper;
         } catch (Exception e) {
@@ -258,6 +269,14 @@ public class TeacherController {
                     }else{
                         cardNumberList=new ArrayList<>();
                     }
+                    //导入时判断手机号是否存在
+                    List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
+                    for (String phone : phoneList) {
+                        if(columns[5].equals(phone)){
+                            return  WrapMapper.error("请检查第" + i + "条手机号已存在");
+                        }
+                    }
+                    phoneList.add(columns[5]);
                     tacher.setCardNumber(columns[6]);
                     cardNumberList.add(columns[6]);
                     tacher.setBirth(columns[7]);
@@ -275,7 +294,7 @@ public class TeacherController {
             }
             teacherControllerClient.batchSaveTeacherInfo(saveTeacherList);
             long end=System.currentTimeMillis();
-            log.info("导入10条数据总计用时："+(end-start));
+            log.info("总计用时："+(end-start)+"+毫秒");
             return WrapMapper.ok("导入完成");
         } catch (Exception e) {
             e.printStackTrace();

@@ -35,6 +35,9 @@ public class FamilyVo implements Serializable {
     @ApiModelProperty("家长CardNumber")
     private String cardNumber;
 
+    @ApiModelProperty("学校ID")
+    private String schoolId;
+
     //学校Code
     @ApiModelProperty("学校Code")
     private String schoolCode;
@@ -62,7 +65,14 @@ public class FamilyVo implements Serializable {
     @ApiModelProperty("家长生日")
     private String birth;
 
-   //学生数据集合
+    /**
+     * 是否激活 1 未激活 2 激活
+     */
+    @ApiModelProperty("是否激活 1 未激活 2 激活")
+    private Byte activate;
+
+
+    //学生数据集合
     @ApiModelProperty("学生数据集合")
     private List<FamilyStudentVo> students;
 

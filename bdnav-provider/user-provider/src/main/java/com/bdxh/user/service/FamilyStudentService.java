@@ -33,13 +33,5 @@ public interface FamilyStudentService extends IService<FamilyStudent> {
       */
      PageInfo<FamilyStudentVo> queryAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto);
 
-     /**
-      * 家长查询自己孩子数据
-      * @param schoolCode
-      * @param cardNumber
-      * @Author：bin
-      * @return
-      */
-     List<FamilyStudentVo> familyFindStudentList(String schoolCode, String cardNumber);
 
 }

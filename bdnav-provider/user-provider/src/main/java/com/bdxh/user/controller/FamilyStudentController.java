@@ -107,22 +107,6 @@ private SnowflakeIdWorker snowflakeIdWorker;
         }
     }
 
-    /**
-     * 微校平台----家长查询孩子列表
-     * @param schoolCode
-     * @param cardNumber
-     * @return
-     */
-    @ApiOperation(value = "微校平台----家长查询孩子列表")
-    @RequestMapping(value = "/familyFindStudentList",method =RequestMethod.POST)
-    public Object familyFindStudentList(@RequestParam("schoolCode") String schoolCode,@RequestParam("cardNumber")String cardNumber){
-        try{
-            List<FamilyStudentVo> familyStudentVoPageInfo=familyStudentService.familyFindStudentList(schoolCode,cardNumber);
-            return WrapMapper.ok(familyStudentVoPageInfo);
-        }catch (Exception e){
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
+
 
 }

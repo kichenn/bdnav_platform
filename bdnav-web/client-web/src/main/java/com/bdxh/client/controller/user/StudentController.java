@@ -25,6 +25,7 @@ import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
@@ -61,8 +62,12 @@ public class StudentController {
 
     @Autowired
     private SchoolClassControllerClient schoolClassControllerClient;
+
     @Autowired
     private SinglePermissionControllerClient singlePermissionControllerClient;
+
+    @Autowired
+    private BaseUserControllerClient baseUserControllerClient;
 
     //图片路径
     private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
@@ -246,7 +251,14 @@ public class StudentController {
             updateStudentDto.setOperatorName(user.getUserName());
             updateStudentDto.setSchoolCode(user.getSchoolCode());
             StudentVo studentVo=(StudentVo)studentControllerClient.queryStudentInfo(user.getSchoolCode(),updateStudentDto.getCardNumber()).getResult();
-           if(null!=studentVo.getImage()){
+            //判断是否已激活 已激活需要同步微校未激活修改不需要同步微校
+            if(studentVo.getActivate().equals(2)) {
+                updateStudentDto.setActivate(studentVo.getActivate());
+                School school = schoolControllerClient.findSchoolBySchoolCode(studentVo.getSchoolCode()).getResult();
+                updateStudentDto.setAppKey(school.getAppKey());
+                updateStudentDto.setAppSecret(school.getAppSecret());
+            }
+            if(null!=studentVo.getImage()){
             if (!studentVo.getImage().equals(updateStudentDto.getImage())) {
                 //删除腾讯云的以前图片
                 if(!studentVo.getImageName().equals(IMG_NAME)){
@@ -338,6 +350,14 @@ public class StudentController {
                    }else{
                         cardNumberList=new ArrayList<>();
                    }
+                   //导入时判断手机号是否存在
+                   List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
+                   for (String phone : phoneList) {
+                       if(columns[10].equals(phone)){
+                           return  WrapMapper.error("请检查第" + i + "条手机号已存在或者重复");
+                       }
+                   }
+                   phoneList.add(columns[10]);
                    AddStudentDto student = new AddStudentDto();
                    student.setCardNumber(columns[11]);
                    cardNumberList.add(columns[11]);

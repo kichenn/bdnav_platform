@@ -74,6 +74,11 @@ public class StudentVo implements Serializable {
 
     @ApiModelProperty("班级名称")
     private String className;
+    /**
+     * 是否激活 1 未激活 2 激活
+     */
+    @ApiModelProperty("是否激活 1 未激活 2 激活")
+    private Byte activate;
 
     @ApiModelProperty("班级ID")
     private  String classId;

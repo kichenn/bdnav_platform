@@ -229,4 +229,23 @@
 	)
 	</foreach>
 	</insert>
+
+	<!--查询所有用户手机号-->
+	<select id="queryAllUserPhone" resultType="java.lang.String">
+		select phone from t_base_user
+	</select>
+
+	<!--查询所有用户手机号-->
+	<select id="queryUserPhoneByPhone" resultType="java.lang.Integer">
+		select count(1) from t_base_user
+		<where>
+		 <if test="baseUserQueryDto.schoolCode!=null and baseUserQueryDto.schoolCode!=''">
+			 and school_code=#{baseUserQueryDto.schoolCode}
+		 </if>
+		<if test="baseUserQueryDto.cardNumber!=null and baseUserQueryDt.cardNumber!=''">
+			and	card_number=#{baseUserQueryDto.cardNumber}
+		</if>
+		 and phone=#{baseUserQueryDto.phone}
+		</where>
+	</select>
 </mapper>
