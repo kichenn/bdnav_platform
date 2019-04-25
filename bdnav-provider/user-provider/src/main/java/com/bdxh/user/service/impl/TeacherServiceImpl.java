@@ -102,6 +102,8 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                         teacherDept.setSchoolCode(teacher.getSchoolCode());
                         teacherDept.setCardNumber(teacher.getCardNumber());
                         teacherDept.setTeacherId(teacher.getId());
+                        teacherDept.setOperator(teacher.getOperator());
+                        teacherDept.setOperatorName(teacher.getOperatorName());
                         teacherDept.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
                         teacherDept.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
                         teacherDept.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
@@ -134,6 +136,8 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             teacherDeptDto.setSchoolCode(updateTeacherDto.getSchoolCode());
             teacherDeptDto.setCardNumber(updateTeacherDto.getCardNumber());
             teacherDeptDto.setTeacherId(updateTeacherDto.getId());
+            teacherDeptDto.setOperator(updateTeacherDto.getOperator());
+            teacherDeptDto.setOperatorName(updateTeacherDto.getOperatorName());
             String [] ids=updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
             String [] names=updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
             teacherDeptDto.setDeptId(Long.parseLong(ids[ids.length-1]));
