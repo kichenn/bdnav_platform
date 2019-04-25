@@ -107,5 +107,5 @@ public interface StudentService extends IService<Student> {
      * @param type
      * @return
      */
-    List<Student> findStudentInfoByClassOrg(String schoolCode,String parentIds,String type);
+    List<Student> findStudentInfoByClassOrg(String schoolCode,String parentIds,Byte type);
 }
