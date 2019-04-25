@@ -81,15 +81,6 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
     @Transactional(rollbackFor = Exception.class)
     public Boolean addFence(SchoolFence schoolFence) throws RuntimeException {
 
-        //实体对象list
-        List<Map<String, Object>> entityMap = new ArrayList<>();
-
-        // 用户群类型 1 学生 2 老师
-        if (new Byte("1").equals(schoolFence.getGroupType())) {
-            SchoolClass schoolClass = schoolClassMapper.selectByPrimaryKey(schoolFence.getGroupId());
-        } else if (new Byte("2").equals(schoolFence.getGroupType())) {
-            SchoolDept schoolDept = schoolDeptMapper.selectByPrimaryKey(schoolFence.getGroupId());
-        }
         //增加监控终端实体
         CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
         entityRequest.setAk(FenceConstant.AK);

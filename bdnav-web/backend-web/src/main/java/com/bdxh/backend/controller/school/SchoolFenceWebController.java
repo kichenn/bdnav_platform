@@ -4,12 +4,19 @@ import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolFenceDto;
+import com.bdxh.school.dto.FenceEntityDto;
 import com.bdxh.school.dto.ModifySchoolFenceDto;
 import com.bdxh.school.dto.SchoolFenceQueryDto;
+import com.bdxh.school.entity.SchoolClass;
+import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.entity.SchoolFence;
+import com.bdxh.school.feign.SchoolClassControllerClient;
+import com.bdxh.school.feign.SchoolDeptControllerClient;
 import com.bdxh.school.feign.SchoolFenceControllerClient;
 import com.bdxh.school.vo.SchoolFenceShowVo;
 import com.bdxh.system.entity.User;
+import com.bdxh.system.feign.UserControllerClient;
+import com.bdxh.user.feign.StudentControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -34,12 +42,34 @@ public class SchoolFenceWebController {
     @Autowired
     private SchoolFenceControllerClient schoolFenceControllerClient;
 
+    @Autowired
+    private SchoolClassControllerClient schoolClassControllerClient;
+
+    @Autowired
+    private SchoolDeptControllerClient schoolDeptControllerClient;
+
+    @Autowired
+    private StudentControllerClient studentControllerClient;
+
     @RequestMapping(value = "/addFence", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校围栏", response = Boolean.class)
     public Object addFence(@Validated @RequestBody AddSchoolFenceDto addSchoolFenceDto) {
         User user = SecurityUtils.getCurrentUser();
         addSchoolFenceDto.setOperator(user.getId());
         addSchoolFenceDto.setOperatorName(user.getUserName());
+
+        //设置监控对象list
+        List<FenceEntityDto> fenceEntitys = new ArrayList<>();
+
+        // 查询用户群类型 1 学生 2 老师
+        if (new Byte("1").equals(addSchoolFenceDto.getGroupTypeEnum().getKey())) {
+            SchoolClass schoolClass = schoolClassControllerClient.findSchoolClassById(addSchoolFenceDto.getGroupId()).getResult();
+            String classIds = schoolClass.getParentIds().substring(schoolClass.getParentIds().indexOf(",")) + schoolClass.getId();
+//            studentControllerClient.findStudentInfoByClassOrg(schoolClass.getSchoolCode(), classIds, schoolClass.getType());
+        } else if (new Byte("2").equals(addSchoolFenceDto.getGroupTypeEnum().getKey())) {
+            SchoolDept schoolDept = schoolDeptControllerClient.findSchoolDeptById(addSchoolFenceDto.getGroupId()).getResult();
+        }
+
         Wrapper wapper = schoolFenceControllerClient.addFence(addSchoolFenceDto);
         return wapper;
     }
