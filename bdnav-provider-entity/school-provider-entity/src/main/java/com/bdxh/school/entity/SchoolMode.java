@@ -25,8 +25,8 @@ public class SchoolMode {
 	@Column(name = "school_code")
 	private String SchoolCode;
 
-	@Column(name = "name")
-	private String Name;
+	@Column(name = "model_name")
+	private String ModelName;
 
 	@Column(name = "platform")
 	@ApiModelProperty("适用平台 1安卓  2苹果")
