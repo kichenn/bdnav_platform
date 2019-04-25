@@ -113,4 +113,14 @@ public interface TeacherControllerClient {
     @RequestMapping(value = "/teacher/queryTeacherCardNumberBySchoolCode", method = RequestMethod.POST)
     @ResponseBody
     Wrapper queryTeacherCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode);
+
+    /**
+     * 查询出某个部门下面的老师
+     * @param schoolCode
+     * @param parentIds
+     * @return
+     */
+    @RequestMapping(value = "/teacher/findTeacherInfoByDeptOrg", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<List<Teacher>> findTeacherInfoByDeptOrg(@RequestParam("schoolCode")String schoolCode,@RequestParam("schoolCode")String parentIds);
 }

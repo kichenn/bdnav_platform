@@ -165,4 +165,9 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     public List<String> queryTeacherCardNumberBySchoolCode(String schoolCode) {
         return teacherMapper.queryTeacherCardNumberBySchoolCode(schoolCode);
     }
+
+    @Override
+    public List<Teacher> findTeacherInfoByDeptOrg(String schoolCode, String parentIds) {
+        return teacherMapper.findTeacherInfoByDeptOrg(schoolCode,parentIds);
+    }
 }

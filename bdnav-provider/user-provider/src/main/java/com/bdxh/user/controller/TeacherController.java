@@ -10,13 +10,10 @@
  */
 package com.bdxh.user.controller;
 
-import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
-import com.bdxh.user.entity.Student;
-import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.service.TeacherDeptService;
 import com.bdxh.user.service.TeacherService;
 import com.bdxh.user.vo.TeacherVo;
@@ -24,7 +21,6 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.ListUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -219,4 +215,19 @@ public class TeacherController {
         }
     }
 
+    /**
+     * 查询出某个部门下面的老师
+     * @param schoolCode
+     * @param parentIds
+     * @return
+     */
+    @ApiOperation(value = "查询出某个部门下面的老师")
+    @RequestMapping(value = "/findTeacherInfoByDeptOrg", method = RequestMethod.POST)
+    public Object findTeacherInfoByDeptOrg(@RequestParam("schoolCode")String schoolCode,@RequestParam("schoolCode")String parentIds) {
+        try {
+            return WrapMapper.ok(teacherService.findTeacherInfoByDeptOrg(schoolCode,parentIds));
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 }
