@@ -74,7 +74,10 @@
                 t_school_mode.name LIKE CONCAT(CONCAT('%',#{Name}),'%')
             </if>
             <if test="schoolNameList !=null and schoolNameList!=''">
-             AND t_school.school_name LIKE CONCAT(CONCAT('%',#{schoolNameList}),'%')
+              AND t_school.school_name LIKE CONCAT(CONCAT('%',#{schoolNameList}),'%')
+            </if>
+            <if test="Platform !=null and Platform!=''">
+              AND t_school_mode.platform =#{Platform}
             </if>
         </where>
         ORDER BY t_school_mode.create_date DESC
