@@ -80,6 +80,18 @@ public class Product implements Serializable {
     private String productExtra;
 
     /**
+     * 操作人
+     */
+    @Column(name = "operator")
+    private Long operator;
+
+    /**
+     * 操作人姓名
+     */
+    @Column(name = "operator_name")
+    private String operatorName;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_date")
@@ -310,6 +322,23 @@ public class Product implements Serializable {
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+
+    public Long getOperator() {
+        return operator;
+    }
+
+    public void setOperator(Long operator) {
+        this.operator = operator;
+    }
+
+    public String getOperatorName() {
+        return operatorName;
+    }
+
+    public void setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
     }
 
     /**
