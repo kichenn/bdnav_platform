@@ -66,6 +66,13 @@ public class SchoolStrategyWebController {
     @RequestMapping(value = "/delSchoolStrategyById", method = RequestMethod.GET)
     @ApiOperation(value = "删除模式信息", response = Boolean.class)
     public Object delSchoolStrategyById(@RequestParam("id")Long id) {
-        return WrapMapper.ok(schoolStrategyControllerClient.delSchoolStrategyById(id));
+        try {
+            Wrapper wrapper=schoolStrategyControllerClient.delSchoolStrategyById(id);
+            return wrapper;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+
     }
 }
