@@ -83,6 +83,9 @@
             <if test="SchoolName !=null and SchoolName!=''">
                 AND t_school_strategy.school_name LIKE CONCAT(CONCAT('%',#{SchoolName}),'%')
             </if>
+            <if test="Platform !=null and Platform!=''">
+                AND t_school_mode.platform =#{Platform}
+            </if>
         </where>
         ORDER BY t_school_strategy.create_date DESC
     </select>
