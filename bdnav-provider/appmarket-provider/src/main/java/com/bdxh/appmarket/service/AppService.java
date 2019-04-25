@@ -71,7 +71,7 @@ public interface AppService extends IService<App> {
      * @param pageSize
      * @return
      */
-    PageInfo<App> getApplicationOfCollection(Long schoolId,Integer pageNum, Integer pageSize);
+    PageInfo<App> getApplicationOfCollection(Long schoolId,String appName,Integer pageNum, Integer pageSize);
 
     /**
      * 分页查询所有信息
@@ -88,12 +88,5 @@ public interface AppService extends IService<App> {
      */
     List<App> getAppListByids(String ids);
 
-    /**
-     * 带条件查询某一学校下的应用列表
-     * @param pageNum
-     * @param pageSize
-     * @return
-     */
-    //PageInfo<App> getAppOfCollection(Map<String,Object> param,Integer pageNum, Integer pageSize);
 
 }

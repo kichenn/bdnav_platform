@@ -186,7 +186,7 @@ public class AppController {
             if(appQueryDto.getSchoolId()==null){
              appListPage  = appService.findAppList(appQueryDto.getPageNum(), appQueryDto.getPageSize());
             }else{
-             appListPage = appService.getApplicationOfCollection(appQueryDto.getSchoolId(),appQueryDto.getPageNum(), appQueryDto.getPageSize());
+             appListPage = appService.getApplicationOfCollection(appQueryDto.getSchoolId(),appQueryDto.getAppName(),appQueryDto.getPageNum(), appQueryDto.getPageSize());
             }
             return WrapMapper.ok(appListPage);
         }catch (Exception e){
@@ -206,22 +206,6 @@ public class AppController {
             return WrapMapper.error(e.getMessage());
         }
     }
-    @ApiOperation("带条件查询某一学校下的应用列表")
-    @RequestMapping(value = "/getAppOfCollection",method = RequestMethod.POST)
-    public Object getAppOfCollection(@Valid @RequestBody QueryAppDto queryAppDto, BindingResult bindingResult){
-        //检验参数
-        if(bindingResult.hasErrors()){
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
-        try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(queryAppDto);
-            PageInfo<App> appListPage = appService.getAppListPage(param, queryAppDto.getPageNum(), queryAppDto.getPageSize());
-            return WrapMapper.ok(appListPage);
-        }catch (Exception e){
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
+
 
 }
