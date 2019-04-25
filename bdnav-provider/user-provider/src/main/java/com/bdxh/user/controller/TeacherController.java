@@ -223,7 +223,7 @@ public class TeacherController {
      */
     @ApiOperation(value = "查询出某个部门下面的老师")
     @RequestMapping(value = "/findTeacherInfoByDeptOrg", method = RequestMethod.POST)
-    public Object findTeacherInfoByDeptOrg(@RequestParam("schoolCode")String schoolCode,@RequestParam("schoolCode")String parentIds) {
+    public Object findTeacherInfoByDeptOrg(@RequestParam("schoolCode")String schoolCode,@RequestParam("parentIds")String parentIds) {
         try {
             return WrapMapper.ok(teacherService.findTeacherInfoByDeptOrg(schoolCode,parentIds));
         }catch (Exception e){

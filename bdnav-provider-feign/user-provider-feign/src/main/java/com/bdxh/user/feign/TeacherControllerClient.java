@@ -122,5 +122,5 @@ public interface TeacherControllerClient {
      */
     @RequestMapping(value = "/teacher/findTeacherInfoByDeptOrg", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<List<Teacher>> findTeacherInfoByDeptOrg(@RequestParam("schoolCode")String schoolCode,@RequestParam("schoolCode")String parentIds);
+    Wrapper<List<Teacher>> findTeacherInfoByDeptOrg(@RequestParam("schoolCode")String schoolCode,@RequestParam("parentIds")String parentIds);
 }
