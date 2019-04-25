@@ -38,7 +38,7 @@ public interface SchoolModeService extends IService<SchoolMode> {
 	SchoolMode findSchoolModeById(Long id);
 
 	//根据模式名称查询模式
-	SchoolMode getSchoolModesByName(String name,Long SchoolId);
+	SchoolMode getSchoolModesByName(String ModelName,Long SchoolId);
 
 	//根据条件分页查询用户列表
 	PageInfo<QuerySchoolMode> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);

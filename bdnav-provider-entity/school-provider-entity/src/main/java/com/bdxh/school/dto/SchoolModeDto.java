@@ -19,7 +19,7 @@ public class SchoolModeDto {
     private String SchoolCode;
 
     @ApiModelProperty("模式名称")
-    private String Name;
+    private String ModelName;
 
 
     @ApiModelProperty("模式优先级")

@@ -6,7 +6,7 @@
         <id column="id" jdbcType="BIGINT" property="Id"/>
         <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
         <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
-        <result column="name" jdbcType="VARCHAR" property="Name"/>
+        <result column="model_name" jdbcType="VARCHAR" property="ModelName"/>
         <result column="platform" jdbcType="VARCHAR" property="Platform"/>
         <result column="priority" jdbcType="TINYINT" property="Priority"/>
         <result column="usable_app" jdbcType="VARCHAR" property="UsableApp"/>
@@ -22,7 +22,7 @@
         <id column="id" jdbcType="BIGINT" property="Id"/>
         <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
         <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
-        <result column="name" jdbcType="VARCHAR" property="Name"/>
+        <result column="model_name" jdbcType="VARCHAR" property="ModelName"/>
         <result column="platform" jdbcType="VARCHAR" property="Platform"/>
         <result column="priority" jdbcType="TINYINT" property="Priority"/>
         <result column="usable_app" jdbcType="VARCHAR" property="UsableApp"/>
@@ -37,7 +37,7 @@
     </resultMap>
 
 	<sql id="BaseColumns">
-	id,school_id,school_code,`name`,platform,priority,usable_app,usable_device,create_date,update_date,operator,operator_name,remark
+	id,school_id,school_code,model_name,platform,priority,usable_app,usable_device,create_date,update_date,operator,operator_name,remark
 	</sql>
 
 <!--
@@ -58,7 +58,7 @@
         SELECT
         <include refid="BaseColumns"/>
         FROM t_school_mode
-        WHERE `name`= #{name} AND school_id=#{SchoolId} limit 1;
+        WHERE model_name= #{ModelName} AND school_id=#{SchoolId} limit 1;
 	</select>
 
 
@@ -70,11 +70,14 @@
         t_school_mode
         INNER JOIN t_school ON t_school_mode.school_id=t_school.id
         <where>
-            <if test="Name !=null and Name !=''">
-                t_school_mode.name LIKE CONCAT(CONCAT('%',#{Name}),'%')
+            <if test="ModelName !=null and ModelName !=''">
+                t_school_mode.model_name LIKE CONCAT(CONCAT('%',#{ModelName}),'%')
             </if>
             <if test="schoolNameList !=null and schoolNameList!=''">
-             AND t_school.school_name LIKE CONCAT(CONCAT('%',#{schoolNameList}),'%')
+              AND t_school.school_name LIKE CONCAT(CONCAT('%',#{schoolNameList}),'%')
+            </if>
+            <if test="Platform !=null and Platform!=''">
+              AND t_school_mode.platform =#{Platform}
             </if>
         </where>
         ORDER BY t_school_mode.create_date DESC

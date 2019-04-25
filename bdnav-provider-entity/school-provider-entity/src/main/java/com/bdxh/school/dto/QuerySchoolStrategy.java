@@ -26,6 +26,10 @@ public class QuerySchoolStrategy extends Query {
     private String SchoolCode;
 
 
+    @ApiModelProperty("学校名称")
+    private String SchoolName;
+
+
     @ApiModelProperty("部门ID")
     private Long GroupId;
 
@@ -38,10 +42,8 @@ public class QuerySchoolStrategy extends Query {
     private String RecursionPermissionIds;
 
 
-
-
     @ApiModelProperty("模式主键")
-    private Long ModeId;
+    private Long ModelId;
 
 
     @ApiModelProperty("开始日期")
@@ -82,13 +84,21 @@ public class QuerySchoolStrategy extends Query {
     @ApiModelProperty("备注")
     private String Remark;
 
-    @ApiModelProperty("学校code")
+/*    @ApiModelProperty("学校code")
     private String getSchoolCode;
 
     @ApiModelProperty("学校名称")
-    private String getSchoolName;
+    private String getSchoolName;*/
 
     @ApiModelProperty("部门名称")
     private String GroupName;
+
+    @ApiModelProperty("模式名称")
+    private String ModelName;
+
+
+    @ApiModelProperty("适用平台 1安卓  2苹果")
+    private String Platform;
+
 
 }

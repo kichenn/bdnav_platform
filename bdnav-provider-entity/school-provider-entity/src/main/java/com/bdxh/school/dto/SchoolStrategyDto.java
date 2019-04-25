@@ -24,6 +24,10 @@ public class SchoolStrategyDto {
     private String SchoolCode;
 
 
+    @ApiModelProperty("学校名称")
+    private String SchoolName;
+
+
     @ApiModelProperty("部门ID")
     private Long GroupId;
 
@@ -36,9 +40,8 @@ public class SchoolStrategyDto {
     private String RecursionPermissionIds;
 
 
-
     @ApiModelProperty("模式主键")
-    private Long ModeId;
+    private Long ModelId;
 
 
     @ApiModelProperty("开始日期")

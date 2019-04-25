@@ -347,4 +347,31 @@
     <select id="queryCardNumberBySchoolCode"  resultType="java.lang.String">
         select card_number from t_student where school_code=#{schoolCode}
     </select>
+    <!--根据院系组织架构ID查询学生-->
+    <select id="findStudentInfoByClassOrg" resultMap="BaseResultMap">
+        select <include refid="studentCloumn" /> from t_student
+        <where>
+            and school_code=#{schoolCode}
+            <if test="type==1">
+                and college_name!=''
+            </if>
+            <if test="type==2">
+                and faculty_name!=''
+            </if>
+            <if test="type==3">
+                and profession_name!=''
+            </if>
+            <if test="type==4">
+                and grade_name!=''
+            </if>
+            <choose>
+                <when test="type==5">
+                 and class_ids=#{parentIds}
+                </when>
+                <otherwise>
+                 and   class_ids Like  CONCAT(#{parentIds},'%')
+                </otherwise>
+            </choose>
+        </where>
+    </select>
 </mapper>

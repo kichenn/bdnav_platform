@@ -1,5 +1,6 @@
 package com.bdxh.product.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -64,6 +65,18 @@ public class ProductAddDto implements Serializable {
      */
     @NotNull(message = "商品业务类型不能为空")
     private Byte businessType=1;
+
+    /**
+     * 操作人
+     */
+    @ApiModelProperty("操作人")
+    private Long operator;
+
+    /**
+     * 操作姓名
+     */
+    @ApiModelProperty("操作姓名")
+    private String operatorName;
 
     /**
      * 备注
