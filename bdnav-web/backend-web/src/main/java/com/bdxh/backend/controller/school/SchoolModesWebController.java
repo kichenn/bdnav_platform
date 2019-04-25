@@ -70,7 +70,14 @@ public class SchoolModesWebController {
     @RequestMapping(value = "/delModesById", method = RequestMethod.GET)
     @ApiOperation(value = "删除模式信息", response = Boolean.class)
     public Object delModesById(@RequestParam("id")Long id) {
-        return WrapMapper.ok(schoolModeControllerClient.delSchoolModesById(id));
+        try {
+            Wrapper wrapper=schoolModeControllerClient.delSchoolModesById(id);
+            return wrapper;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+
     }
 
 

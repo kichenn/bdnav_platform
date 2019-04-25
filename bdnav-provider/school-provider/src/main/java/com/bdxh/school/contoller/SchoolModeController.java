@@ -149,7 +149,13 @@ public class SchoolModeController {
 	@RequestMapping(value = "/delModesById", method = RequestMethod.GET)
 	@ApiOperation(value = "删除信息", response = Boolean.class)
 	public Object delModesById(@RequestParam("id")Long id) {
-		return WrapMapper.ok(schoolModeService.delSchoolModeById(id));
+		try{
+			return WrapMapper.ok(schoolModeService.delSchoolModeById(id));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
+
 	}
 
 	/**
