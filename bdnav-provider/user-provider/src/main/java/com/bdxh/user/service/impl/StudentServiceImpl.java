@@ -172,4 +172,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public List<String> queryCardNumberBySchoolCode(String schoolCode) {
         return studentMapper.queryCardNumberBySchoolCode(schoolCode);
     }
+
+    @Override
+    public List<Student> findStudentInfoByClassOrg(String schoolCode, String parentIds, String type) {
+        return studentMapper.findStudentInfoByClassOrg(schoolCode,parentIds,type);
+    }
 }

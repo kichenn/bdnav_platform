@@ -100,7 +100,7 @@
         <include refid="BaseColumns"/>
         FROM t_school_mode
         WHERE
-        platform=#{Platform}
+        school_id=#{SchoolId} AND platform=#{Platform}
     </select>
 
 </mapper>

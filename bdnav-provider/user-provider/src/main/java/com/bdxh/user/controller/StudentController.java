@@ -22,6 +22,7 @@ import com.bdxh.user.service.StudentService;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -206,4 +207,15 @@ public class StudentController {
         }
     }
 
+    @ApiModelProperty(value = "根据学校CODE和组织架构查询学生")
+    @RequestMapping(value = "/findStudentInfoByClassOrg", method = RequestMethod.POST)
+    public Object findStudentInfoByClassOrg(@RequestParam("schoolCode") String schoolCode,
+                                            @RequestParam("parentIds") String parentIds,
+                                            @RequestParam("type") String type) {
+        try {
+            return WrapMapper.ok(studentService.findStudentInfoByClassOrg(schoolCode,parentIds,type));
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 }

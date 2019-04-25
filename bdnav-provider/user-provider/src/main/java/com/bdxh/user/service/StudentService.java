@@ -99,4 +99,13 @@ public interface StudentService extends IService<Student> {
      * @return
      */
     List<String> queryCardNumberBySchoolCode( String schoolCode);
+
+    /**
+     * 根据学校CODE和组织架构查询学生
+     * @param schoolCode
+     * @param parentIds
+     * @param type
+     * @return
+     */
+    List<Student> findStudentInfoByClassOrg(String schoolCode,String parentIds,String type);
 }

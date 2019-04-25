@@ -8,16 +8,13 @@
  */
 package com.bdxh.user.feign;
 
-import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
-import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.fallback.StudentControllerFallback;
 import com.bdxh.user.vo.StudentVo;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -113,4 +110,16 @@ public interface StudentControllerClient {
     @RequestMapping(value = "/student/queryCardNumberBySchoolCode", method = RequestMethod.POST)
     @ResponseBody
     Wrapper queryCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode);
+
+    /***
+     * 根据学校CODE和组织架构查询学生
+     * @param schoolCode
+     * @param parentIds
+     * @param type
+     * @return
+     */
+    @RequestMapping(value = "/student/findStudentInfoByClassOrg", method = RequestMethod.POST)
+    Wrapper findStudentInfoByClassOrg(@RequestParam("schoolCode") String schoolCode,
+                                      @RequestParam("parentIds") String parentIds,
+                                      @RequestParam("type") String type);
 }
