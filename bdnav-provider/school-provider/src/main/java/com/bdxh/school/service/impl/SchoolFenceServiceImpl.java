@@ -54,8 +54,6 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
     @Autowired
     private SchoolDeptMapper schoolDeptMapper;
 
-//    private
-
     /*
      *查询总条数
      */

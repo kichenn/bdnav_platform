@@ -10,6 +10,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 添加学校围栏dto
@@ -82,5 +83,9 @@ public class AddSchoolFenceDto {
     @ApiModelProperty("备注")
     private String remark;
 
+    /**
+     * 监控对象 集合
+     */
+    private List<FenceEntityDto> fenceEntityDtos;
 
 }
