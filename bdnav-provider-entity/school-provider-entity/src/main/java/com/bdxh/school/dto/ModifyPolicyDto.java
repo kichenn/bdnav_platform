@@ -1,6 +1,5 @@
 package com.bdxh.school.dto;
 
-import com.bdxh.school.enums.PlatformTypeEnum;
 import com.bdxh.school.enums.RecursionPermissionStatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,6 +23,9 @@ public class ModifyPolicyDto {
     @ApiModelProperty("学校编码")
     private String SchoolCode;
 
+    @ApiModelProperty("学校名称")
+    private String SchoolName;
+
 
     @ApiModelProperty("部门ID")
     private Long GroupId;
@@ -37,12 +39,8 @@ public class ModifyPolicyDto {
     private String RecursionPermissionIds;
 
 
-    @ApiModelProperty("适用平台 1安卓  2苹果")
-    private PlatformTypeEnum Platform;
-
-
     @ApiModelProperty("模式主键")
-    private Long ModeId;
+    private Long ModelId;
 
     @ApiModelProperty("开始日期")
     private Date StartDate;

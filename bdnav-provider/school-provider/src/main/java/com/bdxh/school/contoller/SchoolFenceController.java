@@ -1,5 +1,8 @@
 package com.bdxh.school.contoller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.AddBlackUrlDto;
 import com.bdxh.school.dto.AddSchoolFenceDto;
@@ -16,6 +19,10 @@ import org.springframework.web.bind.annotation.*;
 import com.bdxh.school.entity.SchoolFence;
 import com.bdxh.school.service.SchoolFenceService;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -100,4 +107,44 @@ public class SchoolFenceController {
         return WrapMapper.ok(schoolFenceService.findFenceInConditionPaging(schoolFenceQueryDto));
     }
 
+    @RequestMapping(value = "/fencePush", method = RequestMethod.POST)
+    @ApiOperation(value = "围栏报警推送消息", response = SchoolFence.class)
+    public void fencePush(HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException {
+        System.err.println("报警小推送。。。。。。。。");
+       /*验证此方法。方法验证完成注释，开始获取推送信息
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", 1);
+        jsonObject.put("service_id", FenceConstant.SERVICE_ID);
+        String str = jsonObject.toJSONString();
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
+        httpServletResponse.setHeader("SignId","baidu_yingyan");
+        httpServletResponse.setCharacterEncoding("utf-8");
+        httpServletResponse.setContentType("application/json;charset=utf-8");
+        httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));*/
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("type", 2);
+        jsonObject.put("service_id", FenceConstant.SERVICE_ID);
+        String str = jsonObject.toJSONString();
+        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+        httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
+        httpServletResponse.setHeader("SignId", "baidu_yingyan");
+        httpServletResponse.setCharacterEncoding("utf-8");
+        httpServletResponse.setContentType("application/json;charset=utf-8");
+        httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
+
+        StringBuilder sb = new StringBuilder();
+        byte[] b = new byte[4096];
+
+        InputStream is = request.getInputStream();
+        for (int n; (n = is.read(b)) != -1; ) {
+            sb.append(new String(b, 0, n));
+        }
+        log.info("百度回调内容：" + sb.toString());
+        JSONObject statusjson = new JSONObject();
+        statusjson.put("status", 0);
+        statusjson.put("message", "成功");
+        httpServletResponse.setHeader("SignId", "baidu_yingyan");
+        httpServletResponse.getWriter().write(statusjson.toJSONString());
+    }
 }

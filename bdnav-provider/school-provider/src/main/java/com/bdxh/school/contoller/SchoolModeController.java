@@ -7,6 +7,7 @@ import com.bdxh.school.dto.ModifySchoolModeDto;
 import com.bdxh.school.dto.QuerySchoolMode;
 import com.bdxh.school.dto.SchoolModeDto;
 import com.bdxh.school.entity.SchoolMode;
+import com.bdxh.school.enums.PlatformTypeEnum;
 import com.bdxh.school.service.SchoolModeService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -70,7 +71,7 @@ public class SchoolModeController {
 
 		try{
 			SchoolMode schoolModeLogs=new SchoolMode();
-			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(addSchoolModeDto.getName(),addSchoolModeDto.getSchoolId());
+			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(addSchoolModeDto.getModelName(),addSchoolModeDto.getSchoolId());
 			Preconditions.checkArgument(schoolMode == null, "该模式已存在,请更换后添加");
 			BeanUtils.copyProperties(addSchoolModeDto, schoolModeLogs);
 			Boolean result = schoolModeService.save(schoolModeLogs)>0;
@@ -97,11 +98,11 @@ public class SchoolModeController {
 		}
 		try{
 			Boolean result;
-			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(modifySchoolModeDto.getName(),modifySchoolModeDto.getSchoolId());
+			SchoolMode schoolMode = schoolModeService.getSchoolModesByName(modifySchoolModeDto.getModelName(),modifySchoolModeDto.getSchoolId());
 			SchoolMode schoolModeLogs=new SchoolMode();
 			BeanUtils.copyProperties(modifySchoolModeDto, schoolModeLogs);
 			if (schoolMode!=null){
-				if(schoolMode.getName().equals(modifySchoolModeDto.getName())&&!schoolMode.getId().equals(modifySchoolModeDto.getId())){
+				if(schoolMode.getModelName().equals(modifySchoolModeDto.getModelName())&&!schoolMode.getId().equals(modifySchoolModeDto.getId())){
 					return WrapMapper.error("该模式已存在,请更换模式名称");
 				}else{
 					result =  schoolModeService.update(schoolModeLogs)>0;
@@ -183,5 +184,19 @@ public class SchoolModeController {
 	public Object batchDelModesInIds(@RequestParam("ids")List<Long> ids) {
 		return WrapMapper.ok(schoolModeService.batchDelSchoolModeInIds(ids));
 	}
+
+	/**
+	 * @Description: 根据平台查询所有模式
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/getListByPlatform", method = RequestMethod.GET)
+	@ApiOperation(value = "根据平台查询所有模式")
+	public Object getListByPlatform(@RequestParam("Platform") String Platform) {
+
+		List<SchoolMode> schoolMode=schoolModeService.getListByPlatform(Platform);
+		return WrapMapper.ok(schoolMode);
+	}
+
+
 
 }

@@ -32,6 +32,11 @@ public class SchoolStrategy {
 	@ApiModelProperty("学校编码")
 	private String SchoolCode;
 
+
+	@Column(name = "school_name")
+	@ApiModelProperty("学校名称")
+	private String SchoolName;
+
 	@Column(name = "group_id")
 	@ApiModelProperty("部门ID")
 	private Long GroupId;
@@ -44,13 +49,10 @@ public class SchoolStrategy {
 	@ApiModelProperty("递归权限ids")
 	private String RecursionPermissionIds;
 
-	@Column(name = "platform")
-	@ApiModelProperty("适用平台 1安卓  2苹果")
-	private String Platform;
 
-	@Column(name = "mode_id")
+	@Column(name = "model_id")
 	@ApiModelProperty("模式主键")
-	private Long ModeId;
+	private Long ModelId;
 
 	@Column(name = "start_date")
 	@ApiModelProperty("开始日期")

@@ -23,10 +23,12 @@ public class AddSchoolPermissionDto {
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
-//    @ApiModelProperty("父级菜单ids")
+    //    @ApiModelProperty("父级菜单ids")
 //    private String parentIds;
-
     @ApiModelProperty("菜单名称")
+    private String title;
+
+    @ApiModelProperty("路由地址")
     private String name;
 
     @ApiModelProperty("路径")

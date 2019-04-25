@@ -21,8 +21,10 @@ public class QuerySchoolMode extends Query {
     private String SchoolCode;
 
     @ApiModelProperty("模式名称")
-    private String Name;
+    private String ModelName;
 
+    @ApiModelProperty("适用平台 1安卓  2苹果")
+    private String Platform;
 
     @ApiModelProperty("模式优先级")
     private Integer Priority;

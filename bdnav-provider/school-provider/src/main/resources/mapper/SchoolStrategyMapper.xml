@@ -7,11 +7,11 @@
         <result column="policy_name" jdbcType="VARCHAR" property="PolicyName"/>
         <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
         <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="SchoolName"/>
         <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
         <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
         <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
-        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
-        <result column="mode_id" jdbcType="BIGINT" property="ModeId"/>
+        <result column="model_id" jdbcType="BIGINT" property="ModelId"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
         <result column="day_mark" jdbcType="VARCHAR" property="DayMark"/>
@@ -29,11 +29,11 @@
         <result column="policy_name" jdbcType="VARCHAR" property="PolicyName"/>
         <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
         <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="SchoolName"/>
         <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
         <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
         <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
-        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
-        <result column="mode_id" jdbcType="BIGINT" property="ModeId"/>
+        <result column="model_id" jdbcType="BIGINT" property="ModelId"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
         <result column="day_mark" jdbcType="VARCHAR" property="DayMark"/>
@@ -44,14 +44,14 @@
         <result column="operator" jdbcType="BIGINT" property="Operator"/>
         <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
         <result column="remark" jdbcType="VARCHAR" property="Remark"/>
-        <result column="school_code" jdbcType="CHAR" property="getSchoolCode"/>
-        <result column="school_name" jdbcType="VARCHAR" property="getSchoolName"/>
         <result column="name" jdbcType="VARCHAR" property="GroupName"/>
+        <result column="model_name" jdbcType="VARCHAR" property="ModelName"/>
+        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
     </resultMap>
 
 
 	<sql id="BaseColumns">
-	id,policy_name,school_id,school_code,group_id,recursion_permission,recursion_permission_ids,platform,mode_id,start_date,end_date,day_mark,time_mark,exclusion_days,create_date,update_date,operator,operator_name,remark
+	id,policy_name,school_id,school_code,school_name,group_id,recursion_permission,recursion_permission_ids,model_id,start_date,end_date,day_mark,time_mark,exclusion_days,create_date,update_date,operator,operator_name,remark
 	</sql>
 	<select id="getSchoolStrategyAllCount" resultType="Integer">
         SELECT 
@@ -71,17 +71,17 @@
 
     <!--带条件的分页查询-->
     <select id="getByCondition" resultMap="BResultMap" parameterType="java.util.Map" >
-        SELECT t_school_strategy.*,t_school_dept.*,t_school.*
+        SELECT t_school_strategy.*,t_school_dept.*,t_school_mode.*
         FROM
         t_school_strategy
-        LEFT JOIN  t_school ON t_school_strategy.school_id = t_school.id
+        LEFT JOIN  t_school_mode ON t_school_strategy.model_id = t_school_mode.id
         LEFT JOIN t_school_dept ON t_school_strategy.group_id = t_school_dept.id
         <where>
             <if test="PolicyName !=null and PolicyName !=''">
                 AND t_school_strategy.policy_name LIKE CONCAT(CONCAT('%',#{PolicyName}),'%')
             </if>
-            <if test="getSchoolName !=null and getSchoolName!=''">
-                AND t_school.school_name LIKE CONCAT(CONCAT('%',#{getSchoolName}),'%')
+            <if test="SchoolName !=null and SchoolName!=''">
+                AND t_school_strategy.school_name LIKE CONCAT(CONCAT('%',#{SchoolName}),'%')
             </if>
         </where>
         ORDER BY t_school_strategy.create_date DESC

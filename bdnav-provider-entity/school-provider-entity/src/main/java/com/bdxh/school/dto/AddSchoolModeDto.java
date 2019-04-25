@@ -3,7 +3,6 @@ package com.bdxh.school.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import java.util.Date;
 
 @Data
 public class AddSchoolModeDto {
@@ -16,8 +15,10 @@ public class AddSchoolModeDto {
     private String SchoolCode;
 
     @ApiModelProperty("模式名称")
-    private String Name;
+    private String ModelName;
 
+    @ApiModelProperty("适用平台 1安卓  2苹果")
+    private String Platform;
 
     @ApiModelProperty("模式优先级")
     private Integer Priority;
@@ -28,7 +29,6 @@ public class AddSchoolModeDto {
 
     @ApiModelProperty("可用的设备")
     private String UsableDevice;
-
 
 
     @ApiModelProperty("操作人")

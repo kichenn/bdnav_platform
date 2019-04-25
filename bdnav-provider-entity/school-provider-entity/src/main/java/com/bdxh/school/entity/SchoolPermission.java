@@ -40,6 +40,11 @@ public class SchoolPermission {
     /**
      * 菜单名称
      */
+    private String title;
+
+    /**
+     * 路由地址
+     */
     private String name;
 
     /**
@@ -197,7 +202,7 @@ public class SchoolPermission {
     }
 
     /**
-     * 获取菜单名称
+     * 获取路由地址
      *
      * @return name - 菜单名称
      */
@@ -206,12 +211,30 @@ public class SchoolPermission {
     }
 
     /**
-     * 设置菜单名称
+     * 设置路由地址
      *
      * @param name 菜单名称
      */
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    /**
+     * 获取菜单名称
+     *
+     * @return name - 菜单名称
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * 设置菜单名称
+     *
+     * @param title 菜单名称
+     */
+    public void setTitle(String title) {
+        this.title = title == null ? null : title.trim();
     }
 
     /**

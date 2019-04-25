@@ -20,14 +20,17 @@ public class SchoolMode {
 	private Long Id;
 
 	@Column(name = "school_id")
-
 	private Long SchoolId;
 
 	@Column(name = "school_code")
 	private String SchoolCode;
 
-	@Column(name = "name")
-	private String Name;
+	@Column(name = "model_name")
+	private String ModelName;
+
+	@Column(name = "platform")
+	@ApiModelProperty("适用平台 1安卓  2苹果")
+	private String Platform;
 
 	@Column(name = "priority")
 	private Integer Priority;
