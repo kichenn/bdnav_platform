@@ -83,8 +83,8 @@ public class SchoolModeServiceImpl extends BaseService<SchoolMode> implements Sc
     }
 
     @Override
-    public List<SchoolMode> getListByPlatform(String Platform) {
-        return schoolModeMapper.getListByPlatform(Platform);
+    public List<SchoolMode> getListByPlatform(Long SchoolId,String Platform) {
+        return schoolModeMapper.getListByPlatform(SchoolId,Platform);
     }
 
 
