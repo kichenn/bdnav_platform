@@ -1,6 +1,7 @@
 package com.bdxh.school.contoller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -50,7 +51,7 @@ public class SchoolFenceController {
         schoolFence.setRecursionPermission(addSchoolFenceDto.getRecursionPermissionStatusEnum().getKey());
         schoolFence.setStatus(addSchoolFenceDto.getBlackStatusEnum().getKey());
         try {
-            Boolean result = schoolFenceService.addFence(schoolFence);
+            Boolean result = schoolFenceService.addFence(schoolFence, addSchoolFenceDto.getFenceEntityDtos());
             return WrapMapper.ok(result);
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -111,7 +112,7 @@ public class SchoolFenceController {
     @ApiOperation(value = "围栏报警推送消息", response = SchoolFence.class)
     public void fencePush(HttpServletRequest request, HttpServletResponse httpServletResponse) throws IOException {
         System.err.println("报警小推送。。。。。。。。");
-       /*验证此方法。方法验证完成注释，开始获取推送信息
+/*//       验证此方法。方法验证完成注释，开始获取推送信息
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("type", 1);
         jsonObject.put("service_id", FenceConstant.SERVICE_ID);
@@ -122,16 +123,16 @@ public class SchoolFenceController {
         httpServletResponse.setCharacterEncoding("utf-8");
         httpServletResponse.setContentType("application/json;charset=utf-8");
         httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));*/
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("type", 2);
-        jsonObject.put("service_id", FenceConstant.SERVICE_ID);
-        String str = jsonObject.toJSONString();
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-        httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
-        httpServletResponse.setHeader("SignId", "baidu_yingyan");
-        httpServletResponse.setCharacterEncoding("utf-8");
-        httpServletResponse.setContentType("application/json;charset=utf-8");
-        httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
+//        JSONObject jsonObject = new JSONObject();
+//        jsonObject.put("type", 2);
+//        jsonObject.put("service_id", FenceConstant.SERVICE_ID);
+//        String str = jsonObject.toJSONString();
+//        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+//        httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
+//        httpServletResponse.setHeader("SignId", "baidu_yingyan");
+//        httpServletResponse.setCharacterEncoding("utf-8");
+//        httpServletResponse.setContentType("application/json;charset=utf-8");
+//        httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
 
         StringBuilder sb = new StringBuilder();
         byte[] b = new byte[4096];
@@ -141,6 +142,16 @@ public class SchoolFenceController {
             sb.append(new String(b, 0, n));
         }
         log.info("百度回调内容：" + sb.toString());
+
+        JSONObject resultJson = (JSONObject) JSON.parse(sb.toString());
+        if (resultJson != null) {
+            //获取围栏报警信息
+            JSONArray jsonArray = resultJson.getJSONArray("content");
+
+//            for (int i=0)
+        }
+
+
         JSONObject statusjson = new JSONObject();
         statusjson.put("status", 0);
         statusjson.put("message", "成功");

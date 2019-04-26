@@ -25,7 +25,7 @@ public interface SecurityConstant {
     /**
      * token刷新时间60分钟
      */
-    int TOKEN_REFRESH_TIME = 60;
+    int TOKEN_REFRESH_TIME = 30;
 
     /**
      * token请求header

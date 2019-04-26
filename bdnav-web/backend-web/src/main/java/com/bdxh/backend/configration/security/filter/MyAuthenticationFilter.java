@@ -77,7 +77,9 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 Date date = (Date) redisTemplate.opsForValue().get(SecurityConstant.TOKEN_IS_REFRESH + username);
                 Instant instant = date.toInstant();
                 ZoneId zoneId = ZoneId.systemDefault();
+                //redis中存储的 替换token的时间
                 LocalDateTime refreshTime = instant.atZone(zoneId).toLocalDateTime();
+                //如果时间在redis存储的时间之后，那么替换token
                 if (LocalDateTime.now().isAfter(refreshTime)) {
                     Map<String, Object> param = new HashMap<>(16);
                     param.put(SecurityConstant.USER, userStr);

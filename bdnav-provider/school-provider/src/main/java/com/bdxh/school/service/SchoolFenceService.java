@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.FenceEntityDto;
 import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.entity.SchoolFence;
 import com.bdxh.school.vo.SchoolFenceShowVo;
@@ -33,7 +34,7 @@ public interface SchoolFenceService extends IService<SchoolFence> {
      * @param schoolFence
      * @return
      */
-    Boolean addFence(SchoolFence schoolFence) throws RuntimeException;
+    Boolean addFence(SchoolFence schoolFence, List<FenceEntityDto> fenceEntityDto) throws RuntimeException;
 
 
     /**
