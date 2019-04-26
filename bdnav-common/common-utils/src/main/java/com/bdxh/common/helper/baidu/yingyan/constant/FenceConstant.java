@@ -11,7 +11,7 @@ public class FenceConstant {
     public static final String AK = "hS2ggfP9IIGxKFDeff87I7rqEdar07bf";
 
     //学校端围栏service的唯一标识
-    public static final int SERVICE_ID = 211624;
+    public static final int SERVICE_ID = 212229;
 
     /**
      * 单位：米。每个轨迹点都有一个定位误差半径radius，
@@ -42,6 +42,11 @@ public class FenceConstant {
     public static final String ROUND_ADD_ENTITY_URL = "http://yingyan.baidu.com/api/v3/fence/addmonitoredperson";
 
     /**
+     * 删除围栏可去除监控的entity URL POST请求
+     */
+    public static final String ROUND_DELETE_ENTITY_URL = "http://yingyan.baidu.com/api/v3/fence/deletemonitoredperson";
+
+    /**
      * 删除圆形围栏，并且会将该围栏里的监控对象删除，post请求
      */
     public static final String DELETE_ROUND_URL = "http://yingyan.baidu.com/api/v3/fence/delete";
@@ -55,4 +60,9 @@ public class FenceConstant {
      * 删除终端实体url,post请求
      */
     public static final String DELETE_NEW_ENTITY = "http://yingyan.baidu.com/api/v3/entity/delete";
+
+    /**
+     * 查询围栏底下所有entity URL get请求
+     */
+    public static final String SEL_ROUND_IN_ENTITY_URL="http://yingyan.baidu.com/api/v3/entity/list";
 }

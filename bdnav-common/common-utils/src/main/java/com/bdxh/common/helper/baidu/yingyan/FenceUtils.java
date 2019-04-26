@@ -28,7 +28,6 @@ public class FenceUtils {
         String result = "";
         try {
             result = HttpClientUtils.doPost(FenceConstant.CREATE_ROUND_URL, map);
-            log.info(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,8 +44,7 @@ public class FenceUtils {
         Map<String, Object> map = toMap(request);
         String result = "";
         try {
-            result = HttpClientUtils.doPost(FenceConstant.DELETE_ROUND_URL, map);
-            log.info(result);
+            result = HttpClientUtils.doPost(FenceConstant.MODIFY_ROUND_URL, map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -68,7 +66,27 @@ public class FenceUtils {
         String result = "";
         try {
             result = HttpClientUtils.doPost(FenceConstant.ROUND_ADD_ENTITY_URL, map);
-            log.info(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * @Description: 去除围栏中监控的entity对象 （只是去除对entity监控，并不会删除entity的对象）
+     * @注：entitys =#clearentity 为去除该围栏底下所有监控对象
+     * @Author: Kang
+     * @Date: 2019/4/26 14:06
+     */
+    public static String deleteMonitoredPerson(int fenceId, String entitys) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("ak", FenceConstant.AK);
+        map.put("service_id", FenceConstant.SERVICE_ID);
+        map.put("fence_id", fenceId);
+        map.put("monitored_person", entitys);
+        String result = "";
+        try {
+            result = HttpClientUtils.doPost(FenceConstant.ROUND_DELETE_ENTITY_URL, map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -91,7 +109,6 @@ public class FenceUtils {
         String result = "";
         try {
             result = HttpClientUtils.doPost(FenceConstant.DELETE_ROUND_URL, map);
-            log.info(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -109,7 +126,6 @@ public class FenceUtils {
         String result = "";
         try {
             result = HttpClientUtils.doPost(FenceConstant.CREATE_NEW_ENTITY, map);
-            log.info(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -129,7 +145,6 @@ public class FenceUtils {
         String result = "";
         try {
             result = HttpClientUtils.doPost(FenceConstant.DELETE_NEW_ENTITY, map);
-            log.info(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
