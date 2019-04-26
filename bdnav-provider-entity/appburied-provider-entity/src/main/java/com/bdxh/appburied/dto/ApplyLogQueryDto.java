@@ -55,7 +55,6 @@ public class ApplyLogQueryDto extends Query {
     @ApiModelProperty("操作人姓名(审核人)")
     private String operatorName;
 
-    @Null(message = "操作状态必需为空，新增时只能为之待审核")
     @ApiModelProperty("操作状态 1 待审核 2 审核拒绝 3 审核通过(新增时只能为之待审核) ")
-    private ApplyLogOperatorStatusEnum applyLogOperatorStatusEnum = ApplyLogOperatorStatusEnum.WAIT;
+    private Byte operatorStatus;
 }
