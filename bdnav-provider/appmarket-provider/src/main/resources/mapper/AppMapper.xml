@@ -69,13 +69,15 @@
     <include refid="BaseColumns"/>
     from
     t_app
-    where school_id IS NULL
+    <where>
+      school_id IS NULL
     <if test="appName!= null and appName!=''">
       and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
     </if>
     <if test="platform!= null">
       and platform = #{platform}
     </if>
+    </where>
     UNION
     SELECT
     <include refid="BaseColumns"/>
