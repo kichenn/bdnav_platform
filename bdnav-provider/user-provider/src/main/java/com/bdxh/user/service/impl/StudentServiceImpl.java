@@ -116,7 +116,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         //修改时判断用户是否已经激活
         if(updateStudentDto.getActivate().equals(Byte.parseByte("2"))) {
             SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(/*updateStudentDto.getSchoolCode()*/"1011347968");
+            synUserInfoRequest.setSchool_code(updateStudentDto.getSchoolCode());
             synUserInfoRequest.setCard_number(updateStudentDto.getCardNumber());
             synUserInfoRequest.setName(updateStudentDto.getName());
             synUserInfoRequest.setGender(updateStudentDto.getGender() == 1 ? "男" : "女");

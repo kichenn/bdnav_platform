@@ -49,13 +49,13 @@
                 AND school_id=#{applyLog.schoolId,jdbcType = BIGINT}
             </if>
             <if test="applyLog.schoolCode !=null and applyLog.schoolCode!=''">
-                AND school_code=#{applyLog.schoolCode,jdbcType = VARCHAR}
+                AND school_code like CONCAT(CONCAT('%',#{applyLog.schoolCode,jdbcType = VARCHAR}),'%')
             </if>
             <if test="applyLog.schoolName !=null and applyLog.schoolName!=''">
                 AND school_name like CONCAT(CONCAT('%',#{applyLog.schoolName,jdbcType=VARCHAR}),'%')
             </if>
             <if test="applyLog.cardNumber !=null and applyLog.cardNumber!=''">
-                AND card_number=#{applyLog.cardNumber,jdbcType = VARCHAR}
+                AND card_number  CONCAT(CONCAT('%',#{applyLog.cardNumber,jdbcType = VARCHAR}),'%')
             </if>
             <if test="applyLog.userName !=null and applyLog.userName!=''">
                 AND user_name like CONCAT(CONCAT('%',#{applyLog.userName,jdbcType=VARCHAR}),'%')
@@ -64,7 +64,7 @@
                 AND app_name like CONCAT(CONCAT('%',#{applyLog.appName,jdbcType=VARCHAR}),'%')
             </if>
             <if test="applyLog.operatorCode !=null and applyLog.operatorCode!=''">
-                AND operator_code=#{applyLog.operatorCode,jdbcType = VARCHAR}
+                AND operator_code like CONCAT(CONCAT('%',#{applyLog.operatorCode,jdbcType = VARCHAR}),'%')
             </if>
             <if test="applyLog.operatorName !=null and applyLog.operatorName!=''">
                 AND operator_name like CONCAT(CONCAT('%',#{applyLog.operatorName,jdbcType=VARCHAR}),'%')

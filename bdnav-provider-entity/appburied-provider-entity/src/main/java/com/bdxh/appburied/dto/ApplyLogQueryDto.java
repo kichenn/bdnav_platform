@@ -55,6 +55,7 @@ public class ApplyLogQueryDto extends Query {
     @ApiModelProperty("操作人姓名(审核人)")
     private String operatorName;
 
+
     @ApiModelProperty("操作状态 1 待审核 2 审核拒绝 3 审核通过(新增时只能为之待审核) ")
-    private Byte operatorStatus;
+    private ApplyLogOperatorStatusEnum applyLogOperatorStatusEnum ;
 }

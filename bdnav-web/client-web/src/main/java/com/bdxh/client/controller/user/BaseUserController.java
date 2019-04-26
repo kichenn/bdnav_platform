@@ -34,11 +34,11 @@ public class BaseUserController {
     @RequestMapping(value = "/queryUserPhoneByPhone",method = RequestMethod.POST)
     public Object queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto){
         try {
-            Integer count=baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
+            Integer count=(Integer) baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
             if(count>0){
-                return WrapMapper.error("电话号码重复");
+                return WrapMapper.ok(false);
             }
-            return  WrapMapper.ok();
+            return  WrapMapper.ok(true);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

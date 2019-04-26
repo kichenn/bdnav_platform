@@ -48,6 +48,6 @@ public class ProductQueryDto extends Query {
      * 结束时间
      */
     @ApiModelProperty("结束时间")
-    private Date endTime;
+    private Date endDate;
 
 }

@@ -33,5 +33,5 @@ public interface BaseUserControllerClient {
      * @return
      */
     @RequestMapping(value ="/baseUser/queryUserPhoneByPhone",method = RequestMethod.POST)
-    Wrapper<Integer> queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto);
+    Wrapper queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto);
 }

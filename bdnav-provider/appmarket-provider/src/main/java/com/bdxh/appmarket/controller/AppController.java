@@ -186,7 +186,7 @@ public class AppController {
             if(queryAppDto.getSchoolId()==null){
              appListPage  = appService.findAppList(queryAppDto.getPageNum(), queryAppDto.getPageSize());
             }else{
-             appListPage = appService.getApplicationOfCollection(queryAppDto.getSchoolId(),queryAppDto.getAppName(),queryAppDto.getPageNum(), queryAppDto.getPageSize());
+             appListPage = appService.getApplicationOfCollection(queryAppDto.getSchoolId(),queryAppDto.getAppName(),queryAppDto.getPlatform(),queryAppDto.getPageNum(), queryAppDto.getPageSize());
             }
             return WrapMapper.ok(appListPage);
         }catch (Exception e){

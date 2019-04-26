@@ -44,10 +44,10 @@
                 AND user_name  like CONCAT(CONCAT('%',#{appStatus.userName,jdbcType = VARCHAR}),'%')
             </if>
             <if test="appStatus.schoolCode !=null and appStatus.schoolCode!=''">
-                AND school_code=#{appStatus.schoolCode,jdbcType = VARCHAR}
+                AND school_code like CONCAT(CONCAT('%',#{appStatus.schoolCode,jdbcType = VARCHAR}),'%')
             </if>
             <if test="appStatus.cardNumber !=null and appStatus.cardNumber!=''">
-                AND card_number=#{appStatus.cardNumber,jdbcType = VARCHAR}
+                AND card_number like CONCAT(CONCAT('%',#{appStatus.cardNumber,jdbcType = VARCHAR}),'%')
             </if>
             <if test="appStatus.appStatus !=null">
                 AND app_status=#{appStatus.appStatus,jdbcType = TINYINT}

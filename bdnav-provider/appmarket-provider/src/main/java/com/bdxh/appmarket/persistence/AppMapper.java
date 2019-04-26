@@ -33,7 +33,7 @@ public interface AppMapper extends Mapper<App> {
     List<App> getByCondition(Map<String,Object> param);
 
     //显示全部应用or学校特定应用
-    List<App> getApplicationOfCollection(@Param("schoolId") Long schoolId,@Param("appName") String appName);
+    List<App> getApplicationOfCollection(@Param("schoolId") Long schoolId,@Param("appName") String appName,@Param("platform") Byte platform);
 
 
 

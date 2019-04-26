@@ -38,13 +38,13 @@
                 AND school_id=#{installApps.schoolId,jdbcType = BIGINT}
             </if>
             <if test="installApps.schoolCode !=null and installApps.schoolCode!=''">
-                AND school_code=#{installApps.schoolCode,jdbcType = VARCHAR}
+                AND school_code like CONCAT(CONCAT('%',#{installApps.schoolCode,jdbcType = VARCHAR}),'%')
             </if>
             <if test="installApps.schoolName !=null and installApps.schoolName!=''">
                 AND school_name like CONCAT(CONCAT('%',#{installApps.schoolName,jdbcType=VARCHAR}),'%')
             </if>
             <if test="installApps.cardNumber !=null and installApps.cardNumber!=''">
-                AND card_number=#{installApps.cardNumber,jdbcType = VARCHAR}
+                AND card_number like CONCAT(CONCAT('%',#{installApps.cardNumber,jdbcType = VARCHAR}),'%')
             </if>
             <if test="installApps.userName !=null and installApps.userName!=''">
                 AND user_name like CONCAT(CONCAT('%',#{installApps.userName,jdbcType=VARCHAR}),'%')

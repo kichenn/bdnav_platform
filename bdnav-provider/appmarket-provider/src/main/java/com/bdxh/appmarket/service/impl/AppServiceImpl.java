@@ -96,9 +96,9 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     }
 
     @Override
-    public PageInfo<App> getApplicationOfCollection(Long schoolId,String appName,Integer pageNum, Integer pageSize) {
+    public PageInfo<App> getApplicationOfCollection(Long schoolId,String appName,Byte platform,Integer pageNum, Integer pageSize) {
         PageHelper.startPage(pageNum,pageSize);
-        List<App> apps = appMapper.getApplicationOfCollection(schoolId,appName);
+        List<App> apps = appMapper.getApplicationOfCollection(schoolId,appName,platform);
         return new PageInfo(apps);
     }
 
@@ -120,11 +120,5 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
         return appLists;
     }
 
-/*    @Override
-    public PageInfo<App> getAppOfCollection(Map<String,Object> param, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<App> apps = appMapper.getByCondition(param);
-        return new PageInfo(apps);
-    }*/
 
 }

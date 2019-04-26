@@ -47,8 +47,8 @@
       <if test="startDate">
         and <![CDATA[update_date >= #{startDate}]]>
       </if>
-      <if test="endTime">
-        and <![CDATA[update_date <= #{endTime}]]>
+      <if test="endDate">
+        and <![CDATA[update_date <= #{endDate}]]>
       </if>
     </where>
     order by update_date desc
