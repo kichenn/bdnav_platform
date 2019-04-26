@@ -193,6 +193,7 @@ public class TeacherController {
                 School school = schoolControllerClient.findSchoolBySchoolCode(teacherVo.getSchoolCode()).getResult();
                 updateTeacherDto.setAppKey(school.getAppKey());
                 updateTeacherDto.setAppSecret(school.getAppSecret());
+                updateTeacherDto.setSchoolType(school.getSchoolType());
             }
            Wrapper wrapper=teacherControllerClient.updateTeacher(updateTeacherDto);
             return wrapper;

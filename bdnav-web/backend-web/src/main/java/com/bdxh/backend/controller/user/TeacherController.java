@@ -166,6 +166,7 @@ public class TeacherController {
                 School school = schoolControllerClient.findSchoolBySchoolCode(teacherVo.getSchoolCode()).getResult();
                 updateTeacherDto.setAppKey(school.getAppKey());
                 updateTeacherDto.setAppSecret(school.getAppSecret());
+                updateTeacherDto.setSchoolType(school.getSchoolType());
                 updateTeacherDto.setActivate(teacherVo.getActivate());
             }
             if(null!=teacherVo.getImage()) {

@@ -257,6 +257,7 @@ public class StudentController {
                 School school = schoolControllerClient.findSchoolBySchoolCode(studentVo.getSchoolCode()).getResult();
                 updateStudentDto.setAppKey(school.getAppKey());
                 updateStudentDto.setAppSecret(school.getAppSecret());
+                updateStudentDto.setSchoolType(school.getSchoolType());
             }
             if(null!=studentVo.getImage()){
             if (!studentVo.getImage().equals(updateStudentDto.getImage())) {

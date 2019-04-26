@@ -23,6 +23,7 @@ import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -115,14 +116,21 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         //修改时判断用户是否已经激活
         if(updateStudentDto.getActivate().equals(Byte.parseByte("2"))) {
             SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(updateStudentDto.getSchoolCode());
+            synUserInfoRequest.setSchool_code(/*updateStudentDto.getSchoolCode()*/"1011347968");
             synUserInfoRequest.setCard_number(updateStudentDto.getCardNumber());
             synUserInfoRequest.setName(updateStudentDto.getName());
             synUserInfoRequest.setGender(updateStudentDto.getGender() == 1 ? "男" : "女");
-            synUserInfoRequest.setCollege(updateStudentDto.getCollegeName());
-            synUserInfoRequest.setProfession(updateStudentDto.getProfessionName());
-            synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
-            synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
+            if(updateStudentDto.getSchoolType()>=Byte.parseByte("4")){
+                synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
+                synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
+                synUserInfoRequest.setCollege(updateStudentDto.getCollegeName());
+                synUserInfoRequest.setProfession(updateStudentDto.getProfessionName());
+            }else{
+                synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
+                synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
+            }
+
+
             synUserInfoRequest.setOrganization(updateStudentDto.getClassNames());
             synUserInfoRequest.setTelephone(updateStudentDto.getPhone());
             synUserInfoRequest.setCard_type("1");

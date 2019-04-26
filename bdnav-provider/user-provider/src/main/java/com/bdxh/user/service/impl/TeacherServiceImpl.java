@@ -159,8 +159,12 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             synUserInfoRequest.setCard_number(updateTeacherDto.getCardNumber());
             synUserInfoRequest.setName(updateTeacherDto.getName());
             synUserInfoRequest.setGender(updateTeacherDto.getGender() == 1 ? "男" : "女");
-            synUserInfoRequest.setCollege(updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptName());
+            String names[]=updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames().split("\\/");
+            if(updateTeacherDto.getSchoolType()>=Byte.parseByte("4")){
+                synUserInfoRequest.setCollege(names[names.length-1]);
+            }
             synUserInfoRequest.setOrganization(updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames());
+
             synUserInfoRequest.setTelephone(updateTeacherDto.getPhone());
             synUserInfoRequest.setCard_type("1");
             synUserInfoRequest.setId_card(updateTeacherDto.getIdcard());

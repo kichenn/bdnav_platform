@@ -123,7 +123,9 @@ private SnowflakeIdWorker snowflakeIdWorker;
                 synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);
                 synUserInfoRequest.setHead_image(updateFamilyDto.getImage());
                 synUserInfoRequest.setGender(updateFamilyDto.getGender()==1?"男":"女");
-                synUserInfoRequest.setCollege(updateFamilyDto.getSchoolName());
+                if(updateFamilyDto.getSchoolType()>=Byte.parseByte("4")){
+                    synUserInfoRequest.setCollege(updateFamilyDto.getSchoolName());
+                }
                 synUserInfoRequest.setOrganization(updateFamilyDto.getSchoolName());
                 synUserInfoRequest.setTelephone(updateFamilyDto.getPhone());
                 synUserInfoRequest.setCard_type("1");

@@ -194,6 +194,7 @@ public class FamilyController {
             School school=schoolControllerClient.findSchoolBySchoolCode(familyVo.getSchoolCode()).getResult();
             updateFamilyDto.setAppKey(school.getAppKey());
             updateFamilyDto.setAppSecret(school.getAppSecret());
+            updateFamilyDto.setSchoolType(school.getSchoolType());
             }
             Wrapper wrapper=familyControllerClient.updateFamily(updateFamilyDto);
             return wrapper;
