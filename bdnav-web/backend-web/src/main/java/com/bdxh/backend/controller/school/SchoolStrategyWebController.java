@@ -1,9 +1,11 @@
 package com.bdxh.backend.controller.school;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
+import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -26,6 +28,10 @@ public class SchoolStrategyWebController {
     @ApiOperation(value = "增加学校模式", response = Boolean.class)
     public Object addPolicyInCondition(@Validated @RequestBody AddPolicyDto addPolicyDto) {
         try {
+            //设置操作人
+            User user = SecurityUtils.getCurrentUser();
+            addPolicyDto.setOperator(user.getId());
+            addPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.addPolicyInCondition(addPolicyDto);
             return wrapper;
         } catch (Exception e) {
@@ -41,6 +47,10 @@ public class SchoolStrategyWebController {
     @ApiOperation(value = "修改学校模式", response = Boolean.class)
     public Object updatePolicyInCondition(@Validated @RequestBody ModifyPolicyDto modifyPolicyDto) {
         try{
+            //设置操作人
+            User user = SecurityUtils.getCurrentUser();
+            modifyPolicyDto.setOperator(user.getId());
+            modifyPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.updatePolicyInCondition(modifyPolicyDto);
             return wrapper;
         } catch (Exception e) {
