@@ -119,6 +119,7 @@ public interface StudentControllerClient {
      * @return
      */
     @RequestMapping(value = "/student/findStudentInfoByClassOrg", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<List<Student>>  findStudentInfoByClassOrg(@RequestParam("schoolCode") String schoolCode,
                                       @RequestParam("parentIds") String parentIds,
                                       @RequestParam("type") Byte type);

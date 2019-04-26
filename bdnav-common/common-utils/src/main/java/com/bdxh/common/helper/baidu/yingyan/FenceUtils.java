@@ -55,6 +55,28 @@ public class FenceUtils {
     }
 
     /**
+     * @Description: 增加围栏需监控的entity
+     * @Author: Kang
+     * @Date: 2019/4/26 9:44
+     */
+    public static String addMonitoredPerson(int fenceId, String entitys) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("ak", FenceConstant.AK);
+        map.put("service_id", FenceConstant.SERVICE_ID);
+        map.put("fence_id", fenceId);
+        map.put("monitored_person", entitys);
+        String result = "";
+        try {
+            result = HttpClientUtils.doPost(FenceConstant.ROUND_ADD_ENTITY_URL, map);
+            log.info(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
+    /**
      * @Description: 删除圆形围栏
      * @Author: Kang
      * @Date: 2019/4/16 14:12

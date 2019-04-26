@@ -37,6 +37,11 @@ public class FenceConstant {
     public static final String MODIFY_ROUND_URL = "http://yingyan.baidu.com/api/v3/fence/updatecirclefence";
 
     /**
+     * 增加围栏需监控对象 URL post请求
+     */
+    public static final String ROUND_ADD_ENTITY_URL = "http://yingyan.baidu.com/api/v3/fence/addmonitoredperson";
+
+    /**
      * 删除圆形围栏，并且会将该围栏里的监控对象删除，post请求
      */
     public static final String DELETE_ROUND_URL = "http://yingyan.baidu.com/api/v3/fence/delete";

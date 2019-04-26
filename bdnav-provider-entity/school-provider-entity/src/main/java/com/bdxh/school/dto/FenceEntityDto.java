@@ -1,5 +1,6 @@
 package com.bdxh.school.dto;
 
+import com.bdxh.school.enums.GroupTypeEnum;
 import lombok.Data;
 
 /**
@@ -34,4 +35,9 @@ public class FenceEntityDto {
      * 监控人员所属班级或者部门名称
      */
     private String className;
+
+    /**
+     * 用户群类型(1 学生 2 老师)
+     */
+    private GroupTypeEnum groupTypeEnum;
 }

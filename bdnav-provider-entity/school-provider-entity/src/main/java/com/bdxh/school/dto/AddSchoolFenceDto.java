@@ -30,6 +30,7 @@ public class AddSchoolFenceDto {
     @ApiModelProperty("用户群类型(1 学生 2 老师)")
     private GroupTypeEnum groupTypeEnum;
 
+    @NotNull(message = "部门id不能为空")
     @ApiModelProperty("部门id")
     private Long groupId;
 

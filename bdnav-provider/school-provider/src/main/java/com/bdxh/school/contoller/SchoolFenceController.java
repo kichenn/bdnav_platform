@@ -51,7 +51,7 @@ public class SchoolFenceController {
         schoolFence.setRecursionPermission(addSchoolFenceDto.getRecursionPermissionStatusEnum().getKey());
         schoolFence.setStatus(addSchoolFenceDto.getBlackStatusEnum().getKey());
         try {
-            Boolean result = schoolFenceService.addFence(schoolFence);
+            Boolean result = schoolFenceService.addFence(schoolFence, addSchoolFenceDto.getFenceEntityDtos());
             return WrapMapper.ok(result);
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -146,7 +146,7 @@ public class SchoolFenceController {
         JSONObject resultJson = (JSONObject) JSON.parse(sb.toString());
         if (resultJson != null) {
             //获取围栏报警信息
-            JSONArray jsonArray=resultJson.getJSONArray("content");
+            JSONArray jsonArray = resultJson.getJSONArray("content");
 
 //            for (int i=0)
         }

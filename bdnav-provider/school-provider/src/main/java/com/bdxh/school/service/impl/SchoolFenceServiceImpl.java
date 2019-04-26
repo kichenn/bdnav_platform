@@ -6,6 +6,7 @@ import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.helper.baidu.yingyan.request.CreateFenceRoundRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.ModifyFenceRoundRequest;
+import com.bdxh.school.dto.FenceEntityDto;
 import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolClass;
@@ -14,6 +15,7 @@ import com.bdxh.school.persistence.SchoolClassMapper;
 import com.bdxh.school.persistence.SchoolDeptMapper;
 import com.bdxh.school.persistence.SchoolMapper;
 import com.bdxh.school.service.SchoolFenceService;
+import com.bdxh.school.thread.AddFenceEntityThread;
 import com.bdxh.school.vo.SchoolFenceShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -79,20 +81,11 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean addFence(SchoolFence schoolFence) throws RuntimeException {
+    public Boolean addFence(SchoolFence schoolFence, List<FenceEntityDto> fenceEntityDto) throws RuntimeException {
 
-        //增加监控终端实体
-        CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
-        entityRequest.setAk(FenceConstant.AK);
-        entityRequest.setService_id(FenceConstant.SERVICE_ID);
-//        entityRequest.setEntity_name(groupName);
-//        entityRequest.setEntity_desc("");
-//        String entityResult = FenceUtils.createNewEntity(entityRequest);
-//        JSONObject entityJson = JSONObject.parseObject(entityResult);
-//        if (entityJson.getInteger("status") != 0) {
-//            throw new RuntimeException("增加监控终端实体失败， " + groupTypeStr + "组，名称：" + groupName + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
-//        }
-
+        //线程池增加监控对象
+        AddFenceEntityThread addFenceEntityThread = new AddFenceEntityThread();
+        addFenceEntityThread.handleList(fenceEntityDto, 5);
         //增加围栏
         CreateFenceRoundRequest request = new CreateFenceRoundRequest();
         request.setAk(FenceConstant.AK);
@@ -103,16 +96,29 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         request.setLatitude(Double.valueOf(schoolFence.getLatitude().toString()));
         request.setLongitude(Double.valueOf(schoolFence.getLongitude().toString()));
         request.setRadius(Double.valueOf(schoolFence.getRadius().toString()));
-//        request.setMonitored_person(groupName);
+        //获取第一个人员创建围栏添加完成
+        request.setMonitored_person(fenceEntityDto.get(0).getId() + "_" + fenceEntityDto.get(0).getName());
         String createRoundResult = FenceUtils.createRoundFence(request);
         JSONObject createRoundJson = JSONObject.parseObject(createRoundResult);
         if (createRoundJson.getInteger("status") != 0) {
-            throw new RuntimeException("生成围栏失败,状态码" + createRoundJson.getInteger("status") + "，原因:" + createRoundJson.getString("message"));
+            throw new RuntimeException("生成围栏失败,状态码:" + createRoundJson.getInteger("status") + "，原因:" + createRoundJson.getString("message"));
         }
         schoolFence.setFenceId(createRoundJson.getInteger("fence_id"));
 
+        List<FenceEntityDto> modifyFenceEntitys = fenceEntityDto.subList(1, fenceEntityDto.size());
+        //将剩余人员添加到围栏里
+        if (modifyFenceEntitys.size() > 100) {
+            //批量更新监控人员
+            int count = modifyFenceEntitys.size() % 100 == 0 ? modifyFenceEntitys.size() / 100 : modifyFenceEntitys.size() / 100 + 1;
+            for (int i = 0; i < count; i++) {
 
-        return schoolFenceMapper.insertSelective(schoolFence) > 0;
+            }
+        } else {
+
+        }
+
+        return null;
+//        return schoolFenceMapper.insertSelective(schoolFence) > 0;
     }
 
     /**
