@@ -35,7 +35,7 @@ public class BaseUserController {
     public Object queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto){
         try {
             Integer count=baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
-            if(count>0){
+            if((count==null?count=0:count)>0){
                 return WrapMapper.ok(false);
             }
             return  WrapMapper.ok(true);

@@ -239,13 +239,10 @@
 	<select id="queryUserPhoneByPhone" resultType="java.lang.Integer">
 		select count(1) from t_base_user
 		<where>
-		 <if test="baseUserQueryDto.schoolCode!=null and baseUserQueryDto.schoolCode!=''">
-			 and school_code!=#{baseUserQueryDto.schoolCode}
+		 <if test="baseUserQueryDto.userId!=null and baseUserQueryDto.userId!=''">
+			and user_id!=#{baseUserQueryDto.userId}
 		 </if>
-		<if test="baseUserQueryDto.cardNumber!=null and baseUserQueryDto.cardNumber!=''">
-			and	card_number!=#{baseUserQueryDto.cardNumber}
-		</if>
-		 and phone=#{baseUserQueryDto.phone}
+			and phone=#{baseUserQueryDto.phone}
 		</where>
 	</select>
 </mapper>

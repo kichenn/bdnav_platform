@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 
 /**
  * @description:
@@ -38,7 +37,7 @@ public class BaseUserController {
     @RequestMapping(value = "/queryUserPhoneByPhone",method = RequestMethod.POST)
     public Object queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto){
         try {
-            Integer count=baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
+            Integer count=(Integer) baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
             if(count>0){
                 return WrapMapper.ok(false);
             }

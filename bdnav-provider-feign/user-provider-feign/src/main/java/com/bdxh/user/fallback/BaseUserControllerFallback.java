@@ -21,7 +21,7 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
     }
 
     @Override
-    public Wrapper<Integer> queryUserPhoneByPhone(BaseUserQueryDto baseUserQueryDto) {
+    public Wrapper queryUserPhoneByPhone(BaseUserQueryDto baseUserQueryDto) {
         return WrapMapper.error();
     }
 }
