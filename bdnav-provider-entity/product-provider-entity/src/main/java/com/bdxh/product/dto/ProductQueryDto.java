@@ -23,19 +23,19 @@ public class ProductQueryDto extends Query {
     /**
      * 商品类型 1 单品 2 套餐
      */
-    @ApiModelProperty("商品类型")
+    @ApiModelProperty("商品类型 1 单品 2 套餐")
     private Byte productType;
 
     /**
      * 商品上下架状态 1 下架 2 上架
      */
-    @ApiModelProperty("商品上下架状态")
+    @ApiModelProperty("商品上下架状态 1 下架 2 上架")
     private Byte sellStatus;
 
     /**
      * 业务类型 1 微校服务
      */
-    @ApiModelProperty("业务类型")
+    @ApiModelProperty("业务类型 1 微校服务")
     private Byte businessType;
 
     /**

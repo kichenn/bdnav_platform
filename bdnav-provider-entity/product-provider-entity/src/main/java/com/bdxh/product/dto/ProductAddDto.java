@@ -51,14 +51,14 @@ public class ProductAddDto implements Serializable {
      * 商品类型 1 单品 2 套餐
      */
     @NotNull(message = "商品类型不能为空")
-    @ApiModelProperty("商品类型")
+    @ApiModelProperty("商品类型 1 单品 2 套餐")
     private Byte productType=1;
 
     /**
      * 商品上下架状态 1 下架 2 上架
      */
     @NotNull(message = "商品上下架不能为空")
-    @ApiModelProperty("商品上下架状态")
+    @ApiModelProperty("商品上下架状态 1 下架 2 上架")
     private Byte sellStatus=1;
 
     /**
@@ -72,7 +72,7 @@ public class ProductAddDto implements Serializable {
      * 业务类型 1 微校服务
      */
     @NotNull(message = "商品业务类型不能为空")
-    @ApiModelProperty("业务类型")
+    @ApiModelProperty("业务类型 1 微校服务'")
     private Byte businessType=1;
 
     /**
