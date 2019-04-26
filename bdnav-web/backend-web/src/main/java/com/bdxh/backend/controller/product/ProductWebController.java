@@ -1,11 +1,13 @@
 package com.bdxh.backend.controller.product;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.product.dto.ProductAddDto;
 import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.feign.ProductControllerClient;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -60,8 +62,9 @@ public class ProductWebController {
         }
 
         try {
-            productAddDto.setOperator(1L);
-            productAddDto.setOperatorName("dk");
+            User user = SecurityUtils.getCurrentUser();
+            productAddDto.setOperator(user.getId());
+            productAddDto.setOperatorName(user.getUserName());
             Wrapper wrapper = productControllerClient.addProduct(productAddDto);
             return wrapper;
         } catch (Exception e) {
@@ -72,7 +75,7 @@ public class ProductWebController {
 
     }
 
-    ;
+
 
     @ApiOperation("更新商品")
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
