@@ -1,12 +1,14 @@
 package com.bdxh.backend.controller.school;
 
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolModeDto;
 import com.bdxh.school.dto.ModifySchoolModeDto;
 import com.bdxh.school.dto.QuerySchoolMode;
 import com.bdxh.school.feign.SchoolModeControllerClient;
+import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,6 +32,10 @@ public class SchoolModesWebController {
     @ApiOperation(value = "增加学校模式", response = Boolean.class)
     public Object findSchoolsInConditionPaging(@Validated @RequestBody AddSchoolModeDto addSchoolModeDto) {
         try {
+            //设置操作人
+            User user = SecurityUtils.getCurrentUser();
+            addSchoolModeDto.setOperator(user.getId());
+            addSchoolModeDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolModeControllerClient.addSchoolModes(addSchoolModeDto);
             return wrapper;
         } catch (Exception e) {
@@ -45,6 +51,10 @@ public class SchoolModesWebController {
     @ApiOperation(value = "修改学校模式", response = Boolean.class)
     public Object findSchoolsInConditionPaging(@Validated @RequestBody ModifySchoolModeDto modifySchoolModeDto) {
         try{
+            //设置操作人
+            User user = SecurityUtils.getCurrentUser();
+            modifySchoolModeDto.setOperator(user.getId());
+            modifySchoolModeDto.setOperatorName(user.getUserName());
         Wrapper wrapper = schoolModeControllerClient.modifySchoolModes(modifySchoolModeDto);
         return wrapper;
        } catch (Exception e) {
