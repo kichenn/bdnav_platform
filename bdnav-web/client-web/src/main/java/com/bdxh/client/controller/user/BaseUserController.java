@@ -34,8 +34,8 @@ public class BaseUserController {
     @RequestMapping(value = "/queryUserPhoneByPhone",method = RequestMethod.POST)
     public Object queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto){
         try {
-            Integer count=baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
-            if((count==null?count=0:count)>0){
+            Integer count=(Integer) baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
+            if(count>0){
                 return WrapMapper.ok(false);
             }
             return  WrapMapper.ok(true);
