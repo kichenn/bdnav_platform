@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/applyLog")
 @Slf4j
 @Validated
-@Api(value = "应用上报日志信息", tags = "应用上报日志信息交互API")
+@Api(value = "应用审核日志信息", tags = "应用审核日志信息交互API")
 public class ApplyLogController {
 
     @Autowired
@@ -38,7 +38,7 @@ public class ApplyLogController {
 
 
     @RequestMapping(value = "/findApplyLogById", method = RequestMethod.POST)
-    @ApiOperation(value = "根据id查询APP上报日志信息", response = AppStatus.class)
+    @ApiOperation(value = "根据id查询APP审核日志信息", response = AppStatus.class)
     public Object findApplyLogById(@Validated @RequestBody DelOrFindAppBuriedDto findApplyLogDto) {
         SchoolUser schoolUser= SecurityUtils.getCurrentUser();
         findApplyLogDto.setSchoolCode(schoolUser.getSchoolCode());
@@ -48,7 +48,7 @@ public class ApplyLogController {
     }
 
     @RequestMapping(value = "/findApplyLogInContionPaging", method = RequestMethod.POST)
-    @ApiOperation(value = "分页上报App状态日志查询", response = AppStatus.class)
+    @ApiOperation(value = "分页上报App审核日志查询", response = AppStatus.class)
     public Object findAppStatusInContionPaging(@Validated @RequestBody ApplyLogQueryDto applyLogQueryDto) {
         SchoolUser schoolUser= SecurityUtils.getCurrentUser();
         applyLogQueryDto.setSchoolCode(schoolUser.getSchoolCode());
