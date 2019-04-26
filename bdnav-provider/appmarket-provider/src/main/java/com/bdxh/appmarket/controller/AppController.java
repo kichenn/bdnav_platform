@@ -175,7 +175,7 @@ public class AppController {
 
     @ApiOperation("显示全部应用or学校特定应用")
     @RequestMapping(value = "/getApplicationOfCollection",method = RequestMethod.POST)
-    public Object getApplicationOfCollection(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult){
+    public Object getApplicationOfCollection(@Valid @RequestBody QueryAppDto queryAppDto, BindingResult bindingResult){
         //检验参数
         if(bindingResult.hasErrors()){
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -183,10 +183,10 @@ public class AppController {
         }
         try {
             PageInfo<App> appListPage;
-            if(appQueryDto.getSchoolId()==null){
-             appListPage  = appService.findAppList(appQueryDto.getPageNum(), appQueryDto.getPageSize());
+            if(queryAppDto.getSchoolId()==null){
+             appListPage  = appService.findAppList(queryAppDto.getPageNum(), queryAppDto.getPageSize());
             }else{
-             appListPage = appService.getApplicationOfCollection(appQueryDto.getSchoolId(),appQueryDto.getPageNum(), appQueryDto.getPageSize());
+             appListPage = appService.getApplicationOfCollection(queryAppDto.getSchoolId(),queryAppDto.getAppName(),queryAppDto.getPageNum(), queryAppDto.getPageSize());
             }
             return WrapMapper.ok(appListPage);
         }catch (Exception e){
@@ -206,22 +206,6 @@ public class AppController {
             return WrapMapper.error(e.getMessage());
         }
     }
-    @ApiOperation("带条件查询某一学校下的应用列表")
-    @RequestMapping(value = "/getAppOfCollection",method = RequestMethod.POST)
-    public Object getAppOfCollection(@Valid @RequestBody QueryAppDto queryAppDto, BindingResult bindingResult){
-        //检验参数
-        if(bindingResult.hasErrors()){
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
-        try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(queryAppDto);
-            PageInfo<App> appListPage = appService.getAppListPage(param, queryAppDto.getPageNum(), queryAppDto.getPageSize());
-            return WrapMapper.ok(appListPage);
-        }catch (Exception e){
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
+
 
 }

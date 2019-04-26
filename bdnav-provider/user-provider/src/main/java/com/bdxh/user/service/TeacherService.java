@@ -7,6 +7,7 @@ import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -84,4 +85,12 @@ public interface TeacherService extends IService<Teacher> {
      * @return
      */
     List<String> queryTeacherCardNumberBySchoolCode( String schoolCode);
+
+    /**
+     * 查询出某个部门下面的老师
+     * @param schoolCode
+     * @param parentIds
+     * @return
+     */
+    List<Teacher> findTeacherInfoByDeptOrg(@Param("schoolCode")String schoolCode, @Param("parentIds")String parentIds);
 }

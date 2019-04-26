@@ -24,6 +24,7 @@ import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageInfo;
@@ -67,6 +68,9 @@ public class StudentController {
     @Autowired
     private SinglePermissionControllerClient singlePermissionControllerClient;
 
+    @Autowired
+    private BaseUserControllerClient baseUserControllerClient;
+
     //图片路径
     private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
     //图片名称
@@ -92,8 +96,6 @@ public class StudentController {
     public Object queryStudentListPage(@RequestBody StudentQueryDto studentQueryDto){
         try {
             Wrapper wrapper =studentControllerClient.queryStudentListPage(studentQueryDto);
-            log.info("wrapper.getResult()======"+wrapper.getResult());
-            log.info("WrapMapper.ok(wrapper.getResult())======="+WrapMapper.ok(wrapper.getResult()));
             return WrapMapper.ok(wrapper.getResult());
         } catch (Exception e) {
             e.printStackTrace();
@@ -112,7 +114,6 @@ public class StudentController {
     public Object addStudent(@Valid @RequestBody AddStudentDto addStudentDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
-
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
@@ -128,6 +129,7 @@ public class StudentController {
             if(null!= student){
                 return WrapMapper.error("当前学校已存在相同学生学号");
             }
+
             SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=addStudentDto.getClassIds().split(",");
             for (int i = 0; i < ClassId.length; i++) {
@@ -173,7 +175,6 @@ public class StudentController {
                                @RequestParam(name = "cardNumber") @NotNull(message="学生微校卡号不能为空")String cardNumber,
                                 @RequestParam(name = "image" ) String image){
         try{
-
             //删除腾讯云的信息
             if(null!=image){
                 if(!image.equals(IMG_NAME)){
@@ -238,9 +239,11 @@ public class StudentController {
             return WrapMapper.error(errors);
         }
         try {
+            //获取操作人信息
             User user=SecurityUtils.getCurrentUser();
             updateStudentDto.setOperator(user.getId());
             updateStudentDto.setOperatorName(user.getUserName());
+            //获取当前修改学生原来的信息
             StudentVo studentVo=(StudentVo)studentControllerClient.queryStudentInfo(updateStudentDto.getSchoolCode(),updateStudentDto.getCardNumber()).getResult();
            if(null!=studentVo.getImage()){
             if (!studentVo.getImage().equals(updateStudentDto.getImage())) {
@@ -250,6 +253,15 @@ public class StudentController {
                 }
             }
            }
+           //获取学校信息
+            //判断是否已激活 已激活需要同步微校未激活修改不需要同步微校
+            if(studentVo.getActivate().equals(Byte.parseByte("2"))) {
+                School school = schoolControllerClient.findSchoolBySchoolCode(studentVo.getSchoolCode()).getResult();
+                updateStudentDto.setAppKey(school.getAppKey());
+                updateStudentDto.setAppSecret(school.getAppSecret());
+                updateStudentDto.setSchoolType(school.getSchoolType());
+                updateStudentDto.setActivate(studentVo.getActivate());
+            }
             SchoolClass schoolClass=new SchoolClass();
             String ClassId[]=updateStudentDto.getClassIds().split(",");
             for (int i = 0; i < ClassId.length; i++) {
@@ -341,6 +353,14 @@ public class StudentController {
                    }else{
                         cardNumberList=new ArrayList<>();
                    }
+                   //导入时判断手机号是否存在
+                   List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
+                   for (String phone : phoneList) {
+                       if(columns[11].equals(phone)){
+                           return  WrapMapper.error("请检查第" + i + "条手机号已存在");
+                       }
+                   }
+                   phoneList.add(columns[11]);
                    AddStudentDto student = new AddStudentDto();
                    student.setCardNumber(columns[12]);
                    cardNumberList.add(columns[12]);
@@ -381,7 +401,6 @@ public class StudentController {
                    if (!("").equals(student.getClassName()) && null != student.getClassName()) {
                        classNames += student.getClassName();
                    }
-
                    String ids = "";
                    int j;
                    for (j = 0;j < schoolClassList.size(); j++) {
@@ -410,7 +429,7 @@ public class StudentController {
            }
            studentControllerClient.batchSaveStudentInfo(students);
            long end=System.currentTimeMillis();
-           log.info("导入一万条数据总计用时："+(end-start));
+           log.info("总计用时："+(end-start)+"毫秒");
            return  WrapMapper.ok("导入完成,成功导入了"+(addNumber-1)+"条数据");
        }catch (Exception e){
            log.error(e.getMessage());

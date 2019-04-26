@@ -148,12 +148,13 @@ public class AppWebController {
 
     @ApiOperation("分页查询特定应用列表")
     @RequestMapping(value = "/getApplicationOfCollection",method = RequestMethod.POST)
-    public Object getApplicationOfCollection(@RequestBody AppQueryDto appQueryDto){
+    public Object getApplicationOfCollection(@RequestBody QueryAppDto queryAppDto){
         try {
-            Wrapper wrapper = appControllerClient.getApplicationOfCollection(appQueryDto);
+            Wrapper wrapper = appControllerClient.getApplicationOfCollection(queryAppDto);
             return wrapper;
         }catch (Exception e){
             e.printStackTrace();
+            System.out.println(e.getMessage());
             return WrapMapper.error(e.getMessage());
         }
     }
@@ -163,18 +164,6 @@ public class AppWebController {
     public Object getAppListByids(@RequestParam(name = "ids")String ids){
         try {
             Wrapper wrapper = appControllerClient.getAppListByids(ids);
-            return wrapper;
-        }catch (Exception e){
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
-
-    @ApiOperation("带条件查询某一学校下的应用列表")
-    @RequestMapping(value = "/getAppOfCollection",method = RequestMethod.POST)
-    public Object getAppOfCollection(@RequestBody QueryAppDto queryAppDto){
-        try {
-            Wrapper wrapper = appControllerClient.getAppOfCollection(queryAppDto);
             return wrapper;
         }catch (Exception e){
             e.printStackTrace();

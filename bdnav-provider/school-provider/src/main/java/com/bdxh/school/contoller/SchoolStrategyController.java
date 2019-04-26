@@ -51,11 +51,17 @@ public class SchoolStrategyController {
 	* @Description: 删除信息
 	* @Date 2019-04-18 09:52:43
 	*/
-	@RequestMapping(value = "/delDataById", method = RequestMethod.POST)
+	@RequestMapping(value = "/delDataById", method = RequestMethod.GET)
 	@ApiOperation(value = "删除信息", response = Boolean.class)
 	@ResponseBody
 	public Object delDataById(@RequestParam("id")Long id) {
-		return WrapMapper.ok(schoolStrategyService.delSchoolStrategyById(id));
+	   try{
+		Boolean result=schoolStrategyService.deleteByKey(id)>0;
+		return WrapMapper.ok(result);
+	   } catch (Exception e) {
+		e.printStackTrace();
+		return WrapMapper.error(e.getMessage());
+	  }
 	}
 
 

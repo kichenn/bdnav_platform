@@ -18,44 +18,24 @@ import com.bdxh.user.entity.BaseUser;
 @Repository
 public interface BaseUserMapper extends Mapper<BaseUser> {
 
-	/**
-	 *查询总条数
-	 */
+
+	 //查询总条数
 	 Integer getBaseUserAllCount();
 
-	/**
-	 *批量删除方法
-	 */
+
+	 //批量删除方法
 	 Integer delBaseUserInIds(@Param("ids") List<Long> ids);
 
-	/**
-	 * 根据条件查询所有用户
-	 * @param baseUserQueryDto
-	 * @return
-	 */
+	//根据条件查询所有用户
 	 List<BaseUser> queryBaseUserInfo(@Param("baseUserQueryDto") BaseUserQueryDto baseUserQueryDto);
 
-	/**
-	 * 修改用户数据
-	 * @param baseUser
-	 * @return
-	 */
+	 //修改用户数据
 	int updateBaseUserInfo(@Param("baseUser") BaseUser baseUser);
 
-	/**
-	 * 删除用户数据
-	 * @param schoolCode
-	 * @param cadNumber
-	 * @return
-	 */
+	// 删除用户数据
 	int deleteBaseUserInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cadNumber);
 
-	/**
-	 * 查询单个用户信息
-	 * @param schoolCode
-	 * @param cadNumber
-	 * @return
-	 */
+	//查询单个用户信息
 	BaseUser queryBaseUserBySchoolCodeAndCardNumber(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cadNumber);
 
 	//批量删除用户信息
@@ -63,4 +43,10 @@ public interface BaseUserMapper extends Mapper<BaseUser> {
 
 	//批量新增用户信息
 	int batchSaveBaseUserInfo(List<BaseUser> baseUserList);
+
+	//查询所有用户手机号
+	List<String> queryAllUserPhone();
+
+	//根据手机号查询有没有重复的手机号
+	Integer queryUserPhoneByPhone(@Param("baseUserQueryDto")BaseUserQueryDto baseUserQueryDto);
 }

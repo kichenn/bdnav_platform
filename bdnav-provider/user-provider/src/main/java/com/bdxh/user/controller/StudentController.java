@@ -207,7 +207,7 @@ public class StudentController {
         }
     }
 
-    @ApiModelProperty(value = "根据学校CODE和组织架构查询学生")
+    @ApiOperation(value = "根据学校CODE和组织架构查询学生")
     @RequestMapping(value = "/findStudentInfoByClassOrg", method = RequestMethod.POST)
     public Object findStudentInfoByClassOrg(@RequestParam("schoolCode") String schoolCode,
                                             @RequestParam("parentIds") String parentIds,

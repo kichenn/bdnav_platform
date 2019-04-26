@@ -52,8 +52,5 @@ public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> impleme
         return pageInfoFamilyStudent;
     }
 
-    @Override
-    public List<FamilyStudentVo> familyFindStudentList(String schoolCode, String cardNumber) {
-        return  familyStudentMapper.familyFindStudentList(schoolCode,cardNumber);
-    }
+
 }

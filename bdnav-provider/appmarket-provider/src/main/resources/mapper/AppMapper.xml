@@ -70,34 +70,31 @@
     from
     t_app
     where school_id IS NULL
+    <if test="appName!= null and appName!=''">
+      and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+    </if>
+    <if test="platform!= null">
+      and platform = #{platform}
+    </if>
     UNION
     SELECT
     <include refid="BaseColumns"/>
     FROM
     t_app
-   WHERE
-   school_id=#{schoolId}
+    <where>
+      school_id=#{schoolId}
+    <if test="appName!= null and appName!=''">
+      and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+    </if>
+      <if test="platform!= null">
+        and platform = #{platform}
+      </if>
+    </where>
   </select>
 
 
 
-<!--
-    <select id="getAppOfCollection" parameterType="java.util.Map" resultMap="BaseResultMap">
-        select <include refid="BaseColumns"/> from t_app
-        <where>
-            <if test="schoolId!=null">
-                school_id=#{schoolId}
-            </if>
-            <if test="appName!= null and appName!=''">
-                AND app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
-            </if>
-            <if test="platform!= null and platform!=''">
-                AND platform =#{platform}
-            </if>
-        </where>
-        order by create_date desc
-    </select>
--->
+
 
 
 </mapper>

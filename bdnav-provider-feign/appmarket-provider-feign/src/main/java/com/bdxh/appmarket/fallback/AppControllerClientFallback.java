@@ -58,7 +58,7 @@ public class AppControllerClientFallback implements AppControllerClient {
     }
 
     @Override
-    public Wrapper<PageInfo<App>> getApplicationOfCollection(AppQueryDto appQueryDto) {
+    public Wrapper<PageInfo<App>> getApplicationOfCollection(QueryAppDto queryAppDto) {
         return WrapMapper.error();
     }
 
@@ -67,10 +67,6 @@ public class AppControllerClientFallback implements AppControllerClient {
         return WrapMapper.error();
     }
 
-    @Override
-    public Wrapper<PageInfo<App>> getAppOfCollection(QueryAppDto queryAppDto) {
-        return WrapMapper.error();
-    }
 
 
 }

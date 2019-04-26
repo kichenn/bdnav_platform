@@ -30,4 +30,7 @@ public interface TeacherMapper extends Mapper<Teacher> {
 
     //根据学校Code查询卡号
     List<String> queryTeacherCardNumberBySchoolCode(@Param("schoolCode")String schoolCode);
+
+    //查询出某个部门下面的老师
+    List<Teacher> findTeacherInfoByDeptOrg(@Param("schoolCode")String schoolCode,@Param("parentIds")String parentIds);
 }

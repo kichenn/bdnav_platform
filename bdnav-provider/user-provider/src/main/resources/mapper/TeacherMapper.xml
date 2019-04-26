@@ -263,5 +263,42 @@ VALUES
   <!--根据学校Code查询卡号-->
   <select id="queryTeacherCardNumberBySchoolCode"  resultType="java.lang.String">
         select card_number from t_teacher where school_code=#{schoolCode}
-    </select>
+  </select>
+
+  <!--查询出某个部门下面的老师-->
+  <select id="findTeacherInfoByDeptOrg" resultMap="BaseResultMap">
+    SELECT teacher.id,
+    teacher.school_id,
+    teacher.school_code,
+    teacher.school_name,
+    teacher.campus_name,
+    teacher.`name`,
+    teacher.gender,
+    teacher.birth,
+    teacher.position,
+    teacher.phone,
+    teacher.card_number,
+    teacher.idcard,
+    teacher.qq_number,
+    teacher.wx_number,
+    teacher.email,
+    teacher.image,
+    teacher.image_name,
+    teacher.nation_name,
+    teacher.dormitory_address,
+    teacher.adress,
+    teacher.physical_number,
+    teacher.physical_chip_number,
+    teacher.activate,
+    teacher.create_date,
+    teacher.update_date,
+    teacher.operator,
+    teacher.operator_name,
+    teacher.remark
+    from t_teacher as teacher
+    inner join t_teacher_dept as dept
+    on teacher.id=dept.teacher_id
+    where teacher.school_code=#{schoolCode}
+    and dept.dept_ids Like CONCAT(#{parentIds},'%')
+  </select>
 </mapper>

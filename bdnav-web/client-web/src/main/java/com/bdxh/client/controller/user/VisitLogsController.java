@@ -90,7 +90,7 @@ public class VisitLogsController {
     public Object removeVisitLogsInfo(@RequestParam("id")String id,@RequestParam("cardNumber") String  cardNumber){
         try {
             SchoolUser schoolUser= SecurityUtils.getCurrentUser();
-            return visitLogsControllerClient.removeVisitLogsInfo(schoolUser.getSchoolCode(),cardNumber,id);
+            return visitLogsControllerClient.removeVisitLogsInfo(id,schoolUser.getSchoolCode(),cardNumber);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

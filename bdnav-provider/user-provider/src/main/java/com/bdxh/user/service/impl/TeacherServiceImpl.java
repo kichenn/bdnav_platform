@@ -1,5 +1,9 @@
 package com.bdxh.user.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
+import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
+import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.support.BaseService;
@@ -102,6 +106,8 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                         teacherDept.setSchoolCode(teacher.getSchoolCode());
                         teacherDept.setCardNumber(teacher.getCardNumber());
                         teacherDept.setTeacherId(teacher.getId());
+                        teacherDept.setOperator(teacher.getOperator());
+                        teacherDept.setOperatorName(teacher.getOperatorName());
                         teacherDept.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
                         teacherDept.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
                         teacherDept.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
@@ -123,17 +129,20 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     @Transactional
     public void updateTeacherInfo(UpdateTeacherDto updateTeacherDto) {
+        try {
         Teacher teacher = BeanMapUtils.map(updateTeacherDto, Teacher.class);
         teacherMapper.updateTeacher(teacher);
         BaseUser updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, BaseUser.class);
         baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
-            teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber(),0);
+        teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber(),0);
         for (int i=0;i<updateTeacherDto.getTeacherDeptDtoList().size();i++){
             TeacherDeptDto teacherDeptDto=new TeacherDeptDto();
             teacherDeptDto.setId(snowflakeIdWorker.nextId());
             teacherDeptDto.setSchoolCode(updateTeacherDto.getSchoolCode());
             teacherDeptDto.setCardNumber(updateTeacherDto.getCardNumber());
             teacherDeptDto.setTeacherId(updateTeacherDto.getId());
+            teacherDeptDto.setOperator(updateTeacherDto.getOperator());
+            teacherDeptDto.setOperatorName(updateTeacherDto.getOperatorName());
             String [] ids=updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
             String [] names=updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
             teacherDeptDto.setDeptId(Long.parseLong(ids[ids.length-1]));
@@ -142,6 +151,43 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             teacherDeptDto.setDeptNames(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
             TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
             teacherDeptMapper.insert(teacherDept);
+        }
+        //修改时判断用户是否已经激活
+        if(updateTeacherDto.getActivate().equals(Byte.parseByte("2"))) {
+            SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
+            synUserInfoRequest.setSchool_code(updateTeacherDto.getSchoolCode());
+            synUserInfoRequest.setCard_number(updateTeacherDto.getCardNumber());
+            synUserInfoRequest.setName(updateTeacherDto.getName());
+            synUserInfoRequest.setGender(updateTeacherDto.getGender() == 1 ? "男" : "女");
+            String names[]=updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames().split("\\/");
+            if(updateTeacherDto.getSchoolType()>=Byte.parseByte("4")){
+                synUserInfoRequest.setCollege(names[names.length-1]);
+            }
+            synUserInfoRequest.setOrganization(updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames());
+
+            synUserInfoRequest.setTelephone(updateTeacherDto.getPhone());
+            synUserInfoRequest.setCard_type("1");
+            synUserInfoRequest.setId_card(updateTeacherDto.getIdcard());
+            synUserInfoRequest.setHead_image(updateTeacherDto.getImage());
+            synUserInfoRequest.setIdentity_type(AuthenticationConstant.TEACHER);
+            synUserInfoRequest.setIdentity_title(updateTeacherDto.getPosition());
+            synUserInfoRequest.setNation(updateTeacherDto.getNationName());
+            synUserInfoRequest.setQq(updateTeacherDto.getQqNumber());
+            synUserInfoRequest.setAddress(updateTeacherDto.getAdress());
+            synUserInfoRequest.setEmail(updateTeacherDto.getEmail());
+            synUserInfoRequest.setPhysical_card_number(updateTeacherDto.getPhysicalNumber());
+            synUserInfoRequest.setPhysical_chip_number(updateTeacherDto.getPhysicalChipNumber());
+            synUserInfoRequest.setDorm_number(updateTeacherDto.getDormitoryAddress());
+            synUserInfoRequest.setCampus(updateTeacherDto.getCampusName());
+            String result=AuthenticationUtils.synUserInfo(synUserInfoRequest,updateTeacherDto.getAppKey(),updateTeacherDto.getAppSecret());
+            JSONObject jsonObject= JSONObject.parseObject(result);
+            if(!jsonObject.get("errcode").equals(0)){
+                throw new Exception("教职工信息同步失败,返回的错误码"+jsonObject.get("errcode")+"，同步教职工卡号="+updateTeacherDto.getCardNumber()+"学校名称="+updateTeacherDto.getSchoolName());
+            }
+        }
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("更新教职工信息失败，错误信息="+e.getMessage());
         }
     }
 
@@ -164,5 +210,10 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     public List<String> queryTeacherCardNumberBySchoolCode(String schoolCode) {
         return teacherMapper.queryTeacherCardNumberBySchoolCode(schoolCode);
+    }
+
+    @Override
+    public List<Teacher> findTeacherInfoByDeptOrg(String schoolCode, String parentIds) {
+        return teacherMapper.findTeacherInfoByDeptOrg(schoolCode,parentIds);
     }
 }

@@ -352,6 +352,7 @@
         select <include refid="studentCloumn" /> from t_student
         <where>
             and school_code=#{schoolCode}
+
             <if test="type==1">
                 and college_name!=''
             </if>
@@ -366,10 +367,10 @@
             </if>
             <choose>
                 <when test="type==5">
-                 and class_ids=#{parentIds}
+                    and class_ids=#{parentIds}
                 </when>
                 <otherwise>
-                 and   class_ids Like  CONCAT(#{parentIds},'%')
+                    and   class_ids Like  CONCAT(#{parentIds},'%')
                 </otherwise>
             </choose>
         </where>

@@ -49,13 +49,5 @@ public interface FamilyStudentControllerClient {
     @RequestMapping(value = "/familyStudent/queryAllFamilyStudent",method =RequestMethod.POST)
     Wrapper<PageInfo<FamilyStudentVo>>  queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto);
 
-    /**
-     * 家长查询自己的孩子列表
-     * @param schoolCode
-     * @param cardNumber
-     * @return
-     */
-    @ResponseBody
-    @RequestMapping(value = "/familyStudent/familyFindStudentList",method = RequestMethod.POST)
-    Wrapper<PageInfo<FamilyStudentVo>> familyFindStudentList(@RequestParam("schoolCode") String schoolCode,@RequestParam("cardNumber")String cardNumber);
+
 }

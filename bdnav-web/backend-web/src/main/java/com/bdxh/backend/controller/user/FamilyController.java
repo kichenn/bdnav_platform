@@ -17,6 +17,7 @@ import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyFence;
+import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyFenceControllerClient;
 import com.bdxh.user.vo.FamilyVo;
@@ -58,7 +59,8 @@ public class FamilyController {
     private FamilyFenceControllerClient familyFenceControllerClient;
     @Autowired
     private SinglePermissionControllerClient singlePermissionControllerClient;
-
+    @Autowired
+    private BaseUserControllerClient baseUserControllerClient;
     //图片路径
     private static final String IMG_URL="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
     //图片名称
@@ -77,6 +79,7 @@ public class FamilyController {
             if(null!=familyVo){
                 return WrapMapper.error("当前学校已存在相同家长卡号");
             }
+
             if(addFamilyDto.getImage().equals("")||addFamilyDto.getImageName().equals("")){
             addFamilyDto.setImageName(IMG_NAME);
             addFamilyDto.setImage(IMG_URL);
@@ -174,6 +177,14 @@ public class FamilyController {
             User user= SecurityUtils.getCurrentUser();
             updateFamilyDto.setOperator(user.getId());
             updateFamilyDto.setOperatorName(user.getUserName());
+            //判断是否已激活 已激活需要同步微校未激活修改不需要同步微校
+            if(familyVo.getActivate().equals(Byte.parseByte("2"))) {
+                updateFamilyDto.setActivate(familyVo.getActivate());
+                School school = schoolControllerClient.findSchoolBySchoolCode(familyVo.getSchoolCode()).getResult();
+                updateFamilyDto.setAppKey(school.getAppKey());
+                updateFamilyDto.setAppSecret(school.getAppSecret());
+                updateFamilyDto.setSchoolType(school.getSchoolType());
+            }
             Wrapper wrapper=familyControllerClient.updateFamily(updateFamilyDto);
             return wrapper;
         } catch (Exception e) {
@@ -253,6 +264,14 @@ public class FamilyController {
                         family.setPhone(columns[3]);
                         family.setImageName(IMG_NAME);
                         family.setImage(IMG_URL);
+                        //导入时判断手机号是否存在
+                        List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
+                        for (String phone : phoneList) {
+                            if(columns[3].equals(phone)){
+                                return  WrapMapper.error("请检查第" + i + "条手机号已存在");
+                            }
+                        }
+                        phoneList.add(columns[3]);
                         //判断当前学校是否有重复卡号
                         if(null!=cardNumberList) {
                             for (int j = 0; j < cardNumberList.size(); j++) {
@@ -263,6 +282,7 @@ public class FamilyController {
                         }else{
                             cardNumberList=new ArrayList<>();
                         }
+
                         family.setCardNumber(columns[4]);
                         cardNumberList.add(columns[4]);
                         family.setWxNumber(columns[5]);
