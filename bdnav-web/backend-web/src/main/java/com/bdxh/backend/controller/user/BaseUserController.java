@@ -40,9 +40,9 @@ public class BaseUserController {
         try {
             Integer count=baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
             if(count>0){
-                return WrapMapper.error("电话号码重复");
+                return WrapMapper.ok(false);
             }
-            return  WrapMapper.ok();
+            return WrapMapper.ok(true);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

@@ -242,7 +242,7 @@
 		 <if test="baseUserQueryDto.schoolCode!=null and baseUserQueryDto.schoolCode!=''">
 			 and school_code!=#{baseUserQueryDto.schoolCode}
 		 </if>
-		<if test="baseUserQueryDto.cardNumber!=null and baseUserQueryDt.cardNumber!=''">
+		<if test="baseUserQueryDto.cardNumber!=null and baseUserQueryDto.cardNumber!=''">
 			and	card_number!=#{baseUserQueryDto.cardNumber}
 		</if>
 		 and phone=#{baseUserQueryDto.phone}
