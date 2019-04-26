@@ -45,12 +45,11 @@ public interface AppControllerClient {
     Wrapper<PageInfo<App>> queryAppListPage(@RequestBody AppQueryDto appQueryDto);
 
     @RequestMapping(value = "/app/getApplicationOfCollection",method = RequestMethod.POST)
-    @ResponseBody
-    Wrapper<PageInfo<App>> getApplicationOfCollection(@RequestBody AppQueryDto appQueryDto);
+    Wrapper<PageInfo<App>> getApplicationOfCollection(@RequestBody QueryAppDto queryAppDto);
 
     @RequestMapping(value = "/app/getAppListByids",method = RequestMethod.GET)
     Wrapper<List<App>> getAppListByids(@RequestParam(name = "ids")String ids);
 
-/*    @RequestMapping(value = "/app/getAppOfCollection",method = RequestMethod.POST)
-    Wrapper<PageInfo<App>> getAppOfCollection(@RequestBody QueryAppDto queryAppDto);*/
+
+
 }
