@@ -9,7 +9,6 @@ import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.BaseUser;
-import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.persistence.BaseUserMapper;
@@ -56,6 +55,11 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Autowired
     private StudentMapper studentMapper;
 
+    /**
+     * 查询所有学生
+     * @param studentQueryDto
+     * @return
+     */
     @Override
     public PageInfo<Student> getStudentList(StudentQueryDto studentQueryDto) {
         PageHelper.startPage(studentQueryDto.getPageNum(), studentQueryDto.getPageSize());
@@ -64,6 +68,11 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return pageInfoStudent;
     }
 
+    /**
+     * 删除学生信息
+     * @param schoolCode
+     * @param cardNumber
+     */
     @Override
     @Transactional
     public void deleteStudentInfo(String schoolCode, String cardNumber) {
@@ -72,6 +81,11 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         baseUserMapper.deleteBaseUserInfo(schoolCode ,cardNumber );
     }
 
+    /**
+     * 批量删除学生信息
+     * @param schoolCode
+     * @param cardNumber
+     */
     @Override
     @Transactional
     public void deleteBatchesStudentInfo(String schoolCode, String cardNumber) {
@@ -91,6 +105,10 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     }
 
 
+    /**
+     * 修改学生信息
+     * @param updateStudentDto
+     */
     @Override
     @Transactional
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
@@ -129,8 +147,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
                 synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
             }
-
-
             synUserInfoRequest.setOrganization(updateStudentDto.getClassNames());
             synUserInfoRequest.setTelephone(updateStudentDto.getPhone());
             synUserInfoRequest.setCard_type("1");
@@ -157,6 +173,12 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     }
     }
 
+    /**
+     * 查询单个学生信息
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
     @Override
     public StudentVo selectStudentVo(String schoolCode, String cardNumber) {
         StudentVo studentVo = studentMapper.selectStudentVo(schoolCode, cardNumber);
@@ -173,6 +195,12 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return studentVo;
     }
 
+    /**
+     * 查询单个学生是否存在
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
     @Override
     public StudentVo isNullStudent(String schoolCode, String cardNumber) {
         return studentMapper.selectStudentVo(schoolCode, cardNumber);
@@ -188,6 +216,10 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return studentMapper.findStudentBySchoolClassId(schoolCode,schoolId,classId);
     }
 
+    /**
+     * 保存学生信息
+     * @param student
+     */
     @Override
     @Transactional
     public void saveStudent(Student student) {
@@ -201,6 +233,10 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         baseUserMapper.insert(baseUser);
     }
 
+    /**
+     * 批量保存学生信息
+     * @param addStudentDtoList
+     */
     @Override
     public void batchSaveStudentInfo(List<AddStudentDto> addStudentDtoList) {
         List<Student> studentList=BeanMapUtils.mapList(addStudentDtoList,Student.class);
@@ -216,11 +252,23 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     }
 
+    /**
+     * 根据学校CODE查询所有卡号
+     * @param schoolCode
+     * @return
+     */
     @Override
     public List<String> queryCardNumberBySchoolCode(String schoolCode) {
         return studentMapper.queryCardNumberBySchoolCode(schoolCode);
     }
 
+    /**
+     * 根据组织架构信息查询学生
+     * @param schoolCode
+     * @param parentIds
+     * @param type
+     * @return
+     */
     @Override
     public List<Student> findStudentInfoByClassOrg(String schoolCode, String parentIds, Byte type) {
         return studentMapper.findStudentInfoByClassOrg(schoolCode,parentIds,type);
