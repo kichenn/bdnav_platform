@@ -61,25 +61,6 @@ public class OrderController {
         }
     }
 
-//    @ApiOperation("订单号查询")
-//    @RequestMapping(value = "/queryOrder", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Object queryOrder(@RequestParam(name = "schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
-//                             @RequestParam(name = "userId") @NotNull(message = "用户id不能为空") Long userId,
-//                             @RequestParam(name = "orderNo") @NotNull(message = "订单号不能为空") Long orderNo) {
-//        Map<String, Object> param = new HashMap<>();
-//        param.put("schoolCode", schoolCode);
-//        param.put("userId", userId);
-//        param.put("orderNo", orderNo);
-//        try {
-//            Order order = orderService.getOrderByOrderNo(param);
-//            return WrapMapper.ok(order);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return WrapMapper.error(e.getMessage());
-//        }
-//    }
-
 
     //分页所有
     @ApiOperation("分页查询")
@@ -127,23 +108,17 @@ public class OrderController {
     @RequestMapping(value = "/deleteOrders", method = RequestMethod.POST)
     @ResponseBody
     public Object deleteOrders(@RequestParam("schoolCodes") @NotNull(message = "schoolCode不能为空") String schoolCodes,
-                              @RequestParam("userIds") @NotNull(message = "userId不能为空") Long userIds,
-                              @RequestParam(name = "ids") @NotNull(message = "订单id不能为空") Long ids) {
+                              @RequestParam("userIds") @NotNull(message = "userId不能为空") String userIds,
+                              @RequestParam(name = "ids") @NotNull(message = "订单id不能为空") String ids) {
         try {
-
-//            Boolean result = orderService.deleteOrders(schoolCodes,userIds,ids);
-//            orderService.deleteOrder(schoolCode,userId,id);
-            return WrapMapper.ok();
+            Boolean result = orderService.deleteOrders(schoolCodes,userIds,ids);
+            return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage(), e.getStackTrace());
             return WrapMapper.error(e.getMessage());
         }
     }
-
-
-
-
 
     /**
      * 更新订单

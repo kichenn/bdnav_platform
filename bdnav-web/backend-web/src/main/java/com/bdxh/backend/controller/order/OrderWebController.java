@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.feign.OrdersControllerClient;
+import com.bdxh.school.feign.SchoolControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -36,22 +37,9 @@ public class OrderWebController {
     @Autowired
     private OrdersControllerClient orderscc;
 
+    @Autowired
+    private SchoolControllerClient schoolControllerClient;
 
-
-    @ApiOperation("根据订单号查询订单")
-    @RequestMapping(value = "/queryOrder", method = RequestMethod.GET)
-    public Object queryOrder(@RequestParam(name = "schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
-                             @RequestParam(name = "userId") @NotNull(message = "用户id不能为空") Long userId,
-                             @RequestParam(name = "orderNo") @NotNull(message = "订单号不能为空") Long orderNo) {
-
-        try {
-            Wrapper wrapper = orderscc.queryOrder(schoolCode,userId,orderNo);
-            return wrapper;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
 
 
     @ApiOperation("查询订单")
@@ -101,4 +89,16 @@ public class OrderWebController {
         }
     }
 
+    @ApiOperation("根据学校id查询学校信息")
+    @RequestMapping(value = "/queryschool", method = RequestMethod.POST)
+    public Object queryschool(@RequestParam(name = "schoolId") @NotNull(message = "用户id不能为空") Long schoolId){
+
+        try {
+            Wrapper wrapper = schoolControllerClient.findSchoolById(schoolId);
+            return wrapper;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 }
