@@ -3,7 +3,9 @@ package com.bdxh.order.feign;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
+import com.bdxh.order.entity.Order;
 import com.bdxh.order.fallback.OrdersControllerClientFallback;
+import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,7 +43,7 @@ public interface OrdersControllerClient {
 
 
     @RequestMapping(value = "/order/queryUserOrder",method = RequestMethod.POST)
-    Wrapper queryUserOrder(@RequestBody OrderQueryDto orderDto);
+    Wrapper<PageInfo<Order>> queryUserOrder(@RequestBody OrderQueryDto orderDto);
 
 
     @RequestMapping(value = "/order/updateProduct",method = RequestMethod.POST)
