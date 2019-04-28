@@ -1,10 +1,8 @@
 package com.bdxh.order.dto;
 
 import com.bdxh.common.base.page.Query;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: 订单查询dto
@@ -14,16 +12,33 @@ import javax.validation.constraints.NotNull;
 @Data
 public class OrderQueryDto extends Query {
 
+
+    /**
+     * 订单号
+     */
+
+    @ApiModelProperty("订单号")
+    private Long orderNo;
+
     /**
      * 学校编码
      */
-    @NotEmpty(message = "学校编码不能为空")
+
+    @ApiModelProperty("学校编码")
     private String schoolCode;
 
     /**
      * 用户id
      */
-    @NotNull(message = "用户id不能为空")
+
+    @ApiModelProperty("用户id")
     private Long userId;
+
+    /**
+     * 学号
+     */
+    @ApiModelProperty("学号")
+    private String cardNumber;
+
 
 }

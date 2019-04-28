@@ -11,7 +11,7 @@ public class TablePreciseShardingAlgorithm implements PreciseShardingAlgorithm<L
     public String doSharding(Collection<String> collection, PreciseShardingValue<Long> preciseShardingValue) {
         int size = collection.size();
         for (String each : collection) {
-            if (each.endsWith(preciseShardingValue.getValue() % size + "")) {
+            if (each.endsWith(Math.abs(preciseShardingValue.getValue() % size )+ "")) {
                 return each;
             }
         }

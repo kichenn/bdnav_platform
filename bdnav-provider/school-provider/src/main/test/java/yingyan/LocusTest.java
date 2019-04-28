@@ -2,13 +2,13 @@ package yingyan;
 
 import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.utils.HttpClientUtils;
+import com.bdxh.school.dto.FenceEntityDto;
 import org.junit.Test;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 添加轨迹信息，用于测试围栏报警
@@ -58,7 +58,7 @@ public class LocusTest {
      * 查询某监控对象的围栏报警信息
      */
     @Test
-    public void selHistoryalarm(){
+    public void selHistoryalarm() {
         Map<String, Object> map = new HashMap<>();
         map.put("ak", FenceConstant.AK);
         map.put("service_id", FenceConstant.SERVICE_ID);
@@ -108,4 +108,33 @@ public class LocusTest {
     }
 
 
+    /**
+     * 测试list切割
+     */
+    @Test
+    public void testList() {
+
+        List<String> strs = new ArrayList<>();
+        strs.add("张三");
+        strs.add("李四");
+        strs.add("王五");
+        strs.add("赵六");
+        strs.add("田七");
+        String s = String.join(",", strs);
+        System.err.println(s);
+    }
+
+    @Test
+    public void test1() {
+        List<FenceEntityDto> modifyFenceEntitys = new ArrayList<>();
+        FenceEntityDto dto = new FenceEntityDto();
+        dto.setId(new Long("1"));
+        dto.setName("测试");
+        modifyFenceEntitys.add(dto);
+        List<String> fenceEntityNames = modifyFenceEntitys.stream().map(e -> {
+            return e.getId() + "_" + e.getName();
+        }).collect(Collectors.toList());
+
+        System.out.println(String.join(",", fenceEntityNames));
+    }
 }

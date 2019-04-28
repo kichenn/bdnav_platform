@@ -10,6 +10,7 @@ import com.bdxh.product.enums.ProductTypeEnum;
 import com.bdxh.product.service.ProductService;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,6 +46,7 @@ public class ProductController {
      * @param id
      * @return
      */
+    @ApiOperation("根据id查询商品")
     @RequestMapping(value = "/queryProduct",method = RequestMethod.GET)
     @ResponseBody
     public Object queryProduct(@RequestParam(name = "id") @NotNull(message = "商品id不能为空") Long id){
@@ -64,6 +66,7 @@ public class ProductController {
      * @param bindingResult
      * @return
      */
+    @ApiOperation("增加商品")
     @RequestMapping(value = "/addProduct",method = RequestMethod.POST)
     @ResponseBody
     public Object addProduct(@Valid @RequestBody ProductAddDto productAddDto, BindingResult bindingResult){
@@ -88,6 +91,7 @@ public class ProductController {
      * @param bindingResult
      * @return
      */
+    @ApiOperation("更新商品")
     @RequestMapping(value = "/updateProduct",method = RequestMethod.POST)
     @ResponseBody
     public Object updateProduct(@Valid @RequestBody ProductUpdateDto productUpdateDto, BindingResult bindingResult){
@@ -111,6 +115,7 @@ public class ProductController {
      * @param productId
      * @return
      */
+    @ApiOperation("删除商品")
     @RequestMapping(value = "/deleteProduct",method = RequestMethod.POST)
     @ResponseBody
     public Object deleteProduct(@RequestParam(name = "productId") @NotNull(message = "商品id不能为空") Long productId){
@@ -129,6 +134,7 @@ public class ProductController {
      * @param productQueryDto
      * @return
      */
+    @ApiOperation("商品列表查询")
     @RequestMapping(value = "/queryListPage",method = RequestMethod.POST)
     @ResponseBody
     public Object queryListPage(@Valid @RequestBody ProductQueryDto productQueryDto){
@@ -148,6 +154,7 @@ public class ProductController {
      * @param productQueryDto
      * @return
      */
+    @ApiOperation("根据条件查询商品")
     @RequestMapping(value = "/queryList",method = RequestMethod.POST)
     @ResponseBody
     public Object queryList(@Valid @RequestBody ProductQueryDto productQueryDto){
@@ -167,6 +174,7 @@ public class ProductController {
      * @param productShowName
      * @return
      */
+    @ApiOperation("判断商品展示名称是否重复")
     @RequestMapping(value = "/exists",method = RequestMethod.GET)
     @ResponseBody
     public Object exists(@RequestParam(name = "productShowName") @NotEmpty(message = "商品展示名称不能为空") String productShowName){
@@ -188,6 +196,7 @@ public class ProductController {
      * @param businessType
      * @return
      */
+    @ApiOperation("商品购买展示")
     @RequestMapping(value = "/buyShow",method = RequestMethod.GET)
     @ResponseBody
     public Object buyShow(@RequestParam(name = "businessType") @NotNull(message = "业务类型不能为空") Byte businessType){

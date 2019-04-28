@@ -2,12 +2,12 @@ package com.bdxh.order.service;
 
 import com.bdxh.common.support.IService;
 import com.bdxh.order.dto.OrderDto;
+import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.vo.OrderVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,5 +38,19 @@ public interface OrderService extends IService<Order> {
      * @return
      */
     PageInfo<Order> getOrderByCondition(Map<String,Object> param, int pageNum, int pageSize);
+
+    /**
+     * 根据主键删除商品
+     * @param param
+     */
+    void deleteOrder(Map<String,Object> param);
+
+    /**
+     * 更新订单
+     * @param orderUpdateDto
+     */
+    void updateOrder(OrderUpdateDto orderUpdateDto);
+
+
 
 }

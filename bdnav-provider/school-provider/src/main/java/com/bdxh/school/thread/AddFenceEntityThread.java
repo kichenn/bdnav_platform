@@ -6,12 +6,14 @@ import com.bdxh.common.helper.baidu.yingyan.FenceUtils;
 import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
 import com.bdxh.school.dto.FenceEntityDto;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 public class AddFenceEntityThread {
 
     public synchronized void handleList(List<FenceEntityDto> data, int threadNum) {
@@ -81,8 +83,11 @@ public class AddFenceEntityThread {
                 entityRequest.setEntity_desc("");
                 String entityResult = FenceUtils.createNewEntity(entityRequest);
                 JSONObject entityJson = JSONObject.parseObject(entityResult);
+                //此错误可以忽略，只是证明该监控实体是不是在百度鹰眼那
                 if (entityJson.getInteger("status") != 0) {
-                    throw new RuntimeException("增加监控终端实体失败，类型: " + e.getGroupTypeEnum().getValue() + "组名称:" + e.getClassName() + "，名称：" + e.getName() + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
+                    log.error("增加监控终端实体失败，类型: " + e.getGroupTypeEnum().getValue() + "组名称:" + e.getClassName() + "，名称：" + e.getName() + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
+                } else {
+                    System.out.println(threadName + "增加监控终端实体成功:" + entityResult);
                 }
             });
             System.out.println(threadName + "处理了" + subList.size() + "条！");

@@ -44,7 +44,7 @@ public interface SchoolFenceService extends IService<SchoolFence> {
      * @return
      * @throws RuntimeException
      */
-    Boolean modifyFence(SchoolFence schoolFence) throws RuntimeException;
+    Boolean modifyFence(SchoolFence schoolFence, List<FenceEntityDto> fenceEntityDto) throws RuntimeException;
 
     /**
      * 删除学校围栏

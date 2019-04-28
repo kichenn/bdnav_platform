@@ -76,7 +76,7 @@ public class SchoolFenceController {
         }
 
         try {
-            Boolean result = schoolFenceService.modifyFence(schoolFence);
+            Boolean result = schoolFenceService.modifyFence(schoolFence, modifySchoolFenceDto.getFenceEntityDtos());
             return WrapMapper.ok(result);
         } catch (RuntimeException e) {
             e.printStackTrace();

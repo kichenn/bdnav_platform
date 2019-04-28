@@ -1,3 +1,7 @@
+info:
+  groupId: @project.groupId@
+  artifactId: @project.artifactId@
+  version: @project.version@
 server:
   port: 9014
 spring:
@@ -5,5 +9,22 @@ spring:
     name: order-provider-cluster
   profiles:
     active: dev
+  #spring框架时间比京八区标准时间差八小时(time-zone一定不能少，否则熔断出问题！！！！切记切记) Kang
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+#apollo配置
+app:
+  id: order-provider-cluster
+apollo:
+  meta: http://47.107.255.252:8080
+  bootstrap:
+    enabled: true
+    eagerLoad:
+      enabled: true
+    namespaces: BASE.public.eureka,BASE.public-hikari-ds,application,BASE.public-redis
+
+#日志
 logging:
   config: classpath:logback-spring.xml

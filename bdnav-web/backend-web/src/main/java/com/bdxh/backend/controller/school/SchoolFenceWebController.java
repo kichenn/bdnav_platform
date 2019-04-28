@@ -19,7 +19,9 @@ import com.bdxh.school.vo.SchoolFenceShowVo;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.UserControllerClient;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.feign.TeacherControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -57,20 +59,25 @@ public class SchoolFenceWebController {
     @Autowired
     private StudentControllerClient studentControllerClient;
 
-    @RequestMapping(value = "/addFence", method = RequestMethod.POST)
-    @ApiOperation(value = "增加学校围栏", response = Boolean.class)
-    public Object addFence(@Validated @RequestBody AddSchoolFenceDto addSchoolFenceDto) {
-        User user = SecurityUtils.getCurrentUser();
-        addSchoolFenceDto.setOperator(user.getId());
-        addSchoolFenceDto.setOperatorName(user.getUserName());
+    @Autowired
+    private TeacherControllerClient teacherControllerClient;
 
+
+    /**
+     * 设置监控对象
+     *
+     * @param groupTypeEnum
+     * @param groupId
+     * @return
+     */
+    private List<FenceEntityDto> setFenceEntity(GroupTypeEnum groupTypeEnum, Long groupId) {
         //设置监控对象list
         List<FenceEntityDto> fenceEntitys = new ArrayList<>();
 
         // 查询用户群类型 1 学生 2 老师
-        if (new Byte("1").equals(addSchoolFenceDto.getGroupTypeEnum().getKey())) {
+        if (new Byte("1").equals(groupTypeEnum.getKey())) {
             //学生院系信息
-            SchoolClass schoolClass = schoolClassControllerClient.findSchoolClassById(addSchoolFenceDto.getGroupId()).getResult();
+            SchoolClass schoolClass = schoolClassControllerClient.findSchoolClassById(groupId).getResult();
             //父ids+当前id
             String classIds = schoolClass.getParentIds() + schoolClass.getId();
             if (schoolClass.getParentIds().contains(",")) {
@@ -97,9 +104,40 @@ public class SchoolFenceWebController {
                 fenceEntity.setDesc(sbDesc.toString());
                 fenceEntitys.add(fenceEntity);
             });
-        } else if (new Byte("2").equals(addSchoolFenceDto.getGroupTypeEnum().getKey())) {
-            SchoolDept schoolDept = schoolDeptControllerClient.findSchoolDeptById(addSchoolFenceDto.getGroupId()).getResult();
+        } else if (new Byte("2").equals(groupTypeEnum.getKey())) {
+            SchoolDept schoolDept = schoolDeptControllerClient.findSchoolDeptById(groupId).getResult();
+            //父ids+当前id
+            String classIds = schoolDept.getParentIds() + schoolDept.getId();
+            if (schoolDept.getParentIds().contains(",")) {
+                classIds = schoolDept.getParentIds().substring(schoolDept.getParentIds().indexOf(",")) + schoolDept.getId();
+            }
+            //增加监控对象信息
+            List<Teacher> teachers = Optional.ofNullable(teacherControllerClient.findTeacherInfoByDeptOrg(schoolDept.getSchoolCode(), classIds).getResult()).orElse(new ArrayList<>());//Optional.of().orElse(new ArrayList<>());
+            teachers.forEach(e -> {
+                FenceEntityDto fenceEntity = new FenceEntityDto();
+                fenceEntity.setId(e.getId());
+                fenceEntity.setName(e.getName());
+                fenceEntity.setSchoolName(e.getSchoolName());
+                fenceEntity.setClassName("");
+                fenceEntity.setGroupTypeEnum(GroupTypeEnum.STUDENT);
+                StringBuilder sbDesc = new StringBuilder();
+                sbDesc.append("学校id:" + e.getSchoolId() + ",")
+                        .append("校区名称:" + e.getCampusName() + ",")
+                        .append("老师id:" + e.getId());
+                fenceEntity.setDesc(sbDesc.toString());
+                fenceEntitys.add(fenceEntity);
+            });
         }
+        return fenceEntitys;
+    }
+
+    @RequestMapping(value = "/addFence", method = RequestMethod.POST)
+    @ApiOperation(value = "增加学校围栏", response = Boolean.class)
+    public Object addFence(@Validated @RequestBody AddSchoolFenceDto addSchoolFenceDto) {
+        User user = SecurityUtils.getCurrentUser();
+        addSchoolFenceDto.setOperator(user.getId());
+        addSchoolFenceDto.setOperatorName(user.getUserName());
+        List<FenceEntityDto> fenceEntitys = setFenceEntity(addSchoolFenceDto.getGroupTypeEnum(), addSchoolFenceDto.getGroupId());
         if (CollectionUtils.isEmpty(fenceEntitys)) {
             return WrapMapper.error("监控对象为空，创建围栏失败");
         }
@@ -114,6 +152,14 @@ public class SchoolFenceWebController {
         User user = SecurityUtils.getCurrentUser();
         modifySchoolFenceDto.setOperator(user.getId());
         modifySchoolFenceDto.setOperatorName(user.getUserName());
+        SchoolFence superSchoolFence = Optional.ofNullable(schoolFenceControllerClient.findFenceById(modifySchoolFenceDto.getId()).getResult()).orElse(new SchoolFence());
+        //此围栏底下的人员有变动
+        if ((!superSchoolFence.getGroupType().equals(modifySchoolFenceDto.getGroupTypeEnum().getKey())) || (
+                !superSchoolFence.getGroupId().equals(modifySchoolFenceDto.getGroupId()))) {
+            List<FenceEntityDto> fenceEntitys = setFenceEntity(modifySchoolFenceDto.getGroupTypeEnum(), modifySchoolFenceDto.getGroupId());
+            modifySchoolFenceDto.setFenceEntityDtos(fenceEntitys);
+        }
+
         Wrapper wapper = schoolFenceControllerClient.modifyFence(modifySchoolFenceDto);
         return wapper;
     }

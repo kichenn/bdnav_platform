@@ -9,6 +9,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -29,9 +30,11 @@ public class ModifySchoolFenceDto {
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
+    @NotNull(message = "用户群类型不能为空")
     @ApiModelProperty("用户群类型(1 学生 2 老师)")
     private GroupTypeEnum groupTypeEnum;
 
+    @NotNull(message = "部门id不能为空")
     @ApiModelProperty("部门id")
     private Long groupId;
 
@@ -80,5 +83,8 @@ public class ModifySchoolFenceDto {
     @ApiModelProperty("备注")
     private String remark;
 
-
+    /**
+     * 监控对象 集合（当监控的部门有变动时 ，设置）
+     */
+    private List<FenceEntityDto> fenceEntityDtos;
 }

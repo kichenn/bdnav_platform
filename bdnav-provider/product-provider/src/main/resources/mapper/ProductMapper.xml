@@ -35,6 +35,9 @@
       <if test="productShowName != null and productShowName != ''">
         product_show_name like concat(concat('%',#{productShowName}),'%')
       </if>
+      <if test="product_name != null and productName != ''">
+        product_name like concat(concat('%',#{productName}),'%')
+      </if>
       <if test="productType">
         and product_type=#{productType}
       </if>
