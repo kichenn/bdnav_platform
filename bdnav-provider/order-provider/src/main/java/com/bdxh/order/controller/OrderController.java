@@ -17,7 +17,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,24 +61,24 @@ public class OrderController {
         }
     }
 
-    @ApiOperation("订单号查询")
-    @RequestMapping(value = "/queryOrder", method = RequestMethod.GET)
-    @ResponseBody
-    public Object queryOrder(@RequestParam(name = "schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
-                             @RequestParam(name = "userId") @NotNull(message = "用户id不能为空") Long userId,
-                             @RequestParam(name = "orderNo") @NotNull(message = "订单号不能为空") Long orderNo) {
-        Map<String, Object> param = new HashMap<>();
-        param.put("schoolCode", schoolCode);
-        param.put("userId", userId);
-        param.put("orderNo", orderNo);
-        try {
-            Order order = orderService.getOrderByOrderNo(param);
-            return WrapMapper.ok(order);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-    }
+//    @ApiOperation("订单号查询")
+//    @RequestMapping(value = "/queryOrder", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Object queryOrder(@RequestParam(name = "schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
+//                             @RequestParam(name = "userId") @NotNull(message = "用户id不能为空") Long userId,
+//                             @RequestParam(name = "orderNo") @NotNull(message = "订单号不能为空") Long orderNo) {
+//        Map<String, Object> param = new HashMap<>();
+//        param.put("schoolCode", schoolCode);
+//        param.put("userId", userId);
+//        param.put("orderNo", orderNo);
+//        try {
+//            Order order = orderService.getOrderByOrderNo(param);
+//            return WrapMapper.ok(order);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return WrapMapper.error(e.getMessage());
+//        }
+//    }
 
 
     //分页所有
@@ -113,7 +112,26 @@ public class OrderController {
             param.put("userId", userId);
             param.put("id", id);
 
-            orderService.deleteOrder(param);
+            Boolean result = orderService.deleteOrder(param);
+//            orderService.deleteOrder(schoolCode,userId,id);
+            return WrapMapper.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage(), e.getStackTrace());
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    @ApiOperation("批量删除订单")
+    @RequestMapping(value = "/deleteOrders", method = RequestMethod.POST)
+    @ResponseBody
+    public Object deleteOrders(@RequestParam("schoolCodes") @NotNull(message = "schoolCode不能为空") String schoolCodes,
+                              @RequestParam("userIds") @NotNull(message = "userId不能为空") Long userIds,
+                              @RequestParam(name = "ids") @NotNull(message = "订单id不能为空") Long ids) {
+        try {
+
+//            Boolean result = orderService.deleteOrders(schoolCodes,userIds,ids);
 //            orderService.deleteOrder(schoolCode,userId,id);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -122,6 +140,9 @@ public class OrderController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+
+
 
 
     /**
@@ -142,8 +163,8 @@ public class OrderController {
         }
 
         try {
-            orderService.updateOrder(orderUpdateDto);
-            return WrapMapper.ok();
+            Boolean result = orderService.updateOrder(orderUpdateDto);
+            return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
             log.error(e.getMessage(), e.getStackTrace());

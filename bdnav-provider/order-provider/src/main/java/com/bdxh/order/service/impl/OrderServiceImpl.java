@@ -18,10 +18,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -72,11 +71,11 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         return orderVo;
     }
 
-    @Override
-    public Order getOrderByOrderNo(Map<String, Object> param) {
-        Order order = orderMapper.getOrderByOrderNo(param);
-        return order;
-    }
+//    @Override
+//    public Order getOrderByOrderNo(Map<String, Object> param) {
+//        Order order = orderMapper.getOrderByOrderNo(param);
+//        return order;
+//    }
 
     @Override
     public PageInfo<Order> getOrderByCondition(Map<String, Object> param, int pageNum, int pageSize) {
@@ -87,16 +86,41 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     }
 
     @Override
-    public void deleteOrder(Map<String,Object> param) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean deleteOrder(Map<String,Object> param) {
         //查询商品
 //        Order order = orderMapper.selectByPrimaryKey(orderId);
 //        Preconditions.checkNotNull(order,"商品信息不存在");
 //        orderMapper.deleteByPrimaryKey(orderId);
-        orderMapper.deleteByOrderId(param);
+       return orderMapper.deleteByOrderId(param) > 0;
     }
 
     @Override
-    public void updateOrder(OrderUpdateDto orderUpdateDto) {
+    public boolean deleteOrders(String schoolCodes, String userIds, String ids) {
+        String[] schoolCode =schoolCodes.split(",");
+        String[] userId =userIds.split(",");
+        String[] id =ids.split(",");
+        if(schoolCode.length==id.length && id.length==userId.length) {
+            List<Map<String,String>>list =new ArrayList<>();
+            for (int i = 0; i < schoolCode.length; i++) {
+                Map<String,String> map=new HashMap<>();
+                map.put("schoolCode",schoolCode[i]);
+                map.put("userId",userId[i]);
+                map.put("id",id[i]);
+                list.add(map);
+            }
+            return orderMapper.deleteByOrderIds(list) > 0;
+
+        }
+
+        return false;
+
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean updateOrder(OrderUpdateDto orderUpdateDto) {
         //根据id查询商品
 //        Order oldProduct = orderMapper.selectByPrimaryKey(orderUpdateDto.getId());
 //        Preconditions.checkNotNull(oldProduct,"商品信息不存在，无法进行更新");
@@ -104,6 +128,11 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         Order order = BeanMapUtils.map(orderUpdateDto, Order.class);
         //设置更新时间
         order.setUpdateDate(new Date());
-        orderMapper.updateOrder(order);
+
+        return orderMapper.updateOrder(order)>0;
     }
+
+
+
+
 }

@@ -14,6 +14,7 @@
     <modules>
         <module>onecard-provider-entity</module>
         <module>order-provider-entity</module>
+        <module>servicepermit-provider-entity</module>
         <module>pay-provider-entity</module>
         <module>product-provider-entity</module>
         <module>mapservice-provider-entity</module>

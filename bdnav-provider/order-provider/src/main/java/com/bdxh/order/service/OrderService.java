@@ -25,12 +25,12 @@ public interface OrderService extends IService<Order> {
     @Transactional(rollbackFor = Exception.class)
     OrderVo createOrder(OrderDto orderDto);
 
-    /**
-     * 根据订单号查询订单
-     * @param param
-     * @return
-     */
-    Order getOrderByOrderNo(Map<String,Object> param);
+//    /**
+//     * 根据订单号查询订单
+//     * @param param
+//     * @return
+//     */
+//    Order getOrderByOrderNo(Map<String,Object> param);
 
     /**
      * 根据条件查询用户订单列表
@@ -43,13 +43,19 @@ public interface OrderService extends IService<Order> {
      * 根据主键删除商品
      * @param param
      */
-    void deleteOrder(Map<String,Object> param);
+    boolean deleteOrder(Map<String,Object> param);
+
+    /**
+     * 批量删除商品
+     *
+     */
+    boolean deleteOrders(String schoolCodes,String userIds,String ids);
 
     /**
      * 更新订单
      * @param orderUpdateDto
      */
-    void updateOrder(OrderUpdateDto orderUpdateDto);
+    boolean updateOrder(OrderUpdateDto orderUpdateDto);
 
 
 
