@@ -102,4 +102,10 @@ public interface StudentService extends IService<Student> {
      * @return
      */
     List<Student> findStudentInfoByClassOrg(String schoolCode,String parentIds,Byte type);
+
+    /**
+     * 学生用户信息激活绑定
+     * @param updateStudentDto
+     */
+    void studentInfoActivation(UpdateStudentDto updateStudentDto);
 }
