@@ -22,7 +22,6 @@ import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -128,13 +127,12 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 familyStudent.setCardNumber(familyStudentVo.getFCardNumber());
                 familyStudent.setSchoolCode(updateStudentDto.getSchoolCode());
                 familyStudentMapper.updateStudentInfo(familyStudent);
-
             }
         }
         //修改时判断用户是否已经激活
         if(updateStudentDto.getActivate().equals(Byte.parseByte("2"))) {
             SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(updateStudentDto.getSchoolCode());
+            synUserInfoRequest.setSchool_code(/*updateStudentDto.getSchoolCode()*/"1044695883");
             synUserInfoRequest.setCard_number(updateStudentDto.getCardNumber());
             synUserInfoRequest.setName(updateStudentDto.getName());
             synUserInfoRequest.setGender(updateStudentDto.getGender() == 1 ? "男" : "女");
@@ -164,7 +162,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             String result= AuthenticationUtils.synUserInfo(synUserInfoRequest,updateStudentDto.getAppKey(),updateStudentDto.getAppSecret());
             JSONObject jsonObject= JSONObject.parseObject(result);
             if(!jsonObject.get("errcode").equals(0)){
-                throw new Exception("教职工信息同步失败,返回的错误码"+jsonObject.get("errcode")+"，同步教职工卡号="+updateStudentDto.getCardNumber()+"学校名称="+updateStudentDto.getSchoolName());
+                throw new Exception("学生信息同步失败,返回的错误码"+jsonObject.get("errcode")+"，同步学生卡号="+updateStudentDto.getCardNumber()+"学校名称="+updateStudentDto.getSchoolName());
             }
         }
     }catch (Exception e){

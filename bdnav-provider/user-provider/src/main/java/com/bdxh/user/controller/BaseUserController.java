@@ -2,6 +2,7 @@ package com.bdxh.user.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.BaseUserQueryDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.service.BaseUserService;
 import com.bdxh.user.vo.FamilyVo;
 import io.swagger.annotations.Api;
@@ -53,6 +54,21 @@ public class BaseUserController {
         try {
            Integer phoneCount=baseUserService.queryUserPhoneByPhone(baseUserQueryDto);
             return WrapMapper.ok(phoneCount) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+    /**
+     * 根据手机号查询学校基础用户信息
+     * @return
+     */
+    @ApiOperation(value="根据手机号查询学校基础用户信息")
+    @RequestMapping(value ="/queryBaseUserInfoByPhone",method = RequestMethod.GET)
+    public Object queryBaseUserInfoByPhone(@RequestParam("phone")String phone) {
+        try {
+            BaseUser baseUser=baseUserService.queryBaseUserInfoByPhone(phone);
+            return WrapMapper.ok(baseUser) ;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

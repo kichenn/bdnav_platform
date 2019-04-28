@@ -3,6 +3,7 @@ package com.bdxh.user.fallback;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.BaseUserQueryDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,11 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
 
     @Override
     public Wrapper queryUserPhoneByPhone(BaseUserQueryDto baseUserQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<BaseUser> queryBaseUserInfoByPhone(String phone) {
         return WrapMapper.error();
     }
 }

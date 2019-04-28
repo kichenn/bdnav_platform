@@ -155,7 +155,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         //修改时判断用户是否已经激活
         if(updateTeacherDto.getActivate().equals(Byte.parseByte("2"))) {
             SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(updateTeacherDto.getSchoolCode());
+            synUserInfoRequest.setSchool_code(/*updateTeacherDto.getSchoolCode()*/"1044695883");
             synUserInfoRequest.setCard_number(updateTeacherDto.getCardNumber());
             synUserInfoRequest.setName(updateTeacherDto.getName());
             synUserInfoRequest.setGender(updateTeacherDto.getGender() == 1 ? "男" : "女");

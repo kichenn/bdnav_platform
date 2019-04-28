@@ -81,7 +81,7 @@
 
    <!--获取围栏表单个信息-->
   <select id="getFamilyFenceInfo"  resultMap="BaseResultMap">
-  select <include refid="BaseColumns"/> from t_family_fence where school_code=#{schoolCode} AND card_number=#{cardNumber}
+  select <include refid="BaseColumns"/> from t_family_fence where school_code=#{schoolCode} AND card_number=#{cardNumber} and id=#{id}
   </select>
 
    <!--删除围栏表信息-->
@@ -135,7 +135,7 @@ delete from t_family_fence where school_code=#{schoolCode} AND card_number=#{car
     </if>
     update_date = #{familyFence.updateDate}
 WHERE
-	school_code=#{familyFence.schoolCode} and card_number=#{familyFence.cardNumber}
+	school_code=#{familyFence.schoolCode} and card_number=#{familyFence.cardNumber} and id=#{familyFence.id}
   </update>
 
 </mapper>
