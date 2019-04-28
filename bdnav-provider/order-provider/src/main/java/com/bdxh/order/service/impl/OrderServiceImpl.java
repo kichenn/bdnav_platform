@@ -71,12 +71,6 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         return orderVo;
     }
 
-//    @Override
-//    public Order getOrderByOrderNo(Map<String, Object> param) {
-//        Order order = orderMapper.getOrderByOrderNo(param);
-//        return order;
-//    }
-
     @Override
     public PageInfo<Order> getOrderByCondition(Map<String, Object> param, int pageNum, int pageSize) {
         PageHelper.startPage(pageNum,pageSize);
@@ -88,10 +82,6 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean deleteOrder(Map<String,Object> param) {
-        //查询商品
-//        Order order = orderMapper.selectByPrimaryKey(orderId);
-//        Preconditions.checkNotNull(order,"商品信息不存在");
-//        orderMapper.deleteByPrimaryKey(orderId);
        return orderMapper.deleteByOrderId(param) > 0;
     }
 
@@ -110,29 +100,20 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
                 list.add(map);
             }
             return orderMapper.deleteByOrderIds(list) > 0;
-
         }
-
         return false;
-
     }
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public boolean updateOrder(OrderUpdateDto orderUpdateDto) {
-        //根据id查询商品
-//        Order oldProduct = orderMapper.selectByPrimaryKey(orderUpdateDto.getId());
-//        Preconditions.checkNotNull(oldProduct,"商品信息不存在，无法进行更新");
-        //将dto转换成实体对象
+
         Order order = BeanMapUtils.map(orderUpdateDto, Order.class);
         //设置更新时间
         order.setUpdateDate(new Date());
 
         return orderMapper.updateOrder(order)>0;
     }
-
-
-
 
 }

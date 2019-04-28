@@ -25,12 +25,6 @@ public interface OrderService extends IService<Order> {
     @Transactional(rollbackFor = Exception.class)
     OrderVo createOrder(OrderDto orderDto);
 
-//    /**
-//     * 根据订单号查询订单
-//     * @param param
-//     * @return
-//     */
-//    Order getOrderByOrderNo(Map<String,Object> param);
 
     /**
      * 根据条件查询用户订单列表
