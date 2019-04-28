@@ -23,12 +23,13 @@ public class Order implements Serializable {
     @Id
     @ApiModelProperty("主键")
     @JsonSerialize(using= ToStringSerializer.class)
+    @Column(name = "id")
     private Long id;
 
     /**
      * 订单号
      */
-    @Id
+
     @Column(name = "order_no")
     private Long orderNo;
 
