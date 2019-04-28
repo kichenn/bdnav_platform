@@ -48,19 +48,18 @@
         <include refid="BaseColumns"/>
         from t_order
         <where>
-            <if test="orderNo">
-                and order_no=#{orderNo}
+            <if test="orderNo!=null and orderNo!=''">
+                order_no= #{order_no}
             </if>
-            <if test="schoolCode">
-                and school_code=#{schoolCode}
+            <if test="schoolCode!=null and schoolCode!=''">
+                school_code= #{schoolCode}
             </if>
-            <if test="userId">
-                and user_id=#{userId}
+            <if test="userId!=null and userId!=''">
+                user_id= #{userId}
             </if>
-            <if test="cardNumber">
-                and card_number=#{cardNumber}
+            <if test="cardNumber!=null and cardNumber!=''">
+                card_number= #{cardNumber}
             </if>
-
         </where>
         order by create_date desc
     </select>
