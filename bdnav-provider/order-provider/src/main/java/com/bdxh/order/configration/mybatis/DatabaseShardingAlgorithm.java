@@ -11,7 +11,7 @@ public class DatabaseShardingAlgorithm implements PreciseShardingAlgorithm<Strin
     public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {
         int size = collection.size();
         for (String each : collection) {
-            if (each.endsWith(Objects.hashCode(preciseShardingValue.getValue()) % size + "")) {
+            if (each.endsWith(Math.abs(Objects.hashCode(preciseShardingValue.getValue()) % size )+"")) {
                 return each;
             }
         }

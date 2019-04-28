@@ -24,4 +24,8 @@ public interface OrderMapper extends Mapper<Order> {
      */
     List<Order> getOrderByCondition(Map<String,Object> param);
 
+    int deleteByOrderId(Map<String,Object> param);
+
+    int updateOrder(Order order);
+
 }

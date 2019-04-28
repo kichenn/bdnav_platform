@@ -23,7 +23,7 @@ public class ProductAddDto implements Serializable {
     /**
      * 商品展示名称
      */
-    @NotEmpty(message = "商品展示名称")
+    @NotEmpty(message = "商品展示名称不能为空")
     @ApiModelProperty("商品展示名称")
     private String productShowName;
 

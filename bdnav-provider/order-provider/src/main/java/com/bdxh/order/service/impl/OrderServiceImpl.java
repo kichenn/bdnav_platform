@@ -1,14 +1,15 @@
 package com.bdxh.order.service.impl;
 
 import com.bdxh.common.base.enums.BusinessStatusEnum;
-import com.bdxh.order.enums.OrderPayStatusEnum;
-import com.bdxh.order.enums.OrderTradeStatusEnum;
+import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
-import com.bdxh.common.support.BaseService;
 import com.bdxh.order.dto.OrderDto;
+import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.entity.OrderItem;
+import com.bdxh.order.enums.OrderPayStatusEnum;
+import com.bdxh.order.enums.OrderTradeStatusEnum;
 import com.bdxh.order.persistence.OrderItemMapper;
 import com.bdxh.order.persistence.OrderMapper;
 import com.bdxh.order.service.OrderService;
@@ -18,6 +19,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -48,6 +50,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         order.setBusinessStatus(BusinessStatusEnum.NO_PROCESS.getCode());
         order.setTradeStatus(OrderTradeStatusEnum.TRADING.getCode());
         order.setPayStatus(OrderPayStatusEnum.NO_PAY.getCode());
+        order.setId(snowflakeIdWorker.nextId());
         List<OrderItem> orderItems = BeanMapUtils.mapList(orderDto.getItems(), OrderItem.class);
         String productIds = orderItems.stream().map(u -> u.getProductItem()).collect(Collectors.joining(","));
         order.setProductIds(productIds);
@@ -83,4 +86,24 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         return pageInfo;
     }
 
+    @Override
+    public void deleteOrder(Map<String,Object> param) {
+        //查询商品
+//        Order order = orderMapper.selectByPrimaryKey(orderId);
+//        Preconditions.checkNotNull(order,"商品信息不存在");
+//        orderMapper.deleteByPrimaryKey(orderId);
+        orderMapper.deleteByOrderId(param);
+    }
+
+    @Override
+    public void updateOrder(OrderUpdateDto orderUpdateDto) {
+        //根据id查询商品
+//        Order oldProduct = orderMapper.selectByPrimaryKey(orderUpdateDto.getId());
+//        Preconditions.checkNotNull(oldProduct,"商品信息不存在，无法进行更新");
+        //将dto转换成实体对象
+        Order order = BeanMapUtils.map(orderUpdateDto, Order.class);
+        //设置更新时间
+        order.setUpdateDate(new Date());
+        orderMapper.updateOrder(order);
+    }
 }

@@ -1,6 +1,12 @@
 package com.bdxh.order.entity;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.annotations.ApiModelProperty;
+
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -9,6 +15,15 @@ import java.util.Date;
 public class Order implements Serializable {
 
     private static final long serialVersionUID = 2871016506957216726L;
+
+
+    /**
+     * 主键
+     */
+    @Id
+    @ApiModelProperty("主键")
+    @JsonSerialize(using= ToStringSerializer.class)
+    private Long id;
 
     /**
      * 订单号
@@ -30,10 +45,16 @@ public class Order implements Serializable {
     private String schoolCode;
 
     /**
-     * 用户id
+     * 学校主键
      */
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "school_id")
+    private Long schoolId;
+
+//    /**
+//     * 家长主键
+//     */
+//    @Column(name = "family_id")
+//    private Long familyId;
 
     /**
      * 用户openid
@@ -41,11 +62,11 @@ public class Order implements Serializable {
     @Column(name = "open_id")
     private String openId;
 
-    /**
-     * 姓名
-     */
-    @Column(name = "user_name")
-    private String userName;
+//    /**
+//     * 姓名
+//     */
+//    @Column(name = "user_name")
+//    private String userName;
 
     /**
      * 学号
@@ -89,11 +110,11 @@ public class Order implements Serializable {
     @Column(name = "business_status")
     private Byte businessStatus;
 
-    /**
-     * 渠道类型 1 自有渠道
-     */
-    @Column(name = "channel_type")
-    private Byte channelType;
+//    /**
+//     * 渠道类型 1 自有渠道
+//     */
+//    @Column(name = "channel_type")
+//    private Byte channelType;
 
     /**
      * 业务类型 1 微校付费服务
@@ -132,6 +153,12 @@ public class Order implements Serializable {
     private String productIds;
 
     /**
+     * 用户id
+     */
+    @Column(name = "user_id")
+    private Long userId;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_date")
@@ -146,7 +173,17 @@ public class Order implements Serializable {
     /**
      * 备注
      */
+    @Column(name = "remark")
     private String remark;
+
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     /**
      * 获取订单号
@@ -184,7 +221,19 @@ public class Order implements Serializable {
         this.thirdOrderNo = thirdOrderNo == null ? null : thirdOrderNo.trim();
     }
 
+
+
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     /**
+
      * 获取学校编码
      *
      * @return school_code - 学校编码
@@ -202,23 +251,21 @@ public class Order implements Serializable {
         this.schoolCode = schoolCode == null ? null : schoolCode.trim();
     }
 
-    /**
-     * 获取用户id
-     *
-     * @return user_id - 用户id
-     */
-    public Long getUserId() {
-        return userId;
+    public Long getSchoolId() {
+        return schoolId;
     }
 
-    /**
-     * 设置用户id
-     *
-     * @param userId 用户id
-     */
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
     }
+
+//    public Long getFamilyId() {
+//        return familyId;
+//    }
+//
+//    public void setFamilyId(Long familyId) {
+//        this.familyId = familyId;
+//    }
 
     /**
      * 获取用户openid
@@ -238,23 +285,23 @@ public class Order implements Serializable {
         this.openId = openId == null ? null : openId.trim();
     }
 
-    /**
-     * 获取姓名
-     *
-     * @return name - 姓名
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * 设置姓名
-     *
-     * @param userName 姓名
-     */
-    public void setUserName(String userName) {
-        this.userName = userName == null ? null : userName.trim();
-    }
+//    /**
+//     * 获取姓名
+//     *
+//     * @return name - 姓名
+//     */
+//    public String getUserName() {
+//        return userName;
+//    }
+//
+//    /**
+//     * 设置姓名
+//     *
+//     * @param userName 姓名
+//     */
+//    public void setUserName(String userName) {
+//        this.userName = userName == null ? null : userName.trim();
+//    }
 
     /**
      * 获取学号
@@ -382,23 +429,23 @@ public class Order implements Serializable {
         this.businessStatus = businessStatus;
     }
 
-    /**
-     * 获取渠道类型 1 自有渠道
-     *
-     * @return channel_type - 渠道类型 1 自有渠道
-     */
-    public Byte getChannelType() {
-        return channelType;
-    }
-
-    /**
-     * 设置渠道类型 1 自有渠道
-     *
-     * @param channelType 渠道类型 1 自有渠道
-     */
-    public void setChannelType(Byte channelType) {
-        this.channelType = channelType;
-    }
+//    /**
+//     * 获取渠道类型 1 自有渠道
+//     *
+//     * @return channel_type - 渠道类型 1 自有渠道
+//     */
+//    public Byte getChannelType() {
+//        return channelType;
+//    }
+//
+//    /**
+//     * 设置渠道类型 1 自有渠道
+//     *
+//     * @param channelType 渠道类型 1 自有渠道
+//     */
+//    public void setChannelType(Byte channelType) {
+//        this.channelType = channelType;
+//    }
 
     /**
      * 获取业务类型 1 微校付费服务
