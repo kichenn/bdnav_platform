@@ -1,16 +1,39 @@
 package demo;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.RocketMqConstrants;
+import com.bdxh.school.SchoolApplication;
 import com.bdxh.school.configration.common.HandleThreadConfig;
-import org.apache.commons.lang3.ArrayUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.exception.RemotingException;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-public class Test {
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = SchoolApplication.class)
+@EnableAutoConfiguration
+@Slf4j
+public class Tests {
+
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
+
     /**
      * 多线程处理list
      *
@@ -41,12 +64,22 @@ public class Test {
 
 
     public static void main(String[] args) {
-        Test test = new Test();
+        Tests test = new Tests();
         // 准备数据
         List<String> data = new ArrayList<String>();
         for (int i = 0; i < 6666; i++) {
             data.add("item" + i);
         }
         test.handleList(data, 15);
+    }
+
+
+    @Test
+    public void test1() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("schoolClassId", "111");
+        jsonObject.put("msg", "有学校院系组织架构更新了");
+        Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        defaultMQProducer.send(message);
     }
 }
