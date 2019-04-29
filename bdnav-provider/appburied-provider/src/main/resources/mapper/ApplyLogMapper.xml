@@ -69,8 +69,8 @@
             <if test="applyLog.operatorName !=null and applyLog.operatorName!=''">
                 AND operator_name like CONCAT(CONCAT('%',#{applyLog.operatorName,jdbcType=VARCHAR}),'%')
             </if>
-            <if test="applyLog.operatorStatus !=null">
-                operator_status=#{applyLog.operatorStatus,jdbcType = TINYINT}
+            <if test="applyLog.operatorStatus !=null and applyLog.operatorName!=''">
+                AND  operator_status=#{applyLog.operatorStatus,jdbcType = TINYINT}
             </if>
         </where>
 
