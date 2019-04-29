@@ -25,6 +25,12 @@ public class RocketMqConsumerConfig {
     @Autowired
     private RocketMqConsumerTransactionListener rocketMqConsumerTransactionListener;
 
+    /**
+     * 消费者，消费
+     *
+     * @param rocketMqConsumerProperties
+     * @return
+     */
     @Bean(value = "defaultMQPushConsumer", destroyMethod = "shutdown")
     @ConditionalOnBean(RocketMqConsumerProperties.class)
     public DefaultMQPushConsumer defaultMQPushConsumer(@Autowired RocketMqConsumerProperties rocketMqConsumerProperties) {
@@ -34,6 +40,8 @@ public class RocketMqConsumerConfig {
         consumer.setNamesrvAddr(rocketMqConsumerProperties.getNamesrvAddr());
         //最大线程
         consumer.setConsumeThreadMax(20);
+        //消费失败，重试次数10次（如果大于十次，应该在消费中间判断是否，写到响应的日志里）【默认重试16次】
+        consumer.setMaxReconsumeTimes(10);
         try {
             consumer.subscribe(rocketMqConsumerProperties.getTopic(), rocketMqConsumerProperties.getTag());
             // 开启监听

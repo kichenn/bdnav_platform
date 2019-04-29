@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @Description: rocketMQ 生产者配置类
+ *  rocketMQ消息发送是
  * @Author: Kang
  * @Date: 2019/4/28 12:06
  */
@@ -37,8 +38,11 @@ public class RocketMqProducerConfig {
         producer.setNamesrvAddr(rocketMqProperties.getNamesrvAddr());
         producer.setVipChannelEnabled(true);
         producer.setSendMsgTimeout(5000);
+        //队列接收最大的消息size
         producer.setMaxMessageSize(4 * 1024);
-        producer.setRetryTimesWhenSendFailed(2);
+        //发送消息失败，重试次数
+        producer.setRetryTimesWhenSendFailed(5);
+        //slave节点,将master主节点同步到slave失败，重试次数
         producer.setRetryTimesWhenSendAsyncFailed(5);
         producer.start();
         log.info("--------------------defaultProducer server开启成功--------------------");
@@ -57,8 +61,11 @@ public class RocketMqProducerConfig {
         producer.setTransactionListener(rocketMqTransactionListener);
         producer.setVipChannelEnabled(true);
         producer.setSendMsgTimeout(10000);
+        //队列接收最大的消息size
         producer.setMaxMessageSize(4 * 1024);
-        producer.setRetryTimesWhenSendFailed(2);
+        //发送消息失败，重试次数
+        producer.setRetryTimesWhenSendFailed(5);
+        //slave节点,将master主节点同步到slave失败，重试次数
         producer.setRetryTimesWhenSendAsyncFailed(5);
         producer.start();
         log.info("--------------------transactionMQProducer server开启成功--------------------");

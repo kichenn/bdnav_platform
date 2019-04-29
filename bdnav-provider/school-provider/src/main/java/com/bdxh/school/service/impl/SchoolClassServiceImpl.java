@@ -1,5 +1,7 @@
 package com.bdxh.school.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.helper.tree.utils.LongUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.school.dto.SchoolClassDto;
@@ -9,12 +11,19 @@ import com.bdxh.school.persistence.SchoolClassMapper;
 import com.bdxh.school.service.SchoolClassService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.rocketmq.client.exception.MQBrokerException;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.TransactionMQProducer;
+import org.apache.rocketmq.common.message.Message;
+import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.Data;
 
+import java.nio.charset.Charset;
 import java.util.*;
 
 /**
@@ -28,6 +37,9 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
 
     @Autowired
     private SchoolClassMapper schoolClassMapper;
+
+    @Autowired
+    private TransactionMQProducer transactionMQProducer;
 
     //增加院校关系
     @Override
@@ -76,7 +88,21 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
                 schoolClassMapper.updateByPrimaryKeySelective(e);
             });
         }
-        return schoolClassMapper.updateByPrimaryKeySelective(schoolClass) > 0;
+        Boolean result = schoolClassMapper.updateByPrimaryKeySelective(schoolClass) > 0;
+        if (result) {
+            //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("data", schoolClass);
+            jsonObject.put("message", "学校组织架构有调整");
+            Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            try {
+                transactionMQProducer.sendMessageInTransaction(message, null);
+            } catch (MQClientException e) {
+                e.printStackTrace();
+                log.error("发送学校院系组织更新消息");
+            }
+        }
+        return result;
     }
 
     //id删除院校关系
