@@ -10,7 +10,7 @@ public class RocketMqConstrants {
     /**
      * rocketmq事务回查redis前缀
      */
-    public static final String TRANSACTION_REDIS_PREFIX="rocketmqtransaction:";
+    public static final String TRANSACTION_REDIS_PREFIX = "rocketmqtransaction:";
 
     /**
      * rocketmq topics
@@ -20,22 +20,28 @@ public class RocketMqConstrants {
         /**
          * 钱包充值微信回调topic
          */
-        String wechatPayWalletNotice="wechatPayWalletNotice";
+        String wechatPayWalletNotice = "wechatPayWalletNotice";
 
         /**
          * 钱包一卡通充值topic
          */
-        String xiancardWalletRecharge="xiancardWalletRecharge";
+        String xiancardWalletRecharge = "xiancardWalletRecharge";
 
         /**
          * 凯路订单支付topic
          */
-        String xiancardWalletKailu="xiancardWalletKailu";
+        String xiancardWalletKailu = "xiancardWalletKailu";
 
         /**
          * 凯路订单支付更新topic
          */
-        String xiancardWalletKailuUpdate="xiancardWalletKailuUpdate";
+        String xiancardWalletKailuUpdate = "xiancardWalletKailuUpdate";
+
+
+        /**
+         * school服务，院系或部门组织架构更新 topic
+         */
+        String schoolOrganizationTopic = "schoolOrganizationTopic";
 
     }
 
@@ -44,18 +50,41 @@ public class RocketMqConstrants {
      */
     public interface Tags {
 
-        String wechatPayWalletNotice_app ="appmarket";
+        /**
+         * 钱包充值微信回调tag app的
+         */
+        String wechatPayWalletNotice_app = "appmarket";
 
-        String wechatPayWalletNotice_js ="js";
+        /**
+         * 钱包充值微信回调tag js的
+         */
+        String wechatPayWalletNotice_js = "js";
 
-        String wechatPayWalletNotice_query="query";
+        /**
+         * 钱包充值微信回调tag 查询
+         */
+        String wechatPayWalletNotice_query = "query";
 
-        String xiancardWalletRecharge_add="add";
+        /**
+         * 钱包一卡通充值tag 新增
+         */
+        String xiancardWalletRecharge_add = "add";
 
-        String xiancardWalletKailu_consumer="consumer";
+        /**
+         * 凯路订单支付tag
+         */
+        String xiancardWalletKailu_consumer = "consumer";
 
-        String xiancardWalletKailuUpdate_update="update";
+        /**
+         * 凯路订单更新tag
+         */
+        String xiancardWalletKailuUpdate_update = "update";
 
+
+        /**
+         * school服务，院系组织架构更新 tag
+         */
+        String schoolOrganizationTag_class = "schoolOrganizationTag_class";
     }
 
 }

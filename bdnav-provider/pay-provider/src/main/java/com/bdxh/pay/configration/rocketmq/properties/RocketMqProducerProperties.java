@@ -1,4 +1,4 @@
-package com.bdxh.pay.configration.rocketmq;
+package com.bdxh.pay.configration.rocketmq.properties;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -6,14 +6,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 /**
- * @description: rocketmq配置类
- * @author: xuyuan
- * @create: 2019-01-15 12:26
- **/
+ * @Description: rocketmq生产者配置类
+ * @Author: Kang
+ * @Date: 2019/4/28 12:16
+ */
 @Data
-@ConditionalOnProperty(prefix = "rocketmq.producer",name = {"defaultName","transName"})
+@ConditionalOnProperty(prefix = "rocketmq.producer", name = {"defaultName", "transName"})
 @Component
-public class RocketMqProperties {
+public class RocketMqProducerProperties {
 
     @Value("${rocketmq.producer.defaultName}")
     private String defaultProducerName;

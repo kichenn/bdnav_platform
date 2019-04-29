@@ -32,14 +32,19 @@ spring:
 #rocketmq producer配置
 rocketmq:
   producer:
-    defaultName: default-pay-provider
+    defaultName: default-pay-provider #生产者组名
     transName: trans-pay-provider
-    transEnable: false
+    transEnable: true #是否开启事务消息
+    #rocketmq producer配置
+  consumer:
+    groupName: default-pay-consumer #消费者组名
+    topic: wechatPayWalletNotice
+    tag: appmarket #多个 以 tag1,tag2
 management:
   endpoints:
     web:
       exposure:
         include: '*'
   endpoint:
-      health:
-        show-details: ALWAYS
+    health:
+      show-details: ALWAYS

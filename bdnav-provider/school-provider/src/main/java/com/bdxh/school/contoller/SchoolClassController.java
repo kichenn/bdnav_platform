@@ -12,6 +12,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.rocketmq.client.producer.TransactionMQProducer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -173,6 +174,7 @@ public class SchoolClassController {
 
     /**
      * 查询单个学校院系路径和Ids
+     *
      * @param schoolCode
      * @return
      */
@@ -180,11 +182,11 @@ public class SchoolClassController {
     @ApiOperation(value = "查询单个学校院系路径和Ids", response = SchoolClass.class)
     @ResponseBody
     public Object queryClassUrlBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
-        List<SchoolClass> list=schoolClassService.queryClassBySchoolCode(schoolCode);
+        List<SchoolClass> list = schoolClassService.queryClassBySchoolCode(schoolCode);
         for (int i = 0; i < list.size(); i++) {
-            if(!list.get(i).getParentId().equals("-1")){
-            list.get(i).setParentIds(list.get(i).getParentIds().trim().substring(1)+","+list.get(i).getId());
-            list.get(i).setThisUrl(list.get(i).getThisUrl().trim().substring(1));
+            if (!list.get(i).getParentId().equals("-1")) {
+                list.get(i).setParentIds(list.get(i).getParentIds().trim().substring(1) + "," + list.get(i).getId());
+                list.get(i).setThisUrl(list.get(i).getThisUrl().trim().substring(1));
             }
         }
         return WrapMapper.ok(list);
