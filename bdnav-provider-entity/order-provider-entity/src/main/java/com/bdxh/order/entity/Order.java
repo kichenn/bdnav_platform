@@ -29,8 +29,9 @@ public class Order implements Serializable {
     /**
      * 订单号
      */
-
+    @Id
     @Column(name = "order_no")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long orderNo;
 
     /**
@@ -157,6 +158,7 @@ public class Order implements Serializable {
      * 用户id
      */
     @Column(name = "user_id")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long userId;
 
     /**

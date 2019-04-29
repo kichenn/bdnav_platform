@@ -4,8 +4,11 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
+import com.bdxh.order.entity.Order;
 import com.bdxh.order.feign.OrdersControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.user.feign.FamilyControllerClient;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -15,8 +18,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -40,6 +43,10 @@ public class OrderWebController {
     @Autowired
     private SchoolControllerClient schoolControllerClient;
 
+    private FamilyControllerClient familyControllerClient;
+
+
+//queryFamilyInfo
 
 
     @ApiOperation("查询订单")
@@ -47,8 +54,23 @@ public class OrderWebController {
     public Object queryUserOrder(@Valid @RequestBody OrderQueryDto orderDto, BindingResult bindingResult){
 
         try {
-            Wrapper wrapper = orderscc.queryUserOrder(orderDto);
-            return wrapper;
+//            PageInfo<Order> pageInfo= orderscc.queryUserOrder(orderDto).getResult();
+//           List pageInfoList = pageInfo.getList();
+//
+//            for (int i=1;i<pageInfoList.size();i++) {
+//
+//            }
+//            Order order = new Order();
+            try {
+                Wrapper wrapper = orderscc.queryUserOrder(orderDto);
+                return wrapper;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return WrapMapper.error(e.getMessage());
+            }
+
+
+//            return WrapMapper.ok(pageInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

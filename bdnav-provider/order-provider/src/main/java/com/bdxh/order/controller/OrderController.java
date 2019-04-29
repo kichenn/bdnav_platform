@@ -72,6 +72,8 @@ public class OrderController {
             Map<String, Object> param = new HashMap<>();
             param.put("schoolCode", orderDto.getSchoolCode());
             param.put("userId", orderDto.getUserId());
+            param.put("orderNo",orderDto.getOrderNo());
+            param.put("cardNumber",orderDto.getCardNumber());
             PageInfo<Order> pageInfo = orderService.getOrderByCondition(param, orderDto.getPageNum(), orderDto.getPageSize());
             return WrapMapper.ok(pageInfo);
         } catch (Exception e) {

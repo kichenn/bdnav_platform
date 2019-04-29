@@ -20,13 +20,19 @@ public class OrderUpdateDto implements Serializable {
 
 
 
+//    /**
+//     * id
+//     */
+//    @NotEmpty(message = "id不能为空")
+//    @ApiModelProperty("id")
+//    private Long id;
+
     /**
      * 订单号
      */
-    @NotEmpty(message = "id不能为空")
-    @ApiModelProperty("id")
-    private Long id;
 
+    @ApiModelProperty("订单号")
+    private Long orderNo;
 
     /**
      * 学校编码

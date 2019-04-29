@@ -5,7 +5,6 @@
         <!--
           WARNING - @mbg.generated
         -->
-
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
         <result column="third_order_no" jdbcType="VARCHAR" property="thirdOrderNo"/>
@@ -43,16 +42,16 @@
         from t_order
         <where>
             <if test="orderNo!=null and orderNo!=''">
-                order_no= #{order_no}
+                AND order_no= #{orderNo}
             </if>
             <if test="schoolCode!=null and schoolCode!=''">
-                school_code= #{schoolCode}
+                AND school_code= #{schoolCode}
             </if>
             <if test="userId!=null and userId!=''">
-                user_id= #{userId}
+                AND user_id= #{userId}
             </if>
             <if test="cardNumber!=null and cardNumber!=''">
-                card_number= #{cardNumber}
+                AND card_number= #{cardNumber}
             </if>
         </where>
         order by create_date desc
@@ -104,6 +103,6 @@
         </if>
         update_date= #{updateDate}
         WHERE
-        school_code=#{schoolCode} and user_id=#{userId} and id=#{id} ;
+        school_code=#{schoolCode} and user_id=#{userId} and order_no=#{orderNo} ;
     </update>
 </mapper>
