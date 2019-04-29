@@ -55,7 +55,7 @@
                 AND school_name like CONCAT(CONCAT('%',#{applyLog.schoolName,jdbcType=VARCHAR}),'%')
             </if>
             <if test="applyLog.cardNumber !=null and applyLog.cardNumber!=''">
-                AND card_number  CONCAT(CONCAT('%',#{applyLog.cardNumber,jdbcType = VARCHAR}),'%')
+                AND card_number like CONCAT(CONCAT('%',#{applyLog.cardNumber,jdbcType = VARCHAR}),'%')
             </if>
             <if test="applyLog.userName !=null and applyLog.userName!=''">
                 AND user_name like CONCAT(CONCAT('%',#{applyLog.userName,jdbcType=VARCHAR}),'%')
