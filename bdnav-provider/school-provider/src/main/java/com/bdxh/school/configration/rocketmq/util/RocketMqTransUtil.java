@@ -11,10 +11,10 @@ import org.springframework.stereotype.Component;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description: RocketMq事务回查工具类
- * @author: xuyuan
- * @create: 2019-01-15 10:59
- **/
+ * @Description: RocketMq事务回查工具类
+ * @Author: Kang
+ * @Date: 2019/4/29 11:51
+ */
 @Component
 public class RocketMqTransUtil {
 
