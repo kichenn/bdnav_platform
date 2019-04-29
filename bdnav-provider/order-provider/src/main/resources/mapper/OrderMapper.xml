@@ -1,52 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.order.persistence.OrderMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.order.entity.Order">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="order_no" jdbcType="BIGINT" property="orderNo" />
-    <result column="third_order_no" jdbcType="VARCHAR" property="thirdOrderNo" />
-    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
-    <result column="user_id" jdbcType="BIGINT" property="userId" />
-    <result column="open_id" jdbcType="VARCHAR" property="openId" />
-    <result column="user_name" jdbcType="VARCHAR" property="userName" />
-    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
-    <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
-    <result column="order_money" jdbcType="DECIMAL" property="orderMoney" />
-    <result column="pay_money" jdbcType="DECIMAL" property="payMoney" />
-    <result column="trade_status" jdbcType="TINYINT" property="tradeStatus" />
-    <result column="pay_status" jdbcType="TINYINT" property="payStatus" />
-    <result column="business_status" jdbcType="TINYINT" property="businessStatus" />
-    <result column="channel_type" jdbcType="TINYINT" property="channelType" />
-    <result column="business_type" jdbcType="TINYINT" property="businessType" />
-    <result column="pay_type" jdbcType="TINYINT" property="payType" />
-    <result column="trade_type" jdbcType="TINYINT" property="tradeType" />
-    <result column="pay_time" jdbcType="TIMESTAMP" property="payTime" />
-    <result column="pay_end_time" jdbcType="TIMESTAMP" property="payEndTime" />
-    <result column="product_ids" jdbcType="VARCHAR" property="productIds" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.order.entity.Order">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
+        <result column="third_order_no" jdbcType="VARCHAR" property="thirdOrderNo"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="total_money" jdbcType="DECIMAL" property="totalMoney"/>
+        <result column="order_money" jdbcType="DECIMAL" property="orderMoney"/>
+        <result column="pay_money" jdbcType="DECIMAL" property="payMoney"/>
+        <result column="trade_status" jdbcType="TINYINT" property="tradeStatus"/>
+        <result column="pay_status" jdbcType="TINYINT" property="payStatus"/>
+        <result column="business_status" jdbcType="TINYINT" property="businessStatus"/>
+        <result column="business_type" jdbcType="TINYINT" property="businessType"/>
+        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
+        <result column="trade_type" jdbcType="TINYINT" property="tradeType"/>
+        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
+        <result column="pay_end_time" jdbcType="TIMESTAMP" property="payEndTime"/>
+        <result column="product_ids" jdbcType="VARCHAR" property="productIds"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
 
-  <sql id="BaseColumns">
-    order_no, third_order_no, school_code, user_id, open_id, user_name, card_number, total_money, order_money, pay_money, trade_status,
-    pay_status, business_status, channel_type, business_type, pay_type, trade_type, pay_time, pay_end_time, product_ids, create_date, update_date, remark
+    <sql id="BaseColumns">
+    id,order_no, third_order_no, school_code, school_id, open_id, user_id,  card_number, total_money, order_money, pay_money, trade_status,
+    pay_status, business_status,  business_type, pay_type, trade_type, pay_time, pay_end_time, product_ids, create_date, update_date, remark
   </sql>
 
-  <select id="getOrderByOrderNo" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColumns"/>
-    from t_order
-    where order_no=#{orderNo} and school_code=#{schoolCode} and user_id=#{userId}
-  </select>
+    <select id="getOrderByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_order
+        <where>
+            <if test="orderNo!=null and orderNo!=''">
+                AND order_no= #{orderNo}
+            </if>
+            <if test="schoolCode!=null and schoolCode!=''">
+                AND school_code= #{schoolCode}
+            </if>
+            <if test="userId!=null and userId!=''">
+                AND user_id= #{userId}
+            </if>
+            <if test="cardNumber!=null and cardNumber!=''">
+                AND card_number= #{cardNumber}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
 
-  <select id="getOrderByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColumns"/>
-    from t_order
-    <where>
-      school_code=#{schoolCode} and user_id=#{userId}
-    </where>
-    order by create_date desc
-  </select>
+    <delete id="deleteByOrderId" parameterType="java.util.Map">
+		delete  from t_order where school_code=#{schoolCode} and user_id=#{userId} and id=#{id}
+	</delete>
+
+    <delete id="deleteByOrderIds">
+        delete from t_order where (school_code,user_id,id) in
+        <foreach collection="list" separator="," open="(" close=")" item="list" >
+            (#{list.schoolCode},#{list.userId},#{list.id})
+        </foreach>
+    </delete>
+
+    <update id="updateOrder">
+        UPDATE t_order
+        SET
+        <if test="totalMoney!=null and totalMoney!=''">
+            total_money= #{totalMoney},
+        </if>
+        <if test="orderMoney!=null and orderMoney!=''">
+            order_money= #{orderMoney},
+        </if>
+        <if test="payMoney!=null and payMoney!=''">
+            pay_money= #{payMoney},
+        </if>
+        <if test="tradeStatus!=null and tradeStatus!=''">
+            trade_status= #{tradeStatus},
+        </if>
+        <if test="payStatus!=null and payStatus!=''">
+            pay_status= #{payStatus},
+        </if>
+        <if test="businessStatus!=null and businessStatus!=''">
+            business_status= #{businessStatus},
+        </if>
+        <if test="businessType!=null and businessType!=''">
+            business_type= #{businessType},
+        </if>
+        <if test="payType!=null and payType!=''">
+            pay_type= #{payType},
+        </if>
+        <if test="tradeType!=null and tradeType!=''">
+            trade_type= #{tradeType},
+        </if>
+        <if test="remark!=null and remark!=''">
+            remark= #{remark},
+        </if>
+        update_date= #{updateDate}
+        WHERE
+        school_code=#{schoolCode} and user_id=#{userId} and order_no=#{orderNo} ;
+    </update>
 </mapper>

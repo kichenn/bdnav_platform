@@ -18,58 +18,52 @@ import java.util.List;
  * @create: 2019-02-26 10:38
  **/
 public interface StudentService extends IService<Student> {
-    /**
-     * @Author： binzh
-     * @Description： 根据条件分页查询学生信息
-     * @Date： 16:15 2019/3/4
-     * @Param： [StudentQueryDto]
-     * @return： PageInfo<Student>
-     **/
-    PageInfo<Student> getStudentList(StudentQueryDto studentQueryDto);
 
     /**
-     * @Author： binzh
-     * @Description： //根据id删除学生信息以及学生家长绑定信息
-     * @Date： 19:20 2019/3/7
-     * @Param： [schoolCode, cardNumber,studentId]
-     * @return： void
-     **/
+     * 根据条件分页查询学生信息
+     * @param studentQueryDto
+     * @return
+     */
+    PageInfo<Student> getStudentList(StudentQueryDto studentQueryDto);
+
+
+    /**
+     * 根据id删除学生信息以及学生家长绑定信息
+     * @param schoolCode
+     * @param cardNumber
+     */
     void deleteStudentInfo(String schoolCode, String cardNumber);
 
     /**
-     * @Author： binzh
-     * @Description： //根据id批量删除学生信息以及学生家长绑定信息
-     * @Date： 16:15 2019/3/7
-     * @Param： [schoolCodes, cardNumbers, ids]
-     * @return： void
-     **/
+     * 根据id批量删除学生信息以及学生家长绑定信息
+     * @param schoolCodes
+     * @param cardNumbers
+     */
     void deleteBatchesStudentInfo(String schoolCodes, String cardNumbers);
 
+
+
     /**
-     * @Author： binzh
-     * @Description： //修改学生信息如果修改了名字则修改关系表学生名称
-     * @Date： 9:41 2019/3/6
-     * @Param： [studentDto]
-     * @return： void
-     **/
+     * 修改学生信息如果修改了名字则修改关系表学生名称
+     * @param updateStudentDto
+     */
     void updateStudentInfo(UpdateStudentDto updateStudentDto);
 
     /**
-     * @Author： binzh
-     * @Description： //查询单个学生详细信息
-     * @Date： 17:44 2019/3/8
-     * @Param： [schoolCode, cardNumber]
-     * @return： com.bdxh.user.vo.StudentVo
-     **/
+     * 查询单个学生详细信息
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
     StudentVo selectStudentVo(String schoolCode, String cardNumber);
 
+
     /**
-     * @Author： binzh
-     * @Description： //判断数据库是否存在相同卡号
-     * @Date： 17:45 2019/3/8
-     * @Param： [schoolCode, cardNumber]
-     * @return： com.bdxh.user.vo.StudentVo
-     **/
+     * 判断数据库是否存在相同卡号
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
     StudentVo isNullStudent(String schoolCode, String cardNumber);
 
 
@@ -98,7 +92,7 @@ public interface StudentService extends IService<Student> {
      * @param schoolCode
      * @return
      */
-    List<String> queryCardNumberBySchoolCode( String schoolCode);
+    List<String> queryCardNumberBySchoolCode(String schoolCode);
 
     /**
      * 根据学校CODE和组织架构查询学生
@@ -108,4 +102,10 @@ public interface StudentService extends IService<Student> {
      * @return
      */
     List<Student> findStudentInfoByClassOrg(String schoolCode,String parentIds,Byte type);
+
+    /**
+     * 学生用户信息激活绑定
+     * @param updateStudentDto
+     */
+    void studentInfoActivation(UpdateStudentDto updateStudentDto);
 }

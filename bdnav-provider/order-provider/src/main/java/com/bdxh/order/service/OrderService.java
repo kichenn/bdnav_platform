@@ -2,12 +2,12 @@ package com.bdxh.order.service;
 
 import com.bdxh.common.support.IService;
 import com.bdxh.order.dto.OrderDto;
+import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.vo.OrderVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,12 +25,6 @@ public interface OrderService extends IService<Order> {
     @Transactional(rollbackFor = Exception.class)
     OrderVo createOrder(OrderDto orderDto);
 
-    /**
-     * 根据订单号查询订单
-     * @param param
-     * @return
-     */
-    Order getOrderByOrderNo(Map<String,Object> param);
 
     /**
      * 根据条件查询用户订单列表
@@ -38,5 +32,25 @@ public interface OrderService extends IService<Order> {
      * @return
      */
     PageInfo<Order> getOrderByCondition(Map<String,Object> param, int pageNum, int pageSize);
+
+    /**
+     * 根据主键删除商品
+     * @param param
+     */
+    boolean deleteOrder(Map<String,Object> param);
+
+    /**
+     * 批量删除商品
+     *
+     */
+    boolean deleteOrders(String schoolCodes,String userIds,String ids);
+
+    /**
+     * 更新订单
+     * @param orderUpdateDto
+     */
+    boolean updateOrder(OrderUpdateDto orderUpdateDto);
+
+
 
 }

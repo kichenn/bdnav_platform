@@ -54,4 +54,11 @@ private BaseUserMapper baseUserMapper;
     public Integer queryUserPhoneByPhone(BaseUserQueryDto baseUserQueryDto) {
         return baseUserMapper.queryUserPhoneByPhone(baseUserQueryDto);
     }
+
+    @Override
+    public BaseUser queryBaseUserInfoByPhone(String phone) {
+        BaseUser baseUser=new BaseUser();
+        baseUser.setPhone(phone);
+        return baseUserMapper.selectOne(baseUser);
+    }
 }

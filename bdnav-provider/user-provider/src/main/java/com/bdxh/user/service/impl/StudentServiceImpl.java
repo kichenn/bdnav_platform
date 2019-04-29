@@ -9,7 +9,6 @@ import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.BaseUser;
-import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.persistence.BaseUserMapper;
@@ -23,7 +22,6 @@ import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,6 +54,11 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Autowired
     private StudentMapper studentMapper;
 
+    /**
+     * 查询所有学生
+     * @param studentQueryDto
+     * @return
+     */
     @Override
     public PageInfo<Student> getStudentList(StudentQueryDto studentQueryDto) {
         PageHelper.startPage(studentQueryDto.getPageNum(), studentQueryDto.getPageSize());
@@ -64,6 +67,11 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return pageInfoStudent;
     }
 
+    /**
+     * 删除学生信息
+     * @param schoolCode
+     * @param cardNumber
+     */
     @Override
     @Transactional
     public void deleteStudentInfo(String schoolCode, String cardNumber) {
@@ -72,6 +80,11 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         baseUserMapper.deleteBaseUserInfo(schoolCode ,cardNumber );
     }
 
+    /**
+     * 批量删除学生信息
+     * @param schoolCode
+     * @param cardNumber
+     */
     @Override
     @Transactional
     public void deleteBatchesStudentInfo(String schoolCode, String cardNumber) {
@@ -91,6 +104,10 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     }
 
 
+    /**
+     * 修改学生信息
+     * @param updateStudentDto
+     */
     @Override
     @Transactional
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
@@ -110,13 +127,12 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 familyStudent.setCardNumber(familyStudentVo.getFCardNumber());
                 familyStudent.setSchoolCode(updateStudentDto.getSchoolCode());
                 familyStudentMapper.updateStudentInfo(familyStudent);
-
             }
         }
         //修改时判断用户是否已经激活
         if(updateStudentDto.getActivate().equals(Byte.parseByte("2"))) {
             SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(updateStudentDto.getSchoolCode());
+            synUserInfoRequest.setSchool_code(/*updateStudentDto.getSchoolCode()*/"1044695883");
             synUserInfoRequest.setCard_number(updateStudentDto.getCardNumber());
             synUserInfoRequest.setName(updateStudentDto.getName());
             synUserInfoRequest.setGender(updateStudentDto.getGender() == 1 ? "男" : "女");
@@ -129,8 +145,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
                 synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
             }
-
-
             synUserInfoRequest.setOrganization(updateStudentDto.getClassNames());
             synUserInfoRequest.setTelephone(updateStudentDto.getPhone());
             synUserInfoRequest.setCard_type("1");
@@ -148,7 +162,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             String result= AuthenticationUtils.synUserInfo(synUserInfoRequest,updateStudentDto.getAppKey(),updateStudentDto.getAppSecret());
             JSONObject jsonObject= JSONObject.parseObject(result);
             if(!jsonObject.get("errcode").equals(0)){
-                throw new Exception("教职工信息同步失败,返回的错误码"+jsonObject.get("errcode")+"，同步教职工卡号="+updateStudentDto.getCardNumber()+"学校名称="+updateStudentDto.getSchoolName());
+                throw new Exception("学生信息同步失败,返回的错误码"+jsonObject.get("errcode")+"，同步学生卡号="+updateStudentDto.getCardNumber()+"学校名称="+updateStudentDto.getSchoolName());
             }
         }
     }catch (Exception e){
@@ -157,6 +171,12 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     }
     }
 
+    /**
+     * 查询单个学生信息
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
     @Override
     public StudentVo selectStudentVo(String schoolCode, String cardNumber) {
         StudentVo studentVo = studentMapper.selectStudentVo(schoolCode, cardNumber);
@@ -173,6 +193,12 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return studentVo;
     }
 
+    /**
+     * 查询单个学生是否存在
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
     @Override
     public StudentVo isNullStudent(String schoolCode, String cardNumber) {
         return studentMapper.selectStudentVo(schoolCode, cardNumber);
@@ -188,6 +214,10 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return studentMapper.findStudentBySchoolClassId(schoolCode,schoolId,classId);
     }
 
+    /**
+     * 保存学生信息
+     * @param student
+     */
     @Override
     @Transactional
     public void saveStudent(Student student) {
@@ -201,6 +231,10 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         baseUserMapper.insert(baseUser);
     }
 
+    /**
+     * 批量保存学生信息
+     * @param addStudentDtoList
+     */
     @Override
     public void batchSaveStudentInfo(List<AddStudentDto> addStudentDtoList) {
         List<Student> studentList=BeanMapUtils.mapList(addStudentDtoList,Student.class);
@@ -213,16 +247,71 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         }
         studentMapper.batchSaveStudentInfo(studentList);
         baseUserMapper.batchSaveBaseUserInfo(baseUserList);
-
     }
 
+    /**
+     * 根据学校CODE查询所有卡号
+     * @param schoolCode
+     * @return
+     */
     @Override
     public List<String> queryCardNumberBySchoolCode(String schoolCode) {
         return studentMapper.queryCardNumberBySchoolCode(schoolCode);
     }
 
+    /**
+     * 根据组织架构信息查询学生
+     * @param schoolCode
+     * @param parentIds
+     * @param type
+     * @return
+     */
     @Override
     public List<Student> findStudentInfoByClassOrg(String schoolCode, String parentIds, Byte type) {
         return studentMapper.findStudentInfoByClassOrg(schoolCode,parentIds,type);
+    }
+    /**
+     *学生激活信息同步微校且绑定
+     */
+    @Override
+    public void studentInfoActivation(UpdateStudentDto updateStudentDto) {
+        try {
+            SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
+            synUserInfoRequest.setSchool_code(/*updateStudentDto.getSchoolCode()*/"1044695883");
+            synUserInfoRequest.setCard_number(updateStudentDto.getCardNumber());
+            synUserInfoRequest.setName(updateStudentDto.getName());
+            synUserInfoRequest.setGender(updateStudentDto.getGender() == 1 ? "男" : "女");
+            if (updateStudentDto.getSchoolType() >= Byte.parseByte("4")) {
+                synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
+                synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
+                synUserInfoRequest.setCollege(updateStudentDto.getCollegeName());
+                synUserInfoRequest.setProfession(updateStudentDto.getProfessionName());
+            } else {
+                synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
+                synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
+            }
+            synUserInfoRequest.setOrganization(updateStudentDto.getClassNames());
+            synUserInfoRequest.setTelephone(updateStudentDto.getPhone());
+            synUserInfoRequest.setCard_type("1");
+            synUserInfoRequest.setId_card(updateStudentDto.getIdcard());
+            synUserInfoRequest.setHead_image(updateStudentDto.getImage());
+            synUserInfoRequest.setIdentity_type(AuthenticationConstant.STUDENT);
+            synUserInfoRequest.setNation(updateStudentDto.getNationName());
+            synUserInfoRequest.setQq(updateStudentDto.getQqNumber());
+            synUserInfoRequest.setAddress(updateStudentDto.getAdress());
+            synUserInfoRequest.setEmail(updateStudentDto.getEmail());
+            synUserInfoRequest.setPhysical_card_number(updateStudentDto.getPhysicalNumber());
+            synUserInfoRequest.setPhysical_chip_number(updateStudentDto.getPhysicalChipNumber());
+            synUserInfoRequest.setDorm_number(updateStudentDto.getDormitoryAddress());
+            synUserInfoRequest.setCampus(updateStudentDto.getCampusName());
+            String result = AuthenticationUtils.synUserInfo(synUserInfoRequest, updateStudentDto.getAppKey(), updateStudentDto.getAppSecret());
+            JSONObject jsonObject = JSONObject.parseObject(result);
+                if (!jsonObject.get("errcode").equals(0)) {
+                    throw new Exception("学生信息同步失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + updateStudentDto.getCardNumber() + "学校名称=" + updateStudentDto.getSchoolName());
+                }
+                } catch (Exception e) {
+                e.printStackTrace();
+                log.info("用户激活失败");
+                }
     }
 }

@@ -117,7 +117,7 @@ private SnowflakeIdWorker snowflakeIdWorker;
             if(updateFamilyDto.getActivate().equals(Byte.parseByte("2"))){
                 SynUserInfoRequest synUserInfoRequest=new SynUserInfoRequest();
                 synUserInfoRequest.setName(updateFamilyDto.getName());
-                synUserInfoRequest.setSchool_code(updateFamilyDto.getSchoolCode());
+                synUserInfoRequest.setSchool_code(/*updateFamilyDto.getSchoolCode()*/"1044695883");
                 synUserInfoRequest.setCard_number(updateFamilyDto.getCardNumber());
                 synUserInfoRequest.setIdentity_type(AuthenticationConstant.FAMILY);
                 synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);

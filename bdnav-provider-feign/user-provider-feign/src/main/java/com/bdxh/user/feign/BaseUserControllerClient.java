@@ -2,7 +2,9 @@ package com.bdxh.user.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.BaseUserQueryDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.fallback.BaseUserControllerFallback;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -34,4 +36,11 @@ public interface BaseUserControllerClient {
      */
     @RequestMapping(value ="/baseUser/queryUserPhoneByPhone",method = RequestMethod.POST)
     Wrapper queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto);
+
+    /**
+     * 根据手机号查询学生信息
+     * @return BaseUser
+     */
+    @RequestMapping(value ="/baseUser/queryBaseUserInfoByPhone",method = RequestMethod.GET)
+    Wrapper<BaseUser> queryBaseUserInfoByPhone(@RequestParam("phone")String phone);
 }

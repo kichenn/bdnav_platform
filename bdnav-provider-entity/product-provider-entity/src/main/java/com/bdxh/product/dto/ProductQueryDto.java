@@ -21,6 +21,12 @@ public class ProductQueryDto extends Query {
     private String productShowName;
 
     /**
+     * 商品名称
+     */
+    @ApiModelProperty("商品名称")
+    private String productName;
+
+    /**
      * 商品类型 1 单品 2 套餐
      */
     @ApiModelProperty("商品类型 1 单品 2 套餐")

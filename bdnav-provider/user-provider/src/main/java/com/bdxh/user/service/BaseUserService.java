@@ -5,6 +5,7 @@ import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.BaseUser;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -56,4 +57,11 @@ public interface BaseUserService extends IService<BaseUser> {
      * @return
      */
     Integer queryUserPhoneByPhone(BaseUserQueryDto baseUserQueryDto);
+
+    /**
+     * 根据手机号查询学校基础用户信息
+     * @param phone
+     * @return
+     */
+    BaseUser queryBaseUserInfoByPhone(String phone);
 }
