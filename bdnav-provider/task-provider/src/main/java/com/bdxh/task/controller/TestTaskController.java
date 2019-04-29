@@ -1,7 +1,9 @@
 package com.bdxh.task.controller;
 
 import com.bdxh.common.utils.DateUtil;
+import com.bdxh.user.feign.StudentControllerClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -16,6 +18,8 @@ import java.sql.Date;
 @Slf4j
 public class TestTaskController {
 
+    @Autowired
+    private StudentControllerClient studentControllerClient;
     /**
      * 每五秒执行
      */
@@ -27,8 +31,9 @@ public class TestTaskController {
     /**
      * 每一分钟执行
      */
-    @Scheduled(cron = "0 */1 * * * * ")
-    public void scheduled1() {
-        log.info("---每1分钟执行-定时任务---{}", DateUtil.format(new Date(System.currentTimeMillis()), "yyyy-MM-dd HH:mm:ss"));
-    }
+//    @Scheduled(cron = "0/3 * * * * * ")
+//    public void scheduled1() {
+//        studentControllerClient.findStudentBySchoolClassId("", new Long("111"), new Long("111"));
+//        log.info("---每1分钟执行-定时任务---{}", DateUtil.format(new Date(System.currentTimeMillis()), "yyyy-MM-dd HH:mm:ss"));
+//    }
 }

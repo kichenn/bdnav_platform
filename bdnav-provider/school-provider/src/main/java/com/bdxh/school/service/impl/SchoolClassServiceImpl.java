@@ -93,7 +93,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", schoolClass);
-            jsonObject.put("message", "学校组织架构有调整");
+            jsonObject.put("message", "学校院系组织架构有调整");
             Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
                 transactionMQProducer.sendMessageInTransaction(message, null);

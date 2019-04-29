@@ -80,11 +80,15 @@ public class RocketMqConstrants {
          */
         String xiancardWalletKailuUpdate_update = "update";
 
-
         /**
          * school服务，院系组织架构更新 tag
          */
         String schoolOrganizationTag_class = "schoolOrganizationTag_class";
+
+        /**
+         * school服务，部门组织架构更新 tag
+         */
+        String schoolOrganizationTag_dept = "schoolOrganizationTag_dept";
     }
 
 }
