@@ -24,7 +24,6 @@ apollo:
     eagerLoad:
       enabled: true
     namespaces: BASE.public.eureka,BASE.public-hikari-ds,application,BASE.public-redis
-
 #日志
 logging:
   config: classpath:logback-spring.xml

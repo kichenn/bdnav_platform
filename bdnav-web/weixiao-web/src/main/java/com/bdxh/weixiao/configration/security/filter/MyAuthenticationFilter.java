@@ -31,7 +31,7 @@ import java.io.IOException;
  **/
 @Component
 @Slf4j
-public class MyAuthenticationFilter extends OncePerRequestFilter {
+public class MyAuthenticationFilter/* extends OncePerRequestFilter*/ {
 
     //测试token 可以放在header或者param中
     //Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAG2RTUvDMBiA_0vOO7S13dqd52XIvApWQtdmM9o1I2l1OgZe1CnCNlCnUJh6EXQq4kFx-nPa6L8wpnPs4CWQ98mT96sNWFQFRaAqup63DNNcgMnHFT884-83UFNUSxFEUTUIciBiiEIc1Ih437YBotQlHrJBUcnZYBvhFnYIZGEEsSeCNtAr5WWib5adRVqCpGWWt0ydrlRwbWOpZAPhuA71YBA1qohKYS6f5IHTQBLMSpLhOgo8aWi_F-p46M8uSI49FIQ43IHi8DOWxmN-O-Cnoywv8X1UzwifdPn9E3-85v0DCZuU1BBjmAT_c9d3GJNIUXnvQcYIrTsB3nXCzFpVFaug6muCMHedEB_OOklfn5P4JTkZpufD9GL01b3jnwM-iUV16fFeGh99X_aT_XHSe5MfT_XpnO25NdmgI1aCWk0xBkUzDEvNG3rnB5LDKyrPAQAA.wQbwJZiEI1z5WQ27UZImxkZO90UD4Aj8vrQrJbz91_4m44I2ain1_XxSN68crfxzw_F5HFwupFdyZsbyVD37tA
@@ -42,7 +42,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    @Override
+ /*   @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         String servletPath = httpServletRequest.getServletPath();
         //静态资源直接放行不进行拦截
@@ -97,5 +97,5 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
         //清除当前登录用户
         SecurityContext.removeUserInfo();
     }
-
+*/
 }

@@ -34,4 +34,6 @@ public class AuthenticationConstant {
     //主动推送请求更新学生信息接口地址 sync-stu-info
     public static final String SYNC_USER_INFO_URL="https://uni.weixiao.qq.com/open/identity/sync-stu-info";
 
+    //用户激活时的用户认证接口
+    public static final String RECEIVE_STU_INFO="https://uni.weixiao.qq.com/identity/receive-stu-info";
 }

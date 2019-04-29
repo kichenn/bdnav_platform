@@ -56,6 +56,49 @@ public class AuthenticationUtils {
         }
     }
 
+        /**
+         * 认证推送用户信息到腾讯微校后台  成功返回参数 errcode:0
+         * @param synUserInfoRequest 需要加密的数据
+         * @param appKey  腾讯微校后台提供
+         * @param appSecret 取前16位 腾讯微校后台提供
+         * @oaram state     由微校跳转前端页面前端接收再传给后台
+         * @return
+         * @throws Exception
+         */
+    public static String authUserInfo(SynUserInfoRequest synUserInfoRequest,String appKey,String appSecret,String state){
+        try {
+            //获取同步微校用户所有属性 和值
+            List<Map<String,Object>> list=AuthenticationUtils.getFiledsInfo(synUserInfoRequest);
+            JSONObject dataJson=new JSONObject();
+            for (Map<String, Object> map : list) {
+                if(null!=map.get("value")){
+                    dataJson.put(map.get("name").toString(),map.get("value"));
+                }
+            }
+            dataJson.put("state",state);
+            List<String> dataAttr=new ArrayList<>();
+            dataAttr.add(dataJson.toString());
+            String rawData=WxEncryption.Encrypt(dataAttr.toString(),appKey,appSecret.substring(0,16));
+            Map<String,Object> map =new HashMap<>();
+            map.put("raw_data",rawData);
+            map.put("app_key",appKey);
+            String result = HttpClientUtils.doPost(AuthenticationConstant.RECEIVE_STU_INFO,map);
+            return result;
+        }catch (Exception e){
+            e.printStackTrace();
+            return e.getMessage();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
     /**
      * 根据属性名获取属性值
      * */

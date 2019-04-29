@@ -7,6 +7,8 @@ import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.user.configration.rocketmq.listener.RocketMqProducerTransactionListener;
+import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.FamilyStudent;
@@ -48,12 +50,15 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
+
     @Autowired
     private FamilyMapper familyMapper;
 
     @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private RocketMqProducerTransactionListener rocketMqProducerTransactionListener;
     /**
      * 查询所有学生
      * @param studentQueryDto
@@ -132,7 +137,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         //修改时判断用户是否已经激活
         if(updateStudentDto.getActivate().equals(Byte.parseByte("2"))) {
             SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(/*updateStudentDto.getSchoolCode()*/"1044695883");
+            synUserInfoRequest.setSchool_code(updateStudentDto.getSchoolCode());
             synUserInfoRequest.setCard_number(updateStudentDto.getCardNumber());
             synUserInfoRequest.setName(updateStudentDto.getName());
             synUserInfoRequest.setGender(updateStudentDto.getGender() == 1 ? "男" : "女");
@@ -164,6 +169,10 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             if(!jsonObject.get("errcode").equals(0)){
                 throw new Exception("学生信息同步失败,返回的错误码"+jsonObject.get("errcode")+"，同步学生卡号="+updateStudentDto.getCardNumber()+"学校名称="+updateStudentDto.getSchoolName());
             }
+            Map<String,Object> map =new HashMap<>();
+            map.put("tableName","t_student");
+            map.put("data",)
+            rocketMqProducerTransactionListener.executeLocalTransaction();
         }
     }catch (Exception e){
         e.printStackTrace();
@@ -276,42 +285,46 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     public void studentInfoActivation(UpdateStudentDto updateStudentDto) {
         try {
+            Student student=BeanMapUtils.map(updateStudentDto,Student.class);
+            studentMapper.updateStudentInfo(student);
+            Student studentInfo=studentMapper.findStudentInfo(updateStudentDto.getSchoolCode(),updateStudentDto.getCardNumber());
             SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(/*updateStudentDto.getSchoolCode()*/"1044695883");
-            synUserInfoRequest.setCard_number(updateStudentDto.getCardNumber());
-            synUserInfoRequest.setName(updateStudentDto.getName());
-            synUserInfoRequest.setGender(updateStudentDto.getGender() == 1 ? "男" : "女");
+            synUserInfoRequest.setSchool_code(studentInfo.getSchoolCode());
+            synUserInfoRequest.setCard_number(studentInfo.getCardNumber());
+            synUserInfoRequest.setName(studentInfo.getName());
+            synUserInfoRequest.setGender(studentInfo.getGender() == 1 ? "男" : "女");
             if (updateStudentDto.getSchoolType() >= Byte.parseByte("4")) {
-                synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
-                synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
-                synUserInfoRequest.setCollege(updateStudentDto.getCollegeName());
-                synUserInfoRequest.setProfession(updateStudentDto.getProfessionName());
+                synUserInfoRequest.setClass_name(studentInfo.getClassName());
+                synUserInfoRequest.setGrade(studentInfo.getGradeName());
+                synUserInfoRequest.setCollege(studentInfo.getCollegeName());
+                synUserInfoRequest.setProfession(studentInfo.getProfessionName());
             } else {
-                synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
-                synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
+                synUserInfoRequest.setClass_name(studentInfo.getClassName());
+                synUserInfoRequest.setGrade(studentInfo.getGradeName());
             }
-            synUserInfoRequest.setOrganization(updateStudentDto.getClassNames());
-            synUserInfoRequest.setTelephone(updateStudentDto.getPhone());
+            synUserInfoRequest.setReal_name_verify(Byte.valueOf("0"));
+            synUserInfoRequest.setOrganization(studentInfo.getClassNames());
+            synUserInfoRequest.setTelephone(studentInfo.getPhone());
             synUserInfoRequest.setCard_type("1");
-            synUserInfoRequest.setId_card(updateStudentDto.getIdcard());
-            synUserInfoRequest.setHead_image(updateStudentDto.getImage());
+            synUserInfoRequest.setId_card(studentInfo.getIdcard());
+            synUserInfoRequest.setHead_image(studentInfo.getImage());
             synUserInfoRequest.setIdentity_type(AuthenticationConstant.STUDENT);
-            synUserInfoRequest.setNation(updateStudentDto.getNationName());
-            synUserInfoRequest.setQq(updateStudentDto.getQqNumber());
-            synUserInfoRequest.setAddress(updateStudentDto.getAdress());
-            synUserInfoRequest.setEmail(updateStudentDto.getEmail());
-            synUserInfoRequest.setPhysical_card_number(updateStudentDto.getPhysicalNumber());
-            synUserInfoRequest.setPhysical_chip_number(updateStudentDto.getPhysicalChipNumber());
-            synUserInfoRequest.setDorm_number(updateStudentDto.getDormitoryAddress());
-            synUserInfoRequest.setCampus(updateStudentDto.getCampusName());
-            String result = AuthenticationUtils.synUserInfo(synUserInfoRequest, updateStudentDto.getAppKey(), updateStudentDto.getAppSecret());
+            synUserInfoRequest.setNation(studentInfo.getNationName());
+            synUserInfoRequest.setQq(studentInfo.getQqNumber());
+            synUserInfoRequest.setAddress(studentInfo.getAdress());
+            synUserInfoRequest.setEmail(studentInfo.getEmail());
+            synUserInfoRequest.setPhysical_card_number(studentInfo.getPhysicalNumber());
+            synUserInfoRequest.setPhysical_chip_number(studentInfo.getPhysicalChipNumber());
+            synUserInfoRequest.setDorm_number(studentInfo.getDormitoryAddress());
+            synUserInfoRequest.setCampus(studentInfo.getCampusName());
+            String result = AuthenticationUtils.authUserInfo(synUserInfoRequest, updateStudentDto.getAppKey(), updateStudentDto.getAppSecret(),updateStudentDto.getState());
             JSONObject jsonObject = JSONObject.parseObject(result);
-                if (!jsonObject.get("errcode").equals(0)) {
-                    throw new Exception("学生信息同步失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + updateStudentDto.getCardNumber() + "学校名称=" + updateStudentDto.getSchoolName());
-                }
-                } catch (Exception e) {
-                e.printStackTrace();
-                log.info("用户激活失败");
-                }
+            if (!jsonObject.get("errcode").equals(0)) {
+                throw new Exception("激活失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + updateStudentDto.getCardNumber() + "学校名称=" + updateStudentDto.getSchoolName());
+            }
+            } catch (Exception e) {
+            e.printStackTrace();
+            log.info("用户激活失败");
+            }
     }
 }
