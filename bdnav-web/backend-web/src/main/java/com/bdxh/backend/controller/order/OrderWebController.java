@@ -54,13 +54,12 @@ public class OrderWebController {
     public Object queryUserOrder(@Valid @RequestBody OrderQueryDto orderDto, BindingResult bindingResult){
 
         try {
-//            PageInfo<Order> pageInfo= orderscc.queryUserOrder(orderDto).getResult();
-//           List pageInfoList = pageInfo.getList();
-//
+            PageInfo<Order> pageInfo= orderscc.queryUserOrder(orderDto).getResult();
+           List pageInfoList = pageInfo.getList();
+
 //            for (int i=1;i<pageInfoList.size();i++) {
-//
+//                Order order = (Order) pageInfoList.get(i);
 //            }
-//            Order order = new Order();
             try {
                 Wrapper wrapper = orderscc.queryUserOrder(orderDto);
                 return wrapper;
