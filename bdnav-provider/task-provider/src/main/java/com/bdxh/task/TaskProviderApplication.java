@@ -18,7 +18,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableEurekaClient
 @EnableScheduling
 @EnableApolloConfig
-@ComponentScan(basePackages = {"com.bdxh.user"})
+@ComponentScan(basePackages = {"com.bdxh.user","com.bdxh.task"})
 @EnableFeignClients(basePackages = {"com.bdxh.user"})
 public class TaskProviderApplication {
 
