@@ -78,4 +78,9 @@ public class StudentControllerFallback implements StudentControllerClient {
     public Wrapper<List<Student>> findStudentInfoByClassOrg(String schoolCode, String parentIds, Byte type) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<Student>> findAllStudent() {
+        return null;
+    }
 }

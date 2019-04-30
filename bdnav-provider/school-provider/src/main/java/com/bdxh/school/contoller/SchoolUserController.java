@@ -163,5 +163,14 @@ public class SchoolUserController {
     public Object modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "statusEnum") SchoolUserStatusEnum statusEnum) {
         return WrapMapper.ok(schoolUserService.modifySchoolUserStatusById(id, statusEnum.getKey()));
     }
-
+    /**
+     * 查询所有系统用户信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/findAllSchoolUserInfo", method = RequestMethod.GET)
+    @ApiOperation(value = "查询所有系统用户信息", response = Boolean.class)
+    public Object findAllSchoolUserInfo(){
+        return WrapMapper.ok(schoolUserService.selectAll());
+    }
 }

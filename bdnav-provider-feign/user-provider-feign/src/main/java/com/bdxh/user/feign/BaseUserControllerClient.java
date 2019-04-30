@@ -35,6 +35,7 @@ public interface BaseUserControllerClient {
      * @return
      */
     @RequestMapping(value ="/baseUser/queryUserPhoneByPhone",method = RequestMethod.POST)
+    @ResponseBody
     Wrapper queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto);
 
     /**
@@ -42,5 +43,13 @@ public interface BaseUserControllerClient {
      * @return BaseUser
      */
     @RequestMapping(value ="/baseUser/queryBaseUserInfoByPhone",method = RequestMethod.GET)
+    @ResponseBody
     Wrapper<BaseUser> queryBaseUserInfoByPhone(@RequestParam("phone")String phone);
+
+    /**
+     * 查询学校所有除了家长的用户
+     */
+    @RequestMapping(value ="/baseUser/findAllBaseUserInfo",method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<List<BaseUser>> findAllBaseUserInfo();
 }

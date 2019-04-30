@@ -245,4 +245,7 @@
 			and phone=#{baseUserQueryDto.phone}
 		</where>
 	</select>
+	<select id="findAllBaseUserInfo" resultMap="BaseResultMap">
+	select <include refid="BaseColumns"/> from t_base_user where user_type!=3
+	</select>
 </mapper>

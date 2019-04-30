@@ -1,6 +1,7 @@
 package com.bdxh.user.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.service.BaseUserService;
@@ -69,6 +70,19 @@ public class BaseUserController {
         try {
             BaseUser baseUser=baseUserService.queryBaseUserInfoByPhone(phone);
             return WrapMapper.ok(baseUser) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+    /**
+     * 查询学校所有除了家长的用户
+     */
+    @RequestMapping(value ="/findAllBaseUserInfo",method = RequestMethod.POST)
+    @ResponseBody
+   public Object  findAllBaseUserInfo(){
+        try {
+            return WrapMapper.ok(baseUserService.findAllBaseUserInfo()) ;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

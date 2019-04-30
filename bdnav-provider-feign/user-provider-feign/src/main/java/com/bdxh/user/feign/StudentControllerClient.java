@@ -123,4 +123,13 @@ public interface StudentControllerClient {
     Wrapper<List<Student>>  findStudentInfoByClassOrg(@RequestParam("schoolCode") String schoolCode,
                                       @RequestParam("parentIds") String parentIds,
                                       @RequestParam("type") Byte type);
+
+    /**
+     * 查询所有学生
+     * @return
+     */
+    @RequestMapping(value = "/student/findAllStudent", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<Student>>  findAllStudent();
+
 }

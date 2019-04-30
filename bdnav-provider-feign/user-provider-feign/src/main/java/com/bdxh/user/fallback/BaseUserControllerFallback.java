@@ -30,4 +30,9 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
     public Wrapper<BaseUser> queryBaseUserInfoByPhone(String phone) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<BaseUser>> findAllBaseUserInfo() {
+        return WrapMapper.error();
+    }
 }

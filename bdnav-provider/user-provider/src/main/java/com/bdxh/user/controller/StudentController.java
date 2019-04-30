@@ -13,6 +13,7 @@ package com.bdxh.user.controller;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
@@ -62,8 +63,8 @@ public class StudentController {
         }
         try {
             Student student = BeanMapUtils.map(addStudentDto, Student.class);
-                studentService.saveStudent(student);
-                return WrapMapper.ok();
+            studentService.saveStudent(student);
+            return WrapMapper.ok();
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -185,16 +186,17 @@ public class StudentController {
 
     /**
      * 批量新增学生信息
+     *
      * @param studentList
      * @return
      */
     @ApiOperation(value = "批量新增学生信息")
     @RequestMapping(value = "/batchSaveStudentInfo", method = RequestMethod.POST)
-    public Object batchSaveStudentInfo(@RequestBody List<AddStudentDto> studentList){
+    public Object batchSaveStudentInfo(@RequestBody List<AddStudentDto> studentList) {
         try {
             studentService.batchSaveStudentInfo(studentList);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
 
@@ -202,6 +204,7 @@ public class StudentController {
 
     /**
      * 根据学校Code查询所有学生学号
+     *
      * @param schoolCode
      * @return
      */
@@ -210,15 +213,16 @@ public class StudentController {
     public Object queryCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
         try {
 
-        return WrapMapper.ok(studentService.queryCardNumberBySchoolCode(schoolCode));
+            return WrapMapper.ok(studentService.queryCardNumberBySchoolCode(schoolCode));
 
-        }catch (Exception e){
+        } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
     }
 
     /**
      * 根据学校CODE和组织架构查询学生
+     *
      * @param schoolCode
      * @param parentIds
      * @param type
@@ -230,14 +234,15 @@ public class StudentController {
                                             @RequestParam("parentIds") String parentIds,
                                             @RequestParam("type") Byte type) {
         try {
-            return WrapMapper.ok(studentService.findStudentInfoByClassOrg(schoolCode,parentIds,type));
-        }catch (Exception e){
+            return WrapMapper.ok(studentService.findStudentInfoByClassOrg(schoolCode, parentIds, type));
+        } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
     }
 
     /**
      * 学生激活信息同步微校且绑定
+     *
      * @param updateStudentDto
      * @return
      */
@@ -247,7 +252,22 @@ public class StudentController {
         try {
             studentService.studentInfoActivation(updateStudentDto);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 查询所有学生
+     *
+     * @return
+     */
+    @ApiOperation(value = "查询所有学生")
+    @RequestMapping(value = "/findAllStudent", method = RequestMethod.GET)
+    public Object findAllStudent() {
+        try {
+            return WrapMapper.ok(studentService.selectAll());
+        } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
     }

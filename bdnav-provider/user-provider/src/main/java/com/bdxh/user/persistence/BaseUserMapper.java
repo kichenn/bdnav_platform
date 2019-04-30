@@ -49,4 +49,7 @@ public interface BaseUserMapper extends Mapper<BaseUser> {
 
 	//根据手机号查询有没有重复的手机号
 	Integer queryUserPhoneByPhone(@Param("baseUserQueryDto")BaseUserQueryDto baseUserQueryDto);
+
+	//查询不是家长的用户信息
+	List<BaseUser> findAllBaseUserInfo();
 }
