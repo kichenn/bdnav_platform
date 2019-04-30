@@ -77,6 +77,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
 
     //修改院校关系
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean modifySchoolClass(SchoolClassModifyDto schoolClassDto) {
         SchoolClass schoolClass = new SchoolClass();
         BeanUtils.copyProperties(schoolClassDto, schoolClass);

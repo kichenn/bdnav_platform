@@ -26,14 +26,14 @@ import java.time.Duration;
 import java.util.SortedMap;
 
 /**
- * @description: redis配置类
- * @author: xuyuan
- * @create: 2019-01-15 10:19
- **/
-//@Configuration
-//@AutoConfigureAfter(RedisAutoConfiguration.class)
+ * @Description: redis配置类
+ * @Author: Kang
+ * @Date: 2019/4/30 18:44
+ */
+@Configuration
+@AutoConfigureAfter(RedisAutoConfiguration.class)
 public class RedisConfig extends CachingConfigurerSupport {
-/*
+
     @Bean
     public RedisTemplate<String, Object> redisTemplate(LettuceConnectionFactory redisConnectionFactory) {
         RedisSerializer<String> redisSerializer = new StringRedisSerializer();
@@ -77,9 +77,9 @@ public class RedisConfig extends CachingConfigurerSupport {
             StringBuilder sb = new StringBuilder();
             sb.append(o.getClass().getSimpleName()).append(".").append(method.getName()).append("(");
             for (Object obj : objects) {
-                if (obj!=null){
+                if (obj != null) {
                     //简单类型直接toString转字符串
-                    if (ObjectUtil.isSimpleValueType(obj.getClass())){
+                    if (ObjectUtil.isSimpleValueType(obj.getClass())) {
                         sb.append(obj.toString());
                     }
                     //复杂类型使用value拼接字符串,注意不适合嵌套
@@ -94,5 +94,5 @@ public class RedisConfig extends CachingConfigurerSupport {
             return sb.toString();
         };
     }
-*/
+
 }
