@@ -73,12 +73,12 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findPermissionList")
     @ApiOperation(value = "菜单or按钮权限列表", response = List.class)
-    public Object findPermissionList(@RequestParam(value = "roleId", required = false) Long roleId) {
+    public Object findPermissionList(@RequestParam(value = "roleId") Long roleId, @RequestParam(value = "schoolId") Long schoolId) {
         List<SchoolPermission> permissions = schoolPermissionService.selectAll();
         //如果当前roleId不为空查询 该角色底下的菜单
         List<Long> rolePermissionsId = new ArrayList<>();
         if (roleId != null) {
-            List<SchoolPermission> rolePermissions = schoolPermissionService.findPermissionByRoleId(roleId, null, null);
+            List<SchoolPermission> rolePermissions = schoolPermissionService.findPermissionByRoleId(roleId, null, schoolId);
             for (SchoolPermission temp : rolePermissions) {
                 rolePermissionsId.add(temp.getId());
             }
