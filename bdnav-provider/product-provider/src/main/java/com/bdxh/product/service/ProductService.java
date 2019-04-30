@@ -20,7 +20,7 @@ public interface ProductService extends IService<Product> {
      * 新增商品
      * @param productDto
      */
-    void addProduct(ProductAddDto productDto);
+    boolean addProduct(ProductAddDto productDto);
 
     /**
      * 更新商品

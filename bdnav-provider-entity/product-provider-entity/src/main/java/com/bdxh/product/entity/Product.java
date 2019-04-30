@@ -106,6 +106,7 @@ public class Product implements Serializable {
     /**
      * 备注
      */
+    @Column(name = "remark")
     private String remark;
 
     /**
