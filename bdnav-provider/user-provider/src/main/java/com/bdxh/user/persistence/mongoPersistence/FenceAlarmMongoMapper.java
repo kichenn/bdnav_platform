@@ -54,7 +54,8 @@ public class FenceAlarmMongoMapper{
             criteria.and("action").is(fenceAlarmQueryDto.getAction());
         }
         if(StringUtils.isNotEmpty(fenceAlarmQueryDto.getSchoolCode())){
-            criteria.and("school_code").is(fenceAlarmQueryDto.getSchoolCode());
+            Pattern pattern = Pattern.compile("^.*"+fenceAlarmQueryDto.getSchoolCode()+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("school_code").regex(pattern);
         }
         if(null!=fenceAlarmQueryDto.getType()){
             criteria.and("type").is(fenceAlarmQueryDto.getType());
@@ -70,6 +71,10 @@ public class FenceAlarmMongoMapper{
         if (StringUtils.isNotEmpty(fenceAlarmQueryDto.getMonitoredPerson())){
             Pattern pattern = Pattern.compile("^.*"+fenceAlarmQueryDto.getMonitoredPerson()+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("monitored_person").regex(pattern);
+        }
+        if (StringUtils.isNotEmpty(fenceAlarmQueryDto.getCardNumber())){
+            Pattern pattern = Pattern.compile("^.*"+fenceAlarmQueryDto.getCardNumber()+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("card_number").regex(pattern);
         }
         query.addCriteria(criteria);
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "create_date")));

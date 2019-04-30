@@ -25,47 +25,47 @@ import java.util.List;
 import java.util.Map;
 
 /**
-* @Description: 业务层实现
-* @Author Kang
-* @Date 2019-04-17 17:29:24
-*/
+ * @Description: 业务层实现
+ * @Author Kang
+ * @Date 2019-04-17 17:29:24
+ */
 @Service
 @Slf4j
 public class FenceAlarmServiceImpl extends BaseService<FenceAlarm> implements FenceAlarmService {
 
-	@Autowired
-	private FenceAlarmMongoMapper fenceAlarmMongoMapper;
+    @Autowired
+    private FenceAlarmMongoMapper fenceAlarmMongoMapper;
 
 
-	@Override
-	public PageInfo<FenceAlarmVo> getAllFenceAlarmInfos(FenceAlarmQueryDto fenceAlarmQueryDto) {
-		return fenceAlarmMongoMapper.getFenceAlarmInfos(fenceAlarmQueryDto);
-	}
+    @Override
+    public PageInfo<FenceAlarmVo> getAllFenceAlarmInfos(FenceAlarmQueryDto fenceAlarmQueryDto) {
+        return fenceAlarmMongoMapper.getFenceAlarmInfos(fenceAlarmQueryDto);
+    }
 
-	@Override
-	public FenceAlarmVo getFenceAlarmInfo(String schoolCode, String cardNumber, String id) {
-		return fenceAlarmMongoMapper.getFenceAlarmInfo(schoolCode,cardNumber,id);
-	}
+    @Override
+    public FenceAlarmVo getFenceAlarmInfo(String schoolCode, String cardNumber, String id) {
+        return fenceAlarmMongoMapper.getFenceAlarmInfo(schoolCode, cardNumber, id);
+    }
 
-	@Override
-	public void removeFenceAlarmInfo(String id, String schoolCode, String cardNumber) {
-		 fenceAlarmMongoMapper.removeFenceAlarmInfo(schoolCode,cardNumber,id);
-	}
+    @Override
+    public void removeFenceAlarmInfo(String id, String schoolCode, String cardNumber) {
+        fenceAlarmMongoMapper.removeFenceAlarmInfo(schoolCode, cardNumber, id);
+    }
 
-	@Override
-	public void batchRemoveFenceAlarmInfo(String ids, String schoolCodes, String cardNumbers) {
-		 fenceAlarmMongoMapper.batchRemoveFenceAlarmInfo(schoolCodes,cardNumbers,ids);
-	}
+    @Override
+    public void batchRemoveFenceAlarmInfo(String ids, String schoolCodes, String cardNumbers) {
+        fenceAlarmMongoMapper.batchRemoveFenceAlarmInfo(schoolCodes, cardNumbers, ids);
+    }
 
-	@Override
-	public void updateFenceAlarmInfo(UpdateFenceAlarmDto updateFenceAlarmDto) {
-		FenceAlarmMongo fenceAlarmMongo=BeanMapUtils.map(updateFenceAlarmDto,FenceAlarmMongo.class);
-		 fenceAlarmMongoMapper.updateFenceAlarmInfo(fenceAlarmMongo);
-	}
+    @Override
+    public void updateFenceAlarmInfo(UpdateFenceAlarmDto updateFenceAlarmDto) {
+        FenceAlarmMongo fenceAlarmMongo = BeanMapUtils.map(updateFenceAlarmDto, FenceAlarmMongo.class);
+        fenceAlarmMongoMapper.updateFenceAlarmInfo(fenceAlarmMongo);
+    }
 
-	@Override
-	public void insertFenceAlarmInfo(AddFenceAlarmDto addFenceAlarmDto) {
-		FenceAlarmMongo fenceAlarmMongo=BeanMapUtils.map(addFenceAlarmDto,FenceAlarmMongo.class);
-		 fenceAlarmMongoMapper.insertFenceAlarmInfo(fenceAlarmMongo);
-	}
+    @Override
+    public void insertFenceAlarmInfo(AddFenceAlarmDto addFenceAlarmDto) {
+        FenceAlarmMongo fenceAlarmMongo = BeanMapUtils.map(addFenceAlarmDto, FenceAlarmMongo.class);
+        fenceAlarmMongoMapper.insertFenceAlarmInfo(fenceAlarmMongo);
+    }
 }

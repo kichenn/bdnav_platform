@@ -58,7 +58,21 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             schoolClass.setThisUrl(schoolClassTemp.getParentNames() + "/" + schoolClassTemp.getName() + "/" + schoolClass.getName());
             schoolClass.setParentIds(schoolClassTemp.getParentIds() + "," + schoolClassTemp.getId());
         }
-        return schoolClassMapper.insertSelective(schoolClass) > 0;
+        Boolean result = schoolClassMapper.insertSelective(schoolClass) > 0;
+        if (result) {
+            //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("data", schoolClass);
+            jsonObject.put("message", "学校院系组织架构有调整");
+            Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            try {
+                transactionMQProducer.sendMessageInTransaction(message, null);
+            } catch (MQClientException e) {
+                e.printStackTrace();
+                log.error("发送学校院系组织更新消息");
+            }
+        }
+        return result;
     }
 
     //修改院校关系
@@ -94,7 +108,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", schoolClass);
             jsonObject.put("message", "学校院系组织架构有调整");
-            Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
                 transactionMQProducer.sendMessageInTransaction(message, null);
             } catch (MQClientException e) {

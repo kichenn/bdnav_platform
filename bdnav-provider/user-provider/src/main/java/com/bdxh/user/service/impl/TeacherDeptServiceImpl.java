@@ -23,7 +23,7 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
 
     @Override
     public void deleteTeacherDeptInfo(String schoolCode, String cardNumber, Integer deptId) {
-        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber,deptId);
+        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber, deptId);
     }
 
     /**
@@ -33,6 +33,6 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
      */
     @Override
     public TeacherDept findTeacherBySchoolDeptId(String schoolCode, Long schoolId, Long deptId) {
-        return teacherDeptMapper.findTeacherBySchoolDeptId(schoolCode,schoolId,deptId);
+        return teacherDeptMapper.findTeacherBySchoolDeptId(schoolCode, schoolId, deptId);
     }
 }

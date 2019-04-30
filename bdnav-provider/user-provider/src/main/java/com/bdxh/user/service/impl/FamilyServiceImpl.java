@@ -1,12 +1,15 @@
 package com.bdxh.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.user.configration.rocketmq.listener.RocketMqProducerTransactionListener;
+import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
@@ -23,6 +26,8 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,17 +46,23 @@ import java.util.Map;
 @Slf4j
 public class FamilyServiceImpl extends BaseService<Family> implements FamilyService {
 
-@Autowired
-private FamilyMapper familyMapper;
+    @Autowired
+    private FamilyMapper familyMapper;
 
-@Autowired
-private BaseUserMapper baseUserMapper;
+    @Autowired
+    private BaseUserMapper baseUserMapper;
 
-@Autowired
-private FamilyStudentMapper familyStudentMapper;
+    @Autowired
+    private FamilyStudentMapper familyStudentMapper;
 
-@Autowired
-private SnowflakeIdWorker snowflakeIdWorker;
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
+
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
+
+    @Autowired
+    private RocketMqProducerProperties rocketMqProducerProperties;
 
     @Override
     public PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto) {
@@ -64,8 +75,8 @@ private SnowflakeIdWorker snowflakeIdWorker;
     @Override
     @Transactional
     public void deleteFamilyInfo(String scoolCode,String cardNumber) {
-            familyMapper.removeFamilyInfo(scoolCode,cardNumber);
-             familyStudentMapper.familyRemoveFamilyStudent(scoolCode,cardNumber,null);
+        familyMapper.removeFamilyInfo(scoolCode,cardNumber);
+        familyStudentMapper.familyRemoveFamilyStudent(scoolCode,cardNumber,null);
         baseUserMapper.deleteBaseUserInfo(scoolCode,cardNumber);
     }
 
@@ -117,7 +128,7 @@ private SnowflakeIdWorker snowflakeIdWorker;
             if(updateFamilyDto.getActivate().equals(Byte.parseByte("2"))){
                 SynUserInfoRequest synUserInfoRequest=new SynUserInfoRequest();
                 synUserInfoRequest.setName(updateFamilyDto.getName());
-                synUserInfoRequest.setSchool_code(/*updateFamilyDto.getSchoolCode()*/"1044695883");
+                synUserInfoRequest.setSchool_code(updateFamilyDto.getSchoolCode());
                 synUserInfoRequest.setCard_number(updateFamilyDto.getCardNumber());
                 synUserInfoRequest.setIdentity_type(AuthenticationConstant.FAMILY);
                 synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);

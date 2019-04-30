@@ -3,6 +3,7 @@ package com.bdxh.task;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
@@ -15,7 +16,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
  * @Date: 2019/4/29 14:13
  */
 @SpringBootApplication
-@EnableEurekaClient
 @EnableScheduling
 @EnableApolloConfig
 @ComponentScan(basePackages = {"com.bdxh.user","com.bdxh.task"})

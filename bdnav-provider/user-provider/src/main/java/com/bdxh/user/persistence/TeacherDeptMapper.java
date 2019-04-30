@@ -1,6 +1,5 @@
 package com.bdxh.user.persistence;
 
-import com.bdxh.user.dto.TeacherDeptDto;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.vo.TeacherDeptVo;
 import org.apache.ibatis.annotations.Param;
@@ -24,4 +23,7 @@ public interface TeacherDeptMapper extends Mapper<TeacherDept> {
 
     //批量删除老师部门关系信息
     int batchRemoveTeacherDeptInfo(@Param("list") List<Map<String,String>> list);
+
+    //获取老师部门关系
+    TeacherDept findTeacherBySchoolCodeAndCardNumber(@Param("schoolCode") String schoolCode, @Param("cardNumber") String cardNumber);
 }

@@ -19,50 +19,47 @@ import com.bdxh.common.support.BaseService;
 import lombok.extern.slf4j.Slf4j;
 
 /**
-* @Description: 业务层实现
-* @Author Kang
-* @Date 2019-04-17 17:29:24
-*/
+ * @Description: 业务层实现
+ * @Author Kang
+ * @Date 2019-04-17 17:29:24
+ */
 @Service
 @Slf4j
 public class VisitLogsServiceImpl extends BaseService<VisitLogs> implements VisitLogsService {
 
-	@Autowired
-	private VisitLogsMongoMapper visitLogsMongoMapper;
+    @Autowired
+    private VisitLogsMongoMapper visitLogsMongoMapper;
 
 
+    @Override
+    public PageInfo<VisitLogsVo> getVisitLogsInfos(VisitLogsQueryDto visitLogsQueryDto) {
+        return visitLogsMongoMapper.getVisitLogsInfos(visitLogsQueryDto);
+    }
 
+    @Override
+    public VisitLogsVo getVisitLogsInfo(String schoolCode, String cardNumber, String id) {
+        return visitLogsMongoMapper.getVisitLogsInfo(schoolCode, cardNumber, id);
+    }
 
+    @Override
+    public void updateVisitLogsInfo(UpdateVisitLogsDto updateVisitLogsDto) {
+        VisitLogsMongo visitLogsMongo = BeanMapUtils.map(updateVisitLogsDto, VisitLogsMongo.class);
+        visitLogsMongoMapper.updateVisitLogsInfo(visitLogsMongo);
+    }
 
-	@Override
-	public PageInfo<VisitLogsVo> getVisitLogsInfos(VisitLogsQueryDto visitLogsQueryDto) {
-		return visitLogsMongoMapper.getVisitLogsInfos(visitLogsQueryDto);
-	}
+    @Override
+    public void removeVisitLogsInfo(String schoolCode, String cardNumber, String id) {
+        visitLogsMongoMapper.removeVisitLogsInfo(schoolCode, cardNumber, id);
+    }
 
-	@Override
-	public VisitLogsVo getVisitLogsInfo(String schoolCode, String cardNumber, String id) {
-		return visitLogsMongoMapper.getVisitLogsInfo(schoolCode,cardNumber,id);
-	}
+    @Override
+    public void batchRemoveVisitLogsInfo(String schoolCodes, String cardNumbers, String ids) {
+        visitLogsMongoMapper.batchRemoveVisitLogsInfo(schoolCodes, cardNumbers, ids);
+    }
 
-	@Override
-	public void updateVisitLogsInfo(UpdateVisitLogsDto updateVisitLogsDto) {
-		VisitLogsMongo visitLogsMongo=BeanMapUtils.map(updateVisitLogsDto,VisitLogsMongo.class);
-		visitLogsMongoMapper.updateVisitLogsInfo(visitLogsMongo);
-	}
-
-	@Override
-	public void removeVisitLogsInfo(String schoolCode, String cardNumber, String id) {
-		visitLogsMongoMapper.removeVisitLogsInfo(schoolCode,cardNumber,id);
-	}
-
-	@Override
-	public void batchRemoveVisitLogsInfo(String schoolCodes, String cardNumbers, String ids) {
-		visitLogsMongoMapper.batchRemoveVisitLogsInfo(schoolCodes,cardNumbers,ids);
-	}
-
-	@Override
-	public void insertVisitLogsInfo(AddVisitLogsDto addVisitLogsDto) {
-		VisitLogsMongo visitLogsMongo=BeanMapUtils.map(addVisitLogsDto,VisitLogsMongo.class);
-		visitLogsMongoMapper.insertVisitLogsInfo(visitLogsMongo);
-	}
+    @Override
+    public void insertVisitLogsInfo(AddVisitLogsDto addVisitLogsDto) {
+        VisitLogsMongo visitLogsMongo = BeanMapUtils.map(addVisitLogsDto, VisitLogsMongo.class);
+        visitLogsMongoMapper.insertVisitLogsInfo(visitLogsMongo);
+    }
 }

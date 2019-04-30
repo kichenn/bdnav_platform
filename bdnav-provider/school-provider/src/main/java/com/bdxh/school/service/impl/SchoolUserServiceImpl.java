@@ -1,12 +1,13 @@
 package com.bdxh.school.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.DateUtil;
+import com.bdxh.school.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
-import com.bdxh.school.entity.SchoolRole;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.entity.SchoolUserRole;
 import com.bdxh.school.persistence.SchoolUserMapper;
@@ -19,9 +20,10 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +46,12 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
 
     @Autowired
     private SchoolUserRoleMapper schoolUserRoleMapper;
+
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
+
+    @Autowired
+    private RocketMqProducerProperties rocketMqProducerProperties;
 
 
     @Override
@@ -118,6 +126,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addSchoolUser(AddSchoolUserDto addSchoolUserDto) {
+
         SchoolUser schoolUser = new SchoolUser();
         BeanUtils.copyProperties(addSchoolUserDto, schoolUser);
         //设置类型值
@@ -130,7 +139,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         if (addSchoolUserDto.getSchoolUserTypeEnum() != null) {
             schoolUser.setType(addSchoolUserDto.getSchoolUserTypeEnum().getKey());
         }
-        schoolUserMapper.insertSelective(schoolUser);
+        boolean schoolUserResult = schoolUserMapper.insertSelective(schoolUser) > 0;
 
         //增加学校用户和角色的关系
         if (CollectionUtils.isNotEmpty(addSchoolUserDto.getRoles())) {
@@ -140,9 +149,35 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                 schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
                 schoolUserRole.setUserId(schoolUser.getId());
                 schoolUserRole.setRoleId(Long.valueOf(addSchoolUserDto.getRoles().get(i)));
-                schoolUserRoleMapper.insertSelective(schoolUserRole);
+                Boolean userReleResult = schoolUserRoleMapper.insertSelective(schoolUserRole) > 0;
+                //推送消息
+                if (userReleResult) {
+                    JSONObject msgData = new JSONObject();
+                    msgData.put("tableName", "t_school_user_role");
+                    msgData.put("data", schoolUserRole);
+                    Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
+                    try {
+                        defaultMQProducer.send(schoolUserMsg);
+                    } catch (Exception e) {
+                        log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }//推送消息
+        if (schoolUserResult) {
+            JSONObject msgData = new JSONObject();
+            msgData.put("tableName", "t_school_user");
+            msgData.put("data", schoolUser);
+            Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
+            try {
+                defaultMQProducer.send(schoolUserMsg);
+            } catch (Exception e) {
+                log.info("推送学校用户信息失败，错误信息：" + e.getMessage());
+                e.printStackTrace();
             }
         }
+
     }
 
     /**
@@ -170,11 +205,10 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
             schoolUser.setBirth(DateUtil.format(DateUtil.format(schoolUser.getBirth(), "yyyy-MM-dd"), "yyyy-MM-dd"));
         }
         schoolUser.setUpdateDate(new Date());
-        schoolUserMapper.updateByPrimaryKeySelective(schoolUser);
+        Boolean schoolUserResult = schoolUserMapper.updateByPrimaryKeySelective(schoolUser) > 0;
 
         //删除学校用户和角色的关系
         schoolUserRoleMapper.delRoleByUserId(schoolUser.getId());
-
         //增加学校用户和角色的关系
         if (CollectionUtils.isNotEmpty(modifySchoolUserDto.getRoles())) {
             for (int i = 0; i < modifySchoolUserDto.getRoles().size(); i++) {
@@ -183,8 +217,36 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                 schoolUserRole.setSchoolCode(schoolUser.getSchoolCode());
                 schoolUserRole.setUserId(schoolUser.getId());
                 schoolUserRole.setRoleId(Long.valueOf(modifySchoolUserDto.getRoles().get(i)));
-                schoolUserRoleMapper.insertSelective(schoolUserRole);
+                Boolean userReleResult = schoolUserRoleMapper.insertSelective(schoolUserRole) > 0;
+                if (userReleResult) {
+                    JSONObject msgData = new JSONObject();
+                    msgData.put("tableName", "t_school_user_role");
+                    msgData.put("data", schoolUserRole);
+                    Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
+                    try {
+                        defaultMQProducer.send(schoolUserMsg);
+                    } catch (Exception e) {
+                        log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
             }
         }
+        //推送消息
+
+        if (schoolUserResult) {
+            JSONObject msgData = new JSONObject();
+            msgData.put("tableName", "t_school_user");
+            msgData.put("data", schoolUser);
+            Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
+            try {
+                defaultMQProducer.send(schoolUserMsg);
+            } catch (Exception e) {
+                log.info("推送学校用户信息失败，错误信息：" + e.getMessage());
+                e.printStackTrace();
+            }
+        }
+
+
     }
 }
