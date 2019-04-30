@@ -3,6 +3,7 @@ package com.bdxh.school.service.impl;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.service.SinglePermissionService;
+import com.bdxh.school.vo.SinglePermissionShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -54,7 +55,7 @@ public class SinglePermissionServiceImpl extends BaseService<SinglePermission> i
      * @return
      */
     @Override
-    public PageInfo<SinglePermission> findSinglePermissionInConditionPage(SinglePermissionQueryDto singlePermissionQueryDto) {
+    public PageInfo<SinglePermissionShowVo> findSinglePermissionInConditionPage(SinglePermissionQueryDto singlePermissionQueryDto) {
         Page page = PageHelper.startPage(singlePermissionQueryDto.getPageNum(), singlePermissionQueryDto.getPageSize());
         SinglePermission singlePermission = new SinglePermission();
         BeanUtils.copyProperties(singlePermissionQueryDto, singlePermission);
@@ -62,7 +63,7 @@ public class SinglePermissionServiceImpl extends BaseService<SinglePermission> i
         if (singlePermissionQueryDto.getSingleUserTypeEnum()!=null){
             singlePermission.setUserType(singlePermissionQueryDto.getSingleUserTypeEnum().getKey());
         }
-        PageInfo<SinglePermission> pageInfo = new PageInfo(singlePermissionMapper.findSinglePermissionInConditionPage(singlePermission));
+        PageInfo<SinglePermissionShowVo> pageInfo = new PageInfo(singlePermissionMapper.findSinglePermissionInConditionPage(singlePermission));
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }

@@ -12,6 +12,7 @@ import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.feign.SchoolUserControllerClient;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
+import com.bdxh.school.vo.SinglePermissionShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -52,7 +53,7 @@ public class SinglePermissionControllerClientFallback implements SinglePermissio
     }
 
     @Override
-    public Wrapper<PageInfo<SinglePermission>> findSinglePermissionInConditionPage(SinglePermissionQueryDto singlePermissionQueryDto) {
+    public Wrapper<PageInfo<SinglePermissionShowVo>> findSinglePermissionInConditionPage(SinglePermissionQueryDto singlePermissionQueryDto) {
         return WrapMapper.error();
     }
 }

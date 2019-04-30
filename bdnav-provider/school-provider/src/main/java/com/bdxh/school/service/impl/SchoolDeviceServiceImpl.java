@@ -4,6 +4,7 @@ import com.bdxh.school.dto.SchoolDeviceQueryDto;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.enums.DeviceStatusEnum;
 import com.bdxh.school.service.SchoolDeviceService;
+import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -52,7 +53,7 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
      * 门禁信息根据条件分页查询
      */
     @Override
-    public PageInfo<SchoolDevice> findSchoolDeviceInConditionPage(SchoolDeviceQueryDto schoolDeviceQueryDto) {
+    public PageInfo<SchoolDeviceShowVo> findSchoolDeviceInConditionPage(SchoolDeviceQueryDto schoolDeviceQueryDto) {
         Page page = PageHelper.startPage(schoolDeviceQueryDto.getPageNum(), schoolDeviceQueryDto.getPageSize());
         SchoolDevice schoolDevice = new SchoolDevice();
         BeanUtils.copyProperties(schoolDeviceQueryDto, schoolDevice);
@@ -60,7 +61,7 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
             //设置类型
             schoolDevice.setDeviceStatus(schoolDeviceQueryDto.getDeviceStatusEnum().getKey());
         }
-        PageInfo<SchoolDevice> pageInfo = new PageInfo(schoolDeviceMapper.findSchoolDeviceInConditionPage(schoolDevice));
+        PageInfo<SchoolDeviceShowVo> pageInfo = new PageInfo(schoolDeviceMapper.findSchoolDeviceInConditionPage(schoolDevice));
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }

@@ -2,6 +2,7 @@ package com.bdxh.school.persistence;
 
 import java.util.List;
 
+import com.bdxh.school.vo.SchoolDeviceShowVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -30,7 +31,7 @@ public interface SchoolDeviceMapper extends Mapper<SchoolDevice> {
      *
      * @return
      */
-    List<SchoolDevice> findSchoolDeviceInConditionPage(@Param("device") SchoolDevice schoolDevice);
+    List<SchoolDeviceShowVo> findSchoolDeviceInConditionPage(@Param("device") SchoolDevice schoolDevice);
 
     /**
      * 设备类型，设备编码查询设备信息

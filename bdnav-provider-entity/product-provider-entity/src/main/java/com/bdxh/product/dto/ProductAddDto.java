@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class ProductAddDto implements Serializable {
@@ -98,5 +99,9 @@ public class ProductAddDto implements Serializable {
      */
     @ApiModelProperty("套餐包含商品")
     private String productChildIds;
+
+
+    @ApiModelProperty("图片详情")
+    List<ProductImageAddDto> image;
 
 }

@@ -6,6 +6,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
+import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -80,7 +81,7 @@ public class SchoolDeviceWebController {
     @PostMapping("/findSchoolDeviceInConditionPage")
     @ApiOperation(value = "门禁信息根据条件分页查询", response = PageInfo.class)
     public Object findSchoolDeviceInConditionPage(@RequestBody SchoolDeviceQueryDto schoolDeviceQueryDto) {
-        Wrapper<PageInfo<SchoolDevice>> wrapper = schoolDeviceControllerClient.findSchoolDeviceInConditionPage(schoolDeviceQueryDto);
+        Wrapper<PageInfo<SchoolDeviceShowVo>> wrapper = schoolDeviceControllerClient.findSchoolDeviceInConditionPage(schoolDeviceQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 }

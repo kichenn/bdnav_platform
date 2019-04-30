@@ -3,6 +3,7 @@ package com.bdxh.school.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.bdxh.school.vo.SinglePermissionShowVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -29,5 +30,5 @@ public interface SinglePermissionMapper extends Mapper<SinglePermission> {
     /**
      * 门禁单人信息根据条件分页查询
      */
-    List<SinglePermission> findSinglePermissionInConditionPage(@Param("singlePermission") SinglePermission singlePermission);
+    List<SinglePermissionShowVo> findSinglePermissionInConditionPage(@Param("singlePermission") SinglePermission singlePermission);
 }

@@ -3,6 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.SchoolDeviceQueryDto;
 import com.bdxh.school.entity.SchoolDevice;
+import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public interface SchoolDeviceService extends IService<SchoolDevice> {
     /**
      * 门禁信息根据条件分页查询
      */
-    PageInfo<SchoolDevice> findSchoolDeviceInConditionPage(SchoolDeviceQueryDto schoolDeviceQueryDto);
+    PageInfo<SchoolDeviceShowVo> findSchoolDeviceInConditionPage(SchoolDeviceQueryDto schoolDeviceQueryDto);
 
     /**
      * 设备类型，设备编码查询设备信息

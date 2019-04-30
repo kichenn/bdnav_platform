@@ -71,7 +71,7 @@
                             <addClasspath>true</addClasspath>
                             <useUniqueVersions>false</useUniqueVersions>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.bdxh.pay.PayProviderApplication</mainClass>
+                            <mainClass>com.bdxh.task.TaskProviderApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

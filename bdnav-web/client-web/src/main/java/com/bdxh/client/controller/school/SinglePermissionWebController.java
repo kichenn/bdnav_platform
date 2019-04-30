@@ -10,6 +10,7 @@ import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
+import com.bdxh.school.vo.SinglePermissionShowVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -95,7 +96,7 @@ public class SinglePermissionWebController {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
         singlePermissionQueryDto.setSchoolId(user.getSchoolId());
-        Wrapper<PageInfo<SinglePermission>> wrapper = singlePermissionControllerClient.findSinglePermissionInConditionPage(singlePermissionQueryDto);
+        Wrapper<PageInfo<SinglePermissionShowVo>> wrapper = singlePermissionControllerClient.findSinglePermissionInConditionPage(singlePermissionQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 }

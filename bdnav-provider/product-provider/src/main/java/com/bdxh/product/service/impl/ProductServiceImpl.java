@@ -1,15 +1,17 @@
 package com.bdxh.product.service.impl;
 
-import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
-import com.bdxh.product.enums.BusinessTypeEnum;
-import com.bdxh.product.enums.ProductTypeEnum;
-import com.bdxh.product.persistence.ProductChildMapper;
-import com.bdxh.product.persistence.ProductMapper;
+import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.product.dto.ProductAddDto;
 import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.entity.ProductChild;
+import com.bdxh.product.entity.ProductImage;
+import com.bdxh.product.enums.BusinessTypeEnum;
+import com.bdxh.product.enums.ProductTypeEnum;
+import com.bdxh.product.persistence.ProductChildMapper;
+import com.bdxh.product.persistence.ProductImageMapper;
+import com.bdxh.product.persistence.ProductMapper;
 import com.bdxh.product.service.ProductService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +19,7 @@ import com.google.common.base.Preconditions;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -34,10 +37,14 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     private ProductMapper productMapper;
 
     @Autowired
+    private ProductImageMapper productImageMapper;
+
+    @Autowired
     private ProductChildMapper productChildMapper;
 
     @Override
-    public void addProduct(ProductAddDto productAddDto) {
+    @Transactional(rollbackFor = Exception.class)
+    public boolean addProduct(ProductAddDto productAddDto) {
         //判断同名商品是否存在
         Product product = new Product();
         product.setProductShowName(productAddDto.getProductShowName());
@@ -47,6 +54,13 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         //判断是单品还是套餐 单品
         if (productAddDto.getProductType().intValue()== ProductTypeEnum.SINGLE.getCode().intValue()){
             productMapper.insertSelective(product);
+            //图片详情表
+            List<ProductImage> productImages = BeanMapUtils.mapList(productAddDto.getImage(), ProductImage.class);
+            for (int i=0;i<productImages.size();i++) {
+                //明细主键
+                ProductImage productImage = productImages.get(i);
+              return  productImageMapper.insertSelective(productImage) > 0;
+            }
         }
         //套餐
         if (productAddDto.getProductType().intValue()== ProductTypeEnum.GROUP.getCode().intValue()){
@@ -63,14 +77,16 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                         ProductChild productChild=new ProductChild();
                         productChild.setProductId(product.getId());
                         productChild.setProductChildId(Long.valueOf(id));
-                        productChildMapper.insertSelective(productChild);
+                        return   productChildMapper.insertSelective(productChild) > 0;
                     }
                 }
             }
         }
+        return false;
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateProduct(ProductUpdateDto productUpdateDto) {
         //根据id查询商品
         Product oldProduct = productMapper.selectByPrimaryKey(productUpdateDto.getId());
@@ -122,6 +138,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteProduct(Long productId) {
         //查询商品
         Product product = productMapper.selectByPrimaryKey(productId);
