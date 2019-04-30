@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.AddRolePermissionBindMenuDto;
 import com.bdxh.school.dto.AddSchoolPermissionDto;
 import com.bdxh.school.dto.ModifySchoolPermissionDto;
+import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolPermission;
 import com.bdxh.school.service.SchoolPermissionService;
 import com.bdxh.school.service.SchoolRolePermissionService;
@@ -74,7 +75,10 @@ public class SchoolPermissionController {
     @GetMapping("/findPermissionList")
     @ApiOperation(value = "菜单or按钮权限列表", response = List.class)
     public Object findPermissionList(@RequestParam(value = "roleId") Long roleId, @RequestParam(value = "schoolId") Long schoolId) {
-        List<SchoolPermission> permissions = schoolPermissionService.selectAll();
+        //查询当前学校的菜单和按钮信息
+        SchoolPermission schoolPermission = new SchoolPermission();
+        schoolPermission.setSchoolId(schoolId);
+        List<SchoolPermission> permissions = schoolPermissionService.select(schoolPermission);
         //如果当前roleId不为空查询 该角色底下的菜单
         List<Long> rolePermissionsId = new ArrayList<>();
         if (roleId != null) {

@@ -78,7 +78,6 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
 
     //修改学校组织信息
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Boolean modifySchoolDept(SchoolDeptModifyDto schoolDeptDto) {
         SchoolDept schoolDept = new SchoolDept();
         BeanUtils.copyProperties(schoolDeptDto, schoolDept);
