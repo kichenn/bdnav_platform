@@ -67,7 +67,7 @@ public class BaseUserWebController {
               updateStudentDto.setAppKey(appSecret);
               updateStudentDto.setSchoolType(schoolType);
               updateStudentDto.setActivate(Byte.valueOf("2"));
-              studentControllerClient.updateStudent(updateStudentDto);
+             // studentControllerClient.activationStudent(updateStudentDto);
               break;
           case 2:
                 //家长激活
@@ -78,7 +78,7 @@ public class BaseUserWebController {
               updateFamilyDto.setAppKey(appSecret);
               updateFamilyDto.setSchoolType(schoolType);
               updateFamilyDto.setActivate(Byte.valueOf("2"));
-              familyControllerClient.updateFamily(updateFamilyDto);
+             // familyControllerClient.activationFamily(updateFamilyDto);
               break;
           case 3:
                 //老师激活
@@ -89,7 +89,7 @@ public class BaseUserWebController {
               updateTeacherDto.setAppKey(appSecret);
               updateTeacherDto.setSchoolType(schoolType);
               updateTeacherDto.setActivate(Byte.valueOf("2"));
-              teacherControllerClient.updateTeacher(updateTeacherDto);
+              //teacherControllerClient.activationTeacher(updateTeacherDto);
               break;
           default:
               return WrapMapper.error("激活身份异常,请联系管理员");

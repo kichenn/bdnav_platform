@@ -291,6 +291,9 @@ public class SynUserInfoRequest {
     //(毕业学校)
     private  String graduated_school;
 
+    //是否进行实名认证 1-是；0-否
+    private Byte real_name_verify;
+
     //(家庭住址)
     private  String address;
 

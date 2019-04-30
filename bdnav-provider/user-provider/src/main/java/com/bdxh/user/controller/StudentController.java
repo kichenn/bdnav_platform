@@ -183,6 +183,11 @@ public class StudentController {
         return WrapMapper.ok(studentService.findStudentBySchoolClassId(schoolCode, schoolId, classId));
     }
 
+    /**
+     * 批量新增学生信息
+     * @param studentList
+     * @return
+     */
     @ApiOperation(value = "批量新增学生信息")
     @RequestMapping(value = "/batchSaveStudentInfo", method = RequestMethod.POST)
     public Object batchSaveStudentInfo(@RequestBody List<AddStudentDto> studentList){
@@ -195,6 +200,11 @@ public class StudentController {
 
     }
 
+    /**
+     * 根据学校Code查询所有学生学号
+     * @param schoolCode
+     * @return
+     */
     @ApiOperation(value = "根据学校Code查询所有学生学号")
     @RequestMapping(value = "/queryCardNumberBySchoolCode", method = RequestMethod.POST)
     public Object queryCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
@@ -207,6 +217,13 @@ public class StudentController {
         }
     }
 
+    /**
+     * 根据学校CODE和组织架构查询学生
+     * @param schoolCode
+     * @param parentIds
+     * @param type
+     * @return
+     */
     @ApiOperation(value = "根据学校CODE和组织架构查询学生")
     @RequestMapping(value = "/findStudentInfoByClassOrg", method = RequestMethod.POST)
     public Object findStudentInfoByClassOrg(@RequestParam("schoolCode") String schoolCode,
@@ -218,4 +235,21 @@ public class StudentController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 学生激活信息同步微校且绑定
+     * @param updateStudentDto
+     * @return
+     */
+    @ApiOperation(value = "学生激活信息同步微校且绑定")
+    @RequestMapping(value = "/studentInfoActivation", method = RequestMethod.POST)
+    public Object studentInfoActivation(@RequestBody UpdateStudentDto updateStudentDto) {
+        try {
+            studentService.studentInfoActivation(updateStudentDto);
+            return WrapMapper.ok();
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 }

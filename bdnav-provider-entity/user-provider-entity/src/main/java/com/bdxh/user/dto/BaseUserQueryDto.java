@@ -161,4 +161,8 @@ public class BaseUserQueryDto implements Serializable {
     @ApiModelProperty("备注")
     private String remark;
 
+    /**
+     * 微校用户激活时所需参数
+     */
+    private String state;
 }

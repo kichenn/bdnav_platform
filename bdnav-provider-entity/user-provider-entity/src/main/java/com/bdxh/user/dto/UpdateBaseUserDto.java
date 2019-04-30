@@ -161,4 +161,5 @@ public class UpdateBaseUserDto implements Serializable {
     @ApiModelProperty("备注")
     private String remark;
 
+
 }
