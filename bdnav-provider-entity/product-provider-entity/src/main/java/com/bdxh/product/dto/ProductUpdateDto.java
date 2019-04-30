@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
 public class ProductUpdateDto implements Serializable {
@@ -80,5 +81,10 @@ public class ProductUpdateDto implements Serializable {
      */
     @ApiModelProperty("套餐包含商品")
     private String productChildIds;
+
+
+    @ApiModelProperty("图片详情")
+    List<ProductImageUpdateDto> image;
+
 
 }
