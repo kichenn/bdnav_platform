@@ -39,10 +39,14 @@
         <include refid="BaseColumns1"/>
         FROM
         t_school_permission perm
-        LEFT JOIN t_school_role_permission roleperm ON perm.id=roleperm.permission_id
         <where>
             <if test="roleId !=null">
-                roleperm.role_id=#{roleId,jdbcType=BIGINT}
+                AND perm.id IN
+                (
+                SELECT permission_id
+                FROM t_school_role_permission
+                WHERE role_id=#{roleId,jdbcType=BIGINT}
+                )
             </if>
             <if test="type !=null">
                 AND perm.type=#{type,jdbcType=TINYINT}
