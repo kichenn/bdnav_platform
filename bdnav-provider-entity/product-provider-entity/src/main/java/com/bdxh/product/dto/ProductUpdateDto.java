@@ -83,8 +83,8 @@ public class ProductUpdateDto implements Serializable {
     private String productChildIds;
 
 
-/*    @ApiModelProperty("图片详情")
-    List<ProductImageUpdateDto> image;*/
+    @ApiModelProperty("图片详情")
+    List<ProductImageUpdateDto> image;
 
 
 }
