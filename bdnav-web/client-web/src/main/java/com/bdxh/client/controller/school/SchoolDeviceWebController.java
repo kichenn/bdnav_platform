@@ -9,6 +9,7 @@ import com.bdxh.school.dto.SchoolDeviceQueryDto;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
+import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -94,7 +95,7 @@ public class SchoolDeviceWebController {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
         schoolDeviceQueryDto.setSchoolId(user.getSchoolId());
-        Wrapper<PageInfo<SchoolDevice>> wrapper = schoolDeviceControllerClient.findSchoolDeviceInConditionPage(schoolDeviceQueryDto);
+        Wrapper<PageInfo<SchoolDeviceShowVo>> wrapper = schoolDeviceControllerClient.findSchoolDeviceInConditionPage(schoolDeviceQueryDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 }

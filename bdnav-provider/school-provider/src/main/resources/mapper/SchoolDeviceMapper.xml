@@ -22,8 +22,40 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
+    <!--列表展示resultMap -->
+    <resultMap id="BaseResultMap1" type="com.bdxh.school.vo.SchoolDeviceShowVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
+        <result column="device_type" jdbcType="TINYINT" property="deviceType"/>
+        <result column="device_type_name" jdbcType="VARCHAR" property="deviceTypeName"/>
+        <result column="device_brand" jdbcType="VARCHAR" property="deviceBrand"/>
+        <result column="device_model" jdbcType="VARCHAR" property="deviceModel"/>
+        <result column="device_name" jdbcType="VARCHAR" property="deviceName"/>
+        <result column="device_address" jdbcType="VARCHAR" property="deviceAddress"/>
+        <result column="device_ip" jdbcType="VARCHAR" property="deviceIp"/>
+        <result column="device_status" jdbcType="TINYINT" property="deviceStatus"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+
+        <!--扩展字段-->
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+    </resultMap>
+
     <sql id="BaseColumns">
 	  id,school_id,school_code,device_id,device_type,device_type_name,device_brand,device_model,device_name,device_address,device_ip,device_status,create_date,update_date,operator,operator_name,remark
+	</sql>
+    <sql id="BaseColumns1">
+	  device.id,device.school_id,device.school_code,
+	  device.device_id,device.device_type,device.device_type_name,
+	  device.device_brand,device.device_model,device.device_name,
+	  device.device_address,device.device_ip,device.device_status,
+	  device.create_date,device.update_date,device.operator,device.operator_name,
+	  device.remark,school.school_name
 	</sql>
     <select id="getSchoolDeviceAllCount" resultType="Integer">
 	  SELECT 
@@ -41,31 +73,32 @@
         </foreach>
     </delete>
 
-    <select id="findSchoolDeviceInConditionPage" resultMap="BaseResultMap">
+    <select id="findSchoolDeviceInConditionPage" resultMap="BaseResultMap1">
         SELECT
-        <include refid="BaseColumns"/>
-        FROM t_school_device
+        <include refid="BaseColumns1"/>
+        FROM t_school_device device
+        INNER JOIN t_school school ON device.school_id=school.id
         <where>
             <if test="device.schoolId !=null">
-                school_id= #{device.schoolId,jdbcType=BIGINT}
+                device.school_id= #{device.schoolId,jdbcType=BIGINT}
             </if>
             <if test="device.schoolCode !=null and device.schoolCode !=''">
-                AND school_code like CONCAT(CONCAT('%',#{device.schoolCode,jdbcType=VARCHAR}),'%')
+                AND device.school_code like CONCAT(CONCAT('%',#{device.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="device.deviceId !=null and device.deviceId!=''">
-                AND device_id like CONCAT(CONCAT('%',#{device.deviceId,jdbcType=VARCHAR}),'%')
+                AND device.device_id like CONCAT(CONCAT('%',#{device.deviceId,jdbcType=VARCHAR}),'%')
             </if>
             <if test="device.deviceName !=null and device.deviceName!=''">
-                AND device_name like CONCAT(CONCAT('%',#{device.deviceName,jdbcType=VARCHAR}),'%')
+                AND device.device_name like CONCAT(CONCAT('%',#{device.deviceName,jdbcType=VARCHAR}),'%')
             </if>
             <if test="device.deviceAddress !=null and device.deviceAddress!=''">
-                AND device_address like CONCAT(CONCAT('%',#{device.deviceAddress,jdbcType=VARCHAR}),'%')
+                AND device.device_address like CONCAT(CONCAT('%',#{device.deviceAddress,jdbcType=VARCHAR}),'%')
             </if>
             <if test="device.deviceStatus !=null">
-                AND device_status =#{device.deviceStatus,jdbcType=TINYINT}
+                AND device.device_status =#{device.deviceStatus,jdbcType=TINYINT}
             </if>
         </where>
-        Order BY create_date DESC
+        Order BY device.create_date DESC
     </select>
     <select id="findSchoolDeviceByIdOnModel" resultType="com.bdxh.school.entity.SchoolDevice">
         SELECT

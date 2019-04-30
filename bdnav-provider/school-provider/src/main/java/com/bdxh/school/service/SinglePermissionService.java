@@ -3,6 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.SinglePermission;
+import com.bdxh.school.vo.SinglePermissionShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -33,5 +34,5 @@ public interface SinglePermissionService extends IService<SinglePermission> {
      * @param singlePermissionQueryDto
      * @return
      */
-    PageInfo<SinglePermission> findSinglePermissionInConditionPage(SinglePermissionQueryDto singlePermissionQueryDto);
+    PageInfo<SinglePermissionShowVo> findSinglePermissionInConditionPage(SinglePermissionQueryDto singlePermissionQueryDto);
 }

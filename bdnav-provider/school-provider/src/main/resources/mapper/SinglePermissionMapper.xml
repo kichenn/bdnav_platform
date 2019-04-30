@@ -23,8 +23,41 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
+    <!--列表展示vo-->
+    <resultMap id="BaseResultMap1" type="com.bdxh.school.vo.SinglePermissionShowVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="user_type" jdbcType="TINYINT" property="userType"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="device_id" jdbcType="BIGINT" property="deviceId"/>
+        <result column="device_code" jdbcType="VARCHAR" property="deviceCode"/>
+        <result column="access_begin" jdbcType="TIMESTAMP" property="accessBegin"/>
+        <result column="access_end" jdbcType="TIMESTAMP" property="accessEnd"/>
+        <result column="access_day_mark" jdbcType="VARCHAR" property="accessDayMark"/>
+        <result column="access_time_mark" jdbcType="VARCHAR" property="accessTimeMark"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+
+        <!--扩展字段-->
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+    </resultMap>
+
     <sql id="BaseColumns">
 	  id,school_id,school_code,user_type,user_id,user_name,card_number,device_id,device_code,access_begin,access_end,access_day_mark,access_time_mark,create_date,update_date,operator,operator_name,remark
+	</sql>
+
+    <sql id="BaseColumns1">
+	  single.id,single.school_id,single.school_code,single.user_type,
+	  single.user_id,single.user_name,single.card_number,single.device_id,
+	  single.device_code,single.access_begin,single.access_end,
+	  single.access_day_mark,single.access_time_mark,single.create_date,
+	  single.update_date,single.operator,single.operator_name,single.remark,school.school_name
 	</sql>
     <select id="getSinglePermissionAllCount" resultType="java.lang.Integer">
 	  SELECT 
@@ -41,31 +74,32 @@
             #{id, jdbcType = BIGINT}
         </foreach>
     </delete>
-    <select id="findSinglePermissionInConditionPage" resultMap="BaseResultMap">
+    <select id="findSinglePermissionInConditionPage" resultMap="BaseResultMap1">
         SELECT
-        <include refid="BaseColumns"/>
-        FROM t_single_permission
+        <include refid="BaseColumns1"/>
+        FROM t_single_permission single
+        INNER JOIN t_school school ON single.school_id=school.id
         <where>
             <if test="singlePermission.schoolId !=null">
-                school_id= #{singlePermission.schoolId,jdbcType=BIGINT}
+                single.school_id= #{singlePermission.schoolId,jdbcType=BIGINT}
             </if>
             <if test="singlePermission.schoolCode !=null and singlePermission.schoolCode !=''">
-               AND school_code like CONCAT(CONCAT('%',#{singlePermission.schoolCode,jdbcType=VARCHAR}),'%')
+               AND single.school_code like CONCAT(CONCAT('%',#{singlePermission.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="singlePermission.userName !=null and singlePermission.userName!=''">
-                AND user_name like CONCAT(CONCAT('%',#{singlePermission.userName,jdbcType=VARCHAR}),'%')
+                AND single.user_name like CONCAT(CONCAT('%',#{singlePermission.userName,jdbcType=VARCHAR}),'%')
             </if>
             <if test="singlePermission.cardNumber !=null and singlePermission.cardNumber!=''">
-                AND card_number like CONCAT(CONCAT('%',#{singlePermission.cardNumber,jdbcType=VARCHAR}),'%')
+                AND single.card_number like CONCAT(CONCAT('%',#{singlePermission.cardNumber,jdbcType=VARCHAR}),'%')
             </if>
             <if test="singlePermission.deviceCode !=null and singlePermission.deviceCode!=''">
-                AND device_code like CONCAT(CONCAT('%',#{singlePermission.deviceCode,jdbcType=VARCHAR}),'%')
+                AND single.device_code like CONCAT(CONCAT('%',#{singlePermission.deviceCode,jdbcType=VARCHAR}),'%')
             </if>
             <if test="singlePermission.userType !=null ">
-                AND user_type =#{singlePermission.userType,jdbcType=TINYINT}
+                AND single.user_type =#{singlePermission.userType,jdbcType=TINYINT}
             </if>
         </where>
-        ORDER BY create_date DESC
+        ORDER BY single.create_date DESC
     </select>
 
 </mapper>

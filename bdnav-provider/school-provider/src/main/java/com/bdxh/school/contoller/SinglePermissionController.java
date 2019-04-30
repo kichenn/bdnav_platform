@@ -124,7 +124,7 @@ public class SinglePermissionController {
      * @Date: 2019/3/27 16:20
      */
     @PostMapping("/findSinglePermissionInConditionPage")
-    @ApiOperation(value = "id查询门禁单信息", response = PageInfo.class)
+    @ApiOperation(value = "门禁单人信息根据条件分页查询", response = PageInfo.class)
     public Object findSinglePermissionInConditionPage(@RequestBody SinglePermissionQueryDto singlePermissionQueryDto) {
         return WrapMapper.ok(singlePermissionService.findSinglePermissionInConditionPage(singlePermissionQueryDto));
     }

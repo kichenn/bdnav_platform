@@ -10,6 +10,7 @@ import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.fallback.SchoolDeviceControllerClientFallback;
 import com.bdxh.school.fallback.SinglePermissionControllerClientFallback;
+import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -78,5 +79,5 @@ public interface SchoolDeviceControllerClient {
      */
     @RequestMapping(value = "/schoolDevice/findSchoolDeviceInConditionPage", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<SchoolDevice>> findSchoolDeviceInConditionPage(@RequestBody SchoolDeviceQueryDto schoolDeviceQueryDto);
+    Wrapper<PageInfo<SchoolDeviceShowVo>> findSchoolDeviceInConditionPage(@RequestBody SchoolDeviceQueryDto schoolDeviceQueryDto);
 }

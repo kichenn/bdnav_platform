@@ -8,6 +8,7 @@ import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.fallback.SchoolClassControllerClientFallback;
 import com.bdxh.school.fallback.SinglePermissionControllerClientFallback;
 import com.bdxh.school.vo.SchoolClassTreeVo;
+import com.bdxh.school.vo.SinglePermissionShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -76,5 +77,5 @@ public interface SinglePermissionControllerClient {
      */
     @RequestMapping(value = "/singlePermission/findSinglePermissionInConditionPage", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<SinglePermission>> findSinglePermissionInConditionPage(@RequestBody SinglePermissionQueryDto singlePermissionQueryDto);
+    Wrapper<PageInfo<SinglePermissionShowVo>> findSinglePermissionInConditionPage(@RequestBody SinglePermissionQueryDto singlePermissionQueryDto);
 }

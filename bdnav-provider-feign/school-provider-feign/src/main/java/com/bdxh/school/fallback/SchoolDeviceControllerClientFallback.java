@@ -7,6 +7,7 @@ import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
 import com.bdxh.school.vo.SchoolDeptTreeVo;
+import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -45,7 +46,7 @@ public class SchoolDeviceControllerClientFallback implements SchoolDeviceControl
     }
 
     @Override
-    public Wrapper<PageInfo<SchoolDevice>> findSchoolDeviceInConditionPage(SchoolDeviceQueryDto schoolDeviceQueryDto) {
+    public Wrapper<PageInfo<SchoolDeviceShowVo>> findSchoolDeviceInConditionPage(SchoolDeviceQueryDto schoolDeviceQueryDto) {
         return WrapMapper.error();
     }
 }
