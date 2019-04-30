@@ -43,6 +43,10 @@ public class RocketMqConstrants {
          */
         String schoolOrganizationTopic = "schoolOrganizationTopic";
 
+        /**
+         * 北斗星航对接麦圈，远景达 topic
+         */
+        String bdxhTopic="bdxh";
     }
 
     /**
@@ -89,6 +93,42 @@ public class RocketMqConstrants {
          * school服务，部门组织架构更新 tag
          */
         String schoolOrganizationTag_dept = "schoolOrganizationTag_dept";
+
+        /**
+         * school服务，系统用户信息更新 tag
+         */
+        String schoolUserInfoTag_schoolUser="schoolOrganizationTag_schoolUser";
+
+        /**
+         * school服务，系统用户信息角色关系 tag
+         */
+        String schoolUserInfoTag_schoolUserRole="schoolUserInfoTag_schoolUserRole";
+
+        /**
+         * school服务，系统角色信息 tag
+         */
+        String schoolUserInfoTag_schoolRole="schoolUserInfoTag_schoolRole";
+
+        /**
+         * user服务，学生信息更新同步 tag
+         */
+        String userInfoTag_student="userInfoTag_student";
+
+        /**
+         * user服务，基础用户信息更新同步 tag
+         */
+        String userInfoTag_baseUser="userInfoTag_baseUser";
+
+        /**
+         * user服务，老师信息更新同步 tag
+         */
+        String userInfoTag_teacher="userInfoTag_teacher";
+
+        /**
+         * user服务，老师部门关系信息更新同步 tag
+         */
+        String userInfoTag_teacherDept="userInfoTag_teacherDept";
+
     }
 
 }

@@ -33,17 +33,17 @@ public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> impleme
     private FamilyMapper familyMapper;
 
     @Override
-    public void removeFamilyStudentInfo(String schoolCode, String cardNumber,String id) {
-    familyStudentMapper.familyRemoveFamilyStudent(schoolCode,cardNumber,id);
+    public void removeFamilyStudentInfo(String schoolCode, String cardNumber, String id) {
+        familyStudentMapper.familyRemoveFamilyStudent(schoolCode, cardNumber, id);
     }
 
     @Override
     public PageInfo<FamilyStudentVo> queryAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto) {
         PageHelper.startPage(familyStudentQueryDto.getPageNum(), familyStudentQueryDto.getPageSize());
-        List<FamilyStudentVo> familyStudentVoList= familyStudentMapper.queryaAllFamilyStudent(familyStudentQueryDto);
-        if(null!=familyStudentVoList) {
+        List<FamilyStudentVo> familyStudentVoList = familyStudentMapper.queryaAllFamilyStudent(familyStudentQueryDto);
+        if (null != familyStudentVoList) {
             for (int i = 0; i < familyStudentVoList.size(); i++) {
-                FamilyVo familyVo = familyMapper.selectByCodeAndCard(familyStudentVoList.get(i).getSchoolCode(),familyStudentVoList.get(i).getFCardNumber() );
+                FamilyVo familyVo = familyMapper.selectByCodeAndCard(familyStudentVoList.get(i).getSchoolCode(), familyStudentVoList.get(i).getFCardNumber());
                 familyStudentVoList.get(i).setFName(familyVo.getName());
                 familyStudentVoList.get(i).setSchoolName(familyVo.getSchoolName());
             }

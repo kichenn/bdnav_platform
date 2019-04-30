@@ -94,7 +94,7 @@ public class AddFenceAlarmDto implements Serializable {
      * 学生名称
      */
     @ApiModelProperty("学生名称")
-    private String studengName;
+    private String studentName;
 
     /**
      * 创建时间

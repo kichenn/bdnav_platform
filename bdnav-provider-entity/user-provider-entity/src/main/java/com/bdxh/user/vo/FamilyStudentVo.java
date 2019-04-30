@@ -12,8 +12,10 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import  lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 public class FamilyStudentVo implements Serializable {
@@ -49,4 +51,7 @@ public class FamilyStudentVo implements Serializable {
 
     @ApiModelProperty("备注")
     private String  remark;
+    
+    @ApiModelProperty("创建时间")
+    private Date createDate;
 }

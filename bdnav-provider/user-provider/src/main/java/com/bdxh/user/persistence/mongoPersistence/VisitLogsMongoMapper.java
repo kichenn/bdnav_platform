@@ -52,11 +52,16 @@ public class VisitLogsMongoMapper {
             criteria.and("status").is(visitLogsQueryDto.getStatus());
         }
         if(StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolCode())){
-            criteria.and("school_code").is(visitLogsQueryDto.getSchoolCode());
+            Pattern pattern = Pattern.compile("^.*"+visitLogsQueryDto.getSchoolCode()+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("school_code").regex(pattern);
         }
         if (StringUtils.isNotEmpty(visitLogsQueryDto.getUserName())){
             Pattern pattern = Pattern.compile("^.*"+visitLogsQueryDto.getUserName()+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("user_name").regex(pattern);
+        }
+        if (StringUtils.isNotEmpty(visitLogsQueryDto.getCardNumber())){
+            Pattern pattern = Pattern.compile("^.*"+visitLogsQueryDto.getCardNumber()+".*$", Pattern.CASE_INSENSITIVE);
+            criteria.and("card_number").regex(pattern);
         }
         query.addCriteria(criteria);
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "create_date")));

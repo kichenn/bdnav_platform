@@ -375,7 +375,7 @@
             </choose>
         </where>
     </select>
-    <select id="findStudentInfo" resultMap="StudentMapper">
+    <select id="findStudentInfo" resultMap="BaseResultMap">
         select <include refid="studentCloumn"/> from t_student
         WHERE school_code=#{student.schoolCode} AND card_number=#{student.cardNumber};
     </select>

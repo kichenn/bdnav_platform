@@ -1,12 +1,14 @@
 package com.bdxh.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.support.BaseService;
+import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Teacher;
@@ -19,7 +21,11 @@ import com.bdxh.user.vo.TeacherDeptVo;
 import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.netflix.discovery.converters.Auto;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +55,14 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
     @Autowired
     private BaseUserMapper baseUserMapper;
+
+    @Autowired
+    private RocketMqProducerProperties rocketMqProducerProperties;
+
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
+
+
     @Override
     public PageInfo<TeacherVo> getTeacherList(TeacherQueryDto teacherQueryDto) {
         PageHelper.startPage(teacherQueryDto.getPageNum(), teacherQueryDto.getPageSize());
@@ -60,68 +74,98 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
     @Override
     @Transactional
-    public void deleteTeacherInfo(String schoolCode,String cardNumber) {
+    public void deleteTeacherInfo(String schoolCode, String cardNumber) {
         teacherMapper.deleteTeacher(schoolCode, cardNumber);
-        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber,0);
-        baseUserMapper.deleteBaseUserInfo(schoolCode,cardNumber);
+        teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber, 0);
+        baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
     }
 
 
     @Override
     @Transactional
-    public void deleteBatchesTeacherInfo(String schoolCodes,String cardNumbers) {
-        String[] schoolCode=schoolCodes.split(",");
-        String[] cardNumber=cardNumbers.split(",");
+    public void deleteBatchesTeacherInfo(String schoolCodes, String cardNumbers) {
+        String[] schoolCode = schoolCodes.split(",");
+        String[] cardNumber = cardNumbers.split(",");
 
-            List<Map<String,String>>list =new ArrayList<>();
-            for (int i = 0; i < cardNumber.length; i++) {
-                Map<String,String> map=new HashMap<>();
-                map.put("cardNumber",schoolCode[i]);
-                map.put("schoolCode",cardNumber[i]);
-                list.add(map);
-             }
-                teacherMapper.batchRemoveTeacherInfo(list);
-                teacherDeptMapper.batchRemoveTeacherDeptInfo(list);
-                baseUserMapper.batchRemoveBaseUserInfo(list);
+        List<Map<String, String>> list = new ArrayList<>();
+        for (int i = 0; i < cardNumber.length; i++) {
+            Map<String, String> map = new HashMap<>();
+            map.put("cardNumber", schoolCode[i]);
+            map.put("schoolCode", cardNumber[i]);
+            list.add(map);
+        }
+        teacherMapper.batchRemoveTeacherInfo(list);
+        teacherDeptMapper.batchRemoveTeacherDeptInfo(list);
+        baseUserMapper.batchRemoveBaseUserInfo(list);
 
     }
 
     @Override
     @Transactional
     public void saveTeacherDeptInfo(AddTeacherDto teacherDto) {
+
         Teacher teacher = BeanMapUtils.map(teacherDto, Teacher.class);
         teacher.setId(snowflakeIdWorker.nextId());
         teacher.setActivate(Byte.valueOf("1"));
-        teacherMapper.insert(teacher);
+        Boolean teaResult = teacherMapper.insert(teacher) > 0;
         BaseUser baseUser = BeanMapUtils.map(teacher, BaseUser.class);
         baseUser.setUserType(2);
         baseUser.setUserId(teacher.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
-        baseUserMapper.insert(baseUser);
-        if(null!=teacherDto.getTeacherDeptDtoList()) {
-            IntStream.range(0, teacherDto.getTeacherDeptDtoList().size())
-                    .forEach(i -> {
-                        TeacherDept teacherDept = new TeacherDept();
-                        teacherDept.setId(snowflakeIdWorker.nextId());
-                        teacherDept.setSchoolCode(teacher.getSchoolCode());
-                        teacherDept.setCardNumber(teacher.getCardNumber());
-                        teacherDept.setTeacherId(teacher.getId());
-                        teacherDept.setOperator(teacher.getOperator());
-                        teacherDept.setOperatorName(teacher.getOperatorName());
-                        teacherDept.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
-                        teacherDept.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
-                        teacherDept.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
-                        teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
-                        teacherDeptMapper.insert(teacherDept);
-                    });
+        Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
+        TeacherDept teacherDept = new TeacherDept();
+        try {
+            if (null != teacherDto.getTeacherDeptDtoList()) {
+                IntStream.range(0, teacherDto.getTeacherDeptDtoList().size())
+                        .forEach(i -> {
+                            teacherDept.setId(snowflakeIdWorker.nextId());
+                            teacherDept.setSchoolCode(teacher.getSchoolCode());
+                            teacherDept.setCardNumber(teacher.getCardNumber());
+                            teacherDept.setTeacherId(teacher.getId());
+                            teacherDept.setOperator(teacher.getOperator());
+                            teacherDept.setOperatorName(teacher.getOperatorName());
+                            teacherDept.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
+                            teacherDept.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
+                            teacherDept.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
+                            teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
+                            Boolean terDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
+                            if (terDeptResult) {
+                                try {
+                                    JSONObject mesData = new JSONObject();
+                                    mesData.put("tableName", "t_teacher_dept");
+                                    mesData.put("data", teacherDept);
+                                    Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, mesData.toJSONString().getBytes());
+                                    defaultMQProducer.send(teacherDeptMsg);
+                                } catch (Exception e) {
+                                    log.info("推送教职工部门关系信息失败，错误信息:" + e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+            }
+            //将修改的信息推送至rocketMQ
+            if (teaResult && baseUserResult) {
+                JSONObject mesData = new JSONObject();
+                mesData.put("tableName", "t_teacher");
+                mesData.put("data", teacher);
+                Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
+                defaultMQProducer.send(teacherMsg);
+                mesData.put("tableName", "t_base_user");
+                mesData.put("data", baseUser);
+                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
+                defaultMQProducer.send(baseUserMsg);
+            }
+        } catch (Exception e) {
+            log.info("推送教职工信息失败，错误信息:" + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     @Override
     public TeacherVo selectTeacherInfo(String schoolCode, String cardNumber) {
-        Teacher teacher=teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
+        Teacher teacher = teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
         TeacherVo teacherVo = BeanMapUtils.map(teacher, TeacherVo.class);
-        List<TeacherDeptVo> teacherDeptVo=teacherDeptMapper.selectTeacherDeptDetailsInfo(schoolCode, cardNumber);
+        List<TeacherDeptVo> teacherDeptVo = teacherDeptMapper.selectTeacherDeptDetailsInfo(schoolCode, cardNumber);
         teacherVo.setTeacherDeptVos(teacherDeptVo);
         return teacherVo;
     }
@@ -130,81 +174,119 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Transactional
     public void updateTeacherInfo(UpdateTeacherDto updateTeacherDto) {
         try {
-        Teacher teacher = BeanMapUtils.map(updateTeacherDto, Teacher.class);
-        teacherMapper.updateTeacher(teacher);
-        BaseUser updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, BaseUser.class);
-        baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
-        teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber(),0);
-        for (int i=0;i<updateTeacherDto.getTeacherDeptDtoList().size();i++){
-            TeacherDeptDto teacherDeptDto=new TeacherDeptDto();
-            teacherDeptDto.setId(snowflakeIdWorker.nextId());
-            teacherDeptDto.setSchoolCode(updateTeacherDto.getSchoolCode());
-            teacherDeptDto.setCardNumber(updateTeacherDto.getCardNumber());
-            teacherDeptDto.setTeacherId(updateTeacherDto.getId());
-            teacherDeptDto.setOperator(updateTeacherDto.getOperator());
-            teacherDeptDto.setOperatorName(updateTeacherDto.getOperatorName());
-            String [] ids=updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
-            String [] names=updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
-            teacherDeptDto.setDeptId(Long.parseLong(ids[ids.length-1]));
-            teacherDeptDto.setDeptName(names[names.length-1]);
-            teacherDeptDto.setDeptIds(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
-            teacherDeptDto.setDeptNames(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
-            TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
-            teacherDeptMapper.insert(teacherDept);
-        }
-        //修改时判断用户是否已经激活
-        if(updateTeacherDto.getActivate().equals(Byte.parseByte("2"))) {
-            SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(/*updateTeacherDto.getSchoolCode()*/"1044695883");
-            synUserInfoRequest.setCard_number(updateTeacherDto.getCardNumber());
-            synUserInfoRequest.setName(updateTeacherDto.getName());
-            synUserInfoRequest.setGender(updateTeacherDto.getGender() == 1 ? "男" : "女");
-            String names[]=updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames().split("\\/");
-            if(updateTeacherDto.getSchoolType()>=Byte.parseByte("4")){
-                synUserInfoRequest.setCollege(names[names.length-1]);
+            Teacher teacher = BeanMapUtils.map(updateTeacherDto, Teacher.class);
+            Boolean teaResult = teacherMapper.updateTeacher(teacher) > 0;
+            BaseUser updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, BaseUser.class);
+            Boolean baseUserResult = baseUserMapper.updateBaseUserInfo(updateBaseUserDto) > 0;
+            TeacherDept teacherDepts = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
+            teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber(), 0);
+            for (int i = 0; i < updateTeacherDto.getTeacherDeptDtoList().size(); i++) {
+                TeacherDeptDto teacherDeptDto = new TeacherDeptDto();
+                teacherDeptDto.setId(teacherDepts.getId());
+                teacherDeptDto.setSchoolCode(updateTeacherDto.getSchoolCode());
+                teacherDeptDto.setCardNumber(updateTeacherDto.getCardNumber());
+                teacherDeptDto.setTeacherId(updateTeacherDto.getId());
+                teacherDeptDto.setOperator(updateTeacherDto.getOperator());
+                teacherDeptDto.setOperatorName(updateTeacherDto.getOperatorName());
+                String[] ids = updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds().split(",");
+                String[] names = updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().split("\\/");
+                teacherDeptDto.setDeptId(Long.parseLong(ids[ids.length - 1]));
+                teacherDeptDto.setDeptName(names[names.length - 1]);
+                teacherDeptDto.setDeptIds(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
+                teacherDeptDto.setDeptNames(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
+                TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
+                Boolean teaDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
+                //推送消息至MQ
+                if (teaDeptResult) {
+                    JSONObject mesData = new JSONObject();
+                    mesData.put("tableName", "t_teacher_dept");
+                    mesData.put("data", teacherDept);
+                    Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, snowflakeIdWorker.nextId() + "", mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(teacherDeptMsg);
+                }
             }
-            synUserInfoRequest.setOrganization(updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames());
-
-            synUserInfoRequest.setTelephone(updateTeacherDto.getPhone());
-            synUserInfoRequest.setCard_type("1");
-            synUserInfoRequest.setId_card(updateTeacherDto.getIdcard());
-            synUserInfoRequest.setHead_image(updateTeacherDto.getImage());
-            synUserInfoRequest.setIdentity_type(AuthenticationConstant.TEACHER);
-            synUserInfoRequest.setIdentity_title(updateTeacherDto.getPosition());
-            synUserInfoRequest.setNation(updateTeacherDto.getNationName());
-            synUserInfoRequest.setQq(updateTeacherDto.getQqNumber());
-            synUserInfoRequest.setAddress(updateTeacherDto.getAdress());
-            synUserInfoRequest.setEmail(updateTeacherDto.getEmail());
-            synUserInfoRequest.setPhysical_card_number(updateTeacherDto.getPhysicalNumber());
-            synUserInfoRequest.setPhysical_chip_number(updateTeacherDto.getPhysicalChipNumber());
-            synUserInfoRequest.setDorm_number(updateTeacherDto.getDormitoryAddress());
-            synUserInfoRequest.setCampus(updateTeacherDto.getCampusName());
-            String result=AuthenticationUtils.synUserInfo(synUserInfoRequest,updateTeacherDto.getAppKey(),updateTeacherDto.getAppSecret());
-            JSONObject jsonObject= JSONObject.parseObject(result);
-            if(!jsonObject.get("errcode").equals(0)){
-                throw new Exception("教职工信息同步失败,返回的错误码"+jsonObject.get("errcode")+"，同步教职工卡号="+updateTeacherDto.getCardNumber()+"学校名称="+updateTeacherDto.getSchoolName());
+            //修改时判断用户是否已经激活
+            if (updateTeacherDto.getActivate().equals(Byte.parseByte("2"))) {
+                SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
+                synUserInfoRequest.setSchool_code(updateTeacherDto.getSchoolCode());
+                synUserInfoRequest.setCard_number(updateTeacherDto.getCardNumber());
+                synUserInfoRequest.setName(updateTeacherDto.getName());
+                synUserInfoRequest.setGender(updateTeacherDto.getGender() == 1 ? "男" : "女");
+                String names[] = updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames().split("\\/");
+                //判断是K12 还是中高职
+                if (updateTeacherDto.getSchoolType() >= Byte.parseByte("4")) {
+                    synUserInfoRequest.setCollege(names[names.length - 1]);
+                }
+                synUserInfoRequest.setOrganization(updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames());
+                synUserInfoRequest.setTelephone(updateTeacherDto.getPhone());
+                synUserInfoRequest.setCard_type("1");
+                synUserInfoRequest.setId_card(updateTeacherDto.getIdcard());
+                synUserInfoRequest.setHead_image(updateTeacherDto.getImage());
+                synUserInfoRequest.setIdentity_type(AuthenticationConstant.TEACHER);
+                synUserInfoRequest.setIdentity_title(updateTeacherDto.getPosition());
+                synUserInfoRequest.setNation(updateTeacherDto.getNationName());
+                synUserInfoRequest.setQq(updateTeacherDto.getQqNumber());
+                synUserInfoRequest.setAddress(updateTeacherDto.getAdress());
+                synUserInfoRequest.setEmail(updateTeacherDto.getEmail());
+                synUserInfoRequest.setPhysical_card_number(updateTeacherDto.getPhysicalNumber());
+                synUserInfoRequest.setPhysical_chip_number(updateTeacherDto.getPhysicalChipNumber());
+                synUserInfoRequest.setDorm_number(updateTeacherDto.getDormitoryAddress());
+                synUserInfoRequest.setCampus(updateTeacherDto.getCampusName());
+                String result = AuthenticationUtils.synUserInfo(synUserInfoRequest, updateTeacherDto.getAppKey(), updateTeacherDto.getAppSecret());
+                JSONObject jsonObject = JSONObject.parseObject(result);
+                if (!jsonObject.get("errcode").equals(0)) {
+                    throw new Exception("教职工信息同步失败,返回的错误码" + jsonObject.get("errcode") + "，同步教职工卡号=" + updateTeacherDto.getCardNumber() + "学校名称=" + updateTeacherDto.getSchoolName());
+                }
+                //将修改的信息推送至rocketMQ
+                if (teaResult && baseUserResult) {
+                    JSONObject mesData = new JSONObject();
+                    mesData.put("tableName", "t_teacher");
+                    mesData.put("data", teacher);
+                    Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(teacherMsg);
+                    mesData.put("tableName", "t_base_user");
+                    mesData.put("data", updateBaseUserDto);
+                    Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(baseUserMsg);
+                }
             }
-        }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            log.info("更新教职工信息失败，错误信息="+e.getMessage());
+            log.info("更新教职工信息失败，错误信息:" + e.getMessage());
         }
     }
 
     @Override
     @Transactional
-    public void batchSaveTeacherInfo(List<AddTeacherDto> teacherList)  {
-        List<Teacher> saveTeacherList=BeanMapUtils.mapList(teacherList,Teacher.class);
-        List<BaseUser> baseUserList=BeanMapUtils.mapList(teacherList,BaseUser.class);
+    public void batchSaveTeacherInfo(List<AddTeacherDto> teacherList) {
+
+        List<Teacher> saveTeacherList = BeanMapUtils.mapList(teacherList, Teacher.class);
+        List<BaseUser> baseUserList = BeanMapUtils.mapList(teacherList, BaseUser.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             saveTeacherList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setUserType(2);
             baseUserList.get(i).setUserId(teacherList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
-        teacherMapper.batchSaveTeacherInfo(saveTeacherList);
-        baseUserMapper.batchSaveBaseUserInfo(baseUserList);
-
+        Boolean teaResult=teacherMapper.batchSaveTeacherInfo(saveTeacherList)>0;
+        Boolean baseUserResult=baseUserMapper.batchSaveBaseUserInfo(baseUserList)>0;
+        try {
+            //推送至MQ
+            if (teaResult && baseUserResult) {
+                JSONObject mesData = new JSONObject();
+                mesData.put("tableName", "t_teacher");
+                mesData.put("data", saveTeacherList);
+                Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
+                defaultMQProducer.send(teacherMsg);
+                mesData.put("tableName", "t_base_user");
+                mesData.put("data", baseUserList);
+                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
+                defaultMQProducer.send(baseUserMsg);
+            }
+        } catch (Exception e) {
+            log.info("推送教职工信息失败，错误信息:" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -214,6 +296,6 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
     @Override
     public List<Teacher> findTeacherInfoByDeptOrg(String schoolCode, String parentIds) {
-        return teacherMapper.findTeacherInfoByDeptOrg(schoolCode,parentIds);
+        return teacherMapper.findTeacherInfoByDeptOrg(schoolCode, parentIds);
     }
 }

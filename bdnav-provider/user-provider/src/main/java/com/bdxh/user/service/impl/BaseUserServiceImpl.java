@@ -22,8 +22,9 @@ import java.util.List;
 @Slf4j
 public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUserService {
 
-@Autowired
-private BaseUserMapper baseUserMapper;
+    @Autowired
+    private BaseUserMapper baseUserMapper;
+
     @Override
     public List<BaseUser> queryBaseUserInfo(BaseUserQueryDto baseUserQueryDto) {
         return baseUserMapper.queryBaseUserInfo(baseUserQueryDto);
@@ -37,12 +38,12 @@ private BaseUserMapper baseUserMapper;
 
     @Override
     public void deleteBaseUserInfo(String schoolCode, String cadNumber) {
-        baseUserMapper.deleteBaseUserInfo(schoolCode,cadNumber);
+        baseUserMapper.deleteBaseUserInfo(schoolCode, cadNumber);
     }
 
     @Override
     public BaseUser queryBaseUserBySchoolCodeAndCardNumber(String schoolCode, String cadNumber) {
-        return baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode,cadNumber);
+        return baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode, cadNumber);
     }
 
     @Override
@@ -57,7 +58,7 @@ private BaseUserMapper baseUserMapper;
 
     @Override
     public BaseUser queryBaseUserInfoByPhone(String phone) {
-        BaseUser baseUser=new BaseUser();
+        BaseUser baseUser = new BaseUser();
         baseUser.setPhone(phone);
         return baseUserMapper.selectOne(baseUser);
     }

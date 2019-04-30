@@ -31,11 +31,11 @@ import java.util.List;
  **/
 @Service
 public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements FamilyFenceService {
-   @Autowired
-   private FamilyFenceMapper familyFenceMapper;
+    @Autowired
+    private FamilyFenceMapper familyFenceMapper;
 
-   @Autowired
-   private SnowflakeIdWorker snowflakeIdWorker;
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -62,7 +62,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeFamilyFenceInfo(String schoolCode, String cardNumber, String id) {
-        FamilyFence familyFence=familyFenceMapper.getFamilyFenceInfo(schoolCode,cardNumber,id);
+        FamilyFence familyFence = familyFenceMapper.getFamilyFenceInfo(schoolCode, cardNumber, id);
         //删除监控对象
         String entityResult = FenceUtils.deleteNewEntity(familyFence.getStudentName());
         JSONObject entityResultJson = JSONObject.parseObject(entityResult);
@@ -75,7 +75,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
         if (delResultJson.getInteger("status") != 0) {
             throw new RuntimeException("删除围栏失败,状态码" + delResultJson.getInteger("status") + "，原因:" + delResultJson.getString("message"));
         }
-        familyFenceMapper.removeFamilyFenceInfo(schoolCode,cardNumber,id);
+        familyFenceMapper.removeFamilyFenceInfo(schoolCode, cardNumber, id);
     }
 
     @Override
@@ -89,14 +89,14 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
 
     @Override
     public FamilyFence getFamilyFenceInfo(String schoolCode, String cardNumber, String id) {
-        return familyFenceMapper.getFamilyFenceInfo(schoolCode,cardNumber,id);
+        return familyFenceMapper.getFamilyFenceInfo(schoolCode, cardNumber, id);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addFamilyFenceInfo(AddFamilyFenceDto addFamilyFenceDto) {
         //创建家长监控对象
-        CreateNewEntityRequest entityRequest=new CreateNewEntityRequest();
+        CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
         entityRequest.setAk(FenceConstant.AK);
         entityRequest.setService_id(FenceConstant.SERVICE_ID);
         entityRequest.setEntity_name(addFamilyFenceDto.getStudentName());
@@ -107,7 +107,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
             throw new RuntimeException("增加监控终端实体失败,名称：" + addFamilyFenceDto.getStudentName() + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
         }
         //创建围栏
-        CreateFenceRoundRequest fenceRoundRequest=new CreateFenceRoundRequest();
+        CreateFenceRoundRequest fenceRoundRequest = new CreateFenceRoundRequest();
         fenceRoundRequest.setAk(FenceConstant.AK);
         fenceRoundRequest.setService_id(FenceConstant.SERVICE_ID);
         fenceRoundRequest.setDenoise(addFamilyFenceDto.getDenoise());
