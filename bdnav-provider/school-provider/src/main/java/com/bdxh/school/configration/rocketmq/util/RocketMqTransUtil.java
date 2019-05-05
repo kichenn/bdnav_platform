@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
  * @Author: Kang
  * @Date: 2019/4/29 11:51
  */
-@Component
+//@Component
 @Slf4j
 public class RocketMqTransUtil {
 

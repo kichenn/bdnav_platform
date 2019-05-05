@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
  * @Date: 2019/4/28 12:16
  */
 @Data
-@ConditionalOnProperty(prefix = "rocketmq.producer", name = {"defaultName", "transName"})
-@Component
+//@ConditionalOnProperty(prefix = "rocketmq.producer", name = {"defaultName", "transName"})
+//@Component
 public class RocketMqProducerProperties {
 
     @Value("${rocketmq.producer.defaultName}")
