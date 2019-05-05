@@ -16,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +49,17 @@ public class AppConfigController {
 
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @GetMapping("/test2")
+    public String test2() {
+        log.info("测试。。。。。。。。");
+        redisTemplate.opsForValue().set("系统测试test2", "测试redis");
+        log.info("测试完成.......");
+        return "sussce";
+    }
 
     @ApiOperation("增加应用配置")
     @RequestMapping(value = "/addAppConfig",method = RequestMethod.POST)

@@ -48,7 +48,7 @@ public class BlackUrlController {
     @GetMapping("/test2")
     public String test2() {
         log.info("测试。。。。。。。。");
-        redisTemplate.opsForValue().set("测试", "测试redis");
+        redisTemplate.opsForValue().set("学校测试test2", "测试redis");
         log.info("测试完成.......");
         return "sussce";
     }
