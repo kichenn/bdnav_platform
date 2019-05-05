@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,17 @@ import java.util.List;
 public class BaseUserController {
     @Autowired
     private BaseUserService baseUserService;
+
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+    @GetMapping("/test2")
+    public String test2() {
+        log.info("测试。。。。。。。。");
+        redisTemplate.opsForValue().set("user测试test2", "测试redis");
+        log.info("测试完成.......");
+        return "sussce";
+    }
 
     /**
      * 查询所有用户手机号
