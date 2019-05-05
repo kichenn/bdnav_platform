@@ -1,3 +1,4 @@
+/*
 package com.bdxh.user.configration.rocketmq.configration;
 
 import com.bdxh.user.configration.rocketmq.listener.RocketMqConsumerTransactionListener;
@@ -9,13 +10,15 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+*/
 /**
  * @Description: rocketMq 消费者配置
  * Rocketmq消费分为push和pull两种方式，push为被动消费类型，pull为主动消费类型，push方式最终还是会从broker中pull消息。
  * 不同于pull的是，push首先要注册消费监听器，当监听器处触发后才开始消费消息，所以被称为“被动”消费。
  * @Author: bin
  * @Date: 2019/4/29 126:16
- */
+ *//*
+
 @Configuration
 @Slf4j
 public class RocketMqConsumerConfig {
@@ -23,12 +26,14 @@ public class RocketMqConsumerConfig {
     @Autowired
     private RocketMqConsumerTransactionListener rocketMqConsumerTransactionListener;
 
-    /**
+    */
+/**
      * 消费者，消费
      *
      * @param rocketMqConsumerProperties
      * @return
-     */
+     *//*
+
     @Bean(value = "defaultMQPushConsumer", destroyMethod = "shutdown")
     @ConditionalOnBean(RocketMqConsumerProperties.class)
     public DefaultMQPushConsumer defaultMQPushConsumer(@Autowired RocketMqConsumerProperties rocketMqConsumerProperties) {
@@ -53,3 +58,4 @@ public class RocketMqConsumerConfig {
     }
 
 }
+*/
