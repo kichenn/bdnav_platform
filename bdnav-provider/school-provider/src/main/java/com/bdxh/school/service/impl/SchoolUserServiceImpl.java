@@ -47,11 +47,11 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
     @Autowired
     private SchoolUserRoleMapper schoolUserRoleMapper;
 
-//    @Autowired
-//    private DefaultMQProducer defaultMQProducer;
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
 
-//    @Autowired
-//    private RocketMqProducerProperties rocketMqProducerProperties;
+    @Autowired
+    private RocketMqProducerProperties rocketMqProducerProperties;
 
 
     @Override
@@ -157,7 +157,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                     msgData.put("data", schoolUserRole);
                     Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
                     try {
-//                        defaultMQProducer.send(schoolUserMsg);
+                        defaultMQProducer.send(schoolUserMsg);
                     } catch (Exception e) {
                         log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
                         e.printStackTrace();
@@ -171,7 +171,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
             msgData.put("data", schoolUser);
             Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
             try {
-//                defaultMQProducer.send(schoolUserMsg);
+                defaultMQProducer.send(schoolUserMsg);
             } catch (Exception e) {
                 log.info("推送学校用户信息失败，错误信息：" + e.getMessage());
                 e.printStackTrace();
@@ -224,7 +224,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                     msgData.put("data", schoolUserRole);
                     Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
                     try {
-//                        defaultMQProducer.send(schoolUserMsg);
+                        defaultMQProducer.send(schoolUserMsg);
                     } catch (Exception e) {
                         log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
                         e.printStackTrace();
@@ -240,7 +240,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
             msgData.put("data", schoolUser);
             Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
             try {
-//                defaultMQProducer.send(schoolUserMsg);
+                defaultMQProducer.send(schoolUserMsg);
             } catch (Exception e) {
                 log.info("推送学校用户信息失败，错误信息：" + e.getMessage());
                 e.printStackTrace();

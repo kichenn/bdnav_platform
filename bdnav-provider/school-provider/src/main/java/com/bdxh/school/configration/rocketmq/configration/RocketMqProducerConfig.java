@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @Author: Kang
  * @Date: 2019/4/28 12:06
  */
-//@Configuration
+@Configuration
 @Slf4j
 public class RocketMqProducerConfig {
 
