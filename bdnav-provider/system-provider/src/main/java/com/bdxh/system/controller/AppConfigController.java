@@ -50,6 +50,18 @@ public class AppConfigController {
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+
+    @GetMapping("/test2")
+    public String test2() {
+        log.info("测试。。。。。。。。");
+        redisTemplate.opsForValue().set("system测试test2", "测试redis");
+        log.info("测试完成.......");
+        return "sussce";
+    }
+
     @ApiOperation("增加应用配置")
     @RequestMapping(value = "/addAppConfig",method = RequestMethod.POST)
     public Object addAppConfig(@Valid @RequestBody AddAppConfigDto addAppConfigDto, BindingResult bindingResult){
