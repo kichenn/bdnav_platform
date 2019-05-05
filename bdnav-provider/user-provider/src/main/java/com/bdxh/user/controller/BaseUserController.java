@@ -32,7 +32,7 @@ public class BaseUserController {
     private BaseUserService baseUserService;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     /**
      * 查询所有用户手机号
