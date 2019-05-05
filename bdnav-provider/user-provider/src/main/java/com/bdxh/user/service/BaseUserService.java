@@ -23,6 +23,11 @@ public interface BaseUserService extends IService<BaseUser> {
     List<BaseUser> queryBaseUserInfo(BaseUserQueryDto baseUserQueryDto);
 
     /**
+     * 查询所有不是家长的用户
+     * @return
+     */
+    List<BaseUser> findAllBaseUserInfo();
+    /**
      * 修改用户数据
      * @param updateBaseUserDto
      * @return

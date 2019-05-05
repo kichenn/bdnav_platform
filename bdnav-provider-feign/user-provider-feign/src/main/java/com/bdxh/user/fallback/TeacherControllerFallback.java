@@ -69,4 +69,9 @@ public class TeacherControllerFallback implements TeacherControllerClient {
     public Wrapper<List<Teacher>> findTeacherInfoByDeptOrg(String schoolCode, String parentIds) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<Teacher>> findAllTeacher() {
+        return WrapMapper.error();
+    }
 }

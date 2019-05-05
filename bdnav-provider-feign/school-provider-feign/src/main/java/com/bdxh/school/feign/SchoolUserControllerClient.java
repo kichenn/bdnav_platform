@@ -36,6 +36,15 @@ public interface SchoolUserControllerClient {
     Wrapper<SchoolUser> findSchoolUserByName(@RequestParam("userName") String userName);
 
     /**
+     * 查询所有系统用户信息
+     *
+     * @return
+     */
+    @RequestMapping(value = "/schoolUser/findAllSchoolUserInfo", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolUser>> findAllSchoolUserInfo();
+
+    /**
      * 添加系统用户
      *
      * @return

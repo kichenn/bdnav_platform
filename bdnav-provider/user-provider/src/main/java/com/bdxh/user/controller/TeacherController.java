@@ -230,4 +230,19 @@ public class TeacherController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 查询所有老师
+     *
+     * @return
+     */
+    @ApiOperation(value = "查询所有老师")
+    @RequestMapping(value = "/findAllTeacher", method = RequestMethod.GET)
+    public Object findAllTeacher() {
+        try {
+            return WrapMapper.ok(teacherService.selectAll());
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 }

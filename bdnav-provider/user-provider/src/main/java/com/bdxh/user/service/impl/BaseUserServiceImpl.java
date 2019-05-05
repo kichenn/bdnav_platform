@@ -62,4 +62,9 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
         baseUser.setPhone(phone);
         return baseUserMapper.selectOne(baseUser);
     }
+
+    @Override
+    public List<BaseUser> findAllBaseUserInfo() {
+        return baseUserMapper.findAllBaseUserInfo();
+    }
 }

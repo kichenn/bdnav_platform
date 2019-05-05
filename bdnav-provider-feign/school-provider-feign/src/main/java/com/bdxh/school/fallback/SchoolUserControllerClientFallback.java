@@ -63,4 +63,8 @@ public class SchoolUserControllerClientFallback implements SchoolUserControllerC
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper<List<SchoolUser>> findAllSchoolUserInfo() {
+        return WrapMapper.error();
+    }
 }
