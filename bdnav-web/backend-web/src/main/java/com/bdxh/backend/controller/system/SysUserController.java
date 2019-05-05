@@ -1,10 +1,12 @@
 package com.bdxh.backend.controller.system;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.AddUserDto;
 import com.bdxh.system.dto.UpdateUserDto;
 import com.bdxh.system.dto.UserQueryDto;
+import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.UserControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -70,8 +72,13 @@ public class SysUserController {
     @ApiOperation(value = "根据id删除用户信息")
     public Object delUser(@RequestParam(name = "id") Long id) {
         try {
-            Wrapper wrapper = userControllerClient.delUser(id);
-            return wrapper;
+            User user = SecurityUtils.getCurrentUser();
+            if (user.getId().equals(id)){
+                return WrapMapper.error("当前用为正在登陆用户,不能删除");
+            }else{
+                Wrapper wrapper = userControllerClient.delUser(id);
+                return wrapper;
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
