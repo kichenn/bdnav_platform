@@ -1,4 +1,3 @@
-/*
 package com.bdxh.user.configration.rocketmq.listener;
 
 import com.bdxh.common.base.enums.RocketMqTransStatusEnum;
@@ -12,13 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-*/
 /**
  * @Description: rocketmqProducer 生产者监听器
  * @Author: bin
  * @Date: 2019/4/29 126:16
- *//*
-
+ */
 @Slf4j
 @Component
 public class RocketMqProducerTransactionListener implements TransactionListener {
@@ -26,11 +23,9 @@ public class RocketMqProducerTransactionListener implements TransactionListener 
     @Autowired
     protected RocketMqTransUtil rocketMqTransUtil;
 
-    */
-/**
+    /**
      * rocketMq发送事务消息
-     *//*
-
+     */
     @Override
     public LocalTransactionState executeLocalTransaction(Message message, Object o) {
         String transactionId = message.getTransactionId();
@@ -48,11 +43,9 @@ public class RocketMqProducerTransactionListener implements TransactionListener 
     }
 
 
-    */
-/**
+    /**
      * rocketMq事务回查方法
-     *//*
-
+     */
     @Override
     public LocalTransactionState checkLocalTransaction(MessageExt messageExt) {
         String transactionId = messageExt.getTransactionId();
@@ -65,4 +58,3 @@ public class RocketMqProducerTransactionListener implements TransactionListener 
 
 
 }
-*/

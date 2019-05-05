@@ -30,8 +30,9 @@ public class MaiQuanLogin {
     public Object login(){
         SchoolUser schoolUser=SecurityUtils.getCurrentUser();
         JSONObject jsonObject=new JSONObject();
-        jsonObject.put("username",schoolUser.getUserName());
-        jsonObject.put("password",schoolUser.getPassword());
-         return WrapMapper.ok(jsonObject);
+       SchoolUser schoolUsers=schoolUserControllerClient.findSchoolUserByName(schoolUser.getUserName()).getResult();
+        jsonObject.put("username",schoolUsers.getUserName());
+        jsonObject.put("password",schoolUsers.getPassword());
+        return WrapMapper.ok(jsonObject);
     }
 }

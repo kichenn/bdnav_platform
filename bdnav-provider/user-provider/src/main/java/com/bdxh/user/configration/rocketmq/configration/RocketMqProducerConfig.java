@@ -1,4 +1,3 @@
-/*
 package com.bdxh.user.configration.rocketmq.configration;
 
 
@@ -19,13 +18,11 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-*/
 /**
  * @Description: rocketMQ 生产者配置类
  * @Author: bin
  * @Date: 2019/4/29 126:16
- *//*
-
+ */
 @Configuration
 @Slf4j
 public class RocketMqProducerConfig {
@@ -76,4 +73,3 @@ public class RocketMqProducerConfig {
     }
 
 }
-*/

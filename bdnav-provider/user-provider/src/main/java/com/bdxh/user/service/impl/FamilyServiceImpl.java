@@ -7,9 +7,9 @@ import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationCons
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
-import com.bdxh.common.utils.SnowflakeIdWorker;/*
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.configration.rocketmq.listener.RocketMqProducerTransactionListener;
-import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;*/
+import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
@@ -58,11 +58,11 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
-/*    @Autowired
+    @Autowired
     private DefaultMQProducer defaultMQProducer;
 
     @Autowired
-    private RocketMqProducerProperties rocketMqProducerProperties;*/
+    private RocketMqProducerProperties rocketMqProducerProperties;
 
     @Override
     public PageInfo<Family> getFamilyList(FamilyQueryDto familyQueryDto) {

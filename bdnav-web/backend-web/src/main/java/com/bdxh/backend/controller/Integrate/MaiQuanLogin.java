@@ -30,9 +30,7 @@ public class MaiQuanLogin {
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public Object login(){
         User schoolUser= SecurityUtils.getCurrentUser();
-        JSONObject jsonObject=new JSONObject();
-        jsonObject.put("username",schoolUser.getUserName());
-        jsonObject.put("password",schoolUser.getPassword());
-         return WrapMapper.ok(jsonObject);
+        SchoolUser schoolUsers=schoolUserControllerClient.findSchoolUserByName(schoolUser.getUserName()).getResult();
+         return WrapMapper.ok(schoolUsers);
     }
 }
