@@ -42,8 +42,6 @@ public class BaseUserController {
     @RequestMapping(value ="/queryAllUserPhone",method = RequestMethod.GET)
     public Object queryAllUserPhone() {
         try {
-            redisTemplate.opsForValue().set("ceshi","111");
-            log.info(redisTemplate.opsForValue().get("ceshi")+"");
             List<String> list=baseUserService.queryAllUserPhone();
             return WrapMapper.ok(list) ;
         } catch (Exception e) {
