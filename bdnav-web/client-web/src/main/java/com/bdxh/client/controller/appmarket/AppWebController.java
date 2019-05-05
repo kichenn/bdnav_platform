@@ -2,6 +2,7 @@ package com.bdxh.client.controller.appmarket;
 
 import com.bdxh.appmarket.dto.AddAppDto;
 import com.bdxh.appmarket.dto.AppQueryDto;
+import com.bdxh.appmarket.dto.QueryAppDto;
 import com.bdxh.appmarket.dto.UpdateAppDto;
 import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
@@ -148,5 +149,32 @@ public class AppWebController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    @ApiOperation("根据ids查询应用列表")
+    @RequestMapping(value = "/getAppListByids",method = RequestMethod.GET)
+    public Object getAppListByids(@RequestParam(name = "ids")String ids){
+        try {
+            Wrapper wrapper = appControllerClient.getAppListByids(ids);
+            return wrapper;
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    @ApiOperation("分页查询特定应用列表")
+    @RequestMapping(value = "/getApplicationOfCollection",method = RequestMethod.POST)
+    public Object getApplicationOfCollection(@RequestBody QueryAppDto queryAppDto){
+        try {
+            Wrapper wrapper = appControllerClient.getApplicationOfCollection(queryAppDto);
+            return wrapper;
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 }
