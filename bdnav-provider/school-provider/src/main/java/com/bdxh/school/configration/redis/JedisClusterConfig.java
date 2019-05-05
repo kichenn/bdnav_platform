@@ -3,9 +3,8 @@ package com.bdxh.school.configration.redis;
 import java.util.HashSet;
 import java.util.Set;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,46 +13,49 @@ import redis.clients.jedis.JedisCluster;
 
 
 /**
- * @Description: jedis相关配置
+ * @Description: jedis相关配置(redis cluster集群方式 ， 不能使用redisTemple对象操作[会导致分片异常] ， 踩坑)
+ * 异常信息:Cannot retrieve initial cluster partitions from initial URIs
  * @Author: Kang
  * @Date: 2019/5/5 18:00
  */
 @Configuration
+@Slf4j
 public class JedisClusterConfig {
 
-    private static final Logger log = LoggerFactory.getLogger(JedisClusterConfig.class);
-
-    @Value("${redis.nodes}")
+    @Value("${spring.redis.cluster.nodes}")
     private String nodes;
 
-    @Value("${redis.commandTimeout}")
+    @Value("${spring.redis.timeout}")
     private int commandTimeout;
 
-    @Value("${redis.maxTotal}")
+    @Value("${spring.redis.lettuce.pool.max-active}")
     private int maxTotal;
 
-    @Value("${redis.maxIdle}")
+    @Value("${spring.redis.lettuce.pool.max-idle}")
     private int maxIdle;
 
-    @Value("${redis.minIdle}")
+    @Value("${spring.redis.lettuce.pool.min-idle}")
     private int minIdle;
 
-    @Value("${redis.maxWait}")
+    @Value("${spring.redis.lettuce.pool.max-wait}")
     private int maxWait;
 
     @Bean
     public JedisCluster getJedisCluster() {
-        log.info("进入redis集群初始化方法：访问集群地址为：" + nodes);
-        String[] serverArray = nodes.split(",");//获取服务器数组(这里要相信自己的输入，所以没有考虑空指针问题)
+        log.info("redis，集群信息：{}", nodes);
+        String[] serverArray = nodes.split(",");
         Set<HostAndPort> nodes = new HashSet<>();
         for (String ipPort : serverArray) {
             String[] ipPortPair = ipPort.split(":");
             nodes.add(new HostAndPort(ipPortPair[0].trim(), Integer.valueOf(ipPortPair[1].trim())));
         }
         GenericObjectPoolConfig config = new GenericObjectPoolConfig();
+        //最大连接数
         config.setMaxTotal(maxTotal);
+        //最大空闲数
         config.setMaxIdle(maxIdle);
-        config.setMinIdle(minIdle);//设置最小空闲数
+        //设置最小空闲数
+        config.setMinIdle(minIdle);
         config.setMaxWaitMillis(maxWait);
         //在获取Jedis连接时，自动检验连接是否可用
         config.setTestOnBorrow(true);
@@ -70,7 +72,6 @@ public class JedisClusterConfig {
         //表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义
         config.setMinEvictableIdleTimeMillis(60000);
         //需要密码连接的创建对象方式
-        //参数依次是：集群地址，链接超时时间，返回值的超时时间，链接尝试次数，配置文件
         return new JedisCluster(nodes, commandTimeout, 10000, 3, config);
     }
 }
