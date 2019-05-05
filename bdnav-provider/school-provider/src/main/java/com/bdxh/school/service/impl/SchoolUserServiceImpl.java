@@ -50,9 +50,6 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
     @Autowired
     private DefaultMQProducer defaultMQProducer;
 
-    @Autowired
-    private RocketMqProducerProperties rocketMqProducerProperties;
-
 
     @Override
     public PageInfo<SchoolUserShowVo> findListPage(SchoolUserQueryDto schoolUserQueryDto) {

@@ -34,14 +34,6 @@ public class BaseUserController {
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-    @GetMapping("/test2")
-    public String test2() {
-        log.info("测试。。。。。。。。");
-        redisTemplate.opsForValue().set("user测试test2", "测试redis");
-        log.info("测试完成.......");
-        return "sussce";
-    }
-
     /**
      * 查询所有用户手机号
      * @return
