@@ -1,3 +1,4 @@
+/*
 package com.bdxh.user.configration.rocketmq.util;
 
 import com.bdxh.common.base.constant.RocketMqConstrants;
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.concurrent.TimeUnit;
 
+*/
 /**
  * @Description: RocketMq事务回查工具类
  * @Author: bin
  * @Date: 2019/4/29 126:16
- */
+ *//*
+
 @Component
 public class RocketMqTransUtil {
 
@@ -44,3 +47,4 @@ public class RocketMqTransUtil {
     }
 
 }
+*/

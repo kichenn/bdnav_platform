@@ -1,3 +1,4 @@
+/*
 package com.bdxh.user.configration.rocketmq.properties;
 
 import lombok.Data;
@@ -6,11 +7,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 
+*/
 /**
  * @Description: rocketmq 消费者配置类
  * @Author: bin
  * @Date: 2019/4/29 126:16
- */
+ *//*
+
 @Data
 @ConditionalOnProperty(prefix = "rocketmq.consumer", name = {"groupName", "topic", "tag"})
 @Component
@@ -29,3 +32,4 @@ public class RocketMqConsumerProperties {
     private String namesrvAddr;
 
 }
+*/
