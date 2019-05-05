@@ -5,8 +5,17 @@ spring:
     name: school-provider-cluster
   profiles:
     active: dev
-
-
-#日志
+  #学校服务，生产者
+  cloud:
+    stream:
+      rocketmq:
+        binder:
+          namesrv-addr: 47.107.253.90:9876;47.107.255.252:9876
+rocketmq:
+  producer:
+    defaultName: default-school-provider
+    transName: trans-school-provider
+    transEnable: true
+    #日志
 logging:
   config: classpath:logback-spring.xml
