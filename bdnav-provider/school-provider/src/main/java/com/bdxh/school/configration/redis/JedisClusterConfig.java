@@ -12,11 +12,11 @@ import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 
+
 /**
- * ClassName: JedisClusterConfig
- * Description:
- *
- * @date 2018年4月3日
+ * @Description: jedis相关配置
+ * @Author: Kang
+ * @Date: 2019/5/5 18:00
  */
 @Configuration
 public class JedisClusterConfig {
@@ -41,12 +41,6 @@ public class JedisClusterConfig {
     @Value("${redis.maxWait}")
     private int maxWait;
 
-    /**
-     * 注意：
-     * 这里返回的JedisCluster是单例的，并且可以直接注入到其他类中去使用
-     *
-     * @return
-     */
     @Bean
     public JedisCluster getJedisCluster() {
         log.info("进入redis集群初始化方法：访问集群地址为：" + nodes);
@@ -76,7 +70,7 @@ public class JedisClusterConfig {
         //表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义
         config.setMinEvictableIdleTimeMillis(60000);
         //需要密码连接的创建对象方式
-        //参数依次是：集群地址，链接超时时间，返回值的超时时间，链接尝试次数，密码和配置文件
-        return new JedisCluster(nodes, commandTimeout, 10000, 3, null, config);
+        //参数依次是：集群地址，链接超时时间，返回值的超时时间，链接尝试次数，配置文件
+        return new JedisCluster(nodes, commandTimeout, 10000, 3, config);
     }
 }

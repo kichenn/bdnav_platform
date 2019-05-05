@@ -42,18 +42,6 @@ public class BlackUrlController {
     @Autowired
     private BlackUrlService blackUrlService;
 
-    @Autowired
-    private JedisCluster jedisCluster;
-
-
-    @GetMapping("/test2")
-    public String test2() {
-        log.info("测试。。。。。。。。");
-        jedisCluster.set("学校测试test2", "测试redis");
-        log.info("测试完成.......");
-        return "sussce";
-    }
-
     /**
      * @Description: 增加url黑名单
      * @Author: Kang
