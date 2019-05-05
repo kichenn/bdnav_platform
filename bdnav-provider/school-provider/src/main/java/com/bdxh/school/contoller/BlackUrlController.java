@@ -22,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bdxh.school.entity.BlackUrl;
 import com.bdxh.school.service.BlackUrlService;
+import redis.clients.jedis.JedisCluster;
 
 import java.nio.charset.Charset;
 import java.util.List;
@@ -42,13 +43,13 @@ public class BlackUrlController {
     private BlackUrlService blackUrlService;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private JedisCluster jedisCluster;
 
 
     @GetMapping("/test2")
     public String test2() {
         log.info("测试。。。。。。。。");
-        redisTemplate.opsForValue().set("学校测试test2", "测试redis");
+        jedisCluster.set("学校测试test2", "测试redis");
         log.info("测试完成.......");
         return "sussce";
     }
