@@ -1,10 +1,11 @@
-package com.bdxh.client.controller.sso;
+package com.bdxh.backend.controller.Integrate;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bdxh.client.configration.security.utils.SecurityUtils;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolUserControllerClient;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class MaiQuanLogin {
     private SchoolUserControllerClient schoolUserControllerClient;
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public Object login(){
-        SchoolUser schoolUser=SecurityUtils.getCurrentUser();
+        User schoolUser= SecurityUtils.getCurrentUser();
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("username",schoolUser.getUserName());
         jsonObject.put("password",schoolUser.getPassword());
