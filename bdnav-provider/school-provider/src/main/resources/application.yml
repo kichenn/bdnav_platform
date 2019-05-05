@@ -15,15 +15,16 @@ spring:
     time-zone: GMT+8
 
 #apollo配置
-#app:
-#  id: school-provider-cluster1
-#apollo:
-#  meta: http://47.107.255.252:8080
-#  bootstrap:
-#    enabled: true
-#    eagerLoad:
-#      enabled: true
-#    namespaces: BASE.public.eureka,BASE.public-hikari-ds,application,BASE.public-redis,BASE.public-rocketmq
+app:
+  id: school-provider-cluster1
+apollo:
+  meta: http://47.107.255.252:8080
+  bootstrap:
+    enabled: true
+    eagerLoad:
+      enabled: true
+    namespaces: BASE.public.eureka,BASE.public-hikari-ds,application,BASE.public-redis
+    #,BASE.public-rocketmq
 
 #日志
 logging:
