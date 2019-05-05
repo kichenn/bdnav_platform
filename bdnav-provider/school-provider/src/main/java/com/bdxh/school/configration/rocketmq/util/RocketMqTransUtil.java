@@ -2,6 +2,7 @@ package com.bdxh.school.configration.rocketmq.util;
 
 import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.base.enums.RocketMqTransStatusEnum;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +17,14 @@ import java.util.concurrent.TimeUnit;
  * @Date: 2019/4/29 11:51
  */
 @Component
+@Slf4j
 public class RocketMqTransUtil {
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
     public void putTransState(String transactionId, RocketMqTransStatusEnum rocketMqTransStatusEnum) {
+        log.info("redisTemplate........{}", redisTemplate);
         redisTemplate.opsForValue().set(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId, rocketMqTransStatusEnum.getCode(), 1, TimeUnit.DAYS);
     }
 

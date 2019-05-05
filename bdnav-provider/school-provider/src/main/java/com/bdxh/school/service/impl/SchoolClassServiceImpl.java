@@ -103,14 +103,17 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             });
         }
         Boolean result = schoolClassMapper.updateByPrimaryKeySelective(schoolClass) > 0;
+        log.info("修改院系组织架构完成");
         if (result) {
             //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", schoolClass);
             jsonObject.put("message", "学校院系组织架构有调整");
             Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            log.info("发送院系组织架构通知完成");
             try {
                 transactionMQProducer.sendMessageInTransaction(message, null);
+                log.info("。。。。。。。");
             } catch (MQClientException e) {
                 e.printStackTrace();
                 log.error("发送学校院系组织更新消息");

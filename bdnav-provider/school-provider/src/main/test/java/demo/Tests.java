@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.exception.MQBrokerException;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.TransactionMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.apache.rocketmq.remoting.exception.RemotingException;
 import org.junit.Test;
@@ -33,6 +34,9 @@ public class Tests {
 
     @Autowired
     private DefaultMQProducer defaultMQProducer;
+
+    @Autowired
+    private TransactionMQProducer mqProducer;
 
     /**
      * 多线程处理list
@@ -81,5 +85,18 @@ public class Tests {
         jsonObject.put("msg", "有学校院系组织架构更新了");
         Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
         defaultMQProducer.send(message);
+    }
+
+    @Test
+    public void test2() {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("schoolClassId", "111");
+        jsonObject.put("msg", "有学校院系组织架构更新了");
+        Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        try {
+            mqProducer.sendMessageInTransaction(message, null);
+        } catch (MQClientException e) {
+            e.printStackTrace();
+        }
     }
 }

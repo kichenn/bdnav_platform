@@ -1,5 +1,7 @@
 package com.bdxh.school.contoller;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.AddBlackUrlDto;
 import com.bdxh.school.dto.BlackUrlQueryDto;
@@ -8,15 +10,20 @@ import com.bdxh.school.vo.BlackUrlShowVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.rocketmq.client.exception.MQClientException;
+import org.apache.rocketmq.client.producer.TransactionMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bdxh.school.entity.BlackUrl;
 import com.bdxh.school.service.BlackUrlService;
 
+import java.nio.charset.Charset;
 import java.util.List;
 
 /**
@@ -34,6 +41,17 @@ public class BlackUrlController {
     @Autowired
     private BlackUrlService blackUrlService;
 
+    @Autowired
+    private RedisTemplate<String, Object> redisTemplate;
+
+
+    @GetMapping("/test2")
+    public String test2() {
+        log.info("测试。。。。。。。。");
+        redisTemplate.opsForValue().set("测试", "测试redis");
+        log.info("测试完成.......");
+        return "sussce";
+    }
 
     /**
      * @Description: 增加url黑名单
