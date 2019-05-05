@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
  * @Date: 2019/4/28 14:23
  */
 @Slf4j
-@Component
+//@Component
 public class RocketMqProducerTransactionListener implements TransactionListener {
 
     @Autowired
