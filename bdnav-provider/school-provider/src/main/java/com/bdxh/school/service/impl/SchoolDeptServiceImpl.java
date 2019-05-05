@@ -39,8 +39,8 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     @Autowired
     private SchoolDeptMapper schoolDeptMapper;
 
-//    @Autowired
-//    private TransactionMQProducer transactionMQProducer;
+    @Autowired
+    private TransactionMQProducer transactionMQProducer;
 
     //增加学校组织
     @Override
@@ -60,19 +60,19 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
         }
        Boolean result= schoolDeptMapper.insertSelective(schoolDept) > 0;
-//            if (result) {
-//                //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
-//                JSONObject jsonObject = new JSONObject();
-//                jsonObject.put("data", schoolDept);
-//                jsonObject.put("message", "学校部门组织架构有调整");
-//                Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-//                try {
-//                    transactionMQProducer.sendMessageInTransaction(message, null);
-//                } catch (MQClientException e) {
-//                    e.printStackTrace();
-//                    log.error("发送学校院系组织更新消息");
-//                }
-//            }
+            if (result) {
+                //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("data", schoolDept);
+                jsonObject.put("message", "学校部门组织架构有调整");
+                Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+                try {
+                    transactionMQProducer.sendMessageInTransaction(message, null);
+                } catch (MQClientException e) {
+                    e.printStackTrace();
+                    log.error("发送学校院系组织更新消息");
+                }
+            }
         return result;
     }
 
@@ -106,19 +106,19 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
         }
 
         Boolean result = schoolDeptMapper.updateByPrimaryKeySelective(schoolDept) > 0;
-//        if (result) {
-//            //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
-//            JSONObject jsonObject = new JSONObject();
-//            jsonObject.put("data", schoolDept);
-//            jsonObject.put("message", "学校部门组织架构有调整");
-//            Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-//            try {
-//                transactionMQProducer.sendMessageInTransaction(message, null);
-//            } catch (MQClientException e) {
-//                e.printStackTrace();
-//                log.error("发送学校院系组织更新消息");
-//            }
-//        }
+        if (result) {
+            //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("data", schoolDept);
+            jsonObject.put("message", "学校部门组织架构有调整");
+            Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            try {
+                transactionMQProducer.sendMessageInTransaction(message, null);
+            } catch (MQClientException e) {
+                e.printStackTrace();
+                log.error("发送学校院系组织更新消息");
+            }
+        }
         return result;
     }
 
