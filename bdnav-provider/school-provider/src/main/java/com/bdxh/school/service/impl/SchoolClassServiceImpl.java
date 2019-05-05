@@ -113,6 +113,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             log.info("发送院系组织架构通知完成");
             try {
                 transactionMQProducer.sendMessageInTransaction(message, null);
+                log.info("。。。。。。。");
             } catch (MQClientException e) {
                 e.printStackTrace();
                 log.error("发送学校院系组织更新消息");

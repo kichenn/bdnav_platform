@@ -32,6 +32,7 @@ public class RocketMqProducerTransactionListener implements TransactionListener 
         try {
             //执行本地事务
 //            rocketMqTransUtil.putTransState(transactionId, RocketMqTransStatusEnum.UNKNOW);
+            log.info("executeLocalTransaction..................开始发送事务消息:rocketMqTransUtil:{}", rocketMqTransUtil);
             rocketMqTransUtil.putTransState(transactionId, RocketMqTransStatusEnum.COMMIT_MESSAGE);
             return LocalTransactionState.COMMIT_MESSAGE;
         } catch (Exception e) {
