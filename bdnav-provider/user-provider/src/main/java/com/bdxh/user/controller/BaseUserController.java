@@ -32,7 +32,7 @@ public class BaseUserController {
     private BaseUserService baseUserService;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate redisTemplate;
 
     /**
      * 查询所有用户手机号
@@ -42,6 +42,8 @@ public class BaseUserController {
     @RequestMapping(value ="/queryAllUserPhone",method = RequestMethod.GET)
     public Object queryAllUserPhone() {
         try {
+            redisTemplate.opsForValue().set("ceshi","111");
+            log.info(redisTemplate.opsForValue().get("ceshi")+"");
             List<String> list=baseUserService.queryAllUserPhone();
             return WrapMapper.ok(list) ;
         } catch (Exception e) {
