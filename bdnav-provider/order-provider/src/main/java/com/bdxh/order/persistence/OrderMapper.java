@@ -11,12 +11,6 @@ import java.util.Map;
 @Repository
 public interface OrderMapper extends Mapper<Order> {
 
-//    /**
-//     * 根据订单号查询订单 schoolCode userId 必传
-//     * @param param
-//     * @return
-//     */
-//    Order getOrderByOrderNo(Map<String,Object> param);
 
     /**
      * 根据条件查询订单列表 schoolCode userId 必传
@@ -25,9 +19,7 @@ public interface OrderMapper extends Mapper<Order> {
      */
     List<Order> getOrderByCondition(Map<String,Object> param);
 
-    int deleteByOrderId(Map<String,Object> param);
-
-    int updateOrder(Order order);
+    int deleteByOrderId(@Param("SchoolCode")String SchoolCode,@Param("UserId") Long UserId,@Param("OrderNo")Long OrderNo);
 
     //批量删除订单信息
     int deleteByOrderIds(@Param("list") List<Map<String,String>> list);

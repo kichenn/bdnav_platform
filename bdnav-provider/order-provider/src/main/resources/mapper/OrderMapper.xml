@@ -5,69 +5,88 @@
         <!--
           WARNING - @mbg.generated
         -->
-        <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
-        <result column="third_order_no" jdbcType="VARCHAR" property="thirdOrderNo"/>
-        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
-        <result column="open_id" jdbcType="VARCHAR" property="openId"/>
-        <result column="user_name" jdbcType="VARCHAR" property="userName"/>
-        <result column="user_id" jdbcType="BIGINT" property="userId"/>
-        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
-        <result column="total_money" jdbcType="DECIMAL" property="totalMoney"/>
-        <result column="order_money" jdbcType="DECIMAL" property="orderMoney"/>
-        <result column="pay_money" jdbcType="DECIMAL" property="payMoney"/>
-        <result column="trade_status" jdbcType="TINYINT" property="tradeStatus"/>
-        <result column="pay_status" jdbcType="TINYINT" property="payStatus"/>
-        <result column="business_status" jdbcType="TINYINT" property="businessStatus"/>
-        <result column="business_type" jdbcType="TINYINT" property="businessType"/>
-        <result column="pay_type" jdbcType="TINYINT" property="payType"/>
-        <result column="trade_type" jdbcType="TINYINT" property="tradeType"/>
-        <result column="pay_time" jdbcType="TIMESTAMP" property="payTime"/>
-        <result column="pay_end_time" jdbcType="TIMESTAMP" property="payEndTime"/>
-        <result column="product_ids" jdbcType="VARCHAR" property="productIds"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="order_no" jdbcType="BIGINT" property="OrderNo"/>
+        <result column="third_order_no" jdbcType="VARCHAR" property="ThirdOrderNo"/>
+        <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="SchoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="SchoolName"/>
+        <result column="user_id" jdbcType="BIGINT" property="UserId"/>
+        <result column="card_number" jdbcType="VARCHAR" property="CardNumber"/>
+        <result column="user_name" jdbcType="VARCHAR" property="UserName"/>
+        <result column="user_type" jdbcType="TINYINT" property="UserType"/>
+        <result column="open_id" jdbcType="VARCHAR" property="OpenId"/>
+        <result column="total_money" jdbcType="DECIMAL" property="TotalMoney"/>
+        <result column="order_money" jdbcType="DECIMAL" property="OrderMoney"/>
+        <result column="pay_money" jdbcType="DECIMAL" property="PayMoney"/>
+        <result column="trade_status" jdbcType="TINYINT" property="TradeStatus"/>
+        <result column="pay_status" jdbcType="TINYINT" property="PayStatus"/>
+        <result column="business_status" jdbcType="TINYINT" property="BusinessStatus"/>
+        <result column="business_type" jdbcType="TINYINT" property="BusinessType"/>
+        <result column="pay_type" jdbcType="TINYINT" property="PayType"/>
+        <result column="trade_type" jdbcType="TINYINT" property="TradeType"/>
+        <result column="pay_time" jdbcType="TIMESTAMP" property="PayTime"/>
+        <result column="pay_end_time" jdbcType="TIMESTAMP" property="PayEndTime"/>
+        <result column="product_id" jdbcType="VARCHAR" property="ProductId"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="Operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="Remark"/>
     </resultMap>
 
     <sql id="BaseColumns">
-    id,order_no, third_order_no, school_code, school_id, open_id, user_id,  card_number, total_money, order_money, pay_money, trade_status,
-    pay_status, business_status,  business_type, pay_type, trade_type, pay_time, pay_end_time, product_ids, create_date, update_date, remark
-  </sql>
+	order_no,third_order_no,school_id,school_code,school_name,user_id,card_number,user_name,user_type,open_id,total_money,order_money,pay_money,trade_status,pay_status,business_status,business_type,pay_type,trade_type,pay_time,pay_end_time,product_id,create_date,update_date,operator,operator_name,remark
+	</sql>
 
     <select id="getOrderByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_order
+        <where>
+            <if test="OrderNo!=null">
+                AND order_no=#{OrderNo}
+            </if>
+            <if test="SchoolCode!=null and SchoolCode!=''">
+                AND school_code=#{SchoolCode}
+            </if>
+            <if test="UserId!=null">
+                AND user_id=#{UserId}
+            </if>
+            <if test="CardNumber!=null and CardNumber!=''">
+                AND card_number LIKE CONCAT(CONCAT('%',#{CardNumber},'%'))
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+
+<!--    <select id="getOrderByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
         <include refid="BaseColumns"/>
         from t_order
         <where>
-            <if test="orderNo!=null and orderNo!=''">
-                order_no like concat(concat('%',#{orderNo}),'%')
+            <if test="OrderNo!=null and OrderNo!=''">
+                AND order_no =#{OrderNo}
             </if>
-            <if test="schoolCode!=null and schoolCode!=''">
-                AND school_code= #{schoolCode}
+            <if test="SchoolCode!=null and SchoolCode!=''">
+                 AND school_code = #{SchoolCode}
             </if>
-            <if test="userId!=null and userId!=''">
-                AND user_id= #{userId}
+            <if test="UserId!=null">
+                AND user_id= #{UserId}
             </if>
-            <if test="cardNumber!=null and cardNumber!=''">
-                card_number like concat(concat('%',#{cardNumber}),'%')
+            <if test="CardNumber!=null and CardNumber!=''">
+                AND card_number LIKE CONCAT(CONCAT('%',#{CardNumber}),'%')
             </if>
         </where>
         order by create_date desc
-    </select>
+    </select>-->
 
     <delete id="deleteByOrderId" parameterType="java.util.Map">
-		delete  from t_order where school_code=#{schoolCode} and user_id=#{userId} and id=#{id}
+		delete  from t_order where school_code=#{SchoolCode} and user_id=#{UserId} and order_no=#{OrderNo}
 	</delete>
 
-    <delete id="deleteByOrderIds">
-        delete from t_order where (school_code,user_id,id) in
-        <foreach collection="list" separator="," open="(" close=")" item="list" >
-            (#{list.schoolCode},#{list.userId},#{list.id})
-        </foreach>
-    </delete>
 
+<!--
     <update id="updateOrder">
         UPDATE t_order
         SET
@@ -104,5 +123,6 @@
         update_date= #{updateDate}
         WHERE
         school_code=#{schoolCode} and user_id=#{userId} and order_no=#{orderNo} ;
-    </update>
+    </update>-->
+
 </mapper>
