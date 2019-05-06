@@ -1,8 +1,11 @@
 package com.bdxh.order;
 
+import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * @description: 订单服务启动类
@@ -10,7 +13,9 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @create: 2019-01-09 09:50
  **/
 @SpringBootApplication
+@ServletComponentScan
 @EnableEurekaClient
+@EnableApolloConfig
 public class OrderProviderApplication {
     public static void main(String[] args) {
         SpringApplication.run(OrderProviderApplication.class,args);

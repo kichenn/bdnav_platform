@@ -1,6 +1,7 @@
 package com.bdxh.order.dto;
 
 import com.bdxh.common.base.page.Query;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import lombok.Data;
  * @create: 2019-01-09 18:25
  **/
 @Data
+@ApiModel("查询订单dto")
 public class OrderQueryDto extends Query {
 
 

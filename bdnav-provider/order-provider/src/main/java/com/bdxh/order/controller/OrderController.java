@@ -1,6 +1,9 @@
 package com.bdxh.order.controller;
 
+import com.bdxh.common.utils.BeanToMapUtil;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.order.dto.OrderAddDto;
 import com.bdxh.order.dto.OrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
@@ -8,8 +11,10 @@ import com.bdxh.order.entity.Order;
 import com.bdxh.order.service.OrderService;
 import com.bdxh.order.vo.OrderVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -27,14 +33,17 @@ import java.util.stream.Collectors;
  * @author: xuyuan
  * @create: 2019-01-09 15:36
  **/
-@Controller
+@RestController
 @RequestMapping("/order")
 @Slf4j
 @Validated
+@Api(value = "管控订单关系", tags = "管控订单关系")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     /**
      * 创建订单
@@ -45,16 +54,18 @@ public class OrderController {
      */
     @ApiOperation("创建订单")
     @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
-    @ResponseBody
-    public Object createOrder(@Valid @RequestBody OrderDto orderDto, BindingResult bindingResult) {
+    public Object createOrder(@Valid @RequestBody OrderAddDto orderDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            OrderVo orderVo = orderService.createOrder(orderDto);
-            return WrapMapper.ok(orderVo);
+            Order order=new Order();
+            order.setOrderNo(snowflakeIdWorker.nextId());
+            BeanUtils.copyProperties(orderDto, order);
+            Boolean flag =orderService.save(order)>0;
+            return WrapMapper.ok(flag);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -62,20 +73,19 @@ public class OrderController {
     }
 
 
-    //分页所有
-    @ApiOperation("分页查询")
+    //带条件分页所有
+    @ApiOperation("带条件分页查询")
     @RequestMapping(value = "/queryUserOrder", method = RequestMethod.POST)
-    @ResponseBody
     public Object queryUserOrder(@Valid @RequestBody OrderQueryDto orderDto, BindingResult bindingResult) {
-
+        //检验参数
+        if(bindingResult.hasErrors()){
+            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+            return WrapMapper.error(errors);
+        }
         try {
-            Map<String, Object> param = new HashMap<>();
-            param.put("schoolCode", orderDto.getSchoolCode());
-            param.put("userId", orderDto.getUserId());
-            param.put("orderNo",orderDto.getOrderNo());
-            param.put("cardNumber",orderDto.getCardNumber());
-            PageInfo<Order> pageInfo = orderService.getOrderByCondition(param, orderDto.getPageNum(), orderDto.getPageSize());
-            return WrapMapper.ok(pageInfo);
+            Map<String, Object> param = BeanToMapUtil.objectToMap(orderDto);
+            PageInfo<Order> qrders = orderService.getOrderByCondition(param, orderDto.getPageNum(),orderDto.getPageSize());
+            return WrapMapper.ok(qrders);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -83,20 +93,12 @@ public class OrderController {
     }
 
     @ApiOperation("删除订单")
-    @RequestMapping(value = "/deleteOrder", method = RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
     public Object deleteOrder(@RequestParam("schoolCode") @NotNull(message = "schoolCode不能为空") String schoolCode,
                               @RequestParam("userId") @NotNull(message = "userId不能为空") Long userId,
-                              @RequestParam(name = "id") @NotNull(message = "订单id不能为空") Long id) {
+                              @RequestParam(name = "orderNo") @NotNull(message = "订单id不能为空") Long orderNo) {
         try {
-
-            Map<String, Object> param = new HashMap<>();
-            param.put("schoolCode", schoolCode);
-            param.put("userId", userId);
-            param.put("id", id);
-
-            Boolean result = orderService.deleteOrder(param);
-//            orderService.deleteOrder(schoolCode,userId,id);
+            Boolean result = orderService.deleteOrder(schoolCode,userId,orderNo);
             return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
@@ -106,21 +108,6 @@ public class OrderController {
     }
 
 
-    @ApiOperation("批量删除订单")
-    @RequestMapping(value = "/deleteOrders", method = RequestMethod.POST)
-    @ResponseBody
-    public Object deleteOrders(@RequestParam("schoolCodes") @NotNull(message = "schoolCode不能为空") String schoolCodes,
-                              @RequestParam("userIds") @NotNull(message = "userId不能为空") String userIds,
-                              @RequestParam(name = "ids") @NotNull(message = "订单id不能为空") String ids) {
-        try {
-            Boolean result = orderService.deleteOrders(schoolCodes,userIds,ids);
-            return WrapMapper.ok(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.error(e.getMessage(), e.getStackTrace());
-            return WrapMapper.error(e.getMessage());
-        }
-    }
 
     /**
      * 更新订单
@@ -130,17 +117,17 @@ public class OrderController {
      * @return
      */
     @ApiOperation("更新订单")
-    @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value = "/updateOrder", method = RequestMethod.POST)
     public Object updateOrder(@Valid @RequestBody OrderUpdateDto orderUpdateDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
-
         try {
-            Boolean result = orderService.updateOrder(orderUpdateDto);
+            Order order=new Order();
+            BeanUtils.copyProperties(orderUpdateDto, order);
+            Boolean result = orderService.update(order)>0;
             return WrapMapper.ok(result);
         } catch (Exception e) {
             e.printStackTrace();
