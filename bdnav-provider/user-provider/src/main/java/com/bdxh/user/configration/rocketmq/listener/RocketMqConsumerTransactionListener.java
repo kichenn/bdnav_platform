@@ -23,6 +23,7 @@ import java.util.List;
 @Slf4j
 @Component
 public class RocketMqConsumerTransactionListener implements MessageListenerConcurrently {
+
     @Autowired
     private StudentService studentService;
 /*    //学生
@@ -56,16 +57,17 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 String topic = msg.getTopic();
                 String msgBody = new String(msg.getBody(), "utf-8");
                 String tags = msg.getTags();
-                if(topic.equals(RocketMqConstrants.Topic.schoolOrganizationTopic)){
-                    if(StringUtils.isNotEmpty(tags)&&tags.equals(RocketMqConstrants.Tags.schoolOrganizationTag_dept)){
+                if (topic.equals(RocketMqConstrants.Topic.schoolOrganizationTopic)) {
+                    if (StringUtils.isNotEmpty(tags) && tags.equals(RocketMqConstrants.Tags.schoolOrganizationTag_dept)) {
+
+                    } else if (StringUtils.isNotEmpty(tags) && tags.equals(RocketMqConstrants.Tags.schoolOrganizationTag_class)) {
 
                     }
-                    else if(StringUtils.isNotEmpty(tags)&&tags.equals(RocketMqConstrants.Tags.schoolOrganizationTag_class)){
-
-                    }
-                }else if(topic.equals(RocketMqConstrants.Topic.bdxhTopic)){
+                } else if (topic.equals(RocketMqConstrants.Topic.bdxhTopic)) {
 
                 }
+                log.info("studentService:{}",studentService);
+
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
                 msg.getTags();
             }

@@ -1,6 +1,7 @@
 package com.bdxh.user.configration.rocketmq.configration;
 
 import com.bdxh.user.configration.rocketmq.listener.RocketMqConsumerTransactionListener;
+import com.bdxh.user.configration.rocketmq.listener.RocketMqProducerTransactionListener;
 import com.bdxh.user.configration.rocketmq.properties.RocketMqConsumerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
@@ -20,8 +21,6 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 public class RocketMqConsumerConfig {
 
-    @Autowired
-    private RocketMqConsumerTransactionListener rocketMqConsumerTransactionListener;
 
     /**
      * 消费者，消费
@@ -30,8 +29,9 @@ public class RocketMqConsumerConfig {
      * @return
      */
     @Bean(value = "defaultMQPushConsumer", destroyMethod = "shutdown")
-    @ConditionalOnBean(RocketMqConsumerProperties.class)
-    public DefaultMQPushConsumer defaultMQPushConsumer(@Autowired RocketMqConsumerProperties rocketMqConsumerProperties) {
+    @ConditionalOnBean(value = {RocketMqConsumerProperties.class, RocketMqConsumerTransactionListener.class})
+    public DefaultMQPushConsumer defaultMQPushConsumer(@Autowired RocketMqConsumerProperties rocketMqConsumerProperties, @Autowired
+            RocketMqConsumerTransactionListener rocketMqConsumerTransactionListener) {
         log.info("--------------------defaultMQPushConsumer正在创建-------------------");
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(rocketMqConsumerProperties.getDefaultGroupName());
         //设置地址

@@ -1,6 +1,7 @@
 package com.bdxh.user.configration.rocketmq.configration;
 
 
+import com.bdxh.user.configration.rocketmq.listener.RocketMqConsumerTransactionListener;
 import com.bdxh.user.configration.rocketmq.listener.RocketMqProducerTransactionListener;
 import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +30,7 @@ public class RocketMqProducerConfig {
 
     @Autowired
     private RocketMqProducerTransactionListener rocketMqTransactionListener;
+
 
     @Bean(value = "defaultMQProducer", destroyMethod = "shutdown")
     @ConditionalOnBean(RocketMqProducerProperties.class)
