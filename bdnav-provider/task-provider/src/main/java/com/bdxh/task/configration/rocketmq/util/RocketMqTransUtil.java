@@ -24,9 +24,8 @@ public class RocketMqTransUtil {
     public void putTransState(String transactionId, RocketMqTransStatusEnum rocketMqTransStatusEnum) {
         redisUtil.setWithExpireTime(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId, rocketMqTransStatusEnum.getCode(), 86400);
     }
-
     public LocalTransactionState getTransState(String transactionId) {
-        String status = redisUtil.get(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId);
+        String status = (String) redisUtil.get(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId);
         if (StringUtils.equals(status, RocketMqTransStatusEnum.COMMIT_MESSAGE.getCode())) {
             return LocalTransactionState.COMMIT_MESSAGE;
         }
