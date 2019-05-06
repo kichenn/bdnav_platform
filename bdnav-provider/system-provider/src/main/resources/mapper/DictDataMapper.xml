@@ -30,6 +30,7 @@
         data_name LIKE CONCAT(CONCAT('%',#{dataName},'%'))
       </if>
     </where>
+    ORDER BY sort or create_date DESC
   </select>
 
   <!-- 根据dictid查询所属字典目录-->
@@ -43,7 +44,7 @@
         dict_id=#{dictId}
       </if>
     </where>
-
+    ORDER BY sort or create_date DESC
   </select>
 
   <delete id="deleteDictDataById" parameterType="java.lang.Long">

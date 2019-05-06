@@ -28,6 +28,7 @@
         `type`=#{type}
       </if>
     </where>
+    ORDER BY create_date DESC
   </select>
 
   <!-- 根据字典名称查询字典 -->
