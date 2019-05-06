@@ -6,8 +6,11 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddPolicyDto;
 import com.bdxh.school.dto.ModifyPolicyDto;
 import com.bdxh.school.dto.QuerySchoolStrategy;
+import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
+import com.bdxh.school.vo.SchoolInfoVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -32,6 +35,9 @@ public class SchoolStrategyWebController {
     @Autowired
     private SchoolStrategyControllerClient schoolStrategyControllerClient;
 
+    @Autowired
+    private SchoolControllerClient schoolControllerClient;
+
     @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/addPolicyInCondition", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校模式", response = Boolean.class)
@@ -43,6 +49,8 @@ public class SchoolStrategyWebController {
             addPolicyDto.setOperatorName(user.getUserName());
             addPolicyDto.setSchoolCode(user.getSchoolCode());
             addPolicyDto.setSchoolId(user.getSchoolId());
+            SchoolInfoVo school=schoolControllerClient.findSchoolById(user.getSchoolId()).getResult();
+            addPolicyDto.setSchoolName(school.getSchoolName());
             Wrapper wrapper = schoolStrategyControllerClient.addPolicyInCondition(addPolicyDto);
             return wrapper;
         } catch (Exception e) {
