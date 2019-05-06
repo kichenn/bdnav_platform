@@ -85,7 +85,6 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     public void deleteBatchesFamilyInfo(String schoolCode,String cardNumber) {
         String[] schoolCodes=schoolCode.split(",");
         String[] cardNumbers=cardNumber.split(",");
-        if(schoolCodes.length==cardNumbers.length) {
             List<Map<String,String>>list =new ArrayList<>();
             for (int i = 0; i < cardNumbers.length; i++) {
                 Map<String,String> map=new HashMap<>();
@@ -96,7 +95,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
             familyMapper.batchRemoveFamilyInfo(list);
             familyStudentMapper.batchRemoveFamilyStudentInfo(list);
             baseUserMapper.batchRemoveBaseUserInfo(list);
-        }
+
 
     }
 

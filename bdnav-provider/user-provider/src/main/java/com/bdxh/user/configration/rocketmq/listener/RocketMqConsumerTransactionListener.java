@@ -1,10 +1,12 @@
 package com.bdxh.user.configration.rocketmq.listener;
 
 import com.bdxh.common.base.constant.RocketMqConstrants;
+import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.mongo.FenceAlarmMongo;
 import com.bdxh.user.service.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.annotations.Case;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
@@ -23,27 +25,38 @@ import java.util.List;
 @Slf4j
 @Component
 public class RocketMqConsumerTransactionListener implements MessageListenerConcurrently {
-
+    //学生
     @Autowired
     private StudentService studentService;
-/*    //学生
+
 
     //老师部门关系
     @Autowired
     private TeacherDeptService teacherDeptService;
+
     //浏览器访问日志信息
     @Autowired
     private VisitLogsService visitLogsService;
+
     //老师
+    @Autowired
     private TeacherService teacherService;
+
     //家长
+    @Autowired
     private FamilyService familyService;
+
     //基础用户信息
+    @Autowired
     private BaseUserService baseUserService;
+
     //家长围栏
+    @Autowired
     private FamilyFenceService familyFenceService;
+
     //围栏日志
-    private FenceAlarmService fenceAlarmService;*/
+    @Autowired
+    private FenceAlarmService fenceAlarmService;
 
     /**
      * @Description: 消息监听
@@ -57,14 +70,23 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 String topic = msg.getTopic();
                 String msgBody = new String(msg.getBody(), "utf-8");
                 String tags = msg.getTags();
-                if (topic.equals(RocketMqConstrants.Topic.schoolOrganizationTopic)) {
-                    if (StringUtils.isNotEmpty(tags) && tags.equals(RocketMqConstrants.Tags.schoolOrganizationTag_dept)) {
+                switch (topic) {
+                    case RocketMqConstrants.Topic.schoolOrganizationTopic:
+                        {
+                            switch (tags){
+                                case RocketMqConstrants.Tags.schoolOrganizationTag_dept:{
+                                    TeacherDept teacherDept=new TeacherDept();
+                                    teacherDept.setOperatorName("");
+                                    teacherDeptService.update(teacherDept);
+                                }
+                                case RocketMqConstrants.Tags.schoolOrganizationTag_class:{
 
-                    } else if (StringUtils.isNotEmpty(tags) && tags.equals(RocketMqConstrants.Tags.schoolOrganizationTag_class)) {
+                                }
+                                case RocketMqConstrants.Tags.schoolOrganizationTag_school:{
 
+                                }
+                            }
                     }
-                } else if (topic.equals(RocketMqConstrants.Topic.bdxhTopic)) {
-
                 }
                 log.info("studentService:{}",studentService);
 
