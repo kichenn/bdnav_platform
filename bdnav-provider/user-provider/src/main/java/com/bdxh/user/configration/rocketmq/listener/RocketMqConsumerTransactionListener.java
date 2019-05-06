@@ -66,6 +66,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
         try {
+            log.info("进来了");
             for (MessageExt msg : msgs) {
                 String topic = msg.getTopic();
                 String msgBody = new String(msg.getBody(), "utf-8");
