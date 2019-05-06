@@ -95,6 +95,11 @@ public class RocketMqConstrants {
         String schoolOrganizationTag_dept = "schoolOrganizationTag_dept";
 
         /**
+         * school服务，学校更新 tag
+         */
+        String schoolOrganizationTag_school="schoolOrganizationTag_school";
+
+        /**
          * school服务，系统用户信息更新 tag
          */
         String schoolUserInfoTag_schoolUser="schoolOrganizationTag_schoolUser";
