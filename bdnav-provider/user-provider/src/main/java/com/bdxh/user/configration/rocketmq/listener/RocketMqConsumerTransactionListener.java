@@ -1,12 +1,11 @@
 package com.bdxh.user.configration.rocketmq.listener;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
+import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.user.entity.TeacherDept;
-import com.bdxh.user.mongo.FenceAlarmMongo;
 import com.bdxh.user.service.*;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.annotations.Case;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
@@ -15,7 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: rocketMqConsumer 消费者监听器
@@ -76,9 +77,31 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                         {
                             switch (tags){
                                 case RocketMqConstrants.Tags.schoolOrganizationTag_dept:{
-                                    TeacherDept teacherDept=new TeacherDept();
-                                    teacherDept.setOperatorName("");
-                                    teacherDeptService.update(teacherDept);
+                                    JSONObject deptJson=JSONObject.parseObject(msgBody);
+                                    Map<String, String> map =(Map<String, String>) deptJson.get("data");
+                                    JSONObject data=JSONObject.parseObject(map.toString());
+                                    //是否是父节点
+                                    String type = data.getString("parentId").equals("-1")?"0":"1";
+                                    //部门路径名称
+                                    String deptNames = data.getString("thisUrl");
+                                    //部门名称
+                                    String deptName = data.getString("name");
+                                    //学校schoolCode
+                                    String schoolCode = data.getString("schoolCode");
+                                    //部门ID
+                                    String deptId=data.getString("id");
+                                    List<TeacherDept> teacherDeptList=teacherDeptService.findTeacherDeptsBySchoolCode(schoolCode,deptId,type);
+                                   List<TeacherDept> newTeacherDeptList=new ArrayList<>();
+                                    for (TeacherDept teacherDept : teacherDeptList) {
+                                        //如果修改的部门名称是当前所在部门的子部门还需要修改deptName列的数据
+                                        if(teacherDept.getDeptId().equals(Long.parseLong(deptId))){
+                                            teacherDept.setDeptName(deptName);
+                                        }
+                                        //如果不是只需要修改deptNames列
+                                        teacherDept.setDeptNames(deptNames);
+                                        newTeacherDeptList.add(teacherDept);
+                                    }
+                                    teacherDeptService.batchUpdateTeacherDept(newTeacherDeptList);
                                     log.info("我修改了部门");
                                 }
                                 case RocketMqConstrants.Tags.schoolOrganizationTag_class:{

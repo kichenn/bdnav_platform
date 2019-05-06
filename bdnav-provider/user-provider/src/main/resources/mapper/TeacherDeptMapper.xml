@@ -1,82 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.user.persistence.TeacherDeptMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.user.entity.TeacherDept">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_code" jdbcType="CHAR" property="schoolCode" />
-    <result column="card_number" jdbcType="CHAR" property="cardNumber" />
-    <result column="teacher_id" jdbcType="BIGINT" property="teacherId" />
-    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
-    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
-    <result column="dept_ids" jdbcType="VARCHAR" property="deptIds" />
-    <result column="dept_names" jdbcType="VARCHAR" property="deptNames" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
-  <resultMap id="TeacherDeptVoMap" type="com.bdxh.user.vo.TeacherDeptVo">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_code" jdbcType="CHAR" property="schoolCode" />
-    <result column="card_number" jdbcType="CHAR" property="cardNumber" />
-    <result column="dept_id" jdbcType="BIGINT" property="deptId" />
-    <result column="dept_name" jdbcType="VARCHAR" property="deptName" />
-    <result column="dept_ids" jdbcType="VARCHAR" property="deptIds" />
-    <result column="dept_names" jdbcType="VARCHAR" property="deptNames" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.user.entity.TeacherDept">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="card_number" jdbcType="CHAR" property="cardNumber"/>
+        <result column="teacher_id" jdbcType="BIGINT" property="teacherId"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="dept_ids" jdbcType="VARCHAR" property="deptIds"/>
+        <result column="dept_names" jdbcType="VARCHAR" property="deptNames"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <resultMap id="TeacherDeptVoMap" type="com.bdxh.user.vo.TeacherDeptVo">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="card_number" jdbcType="CHAR" property="cardNumber"/>
+        <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
+        <result column="dept_name" jdbcType="VARCHAR" property="deptName"/>
+        <result column="dept_ids" jdbcType="VARCHAR" property="deptIds"/>
+        <result column="dept_names" jdbcType="VARCHAR" property="deptNames"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
 
-  <sql id="batchSql">
+    <sql id="batchSql">
     id,school_code,card_number,teacher_id,dept_id,dept_name,dept_ids,dept_names,create_date,update_date,operator,operator_name,remark
   </sql>
-  <!-- 删除老师部门信息-->
-  <delete id="deleteTeacherDept">
-    delete from t_teacher_dept
-    <where>
-      <if test="schoolCode!=null and schoolCode!=''">
-        and school_code=#{schoolCode}
-      </if>
-      <if test="cardNumber!=null and cardNumber!=''">
-        and card_number=#{cardNumber}
-      </if>
-      <if test="deptId!=0">
-        and dept_id=#{deptId}
-      </if>
-    </where>
+    <!-- 删除老师部门信息-->
+    <delete id="deleteTeacherDept">
+        delete from t_teacher_dept
+        <where>
+            <if test="schoolCode!=null and schoolCode!=''">
+                and school_code=#{schoolCode}
+            </if>
+            <if test="cardNumber!=null and cardNumber!=''">
+                and card_number=#{cardNumber}
+            </if>
+            <if test="deptId!=0">
+                and dept_id=#{deptId}
+            </if>
+        </where>
 
-  </delete>
+    </delete>
 
-  <!--查询出老师的部门关系-->
-  <select id="selectTeacherDeptDetailsInfo" resultMap="TeacherDeptVoMap">
+    <!--查询出老师的部门关系-->
+    <select id="selectTeacherDeptDetailsInfo" resultMap="TeacherDeptVoMap">
     select * from t_teacher_dept where school_code=#{schoolCode} and card_number=#{cardNumber}
   </select>
 
 
-  <select id="findTeacherBySchoolDeptId" resultMap="BaseResultMap">
-    SELECT
-     <include refid="batchSql"/>
-    FROM t_teacher_dept
-    WHERE `school_code`=#{schoolCode,jdbcType=VARCHAR}
-    AND `school_id`=#{schoolId,jdbcType=BIGINT}
-    AND `dept_id`=#{deptId,jdbcType=BIGINT}
-    limit 1;
-  </select>
-  <!--批量删除老师信息-->
-  <delete id="batchRemoveTeacherDeptInfo">
-    delete from t_teacher_dept where (school_code,card_number)in
-    <foreach collection="list" separator="," open="(" close=")" item="list" >
-      (#{list.schoolCode},#{list.cardNumber})
-    </foreach>
-  </delete>
-  <select id="findTeacherBySchoolCodeAndCardNumber" resultMap="BaseResultMap">
-    select  <include refid="batchSql"/> from t_teacher_dept where school_code=#{schoolCode}
-    and card_number=#{cardNumber} limit 0,1
-  </select>
+    <select id="findTeacherBySchoolDeptId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="batchSql"/>
+        FROM t_teacher_dept
+        WHERE `school_code`=#{schoolCode,jdbcType=VARCHAR}
+        AND `school_id`=#{schoolId,jdbcType=BIGINT}
+        AND `dept_id`=#{deptId,jdbcType=BIGINT}
+        limit 1;
+    </select>
+    <!--批量删除老师信息-->
+    <delete id="batchRemoveTeacherDeptInfo">
+        delete from t_teacher_dept where (school_code,card_number)in
+        <foreach collection="list" separator="," open="(" close=")" item="list">
+            (#{list.schoolCode},#{list.cardNumber})
+        </foreach>
+    </delete>
+    <select id="findTeacherBySchoolCodeAndCardNumber" resultMap="BaseResultMap">
+        select
+        <include refid="batchSql"/>
+        from t_teacher_dept where school_code=#{schoolCode}
+        and card_number=#{cardNumber} limit 0,1
+    </select>
+    <select id="findTeacherDeptsBySchoolCode" resultMap="BaseResultMap">
+        select
+        <include refid="batchSql"/>
+        from t_teacher_dept
+        <where>
+            and school_code=#{schoolCode}
+            <choose>
+                <when test="type != 0">
+                    and dept_ids like CONCAT('%',CONCAT(#{deptId},'%'))
+                </when>
+                <otherwise>
+                    and dept_ids like CONCAT(#{deptId},'%')
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    <update id="batchUpdateTeacherDept" parameterType="java.util.List">
+
+    </update>
 </mapper>

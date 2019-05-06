@@ -327,12 +327,12 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 mesData.put("tableName", "t_student");
                 mesData.put("data", studentList);
                 mesData.put("del_flag","0");
-                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, mesData.toJSONString().getBytes());
+                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUserList);
                 mesData.put("del_flag","0");
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
+                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
         } catch (Exception e) {
