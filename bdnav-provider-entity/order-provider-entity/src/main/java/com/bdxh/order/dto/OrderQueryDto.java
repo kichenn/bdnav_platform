@@ -20,27 +20,27 @@ public class OrderQueryDto extends Query {
      */
 
     @ApiModelProperty("订单号")
-    private Long orderNo;
+    private Long OrderNo;
 
     /**
      * 学校编码
      */
 
     @ApiModelProperty("学校编码")
-    private String schoolCode;
+    private String SchoolCode;
 
     /**
      * 用户id
      */
 
     @ApiModelProperty("用户id")
-    private Long userId;
+    private Long UserId;
 
     /**
      * 学号
      */
     @ApiModelProperty("学号")
-    private String cardNumber;
+    private String CardNumber;
 
 
 }

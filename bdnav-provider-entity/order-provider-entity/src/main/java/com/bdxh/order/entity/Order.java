@@ -2,7 +2,6 @@ package com.bdxh.order.entity;
 
 import javax.persistence.*;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.Date;
@@ -23,19 +22,19 @@ public class Order {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-/*	@ApiModelProperty("订单号")*/
+	@ApiModelProperty("订单号")
 	private Long OrderNo;
 
 	@Column(name = "third_order_no")
-/*	@ApiModelProperty("第三方订单号")*/
+	@ApiModelProperty("第三方订单号")
 	private String ThirdOrderNo;
 
 	@Column(name = "school_id")
-/*	@ApiModelProperty("学校主键")*/
+	@ApiModelProperty("学校主键")
 	private Long SchoolId;
 
 	@Column(name = "school_code")
-/*	@ApiModelProperty("学校编码")*/
+	@ApiModelProperty("学校编码")
 	private String SchoolCode;
 
 	@Column(name = "school_name")
