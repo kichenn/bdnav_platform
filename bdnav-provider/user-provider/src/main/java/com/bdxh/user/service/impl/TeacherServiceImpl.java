@@ -75,9 +75,32 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     @Transactional
     public void deleteTeacherInfo(String schoolCode, String cardNumber) {
+        Teacher teacher=teacherMapper.selectTeacherDetails(schoolCode,cardNumber);
+        BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode,cardNumber);
+        TeacherDept teacherDept=teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(schoolCode,cardNumber);
         teacherMapper.deleteTeacher(schoolCode, cardNumber);
         teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber, 0);
         baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
+        try {
+            JSONObject mesData = new JSONObject();
+            mesData.put("tableName", "t_teacher");
+            mesData.put("data",teacher);
+            mesData.put("del_flag","1");
+            Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+            mesData.put("tableName", "t_base_user");
+            mesData.put("data", baseUser);
+            mesData.put("del_flag","1");
+            Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+            mesData.put("tableName", "t_teacher_dept");
+            mesData.put("data", teacherDept);
+            mesData.put("del_flag","1");
+            Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+            defaultMQProducer.send(studentMsg);
+            defaultMQProducer.send(baseUserMsg);
+            defaultMQProducer.send(teacherDeptMsg);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -39,7 +39,7 @@ public class RocketMqProducerConfig {
         producer.setVipChannelEnabled(true);
         producer.setSendMsgTimeout(5000);
         //队列接收最大的消息size
-        producer.setMaxMessageSize(4 * 1024);
+        producer.setMaxMessageSize(1024*1024);
         //发送消息失败，重试次数
         producer.setRetryTimesWhenSendFailed(5);
         //slave节点,将master主节点同步到slave失败，重试次数

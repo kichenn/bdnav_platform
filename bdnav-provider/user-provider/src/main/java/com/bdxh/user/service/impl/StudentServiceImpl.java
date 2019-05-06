@@ -90,19 +90,25 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional
     public void deleteStudentInfo(String schoolCode, String cardNumber) {
         Student student=studentMapper.findStudentInfo(schoolCode,cardNumber);
+        BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode,cardNumber);
         studentMapper.removeStudentInfo(schoolCode, cardNumber);
         familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCode, cardNumber);
         baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
+        try {
         JSONObject mesData = new JSONObject();
         mesData.put("tableName", "t_student");
         mesData.put("data",student);
         mesData.put("del_flag","1");
         Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-          try {
-              defaultMQProducer.send(studentMsg);
-          }catch (Exception e) {
-              e.printStackTrace();
-          }
+        mesData.put("tableName", "t_base_user");
+        mesData.put("data", baseUser);
+        mesData.put("del_flag","1");
+        Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+        defaultMQProducer.send(studentMsg);
+        defaultMQProducer.send(baseUserMsg);
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
       }
 
     /**

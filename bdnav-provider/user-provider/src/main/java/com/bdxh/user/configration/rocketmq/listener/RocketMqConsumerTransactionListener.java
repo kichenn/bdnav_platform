@@ -78,6 +78,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                     TeacherDept teacherDept=new TeacherDept();
                                     teacherDept.setOperatorName("");
                                     teacherDeptService.update(teacherDept);
+                                    log.info("我修改了部门");
                                 }
                                 case RocketMqConstrants.Tags.schoolOrganizationTag_class:{
 
@@ -89,7 +90,6 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                     }
                 }
                 log.info("studentService:{}",studentService);
-
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
                 msg.getTags();
             }
