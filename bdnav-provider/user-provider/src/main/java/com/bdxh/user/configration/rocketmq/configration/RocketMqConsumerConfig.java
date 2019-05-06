@@ -5,6 +5,7 @@ import com.bdxh.user.configration.rocketmq.listener.RocketMqProducerTransactionL
 import com.bdxh.user.configration.rocketmq.properties.RocketMqConsumerProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
+import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +35,13 @@ public class RocketMqConsumerConfig {
             RocketMqConsumerTransactionListener rocketMqConsumerTransactionListener) {
         log.info("--------------------defaultMQPushConsumer正在创建-------------------");
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer(rocketMqConsumerProperties.getDefaultGroupName());
+
+        //这里设置的是一个consumer的消费策略
+        //CONSUME_FROM_LAST_OFFSET 默认策略，从该队列最尾开始消费，即跳过历史消息
+        //CONSUME_FROM_FIRST_OFFSET 从队列最开始开始消费，即历史消息（还储存在broker的）全部消费一遍
+        //CONSUME_FROM_TIMESTAMP 从某个时间点开始消费，和setConsumeTimestamp()配合使用，默认是半个小时以前
+        consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
+
         //设置地址
         consumer.setNamesrvAddr(rocketMqConsumerProperties.getNamesrvAddr());
         //最大线程
@@ -41,7 +49,7 @@ public class RocketMqConsumerConfig {
         //消费失败，重试次数10次（如果大于十次，应该在消费中间判断是否，写到响应的日志里）【默认重试16次】
         consumer.setMaxReconsumeTimes(10);
         try {
-            consumer.subscribe(rocketMqConsumerProperties.getTopic(), rocketMqConsumerProperties.getTag());
+            consumer.subscribe(rocketMqConsumerProperties.getTopic(), "*");
             // 开启监听
             consumer.registerMessageListener(rocketMqConsumerTransactionListener);
             consumer.start();

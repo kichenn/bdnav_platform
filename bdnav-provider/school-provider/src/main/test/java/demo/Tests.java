@@ -44,11 +44,15 @@ public class Tests {
 
     @Test
     public void test1() throws InterruptedException, RemotingException, MQClientException, MQBrokerException {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put("schoolClassId", "111");
-        jsonObject.put("msg", "有学校院系组织架构更新了");
-        Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-        defaultMQProducer.send(message);
+        for (int i = 0; i < 10; i++) {
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("schoolClassId", "i:" + i);
+            jsonObject.put("msg", "有学校院系组织架构更新了:" + i);
+            Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            defaultMQProducer.send(message);
+        }
+
+        log.info("发送消息成功院系组织............");
     }
 
     @Test
@@ -64,20 +68,4 @@ public class Tests {
         }
     }
 
-    @Autowired
-    StringRedisTemplate redisTemplate;
-
-    ValueOperations<String, String> stringRedis;
-
-    @PostConstruct
-    public void init(){
-        stringRedis=redisTemplate.opsForValue();
-    }
-
-
-    @Test
-    public void testString (){
-        stringRedis.set("name", "丁洁");
-        System.out.println(stringRedis.get("name"));
-    }
 }
