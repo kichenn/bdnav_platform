@@ -16,6 +16,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delUser(Long id) {
         userMapper.deleteByPrimaryKey(id);
         UserRole userRole = new UserRole();
@@ -57,6 +59,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delBatchUser(List<Long> ids) {
         if (ids != null&&!ids.isEmpty()){
             ids.forEach(id->{
@@ -69,6 +72,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean addUsers(AddUserDto addUserDto) {
         Boolean falg;
         if (!addUserDto.getRoleIds().equals("")&&!addUserDto.getRoleIds().equals(null)){
@@ -108,6 +112,7 @@ public class UserServiceImpl extends BaseService<User> implements UserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean updateUsers(UpdateUserDto updateUserDto) {
         Boolean falgResult;
         if (!updateUserDto.getRoleIds().equals("")&&!updateUserDto.getRoleIds().equals(null)){

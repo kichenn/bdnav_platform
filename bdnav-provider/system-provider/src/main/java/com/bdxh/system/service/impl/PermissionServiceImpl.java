@@ -102,6 +102,7 @@ public class PermissionServiceImpl extends BaseService<Permission> implements Pe
 
     //Id删除权限列表信息
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean delPermissionById(Long id) {
         return permissionMapper.deleteByPrimaryKey(id) > 0;
     }

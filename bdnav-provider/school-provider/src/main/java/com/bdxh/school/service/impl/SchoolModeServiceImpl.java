@@ -43,6 +43,7 @@ public class SchoolModeServiceImpl extends BaseService<SchoolMode> implements Sc
     public Boolean addSchoolMode(SchoolMode schoolMode){
         return schoolModeMapper.insertSelective(schoolMode) > 0;
     }
+
     //修改方法
     @Override
     public Boolean modifySchoolMode(SchoolMode schoolMode) {
@@ -51,6 +52,7 @@ public class SchoolModeServiceImpl extends BaseService<SchoolMode> implements Sc
 
     //删除方法
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean delSchoolModeById(Long id){
         return schoolModeMapper.deleteByPrimaryKey(id) > 0;
     }

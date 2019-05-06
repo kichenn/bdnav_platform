@@ -8,6 +8,7 @@ import com.bdxh.system.service.RolePermissionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,6 +46,7 @@ public class RolePermissionServiceImpl extends BaseService<RolePermission> imple
 
     // 删除角色与权限关系
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean delRolePermission(Long roleId) {
         return rolePermissionMapper.deleteByRoleId(roleId) > 0;
     }

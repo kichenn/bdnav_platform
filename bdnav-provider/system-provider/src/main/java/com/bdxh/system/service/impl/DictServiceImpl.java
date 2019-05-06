@@ -48,8 +48,9 @@ public class DictServiceImpl extends BaseService<Dict> implements DictService {
         return pageInfo;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delDict(Long dictId) {
 
         List<DictData> dictDataList=dictDataMapper.getDictDataById(dictId);

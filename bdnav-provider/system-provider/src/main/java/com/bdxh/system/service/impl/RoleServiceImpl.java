@@ -38,16 +38,18 @@ public class RoleServiceImpl extends BaseService<Role> implements RoleService {
     @Autowired
     private RolePermissionMapper rolePermissionMapper;
 
-    @Transactional(rollbackFor = Exception.class)
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delRole(Long roleId) {
         roleMapper.deleteByPrimaryKey(roleId);
         userRoleMapper.deleteByRoleId(roleId);
         rolePermissionMapper.deleteByRoleId(roleId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delBatchRole(List<Long> roleIds) {
         if (roleIds!=null&&!roleIds.isEmpty()){
             for (int i=0;i<roleIds.size();i++){

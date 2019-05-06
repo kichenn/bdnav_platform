@@ -54,6 +54,7 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
 
     //删除方法
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean delSchoolStrategyById(Long id){
         return schoolStrategyMapper.deleteByPrimaryKey(id) > 0;
     }

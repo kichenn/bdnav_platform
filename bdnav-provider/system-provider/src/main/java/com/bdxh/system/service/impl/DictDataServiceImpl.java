@@ -26,8 +26,9 @@ public class DictDataServiceImpl extends BaseService<DictData> implements DictDa
     @Autowired
     private DictDataMapper dictDataMapper;
 
-    @Transactional(rollbackFor = Exception.class)
+
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void delBatchDictData(List<Long> dictDataIds) {
         if (dictDataIds!=null&&!dictDataIds.isEmpty()){
             for (int i=0;i<dictDataIds.size();i++){
@@ -59,6 +60,7 @@ public class DictDataServiceImpl extends BaseService<DictData> implements DictDa
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteDictDataById(Long id) {
       dictDataMapper.deleteDictDataById(id);
     }
