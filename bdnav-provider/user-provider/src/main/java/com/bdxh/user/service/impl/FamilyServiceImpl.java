@@ -74,37 +74,37 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
 
     @Override
     @Transactional
-    public void deleteFamilyInfo(String scoolCode,String cardNumber) {
-        familyMapper.removeFamilyInfo(scoolCode,cardNumber);
-        familyStudentMapper.familyRemoveFamilyStudent(scoolCode,cardNumber,null);
-        baseUserMapper.deleteBaseUserInfo(scoolCode,cardNumber);
+    public void deleteFamilyInfo(String scoolCode, String cardNumber) {
+        familyMapper.removeFamilyInfo(scoolCode, cardNumber);
+        familyStudentMapper.familyRemoveFamilyStudent(scoolCode, cardNumber, null);
+        baseUserMapper.deleteBaseUserInfo(scoolCode, cardNumber);
     }
 
     @Override
     @Transactional
-    public void deleteBatchesFamilyInfo(String schoolCode,String cardNumber) {
-        String[] schoolCodes=schoolCode.split(",");
-        String[] cardNumbers=cardNumber.split(",");
-            List<Map<String,String>>list =new ArrayList<>();
-            for (int i = 0; i < cardNumbers.length; i++) {
-                Map<String,String> map=new HashMap<>();
-                map.put("cardNumber",cardNumbers[i]);
-                map.put("schoolCode",schoolCodes[i]);
-                list.add(map);
-            }
-            familyMapper.batchRemoveFamilyInfo(list);
-            familyStudentMapper.batchRemoveFamilyStudentInfo(list);
-            baseUserMapper.batchRemoveBaseUserInfo(list);
+    public void deleteBatchesFamilyInfo(String schoolCode, String cardNumber) {
+        String[] schoolCodes = schoolCode.split(",");
+        String[] cardNumbers = cardNumber.split(",");
+        List<Map<String, String>> list = new ArrayList<>();
+        for (int i = 0; i < cardNumbers.length; i++) {
+            Map<String, String> map = new HashMap<>();
+            map.put("cardNumber", cardNumbers[i]);
+            map.put("schoolCode", schoolCodes[i]);
+            list.add(map);
+        }
+        familyMapper.batchRemoveFamilyInfo(list);
+        familyStudentMapper.batchRemoveFamilyStudentInfo(list);
+        baseUserMapper.batchRemoveBaseUserInfo(list);
 
 
     }
 
 
     @Override
-    public FamilyVo selectBysCodeAndCard(String schoolCode,String cardNumber) {
-        FamilyVo familyVo=familyMapper.selectByCodeAndCard(schoolCode,cardNumber);
-        List<FamilyStudentVo> familyStudentVos=familyStudentMapper.selectFamilyStudentInfo(schoolCode, cardNumber);
-        if(familyStudentVos.size()>0){
+    public FamilyVo selectBysCodeAndCard(String schoolCode, String cardNumber) {
+        FamilyVo familyVo = familyMapper.selectByCodeAndCard(schoolCode, cardNumber);
+        List<FamilyStudentVo> familyStudentVos = familyStudentMapper.selectFamilyStudentInfo(schoolCode, cardNumber);
+        if (familyStudentVos.size() > 0) {
             familyVo.setStudents(familyStudentVos);
         }
         return familyVo;
@@ -117,23 +117,23 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
 
     @Override
     @Transactional
-    public void updateFamily(UpdateFamilyDto updateFamilyDto)  {
+    public void updateFamily(UpdateFamilyDto updateFamilyDto) {
         try {
             Family family = BeanMapUtils.map(updateFamilyDto, Family.class);
             familyMapper.updateFamilyInfo(family);
             BaseUser updateBaseUserDto = BeanMapUtils.map(updateFamilyDto, BaseUser.class);
             baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
             //修改时判断用户是否已经激活
-            if(updateFamilyDto.getActivate().equals(Byte.parseByte("2"))){
-                SynUserInfoRequest synUserInfoRequest=new SynUserInfoRequest();
+            if (updateFamilyDto.getActivate().equals(Byte.parseByte("2"))) {
+                SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
                 synUserInfoRequest.setName(updateFamilyDto.getName());
                 synUserInfoRequest.setSchool_code(updateFamilyDto.getSchoolCode());
                 synUserInfoRequest.setCard_number(updateFamilyDto.getCardNumber());
                 synUserInfoRequest.setIdentity_type(AuthenticationConstant.FAMILY);
                 synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);
                 synUserInfoRequest.setHead_image(updateFamilyDto.getImage());
-                synUserInfoRequest.setGender(updateFamilyDto.getGender()==1?"男":"女");
-                if(updateFamilyDto.getSchoolType()>=Byte.parseByte("4")){
+                synUserInfoRequest.setGender(updateFamilyDto.getGender() == 1 ? "男" : "女");
+                if (updateFamilyDto.getSchoolType() >= Byte.parseByte("4")) {
                     synUserInfoRequest.setCollege(updateFamilyDto.getSchoolName());
                 }
                 synUserInfoRequest.setOrganization(updateFamilyDto.getSchoolName());
@@ -146,17 +146,18 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
                 synUserInfoRequest.setAddress(updateFamilyDto.getAdress());
                 synUserInfoRequest.setPhysical_card_number(updateFamilyDto.getPhysicalNumber());
                 synUserInfoRequest.setPhysical_chip_number(updateFamilyDto.getPhysicalChipNumber());
-                String result=AuthenticationUtils.synUserInfo(synUserInfoRequest,updateFamilyDto.getAppKey(),updateFamilyDto.getAppSecret());
-                JSONObject jsonObject= JSONObject.parseObject(result);
-                if(!jsonObject.get("errcode").equals(0)){
-                    throw new Exception("家长信息同步失败,返回的错误码"+jsonObject.get("errcode")+"，同步家长卡号="+updateFamilyDto.getCardNumber()+"学校名称="+updateFamilyDto.getSchoolName());
+                String result = AuthenticationUtils.synUserInfo(synUserInfoRequest, updateFamilyDto.getAppKey(), updateFamilyDto.getAppSecret());
+                JSONObject jsonObject = JSONObject.parseObject(result);
+                if (!jsonObject.get("errcode").equals(0)) {
+                    throw new Exception("家长信息同步失败,返回的错误码" + jsonObject.get("errcode") + "，同步家长卡号=" + updateFamilyDto.getCardNumber() + "学校名称=" + updateFamilyDto.getSchoolName());
                 }
             }
-        }catch (Exception e){
-                e.printStackTrace();
-                log.info("更新家长信息失败，错误信息="+e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.info("更新家长信息失败，错误信息=" + e.getMessage());
         }
     }
+
     @Override
     @Transactional
     public void saveFamily(Family family) {
@@ -189,5 +190,10 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     @Override
     public List<String> queryFamilyCardNumberBySchoolCode(String schoolCode) {
         return familyMapper.queryFamilyCardNumberBySchoolCode(schoolCode);
+    }
+
+    @Override
+    public void updateSchoolName(String schoolCode, String schoolName) {
+        familyMapper.updateSchoolName(schoolCode, schoolName);
     }
 }

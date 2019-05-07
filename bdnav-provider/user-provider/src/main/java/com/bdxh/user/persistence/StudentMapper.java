@@ -47,4 +47,7 @@ public interface StudentMapper extends Mapper<Student> {
 
     //查询学生根据学号以及班级IDs和修改的院校是否父节点查找学生
     List<Student> findStudentInfoByClassId(@Param("schoolCode")String schoolCode,@Param("classIds") String classIds,@Param("type") String type);
+
+    //修改学校名字
+    int updateSchoolName(@Param("schoolCode")String schoolCode, @Param("schoolName")String schoolName);
 }

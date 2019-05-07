@@ -67,4 +67,9 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
     public List<BaseUser> findAllBaseUserInfo() {
         return baseUserMapper.findAllBaseUserInfo();
     }
+
+    @Override
+    public void updateSchoolName(String schoolCode, String schoolName) {
+        baseUserMapper.updateSchoolName(schoolCode,schoolName);
+    }
 }

@@ -65,4 +65,11 @@ public interface VisitLogsService extends IService<VisitLogs> {
 	 * @param addVisitLogsDto
 	 */
 	void insertVisitLogsInfo(AddVisitLogsDto addVisitLogsDto);
+
+	/**
+	 * 修改学校名字
+	 * @param schoolCode
+	 * @param schoolName
+	 */
+	void updateSchoolName(String schoolCode,String schoolName);
 }

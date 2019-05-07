@@ -118,6 +118,20 @@ public class VisitLogsMongoMapper {
     }
 
     /**
+     * 修改学生浏览网页数据
+     * @param schoolCode
+     * @param schoolName
+     */
+    public void updateSchoolName(String schoolCode,String schoolName) {
+        Query query =new Query();
+        query.addCriteria(Criteria.where("id").is("school_code").is(schoolCode));
+        Update update=new Update();
+        if(StringUtils.isNotEmpty(schoolName)){
+            update.set("schoolName",schoolName);
+        }
+        mongoTemplate.updateFirst(query,update,VisitLogsMongo.class);
+    }
+    /**
      * 删除学生浏览网页数据
      * @param schoolCode
      * @param cardNumber

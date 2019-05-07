@@ -93,4 +93,11 @@ public interface TeacherService extends IService<Teacher> {
      * @return
      */
     List<Teacher> findTeacherInfoByDeptOrg(@Param("schoolCode")String schoolCode, @Param("parentIds")String parentIds);
+
+    /**
+     * 修改学校名字
+     * @param schoolCode
+     * @param schoolName
+     */
+    void updateSchoolName(String schoolCode,String schoolName);
 }

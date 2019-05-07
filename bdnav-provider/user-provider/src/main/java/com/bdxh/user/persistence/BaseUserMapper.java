@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.bdxh.user.dto.BaseUserQueryDto;
-import com.bdxh.user.dto.UpdateBaseUserDto;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -52,4 +51,7 @@ public interface BaseUserMapper extends Mapper<BaseUser> {
 
 	//查询不是家长的用户信息
 	List<BaseUser> findAllBaseUserInfo();
+
+	//修改学校名字
+	int updateSchoolName(@Param("schoolCode")String schoolCode, @Param("schoolName")String schoolName);
 }

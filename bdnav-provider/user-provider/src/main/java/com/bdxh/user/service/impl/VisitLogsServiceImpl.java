@@ -62,4 +62,9 @@ public class VisitLogsServiceImpl extends BaseService<VisitLogs> implements Visi
         VisitLogsMongo visitLogsMongo = BeanMapUtils.map(addVisitLogsDto, VisitLogsMongo.class);
         visitLogsMongoMapper.insertVisitLogsInfo(visitLogsMongo);
     }
+
+    @Override
+    public void updateSchoolName(String schoolCode, String schoolName) {
+        visitLogsMongoMapper.updateSchoolName(schoolCode, schoolName);
+    }
 }
