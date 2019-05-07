@@ -1,7 +1,7 @@
 //package com.bdxh.common.helper.getui.utils;
 //
-//import com.gexin.rp.sdk.base.IPushResult;
-//import com.gexin.rp.sdk.base.impl.AppMessage;
+////import com.gexin.rp.sdk.base.IPushResult;
+////import com.gexin.rp.sdk.base.impl.AppMessage;
 //import com.gexin.rp.sdk.http.IGtPush;
 //import com.gexin.rp.sdk.template.LinkTemplate;
 //
