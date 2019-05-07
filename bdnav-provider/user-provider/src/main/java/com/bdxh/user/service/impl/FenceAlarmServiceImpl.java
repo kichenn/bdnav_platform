@@ -68,4 +68,9 @@ public class FenceAlarmServiceImpl extends BaseService<FenceAlarm> implements Fe
         FenceAlarmMongo fenceAlarmMongo = BeanMapUtils.map(addFenceAlarmDto, FenceAlarmMongo.class);
         fenceAlarmMongoMapper.insertFenceAlarmInfo(fenceAlarmMongo);
     }
+
+    @Override
+    public void updateSchoolName(String schoolCode, String schoolName) {
+        fenceAlarmMongoMapper.updateSchoolName(schoolCode, schoolName);
+    }
 }

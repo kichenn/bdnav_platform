@@ -2,250 +2,264 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.user.persistence.BaseUserMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.BaseUser">
-	 <id column="id" jdbcType="BIGINT" property="id"/>
-	 <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
-	 <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-	 <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
-	 <result column="user_type" jdbcType="TINYINT" property="userType"/>
-	 <result column="user_id" jdbcType="BIGINT" property="userId"/>
-	 <result column="name" jdbcType="VARCHAR" property="name"/>
-	 <result column="gender" jdbcType="TINYINT" property="gender"/>
-	 <result column="birth" jdbcType="CHAR" property="birth"/>
-	 <result column="phone" jdbcType="VARCHAR" property="phone"/>
-	 <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
-	 <result column="idcard" jdbcType="VARCHAR" property="idcard"/>
-	 <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
-	 <result column="wx_number" jdbcType="VARCHAR" property="wxNumber"/>
-	 <result column="email" jdbcType="VARCHAR" property="email"/>
-	 <result column="image" jdbcType="VARCHAR" property="image"/>
-	 <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
-	 <result column="nation_name" jdbcType="VARCHAR" property="nationName"/>
-	 <result column="adress" jdbcType="VARCHAR" property="adress"/>
-	 <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-	 <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-	 <result column="operator" jdbcType="BIGINT" property="operator"/>
-	 <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
-	 <result column="remark" jdbcType="VARCHAR" property="remark"/>
-	</resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.user.entity.BaseUser">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="user_type" jdbcType="TINYINT" property="userType"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="birth" jdbcType="CHAR" property="birth"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="idcard" jdbcType="VARCHAR" property="idcard"/>
+        <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
+        <result column="wx_number" jdbcType="VARCHAR" property="wxNumber"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
+        <result column="nation_name" jdbcType="VARCHAR" property="nationName"/>
+        <result column="adress" jdbcType="VARCHAR" property="adress"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
 
-	<sql id="BaseColumns">
+    <sql id="BaseColumns">
 	  id,school_id,school_code,school_name,user_type,user_id,name,gender,birth,phone,card_number,idcard,qq_number,wx_number,email,image,image_name,nation_name,adress,create_date,update_date,operator,operator_name,remark
 	</sql>
 
-	<select id="getBaseUserAllCount" resultType="java.lang.Integer">
+    <select id="getBaseUserAllCount" resultType="java.lang.Integer">
 	  SELECT 
 	  COUNT(1)
 	  FROM t_base_user 
 	</select>
 
-	<delete id="delBaseUserInIds" parameterType="java.lang.Integer">
-	  DELETE
-	  FROM t_base_user
-	  WHERE
-	  id IN
-	  <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	    #{id, jdbcType = BIGINT}
-	  </foreach >
-	</delete>
+    <delete id="delBaseUserInIds" parameterType="java.lang.Integer">
+        DELETE
+        FROM t_base_user
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
 
-	<!--查询所有用户 -->
-	<select id="queryBaseUserInfo" resultMap="BaseResultMap">
-		select <include refid="BaseColumns"/> from t_base_user
-		<where>
-		<if test="baseUserQueryDto.id>0">
-			AND school_id=#{baseUserQueryDto.schoolId}
-		</if>
-		<if test="baseUserQueryDto.schoolCode!=null and baseUserQueryDto.schoolCode!=''">
-			AND school_code =#{baseUserQueryDto.schoolCode}
-		</if>
-		<if test="baseUserQueryDto.schoolName!=null and baseUserQueryDto.schoolName!=''">
-			AND school_name =#{baseUserQueryDto.schoolName}
-		</if>
-		<if test="baseUserQueryDto.userType>0">
-			AND user_type =#{baseUserQueryDto.userType}
-		</if>
-		<if test="baseUserQueryDto.userId>0">
-			AND user_id =#{baseUserQueryDto.userId}
-		</if>
-		<if test="baseUserQueryDto.name!=null and baseUserQueryDto.name!=''">
-			AND name =#{baseUserQueryDto.name}
-		</if>
-		<if test="baseUserQueryDto.gender>0">
-			AND gender =#{baseUserQueryDto.gender}
-		</if>
-		<if test="baseUserQueryDto.cardNumber!=null and baseUserQueryDto.cardNumber!=''">
-			AND card_number =#{baseUserQueryDto.cardNumber}
-		</if>
-		<if test="baseUserQueryDto.phone!=null and baseUserQueryDto.phone!=''">
-			AND phone =#{baseUserQueryDto.phone}
-		</if>
-		</where>
-	</select>
+    <!--查询所有用户 -->
+    <select id="queryBaseUserInfo" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_base_user
+        <where>
+            <if test="baseUserQueryDto.id>0">
+                AND school_id=#{baseUserQueryDto.schoolId}
+            </if>
+            <if test="baseUserQueryDto.schoolCode!=null and baseUserQueryDto.schoolCode!=''">
+                AND school_code =#{baseUserQueryDto.schoolCode}
+            </if>
+            <if test="baseUserQueryDto.schoolName!=null and baseUserQueryDto.schoolName!=''">
+                AND school_name =#{baseUserQueryDto.schoolName}
+            </if>
+            <if test="baseUserQueryDto.userType>0">
+                AND user_type =#{baseUserQueryDto.userType}
+            </if>
+            <if test="baseUserQueryDto.userId>0">
+                AND user_id =#{baseUserQueryDto.userId}
+            </if>
+            <if test="baseUserQueryDto.name!=null and baseUserQueryDto.name!=''">
+                AND name =#{baseUserQueryDto.name}
+            </if>
+            <if test="baseUserQueryDto.gender>0">
+                AND gender =#{baseUserQueryDto.gender}
+            </if>
+            <if test="baseUserQueryDto.cardNumber!=null and baseUserQueryDto.cardNumber!=''">
+                AND card_number =#{baseUserQueryDto.cardNumber}
+            </if>
+            <if test="baseUserQueryDto.phone!=null and baseUserQueryDto.phone!=''">
+                AND phone =#{baseUserQueryDto.phone}
+            </if>
+        </where>
+    </select>
 
-	<!--修改用户-->
-	<update id="updateBaseUserInfo">
-		UPDATE t_base_user
-		SET
-		<if test="baseUser.schoolId!=null and baseUser.schoolId!=''">
-			school_id= #{baseUser.schoolId},
-		</if>
-		<if test="baseUser.schoolCode!=null and baseUser.schoolCode!=''">
-			school_code= #{baseUser.schoolCode},
-		</if>
-		<if test="baseUser.schoolName!=null and baseUser.schoolName!=''">
-			school_name= #{baseUser.schoolName},
-		</if>
-		<if test="baseUser.userType!=null and baseUser.userType!=''">
-			user_type= #{baseUser.userType},
-		</if>
-		<if test="baseUser.userId!=null and baseUser.userId!=''">
-			user_id= #{baseUser.userId},
-		</if>
-		<if test="baseUser.name!=null and baseUser.name!=''">
-			name= #{baseUser.name},
-		</if>
-		<if test="baseUser.gender!=null and baseUser.gender!=''">
-			gender= #{baseUser.gender},
-		</if>
-		<if test="baseUser.birth!=null and baseUser.birth!=''">
-			birth= #{baseUser.birth},
-		</if>
-		<if test="baseUser.phone!=null and baseUser.phone!=''">
-			phone= #{baseUser.phone},
-		</if>
-		<if test="baseUser.cardNumber!=null and baseUser.cardNumber!=''">
-			card_number= #{baseUser.cardNumber},
-		</if>
-		<if test="baseUser.idcard!=null and baseUser.idcard!=''">
-			idcard= #{baseUser.idcard},
-		</if>
-		<if test="baseUser.qqNumber!=null and baseUser.qqNumber!=''">
-			qq_number= #{baseUser.qqNumber},
-		</if>
-		<if test="baseUser.wxNumber!=null and baseUser.wxNumber!=''">
-			wx_number= #{baseUser.wxNumber},
-		</if>
-		<if test="baseUser.email!=null and baseUser.email!=''">
-			email= #{baseUser.email},
-		</if>
-		<if test="baseUser.image!=null and baseUser.image!=''">
-			image= #{baseUser.image},
-		</if>
-		<if test="baseUser.imageName!=null and baseUser.imageName!=''">
-			image_name= #{baseUser.imageName},
-		</if>
-		<if test="baseUser.nationName!=null and baseUser.nationName!=''">
-			nation_name= #{baseUser.nationName},
-		</if>
-		<if test="baseUser.adress!=null and baseUser.adress!=''">
-			adress= #{baseUser.adress},
-		</if>
-		<if test="baseUser.operator!=null and baseUser.operator!=''">
-			operator= #{baseUser.operator},
-		</if>
-		<if test="baseUser.operatorName!=null and baseUser.operatorName!=''">
-			operator_name= #{baseUser.operatorName},
-		</if>
-		update_date= #{baseUser.updateDate}
-		WHERE
-		school_code=#{baseUser.schoolCode} and card_number=#{baseUser.cardNumber};
-	</update>
+    <!--修改用户-->
+    <update id="updateBaseUserInfo">
+        UPDATE t_base_user
+        SET
+        <if test="baseUser.schoolId!=null and baseUser.schoolId!=''">
+            school_id= #{baseUser.schoolId},
+        </if>
+        <if test="baseUser.schoolCode!=null and baseUser.schoolCode!=''">
+            school_code= #{baseUser.schoolCode},
+        </if>
+        <if test="baseUser.schoolName!=null and baseUser.schoolName!=''">
+            school_name= #{baseUser.schoolName},
+        </if>
+        <if test="baseUser.userType!=null and baseUser.userType!=''">
+            user_type= #{baseUser.userType},
+        </if>
+        <if test="baseUser.userId!=null and baseUser.userId!=''">
+            user_id= #{baseUser.userId},
+        </if>
+        <if test="baseUser.name!=null and baseUser.name!=''">
+            name= #{baseUser.name},
+        </if>
+        <if test="baseUser.gender!=null and baseUser.gender!=''">
+            gender= #{baseUser.gender},
+        </if>
+        <if test="baseUser.birth!=null and baseUser.birth!=''">
+            birth= #{baseUser.birth},
+        </if>
+        <if test="baseUser.phone!=null and baseUser.phone!=''">
+            phone= #{baseUser.phone},
+        </if>
+        <if test="baseUser.cardNumber!=null and baseUser.cardNumber!=''">
+            card_number= #{baseUser.cardNumber},
+        </if>
+        <if test="baseUser.idcard!=null and baseUser.idcard!=''">
+            idcard= #{baseUser.idcard},
+        </if>
+        <if test="baseUser.qqNumber!=null and baseUser.qqNumber!=''">
+            qq_number= #{baseUser.qqNumber},
+        </if>
+        <if test="baseUser.wxNumber!=null and baseUser.wxNumber!=''">
+            wx_number= #{baseUser.wxNumber},
+        </if>
+        <if test="baseUser.email!=null and baseUser.email!=''">
+            email= #{baseUser.email},
+        </if>
+        <if test="baseUser.image!=null and baseUser.image!=''">
+            image= #{baseUser.image},
+        </if>
+        <if test="baseUser.imageName!=null and baseUser.imageName!=''">
+            image_name= #{baseUser.imageName},
+        </if>
+        <if test="baseUser.nationName!=null and baseUser.nationName!=''">
+            nation_name= #{baseUser.nationName},
+        </if>
+        <if test="baseUser.adress!=null and baseUser.adress!=''">
+            adress= #{baseUser.adress},
+        </if>
+        <if test="baseUser.operator!=null and baseUser.operator!=''">
+            operator= #{baseUser.operator},
+        </if>
+        <if test="baseUser.operatorName!=null and baseUser.operatorName!=''">
+            operator_name= #{baseUser.operatorName},
+        </if>
+        update_date= #{baseUser.updateDate}
+        WHERE
+        school_code=#{baseUser.schoolCode} and card_number=#{baseUser.cardNumber};
+    </update>
 
-	<!--删除用户信息-->
-	<delete id="deleteBaseUserInfo" >
+    <!--删除用户信息-->
+    <delete id="deleteBaseUserInfo">
 		delete  from t_base_user where school_code=#{schoolCode} and card_number=#{cardNumber}
 	</delete>
 
-	<!--查询单个用户-->
-	<select id="queryBaseUserBySchoolCodeAndCardNumber" resultMap="BaseResultMap">
-		select <include refid="BaseColumns" /> from t_base_user
-		where school_code=#{schoolCode} and card_number=#{cardNumber}
-	</select>
+    <!--查询单个用户-->
+    <select id="queryBaseUserBySchoolCodeAndCardNumber" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_base_user
+        where school_code=#{schoolCode} and card_number=#{cardNumber}
+    </select>
 
-	<!--批量删除用户信息-->
-	<delete id="batchRemoveBaseUserInfo">
-		delete from t_base_user where (school_code,card_number)in
-		<foreach collection="list" separator="," open="(" close=")" item="list" >
-			(#{list.schoolCode},#{list.cardNumber})
-		</foreach>
-	</delete>
+    <!--批量删除用户信息-->
+    <delete id="batchRemoveBaseUserInfo">
+        delete from t_base_user where (school_code,card_number)in
+        <foreach collection="list" separator="," open="(" close=")" item="list">
+            (#{list.schoolCode},#{list.cardNumber})
+        </foreach>
+    </delete>
 
-	<!--批量新增用户-->
-	<insert id="batchSaveBaseUserInfo">
-		INSERT INTO  t_base_user  (
-		id ,
-		school_id ,
-		school_code ,
-		school_name ,
-		user_type ,
-		user_id ,
-		name ,
-		gender ,
-		birth ,
-		phone ,
-		card_number ,
-		idcard ,
-		qq_number ,
-		wx_number ,
-		email ,
-		image ,
-		image_name ,
-		nation_name ,
-		adress ,
-		create_date ,
-		update_date ,
-		operator ,
-		operator_name ,
-		remark
-		)
-		VALUES
-	<foreach collection="list" separator="," item="baseUserList" index="index"  >
-	(
-		#{baseUserList.id},
-		#{baseUserList.schoolId},
-		#{baseUserList.schoolCode},
-		#{baseUserList.schoolName},
-		#{baseUserList.userType},
-		#{baseUserList.userId},
-		#{baseUserList.name},
-		#{baseUserList.gender},
-		#{baseUserList.birth},
-		#{baseUserList.phone},
-		#{baseUserList.cardNumber},
-		#{baseUserList.idcard},
-		#{baseUserList.qqNumber},
-		#{baseUserList.wxNumber},
-		#{baseUserList.email},
-		#{baseUserList.image},
-		#{baseUserList.imageName},
-		#{baseUserList.nationName},
-		#{baseUserList.adress},
-		#{baseUserList.createDate},
-		#{baseUserList.updateDate},
-		#{baseUserList.operator},
-		#{baseUserList.operatorName},
-		#{baseUserList.remark}
-	)
-	</foreach>
-	</insert>
+    <!--批量新增用户-->
+    <insert id="batchSaveBaseUserInfo">
+        INSERT INTO t_base_user (
+        id ,
+        school_id ,
+        school_code ,
+        school_name ,
+        user_type ,
+        user_id ,
+        name ,
+        gender ,
+        birth ,
+        phone ,
+        card_number ,
+        idcard ,
+        qq_number ,
+        wx_number ,
+        email ,
+        image ,
+        image_name ,
+        nation_name ,
+        adress ,
+        create_date ,
+        update_date ,
+        operator ,
+        operator_name ,
+        remark
+        )
+        VALUES
+        <foreach collection="list" separator="," item="baseUserList" index="index">
+            (
+            #{baseUserList.id},
+            #{baseUserList.schoolId},
+            #{baseUserList.schoolCode},
+            #{baseUserList.schoolName},
+            #{baseUserList.userType},
+            #{baseUserList.userId},
+            #{baseUserList.name},
+            #{baseUserList.gender},
+            #{baseUserList.birth},
+            #{baseUserList.phone},
+            #{baseUserList.cardNumber},
+            #{baseUserList.idcard},
+            #{baseUserList.qqNumber},
+            #{baseUserList.wxNumber},
+            #{baseUserList.email},
+            #{baseUserList.image},
+            #{baseUserList.imageName},
+            #{baseUserList.nationName},
+            #{baseUserList.adress},
+            #{baseUserList.createDate},
+            #{baseUserList.updateDate},
+            #{baseUserList.operator},
+            #{baseUserList.operatorName},
+            #{baseUserList.remark}
+            )
+        </foreach>
+    </insert>
 
-	<!--查询所有用户手机号-->
-	<select id="queryAllUserPhone" resultType="java.lang.String">
+    <!--查询所有用户手机号-->
+    <select id="queryAllUserPhone" resultType="java.lang.String">
 		select phone from t_base_user
 	</select>
 
-	<!--查询所有用户手机号-->
-	<select id="queryUserPhoneByPhone" resultType="java.lang.Integer">
-		select count(1) from t_base_user
-		<where>
-		 <if test="baseUserQueryDto.userId!=null and baseUserQueryDto.userId!=''">
-			and user_id!=#{baseUserQueryDto.userId}
-		 </if>
-			and phone=#{baseUserQueryDto.phone}
-		</where>
-	</select>
-	<select id="findAllBaseUserInfo" resultMap="BaseResultMap">
-	select <include refid="BaseColumns"/> from t_base_user where user_type!=3
-	</select>
+    <!--查询所有用户手机号-->
+    <select id="queryUserPhoneByPhone" resultType="java.lang.Integer">
+        select count(1) from t_base_user
+        <where>
+            <if test="baseUserQueryDto.userId!=null and baseUserQueryDto.userId!=''">
+                and user_id!=#{baseUserQueryDto.userId}
+            </if>
+            and phone=#{baseUserQueryDto.phone}
+        </where>
+    </select>
+
+    <select id="findAllBaseUserInfo" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_base_user where user_type!=3
+    </select>
+
+    <update id="updateSchoolName">
+		    update t_base_user
+            set school_name=#{schoolName}
+            where school_code=#{schoolCode}
+	</update>
+
 </mapper>

@@ -34,4 +34,7 @@ public interface FamilyMapper extends Mapper<Family> {
 
     //根据学校Code查询卡号
     List<String> queryFamilyCardNumberBySchoolCode(@Param("schoolCode")String schoolCode);
+
+    //修改学校名字
+    int updateSchoolName(@Param("schoolCode")String schoolCode, @Param("schoolName")String schoolName);
 }

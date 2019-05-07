@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.user.persistence.FamilyMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.user.entity.Family">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_id" jdbcType="BIGINT" property="schoolId" />
-    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
-    <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="gender" jdbcType="TINYINT" property="gender" />
-    <result column="birth" jdbcType="CHAR" property="birth" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
-    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
-    <result column="qq_number" jdbcType="VARCHAR" property="qqNumber" />
-    <result column="wx_number" jdbcType="VARCHAR" property="wxNumber" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
-    <result column="adress" jdbcType="VARCHAR" property="adress" />
-    <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber" />
-    <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber" />
-    <result column="activate" jdbcType="TINYINT" property="activate" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-      <result column="image_name" jdbcType="VARCHAR" property="imageName" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.user.entity.Family">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="birth" jdbcType="CHAR" property="birth"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="idcard" jdbcType="VARCHAR" property="idcard"/>
+        <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
+        <result column="wx_number" jdbcType="VARCHAR" property="wxNumber"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="nation_name" jdbcType="VARCHAR" property="nationName"/>
+        <result column="adress" jdbcType="VARCHAR" property="adress"/>
+        <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
+        <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber"/>
+        <result column="activate" jdbcType="TINYINT" property="activate"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
+    </resultMap>
 
     <sql id="familyColumn">
         id,school_id,school_code,school_name,name,gender,birth,phone,card_number,idcard,
@@ -39,34 +39,36 @@
     </sql>
 
     <!-- 查询所有家长数据 -->
-<select id="selectAllFamilyInfo" resultMap="BaseResultMap">
-    select <include refid="familyColumn"/> from t_family
-    <where>
-        <if test="familyQueryDto.schoolName!=null and familyQueryDto.schoolName!=''">
-            AND school_name LIKE CONCAT('%',CONCAT(#{familyQueryDto.schoolName},'%'))
-        </if>
-        <if test="familyQueryDto.schoolCode!=null and familyQueryDto.schoolCode!=''">
-            AND school_code = #{familyQueryDto.schoolCode}
-        </if>
-        <if test="familyQueryDto.name!=null and familyQueryDto.name!=''">
-            AND name LIKE  CONCAT('%',CONCAT(#{familyQueryDto.name},'%'))
-        </if>
-        <if test="familyQueryDto.phone!=null and familyQueryDto.phone!=''">
-            AND phone LIKE  CONCAT('%',CONCAT(#{familyQueryDto.phone},'%'))
-        </if>
-        <if test="familyQueryDto.activate!=null and familyQueryDto.activate!=''">
-            AND activate =#{familyQueryDto.activate}
-        </if>
-        <if test="familyQueryDto.cardNumber!=null and familyQueryDto.cardNumber!=''">
-            AND card_number LIKE   CONCAT('%',CONCAT(#{familyQueryDto.cardNumber},'%'))
-        </if>
+    <select id="selectAllFamilyInfo" resultMap="BaseResultMap">
+        select
+        <include refid="familyColumn"/>
+        from t_family
+        <where>
+            <if test="familyQueryDto.schoolName!=null and familyQueryDto.schoolName!=''">
+                AND school_name LIKE CONCAT('%',CONCAT(#{familyQueryDto.schoolName},'%'))
+            </if>
+            <if test="familyQueryDto.schoolCode!=null and familyQueryDto.schoolCode!=''">
+                AND school_code = #{familyQueryDto.schoolCode}
+            </if>
+            <if test="familyQueryDto.name!=null and familyQueryDto.name!=''">
+                AND name LIKE CONCAT('%',CONCAT(#{familyQueryDto.name},'%'))
+            </if>
+            <if test="familyQueryDto.phone!=null and familyQueryDto.phone!=''">
+                AND phone LIKE CONCAT('%',CONCAT(#{familyQueryDto.phone},'%'))
+            </if>
+            <if test="familyQueryDto.activate!=null and familyQueryDto.activate!=''">
+                AND activate =#{familyQueryDto.activate}
+            </if>
+            <if test="familyQueryDto.cardNumber!=null and familyQueryDto.cardNumber!=''">
+                AND card_number LIKE CONCAT('%',CONCAT(#{familyQueryDto.cardNumber},'%'))
+            </if>
 
-    </where>
-    order by create_date desc
-</select>
+        </where>
+        order by create_date desc
+    </select>
 
     <!-- 根据条件查询出家长详细信息 -->
-     <select id="selectByCodeAndCard" resultType="com.bdxh.user.vo.FamilyVo" parameterType="java.lang.String">
+    <select id="selectByCodeAndCard" resultType="com.bdxh.user.vo.FamilyVo" parameterType="java.lang.String">
         SELECT
          id,
          `name` AS `name`,
@@ -89,8 +91,8 @@
 
     <!--批量删除家长信息-->
     <delete id="batchRemoveFamilyInfo">
-    delete from t_family where (school_code,card_number)in
-        <foreach collection="list" separator="," open="(" close=")" item="list" >
+        delete from t_family where (school_code,card_number)in
+        <foreach collection="list" separator="," open="(" close=")" item="list">
             (#{list.schoolCode},#{list.cardNumber})
         </foreach>
     </delete>
@@ -160,13 +162,13 @@
         <if test="family.remark!=null and family.remark!=''">
             `remark`=#{family.remark},
         </if>
-            `update_date`=NOW()
-         WHERE `school_code`=#{family.schoolCode} AND card_number=#{family.cardNumber};
+        `update_date`=NOW()
+        WHERE `school_code`=#{family.schoolCode} AND card_number=#{family.cardNumber};
     </update>
 
     <!--批量新增家长-->
     <insert id="batchSaveFamilyInfo">
-        INSERT INTO   t_family  (
+        INSERT INTO t_family (
         id ,
         school_id ,
         school_code ,
@@ -195,7 +197,7 @@
         )
         VALUES
         <foreach collection="list" index="index" separator="," item="familyList">
-            (   #{familyList.id},
+            ( #{familyList.id},
             #{familyList.schoolId},
             #{familyList.schoolCode},
             #{familyList.schoolName},
@@ -225,7 +227,15 @@
     </insert>
 
     <!--根据学校Code查询卡号-->
-    <select id="queryFamilyCardNumberBySchoolCode"  resultType="java.lang.String">
+    <select id="queryFamilyCardNumberBySchoolCode" resultType="java.lang.String">
         select card_number from t_family where school_code=#{schoolCode}
     </select>
+
+
+    <update id="updateSchoolName">
+		    update t_family
+            set school_name=#{schoolName}
+            where school_code=#{schoolCode}
+	</update>
+
 </mapper>

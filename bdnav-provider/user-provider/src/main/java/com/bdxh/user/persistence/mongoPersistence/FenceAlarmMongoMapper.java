@@ -125,7 +125,20 @@ public class FenceAlarmMongoMapper{
         update.set("update_date",fenceAlarmMongo.getUpdateDate());
         mongoTemplate.updateFirst(query,update,FenceAlarmMongo.class);
     }
-
+    /**
+     * 修改学生围栏警报数据
+     * @param schoolCode
+     * @param schoolName
+     */
+    public void updateSchoolName(String schoolCode,String schoolName) {
+        Query query =new Query();
+        query.addCriteria(Criteria.where("id").is("school_code").is(schoolCode));
+        Update update=new Update();
+        if(StringUtils.isNotEmpty(schoolName)){
+            update.set("schoolName",schoolName);
+        }
+        mongoTemplate.updateFirst(query,update,FenceAlarmMongo.class);
+    }
     /**
      * 删除学生围栏警报数据
      * @param schoolCode

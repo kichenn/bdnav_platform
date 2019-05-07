@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.user.persistence.TeacherMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.user.entity.Teacher">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_id" jdbcType="BIGINT" property="schoolId" />
-    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
-    <result column="school_name" jdbcType="VARCHAR" property="schoolName" />
-    <result column="campus_name" jdbcType="VARCHAR" property="campusName" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="gender" jdbcType="TINYINT" property="gender" />
-    <result column="birth" jdbcType="CHAR" property="birth" />
-    <result column="position" jdbcType="VARCHAR" property="position" />
-    <result column="phone" jdbcType="VARCHAR" property="phone" />
-    <result column="card_number" jdbcType="VARCHAR" property="cardNumber" />
-    <result column="idcard" jdbcType="VARCHAR" property="idcard" />
-    <result column="qq_number" jdbcType="VARCHAR" property="qqNumber" />
-    <result column="wx_number" jdbcType="VARCHAR" property="wxNumber" />
-    <result column="email" jdbcType="VARCHAR" property="email" />
-    <result column="image" jdbcType="VARCHAR" property="image" />
-    <result column="nation_name" jdbcType="VARCHAR" property="nationName" />
-    <result column="dormitory_address" jdbcType="VARCHAR" property="dormitoryAddress" />
-    <result column="adress" jdbcType="VARCHAR" property="adress" />
-    <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber" />
-    <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber" />
-    <result column="activate" jdbcType="TINYINT" property="activate" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-    <result column="image_name" jdbcType="VARCHAR" property="imageName" />
-  </resultMap>
-<sql id="BaseColumn">
+    <resultMap id="BaseResultMap" type="com.bdxh.user.entity.Teacher">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="campus_name" jdbcType="VARCHAR" property="campusName"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="gender" jdbcType="TINYINT" property="gender"/>
+        <result column="birth" jdbcType="CHAR" property="birth"/>
+        <result column="position" jdbcType="VARCHAR" property="position"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="idcard" jdbcType="VARCHAR" property="idcard"/>
+        <result column="qq_number" jdbcType="VARCHAR" property="qqNumber"/>
+        <result column="wx_number" jdbcType="VARCHAR" property="wxNumber"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="image" jdbcType="VARCHAR" property="image"/>
+        <result column="nation_name" jdbcType="VARCHAR" property="nationName"/>
+        <result column="dormitory_address" jdbcType="VARCHAR" property="dormitoryAddress"/>
+        <result column="adress" jdbcType="VARCHAR" property="adress"/>
+        <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
+        <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber"/>
+        <result column="activate" jdbcType="TINYINT" property="activate"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
+    </resultMap>
+    <sql id="BaseColumn">
   id,school_id,school_code,school_name,name,gender,birth,position,phone,card_number,idcard,qq_number,wx_number,
   email,image,nation_name,dormitory_address,adress,physical_number,physical_chip_number,activate,create_date,update_date,
   operator,operator_name,remark,image_name
 </sql>
 
 
-  <!--删除老师信息-->
-  <delete id="deleteTeacher">
+    <!--删除老师信息-->
+    <delete id="deleteTeacher">
     delete from t_teacher
     where school_code=#{schoolCode}
     and card_number=#{cardNumber}
@@ -50,223 +50,225 @@
 
     <!-- 查询出某个老师的详细信息-->
     <select id="selectTeacherDetails" resultMap="BaseResultMap">
-    SELECT <include refid="BaseColumn"/>   FROM t_teacher where school_code=#{schoolCode} and card_number=#{cardNumber}
+        SELECT
+        <include refid="BaseColumn"/>
+        FROM t_teacher where school_code=#{schoolCode} and card_number=#{cardNumber}
     </select>
 
-  <!-- 修改老师信息 -->
-  <update id="updateTeacher">
-      UPDATE `t_teacher`
-    SET
-    <if test="teacher.schoolName!=null and teacher.schoolName!=''">
-      `school_name`=#{teacher.schoolName},
-    </if>
-    <if test="teacher.campusName!=null and teacher.campusName!=''">
-      `campus_name`=#{teacher.campusName},
-    </if>
-    <if test="teacher.name!=null and teacher.name!=''">
-      `name`=#{teacher.name},
-    </if>
-    <if test="teacher.gender!=0">
-      `gender`=#{teacher.gender},
-    </if>
-    <if test="teacher.birth!=null and teacher.birth!=''">
-       `birth`=#{teacher.birth},
-    </if>
-    <if test="teacher.position!=null and teacher.position!=''">
-      `position`=#{teacher.position},
-    </if>
-    <if test="teacher.phone!=null and teacher.phone!=''">
-      `phone`=#{teacher.phone},
-    </if>
-    <if test="teacher.idcard!=null and teacher.idcard!=''">
-      `idcard`=#{teacher.idcard},
-    </if>
-    <if test="teacher.qqNumber!=null and teacher.qqNumber!=''">
-     `qq_number`=#{teacher.qqNumber},
-    </if>
-    <if test="teacher.wxNumber!=null and teacher.wxNumber!=''">
-      `wx_number`=#{teacher.wxNumber},
-    </if>
-    <if test="teacher.email!=null and teacher.email!=''">
-      `email`=#{teacher.email},
-    </if>
-    <if test="teacher.image!=null and teacher.image!=''">
-      `image`=#{teacher.image},
-    </if>
-    <if test="teacher.imageName!=null and teacher.imageName!=''">
-      `image_name`=#{teacher.imageName},
-    </if>
-    <if test="teacher.nationName!=null and teacher.nationName!=''">
-      `nation_name`=#{teacher.nationName},
-    </if>
-    <if test="teacher.dormitoryAddress!=null and teacher.dormitoryAddress!=''">
-      `dormitory_address`=#{teacher.dormitoryAddress},
-    </if>
-    <if test="teacher.adress!=null and teacher.adress!=''">
-      `adress`=#{teacher.adress},
-    </if>
-    <if test="teacher.physicalNumber!=null and teacher.physicalNumber!=''">
-      `physical_number`=#{teacher.physicalNumber},
-    </if>
-    <if test="teacher.physicalChipNumber!=null and teacher.physicalChipNumber!=''">
-      `physical_chip_number`=#{teacher.physicalChipNumber},
-    </if>
-    <if test="teacher.activate!=0">
-      `activate`=#{teacher.activate},
-    </if>
-    <if test="teacher.operator!=null and teacher.operator!=''">
-      `operator`=#{teacher.operator},
-    </if>
-    <if test="teacher.operatorName!=null and teacher.operatorName!=''">
-      `operator_name`=#{teacher.operatorName},
-    </if>
-    <if test="teacher.remark!=null and teacher.remark!=''">
-      `remark`=#{teacher.remark},
-    </if>
-    `update_date`=now()
-     WHERE
-    `school_code`=#{teacher.schoolCode} and `card_number`=#{teacher.cardNumber}
-      </update>
+    <!-- 修改老师信息 -->
+    <update id="updateTeacher">
+        UPDATE `t_teacher`
+        SET
+        <if test="teacher.schoolName!=null and teacher.schoolName!=''">
+            `school_name`=#{teacher.schoolName},
+        </if>
+        <if test="teacher.campusName!=null and teacher.campusName!=''">
+            `campus_name`=#{teacher.campusName},
+        </if>
+        <if test="teacher.name!=null and teacher.name!=''">
+            `name`=#{teacher.name},
+        </if>
+        <if test="teacher.gender!=0">
+            `gender`=#{teacher.gender},
+        </if>
+        <if test="teacher.birth!=null and teacher.birth!=''">
+            `birth`=#{teacher.birth},
+        </if>
+        <if test="teacher.position!=null and teacher.position!=''">
+            `position`=#{teacher.position},
+        </if>
+        <if test="teacher.phone!=null and teacher.phone!=''">
+            `phone`=#{teacher.phone},
+        </if>
+        <if test="teacher.idcard!=null and teacher.idcard!=''">
+            `idcard`=#{teacher.idcard},
+        </if>
+        <if test="teacher.qqNumber!=null and teacher.qqNumber!=''">
+            `qq_number`=#{teacher.qqNumber},
+        </if>
+        <if test="teacher.wxNumber!=null and teacher.wxNumber!=''">
+            `wx_number`=#{teacher.wxNumber},
+        </if>
+        <if test="teacher.email!=null and teacher.email!=''">
+            `email`=#{teacher.email},
+        </if>
+        <if test="teacher.image!=null and teacher.image!=''">
+            `image`=#{teacher.image},
+        </if>
+        <if test="teacher.imageName!=null and teacher.imageName!=''">
+            `image_name`=#{teacher.imageName},
+        </if>
+        <if test="teacher.nationName!=null and teacher.nationName!=''">
+            `nation_name`=#{teacher.nationName},
+        </if>
+        <if test="teacher.dormitoryAddress!=null and teacher.dormitoryAddress!=''">
+            `dormitory_address`=#{teacher.dormitoryAddress},
+        </if>
+        <if test="teacher.adress!=null and teacher.adress!=''">
+            `adress`=#{teacher.adress},
+        </if>
+        <if test="teacher.physicalNumber!=null and teacher.physicalNumber!=''">
+            `physical_number`=#{teacher.physicalNumber},
+        </if>
+        <if test="teacher.physicalChipNumber!=null and teacher.physicalChipNumber!=''">
+            `physical_chip_number`=#{teacher.physicalChipNumber},
+        </if>
+        <if test="teacher.activate!=0">
+            `activate`=#{teacher.activate},
+        </if>
+        <if test="teacher.operator!=null and teacher.operator!=''">
+            `operator`=#{teacher.operator},
+        </if>
+        <if test="teacher.operatorName!=null and teacher.operatorName!=''">
+            `operator_name`=#{teacher.operatorName},
+        </if>
+        <if test="teacher.remark!=null and teacher.remark!=''">
+            `remark`=#{teacher.remark},
+        </if>
+        `update_date`=now()
+        WHERE
+        `school_code`=#{teacher.schoolCode} and `card_number`=#{teacher.cardNumber}
+    </update>
 
-  <select id="selectAllTeacherInfo" resultType="com.bdxh.user.vo.TeacherVo">
-    select
-    teacher.id,
-    teacher.school_id AS schoolId,
-    teacher.school_code AS schoolCode,
-    teacher.school_name AS schoolName,
-    teacher.name,
-    teacher.gender,
-    teacher.birth,
-    teacher.position,
-    teacher.phone,
-    teacher.card_number AS cardNumber,
-    teacher.idcard,
-    teacher.qq_number AS qqNumber,
-    teacher.wx_number AS wxNumber,
-    teacher.email,
-    teacher.image,
-    teacher.nation_name AS nationName,
-    teacher.dormitory_address AS dormitoryAddress,
-    teacher.adress,
-    teacher.physical_number AS physicalNumber,
-    teacher.physical_chip_number AS physicalChipNumber,
-    teacher.activate,
-    teacher.create_date AS createDate,
-    teacher.update_date AS updateDate,
-    teacher.operator,
-    teacher.operator_name AS operatorName,
-    teacher.remark,
-    teacher.image_name  AS imageName,
-    teacherDept.dept_name as deptName
-    FROM
-    t_teacher AS teacher
-    LEFT JOIN t_teacher_dept AS teacherDept on teacher.id=teacherDept.teacher_id
-    <where>
-      <if test="teacherQueryDto.schoolName!=null and teacherQueryDto.schoolName!=''">
-        AND teacher.school_name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.schoolName},'%'))
-      </if>
-      <if test="teacherQueryDto.schoolCode!=null and teacherQueryDto.schoolCode!=''">
-        AND teacher.school_code = #{teacherQueryDto.schoolCode}
-      </if>
-      <if test="teacherQueryDto.name!=null and teacherQueryDto.name!=''">
-        AND teacher.name  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.name},'%'))
-      </if>
-      <if test="teacherQueryDto.cardNumber!=null and teacherQueryDto.cardNumber!=''">
-        AND teacher.card_number  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.cardNumber},'%'))
-      </if>
-      <if test="teacherQueryDto.phone!=null and teacherQueryDto.phone!=''">
-        AND teacher.phone  LIKE  CONCAT('%',CONCAT(#{teacherQueryDto.phone},'%'))
-      </if>
-      <if test="teacherQueryDto.activate!=null and teacherQueryDto.activate!=''">
-        AND teacher.activate  = #{teacherQueryDto.activate}
-      </if>
-    </where>
-    order by teacher.create_date desc
-  </select>
+    <select id="selectAllTeacherInfo" resultType="com.bdxh.user.vo.TeacherVo">
+        select
+        teacher.id,
+        teacher.school_id AS schoolId,
+        teacher.school_code AS schoolCode,
+        teacher.school_name AS schoolName,
+        teacher.name,
+        teacher.gender,
+        teacher.birth,
+        teacher.position,
+        teacher.phone,
+        teacher.card_number AS cardNumber,
+        teacher.idcard,
+        teacher.qq_number AS qqNumber,
+        teacher.wx_number AS wxNumber,
+        teacher.email,
+        teacher.image,
+        teacher.nation_name AS nationName,
+        teacher.dormitory_address AS dormitoryAddress,
+        teacher.adress,
+        teacher.physical_number AS physicalNumber,
+        teacher.physical_chip_number AS physicalChipNumber,
+        teacher.activate,
+        teacher.create_date AS createDate,
+        teacher.update_date AS updateDate,
+        teacher.operator,
+        teacher.operator_name AS operatorName,
+        teacher.remark,
+        teacher.image_name AS imageName,
+        teacherDept.dept_name as deptName
+        FROM
+        t_teacher AS teacher
+        LEFT JOIN t_teacher_dept AS teacherDept on teacher.id=teacherDept.teacher_id
+        <where>
+            <if test="teacherQueryDto.schoolName!=null and teacherQueryDto.schoolName!=''">
+                AND teacher.school_name LIKE CONCAT('%',CONCAT(#{teacherQueryDto.schoolName},'%'))
+            </if>
+            <if test="teacherQueryDto.schoolCode!=null and teacherQueryDto.schoolCode!=''">
+                AND teacher.school_code = #{teacherQueryDto.schoolCode}
+            </if>
+            <if test="teacherQueryDto.name!=null and teacherQueryDto.name!=''">
+                AND teacher.name LIKE CONCAT('%',CONCAT(#{teacherQueryDto.name},'%'))
+            </if>
+            <if test="teacherQueryDto.cardNumber!=null and teacherQueryDto.cardNumber!=''">
+                AND teacher.card_number LIKE CONCAT('%',CONCAT(#{teacherQueryDto.cardNumber},'%'))
+            </if>
+            <if test="teacherQueryDto.phone!=null and teacherQueryDto.phone!=''">
+                AND teacher.phone LIKE CONCAT('%',CONCAT(#{teacherQueryDto.phone},'%'))
+            </if>
+            <if test="teacherQueryDto.activate!=null and teacherQueryDto.activate!=''">
+                AND teacher.activate = #{teacherQueryDto.activate}
+            </if>
+        </where>
+        order by teacher.create_date desc
+    </select>
 
-  <!--批量删除老师信息-->
-  <delete id="batchRemoveTeacherInfo">
-    delete from t_teacher where (school_code,card_number)in
-    <foreach collection="list" separator="," open="(" close=")" item="list" >
-      (#{list.schoolCode},#{list.cardNumber})
-    </foreach>
-  </delete>
+    <!--批量删除老师信息-->
+    <delete id="batchRemoveTeacherInfo">
+        delete from t_teacher where (school_code,card_number)in
+        <foreach collection="list" separator="," open="(" close=")" item="list">
+            (#{list.schoolCode},#{list.cardNumber})
+        </foreach>
+    </delete>
 
-  <!--批量新增老师信息-->
-  <insert id="batchSaveTeacherInfo">
-    INSERT INTO t_teacher (
-	id,
-	school_id,
-	school_code,
-	school_name,
-	campus_name,
-	name,
-	gender,
-	birth,
-	position,
-	phone,
-	card_number,
-	idcard,
-	qq_number,
-	wx_number,
-	email,
-	image,
-	image_name,
-	nation_name,
-	dormitory_address,
-	adress,
-	physical_number,
-	physical_chip_number,
-	activate,
-	create_date,
-	update_date,
-	operator,
-	operator_name,
-	remark
-)
-VALUES
-<foreach collection="list" index="index" separator="," item="teacherList">
-  (
-  #{teacherList.id},
-  #{teacherList.schoolId},
-  #{teacherList.schoolCode},
-  #{teacherList.schoolName},
-  #{teacherList.campusName},
-  #{teacherList.name},
-  #{teacherList.gender},
-  #{teacherList.birth},
-  #{teacherList.position},
-  #{teacherList.phone},
-  #{teacherList.cardNumber},
-  #{teacherList.idcard},
-  #{teacherList.qqNumber},
-  #{teacherList.wxNumber},
-  #{teacherList.email},
-  #{teacherList.image},
-  #{teacherList.imageName},
-  #{teacherList.nationName},
-  #{teacherList.dormitoryAddress},
-  #{teacherList.adress},
-  #{teacherList.physicalNumber},
-  #{teacherList.physicalChipNumber},
-  #{teacherList.activate},
-  #{teacherList.createDate},
-  #{teacherList.updateDate},
-  #{teacherList.operator},
-  #{teacherList.operatorName},
-  #{teacherList.remark}
-  )
-</foreach>
+    <!--批量新增老师信息-->
+    <insert id="batchSaveTeacherInfo">
+        INSERT INTO t_teacher (
+        id,
+        school_id,
+        school_code,
+        school_name,
+        campus_name,
+        name,
+        gender,
+        birth,
+        position,
+        phone,
+        card_number,
+        idcard,
+        qq_number,
+        wx_number,
+        email,
+        image,
+        image_name,
+        nation_name,
+        dormitory_address,
+        adress,
+        physical_number,
+        physical_chip_number,
+        activate,
+        create_date,
+        update_date,
+        operator,
+        operator_name,
+        remark
+        )
+        VALUES
+        <foreach collection="list" index="index" separator="," item="teacherList">
+            (
+            #{teacherList.id},
+            #{teacherList.schoolId},
+            #{teacherList.schoolCode},
+            #{teacherList.schoolName},
+            #{teacherList.campusName},
+            #{teacherList.name},
+            #{teacherList.gender},
+            #{teacherList.birth},
+            #{teacherList.position},
+            #{teacherList.phone},
+            #{teacherList.cardNumber},
+            #{teacherList.idcard},
+            #{teacherList.qqNumber},
+            #{teacherList.wxNumber},
+            #{teacherList.email},
+            #{teacherList.image},
+            #{teacherList.imageName},
+            #{teacherList.nationName},
+            #{teacherList.dormitoryAddress},
+            #{teacherList.adress},
+            #{teacherList.physicalNumber},
+            #{teacherList.physicalChipNumber},
+            #{teacherList.activate},
+            #{teacherList.createDate},
+            #{teacherList.updateDate},
+            #{teacherList.operator},
+            #{teacherList.operatorName},
+            #{teacherList.remark}
+            )
+        </foreach>
 
-  </insert>
+    </insert>
 
-  <!--根据学校Code查询卡号-->
-  <select id="queryTeacherCardNumberBySchoolCode"  resultType="java.lang.String">
+    <!--根据学校Code查询卡号-->
+    <select id="queryTeacherCardNumberBySchoolCode" resultType="java.lang.String">
         select card_number from t_teacher where school_code=#{schoolCode}
   </select>
 
-  <!--查询出某个部门下面的老师-->
-  <select id="findTeacherInfoByDeptOrg" resultMap="BaseResultMap">
+    <!--查询出某个部门下面的老师-->
+    <select id="findTeacherInfoByDeptOrg" resultMap="BaseResultMap">
     SELECT teacher.id,
     teacher.school_id,
     teacher.school_code,
@@ -301,4 +303,10 @@ VALUES
     where teacher.school_code=#{schoolCode}
     and dept.dept_ids Like CONCAT(#{parentIds},'%')
   </select>
+
+    <update id="updateSchoolName">
+		    update t_teacher
+            set school_name=#{schoolName}
+            where school_code=#{schoolCode}
+	</update>
 </mapper>

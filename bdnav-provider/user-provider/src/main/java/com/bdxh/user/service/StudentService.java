@@ -122,4 +122,11 @@ public interface StudentService extends IService<Student> {
      * @return
      */
     List<Student> findStudentInfoByClassId(String schoolCode,String classIds,String type);
+
+    /**
+     * 修改学校名字
+     * @param schoolCode
+     * @param schoolName
+     */
+    void updateSchoolName(String schoolCode,String schoolName);
 }

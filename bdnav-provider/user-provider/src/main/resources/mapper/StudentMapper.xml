@@ -54,22 +54,22 @@
         from t_student
         <where>
             <if test="studentQueryDto.schoolName!=null and studentQueryDto.schoolName!=''">
-                AND school_name LIKE   CONCAT('%',CONCAT(#{studentQueryDto.schoolName},'%'))
+                AND school_name LIKE CONCAT('%',CONCAT(#{studentQueryDto.schoolName},'%'))
             </if>
             <if test="studentQueryDto.name!=null and studentQueryDto.name!=''">
-                AND `name` LIKE   CONCAT('%',CONCAT(#{studentQueryDto.name},'%'))
+                AND `name` LIKE CONCAT('%',CONCAT(#{studentQueryDto.name},'%'))
             </if>
             <if test="studentQueryDto.phone!=null and studentQueryDto.phone!=''">
-                AND phone LIKE   CONCAT('%',CONCAT(#{studentQueryDto.phone},'%'))
+                AND phone LIKE CONCAT('%',CONCAT(#{studentQueryDto.phone},'%'))
             </if>
             <if test="studentQueryDto.cardNumber!=null and studentQueryDto.cardNumber!=''">
-                AND card_number LIKE   CONCAT('%',CONCAT(#{studentQueryDto.cardNumber},'%'))
+                AND card_number LIKE CONCAT('%',CONCAT(#{studentQueryDto.cardNumber},'%'))
             </if>
             <if test="studentQueryDto.activate!=null and studentQueryDto.activate!=''">
                 AND activate= #{studentQueryDto.activate}
             </if>
             <if test="studentQueryDto.schoolCode!=null and studentQueryDto.schoolCode!=''">
-                AND school_code =  #{studentQueryDto.schoolCode}
+                AND school_code = #{studentQueryDto.schoolCode}
             </if>
             <if test="studentQueryDto.classIds!=null and studentQueryDto.classIds!=''">
                 AND class_ids like CONCAT(#{studentQueryDto.classIds},'%')
@@ -257,7 +257,7 @@
     <!--批量删除学生信息-->
     <delete id="batchRemoveStudentInfo">
         delete from t_student where (school_code,card_number)in
-        <foreach collection="list" separator="," open="(" close=")" item="list" >
+        <foreach collection="list" separator="," open="(" close=")" item="list">
             (#{list.schoolCode},#{list.cardNumber})
         </foreach>
     </delete>
@@ -303,7 +303,7 @@
         )
         VALUES
         <foreach collection="list" index="index" separator="," item="studentList">
-        (
+            (
             #{studentList.id},
             #{studentList.schoolId},
             #{studentList.schoolCode},
@@ -339,17 +339,19 @@
             #{studentList.operator},
             #{studentList.operatorName},
             #{studentList.remark}
-        )
+            )
         </foreach>
     </insert>
 
     <!--根据学校Code查询学号-->
-    <select id="queryCardNumberBySchoolCode"  resultType="java.lang.String">
+    <select id="queryCardNumberBySchoolCode" resultType="java.lang.String">
         select card_number from t_student where school_code=#{schoolCode}
     </select>
     <!--根据院系组织架构ID查询学生-->
     <select id="findStudentInfoByClassOrg" resultMap="BaseResultMap">
-        select <include refid="studentCloumn" /> from t_student
+        select
+        <include refid="studentCloumn"/>
+        from t_student
         <where>
             and school_code=#{schoolCode}
             <if test="type==1">
@@ -369,13 +371,15 @@
                     and class_ids=#{parentIds}
                 </when>
                 <otherwise>
-                    and   class_ids Like  CONCAT(#{parentIds},'%')
+                    and class_ids Like CONCAT(#{parentIds},'%')
                 </otherwise>
             </choose>
         </where>
     </select>
     <select id="findStudentInfo" resultMap="BaseResultMap">
-        select <include refid="studentCloumn"/> from t_student
+        select
+        <include refid="studentCloumn"/>
+        from t_student
         WHERE school_code=#{student.schoolCode} AND card_number=#{student.cardNumber};
     </select>
     <select id="findStudentInfoByClassId" resultMap="BaseResultMap">
@@ -394,4 +398,10 @@
             </choose>
         </where>
     </select>
+
+    <update id="updateSchoolName">
+		    update t_student
+            set school_name=#{schoolName}
+            where school_code=#{schoolCode}
+	</update>
 </mapper>

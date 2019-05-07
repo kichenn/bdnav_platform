@@ -88,4 +88,11 @@ public interface FamilyService extends IService<Family> {
   * @return
   */
    List<String> queryFamilyCardNumberBySchoolCode( String schoolCode);
+
+    /**
+     * 修改学校名字
+     * @param schoolCode
+     * @param schoolName
+     */
+    void updateSchoolName(String schoolCode,String schoolName);
 }

@@ -23,6 +23,7 @@ import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.xiaoleilu.hutool.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
@@ -66,6 +67,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Autowired
     private DefaultMQPushConsumer defaultMQPushConsumer;
+
     /**
      * 查询所有学生
      *
@@ -89,27 +91,27 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     @Transactional
     public void deleteStudentInfo(String schoolCode, String cardNumber) {
-        Student student=studentMapper.findStudentInfo(schoolCode,cardNumber);
-        BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode,cardNumber);
+        Student student = studentMapper.findStudentInfo(schoolCode, cardNumber);
+        BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode, cardNumber);
         studentMapper.removeStudentInfo(schoolCode, cardNumber);
         familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCode, cardNumber);
         baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
         try {
-        JSONObject mesData = new JSONObject();
-        mesData.put("tableName", "t_student");
-        mesData.put("data",student);
-        mesData.put("del_flag","1");
-        Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-        mesData.put("tableName", "t_base_user");
-        mesData.put("data", baseUser);
-        mesData.put("del_flag","1");
-        Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-        defaultMQProducer.send(studentMsg);
-        defaultMQProducer.send(baseUserMsg);
-        }catch (Exception e) {
+            JSONObject mesData = new JSONObject();
+            mesData.put("tableName", "t_student");
+            mesData.put("data", student);
+            mesData.put("del_flag", "1");
+            Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+            mesData.put("tableName", "t_base_user");
+            mesData.put("data", baseUser);
+            mesData.put("del_flag", "1");
+            Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+            defaultMQProducer.send(studentMsg);
+            defaultMQProducer.send(baseUserMsg);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-      }
+    }
 
     /**
      * 批量删除学生信息
@@ -205,13 +207,13 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
                 mesData.put("data", student);
-                mesData.put("del_flag","0");
-                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                mesData.put("del_flag", "0");
+                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", updateBaseUserDto);
-                mesData.put("del_flag","0");
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                mesData.put("del_flag", "0");
+                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
         } catch (Exception e) {
@@ -288,13 +290,13 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
                 mesData.put("data", student);
-                mesData.put("del_flag","0");
-                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                mesData.put("del_flag", "0");
+                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUser);
-                mesData.put("del_flag","0");
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                mesData.put("del_flag", "0");
+                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
         } catch (Exception e) {
@@ -328,13 +330,13 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
                 mesData.put("data", studentList);
-                mesData.put("del_flag","0");
-                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                mesData.put("del_flag", "0");
+                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUserList);
-                mesData.put("del_flag","0");
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                mesData.put("del_flag", "0");
+                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
         } catch (Exception e) {
@@ -418,23 +420,30 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Override
     public void studentBatchUpdate(List<Student> studentList) {
-        for (Student student : studentList) {
-            studentMapper.updateStudentInfo(student);
-        }
-        JSONObject mesData = new JSONObject();
-        mesData.put("tableName", "t_student");
-        mesData.put("data", studentList);
-        mesData.put("del_flag","0");
-        Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-        try {
-            defaultMQProducer.send(studentMsg);
-        }catch (Exception e){
-            e.printStackTrace();
+        if (CollUtil.isNotEmpty(studentList)) {
+            for (Student student : studentList) {
+                studentMapper.updateStudentInfo(student);
+            }
+            JSONObject mesData = new JSONObject();
+            mesData.put("tableName", "t_student");
+            mesData.put("data", studentList);
+            mesData.put("del_flag", "0");
+            Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+            try {
+                defaultMQProducer.send(studentMsg);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public List<Student> findStudentInfoByClassId(String schoolCode, String classIds, String type) {
-        return studentMapper.findStudentInfoByClassId(schoolCode,classIds,type);
+        return studentMapper.findStudentInfoByClassId(schoolCode, classIds, type);
+    }
+
+    @Override
+    public void updateSchoolName(String schoolCode, String schoolName) {
+        studentMapper.updateSchoolName(schoolCode, schoolName);
     }
 }

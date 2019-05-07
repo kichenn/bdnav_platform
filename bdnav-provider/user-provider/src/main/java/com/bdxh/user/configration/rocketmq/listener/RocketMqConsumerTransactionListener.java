@@ -52,24 +52,21 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
     @Autowired
     private BaseUserService baseUserService;
 
-    //家长围栏
-    @Autowired
-    private FamilyFenceService familyFenceService;
 
     //围栏日志
     @Autowired
     private FenceAlarmService fenceAlarmService;
 
     //学院类型
-    private static final byte COLLEGE_TYPE = 1;
+    private static final String COLLEGE_TYPE = "1";
     //系类型
-    private static final byte FACULTY_TYPE = 2;
+    private static final String FACULTY_TYPE = "2";
     //专业类型
-    private static final byte PROFESSION_TYPE = 3;
+    private static final String PROFESSION_TYPE = "3";
     //年纪类型
-    private static final byte GRADE_TYPE = 4;
+    private static final String GRADE_TYPE = "4";
     //班级类型
-    private static final byte CLASS_TYPE = 5;
+    private static final String CLASS_TYPE = "5";
 
     /**
      * @Description: 消息监听
@@ -132,55 +129,61 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 //院系ID
                                 String deptId = data.getString("id");
                                 //院系类型 1 学院 2 系 3 专业 4 年级 5 班级
-                                byte type = data.getByte("type");
-                                List<Student> studentList = studentService.findStudentInfoByClassId(schoolCode, deptId,parentId);
+                                String type = data.getString("type");
+                                List<Student> studentList = studentService.findStudentInfoByClassId(schoolCode, deptId, parentId);
                                 List<Student> newStudentList = new ArrayList<>();
+                                //循环院系下所有学生
                                 for (Student student : studentList) {
-                                    switch (type) {
-                                        case COLLEGE_TYPE: {
-                                            student.setCollegeName(className);
-                                            break;
-                                        }
-                                        case FACULTY_TYPE: {
-                                            student.setFacultyName(className);
-                                            break;
-                                        }
-                                        case PROFESSION_TYPE: {
-                                            student.se tProfessionName(className);
-                                            break;
-                                        }
-                                        case GRADE_TYPE: {
-                                            student.setGradeName(className);
-                                            break;
-                                        }
-                                        case CLASS_TYPE: {
-                                            student.setClassName(className);
-                                            break;
-                                        }
-                                        default: {
-                                            log.info("未找到对应的组织架构");
-                                        }
-                                        String classNames = null;
-                                        if (StringUtils.isNotEmpty(student.getCollegeName())) {
-                                            className += student.getCollegeName() + "/";
-                                        } else if (StringUtils.isNotEmpty(student.getFacultyName())) {
-                                            className += student.getFacultyName() + "/";
-                                        } else if (StringUtils.isNotEmpty(student.getProfessionName())) {
-                                            className += student.getProfessionName() + "/";
-                                        } else if (StringUtils.isNotEmpty(student.getGradeName())) {
-                                            className += student.getGradeName() + "/";
-                                        } else if (StringUtils.isNotEmpty(student.getClassName())) {
-                                            className += student.getClassName();
-                                        }
-                                        student.setClassNames(classNames);
-                                        newStudentList.add(student);
+                                    //判断是修改了那个院系组织
+                                    if (type.equals(COLLEGE_TYPE)) {
+                                        student.setCollegeName(className);
+                                    } else if (type.equals(FACULTY_TYPE)) {
+                                        student.setFacultyName(className);
+                                    } else if (type.equals(PROFESSION_TYPE)) {
+                                        student.setProfessionName(className);
+                                    } else if (type.equals(GRADE_TYPE)) {
+                                        student.setGradeName(className);
+                                    } else if (type.equals(CLASS_TYPE)) {
+                                        student.setClassName(className);
                                     }
+                                    String classNames = "";
+                                    //拼接院系组织架构路劲
+                                    if (StringUtils.isNotEmpty(student.getCollegeName())) {
+                                        classNames += student.getCollegeName() + "/";
+                                    }
+                                    if (StringUtils.isNotEmpty(student.getFacultyName())) {
+                                        classNames += student.getFacultyName() + "/";
+                                    }
+                                    if (StringUtils.isNotEmpty(student.getProfessionName())) {
+                                        classNames += student.getProfessionName() + "/";
+                                    }
+                                    if (StringUtils.isNotEmpty(student.getGradeName())) {
+                                        classNames += student.getGradeName() + "/";
+                                    }
+                                    if (StringUtils.isNotEmpty(student.getClassName())) {
+                                        classNames += student.getClassName();
+                                    }
+                                    student.setClassNames(classNames.trim());
+                                    newStudentList.add(student);
                                 }
                                 studentService.studentBatchUpdate(newStudentList);
                                 log.info("我修改了班级");
                                 break;
                             }
                             case RocketMqConstrants.Tags.schoolOrganizationTag_school: {
+                                String schoolCode = data.getString("schoolCode");
+                                String schoolName = data.getString("schoolName");
+                                studentService.updateSchoolName(schoolCode, schoolName);
+
+                                visitLogsService.updateSchoolName(schoolCode, schoolName);
+
+                                teacherService.updateSchoolName(schoolCode, schoolName);
+
+                                familyService.updateSchoolName(schoolCode, schoolName);
+
+                                baseUserService.updateSchoolName(schoolCode, schoolName);
+
+                                fenceAlarmService.updateSchoolName(schoolCode, schoolName);
                                 log.info("我修改了学校");
                                 break;
                             }
@@ -191,7 +194,6 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
 
                     }
                 }
-                log.info("studentService:{}", studentService);
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
                 msg.getTags();
             }
