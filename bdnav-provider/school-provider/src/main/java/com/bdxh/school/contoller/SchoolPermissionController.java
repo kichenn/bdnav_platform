@@ -20,7 +20,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 /**
@@ -48,7 +50,14 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findSchoolPermissionByRoleId")
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = List.class)
-    public Object findPermissionByRoleId(@RequestParam(name = "roleIds", required = false) List<Long> roleId, @RequestParam(name = "type", required = false) Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId) {
+    public Object findPermissionByRoleId(@RequestParam(name = "roleIds", required = false) String roleIds, @RequestParam(name = "type", required = false) Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId) {
+        List<Long> roleId = null;
+        if (!roleIds.isEmpty()) {
+            List<String> temp = Arrays.asList(roleIds.split(","));
+            roleId = temp.stream().map(e -> {
+                return Long.valueOf(e);
+            }).collect(Collectors.toList());
+        }
         List<SchoolPermission> permissions = schoolPermissionService.findPermissionByRoleId(roleId, type, schoolId);
         List<SchoolPermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)) {
@@ -74,7 +83,14 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findPermissionList")
     @ApiOperation(value = "菜单or按钮权限列表", response = List.class)
-    public Object findPermissionList(@RequestParam(value = "roleIds") List<Long> roleId, @RequestParam(value = "schoolId") Long schoolId) {
+    public Object findPermissionList(@RequestParam(value = "roleIds") String roleIds, @RequestParam(value = "schoolId") Long schoolId) {
+        List<Long> roleId = null;
+        if (!roleIds.isEmpty()) {
+            List<String> temp = Arrays.asList(roleIds.split(","));
+            roleId = temp.stream().map(e -> {
+                return Long.valueOf(e);
+            }).collect(Collectors.toList());
+        }
         //查询当前学校的菜单和按钮信息
         SchoolPermission schoolPermission = new SchoolPermission();
         schoolPermission.setSchoolId(schoolId);
@@ -93,7 +109,7 @@ public class SchoolPermissionController {
                 SchoolPermissionTreeVo treeVo = new SchoolPermissionTreeVo();
                 treeVo.setTitle(e.getName());
                 treeVo.setCreateDate(e.getCreateDate());
-                if (roleId != null && rolePermissionsId.contains(e.getId())) {
+                if (rolePermissionsId.contains(e.getId())) {
                     treeVo.setChecked(true);
                 }
                 BeanUtils.copyProperties(e, treeVo);
@@ -113,7 +129,14 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findPermissionListBySchoolId")
     @ApiOperation(value = "菜单or按钮权限列表(根据学校id)", response = List.class)
-    public Object findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId, @RequestParam(value = "roleIds", required = false) List<Long> roleId) {
+    public Object findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId, @RequestParam(value = "roleIds", required = false) String roleIds) {
+        List<Long> roleId = null;
+        if (!roleIds.isEmpty()) {
+            List<String> temp = Arrays.asList(roleIds.split(","));
+            roleId = temp.stream().map(e -> {
+                return Long.valueOf(e);
+            }).collect(Collectors.toList());
+        }
         List<SchoolPermission> permissions = schoolPermissionService.findPermissionByRoleId(null, null, schoolId);
         //如果当前roleId不为空查询 该角色底下的菜单
         List<Long> rolePermissionsId = new ArrayList<>();
@@ -129,7 +152,7 @@ public class SchoolPermissionController {
                 SchoolPermissionTreeVo treeVo = new SchoolPermissionTreeVo();
                 treeVo.setTitle(e.getName());
                 treeVo.setCreateDate(e.getCreateDate());
-                if (roleId != null && rolePermissionsId.contains(e.getId())) {
+                if (rolePermissionsId.contains(e.getId())) {
                     treeVo.setChecked(true);
                 }
                 BeanUtils.copyProperties(e, treeVo);

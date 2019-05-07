@@ -45,17 +45,17 @@ public class SchoolPermissionWebController {
 
     @RequestMapping(value = "/findSchoolPermissionByRoleId", method = RequestMethod.GET)
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = SchoolPermissionTreeVo.class)
-    public Object findSchoolPermissionByRoleId(@RequestParam(name = "roleIds", required = false) List<Long> roleId,
+    public Object findSchoolPermissionByRoleId(@RequestParam(name = "roleIds", required = false) String roleIds,
                                                @RequestParam(name = "type", required = false) Byte type,
                                                @RequestParam(name = "schoolId", required = false) Long schoolId) {
-        Wrapper wrapper = schoolPermissionControllerClient.findSchoolPermissionByRoleId(roleId, type, schoolId);
+        Wrapper wrapper = schoolPermissionControllerClient.findSchoolPermissionByRoleId(roleIds, type, schoolId);
         return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/findPermissionList", method = RequestMethod.GET)
     @ApiOperation(value = "菜单or按钮权限列表", response = SchoolPermissionTreeVo.class)
-    public Object findPermissionList(@RequestParam(value = "roleIds") List<Long> roleId, @RequestParam(value = "schoolId") Long schoolId) {
-        Wrapper wrapper = schoolPermissionControllerClient.findPermissionList(roleId,schoolId);
+    public Object findPermissionList(@RequestParam(value = "roleIds") String roleIds, @RequestParam(value = "schoolId") Long schoolId) {
+        Wrapper wrapper = schoolPermissionControllerClient.findPermissionList(roleIds,schoolId);
         return WrapMapper.ok(wrapper.getResult());
     }
 
