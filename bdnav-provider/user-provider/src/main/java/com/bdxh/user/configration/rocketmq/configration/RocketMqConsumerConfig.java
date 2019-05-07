@@ -50,7 +50,7 @@ public class RocketMqConsumerConfig {
         //消费失败，重试次数10次（如果大于十次，应该在消费中间判断是否，写到响应的日志里）【默认重试16次】
         consumer.setMaxReconsumeTimes(10);
         try {
-            consumer.subscribe(rocketMqConsumerProperties.getTopic(), "*");
+            consumer.subscribe(rocketMqConsumerProperties.getTopic(), rocketMqConsumerProperties.getTag());
             // 开启监听
             consumer.registerMessageListener(rocketMqConsumerTransactionListener);
             consumer.start();

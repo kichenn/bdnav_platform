@@ -1,12 +1,11 @@
 package com.bdxh.order.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 
 /**
  * @description: 订单主信息dto
@@ -14,110 +13,115 @@ import java.math.BigDecimal;
  * @create: 2019-01-09 15:14
  **/
 @Data
-public class OrderUpdateDto implements Serializable {
+@ApiModel("更改订单dto")
+public class OrderUpdateDto{
 
-    private static final long serialVersionUID = -8878327806119184802L;
-
-
-
-//    /**
-//     * id
-//     */
-//    @NotEmpty(message = "id不能为空")
-//    @ApiModelProperty("id")
-//    private Long id;
-
-    /**
-     * 订单号
-     */
 
     @ApiModelProperty("订单号")
-    private Long orderNo;
+    private Long OrderNo;
 
-    /**
-     * 学校编码
-     */
-    @NotEmpty(message = "学校编码不能为空")
+
+    @ApiModelProperty("第三方订单号")
+    private String ThirdOrderNo;
+
+
+    @ApiModelProperty("学校主键")
+    private Long SchoolId;
+
+
     @ApiModelProperty("学校编码")
-    private String schoolCode;
+    private String SchoolCode;
 
-    /**
-     * 用户id
-     */
-    @NotNull(message = "用户id不能为空")
-    @ApiModelProperty("用户id")
-    private Long userId;
 
-    /**
-     * 订单总金额
-     */
+    @ApiModelProperty("学校名称")
+    private String SchoolName;
+
+
+    @ApiModelProperty("家长主键")
+    private Long UserId;
+
+
+    @ApiModelProperty("学号")
+    private String CardNumber;
+
+
+    @ApiModelProperty("用户姓名")
+    private String UserName;
+
+
+    @ApiModelProperty("用户类型 1 学生 2 老师 3 家长")
+    private Integer UserType;
+
+
+    @ApiModelProperty("用户openid")
+    private String OpenId;
+
+
     @ApiModelProperty("订单总金额")
-    private BigDecimal totalMoney;
+    private BigDecimal TotalMoney;
 
-    /**
-     * 订单金额
-     */
+
     @ApiModelProperty("订单金额")
-    private BigDecimal orderMoney;
+    private BigDecimal OrderMoney;
 
-    /**
-     * 支付金额
-     */
-    @NotNull(message = "支付金额不能为空")
+
     @ApiModelProperty("支付金额")
-    private BigDecimal payMoney;
+    private BigDecimal PayMoney;
 
-    /**
-     * 交易状态 1 进行中 2 已取消 3 已删除 4 交易成功'
-     */
-    @ApiModelProperty("交易状态 1 进行中 2 已取消 3 已删除 4 交易成功'")
-    private Byte tradeStatus;
 
-    /**
-     * '支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败'
-     */
+    @ApiModelProperty("交易状态 1 进行中 2 已取消 3 已删除 4 交易成功")
+    private Integer TradeStatus;
+
+
     @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败")
-    private Byte payStatus;
+    private Integer PayStatus;
 
 
-
-    /**
-     * '业务状态 1 未处理 2 处理中 3 已处理'
-     */
-    @ApiModelProperty("'业务状态 1 未处理 2 处理中 3 已处理'")
-    private Byte businessStatus;
-
-    /**
-     * 业务类型 1 微校付费服务
-     */
-    @NotNull(message = "业务类型不能为空")
-    @ApiModelProperty("1 微校付费服务")
-    private Byte businessType;
+    @ApiModelProperty("业务状态 1 未处理 2 已处理")
+    private Integer BusinessStatus;
 
 
-    /**
-     * 支付渠道 1 微信支付
-     */
-    @NotNull(message = "支付类型不能为空")
-    @ApiModelProperty("1 微信支付")
-    private Byte payType;
-
-    /**
-     * 订单类型  1 JSAPI支付
-     */
-    @NotNull(message = "交易类型不能为空")
-    @ApiModelProperty("1 JSAPI支付")
-    private Byte tradeType;
+    @ApiModelProperty("业务类型 1 校园钱包充值  2管控服务")
+    private Integer BusinessType;
 
 
-    /**
-     * 备注
-     */
+    @ApiModelProperty("支付渠道 1 微信支付")
+    private Integer PayType;
+
+
+    @ApiModelProperty("订单类型  1 JSAPI支付")
+    private Integer TradeType;
+
+
+    @ApiModelProperty("支付时间")
+    private Date PayTime;
+
+
+    @ApiModelProperty("支付结束时间")
+    private Date PayEndTime;
+
+
+    @ApiModelProperty("产品主键")
+    private String ProductId;
+
+
+    @ApiModelProperty("创建时间")
+    private Date CreateDate;
+
+
+    @ApiModelProperty("修改时间")
+    private Date UpdateDate;
+
+
+    @ApiModelProperty("操作人")
+    private Long Operator;
+
+
+    @ApiModelProperty("操作人姓名")
+    private String OperatorName;
+
+
     @ApiModelProperty("备注")
-    private String remark;
+    private String Remark;
 
-
-//    @NotNull(message = "交易明细不能为空")
-//    @Valid
-//    List<OrderItemDto> items;
 }

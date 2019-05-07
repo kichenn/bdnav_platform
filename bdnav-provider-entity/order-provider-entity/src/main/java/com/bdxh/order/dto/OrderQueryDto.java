@@ -1,6 +1,7 @@
 package com.bdxh.order.dto;
 
 import com.bdxh.common.base.page.Query;
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import lombok.Data;
  * @create: 2019-01-09 18:25
  **/
 @Data
+@ApiModel("查询订单dto")
 public class OrderQueryDto extends Query {
 
 
@@ -18,27 +20,27 @@ public class OrderQueryDto extends Query {
      */
 
     @ApiModelProperty("订单号")
-    private Long orderNo;
+    private Long OrderNo;
 
     /**
      * 学校编码
      */
 
     @ApiModelProperty("学校编码")
-    private String schoolCode;
+    private String SchoolCode;
 
     /**
      * 用户id
      */
 
     @ApiModelProperty("用户id")
-    private Long userId;
+    private Long UserId;
 
     /**
      * 学号
      */
     @ApiModelProperty("学号")
-    private String cardNumber;
+    private String CardNumber;
 
 
 }

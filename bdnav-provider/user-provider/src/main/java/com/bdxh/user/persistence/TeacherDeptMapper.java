@@ -26,4 +26,10 @@ public interface TeacherDeptMapper extends Mapper<TeacherDept> {
 
     //获取老师部门关系
     TeacherDept findTeacherBySchoolCodeAndCardNumber(@Param("schoolCode") String schoolCode, @Param("cardNumber") String cardNumber);
+
+    //根据学校Code和部门ID查询出当前部门和当前部门下的所有老师部门关系信息
+    List<TeacherDept> findTeacherDeptsBySchoolCode(@Param("schoolCode")String schoolCode, @Param("deptId")String deptId,@Param("type")String type);
+
+    //批量修改老师部门信息
+    int batchUpdateTeacherDept(@Param("teacherDept") TeacherDept teacherDepts);
 }

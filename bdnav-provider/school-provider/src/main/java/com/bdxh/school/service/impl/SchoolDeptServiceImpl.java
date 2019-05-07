@@ -64,13 +64,14 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
                 //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("data", schoolDept);
-                jsonObject.put("message", "学校部门组织架构有调整");
+                jsonObject.put("tableName", "t_school_dept");
+                jsonObject.put("del_flag", "0");
                 Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 try {
-                    transactionMQProducer.sendMessageInTransaction(message, null);
-                } catch (MQClientException e) {
+                    transactionMQProducer.send(message);
+                } catch (Exception e) {
                     e.printStackTrace();
-                    log.error("发送学校院系组织更新消息");
+                    log.error("发送学校院系组织新增消息");
                 }
             }
         return result;
@@ -93,7 +94,6 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             schoolDept.setThisUrl(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName() + "/" + schoolDept.getName());
             schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
         }
-
         //查询当前节点的子节点
         // 修改当前组织，  子部门组织的 url parentnames 要跟着修改
         List<SchoolDept> depts = findSchoolByParentId(schoolDept.getId());
@@ -104,17 +104,20 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
                 schoolDeptMapper.updateByPrimaryKeySelective(e);
             });
         }
-
         Boolean result = schoolDeptMapper.updateByPrimaryKeySelective(schoolDept) > 0;
         if (result) {
             //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", schoolDept);
             jsonObject.put("message", "学校部门组织架构有调整");
-            Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            jsonObject.put("del_flag", "0");
+            jsonObject.put("tableName", "t_school_dept");
+            Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
-                transactionMQProducer.sendMessageInTransaction(message, null);
-            } catch (MQClientException e) {
+                transactionMQProducer.sendMessageInTransaction(message1, null);
+                transactionMQProducer.send(message2);
+            } catch (Exception e) {
                 e.printStackTrace();
                 log.error("发送学校院系组织更新消息");
             }

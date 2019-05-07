@@ -352,7 +352,6 @@
         select <include refid="studentCloumn" /> from t_student
         <where>
             and school_code=#{schoolCode}
-
             <if test="type==1">
                 and college_name!=''
             </if>

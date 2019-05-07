@@ -1,22 +1,18 @@
 package com.bdxh.order.dto;
 
-import com.bdxh.common.base.page.Query;
+
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
 
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * @description: 订单主信息dto
- * @create: 2019-01-09 15:14
- **/
 @Data
-public class OrderDto extends Query {
+@ApiModel("增加订单dto")
+public class OrderAddDto {
 
-
-    @ApiModelProperty(value = "订单号")
+    @ApiModelProperty("订单号")
     private Long OrderNo;
 
 
@@ -122,5 +118,6 @@ public class OrderDto extends Query {
 
     @ApiModelProperty("备注")
     private String Remark;
+
 
 }
