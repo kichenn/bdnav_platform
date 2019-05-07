@@ -113,21 +113,26 @@
             <artifactId>spring-web</artifactId>
         </dependency>
         <!--个推-->
-        <!--<dependency>-->
-        <!--<groupId>com.gexin.platform</groupId>-->
-        <!--<artifactId>gexin-rp-sdk-http</artifactId>-->
-        <!--<version>4.0.1.7</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>commons-io.com.gexin.platform</groupId>-->
-        <!--<artifactId>gexin-rp-sdk-template</artifactId>-->
-        <!--<version>4.0.0.6</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>commons-io.com.gexin.platform</groupId>-->
-        <!--<artifactId>gexin-rp-sdk-base</artifactId>-->
-        <!--<version>4.0.0.12</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gexin.platform</groupId>
+            <artifactId>gexin-rp-sdk-http</artifactId>
+            <version>4.0.1.7</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gexin.platform</groupId>
+            <artifactId>gexin-rp-sdk-template</artifactId>
+            <version>4.0.0.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.gexin.platform</groupId>
+            <artifactId>gexin-rp-sdk-base</artifactId>
+            <version>4.0.0.12</version>
+        </dependency>
     </dependencies>
 
 </project>
