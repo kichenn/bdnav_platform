@@ -112,21 +112,21 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-        <!--&lt;!&ndash;个推&ndash;&gt;-->
+        <!--个推-->
         <!--<dependency>-->
-            <!--<groupId>com.gexin.platform</groupId>-->
-            <!--<artifactId>gexin-rp-sdk-http</artifactId>-->
-            <!--<version>4.0.1.7</version>-->
+        <!--<groupId>com.gexin.platform</groupId>-->
+        <!--<artifactId>gexin-rp-sdk-http</artifactId>-->
+        <!--<version>4.0.1.7</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>commons-io.com.gexin.platform</groupId>-->
-            <!--<artifactId>gexin-rp-sdk-template</artifactId>-->
-            <!--<version>4.0.0.6</version>-->
+        <!--<groupId>commons-io.com.gexin.platform</groupId>-->
+        <!--<artifactId>gexin-rp-sdk-template</artifactId>-->
+        <!--<version>4.0.0.6</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>commons-io.com.gexin.platform</groupId>-->
-            <!--<artifactId>gexin-rp-sdk-base</artifactId>-->
-            <!--<version>4.0.0.12</version>-->
+        <!--<groupId>commons-io.com.gexin.platform</groupId>-->
+        <!--<artifactId>gexin-rp-sdk-base</artifactId>-->
+        <!--<version>4.0.0.12</version>-->
         <!--</dependency>-->
     </dependencies>
 

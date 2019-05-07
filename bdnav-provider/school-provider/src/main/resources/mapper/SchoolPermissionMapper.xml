@@ -43,7 +43,7 @@
             <if test="roleIds !=null">
                 AND perm.id IN
                 (
-                SELECT permission_id DISTINCT
+                SELECT DISTINCT permission_id
                 FROM t_school_role_permission
                 WHERE role_id in
                 <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">

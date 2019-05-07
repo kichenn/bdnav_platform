@@ -14,6 +14,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -52,7 +53,7 @@ public class SchoolPermissionController {
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = List.class)
     public Object findPermissionByRoleId(@RequestParam(name = "roleIds", required = false) String roleIds, @RequestParam(name = "type", required = false) Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId) {
         List<Long> roleId = null;
-        if (!roleIds.isEmpty()) {
+        if (StringUtils.isNotEmpty(roleIds)) {
             List<String> temp = Arrays.asList(roleIds.split(","));
             roleId = temp.stream().map(e -> {
                 return Long.valueOf(e);
@@ -85,7 +86,7 @@ public class SchoolPermissionController {
     @ApiOperation(value = "菜单or按钮权限列表", response = List.class)
     public Object findPermissionList(@RequestParam(value = "roleIds") String roleIds, @RequestParam(value = "schoolId") Long schoolId) {
         List<Long> roleId = null;
-        if (!roleIds.isEmpty()) {
+        if (StringUtils.isNotEmpty(roleIds)) {
             List<String> temp = Arrays.asList(roleIds.split(","));
             roleId = temp.stream().map(e -> {
                 return Long.valueOf(e);
@@ -131,7 +132,7 @@ public class SchoolPermissionController {
     @ApiOperation(value = "菜单or按钮权限列表(根据学校id)", response = List.class)
     public Object findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId, @RequestParam(value = "roleIds", required = false) String roleIds) {
         List<Long> roleId = null;
-        if (!roleIds.isEmpty()) {
+        if (StringUtils.isNotEmpty(roleIds)) {
             List<String> temp = Arrays.asList(roleIds.split(","));
             roleId = temp.stream().map(e -> {
                 return Long.valueOf(e);
