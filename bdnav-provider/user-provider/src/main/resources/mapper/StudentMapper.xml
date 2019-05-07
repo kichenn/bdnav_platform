@@ -378,4 +378,20 @@
         select <include refid="studentCloumn"/> from t_student
         WHERE school_code=#{student.schoolCode} AND card_number=#{student.cardNumber};
     </select>
+    <select id="findStudentInfoByClassId" resultMap="BaseResultMap">
+        select
+        <include refid="studentCloumn"/>
+        from t_student
+        <where>
+            and school_code=#{schoolCode}
+            <choose>
+                <when test="type != 0">
+                    and class_ids like CONCAT('%',CONCAT(#{classIds},'%'))
+                </when>
+                <otherwise>
+                    and class_ids like CONCAT(#{classIds},'%')
+                </otherwise>
+            </choose>
+        </where>
+    </select>
 </mapper>

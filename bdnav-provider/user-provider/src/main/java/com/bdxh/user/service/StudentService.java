@@ -108,4 +108,18 @@ public interface StudentService extends IService<Student> {
      * @param updateStudentDto
      */
     void studentInfoActivation(UpdateStudentDto updateStudentDto);
+
+    /**
+     * 学生信息批量修改
+     */
+    void studentBatchUpdate(List<Student> studentList);
+
+    /**
+     * 查询学生根据学号以及班级IDs和修改的院校是否父节点查找学生
+     * @param schoolCode
+     * @param classIds
+     * @param type
+     * @return
+     */
+    List<Student> findStudentInfoByClassId(String schoolCode,String classIds,String type);
 }
