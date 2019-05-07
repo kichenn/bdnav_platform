@@ -98,6 +98,14 @@
         </where>
     </select>
     <update id="batchUpdateTeacherDept" parameterType="java.util.List">
-
+        <foreach collection="list" index="index" item="item"
+                 separator=";" open="" close="">
+            update t_teacher_dept
+            set dept_name=#{item.deptName},
+            dept_names=#{item.deptNames}
+            where id=#{item.id}
+            and school_code=#{item.schoolCode}
+            and card_number=#{item.cardNumber}
+        </foreach>
     </update>
 </mapper>

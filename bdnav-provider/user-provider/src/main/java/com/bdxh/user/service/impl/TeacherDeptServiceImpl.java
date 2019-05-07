@@ -8,6 +8,7 @@ import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.persistence.TeacherDeptMapper;
 import com.bdxh.user.service.TeacherDeptService;
 import com.bdxh.user.service.TeacherService;
+import com.xiaoleilu.hutool.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
@@ -53,7 +54,10 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
 
     @Override
     public void batchUpdateTeacherDept(List<TeacherDept> teacherDepts) {
-        Boolean result = teacherDeptMapper.batchUpdateTeacherDept(teacherDepts) > 0;
+        Boolean result=false;
+        if(CollUtil.isNotEmpty(teacherDepts)){
+         result = teacherDeptMapper.batchUpdateTeacherDept(teacherDepts) > 0;
+        }
         //修改完成之后同步到第三方给第三方修改
         if (result) {
             JSONObject mesData = new JSONObject();
