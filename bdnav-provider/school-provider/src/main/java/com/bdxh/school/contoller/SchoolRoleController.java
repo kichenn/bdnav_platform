@@ -22,6 +22,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -131,15 +132,16 @@ public class SchoolRoleController {
     }
 
     /**
-    * @Description:  用户id查询，角色id和角色名称列表
-    * @Author: Kang
-    * @Date: 2019/5/7 15:32
-    */
-    @ApiOperation(value = "用户id查询，角色id和角色名称列表", response = String.class)
-    @RequestMapping(value = "/findSchoolRolesInfoMapByUserId", method = RequestMethod.GET)
-    public Object findRoleByUserIdResultMap(@RequestParam(name = "userId") Long userId) {
-        List<Map<Long, String>> roles = schoolRoleService.findRoleByUserIdResultMap(userId);
-        return WrapMapper.ok(roles);
+     * @Description: 用户id查询，角色id
+     * @Author: Kang
+     * @Date: 2019/5/7 15:32
+     */
+    @ApiOperation(value = "用户id查询，角色id列表", response = String.class)
+    @RequestMapping(value = "/getRoleIdListByUserId", method = RequestMethod.GET)
+    public Object getRoleIdListByUserId(@RequestParam(name = "userId") Long userId) {
+        List<Long> result = schoolRoleService.getRoleIdListByUserId(userId);
+
+        return WrapMapper.ok(result);
     }
 
     /**

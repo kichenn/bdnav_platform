@@ -15,7 +15,13 @@ import java.util.Map;
 @Data
 public class SchoolUserShowVo extends SchoolUser {
 
+    /**
+     * 学校名称
+     */
     private String schoolName;
 
-    private List<Map<Long,String>> roleMaps;
+    /**
+     * 角色id + 角色用户信息
+     */
+    private List<Long> roleIds;
 }

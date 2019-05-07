@@ -26,7 +26,7 @@ import java.util.Map;
 public interface SchoolRoleControllerClient {
 
     /**
-     * 根据用户id查询角色列表
+     * 根据用户id查询角色列表(角色名称)
      *
      * @param userId
      * @return
@@ -36,14 +36,14 @@ public interface SchoolRoleControllerClient {
     Wrapper<List<String>> findSchoolRolesByUserId(@RequestParam("userId") Long userId);
 
     /**
-     *  用户id查询，角色id和角色名称列表
+     *  用户id查询，角色id列表
      *
      * @param userId
      * @return
      */
-    @RequestMapping(value = "/schoolRole/findSchoolRolesInfoMapByUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolRole/getRoleIdListByUserId", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<Map<Long, String>>> findSchoolRolesInfoMapByUserId(@RequestParam("userId") Long userId);
+    Wrapper<List<Long>> getRoleIdListByUserId(@RequestParam("userId") Long userId);
 
     /**
      * 根据id查询角色信息

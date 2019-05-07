@@ -1,6 +1,7 @@
 package com.bdxh.client.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.client.configration.security.properties.SecurityConstant;
 import com.bdxh.client.configration.security.userdetail.MyUserDetails;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
@@ -121,7 +122,8 @@ public class SecurityController {
         SchoolUserShowVo schoolUserShowVo = new SchoolUserShowVo();
         BeanUtils.copyProperties(schoolUser, schoolUserShowVo);
         //当前学校用户查询角色信息
-        schoolUserShowVo.setRoleMaps(schoolRoleControllerClient.findSchoolRolesInfoMapByUserId(schoolUser.getId()).getResult());
+        List<Long> result = schoolRoleControllerClient.getRoleIdListByUserId(schoolUser.getId()).getResult();
+        schoolUserShowVo.setRoleIds(result);
         return WrapMapper.ok(schoolUserShowVo);
     }
 

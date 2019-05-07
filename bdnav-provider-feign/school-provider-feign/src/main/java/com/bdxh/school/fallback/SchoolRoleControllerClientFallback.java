@@ -29,7 +29,7 @@ public class SchoolRoleControllerClientFallback implements SchoolRoleControllerC
     }
 
     @Override
-    public Wrapper<List<Map<Long, String>>> findSchoolRolesInfoMapByUserId(Long userId) {
+    public Wrapper<List<Long>> getRoleIdListByUserId(Long userId) {
         return WrapMapper.error();
     }
 

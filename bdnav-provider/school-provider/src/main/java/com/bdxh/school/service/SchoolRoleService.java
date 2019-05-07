@@ -26,8 +26,11 @@ public interface SchoolRoleService extends IService<SchoolRole> {
     //条件搜索-分页
     PageInfo<SchoolRoleShowVo> findListPage(SchoolRoleQueryDto roleQueryDto);
 
-    //根据用户id查询角色列表
+    //根据用户id查询角色列表(角色名称)
     List<String> getRoleListByUserId(Long userId);
+
+    //根据用户id查询角色列表(角色id)
+    List<Long> getRoleIdListByUserId(Long userId);
 
     //用户id查询角色id和角色名称
     List<Map<Long, String>> findRoleByUserIdResultMap(Long UserId);

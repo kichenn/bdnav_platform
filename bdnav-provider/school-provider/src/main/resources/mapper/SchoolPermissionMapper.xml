@@ -40,7 +40,7 @@
         FROM
         t_school_permission perm
         <where>
-            <if test="roleId !=null">
+            <if test="roleIds !=null">
                 AND perm.id IN
                 (
                 SELECT permission_id

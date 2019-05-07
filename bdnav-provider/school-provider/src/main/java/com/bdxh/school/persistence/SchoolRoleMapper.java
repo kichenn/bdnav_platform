@@ -20,12 +20,19 @@ public interface SchoolRoleMapper extends Mapper<SchoolRole> {
     List<SchoolRoleShowVo> getByCondition(@Param("schoolRole") SchoolRole schoolRole);
 
     /**
-     * 根据用户id查询角色列表
+     * 根据用户id查询角色列表(角色名称)
      *
      * @param userId
      * @return
      */
     List<String> getRoleListByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据用户id查询角色列表(角色id)
+     * @param userId
+     * @return
+     */
+    List<Long> getRoleIdListByUserId(@Param("userId") Long userId);
 
     /**
      * 用户id查询角色id和角色名称
