@@ -4,104 +4,73 @@ import javax.persistence.Table;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Date;
 import java.lang.String;
 import java.lang.Long;
-import java.lang.Byte;
 
 /**
 * @Description: 实体类
-* @Author Kang
 * @Date 2019-04-26 10:26:58
 */
 @Data
 @Table(name = "t_service_used")
 public class ServiceUsed {
 
-	/**
-	 * 主键
-	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private Long ServiceId;
 
-	/**
-	 * 订单主键
-	 */
 	@Column(name = "order_no")
-	private Long orderNo;
+	private Long OrderNo;
 
-	/**
-	 * 产品主键
-	 */
 	@Column(name = "product_id")
-	private Long productId;
+	private Long ProductId;
 
-	/**
-	 * 学校主键
-	 */
 	@Column(name = "school_id")
-	private Long schoolId;
+	private Long SchoolId;
 
-	/**
-	 * 学校编码
-	 */
 	@Column(name = "school_code")
-	private String schoolCode;
+	private String SchoolCode;
 
-	/**
-	 * 家长主键
-	 */
+	@Column(name = "school_name")
+	private String SchoolName;
+
 	@Column(name = "family_id")
-	private Long familyId;
+	private Long FamilyId;
 
-	/**
-	 * 家长主键
-	 */
 	@Column(name = "card_number")
-	private Long cardNumber;
+	private Long CardNumber;
 
-	/**
-	 * 开始使用时间
-	 */
+	@Column(name = "family_name")
+	private String FamilyName;
+
 	@Column(name = "start_time")
-	private Date startTime;
+	private Date StartTime;
 
-	/**
-	 * 结束时间
-	 */
 	@Column(name = "end_time")
-	private Date endTime;
+	private Date EndTime;
 
-	/**
-	 * 状态 1 正常使用 2已过期
-	 */
 	@Column(name = "status")
-	private Byte status;
+	private Integer Status;
 
-	/**
-	 * 类型 1是试用  2是正式使用
-	 */
 	@Column(name = "type")
-	private Byte type;
+	private Integer Type;
 
-	/**
-	 * 备注
-	 */
-	@Column(name = "remark")
-	private String remark;
-
-	/**
-	 * 创建日期
-	 */
 	@Column(name = "create_date")
-	private Date createDate;
+	private Date CreateDate;
 
-	/**
-	 * 修改日期
-	 */
 	@Column(name = "update_date")
-	private Date updateDate;
+
+	private Date UpdateDate;
+
+	@Column(name = "operator")
+
+	private Long Operator;
+
+	@Column(name = "operator_name")
+	private String OperatorName;
+
+	@Column(name = "remark")
+	private String Remark;
 
 
 }
