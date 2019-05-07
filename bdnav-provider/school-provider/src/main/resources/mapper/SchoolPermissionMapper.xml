@@ -45,7 +45,10 @@
                 (
                 SELECT permission_id
                 FROM t_school_role_permission
-                WHERE role_id=#{roleId,jdbcType=BIGINT}
+                WHERE role_id in
+                <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+                    #{roleId,jdbcType=BIGINT}
+                </foreach>
                 )
             </if>
             <if test="type !=null">

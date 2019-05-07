@@ -14,7 +14,7 @@ import java.util.List;
 public interface SchoolPermissionService extends IService<SchoolPermission> {
 
     //学校id+角色id，菜单类型 查询权限菜单or按钮
-    List<SchoolPermission> findPermissionByRoleId(Long roleId, Byte type, Long schoolId);
+    List<SchoolPermission> findPermissionByRoleId(List<Long> roleId, Byte type, Long schoolId);
 
     //增加权限列表信息
     Boolean addPermission(SchoolPermission permission);

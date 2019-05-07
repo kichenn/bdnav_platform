@@ -46,7 +46,7 @@ public interface SchoolPermissionControllerClient {
      */
     @RequestMapping(value = "/schoolPermission/findSchoolPermissionByRoleId", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolPermissionTreeVo>> findSchoolPermissionByRoleId(@RequestParam(name = "roleId", required = false) Long roleId, @RequestParam(name = "type", required = false) Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId);
+    Wrapper<List<SchoolPermissionTreeVo>> findSchoolPermissionByRoleId(@RequestParam(name = "roleIds", required = false) List<Long> roleId, @RequestParam(name = "type", required = false) Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId);
 
     /**
      * 菜单or按钮权限列表
@@ -55,7 +55,7 @@ public interface SchoolPermissionControllerClient {
      */
     @RequestMapping(value = "/schoolPermission/findPermissionList", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolPermissionTreeVo>> findPermissionList(@RequestParam(value = "roleId") Long roleId, @RequestParam(value = "schoolId") Long schoolId);
+    Wrapper<List<SchoolPermissionTreeVo>> findPermissionList(@RequestParam(value = "roleIds") List<Long> roleId, @RequestParam(value = "schoolId") Long schoolId);
 
     /**
      * 菜单or按钮权限列表(根据学校id)
@@ -64,7 +64,7 @@ public interface SchoolPermissionControllerClient {
      */
     @RequestMapping(value = "/schoolPermission/findPermissionListBySchoolId", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolPermissionTreeVo>> findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId,@RequestParam(value = "roleId", required = false) Long roleId);
+    Wrapper<List<SchoolPermissionTreeVo>> findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId,@RequestParam(value = "roleIds", required = false) List<Long> roleId);
 
     /**
      * 添加权限信息

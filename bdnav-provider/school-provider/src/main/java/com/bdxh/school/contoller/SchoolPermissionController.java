@@ -48,7 +48,7 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findSchoolPermissionByRoleId")
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = List.class)
-    public Object findPermissionByRoleId(@RequestParam(name = "roleId", required = false) Long roleId, @RequestParam(name = "type", required = false) Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId) {
+    public Object findPermissionByRoleId(@RequestParam(name = "roleIds", required = false) List<Long> roleId, @RequestParam(name = "type", required = false) Byte type, @RequestParam(name = "schoolId", required = false) Long schoolId) {
         List<SchoolPermission> permissions = schoolPermissionService.findPermissionByRoleId(roleId, type, schoolId);
         List<SchoolPermissionTreeVo> treeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(permissions)) {
@@ -74,7 +74,7 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findPermissionList")
     @ApiOperation(value = "菜单or按钮权限列表", response = List.class)
-    public Object findPermissionList(@RequestParam(value = "roleId") Long roleId, @RequestParam(value = "schoolId") Long schoolId) {
+    public Object findPermissionList(@RequestParam(value = "roleIds") List<Long> roleId, @RequestParam(value = "schoolId") Long schoolId) {
         //查询当前学校的菜单和按钮信息
         SchoolPermission schoolPermission = new SchoolPermission();
         schoolPermission.setSchoolId(schoolId);
@@ -113,7 +113,7 @@ public class SchoolPermissionController {
      */
     @GetMapping("/findPermissionListBySchoolId")
     @ApiOperation(value = "菜单or按钮权限列表(根据学校id)", response = List.class)
-    public Object findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId, @RequestParam(value = "roleId", required = false) Long roleId) {
+    public Object findPermissionListBySchoolId(@RequestParam("schoolId") Long schoolId, @RequestParam(value = "roleIds", required = false) List<Long> roleId) {
         List<SchoolPermission> permissions = schoolPermissionService.findPermissionByRoleId(null, null, schoolId);
         //如果当前roleId不为空查询 该角色底下的菜单
         List<Long> rolePermissionsId = new ArrayList<>();

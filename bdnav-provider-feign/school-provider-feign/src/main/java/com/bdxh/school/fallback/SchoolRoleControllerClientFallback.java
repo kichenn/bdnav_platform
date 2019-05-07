@@ -13,6 +13,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description: 学校系统角色feign降级服务
@@ -24,6 +25,11 @@ public class SchoolRoleControllerClientFallback implements SchoolRoleControllerC
 
     @Override
     public Wrapper<List<String>> findSchoolRolesByUserId(Long userId) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<Map<Long, String>>> findSchoolRolesInfoMapByUserId(Long userId) {
         return WrapMapper.error();
     }
 

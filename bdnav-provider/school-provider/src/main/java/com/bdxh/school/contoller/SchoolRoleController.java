@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 学校角色管理控制器
@@ -126,6 +127,18 @@ public class SchoolRoleController {
     @RequestMapping(value = "/findSchoolRolesByUserId", method = RequestMethod.GET)
     public Object findSchoolRolesByUserId(@RequestParam(name = "userId") Long userId) {
         List<String> roles = schoolRoleService.getRoleListByUserId(userId);
+        return WrapMapper.ok(roles);
+    }
+
+    /**
+    * @Description:  用户id查询，角色id和角色名称列表
+    * @Author: Kang
+    * @Date: 2019/5/7 15:32
+    */
+    @ApiOperation(value = "用户id查询，角色id和角色名称列表", response = String.class)
+    @RequestMapping(value = "/findSchoolRolesInfoMapByUserId", method = RequestMethod.GET)
+    public Object findRoleByUserIdResultMap(@RequestParam(name = "userId") Long userId) {
+        List<Map<Long, String>> roles = schoolRoleService.findRoleByUserIdResultMap(userId);
         return WrapMapper.ok(roles);
     }
 

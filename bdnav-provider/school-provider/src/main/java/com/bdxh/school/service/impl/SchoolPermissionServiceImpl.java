@@ -31,7 +31,7 @@ public class SchoolPermissionServiceImpl extends BaseService<SchoolPermission> i
 
     //学校id+角色id 菜单类型 筛选查询权限菜单
     @Override
-    public List<SchoolPermission> findPermissionByRoleId(Long roleId, Byte type, Long schoolId) {
+    public List<SchoolPermission> findPermissionByRoleId(List<Long> roleId, Byte type, Long schoolId) {
         return schoolPermissionMapper.findPermissionByRoleId(roleId, type, schoolId);
     }
 
