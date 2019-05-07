@@ -31,5 +31,5 @@ public interface TeacherDeptMapper extends Mapper<TeacherDept> {
     List<TeacherDept> findTeacherDeptsBySchoolCode(@Param("schoolCode")String schoolCode, @Param("deptId")String deptId,@Param("type")String type);
 
     //批量修改老师部门信息
-    int batchUpdateTeacherDept(@Param("list") List<TeacherDept> teacherDepts);
+    int batchUpdateTeacherDept(@Param("teacherDept") TeacherDept teacherDepts);
 }

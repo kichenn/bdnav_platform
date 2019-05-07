@@ -14,6 +14,7 @@ import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.json.JsonObject;
 import java.util.List;
@@ -53,24 +54,27 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
     }
 
     @Override
+    @Transactional
     public void batchUpdateTeacherDept(List<TeacherDept> teacherDepts) {
-        Boolean result=false;
         if(CollUtil.isNotEmpty(teacherDepts)){
-         result = teacherDeptMapper.batchUpdateTeacherDept(teacherDepts) > 0;
-        }
-        //修改完成之后同步到第三方给第三方修改
-        if (result) {
-            JSONObject mesData = new JSONObject();
-            mesData.put("tableName", "t_teacher_dept");
-            mesData.put("data", teacherDepts);
-            mesData.put("del_flag", "0");
-            Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-            try {
-                defaultMQProducer.send(baseUserMsg);
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.info("批量修改组织架构时推送失败");
+            for (TeacherDept teacherDept : teacherDepts) {
+                teacherDeptMapper.batchUpdateTeacherDept(teacherDept);
             }
+            //修改完成之后同步到第三方给第三方修改
+                JSONObject mesData = new JSONObject();
+                mesData.put("tableName", "t_teacher_dept");
+                mesData.put("data", teacherDepts);
+                mesData.put("del_flag", "0");
+                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                try {
+                    defaultMQProducer.send(baseUserMsg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    log.info("批量修改组织架构时推送失败");
+                }
+
         }
+
+
     }
 }

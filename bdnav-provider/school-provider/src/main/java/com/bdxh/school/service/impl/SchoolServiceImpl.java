@@ -1,5 +1,7 @@
 package com.bdxh.school.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.helper.excel.ExcelExportUtils;
 import com.bdxh.common.helper.excel.bean.SchoolExcelReportBean;
 import com.bdxh.common.helper.excel.utils.DateUtils;
@@ -18,12 +20,15 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +41,8 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     @Autowired
     private SchoolMapper schoolMapper;
 
-
+    @Autowired
+    private DefaultMQProducer defaultMQProducer;
     //添加学校信息
     @Override
     public Boolean addSchool(SchoolDto schoolDto) {
@@ -61,6 +67,18 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         BeanUtils.copyProperties(schoolDto, school);
         school.setUpdateDate(new Date());
         Boolean result = schoolMapper.updateByPrimaryKeySelective(school) > 0;
+        if(result){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("data", school);
+            jsonObject.put("message", "学校有调整");
+            Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_school, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            try {
+                defaultMQProducer.send(message);
+            }catch (Exception e){
+                e.printStackTrace();
+                log.info("推送学校消息至user服务");
+            }
+        }
         /*if (result) {
             //删除列表缓存
             redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);

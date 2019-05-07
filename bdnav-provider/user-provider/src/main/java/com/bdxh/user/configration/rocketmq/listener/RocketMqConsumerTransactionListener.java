@@ -72,14 +72,14 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 String topic = msg.getTopic();
                 String msgBody = new String(msg.getBody(), "utf-8");
                 String tags = msg.getTags();
+                JSONObject deptJson=JSONObject.parseObject(msgBody);
+                Map<String, String> map =(Map<String, String>) deptJson.get("data");
+                JSONObject data=JSONObject.parseObject(map.toString());
                 switch (topic) {
                     case RocketMqConstrants.Topic.schoolOrganizationTopic:
                         {
                             switch (tags){
                                 case RocketMqConstrants.Tags.schoolOrganizationTag_dept:{
-                                    JSONObject deptJson=JSONObject.parseObject(msgBody);
-                                    Map<String, String> map =(Map<String, String>) deptJson.get("data");
-                                    JSONObject data=JSONObject.parseObject(map.toString());
                                     //是否是父节点
                                     String type = data.getString("parentId").equals("-1")?"0":"1";
                                     //部门路径名称
@@ -106,6 +106,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 }
                                 case RocketMqConstrants.Tags.schoolOrganizationTag_class:{
 
+                                    log.info("我修改了班级");
                                 }
                                 case RocketMqConstrants.Tags.schoolOrganizationTag_school:{
 

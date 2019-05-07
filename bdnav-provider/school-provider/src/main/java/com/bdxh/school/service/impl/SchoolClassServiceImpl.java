@@ -60,16 +60,17 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
         }
         Boolean result = schoolClassMapper.insertSelective(schoolClass) > 0;
         if (result) {
-            //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
+            //院系新增成功之后，发送异步消息，通知第三方，学校院系组织架构有变动，
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", schoolClass);
-            jsonObject.put("message", "学校院系组织架构有调整");
+            jsonObject.put("tableName", "t_school_class");
+            jsonObject.put("del_flag", "0");
             Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
-                transactionMQProducer.sendMessageInTransaction(message, null);
-            } catch (MQClientException e) {
+                transactionMQProducer.send(message);
+            } catch (Exception e) {
                 e.printStackTrace();
-                log.error("发送学校院系组织更新消息");
+                log.error("发送学校院系组织新增消息失败");
             }
         }
         return result;
@@ -109,14 +110,17 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", schoolClass);
             jsonObject.put("message", "学校院系组织架构有调整");
-            Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-            log.info("发送院系组织架构通知完成");
+            Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            jsonObject.put("tableName", "t_school_class");
+            jsonObject.put("del_flag", "0");
+            Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
-                transactionMQProducer.sendMessageInTransaction(message, null);
-                log.info("。。。。。。。");
-            } catch (MQClientException e) {
+                transactionMQProducer.send(message2);
+                transactionMQProducer.sendMessageInTransaction(message1, null);
+                log.info("发送院系组织架构通知完成");
+            } catch (Exception e) {
                 e.printStackTrace();
-                log.error("发送学校院系组织更新消息");
+                log.error("发送学校院系组织更新消息失败");
             }
         }
         return result;
