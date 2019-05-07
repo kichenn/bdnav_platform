@@ -30,7 +30,6 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
     @Autowired
     private StudentService studentService;
 
-
     //老师部门关系
     @Autowired
     private TeacherDeptService teacherDeptService;
@@ -72,49 +71,67 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 String topic = msg.getTopic();
                 String msgBody = new String(msg.getBody(), "utf-8");
                 String tags = msg.getTags();
-                JSONObject deptJson=JSONObject.parseObject(msgBody);
-                Map<String, String> map =(Map<String, String>) deptJson.get("data");
-                JSONObject data=JSONObject.parseObject(map.toString());
+                JSONObject deptJson = JSONObject.parseObject(msgBody);
+                Map<String, String> map = (Map<String, String>) deptJson.get("data");
+                JSONObject data = JSONObject.parseObject(map.toString());
                 switch (topic) {
-                    case RocketMqConstrants.Topic.schoolOrganizationTopic:
-                        {
-                            switch (tags){
-                                case RocketMqConstrants.Tags.schoolOrganizationTag_dept:{
-                                    //是否是父节点
-                                    String type = data.getString("parentId").equals("-1")?"0":"1";
-                                    //部门路径名称
-                                    String deptNames = data.getString("thisUrl");
-                                    //部门名称
-                                    String deptName = data.getString("name");
-                                    //学校schoolCode
-                                    String schoolCode = data.getString("schoolCode");
-                                    //部门ID
-                                    String deptId=data.getString("id");
-                                    List<TeacherDept> teacherDeptList=teacherDeptService.findTeacherDeptsBySchoolCode(schoolCode,deptId,type);
-                                   List<TeacherDept> newTeacherDeptList=new ArrayList<>();
-                                    for (TeacherDept teacherDept : teacherDeptList) {
-                                        //如果修改的部门名称是当前所在部门的子部门还需要修改deptName列的数据
-                                        if(teacherDept.getDeptId().equals(Long.parseLong(deptId))){
-                                            teacherDept.setDeptName(deptName);
-                                        }
-                                        //如果不是只需要修改deptNames列
-                                        teacherDept.setDeptNames(deptNames);
-                                        newTeacherDeptList.add(teacherDept);
+                    case RocketMqConstrants.Topic.schoolOrganizationTopic: {
+                        switch (tags) {
+                            case RocketMqConstrants.Tags.schoolOrganizationTag_dept: {
+                                //是否是父节点 是：0 否：1
+                                String type = data.getString("parentId").equals("-1") ? "0" : "1";
+                                //部门路径名称
+                                String deptNames = type.equals("1") ?
+                                        data.getString("thisUrl").trim().substring(1) :
+                                        data.getString("thisUrl");
+                                //部门名称
+                                String deptName = data.getString("name");
+                                //学校schoolCode
+                                String schoolCode = data.getString("schoolCode");
+                                //部门ID
+                                String deptId = data.getString("id");
+                                List<TeacherDept> teacherDeptList = teacherDeptService.findTeacherDeptsBySchoolCode(schoolCode, deptId, type);
+                                List<TeacherDept> newTeacherDeptList = new ArrayList<>();
+                                for (TeacherDept teacherDept : teacherDeptList) {
+                                    //如果修改的部门名称是当前所在部门的子部门还需要修改deptName列的数据
+                                    if (teacherDept.getDeptId().equals(Long.parseLong(deptId))) {
+                                        teacherDept.setDeptName(deptName);
                                     }
-                                    teacherDeptService.batchUpdateTeacherDept(newTeacherDeptList);
-                                    log.info("我修改了部门");
-                                }
-                                case RocketMqConstrants.Tags.schoolOrganizationTag_class:{
+                                    //如果不是只需要修改deptNames列
+                                    if(type.equals("1")){
 
-                                    log.info("我修改了班级");
+                                    }
+                                    teacherDept.setDeptNames(deptNames);
+                                    newTeacherDeptList.add(teacherDept);
                                 }
-                                case RocketMqConstrants.Tags.schoolOrganizationTag_school:{
-
-                                }
+                                teacherDeptService.batchUpdateTeacherDept(newTeacherDeptList);
+                                log.info("我修改了部门");
                             }
+                            case RocketMqConstrants.Tags.schoolOrganizationTag_class: {
+                                //父节点
+                                      String parentId = data.getString("parentId").equals("-1")?"0":"1";
+                                //院系路径名称
+                                String deptNames = parentId.equals("1") ?
+                                        data.getString("thisUrl").trim().substring(1) :
+                                        data.getString("thisUrl");
+                                //院系名称
+                                String deptName = data.getString("name");
+                                //学校schoolCode
+                                String schoolCode = data.getString("schoolCode");
+                                //院系ID
+                                String deptId = data.getString("id");
+                                //院系类型 1 学院 2 系 3 专业 4 年级 5 班级
+                                Byte type = data.getByte("type");
+                                studentService.findStudentInfoByClassOrg(schoolCode, deptId, type);
+                                log.info("我修改了班级");
+                            }
+                            case RocketMqConstrants.Tags.schoolOrganizationTag_school: {
+
+                            }
+                        }
                     }
                 }
-                log.info("studentService:{}",studentService);
+                log.info("studentService:{}", studentService);
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
                 msg.getTags();
             }
