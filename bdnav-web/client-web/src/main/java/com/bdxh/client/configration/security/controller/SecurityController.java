@@ -1,6 +1,7 @@
 package com.bdxh.client.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.client.configration.security.properties.SecurityConstant;
 import com.bdxh.client.configration.security.userdetail.MyUserDetails;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
@@ -9,12 +10,17 @@ import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.feign.SchoolRoleControllerClient;
+import com.bdxh.school.feign.SchoolUserControllerClient;
+import com.bdxh.school.vo.SchoolUserShowVo;
 import com.google.common.base.Preconditions;
 import io.jsonwebtoken.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,6 +35,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -44,6 +51,9 @@ public class SecurityController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private SchoolRoleControllerClient schoolRoleControllerClient;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -107,7 +117,14 @@ public class SecurityController {
     @GetMapping("/getSchoolUserInfoByToken")
     @ApiOperation(value = "token获取用户信息", response = String.class)
     public Object getUserInfoByToken() {
-        return WrapMapper.ok(SecurityUtils.getCurrentUser());
+        SchoolUser schoolUser = SecurityUtils.getCurrentUser();
+        //组装数据，获取当前学校用户的角色信息
+        SchoolUserShowVo schoolUserShowVo = new SchoolUserShowVo();
+        BeanUtils.copyProperties(schoolUser, schoolUserShowVo);
+        //当前学校用户查询角色信息
+        List<Long> result = schoolRoleControllerClient.getRoleIdListByUserId(schoolUser.getId()).getResult();
+        schoolUserShowVo.setRoleIds(result);
+        return WrapMapper.ok(schoolUserShowVo);
     }
 
 

@@ -74,6 +74,12 @@ public class SchoolRoleServiceImpl extends BaseService<SchoolRole> implements Sc
     }
 
     @Override
+    public List<Long> getRoleIdListByUserId(Long userId) {
+        List<Long> roles = schoolRoleMapper.getRoleIdListByUserId(userId);
+        return roles;
+    }
+
+    @Override
     public List<Map<Long, String>> findRoleByUserIdResultMap(Long userId) {
         return schoolRoleMapper.findRoleByUserIdResultMap(userId);
     }

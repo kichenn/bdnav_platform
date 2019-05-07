@@ -18,6 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 /**
  * @Description: web层学校权限交互api
@@ -44,20 +45,20 @@ public class SchoolPermissionWebController {
 
     @RequestMapping(value = "/findSchoolPermissionByRoleId", method = RequestMethod.GET)
     @ApiOperation(value = "学校角色id查询用户菜单or按钮权限", response = SchoolPermissionTreeVo.class)
-    public Object findSchoolPermissionByRoleId(@RequestParam(name = "roleId", required = false) Long roleId,
+    public Object findSchoolPermissionByRoleId(@RequestParam(name = "roleIds", required = false) String roleIds,
                                                @RequestParam(name = "type", required = false) Byte type) {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
-        Wrapper wrapper = schoolPermissionControllerClient.findSchoolPermissionByRoleId(roleId, type, user.getSchoolId());
+        Wrapper wrapper = schoolPermissionControllerClient.findSchoolPermissionByRoleId(roleIds, type, user.getSchoolId());
         return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/findPermissionList", method = RequestMethod.GET)
     @ApiOperation(value = "获取当前学校，菜单or按钮权限列表", response = SchoolPermissionTreeVo.class)
-    public Object findPermissionList(@RequestParam(value = "roleId", required = false) Long roleId) {
+    public Object findPermissionList(@RequestParam(value = "roleIds", required = false) String roleIds) {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
-        Wrapper wrapper = schoolPermissionControllerClient.findPermissionListBySchoolId(user.getSchoolId(),roleId);
+        Wrapper wrapper = schoolPermissionControllerClient.findPermissionListBySchoolId(user.getSchoolId(),roleIds);
         return WrapMapper.ok(wrapper.getResult());
     }
 

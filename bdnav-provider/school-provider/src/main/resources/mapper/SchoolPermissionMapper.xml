@@ -40,12 +40,15 @@
         FROM
         t_school_permission perm
         <where>
-            <if test="roleId !=null">
+            <if test="roleIds !=null">
                 AND perm.id IN
                 (
-                SELECT permission_id
+                SELECT permission_id DISTINCT
                 FROM t_school_role_permission
-                WHERE role_id=#{roleId,jdbcType=BIGINT}
+                WHERE role_id in
+                <foreach collection="roleIds" item="roleId" separator="," open="(" close=")">
+                    #{roleId,jdbcType=BIGINT}
+                </foreach>
                 )
             </if>
             <if test="type !=null">

@@ -71,9 +71,9 @@
         </dependency>
         <!-- poi -->
         <!--<dependency>-->
-            <!--<groupId>org.apache.poi</groupId>-->
-            <!--<artifactId>poi</artifactId>-->
-            <!--<version>3.17</version>-->
+        <!--<groupId>org.apache.poi</groupId>-->
+        <!--<artifactId>poi</artifactId>-->
+        <!--<version>3.17</version>-->
         <!--</dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
@@ -100,6 +100,7 @@
             <groupId>com.qcloud</groupId>
             <artifactId>cos_api</artifactId>
             <version>5.4.10</version>
+            <!--腾讯云中的日志包与此项目中的日志包冲突，报错，故忽略-->
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
@@ -111,29 +112,22 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-
-
-        <!-- jaxb模块引用 - start java9之后模块化的概念使得JAXB默认没有加载-->
+        <!--&lt;!&ndash;个推&ndash;&gt;-->
         <!--<dependency>-->
-            <!--<groupId>javax.xml.bind</groupId>-->
-            <!--<artifactId>jaxb-api</artifactId>-->
+            <!--<groupId>com.gexin.platform</groupId>-->
+            <!--<artifactId>gexin-rp-sdk-http</artifactId>-->
+            <!--<version>4.0.1.7</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>com.sun.xml.bind</groupId>-->
-            <!--<artifactId>jaxb-impl</artifactId>-->
-            <!--<version>2.3.0</version>-->
+            <!--<groupId>commons-io.com.gexin.platform</groupId>-->
+            <!--<artifactId>gexin-rp-sdk-template</artifactId>-->
+            <!--<version>4.0.0.6</version>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.glassfish.jaxb</groupId>-->
-            <!--<artifactId>jaxb-runtime</artifactId>-->
-            <!--<version>2.3.0</version>-->
+            <!--<groupId>commons-io.com.gexin.platform</groupId>-->
+            <!--<artifactId>gexin-rp-sdk-base</artifactId>-->
+            <!--<version>4.0.0.12</version>-->
         <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>javax.activation</groupId>-->
-            <!--<artifactId>activation</artifactId>-->
-            <!--<version>1.1.1</version>-->
-        <!--</dependency>-->
-        <!-- jaxb模块引用 - end -->
     </dependencies>
 
 </project>

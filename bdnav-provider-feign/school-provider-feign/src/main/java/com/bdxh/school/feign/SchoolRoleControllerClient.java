@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 学校角色feign客户端
@@ -25,7 +26,7 @@ import java.util.List;
 public interface SchoolRoleControllerClient {
 
     /**
-     * 根据用户id查询角色列表
+     * 根据用户id查询角色列表(角色名称)
      *
      * @param userId
      * @return
@@ -33,6 +34,16 @@ public interface SchoolRoleControllerClient {
     @RequestMapping(value = "/schoolRole/findSchoolRolesByUserId", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<String>> findSchoolRolesByUserId(@RequestParam("userId") Long userId);
+
+    /**
+     *  用户id查询，角色id列表
+     *
+     * @param userId
+     * @return
+     */
+    @RequestMapping(value = "/schoolRole/getRoleIdListByUserId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<Long>> getRoleIdListByUserId(@RequestParam("userId") Long userId);
 
     /**
      * 根据id查询角色信息
