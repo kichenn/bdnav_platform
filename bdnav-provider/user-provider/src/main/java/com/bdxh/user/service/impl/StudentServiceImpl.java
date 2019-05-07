@@ -146,6 +146,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
         try {
             Student student = BeanMapUtils.map(updateStudentDto, Student.class);
+            student.getClassNames().trim();
             Boolean stuResult = studentMapper.updateStudentInfo(student) > 0;
             BaseUser updateBaseUserDto = BeanMapUtils.map(updateStudentDto, BaseUser.class);
             Boolean baseUserResult = baseUserMapper.updateBaseUserInfo(updateBaseUserDto) > 0;
@@ -274,6 +275,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public void saveStudent(Student student) {
         student.setId(snowflakeIdWorker.nextId());
         student.setActivate(Byte.valueOf("1"));
+        student.getClassNames().trim();
         Boolean stuResult = studentMapper.insert(student) > 0;
         BaseUser baseUser = BeanMapUtils.map(student, BaseUser.class);
         baseUser.setUserType(1);
@@ -414,4 +416,25 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         }
     }
 
+    @Override
+    public void studentBatchUpdate(List<Student> studentList) {
+        for (Student student : studentList) {
+            studentMapper.updateStudentInfo(student);
+        }
+        JSONObject mesData = new JSONObject();
+        mesData.put("tableName", "t_student");
+        mesData.put("data", studentList);
+        mesData.put("del_flag","0");
+        Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student,String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+        try {
+            defaultMQProducer.send(studentMsg);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Student> findStudentInfoByClassId(String schoolCode, String classIds, String type) {
+        return studentMapper.findStudentInfoByClassId(schoolCode,classIds,type);
+    }
 }

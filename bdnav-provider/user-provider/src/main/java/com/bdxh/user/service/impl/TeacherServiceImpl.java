@@ -150,7 +150,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                             teacherDept.setDeptId(teacherDto.getTeacherDeptDtoList().get(i).getDeptId());
                             teacherDept.setDeptName(teacherDto.getTeacherDeptDtoList().get(i).getDeptName());
                             teacherDept.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
-                            teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
+                            teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames().trim());
                             Boolean terDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
                             if (terDeptResult) {
                                 try {
@@ -219,7 +219,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 teacherDeptDto.setDeptId(Long.parseLong(ids[ids.length - 1]));
                 teacherDeptDto.setDeptName(names[names.length - 1]);
                 teacherDeptDto.setDeptIds(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
-                teacherDeptDto.setDeptNames(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames());
+                teacherDeptDto.setDeptNames(updateTeacherDto.getTeacherDeptDtoList().get(i).getDeptNames().trim());
                 TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
                 Boolean teaDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
                 //推送消息至MQ

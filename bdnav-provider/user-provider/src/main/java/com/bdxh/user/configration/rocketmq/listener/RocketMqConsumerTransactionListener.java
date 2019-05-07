@@ -3,9 +3,11 @@ package com.bdxh.user.configration.rocketmq.listener;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.user.entity.Student;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.service.*;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
 import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
@@ -58,6 +60,17 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
     @Autowired
     private FenceAlarmService fenceAlarmService;
 
+    //学院类型
+    private static final byte COLLEGE_TYPE = 1;
+    //系类型
+    private static final byte FACULTY_TYPE = 2;
+    //专业类型
+    private static final byte PROFESSION_TYPE = 3;
+    //年纪类型
+    private static final byte GRADE_TYPE = 4;
+    //班级类型
+    private static final byte CLASS_TYPE = 5;
+
     /**
      * @Description: 消息监听
      * @Author: Kang
@@ -90,6 +103,10 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 String schoolCode = data.getString("schoolCode");
                                 //部门ID
                                 String deptId = data.getString("id");
+                                //部门IDS
+                                String deptIds = type.equals("1")
+                                        ? data.getString("parentIds").substring(1) + "," + deptId
+                                        : deptId;
                                 List<TeacherDept> teacherDeptList = teacherDeptService.findTeacherDeptsBySchoolCode(schoolCode, deptId, type);
                                 List<TeacherDept> newTeacherDeptList = new ArrayList<>();
                                 for (TeacherDept teacherDept : teacherDeptList) {
@@ -98,44 +115,88 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                         teacherDept.setDeptName(deptName);
                                     }
                                     //如果不是只需要修改deptNames列
-                                    if(type.equals("1")){
-
-                                    }
                                     teacherDept.setDeptNames(deptNames);
                                     newTeacherDeptList.add(teacherDept);
                                 }
                                 teacherDeptService.batchUpdateTeacherDept(newTeacherDeptList);
                                 log.info("我修改了部门");
+                                break;
                             }
                             case RocketMqConstrants.Tags.schoolOrganizationTag_class: {
                                 //父节点
-                                      String parentId = data.getString("parentId").equals("-1")?"0":"1";
-                                //院系路径名称
-                                String deptNames = parentId.equals("1") ?
-                                        data.getString("thisUrl").trim().substring(1) :
-                                        data.getString("thisUrl");
+                                String parentId = data.getString("parentId").equals("-1") ? "0" : "1";
                                 //院系名称
-                                String deptName = data.getString("name");
+                                String className = data.getString("name");
                                 //学校schoolCode
                                 String schoolCode = data.getString("schoolCode");
                                 //院系ID
                                 String deptId = data.getString("id");
                                 //院系类型 1 学院 2 系 3 专业 4 年级 5 班级
-                                Byte type = data.getByte("type");
-                                studentService.findStudentInfoByClassOrg(schoolCode, deptId, type);
+                                byte type = data.getByte("type");
+                                List<Student> studentList = studentService.findStudentInfoByClassId(schoolCode, deptId,parentId);
+                                List<Student> newStudentList = new ArrayList<>();
+                                for (Student student : studentList) {
+                                    switch (type) {
+                                        case COLLEGE_TYPE: {
+                                            student.setCollegeName(className);
+                                            break;
+                                        }
+                                        case FACULTY_TYPE: {
+                                            student.setFacultyName(className);
+                                            break;
+                                        }
+                                        case PROFESSION_TYPE: {
+                                            student.setProfessionName(className);
+                                            break;
+                                        }
+                                        case GRADE_TYPE: {
+                                            student.setGradeName(className);
+                                            break;
+                                        }
+                                        case CLASS_TYPE: {
+                                            student.setClassName(className);
+                                            break;
+                                        }
+                                        default: {
+                                            log.info("未找到对应的组织架构");
+                                        }
+                                        String classNames = null;
+                                        if (StringUtils.isNotEmpty(student.getCollegeName())) {
+                                            className += student.getCollegeName() + "/";
+                                        } else if (StringUtils.isNotEmpty(student.getFacultyName())) {
+                                            className += student.getFacultyName() + "/";
+                                        } else if (StringUtils.isNotEmpty(student.getProfessionName())) {
+                                            className += student.getProfessionName() + "/";
+                                        } else if (StringUtils.isNotEmpty(student.getGradeName())) {
+                                            className += student.getGradeName() + "/";
+                                        } else if (StringUtils.isNotEmpty(student.getClassName())) {
+                                            className += student.getClassName();
+                                        }
+                                        student.setClassNames(classNames);
+                                        newStudentList.add(student);
+                                    }
+                                }
+                                studentService.studentBatchUpdate(newStudentList);
                                 log.info("我修改了班级");
+                                break;
                             }
                             case RocketMqConstrants.Tags.schoolOrganizationTag_school: {
-
+                                log.info("我修改了学校");
+                                break;
+                            }
+                            default: {
+                                log.info("没有对应的tag");
                             }
                         }
+
                     }
                 }
                 log.info("studentService:{}", studentService);
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
                 msg.getTags();
             }
-        } catch (UnsupportedEncodingException e) {
+        } catch (
+                UnsupportedEncodingException e) {
             e.printStackTrace();
             return ConsumeConcurrentlyStatus.RECONSUME_LATER;
         }
