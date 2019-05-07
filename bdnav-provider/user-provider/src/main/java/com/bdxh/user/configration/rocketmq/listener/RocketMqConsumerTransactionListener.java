@@ -146,7 +146,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                             break;
                                         }
                                         case PROFESSION_TYPE: {
-                                            student.setProfessionName(className);
+                                            student.se tProfessionName(className);
                                             break;
                                         }
                                         case GRADE_TYPE: {
