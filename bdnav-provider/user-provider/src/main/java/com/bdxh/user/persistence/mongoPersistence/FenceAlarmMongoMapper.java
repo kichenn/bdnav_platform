@@ -132,12 +132,12 @@ public class FenceAlarmMongoMapper{
      */
     public void updateSchoolName(String schoolCode,String schoolName) {
         Query query =new Query();
-        query.addCriteria(Criteria.where("id").is("school_code").is(schoolCode));
+        query.addCriteria(Criteria.where("school_code").is(schoolCode));
         Update update=new Update();
         if(StringUtils.isNotEmpty(schoolName)){
             update.set("schoolName",schoolName);
         }
-        mongoTemplate.updateFirst(query,update,FenceAlarmMongo.class);
+        mongoTemplate.updateMulti(query,update,FenceAlarmMongo.class);
     }
     /**
      * 删除学生围栏警报数据
