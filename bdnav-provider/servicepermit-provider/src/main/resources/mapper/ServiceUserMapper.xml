@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.servicepermit.persistence.ServiceUserMapper">
+
+    <resultMap id="BaseResultMap" type="com.bdxh.servicepermit.entity.ServiceUser">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+      <!--  <result column="id" jdbcType="BIGINT" property="id"/>-->
+        <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
+        <result column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="family_id" jdbcType="BIGINT" property="familyId"/>
+        <result column="card_number" jdbcType="BIGINT" property="cardNumber"/>
+        <result column="family_name" jdbcType="VARCHAR" property="familyName"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="type" jdbcType="TINYINT" property="type"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+	id,order_no,product_id,school_id,school_code,school_name,family_id,card_number,family_name,start_time,end_time,`status`,`type`,create_date,update_date,operator,operator_name,remark
+	</sql>
+
+    <select id="getServiceUserAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_service_user
+	</select>
+
+    <delete id="delServiceUserInIds" parameterType="Integer">
+        DELETE
+        FROM t_service_user
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
+
+    <select id="getServiceByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_service_user
+        <where>
+            <if test="cardNumber!=null">
+                AND card_number=#{card_number}
+            </if>
+            <if test="familyName!=null and familyName!=''">
+                AND family_name LIKE CONCAT(CONCAT('%',#{familyName},'%'))
+            </if>
+            <if test="schoolCode!=null and schoolCode!=''">
+                AND school_code=#{schoolCode}
+            </if>
+            <if test="status!=null">
+                AND `status`=#{status}
+            </if>
+            <if test="type!=null">
+                AND `type`=#{type}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+
+    <delete id="deleteByServiceId" parameterType="java.util.Map">
+		DELETE FROM t_service_user WHERE school_code=#{SchoolCode} AND card_number=#{cardNumber} AND id=#{id}
+	</delete>
+
+
+
+</mapper>
