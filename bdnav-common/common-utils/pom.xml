@@ -121,17 +121,30 @@
         <dependency>
             <groupId>com.gexin.platform</groupId>
             <artifactId>gexin-rp-sdk-http</artifactId>
-            <version>4.0.1.7</version>
+            <version>4.0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/gexin-rp-sdk-http-4.1.0.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.gexin.platform</groupId>
             <artifactId>gexin-rp-sdk-template</artifactId>
-            <version>4.0.0.6</version>
+            <version>4.0.0.20</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/gexin-rp-sdk-template-4.0.0.20.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>com.gexin.platform</groupId>
             <artifactId>gexin-rp-sdk-base</artifactId>
-            <version>4.0.0.12</version>
+            <version>4.0.0.26</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/gexin-rp-sdk-base-4.0.0.26.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>com.gexin.platform</groupId>
+            <artifactId>gexin-rp-fastjson</artifactId>
+            <version>1.0.0.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/lib/gexin-rp-fastjson-1.0.0.1.jar</systemPath>
         </dependency>
     </dependencies>
 
