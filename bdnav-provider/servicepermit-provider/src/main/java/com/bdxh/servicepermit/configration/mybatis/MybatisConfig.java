@@ -44,6 +44,7 @@ public class MybatisConfig {
         return DruidDataSourceBuilder.create().build();
     }
 
+
     @Bean(name = "shardingDataSource")
     @Primary
     public DataSource getDataSource(@Qualifier("dataSource0") DataSource dataSource0, @Qualifier("dataSource1") DataSource dataSource1) throws SQLException {
@@ -106,8 +107,8 @@ public class MybatisConfig {
     @Bean
     public TableRuleConfiguration getStudentTableRuleConfiguration() {
         TableRuleConfiguration result = new TableRuleConfiguration();
-        result.setLogicTable("t_service_used");
-        result.setActualDataNodes("ds_${0..1}.t_service_used${0..3}");
+        result.setLogicTable("t_service_user");
+        result.setActualDataNodes("ds_${0..1}.t_service_user${0..3}");
         result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
         result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
         return result;
