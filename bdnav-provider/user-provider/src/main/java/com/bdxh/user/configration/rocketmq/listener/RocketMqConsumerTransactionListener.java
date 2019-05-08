@@ -175,8 +175,6 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 String schoolName = data.getString("schoolName");
                                 studentService.updateSchoolName(schoolCode, schoolName);
 
-                                visitLogsService.updateSchoolName(schoolCode, schoolName);
-
                                 teacherService.updateSchoolName(schoolCode, schoolName);
 
                                 familyService.updateSchoolName(schoolCode, schoolName);
@@ -184,6 +182,8 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 baseUserService.updateSchoolName(schoolCode, schoolName);
 
                                 fenceAlarmService.updateSchoolName(schoolCode, schoolName);
+
+                                visitLogsService.updateSchoolName(schoolCode, schoolName);
                                 log.info("我修改了学校");
                                 break;
                             }
@@ -191,7 +191,6 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 log.info("没有对应的tag");
                             }
                         }
-
                     }
                 }
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);

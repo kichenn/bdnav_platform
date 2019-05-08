@@ -90,8 +90,6 @@ public class VisitLogsMongoMapper {
         }
         VisitLogsVo visitLogsVo=BeanMapUtils.map(visitLogsMongo,VisitLogsVo.class);
         return visitLogsVo;
-
-
     }
 
     /**
@@ -114,7 +112,7 @@ public class VisitLogsMongoMapper {
             update.set("remark",visitLogsMongo.getRemark());
         }
         update.set("update_date",visitLogsMongo.getUpdateDate());
-        mongoTemplate.updateFirst(query,update,VisitLogsMongo.class);
+        mongoTemplate.upsert(query,update,VisitLogsMongo.class);
     }
 
     /**
@@ -124,12 +122,12 @@ public class VisitLogsMongoMapper {
      */
     public void updateSchoolName(String schoolCode,String schoolName) {
         Query query =new Query();
-        query.addCriteria(Criteria.where("id").is("school_code").is(schoolCode));
+        query.addCriteria(Criteria.where("school_code").is(schoolCode));
         Update update=new Update();
         if(StringUtils.isNotEmpty(schoolName)){
-            update.set("schoolName",schoolName);
+            update.set("school_name",schoolName);
         }
-        mongoTemplate.updateFirst(query,update,VisitLogsMongo.class);
+        mongoTemplate.updateMulti (query,update,VisitLogsMongo.class);
     }
     /**
      * 删除学生浏览网页数据
