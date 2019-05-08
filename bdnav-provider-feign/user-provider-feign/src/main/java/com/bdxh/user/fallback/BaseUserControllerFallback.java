@@ -2,6 +2,7 @@ package com.bdxh.user.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
@@ -33,6 +34,16 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
 
     @Override
     public Wrapper<List<BaseUser>> findAllBaseUserInfo() {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<BaseUser> queryBaseUserBySchoolCodeAndCardNumber(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<Boolean> baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
         return WrapMapper.error();
     }
 }

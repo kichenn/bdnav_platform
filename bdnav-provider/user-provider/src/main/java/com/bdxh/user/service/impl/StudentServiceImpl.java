@@ -62,12 +62,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Autowired
     private DefaultMQProducer defaultMQProducer;
 
-    @Autowired
-    private RocketMqConsumerProperties rocketMqConsumerProperties;
-
-    @Autowired
-    private DefaultMQPushConsumer defaultMQPushConsumer;
-
     /**
      * 查询所有学生
      *
@@ -313,7 +307,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     @Transactional
     public void batchSaveStudentInfo(List<AddStudentDto> addStudentDtoList) {
-
         List<Student> studentList = BeanMapUtils.mapList(addStudentDtoList, Student.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(studentList, BaseUser.class);
         for (int i = 0; i < baseUserList.size(); i++) {
@@ -367,55 +360,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     public List<Student> findStudentInfoByClassOrg(String schoolCode, String parentIds, Byte type) {
         return studentMapper.findStudentInfoByClassOrg(schoolCode, parentIds, type);
-    }
-
-    /**
-     * 学生激活信息同步微校且绑定
-     */
-    @Override
-    public void studentInfoActivation(UpdateStudentDto updateStudentDto) {
-        try {
-            Student student = BeanMapUtils.map(updateStudentDto, Student.class);
-            studentMapper.updateStudentInfo(student);
-            Student studentInfo = studentMapper.findStudentInfo(updateStudentDto.getSchoolCode(), updateStudentDto.getCardNumber());
-            SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-            synUserInfoRequest.setSchool_code(studentInfo.getSchoolCode());
-            synUserInfoRequest.setCard_number(studentInfo.getCardNumber());
-            synUserInfoRequest.setName(studentInfo.getName());
-            synUserInfoRequest.setGender(studentInfo.getGender() == 1 ? "男" : "女");
-            if (updateStudentDto.getSchoolType() >= Byte.parseByte("4")) {
-                synUserInfoRequest.setClass_name(studentInfo.getClassName());
-                synUserInfoRequest.setGrade(studentInfo.getGradeName());
-                synUserInfoRequest.setCollege(studentInfo.getCollegeName());
-                synUserInfoRequest.setProfession(studentInfo.getProfessionName());
-            } else {
-                synUserInfoRequest.setClass_name(studentInfo.getClassName());
-                synUserInfoRequest.setGrade(studentInfo.getGradeName());
-            }
-            synUserInfoRequest.setReal_name_verify(Byte.valueOf("0"));
-            synUserInfoRequest.setOrganization(studentInfo.getClassNames());
-            synUserInfoRequest.setTelephone(studentInfo.getPhone());
-            synUserInfoRequest.setCard_type("1");
-            synUserInfoRequest.setId_card(studentInfo.getIdcard());
-            synUserInfoRequest.setHead_image(studentInfo.getImage());
-            synUserInfoRequest.setIdentity_type(AuthenticationConstant.STUDENT);
-            synUserInfoRequest.setNation(studentInfo.getNationName());
-            synUserInfoRequest.setQq(studentInfo.getQqNumber());
-            synUserInfoRequest.setAddress(studentInfo.getAdress());
-            synUserInfoRequest.setEmail(studentInfo.getEmail());
-            synUserInfoRequest.setPhysical_card_number(studentInfo.getPhysicalNumber());
-            synUserInfoRequest.setPhysical_chip_number(studentInfo.getPhysicalChipNumber());
-            synUserInfoRequest.setDorm_number(studentInfo.getDormitoryAddress());
-            synUserInfoRequest.setCampus(studentInfo.getCampusName());
-            String result = AuthenticationUtils.authUserInfo(synUserInfoRequest, updateStudentDto.getAppKey(), updateStudentDto.getAppSecret(), updateStudentDto.getState());
-            JSONObject jsonObject = JSONObject.parseObject(result);
-            if (!jsonObject.get("errcode").equals(0)) {
-                throw new Exception("激活失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + updateStudentDto.getCardNumber() + "学校名称=" + updateStudentDto.getSchoolName());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-            log.info("用户激活失败");
-        }
     }
 
     @Override

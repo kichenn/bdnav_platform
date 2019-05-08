@@ -12,7 +12,7 @@ import java.util.Date;
  * @create: 2019-03-11 19:08
  **/
 @Data
-public class UpdateStudentDto extends BaseDto implements Serializable {
+public class UpdateStudentDto extends WeiXiaoDto implements Serializable {
 
 
     private static final long serialVersionUID = 7186246502445878875L;

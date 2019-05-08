@@ -1,6 +1,7 @@
 package com.bdxh.user.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.BaseUser;
@@ -76,4 +77,10 @@ public interface BaseUserService extends IService<BaseUser> {
      * @param schoolName
      */
     void updateSchoolName(String schoolCode,String schoolName);
+
+    /**
+     * 校方页面认证激活用户并同步信息
+     * @param activationBaseUserDto
+     */
+    Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto);
 }
