@@ -1,12 +1,13 @@
 package com.bdxh.backend.controller.order;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.OrderAddDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.feign.OrdersControllerClient;
-import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -36,14 +37,6 @@ public class OrderWebController {
 
     @Autowired
     private OrdersControllerClient oControllerClient;
-
-/*
-    @Autowired
-    private SchoolControllerClient schoolControllerClient;
-*/
-
-  /*  @Autowired
-    private FamilyControllerClient familyControllerClient;*/
 
 
 
@@ -91,6 +84,9 @@ public class OrderWebController {
         }
 
         try {
+            User user = SecurityUtils.getCurrentUser();
+            orderDto.setOperator(user.getId());
+            orderDto.setOperatorName(user.getUserName());
             Wrapper wrapper = oControllerClient.createOrder(orderDto);
             return wrapper;
         } catch (Exception e) {
@@ -111,6 +107,9 @@ public class OrderWebController {
         }
 
         try {
+            User user = SecurityUtils.getCurrentUser();
+            orderUpdateDto.setOperator(user.getId());
+            orderUpdateDto.setOperatorName(user.getUserName());
             Wrapper wrapper = oControllerClient.updateOrder(orderUpdateDto);
             return wrapper;
         } catch (Exception e) {

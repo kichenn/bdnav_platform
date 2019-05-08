@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 * @Date 2019-04-26 10:26:58
 */
 @RestController
-@RequestMapping("/serviceUsed")
+@RequestMapping("/serviceUser")
 @Slf4j
 @Validated
 @Api(value = "用户服务认证控制器", tags = "用户服务认证交互API")
@@ -115,9 +115,9 @@ public class ServiceUserController {
 
 	@ApiOperation("删除用户许可")
 	@RequestMapping(value = "/deleteService", method = RequestMethod.GET)
-	public Object deleteService(@RequestParam("schoolCode") @NotNull(message = "schoolCode不能为空") String schoolCode,
-							  @RequestParam("cardNumber") @NotNull(message = "家长号不能为空") Long cardNumber,
-							  @RequestParam(name = "id") @NotNull(message = "服务id不能为空") Long id) {
+	public Object deleteService(@RequestParam("schoolCode") String schoolCode,
+							  @RequestParam("cardNumber")  Long cardNumber,
+							  @RequestParam(name = "id") Long id) {
 		try {
 			Boolean result = serviceUserService.deleteByServiceId(schoolCode,cardNumber,id);
 			return WrapMapper.ok(result);
