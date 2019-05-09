@@ -16,6 +16,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +28,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @description: 账户管理控制器
- * @author: xuyuan
- * @create: 2019-03-06 10:38
- **/
+ * @Description: 账户管理控制器
+ * @Author: Kang
+ * @Date: 2019/5/9 17:04
+ */
 @RestController
 @RequestMapping("/account")
 @Slf4j
@@ -53,6 +54,8 @@ public class AccountController {
         Account accountData = accountService.selectOne(account);
         Preconditions.checkArgument(accountData == null, "账户已存在");
         BeanMapUtils.copy(addAccountDto, account);
+        //密码加密
+        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
         account.setId(snowflakeIdWorker.nextId());
         return WrapMapper.ok(accountService.save(account) > 0);
     }
@@ -62,6 +65,8 @@ public class AccountController {
     public Object updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto) {
         Account account = new Account();
         BeanUtils.copyProperties(updateAccountDto, account);
+        //密码加密
+        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
         return WrapMapper.ok(accountService.updateAccount(account));
     }
 

@@ -17,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description: 账户管理service实现
- * @author: xuyuan
- * @create: 2019-03-04 17:42
- **/
+ * @Description: 账户管理service实现
+ * @Author: Kang
+ * @Date: 2019/5/9 17:04
+ */
 @Service
 @Slf4j
 public class AccountServiceImpl extends BaseService<Account> implements AccountService {

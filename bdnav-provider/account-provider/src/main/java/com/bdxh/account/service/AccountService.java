@@ -9,10 +9,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description: 账户管理service
- * @author: xuyuan
- * @create: 2019-03-04 17:31
- **/
+ * @Description: 账户管理service
+ * @Author: Kang
+ * @Date: 2019/5/9 17:04
+ */
 public interface AccountService extends IService<Account> {
 
     /**
