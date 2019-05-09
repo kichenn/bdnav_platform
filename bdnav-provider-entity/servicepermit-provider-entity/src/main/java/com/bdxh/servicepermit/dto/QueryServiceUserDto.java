@@ -8,7 +8,7 @@ import lombok.Data;
 public class QueryServiceUserDto extends Query {
 
     @ApiModelProperty("家长号")
-    private Long cardNumber;
+    private String cardNumber;
 
     @ApiModelProperty("学校编码")
     private String schoolCode;
