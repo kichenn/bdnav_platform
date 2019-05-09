@@ -6,6 +6,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolUserControllerClient;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -22,10 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/yuanJingDaLogin")
 @Validated
-@Api(value = "系统集成远景达系统API", tags = "系统集成远景达系统API")
-public class YuanJingDaLogin {
+@Api(value = "集成远景达系统API", tags = "集成远景达系统API")
+public class YuanJingDaLogin{
     @Autowired
     private SchoolUserControllerClient schoolUserControllerClient;
+    @ApiOperation("获取登录参数接口")
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public Object login(){
         SchoolUser schoolUser=SecurityUtils.getCurrentUser();
