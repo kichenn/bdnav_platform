@@ -42,8 +42,8 @@ public class ServiceUserController {
 
 	//带条件分页所有
 	@ApiOperation("带条件分页查询")
-	@RequestMapping(value = "/queryUserOrder", method = RequestMethod.POST)
-	public Object queryUserOrder(@Valid @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
+	@RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
+	public Object queryServiceUser(@Valid @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
 		//检验参数
 		if(bindingResult.hasErrors()){
 			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
