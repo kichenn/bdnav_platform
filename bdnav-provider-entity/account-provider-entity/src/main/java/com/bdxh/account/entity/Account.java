@@ -80,6 +80,7 @@ public class Account implements Serializable {
     /**
      * 密码
      */
+    @Column(name ="password")
     private String password;
 
     /**

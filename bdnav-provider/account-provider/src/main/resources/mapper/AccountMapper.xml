@@ -42,7 +42,7 @@
                 user_phone = #{account.userPhone},
             </if>
             <if test="account.password!=null and account.password!=''">
-                password = #{password},
+                password = #{account.password},
             </if>
             <if test="account.accountExpired!=null">
                 account_expired = #{account.accountExpired},
