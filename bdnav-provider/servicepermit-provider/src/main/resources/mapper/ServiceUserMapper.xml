@@ -50,7 +50,7 @@
         FROM t_service_user
         <where>
             <if test="cardNumber!=null">
-                AND card_number=#{card_number}
+                AND card_number=#{cardNumber}
             </if>
             <if test="familyName!=null and familyName!=''">
                 AND family_name LIKE CONCAT(CONCAT('%',#{familyName},'%'))
