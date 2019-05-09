@@ -6,6 +6,9 @@ import io.shardingsphere.api.algorithm.sharding.standard.PreciseShardingAlgorith
 
 import java.util.Collection;
 
+/**
+ * 分库算法
+ */
 public class DatabaseShardingAlgorithm implements PreciseShardingAlgorithm<String> {
     @Override
     public String doSharding(Collection<String> collection, PreciseShardingValue<String> preciseShardingValue) {

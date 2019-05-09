@@ -42,7 +42,7 @@ public class OrderWebController {
 
     @ApiOperation("查询订单")
     @RequestMapping(value = "/queryUserOrder", method = RequestMethod.POST)
-    public Object queryUserOrder(@Valid @RequestBody OrderQueryDto orderDto, BindingResult bindingResult){
+    public Object queryUserOrder(@Validated @RequestBody OrderQueryDto orderDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -76,7 +76,7 @@ public class OrderWebController {
 
     @ApiOperation("添加订单")
     @RequestMapping(value = "/addOrder", method = RequestMethod.POST)
-    public Object addOrder(@Valid @RequestBody OrderAddDto orderDto, BindingResult bindingResult){
+    public Object addOrder(@Validated @RequestBody OrderAddDto orderDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -99,7 +99,7 @@ public class OrderWebController {
 
     @ApiOperation("更新订单")
     @RequestMapping(value = "/updateOrder", method = RequestMethod.POST)
-    public Object updateOrder(@Valid @RequestBody OrderUpdateDto orderUpdateDto, BindingResult bindingResult){
+    public Object updateOrder(@Validated @RequestBody OrderUpdateDto orderUpdateDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));

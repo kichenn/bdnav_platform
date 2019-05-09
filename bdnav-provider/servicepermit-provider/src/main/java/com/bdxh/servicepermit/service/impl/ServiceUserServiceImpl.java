@@ -54,7 +54,7 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
 
 	@Override
 	@Transactional(rollbackFor = Exception.class)
-	public Boolean deleteByServiceId(String SchoolCode, Long cardNumber, Long id) {
+	public Boolean deleteByServiceId(String SchoolCode, String cardNumber, Long id) {
 		return serviceUserMapper.deleteByServiceId(SchoolCode,cardNumber,id)>0;
 	}
 

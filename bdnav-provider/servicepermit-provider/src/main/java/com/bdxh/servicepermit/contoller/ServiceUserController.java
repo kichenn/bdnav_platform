@@ -116,7 +116,7 @@ public class ServiceUserController {
 	@ApiOperation("删除用户许可")
 	@RequestMapping(value = "/deleteService", method = RequestMethod.GET)
 	public Object deleteService(@RequestParam("schoolCode") String schoolCode,
-							  @RequestParam("cardNumber")  Long cardNumber,
+							  @RequestParam("cardNumber")  String cardNumber,
 							  @RequestParam(name = "id") Long id) {
 		try {
 			Boolean result = serviceUserService.deleteByServiceId(schoolCode,cardNumber,id);

@@ -37,7 +37,7 @@ public interface ServiceUserMapper extends Mapper<ServiceUser> {
 	List<ServiceUser> getServiceByCondition(Map<String,Object> param);
 
 
-	Integer deleteByServiceId(@Param("SchoolCode")String SchoolCode,@Param("cardNumber") Long cardNumber,@Param("id")Long id);
+	Integer deleteByServiceId(@Param("SchoolCode")String SchoolCode,@Param("cardNumber") String cardNumber,@Param("id")Long id);
 
 
 
