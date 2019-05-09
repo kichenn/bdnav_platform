@@ -34,29 +34,29 @@ public class AccountWebController {
     @Autowired
     private AccountControllerClient accountControllerClient;
 
-    @ApiOperation(value = "增加账户信息", response = Boolean.class)
-    @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
-    public Object addAccount(@Valid @RequestBody AddAccountDto addAccountDto) {
-        //设置账户学校信息
-        SchoolUser user = SecurityUtils.getCurrentUser();
-        addAccountDto.setSchoolId(user.getSchoolId());
-        addAccountDto.setSchoolCode(user.getSchoolCode());
-        return accountControllerClient.addAccount(addAccountDto);
-    }
-
-    @ApiOperation(value = "修改账户信息", response = Boolean.class)
-    @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
-    public Object updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto) {
-        return accountControllerClient.updateAccount(updateAccountDto);
-    }
-
-    @ApiOperation(value = "修改账户登录名", response = Boolean.class)
-    @RequestMapping(value = "/updateLoginName", method = RequestMethod.POST)
-    public Object updateLoginName(@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
-                                  @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber,
-                                  @RequestParam("loginName") @NotEmpty(message = "登录名不能为空") String loginName) {
-        return accountControllerClient.updateLoginName(schoolCode, cardNumber, loginName);
-    }
+//    @ApiOperation(value = "增加账户信息", response = Boolean.class)
+//    @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
+//    public Object addAccount(@Valid @RequestBody AddAccountDto addAccountDto) {
+//        //设置账户学校信息
+//        SchoolUser user = SecurityUtils.getCurrentUser();
+//        addAccountDto.setSchoolId(user.getSchoolId());
+//        addAccountDto.setSchoolCode(user.getSchoolCode());
+//        return accountControllerClient.addAccount(addAccountDto);
+//    }
+//
+//    @ApiOperation(value = "修改账户信息", response = Boolean.class)
+//    @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
+//    public Object updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto) {
+//        return accountControllerClient.updateAccount(updateAccountDto);
+//    }
+//
+//    @ApiOperation(value = "修改账户登录名", response = Boolean.class)
+//    @RequestMapping(value = "/updateLoginName", method = RequestMethod.POST)
+//    public Object updateLoginName(@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
+//                                  @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber,
+//                                  @RequestParam("loginName") @NotEmpty(message = "登录名不能为空") String loginName) {
+//        return accountControllerClient.updateLoginName(schoolCode, cardNumber, loginName);
+//    }
 
     @ApiOperation(value = "查询账户信息", response = Account.class)
     @RequestMapping(value = "/queryAccount", method = RequestMethod.GET)
