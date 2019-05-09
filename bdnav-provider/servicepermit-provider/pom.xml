@@ -88,7 +88,7 @@
                             <addClasspath>true</addClasspath>
                             <useUniqueVersions>false</useUniqueVersions>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.bdxh.school.SchoolApplication</mainClass>
+                            <mainClass>com.bdxh.servicepermit.ServicePermitApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -120,7 +120,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>school-provider1</finalName>
+        <finalName>servicepermit-provider1</finalName>
     </build>
 
 </project>

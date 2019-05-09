@@ -18,6 +18,12 @@ public class Account implements Serializable {
     private Long id;
 
     /**
+     * 学校id
+     */
+    @Column(name = "school_id")
+    private Long schoolId;
+
+    /**
      * 学校编码
      */
     @Column(name = "school_code")
@@ -74,6 +80,7 @@ public class Account implements Serializable {
     /**
      * 密码
      */
+    @Column(name ="password")
     private String password;
 
     /**
@@ -116,6 +123,25 @@ public class Account implements Serializable {
      */
     public void setId(Long id) {
         this.id = id;
+    }
+
+
+    /**
+     * 获取学校id
+     *
+     * @return id - 主键
+     */
+    public Long getSchoolId() {
+        return schoolId;
+    }
+
+    /**
+     * 设置学校id
+     *
+     * @param schoolId 主键
+     */
+    public void setSchoolId(Long schoolId) {
+        this.schoolId = schoolId;
     }
 
     /**

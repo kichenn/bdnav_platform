@@ -39,7 +39,7 @@ public interface ServiceUserService extends IService<ServiceUser> {
 	 * @param id
 	 * @return
 	 */
-	Boolean deleteByServiceId(String SchoolCode,Long cardNumber,Long id);
+	Boolean deleteByServiceId(String SchoolCode,String cardNumber,Long id);
 
 
 }

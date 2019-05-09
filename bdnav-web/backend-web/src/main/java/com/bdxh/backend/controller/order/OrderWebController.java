@@ -1,12 +1,13 @@
 package com.bdxh.backend.controller.order;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.OrderAddDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.feign.OrdersControllerClient;
-import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,19 +38,11 @@ public class OrderWebController {
     @Autowired
     private OrdersControllerClient oControllerClient;
 
-/*
-    @Autowired
-    private SchoolControllerClient schoolControllerClient;
-*/
-
-  /*  @Autowired
-    private FamilyControllerClient familyControllerClient;*/
-
 
 
     @ApiOperation("查询订单")
     @RequestMapping(value = "/queryUserOrder", method = RequestMethod.POST)
-    public Object queryUserOrder(@Valid @RequestBody OrderQueryDto orderDto, BindingResult bindingResult){
+    public Object queryUserOrder(@Validated @RequestBody OrderQueryDto orderDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -83,7 +76,7 @@ public class OrderWebController {
 
     @ApiOperation("添加订单")
     @RequestMapping(value = "/addOrder", method = RequestMethod.POST)
-    public Object addOrder(@Valid @RequestBody OrderAddDto orderDto, BindingResult bindingResult){
+    public Object addOrder(@Validated @RequestBody OrderAddDto orderDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -91,6 +84,9 @@ public class OrderWebController {
         }
 
         try {
+            User user = SecurityUtils.getCurrentUser();
+            orderDto.setOperator(user.getId());
+            orderDto.setOperatorName(user.getUserName());
             Wrapper wrapper = oControllerClient.createOrder(orderDto);
             return wrapper;
         } catch (Exception e) {
@@ -103,7 +99,7 @@ public class OrderWebController {
 
     @ApiOperation("更新订单")
     @RequestMapping(value = "/updateOrder", method = RequestMethod.POST)
-    public Object updateOrder(@Valid @RequestBody OrderUpdateDto orderUpdateDto, BindingResult bindingResult){
+    public Object updateOrder(@Validated @RequestBody OrderUpdateDto orderUpdateDto, BindingResult bindingResult){
         //检验参数
         if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -111,6 +107,9 @@ public class OrderWebController {
         }
 
         try {
+            User user = SecurityUtils.getCurrentUser();
+            orderUpdateDto.setOperator(user.getId());
+            orderUpdateDto.setOperatorName(user.getUserName());
             Wrapper wrapper = oControllerClient.updateOrder(orderUpdateDto);
             return wrapper;
         } catch (Exception e) {

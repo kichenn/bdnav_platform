@@ -1,5 +1,6 @@
 package com.bdxh.account.service.impl;
 
+import com.bdxh.account.dto.AccountQueryDto;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.persistence.AccountMapper;
 import com.bdxh.account.service.AccountService;
@@ -8,6 +9,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description: 账户管理service实现
- * @author: xuyuan
- * @create: 2019-03-04 17:42
- **/
+ * @Description: 账户管理service实现
+ * @Author: Kang
+ * @Date: 2019/5/9 17:04
+ */
 @Service
 @Slf4j
 public class AccountServiceImpl extends BaseService<Account> implements AccountService {
@@ -33,29 +35,31 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
     }
 
     @Override
-    public List<Account> queryAccountList(Map<String, Object> param) {
-        List<Account> accounts = accountMapper.getByCondition(param);
+    public List<Account> queryAccountList(Account account) {
+        List<Account> accounts = accountMapper.getByCondition(account);
         return accounts;
     }
 
     @Override
-    public PageInfo<Account> queryAccountListPage(Map<String, Object> param, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<Account> accounts = accountMapper.getByCondition(param);
+    public PageInfo<Account> queryAccountListPage(AccountQueryDto accountQueryDto) {
+        Account account = new Account();
+        BeanUtils.copyProperties(accountQueryDto, account);
+        PageHelper.startPage(accountQueryDto.getPageNum(), accountQueryDto.getPageSize());
+        List<Account> accounts = accountMapper.getByCondition(account);
         PageInfo<Account> pageInfo = new PageInfo<>(accounts);
         return pageInfo;
     }
 
     @Override
     public int updateLoginName(String schoolCode, String cardNumber, String loginName) {
-        int result = accountMapper.updateLoginName(schoolCode,cardNumber,loginName);
-        Preconditions.checkArgument(result == 1,"修改用户名失败");
+        int result = accountMapper.updateLoginName(schoolCode, cardNumber, loginName);
+        Preconditions.checkArgument(result == 1, "修改用户名失败");
         return result;
     }
 
     @Override
-    public void updateAccount(Map<String, Object> param) {
-        accountMapper.updateAccount(param);
+    public boolean updateAccount(Account account) {
+        return accountMapper.updateAccount(account) > 0;
     }
 
 }

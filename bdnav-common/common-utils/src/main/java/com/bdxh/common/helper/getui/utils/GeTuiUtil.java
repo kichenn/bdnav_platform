@@ -189,10 +189,10 @@ public class GeTuiUtil {
         appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
 
         //单发普通模版
-//        Map<String, Object> resultMap = appPush(appPushRequest);
+        Map<String, Object> resultMap = appPush(appPushRequest);
 
         //群发穿透模版
-        Map<String, Object> resultMap = appBatchPush(appPushRequest);
+//        Map<String, Object> resultMap = appBatchPush(appPushRequest);
 
         System.out.println(resultMap.toString());
     }

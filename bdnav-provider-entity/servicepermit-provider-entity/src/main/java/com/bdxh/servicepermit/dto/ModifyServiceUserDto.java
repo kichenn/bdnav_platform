@@ -35,7 +35,7 @@ public class ModifyServiceUserDto {
 
 
     @ApiModelProperty("家长号")
-    private Long cardNumber;
+    private String cardNumber;
 
 
     @ApiModelProperty("家长姓名")

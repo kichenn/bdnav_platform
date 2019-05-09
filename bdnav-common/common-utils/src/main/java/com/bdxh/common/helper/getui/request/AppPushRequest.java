@@ -4,6 +4,7 @@ import com.bdxh.common.helper.getui.entity.AppLinkTemplate;
 import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -12,7 +13,9 @@ import java.util.List;
  * @Date: 2019/5/8 11:08
  */
 @Data
-public class AppPushRequest {
+public class AppPushRequest implements Serializable {
+
+    private static final long serialVersionUID = 7708321604485028623L;
 
     /**
      * getui APPID

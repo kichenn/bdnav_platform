@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 * @Date 2019-04-26 10:26:58
 */
 @RestController
-@RequestMapping("/serviceUsed")
+@RequestMapping("/serviceUser")
 @Slf4j
 @Validated
 @Api(value = "用户服务认证控制器", tags = "用户服务认证交互API")
@@ -42,8 +42,8 @@ public class ServiceUserController {
 
 	//带条件分页所有
 	@ApiOperation("带条件分页查询")
-	@RequestMapping(value = "/queryUserOrder", method = RequestMethod.POST)
-	public Object queryUserOrder(@Valid @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
+	@RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
+	public Object queryServiceUser(@Valid @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
 		//检验参数
 		if(bindingResult.hasErrors()){
 			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
@@ -115,9 +115,9 @@ public class ServiceUserController {
 
 	@ApiOperation("删除用户许可")
 	@RequestMapping(value = "/deleteService", method = RequestMethod.GET)
-	public Object deleteService(@RequestParam("schoolCode") @NotNull(message = "schoolCode不能为空") String schoolCode,
-							  @RequestParam("cardNumber") @NotNull(message = "家长号不能为空") Long cardNumber,
-							  @RequestParam(name = "id") @NotNull(message = "服务id不能为空") Long id) {
+	public Object deleteService(@RequestParam("schoolCode") String schoolCode,
+							  @RequestParam("cardNumber")  String cardNumber,
+							  @RequestParam(name = "id") Long id) {
 		try {
 			Boolean result = serviceUserService.deleteByServiceId(schoolCode,cardNumber,id);
 			return WrapMapper.ok(result);

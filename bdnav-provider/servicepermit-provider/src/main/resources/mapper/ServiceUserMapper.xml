@@ -11,7 +11,7 @@
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
         <result column="family_id" jdbcType="BIGINT" property="familyId"/>
-        <result column="card_number" jdbcType="BIGINT" property="cardNumber"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
         <result column="family_name" jdbcType="VARCHAR" property="familyName"/>
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
@@ -50,7 +50,7 @@
         FROM t_service_user
         <where>
             <if test="cardNumber!=null">
-                AND card_number=#{card_number}
+                AND card_number=#{cardNumber}
             </if>
             <if test="familyName!=null and familyName!=''">
                 AND family_name LIKE CONCAT(CONCAT('%',#{familyName},'%'))

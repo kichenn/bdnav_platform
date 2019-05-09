@@ -43,7 +43,7 @@ public class ServiceUser {
     private Long familyId;
 
     @Column(name = "card_number")
-    private Long cardNumber;
+    private String cardNumber;
 
     @Column(name = "family_name")
     private String familyName;
