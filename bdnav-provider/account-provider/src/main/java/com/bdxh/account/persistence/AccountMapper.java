@@ -13,13 +13,14 @@ public interface AccountMapper extends Mapper<Account> {
 
     /**
      * 根据条件查询账户信息列表
-     * @param param
+     *
      * @return
      */
-    List<Account> getByCondition(Map<String,Object> param);
+    List<Account> getByCondition(@Param("account") Account account);
 
     /**
      * 查询账户信息
+     *
      * @param schoolCode
      * @param cardNumber
      * @return
@@ -29,16 +30,16 @@ public interface AccountMapper extends Mapper<Account> {
 
     /**
      * 修改用户名
+     *
      * @param schoolCode
      * @param cardNumber
      * @param loginName
      */
-    int updateLoginName(@Param("schoolCode") String schoolCode,@Param("cardNumber") String cardNumber,@Param("loginName") String loginName);
+    int updateLoginName(@Param("schoolCode") String schoolCode, @Param("cardNumber") String cardNumber, @Param("loginName") String loginName);
 
     /**
      * 更新账户信息
-     * @param param
      */
-    void updateAccount(Map<String,Object> param);
+    int updateAccount(@Param("account") Account account);
 
 }

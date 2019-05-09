@@ -29,7 +29,7 @@ public class AddAccountDto implements Serializable {
     private String schoolName;
 
     @ApiModelProperty("用户类型 1 学生 2 老师 3 家长")
-    private Byte userType = 1;
+    private Byte userType;
 
     @ApiModelProperty("用户信息id")
     private Long userId;

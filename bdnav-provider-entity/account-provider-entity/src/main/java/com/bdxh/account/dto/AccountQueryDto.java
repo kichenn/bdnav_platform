@@ -26,7 +26,7 @@ public class AccountQueryDto extends Query {
     private String schoolName;
 
     @ApiModelProperty("用户类型 1 学生 2 老师 3 家长")
-    private Byte userType = 1;
+    private Byte userType;
 
     @ApiModelProperty("用户姓名")
     private String userName;

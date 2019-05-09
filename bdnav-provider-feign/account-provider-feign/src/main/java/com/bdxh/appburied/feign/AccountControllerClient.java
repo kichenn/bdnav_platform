@@ -59,7 +59,7 @@ public interface AccountControllerClient {
     /**
      * 查询账户信息列表
      */
-    @RequestMapping(value = "/account/queryAccountList", method = RequestMethod.GET)
+    @RequestMapping(value = "/account/queryAccountList", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<List<Account>> queryAccountList(@Valid @RequestBody AccountQueryDto accountQueryDto);
 

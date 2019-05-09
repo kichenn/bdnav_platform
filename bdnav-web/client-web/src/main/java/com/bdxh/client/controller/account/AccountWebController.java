@@ -66,7 +66,7 @@ public class AccountWebController {
     }
 
     @ApiOperation(value = "查询账户信息列表", response = Account.class)
-    @RequestMapping(value = "/queryAccountList", method = RequestMethod.GET)
+    @RequestMapping(value = "/queryAccountList", method = RequestMethod.POST)
     public Object queryAccountList(@Valid @RequestBody AccountQueryDto accountQueryDto) {
         //设置账户学校信息
         SchoolUser user = SecurityUtils.getCurrentUser();

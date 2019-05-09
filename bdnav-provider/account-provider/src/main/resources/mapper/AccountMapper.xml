@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.account.persistence.AccountMapper">
     <resultMap id="BaseResultMap" type="com.bdxh.account.entity.Account">
-        <!--
-          WARNING - @mbg.generated
-        -->
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
@@ -31,30 +28,30 @@
     where login_name_update = 1 and school_code = #{schoolCode} and card_number = #{cardNumber}
   </update>
 
-    <update id="updateAccount" parameterType="java.util.Map">
+    <update id="updateAccount" parameterType="com.bdxh.account.entity.Account">
         update t_account
         <set>
             update_date = now(),
-            <if test="schoolName!=null and schoolName!=''">
-                school_name = #{schoolName},
+            <if test="account.schoolName!=null and account.schoolName!=''">
+                school_name = #{account.schoolName},
             </if>
-            <if test="userName!=null and userName!=''">
-                user_name = #{userName},
+            <if test="account.userName!=null and account.userName!=''">
+                user_name = #{account.userName},
             </if>
-            <if test="userPhone!=null and userPhone!=''">
-                user_phone = #{userPhone},
+            <if test="account.userPhone!=null and account.userPhone!=''">
+                user_phone = #{account.userPhone},
             </if>
-            <if test="password!=null and password!=''">
+            <if test="account.password!=null and account.password!=''">
                 password = #{password},
             </if>
-            <if test="accountExpired!=null">
-                account_expired = #{accountExpired}
+            <if test="account.accountExpired!=null">
+                account_expired = #{account.accountExpired},
             </if>
-            <if test="accountLocked!=null">
-                account_locked = #{accountLocked}
+            <if test="account.accountLocked!=null">
+                account_locked = #{account.accountLocked}
             </if>
         </set>
-        where school_code = #{schoolCode} and card_number = #{cardNumber}
+        where school_code = #{account.schoolCode} and card_number = #{account.cardNumber}
     </update>
 
     <select id="getAccount" parameterType="java.util.Map" resultMap="BaseResultMap">
@@ -64,43 +61,43 @@
         ORDER BY create_date DESC
     </select>
 
-    <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="getByCondition" resultMap="BaseResultMap">
         select
         <include refid="BaseCloumns"/>
         from t_account
         <where>
-            <if test="schoolId!=null and schoolId!=''">
-                school_id = #{schoolId}
+            <if test="account.schoolId !=null and account.schoolId !=''">
+                school_id = #{account.schoolId}
             </if>
-            <if test="schoolCode!=null and schoolCode!=''">
-                school_code LIKE CONCAT(CONCAT('%',#{schoolCode}),'%')
+            <if test="account.schoolCode!=null and account.schoolCode!=''">
+                AND school_code LIKE CONCAT(CONCAT('%',#{account.schoolCode}),'%')
             </if>
-            <if test="schoolName!=null and schoolName=''">
-                AND school_name LIKE CONCAT(CONCAT('%',#{schoolName}),'%')
+            <if test="account.schoolName!=null and account.schoolName!=''">
+                AND school_name LIKE CONCAT(CONCAT('%',#{account.schoolName}),'%')
             </if>
-            <if test="userType!=null">
-                AND user_type = #{userType}
+            <if test="account.userType!=null">
+                AND user_type = #{account.userType}
             </if>
-            <if test="userName!=null and userName=''">
-                AND user_name LIKE CONCAT(CONCAT('%',#{userName}),'%')
+            <if test="account.userName!=null and account.userName!=''">
+                AND user_name LIKE CONCAT(CONCAT('%',#{account.userName}),'%')
             </if>
-            <if test="userPhone!=null and userPhone=''">
-                AND user_phone LIKE CONCAT(CONCAT('%',#{userPhone}),'%')
+            <if test="account.userPhone!=null and account.userPhone!=''">
+                AND user_phone LIKE CONCAT(CONCAT('%',#{account.userPhone}),'%')
             </if>
-            <if test="cardNumber!=null and cardNumber=''">
-                AND card_number = #{cardNumber}
+            <if test="account.cardNumber!=null and account.cardNumber!=''">
+                AND card_number = #{account.cardNumber}
             </if>
-            <if test="loginName!=null and loginName=''">
-                AND login_name LIKE CONCAT(CONCAT('%',#{loginName}),'%')
+            <if test="account.loginName!=null and account.loginName!=''">
+                AND login_name LIKE CONCAT(CONCAT('%',#{account.loginName}),'%')
             </if>
-            <if test="loginNameUpdate!=null and loginNameUpdate=''">
-                AND login_name_update = #{loginNameUpdate}
+            <if test="account.loginNameUpdate!=null and account.loginNameUpdate!=''">
+                AND login_name_update = #{account.loginNameUpdate}
             </if>
-            <if test="accountExpired!=null">
-                AND account_expired = #{accountExpired}
+            <if test="account.accountExpired!=null">
+                AND account_expired = #{account.accountExpired}
             </if>
-            <if test="accountLocked!=null">
-                AND account_locked = #{accountLocked}
+            <if test="account.accountLocked!=null">
+                AND account_locked = #{account.accountLocked}
             </if>
         </where>
 
