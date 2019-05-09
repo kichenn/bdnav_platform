@@ -16,20 +16,20 @@ import com.github.pagehelper.PageInfo;
 public interface ServiceUserControllerClient {
 
 
-        @RequestMapping(value = "/serviceUsed/deleteService", method = RequestMethod.GET)
+        @RequestMapping(value = "/serviceUser/deleteService", method = RequestMethod.GET)
         Wrapper deleteService(@RequestParam(name = "schoolCode") String schoolCode,
                             @RequestParam(name = "cardNumber") Long cardNumber,
                             @RequestParam(name = "id") Long id);
 
 
-        @RequestMapping(value = "/serviceUsed/queryServiceUser",method = RequestMethod.POST)
+        @RequestMapping(value = "/serviceUser/queryServiceUser",method = RequestMethod.POST)
         Wrapper<PageInfo<ServiceUser>> queryServiceUser(@RequestBody QueryServiceUserDto queryServiceUsedDto);
 
 
-        @RequestMapping(value = "/serviceUsed/updateService",method = RequestMethod.POST)
+        @RequestMapping(value = "/serviceUser/updateService",method = RequestMethod.POST)
         Wrapper updateServiceUser(@RequestBody ModifyServiceUserDto modifyServiceUserDto);
 
-        @RequestMapping(value = "/serviceUsed/createService",method = RequestMethod.POST)
+        @RequestMapping(value = "/serviceUser/createService",method = RequestMethod.POST)
         @ResponseBody
         Wrapper createServiceUser(@RequestBody AddServiceUserDto addServiceUserDto);
 
