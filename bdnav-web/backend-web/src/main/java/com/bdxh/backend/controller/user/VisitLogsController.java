@@ -33,24 +33,26 @@ import java.util.stream.Collectors;
 public class VisitLogsController {
     @Autowired
     private VisitLogsControllerClient visitLogsControllerClient;
+
     /**
      * 查询所有浏览网站日志接口
+     *
      * @param visitLogsQueryDto
      * @return
      */
     @ApiOperation("查询所有浏览网站日志接口")
-    @RequestMapping(value = "/getVisitLogsInfos",method = RequestMethod.POST)
-    public Object getVisitLogsInfos(@Valid @RequestBody VisitLogsQueryDto visitLogsQueryDto, BindingResult bindingResult){
+    @RequestMapping(value = "/getVisitLogsInfos", method = RequestMethod.POST)
+    public Object getVisitLogsInfos(@Valid @RequestBody VisitLogsQueryDto visitLogsQueryDto, BindingResult bindingResult) {
         try {
             //检验参数
             if (bindingResult.hasErrors()) {
                 String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
                 return WrapMapper.error(errors);
             }
-            PageInfo<VisitLogsVo> visitLogsPageInfo=visitLogsControllerClient.getVisitLogsInfos(visitLogsQueryDto).getResult();
+            PageInfo<VisitLogsVo> visitLogsPageInfo = visitLogsControllerClient.getVisitLogsInfos(visitLogsQueryDto).getResult();
             log.info(visitLogsPageInfo.toString());
             return WrapMapper.ok(visitLogsPageInfo);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -58,19 +60,20 @@ public class VisitLogsController {
 
     /**
      * 查询单个浏览网站日志接口
+     *
      * @param schoolCode
      * @param cardNumber
      * @param id
      * @return
      */
     @ApiOperation("查询单个浏览网站日志接口")
-    @RequestMapping(value="/getVisitLogsInfo",method = RequestMethod.POST)
-    public Object getVisitLogsInfo(@RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空") String schoolCode,
-                                   @RequestParam(name="cardNumber")@NotNull(message = "cardNumber不能为空")  String cardNumber,
-                                   @RequestParam(name="id") @NotNull(message = "id不能为空")  String id){
+    @RequestMapping(value = "/getVisitLogsInfo", method = RequestMethod.POST)
+    public Object getVisitLogsInfo(@RequestParam(name = "schoolCode") @NotNull(message = "schoolCode不能为空") String schoolCode,
+                                   @RequestParam(name = "cardNumber") @NotNull(message = "cardNumber不能为空") String cardNumber,
+                                   @RequestParam(name = "id") @NotNull(message = "id不能为空") String id) {
         try {
-            return visitLogsControllerClient.getVisitLogsInfo(schoolCode,cardNumber,id);
-        }catch (Exception e){
+            return visitLogsControllerClient.getVisitLogsInfo(schoolCode, cardNumber, id);
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -78,16 +81,17 @@ public class VisitLogsController {
 
     /**
      * 删除单个浏览网站日志接口
+     *
      * @param id
      * @param schoolCode
      * @param cardNumber
      */
     @ApiOperation("删除单个浏览网站日志接口")
-    @RequestMapping(value="/removeVisitLogsInfo",method = RequestMethod.GET)
-    public Object removeVisitLogsInfo(@RequestParam("id")String id,@RequestParam("schoolCode")String schoolCode,@RequestParam("cardNumber") String  cardNumber){
+    @RequestMapping(value = "/removeVisitLogsInfo", method = RequestMethod.GET)
+    public Object removeVisitLogsInfo(@RequestParam("id") String id, @RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
         try {
-            return visitLogsControllerClient.removeVisitLogsInfo(schoolCode,cardNumber,id);
-        }catch (Exception e){
+            return visitLogsControllerClient.removeVisitLogsInfo(schoolCode, cardNumber, id);
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -95,16 +99,17 @@ public class VisitLogsController {
 
     /**
      * 批量删除浏览网站日志接口
+     *
      * @param ids
      * @param schoolCodes
      * @param cardNumbers
      */
     @ApiOperation("批量删除浏览网站日志接口")
-    @RequestMapping(value="/batchRemoveVisitLogsInfo",method = RequestMethod.POST)
-    public Object batchRemoveVisitLogsInfo(@RequestParam("ids")String ids,@RequestParam("schoolCodes")String schoolCodes,@RequestParam("cardNumbers")String  cardNumbers){
+    @RequestMapping(value = "/batchRemoveVisitLogsInfo", method = RequestMethod.POST)
+    public Object batchRemoveVisitLogsInfo(@RequestParam("ids") String ids, @RequestParam("schoolCodes") String schoolCodes, @RequestParam("cardNumbers") String cardNumbers) {
         try {
-            return visitLogsControllerClient.batchRemoveVisitLogsInfo(ids,schoolCodes,cardNumbers);
-        }catch (Exception e){
+            return visitLogsControllerClient.batchRemoveVisitLogsInfo(ids, schoolCodes, cardNumbers);
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -112,20 +117,20 @@ public class VisitLogsController {
 
     /**
      * 修改浏览网站日志接口
+     *
      * @param updateVisitLogsDto
      */
     @ApiOperation("修改浏览网站日志接口")
-    @RequestMapping(value="/updateVisitLogsInfo",method = RequestMethod.POST)
-    public Object updateVisitLogsInfo(@Valid @RequestBody UpdateVisitLogsDto updateVisitLogsDto, BindingResult bindingResult){
+    @RequestMapping(value = "/updateVisitLogsInfo", method = RequestMethod.POST)
+    public Object updateVisitLogsInfo(@Valid @RequestBody UpdateVisitLogsDto updateVisitLogsDto, BindingResult bindingResult) {
         try {
             //检验参数
             if (bindingResult.hasErrors()) {
                 String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
                 return WrapMapper.error(errors);
             }
-
-            return  visitLogsControllerClient.updateVisitLogsInfo(updateVisitLogsDto);
-        }catch (Exception e){
+            return visitLogsControllerClient.updateVisitLogsInfo(updateVisitLogsDto);
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -133,19 +138,20 @@ public class VisitLogsController {
 
     /**
      * 新增围栏警报接口
+     *
      * @param addVisitLogsDto
      */
     @ApiOperation("新增浏览网站日志接口")
-    @RequestMapping(value="/insertVisitLogsInfo",method = RequestMethod.POST)
-    public Object insertVisitLogsInfo(@Valid @RequestBody AddVisitLogsDto addVisitLogsDto, BindingResult bindingResult){
+    @RequestMapping(value = "/insertVisitLogsInfo", method = RequestMethod.POST)
+    public Object insertVisitLogsInfo(@Valid @RequestBody AddVisitLogsDto addVisitLogsDto, BindingResult bindingResult) {
         try {
             //检验参数
             if (bindingResult.hasErrors()) {
                 String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
                 return WrapMapper.error(errors);
             }
-            return   visitLogsControllerClient.insertVisitLogsInfo(addVisitLogsDto);
-        }catch (Exception e){
+            return visitLogsControllerClient.insertVisitLogsInfo(addVisitLogsDto);
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }

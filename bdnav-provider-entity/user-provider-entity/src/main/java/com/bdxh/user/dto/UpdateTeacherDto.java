@@ -13,7 +13,7 @@ import java.util.List;
  * @create: 2019-03-11 19:11
  **/
 @Data
-public class UpdateTeacherDto extends BaseDto implements Serializable {
+public class UpdateTeacherDto extends WeiXiaoDto implements Serializable {
 
 
     private static final long serialVersionUID = -2157845844013847688L;

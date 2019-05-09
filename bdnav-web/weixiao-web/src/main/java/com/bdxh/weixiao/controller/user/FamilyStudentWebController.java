@@ -46,28 +46,29 @@ public class FamilyStudentWebController {
 
     /**
      * 微校平台----家长绑定孩子
+     *
      * @param addFamilyStudentDto
      * @param bindingResult
      * @return
      */
-    @ApiOperation(value="微校平台----家长绑定孩子接口")
-    @RequestMapping(value = "/bindingStudent",method = RequestMethod.POST)
-    public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult){
+    @ApiOperation(value = "微校平台----家长绑定孩子接口")
+    @RequestMapping(value = "/bindingStudent", method = RequestMethod.POST)
+    public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
-            FamilyStudentQueryDto familyStudentQueryDto=new FamilyStudentQueryDto();
+            FamilyStudentQueryDto familyStudentQueryDto = new FamilyStudentQueryDto();
             familyStudentQueryDto.setStudentNumber(addFamilyStudentDto.getStudentNumber());
             familyStudentQueryDto.setSchoolCode(addFamilyStudentDto.getSchoolCode());
-            Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
-            PageInfo pageInfo=(PageInfo)wrapper.getResult();
-            if(pageInfo.getTotal()!=0){
-                return WrapMapper.error(addFamilyStudentDto.getStudentName()+"已存在绑定关系");
+            Wrapper wrapper = familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
+            PageInfo pageInfo = (PageInfo) wrapper.getResult();
+            if (pageInfo.getTotal() != 0) {
+                return WrapMapper.error(addFamilyStudentDto.getStudentName() + "已存在绑定关系");
             }
-            Wrapper wrappers =familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
+            Wrapper wrappers = familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
             return wrappers;
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,20 +78,21 @@ public class FamilyStudentWebController {
 
     /**
      * 微校平台----删除学生家长绑定关系
+     *
      * @param schoolCode
      * @param cardNumber
      * @param id
      * @return
      */
     @ApiOperation(value = "微校平台----删除学生家长绑定关系")
-    @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.GET)
-    public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
-                                        @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
-                                        @RequestParam(name = "id") @NotNull(message="id不能为空")String id){
-        try{
-            Wrapper wrapper= familyStudentControllerClient.removeFamilyOrStudent(schoolCode, cardNumber,id);
+    @RequestMapping(value = "/removeFamilyOrStudent", method = RequestMethod.GET)
+    public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
+                                        @RequestParam(name = "cardNumber") @NotNull(message = "微校卡号不能为空") String cardNumber,
+                                        @RequestParam(name = "id") @NotNull(message = "id不能为空") String id) {
+        try {
+            Wrapper wrapper = familyStudentControllerClient.removeFamilyOrStudent(schoolCode, cardNumber, id);
             return wrapper;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -98,16 +100,17 @@ public class FamilyStudentWebController {
 
     /**
      * 微校平台----家长查询孩子列表
+     *
      * @param familyStudentQueryDto
      * @return
      */
     @ApiOperation(value = "微校平台----家长查询孩子列表")
-    @RequestMapping(value = "/familyFindStudentList",method =RequestMethod.POST)
-    public Object familyFindStudentList(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
-        try{
-            log.info(familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto).getResult()+"");
+    @RequestMapping(value = "/familyFindStudentList", method = RequestMethod.POST)
+    public Object familyFindStudentList(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
+        try {
+            log.info(familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto).getResult() + "");
             return WrapMapper.ok(familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto).getResult());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -115,20 +118,21 @@ public class FamilyStudentWebController {
 
     /**
      * 微校平台----查询家长与孩子关系详细
+     *
      * @param familyStudentQueryDto
      * @return
      */
     @ApiOperation(value = "微校平台----查询家长与孩子关系详细")
-    @RequestMapping(value = "/queryFamilyStudentDetails",method =RequestMethod.POST)
-    public Object queryFamilyStudentDetails(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
-        try{
-            FamilyVo familyVo=familyControllerClient.queryFamilyInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getCardNumber()).getResult();
-            StudentVo studentVo= studentControllerClient.queryStudentInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getStudentNumber()).getResult();
-            FamilyStudentDetailsVo familyStudentDetailsVo=new FamilyStudentDetailsVo();
+    @RequestMapping(value = "/queryFamilyStudentDetails", method = RequestMethod.POST)
+    public Object queryFamilyStudentDetails(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
+        try {
+            FamilyVo familyVo = familyControllerClient.queryFamilyInfo(familyStudentQueryDto.getSchoolCode(), familyStudentQueryDto.getCardNumber()).getResult();
+            StudentVo studentVo = studentControllerClient.queryStudentInfo(familyStudentQueryDto.getSchoolCode(), familyStudentQueryDto.getStudentNumber()).getResult();
+            FamilyStudentDetailsVo familyStudentDetailsVo = new FamilyStudentDetailsVo();
             familyStudentDetailsVo.setFamilyVo(familyVo);
             familyStudentDetailsVo.setStudentVo(studentVo);
             return WrapMapper.ok(familyStudentDetailsVo);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }

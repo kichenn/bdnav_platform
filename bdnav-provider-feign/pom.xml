@@ -13,6 +13,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>servicepermit-provider-feign</module>
         <module>order-provider-feign</module>
         <module>pay-provider-feign</module>
         <module>system-provider-feign</module>

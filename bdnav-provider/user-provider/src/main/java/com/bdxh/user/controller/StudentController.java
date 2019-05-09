@@ -199,12 +199,10 @@ public class StudentController {
         } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
-
     }
 
     /**
      * 根据学校Code查询所有学生学号
-     *
      * @param schoolCode
      * @return
      */
@@ -212,9 +210,7 @@ public class StudentController {
     @RequestMapping(value = "/queryCardNumberBySchoolCode", method = RequestMethod.POST)
     public Object queryCardNumberBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
         try {
-
             return WrapMapper.ok(studentService.queryCardNumberBySchoolCode(schoolCode));
-
         } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
@@ -222,7 +218,6 @@ public class StudentController {
 
     /**
      * 根据学校CODE和组织架构查询学生
-     *
      * @param schoolCode
      * @param parentIds
      * @param type
@@ -241,25 +236,7 @@ public class StudentController {
     }
 
     /**
-     * 学生激活信息同步微校且绑定
-     *
-     * @param updateStudentDto
-     * @return
-     */
-    @ApiOperation(value = "学生激活信息同步微校且绑定")
-    @RequestMapping(value = "/studentInfoActivation", method = RequestMethod.POST)
-    public Object studentInfoActivation(@RequestBody UpdateStudentDto updateStudentDto) {
-        try {
-            studentService.studentInfoActivation(updateStudentDto);
-            return WrapMapper.ok();
-        } catch (Exception e) {
-            return WrapMapper.error(e.getMessage());
-        }
-    }
-
-    /**
      * 查询所有学生
-     *
      * @return
      */
     @ApiOperation(value = "查询所有学生")
