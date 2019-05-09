@@ -2,6 +2,7 @@ package com.bdxh.weixiao.controller.user;
 
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
@@ -26,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RequestMapping(value = "/baseUser")
 @RestController
-@Api(value = "微校平台----学校用户(学生 ， 家长 ， 老师)控制器")
+@Api(value = "微校平台----学校用户(学生 ， 家长 ， 老师)控制器", tags = "微校平台----学校用户(学生 ， 家长 ， 老师)控制器")
 @Validated
 public class BaseUserWebController {
     @Autowired
@@ -45,11 +46,15 @@ public class BaseUserWebController {
     @RequestMapping(value = "/activationBaseUser", method = RequestMethod.POST)
     public Object activationBaseUser(@RequestBody ActivationBaseUserDto activationBaseUserDto) {
         //查询出激活用户所需要的第三方参数
-        School school = schoolControllerClient.findSchoolBySchoolCode(activationBaseUserDto.getSchoolCode()).getResult();
-        activationBaseUserDto.setAppKey(school.getAppKey());
-        activationBaseUserDto.setAppSecret(school.getAppSecret());
-        activationBaseUserDto.setSchoolType(school.getSchoolType());
-
-        return WrapMapper.ok(baseUserControllerClient.baseUserActivation(activationBaseUserDto).getResult());
+        try {
+            School school = schoolControllerClient.findSchoolBySchoolCode(activationBaseUserDto.getSchoolCode()).getResult();
+            activationBaseUserDto.setAppKey(school.getAppKey());
+            activationBaseUserDto.setAppSecret(school.getAppSecret());
+            activationBaseUserDto.setSchoolType(school.getSchoolType());
+            return WrapMapper.ok(baseUserControllerClient.baseUserActivation(activationBaseUserDto).getResult());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error("false");
+        }
     }
 }
