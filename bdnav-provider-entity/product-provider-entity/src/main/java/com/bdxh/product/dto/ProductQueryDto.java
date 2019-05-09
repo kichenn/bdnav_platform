@@ -1,9 +1,12 @@
 package com.bdxh.product.dto;
 
 import com.bdxh.common.base.page.Query;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -12,8 +15,9 @@ import java.util.Date;
  * @create: 2019-01-22 17:01
  **/
 @Data
-public class ProductQueryDto extends Query {
+public class ProductQueryDto extends Query implements Serializable {
 
+    private static final long serialVersionUID = -2242168395369859125L;
     /**
      * 商品展示名称
      */
@@ -48,12 +52,14 @@ public class ProductQueryDto extends Query {
      * 开始时间
      */
     @ApiModelProperty("开始时间")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date startDate;
 
     /**
      * 结束时间
      */
     @ApiModelProperty("结束时间")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     private Date endDate;
 
 }

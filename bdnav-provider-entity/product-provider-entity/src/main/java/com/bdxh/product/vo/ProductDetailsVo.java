@@ -1,44 +1,51 @@
-package com.bdxh.product.dto;
+package com.bdxh.product.vo;
 
+import com.bdxh.product.entity.Product;
+import com.bdxh.product.entity.ProductImage;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
+import lombok.Data;
+
+/**
+ * @description:
+ * @author: binzh
+ * @create: 2019-05-09 11:26
+ **/
 @Data
-public class ProductAddDto implements Serializable {
+public class ProductDetailsVo implements Serializable {
 
-    private static final long serialVersionUID = 1295579643785690138L;
-
+    private static final long serialVersionUID = 1964073671578729394L;
+    /**
+     * id
+     */
+    @ApiModelProperty("id")
+    private Long id;
     /**
      * 商品名称
      */
-    @NotEmpty(message = "商品名称不能为空")
     @ApiModelProperty("商品名称")
     private String productName;
 
     /**
      * 商品展示名称
      */
-    @NotEmpty(message = "商品展示名称不能为空")
     @ApiModelProperty("商品展示名称")
     private String productShowName;
 
     /**
      * 商品定价
      */
-    @NotNull(message = "商品定价不能为空")
     @ApiModelProperty("商品定价")
     private BigDecimal productPrice;
 
     /**
      * 商品售价
      */
-    @NotNull(message = "商品售价不能为空")
     @ApiModelProperty("商品售价")
     private BigDecimal productSellPrice;
 
@@ -51,28 +58,24 @@ public class ProductAddDto implements Serializable {
     /**
      * 商品类型 1 单品 2 套餐
      */
-    @NotNull(message = "商品类型不能为空")
     @ApiModelProperty("商品类型 1 单品 2 套餐")
     private Byte productType;
 
     /**
      * 商品上下架状态 1 下架 2 上架
      */
-    @NotNull(message = "商品上下架不能为空")
     @ApiModelProperty("商品上下架状态 1 下架 2 上架")
     private Byte sellStatus;
 
     /**
      * 商品图片地址
      */
-    @NotEmpty(message = "商品图片地址不能为空")
     @ApiModelProperty("商品图片地址")
     private String imgUrl;
 
     /**
      * 业务类型 1 微校服务
      */
-    @NotNull(message = "商品业务类型不能为空")
     @ApiModelProperty("业务类型 1 微校服务'")
     private Byte businessType;
 
@@ -89,6 +92,18 @@ public class ProductAddDto implements Serializable {
     private String operatorName;
 
     /**
+     * 创建时间
+     */
+    @ApiModelProperty(name = "创建时间")
+    private Date createDate;
+
+    /**
+     * 修改时间
+     */
+    @ApiModelProperty(name = "修改时间")
+    private Date updateDate;
+
+    /**
      * 备注
      */
     @ApiModelProperty("备注")
@@ -100,11 +115,15 @@ public class ProductAddDto implements Serializable {
     @ApiModelProperty("套餐包含商品")
     private String productChildIds;
 
-
+    /**
+     * 图片详情
+     */
     @ApiModelProperty("图片详情")
-    List<ProductImageAddDto> image;
+    List<ProductImage> image;
 
-    @ApiModelProperty("套餐详细数据")
-    List<ProductChildAddDto> productChildList;
-
+    /**
+     * 如果商品类型为套餐那么就有子商品集合
+     */
+    @ApiModelProperty("如果商品类型为套餐那么就有子商品集合")
+    List<Product> productList;
 }

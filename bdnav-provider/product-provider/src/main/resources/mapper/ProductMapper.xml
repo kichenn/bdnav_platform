@@ -1,60 +1,152 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.product.persistence.ProductMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.product.entity.Product">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="product_name" jdbcType="VARCHAR" property="productName" />
-    <result column="product_show_name" jdbcType="VARCHAR" property="productShowName" />
-    <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
-    <result column="product_sell_price" jdbcType="DECIMAL" property="productSellPrice" />
-    <result column="product_description" jdbcType="VARCHAR" property="productDescription" />
-    <result column="product_type" jdbcType="TINYINT" property="productType" />
-    <result column="sell_status" jdbcType="TINYINT" property="sellStatus" />
-    <result column="img_url" jdbcType="VARCHAR" property="imgUrl" />
-    <result column="business_type" jdbcType="TINYINT" property="businessType" />
-    <result column="product_extra" jdbcType="VARCHAR" property="productExtra" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.product.entity.Product">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
+        <result column="product_show_name" jdbcType="VARCHAR" property="productShowName"/>
+        <result column="product_price" jdbcType="DECIMAL" property="productPrice"/>
+        <result column="product_sell_price" jdbcType="DECIMAL" property="productSellPrice"/>
+        <result column="product_description" jdbcType="VARCHAR" property="productDescription"/>
+        <result column="product_type" jdbcType="TINYINT" property="productType"/>
+        <result column="sell_status" jdbcType="TINYINT" property="sellStatus"/>
+        <result column="img_url" jdbcType="VARCHAR" property="imgUrl"/>
+        <result column="business_type" jdbcType="TINYINT" property="businessType"/>
+        <result column="product_extra" jdbcType="VARCHAR" property="productExtra"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <resultMap id="ProductDetailsMap" type="com.bdxh.product.vo.ProductDetailsVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="productName" jdbcType="VARCHAR" property="productName"/>
+        <result column="productShowName" jdbcType="VARCHAR" property="productShowName"/>
+        <result column="productPrice" jdbcType="DECIMAL" property="productPrice"/>
+        <result column="productSellPrice" jdbcType="DECIMAL" property="productSellPrice"/>
+        <result column="productDescription" jdbcType="VARCHAR" property="productDescription"/>
+        <result column="productType" jdbcType="TINYINT" property="productType"/>
+        <result column="sellStatus" jdbcType="TINYINT" property="sellStatus"/>
+        <result column="businessType" jdbcType="TINYINT" property="businessType"/>
+        <result column="productExtra" jdbcType="VARCHAR" property="productChildIds"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operatorName" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <collection property="image" ofType="ProductImage" column="product_id">
+            <id column="imageId" jdbcType="BIGINT" property="id"/>
+            <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl"/>
+            <result column="imageName" jdbcType="VARCHAR" property="imageName"/>
+            <result column="sort" jdbcType="TINYINT" property="sort"/>
+        </collection>
+    </resultMap>
 
-  <sql id="BaseColumns">
+    <sql id="BaseColumns">
     id, product_name, product_show_name, product_price, product_sell_price, product_description, product_type, sell_status,
     img_url, business_type, product_extra, create_date, update_date, remark ,operator,operator_name
   </sql>
 
-  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColumns"/>
-    from product
-    <where>
-      <if test="productShowName != null and productShowName != ''">
-        product_show_name like concat(concat('%',#{productShowName}),'%')
-      </if>
-      <if test="product_name != null and productName != ''">
-        product_name like concat(concat('%',#{productName}),'%')
-      </if>
-      <if test="productType">
-        and product_type=#{productType}
-      </if>
-      <if test="sellStatus">
-        and sell_status=#{sellStatus}
-      </if>
-      <if test="businessType">
-        and business_type=#{businessType}
-      </if>
-      <if test="startDate">
-        and <![CDATA[update_date >= #{startDate}]]>
-      </if>
-      <if test="endDate">
-        and <![CDATA[update_date <= #{endDate}]]>
-      </if>
-    </where>
-    order by update_date desc
+    <select id="findProduct" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from product
+        <where>
+            <if test="productShowName != null and productShowName != ''">
+                product_show_name like CONCAT(CONCAT('%',#{productShowName}),'%')
+            </if>
+            <if test="productName != null and productName != ''">
+                product_name like CONCAT(CONCAT('%',#{productName}),'%')
+            </if>
+            <if test="productType !=null and productType!=''">
+                and product_type=#{productType}
+            </if>
+            <if test="sellStatus !=null and sellStatus!=''">
+                and sell_status=#{sellStatus}
+            </if>
+            <if test="businessType !=null and businessType!=''">
+                and business_type=#{businessType}
+            </if>
+            <if test="startDate !=null">
+                and <![CDATA[date(update_date) >= date(#{startDate,jdbcType=TIMESTAMP})]]>
+            </if>
+            <if test="endDate !=null ">
+                and <![CDATA[date(update_date) <= date(#{endDate,jdbcType=TIMESTAMP})]]>
+            </if>
+        </where>
+        order by update_date desc
+    </select>
+    <!--查询商品的详情信息-->
+
+    <select id="findProductDetails" resultMap="ProductDetailsMap">
+    SELECT
+        product.id AS id,
+        product.product_name AS productName,
+        product.product_show_name AS productShowName,
+        product.product_price AS productPrice,
+        product.product_sell_price AS productSellPrice,
+        product.product_description AS productDescription,
+        product.product_type AS productType,
+        product.sell_status AS sellStatus,
+        product.business_type AS businessType,
+        product.product_extra AS productExtra,
+        product.operator AS operator,
+        product.operator_name AS operatorName,
+        product.create_date AS createDate,
+        product.update_date AS updateDate,
+        product.remark AS remark,
+        productImage.id AS imageId,
+        productImage.sort AS sort,
+        productImage.image_url AS imageUrl,
+        productImage.image_name AS imageName
+    FROM
+        product AS product
+    LEFT JOIN t_product_image AS productImage ON productImage.product_id = product.id
+    WHERE
+        product.id = #{id}
+    ORDER BY
+    updateDate DESC
   </select>
 
+    <update id="updateProduct">
+        UPDATE product
+        <set>
+        <if test="productName != null"> product_name = #{productName},</if>
+        <if test="productName == null"> product_name = product_name,</if>
+        <if test="productShowName != null"> product_show_name = #{productShowName},</if>
+        <if test="productShowName == null"> product_show_name = product_show_name,</if>
+        <if test="productPrice != null"> product_price = #{productPrice},</if>
+        <if test="productPrice == null"> product_price = product_price,</if>
+        <if test="productSellPrice != null"> product_sell_price = #{productSellPrice},</if>
+        <if test="productSellPrice == null"> product_sell_price = product_sell_price,</if>
+        <if test="productDescription != null"> product_description = #{productDescription},</if>
+        <if test="productDescription == null"> product_description = product_description,</if>
+        <if test="productType != null"> product_type = #{productType},</if>
+        <if test="productType == null"> product_type = product_type,</if>
+        <if test="sellStatus != null"> sell_status = #{sellStatus},</if>
+        <if test="sellStatus == null"> sell_status = sell_status,</if>
+        <if test="imgUrl != null"> img_url = #{imgUrl},</if>
+        <if test="imgUrl == null"> img_url = img_url,</if>
+        <if test="businessType != null"> business_type = #{businessType},</if>
+        <if test="businessType == null"> business_type = business_type,</if>
+        <if test="productExtra != null"> product_extra = #{productExtra},</if>
+        <if test="productExtra == null"> product_extra = product_extra,</if>
+        <if test="operator != null"> operator = #{operator},</if>
+        <if test="operator == null"> operator = operator,</if>
+        <if test="operatorName != null"> operator_name = #{operatorName},</if>
+        <if test="operatorName == null"> operator_name = operator_name,</if>
+        <if test="createDate != null"> create_date = #{createDate},</if>
+        <if test="createDate == null"> create_date = create_date,</if>
+        <if test="updateDate != null"> update_date = #{updateDate},</if>
+        <if test="updateDate == null"> update_date = update_date,</if>
+        <if test="remark != null"> remark = #{remark}</if>
+        <if test="remark == null"> remark = remark</if>
+        </set>
+        WHERE
+	        id=#{id}
+    </update>
 </mapper>

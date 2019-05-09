@@ -146,7 +146,7 @@
         <if test="student.name!=null and student.name!=''">
             name=#{student.name},
         </if>
-        <if test="student.gender!=0">
+        <if test="student.gender!=null and student.gender!=''">
             gender=#{student.gender},
         </if>
         <if test="student.birth!=null and student.birth!=''">
@@ -380,7 +380,7 @@
         select
         <include refid="studentCloumn"/>
         from t_student
-        WHERE school_code=#{student.schoolCode} AND card_number=#{student.cardNumber};
+        WHERE school_code=#{schoolCode} AND card_number=#{cardNumber};
     </select>
     <select id="findStudentInfoByClassId" resultMap="BaseResultMap">
         select
@@ -404,4 +404,10 @@
             set school_name=#{schoolName}
             where school_code=#{schoolCode}
 	</update>
+    <!-- 学生激活 -->
+    <update id="updateStudentActivation">
+      		update t_student
+            set activate=#{activate}
+            where school_code=#{schoolCode} and school_name=#{schoolName}
+    </update>
 </mapper>
