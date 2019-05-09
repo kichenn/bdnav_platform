@@ -3,16 +3,13 @@ package com.bdxh.servicepermit.feign;
 import com.bdxh.servicepermit.fallback.ServiceUserControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.servicepermit.dto.AddServiceUserDto;
 import com.bdxh.servicepermit.dto.ModifyServiceUserDto;
 import com.bdxh.servicepermit.dto.QueryServiceUserDto;
 import com.bdxh.servicepermit.entity.ServiceUser;
 import com.github.pagehelper.PageInfo;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Service
 @FeignClient(value = "servicepermit-provider-cluster", fallback = ServiceUserControllerClientFallback.class)
@@ -33,6 +30,7 @@ public interface ServiceUserControllerClient {
         Wrapper updateServiceUser(@RequestBody ModifyServiceUserDto modifyServiceUserDto);
 
         @RequestMapping(value = "/serviceUsed/createService",method = RequestMethod.POST)
+        @ResponseBody
         Wrapper createServiceUser(@RequestBody AddServiceUserDto addServiceUserDto);
 
 
