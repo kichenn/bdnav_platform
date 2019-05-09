@@ -28,7 +28,7 @@ import javax.validation.constraints.NotEmpty;
 @RequestMapping("/clientAccountWeb")
 @Slf4j
 @Validated
-@Api(value = "应用审核日志信息", tags = "应用审核日志信息交互API")
+@Api(value = "客户端账户管理信息", tags = "客户端账户管理信息交互API")
 public class AccountWebController {
 
     @Autowired
