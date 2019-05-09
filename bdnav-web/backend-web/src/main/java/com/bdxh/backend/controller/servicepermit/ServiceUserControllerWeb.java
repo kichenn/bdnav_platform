@@ -31,7 +31,7 @@ public class ServiceUserControllerWeb {
 
     @ApiOperation("根据条件查询订单")
     @RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
-    public Object queryServiceUser(@Valid @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
+    public Object queryServiceUser(@Validated @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
         Wrapper wrapper = serviceUserControllerClient.queryServiceUser(queryServiceUsedDto);
         return wrapper;
 
@@ -49,7 +49,7 @@ public class ServiceUserControllerWeb {
 
     @ApiOperation("添加订单服务许可")
     @RequestMapping(value = "/createServiceUser", method = RequestMethod.POST)
-    public Object createServiceUser(@Valid @RequestBody AddServiceUserDto addServiceUserDto, BindingResult bindingResult) {
+    public Object createServiceUser(@Validated @RequestBody AddServiceUserDto addServiceUserDto, BindingResult bindingResult) {
         User user = SecurityUtils.getCurrentUser();
         addServiceUserDto.setOperator(user.getId());
         addServiceUserDto.setOperatorName(user.getUserName());
@@ -60,7 +60,7 @@ public class ServiceUserControllerWeb {
 
     @ApiOperation("更新订单服务许可")
     @RequestMapping(value = "/updateServiceUser", method = RequestMethod.POST)
-    public Object updateServiceUser(@Valid @RequestBody ModifyServiceUserDto modifyServiceUserDto, BindingResult bindingResult) {
+    public Object updateServiceUser(@Validated @RequestBody ModifyServiceUserDto modifyServiceUserDto, BindingResult bindingResult) {
         User user = SecurityUtils.getCurrentUser();
         modifyServiceUserDto.setOperator(user.getId());
         modifyServiceUserDto.setOperatorName(user.getUserName());
