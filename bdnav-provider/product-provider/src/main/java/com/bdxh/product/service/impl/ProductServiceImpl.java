@@ -3,6 +3,7 @@ package com.bdxh.product.service.impl;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.product.dto.ProductAddDto;
+import com.bdxh.product.dto.ProductImageAddDto;
 import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
@@ -41,16 +42,25 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     @Transactional(rollbackFor = Exception.class)
     public void addProduct(ProductAddDto productDto) {
         Product product = BeanMapUtils.map(productDto, Product.class);
-        //判断是不是新增的
-   /*     if (productDto.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
-            List<ProductChildAddDto> productAddDto = productDto.getProductChildList();
-            if (CollUtil.isNotEmpty(productAddDto)) {
-                for (ProductChildAddDto productChildAddDto : productAddDto) {
-                    Product product = BeanMapUtils.map(productDto, Product.class);
-                }
-            }
+        //判断是不是新增的套餐
+        if (productDto.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
+
+
         }
-        productMapper.insert()*/
+       Long productId= productMapper.insertProduct(product).getId();
+        //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
+        Byte i = 1;
+        for (ProductImageAddDto productImageAddDto : productDto.getImage()) {
+            ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
+            productImage.setSort(i);
+            productImage.setProductId(productId);
+            productImage.setOperator(productDto.getOperator());
+            productImage.setOperatorName(productDto.getOperatorName());
+            productImage.setRemark(productDto.getRemark());
+            productImageMapper.insert(productImage);
+            i++;
+        }
+
     }
 
     @Override
@@ -77,7 +87,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                 }
             }
             if (!childIds.equals("")) {
-                //ID去重
+                //子商品ID去重
                 String[] idsArray = childIds.split(",");
                 Set<String> ids = new HashSet(Arrays.asList(idsArray));
                 List<String> idList = new ArrayList<>(ids);

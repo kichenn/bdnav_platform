@@ -104,7 +104,4 @@ public class ProductAddDto implements Serializable {
     @ApiModelProperty("图片详情")
     List<ProductImageAddDto> image;
 
-    @ApiModelProperty("套餐详细数据")
-    List<ProductChildAddDto> productChildList;
-
 }

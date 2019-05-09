@@ -20,4 +20,7 @@ public interface ProductMapper extends Mapper<Product> {
 
     //修改商品信息
     int updateProduct(Product product);
+
+    //新增商品信息
+    Product insertProduct(Product product);
 }

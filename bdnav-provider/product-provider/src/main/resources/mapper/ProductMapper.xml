@@ -78,7 +78,7 @@
                 and <![CDATA[date(update_date) <= date(#{endDate,jdbcType=TIMESTAMP})]]>
             </if>
         </where>
-        order by update_date desc
+        order by update_date
     </select>
     <!--查询商品的详情信息-->
 
@@ -108,8 +108,7 @@
     LEFT JOIN t_product_image AS productImage ON productImage.product_id = product.id
     WHERE
         product.id = #{id}
-    ORDER BY
-    updateDate DESC
+    ORDER BY sort
   </select>
 
     <update id="updateProduct">
@@ -149,4 +148,39 @@
         WHERE
 	        id=#{id}
     </update>
+
+    <!--添加商品信息-->
+    <insert id="insertProduct" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+        INSERT INTO bdxh_product.product (
+        product_name,
+        product_show_name,
+        product_price,
+        product_sell_price,
+        product_description,
+        product_type,
+        sell_status,
+        img_url,
+        business_type,
+        product_extra,
+        operator,
+        operator_name,
+        remark
+    )
+    VALUES
+        (
+            #{productName},
+            #{productShowName},
+            #{productPrice},
+            #{productSellPrice},
+            #{productDescription},
+            #{productType},
+            #{sellStatus},
+            #{imgUrl},
+            #{businessType},
+            #{productExtra},
+            #{operator},
+            #{operatorName},
+            #{remark}
+         );
+</insert>
 </mapper>
