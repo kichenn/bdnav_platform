@@ -68,12 +68,20 @@ public class AccountWebController {
     @ApiOperation(value = "查询账户信息列表", response = Account.class)
     @RequestMapping(value = "/queryAccountList", method = RequestMethod.GET)
     public Object queryAccountList(@Valid @RequestBody AccountQueryDto accountQueryDto) {
+        //设置账户学校信息
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        accountQueryDto.setSchoolId(user.getSchoolId());
+        accountQueryDto.setSchoolCode(user.getSchoolCode());
         return accountControllerClient.queryAccountList(accountQueryDto);
     }
 
     @ApiOperation(value = "分页查询账户信息列表", response = Account.class)
     @RequestMapping(value = "/queryAccountListPage", method = RequestMethod.POST)
     public Object queryCategoryListPage(@Valid @RequestBody AccountQueryDto accountQueryDto) {
+        //设置账户学校信息
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        accountQueryDto.setSchoolId(user.getSchoolId());
+        accountQueryDto.setSchoolCode(user.getSchoolCode());
         return accountControllerClient.queryCategoryListPage(accountQueryDto);
     }
 }
