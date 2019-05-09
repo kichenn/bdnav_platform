@@ -17,10 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -46,11 +43,11 @@ public class AccountController {
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
-    @ApiOperation("增加账户信息")
-    @RequestMapping("/addAccount")
-    public Object addAccount(@Valid @RequestBody AddAccountDto addAccountDto, BindingResult bindingResult){
+    @ApiOperation(value = "增加账户信息", response = Boolean.class)
+    @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
+    public Object addAccount(@Valid @RequestBody AddAccountDto addAccountDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
@@ -59,22 +56,22 @@ public class AccountController {
             account.setSchoolCode(addAccountDto.getSchoolCode());
             account.setCardNumber(addAccountDto.getCardNumber());
             Account accountData = accountService.selectOne(account);
-            Preconditions.checkArgument(accountData == null,"账户已存在");
+            Preconditions.checkArgument(accountData == null, "账户已存在");
             BeanMapUtils.copy(addAccountDto, account);
             account.setId(snowflakeIdWorker.nextId());
             accountService.save(account);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
-    @ApiOperation("修改账户信息")
-    @RequestMapping("/updateAccount")
-    public Object updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto, BindingResult bindingResult){
+    @ApiOperation(value = "修改账户信息", response = Boolean.class)
+    @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
+    public Object updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
@@ -82,44 +79,44 @@ public class AccountController {
             Map<String, Object> param = BeanToMapUtil.objectToMap(updateAccountDto);
             accountService.updateAccount(param);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
-    @ApiOperation("修改账户登录名")
-    @RequestMapping("/updateLoginName")
+    @ApiOperation(value = "修改账户登录名", response = Boolean.class)
+    @RequestMapping(value = "/updateLoginName", method = RequestMethod.POST)
     public Object updateLoginName(@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
                                   @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber,
-                                  @RequestParam("loginName") @NotEmpty(message = "登录名不能为空") String loginName){
+                                  @RequestParam("loginName") @NotEmpty(message = "登录名不能为空") String loginName) {
         try {
-            accountService.updateLoginName(schoolCode,cardNumber,loginName);
+            accountService.updateLoginName(schoolCode, cardNumber, loginName);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
-    @ApiOperation("查询账户信息")
-    @RequestMapping("/queryAccount")
+    @ApiOperation(value = "查询账户信息", response = Account.class)
+    @RequestMapping(value = "/queryAccount", method = RequestMethod.GET)
     public Object queryAccount(@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
-                               @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber){
+                               @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber) {
         try {
-            Account account = accountService.queryAccount(schoolCode,cardNumber);
+            Account account = accountService.queryAccount(schoolCode, cardNumber);
             return WrapMapper.ok(account);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
-    @ApiOperation("查询账户信息列表")
-    @RequestMapping("/queryAccountList")
-    public Object queryAccountList(@Valid @RequestBody AccountQueryDto accountQueryDto, BindingResult bindingResult){
+    @ApiOperation(value = "查询账户信息列表", response = Account.class)
+    @RequestMapping(value = "/queryAccountList", method = RequestMethod.GET)
+    public Object queryAccountList(@Valid @RequestBody AccountQueryDto accountQueryDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
@@ -127,25 +124,25 @@ public class AccountController {
             Map<String, Object> param = BeanToMapUtil.objectToMap(accountQueryDto);
             List<Account> accounts = accountService.queryAccountList(param);
             return WrapMapper.ok(accounts);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
-    @ApiOperation("分页查询账户信息列表")
-    @RequestMapping("/queryAccountListPage")
-    public Object queryCategoryListPage(@Valid @RequestBody AccountQueryDto accountQueryDto, BindingResult bindingResult){
+    @ApiOperation(value = "分页查询账户信息列表", response = Account.class)
+    @RequestMapping(value = "/queryAccountListPage", method = RequestMethod.POST)
+    public Object queryCategoryListPage(@Valid @RequestBody AccountQueryDto accountQueryDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
             Map<String, Object> param = BeanToMapUtil.objectToMap(accountQueryDto);
-            PageInfo<Account> accounts = accountService.queryAccountListPage(param,accountQueryDto.getPageNum(),accountQueryDto.getPageSize());
+            PageInfo<Account> accounts = accountService.queryAccountListPage(param, accountQueryDto.getPageNum(), accountQueryDto.getPageSize());
             return WrapMapper.ok(accounts);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }

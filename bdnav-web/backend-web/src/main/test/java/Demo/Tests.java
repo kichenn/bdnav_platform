@@ -5,6 +5,7 @@ import com.bdxh.backend.configration.security.properties.SecurityConstant;
 import com.bdxh.common.helper.baidu.yingyan.FenceUtils;
 import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.utils.HttpClientUtils;
+import com.bdxh.common.utils.HttpPoolClientUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 

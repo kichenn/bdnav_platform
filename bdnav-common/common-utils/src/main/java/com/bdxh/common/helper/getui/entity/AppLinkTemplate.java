@@ -2,14 +2,17 @@ package com.bdxh.common.helper.getui.entity;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @Description: 个推消息模版相关属性
  * @Author: Kang
  * @Date: 2019/5/8 11:32
  */
 @Data
-public class AppLinkTemplate {
+public class AppLinkTemplate implements Serializable {
 
+    private static final long serialVersionUID = 19815696838026674L;
     /**
      * 个推标题
      */

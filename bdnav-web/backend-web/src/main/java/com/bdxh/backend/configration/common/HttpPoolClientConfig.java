@@ -25,7 +25,7 @@ public class HttpPoolClientConfig {
     /**
      * 并发数
      */
-    @Value("${httpPool.maxPerRoute:50}")
+    @Value("${httpPool.maxPerRoute:}50")
     private int maxPerRoute;
 
     /**
