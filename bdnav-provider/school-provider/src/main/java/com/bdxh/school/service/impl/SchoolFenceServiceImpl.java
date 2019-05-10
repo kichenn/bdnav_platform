@@ -100,6 +100,11 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
 //        request.setMonitored_person(fenceEntityDto.get(0).getId() + "_" + fenceEntityDto.get(0).getName());
         String createRoundResult = FenceUtils.createRoundFence(request);
         JSONObject createRoundJson = JSONObject.parseObject(createRoundResult);
+        if (createRoundJson.getInteger("status") == 1) {
+            //创建围栏，状态如果为1的情况，为百度那边的服务器内部错误，则再次请求
+            createRoundResult = FenceUtils.createRoundFence(request);
+            createRoundJson = JSONObject.parseObject(createRoundResult);
+        }
         if (createRoundJson.getInteger("status") != 0) {
             throw new RuntimeException("生成围栏失败,状态码:" + createRoundJson.getInteger("status") + "，原因:" + createRoundJson.getString("message"));
         } else {
@@ -107,40 +112,45 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
         }
         schoolFence.setFenceId(createRoundJson.getInteger("fence_id"));
         //当监控对象为一人以上，更新监控对象到围栏里
-            //将剩余人员添加到围栏里(因为该，接口每次只能接受100人的提交，故计算人次)
-            if (fenceEntityDto.size() > 100) {
-                //批量更新监控人员
-                int count = fenceEntityDto.size() % 100 == 0 ? fenceEntityDto.size() / 100 : fenceEntityDto.size() / 100 + 1;
-                for (int i = 0; i < count; i++) {
-                    int end = (i + 1) * 100;
-                    //获取需要添加的监控对象信息
-                    List<FenceEntityDto> tempModifyFenceEntity = fenceEntityDto.subList(i * 100, end > fenceEntityDto.size() ? fenceEntityDto.size() : end);
-                    List<String> tempFenceEntityNames = tempModifyFenceEntity.stream().map(e -> {
-                        return e.getId() + "_" + e.getName();
-                    }).collect(Collectors.toList());
-                    //切割监控人员为string
-                    String finalEntity = String.join(",", tempFenceEntityNames);
-                    String result = FenceUtils.addMonitoredPerson(schoolFence.getFenceId(), finalEntity);
-                    JSONObject resultJson = JSONObject.parseObject(result);
-                    if (resultJson.getInteger("status") != 0) {
-                        log.error("更新围栏监控人员失败:{},状态:{}", resultJson.getString("message"), resultJson.getInteger("status"));
-                    } else {
-                        log.info("分批更新围栏监控人员成功,状态:{},消息:{}", createRoundJson.getInteger("status"), createRoundJson.getString("message"));
-                    }
-                }
-            } else {
-                List<String> fenceEntityNames = fenceEntityDto.stream().map(e -> {
+        //将剩余人员添加到围栏里(因为该，接口每次只能接受100人的提交，故计算人次)
+        if (fenceEntityDto.size() > 100) {
+            //批量更新监控人员
+            int count = fenceEntityDto.size() % 100 == 0 ? fenceEntityDto.size() / 100 : fenceEntityDto.size() / 100 + 1;
+            for (int i = 0; i < count; i++) {
+                int end = (i + 1) * 100;
+                //获取需要添加的监控对象信息
+                List<FenceEntityDto> tempModifyFenceEntity = fenceEntityDto.subList(i * 100, end > fenceEntityDto.size() ? fenceEntityDto.size() : end);
+                List<String> tempFenceEntityNames = tempModifyFenceEntity.stream().map(e -> {
                     return e.getId() + "_" + e.getName();
                 }).collect(Collectors.toList());
-                String finalEntity = String.join(",", fenceEntityNames);
+                //切割监控人员为string
+                String finalEntity = String.join(",", tempFenceEntityNames);
                 String result = FenceUtils.addMonitoredPerson(schoolFence.getFenceId(), finalEntity);
                 JSONObject resultJson = JSONObject.parseObject(result);
                 if (resultJson.getInteger("status") != 0) {
                     log.error("更新围栏监控人员失败:{},状态:{}", resultJson.getString("message"), resultJson.getInteger("status"));
                 } else {
-                    log.info("更新围栏监控人员成功,状态:{},消息:{}", createRoundJson.getInteger("status"), createRoundJson.getString("message"));
+                    log.info("分批更新围栏监控人员成功,状态:{},消息:{}", createRoundJson.getInteger("status"), createRoundJson.getString("message"));
                 }
             }
+        } else {
+            List<String> fenceEntityNames = fenceEntityDto.stream().map(e -> {
+                return e.getId() + "_" + e.getName();
+            }).collect(Collectors.toList());
+            String finalEntity = String.join(",", fenceEntityNames);
+            String result = FenceUtils.addMonitoredPerson(schoolFence.getFenceId(), finalEntity);
+            JSONObject resultJson = JSONObject.parseObject(result);
+            if (createRoundJson.getInteger("status") == 1) {
+                //更新围栏，状态如果为1的情况，为百度那边的服务器内部错误，则再次请求
+                createRoundResult = FenceUtils.createRoundFence(request);
+                createRoundJson = JSONObject.parseObject(createRoundResult);
+            }
+            if (resultJson.getInteger("status") != 0) {
+                log.error("更新围栏监控人员失败:{},状态:{}", resultJson.getString("message"), resultJson.getInteger("status"));
+            } else {
+                log.info("更新围栏监控人员成功,状态:{},消息:{}", createRoundJson.getInteger("status"), createRoundJson.getString("message"));
+            }
+        }
         return schoolFenceMapper.insertSelective(schoolFence) > 0;
     }
 
