@@ -17,10 +17,14 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.xiaoleilu.hutool.collection.CollUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.applet.Main;
 
+import java.math.BigDecimal;
+import java.sql.Array;
 import java.util.*;
 
 /**
@@ -37,17 +41,17 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     @Autowired
     private ProductImageMapper productImageMapper;
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addProduct(ProductAddDto productDto) {
         Product product = BeanMapUtils.map(productDto, Product.class);
+        Integer count = productMapper.findProductByName(product.getProductName());
+        Preconditions.checkArgument(count > 0, "已有重复的商品名称");
         //判断是不是新增的套餐
         if (productDto.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
-
-
+            product.setProductExtra(productDto.getProductChildIds());
         }
-       Long productId= productMapper.insertProduct(product).getId();
+        Long productId = productMapper.insertProduct(product).getId();
         //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
         Byte i = 1;
         for (ProductImageAddDto productImageAddDto : productDto.getImage()) {
@@ -60,12 +64,57 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
             productImageMapper.insert(productImage);
             i++;
         }
-
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateProduct(ProductUpdateDto productUpdateDto) {
-
+        Product product = BeanMapUtils.map(productUpdateDto, Product.class);
+        //修改的当前商品修改之前的数据
+        Product oldProduct = productMapper.selectByPrimaryKey(product.getId());
+        //如果是修改普通的单品
+        if (product.getProductType().equals(ProductTypeEnum.SINGLE.getCode())) {
+            Product findProduct = new Product();
+            findProduct.setProductType(ProductTypeEnum.GROUP.getCode());
+            List<Product> productList = productMapper.select(findProduct);
+            //循环所有套餐商品
+            for (Product fatherProduct : productList) {
+                if (StringUtils.isNotEmpty(fatherProduct.getProductExtra())) {
+                    String[] chdilIds = fatherProduct.getProductExtra().split(",");
+                    for (int i = 0; i < chdilIds.length; i++) {
+                        //如果该商品存在于套餐那么就修改套餐的定价金额
+                        if (product.getId().equals(chdilIds[i])) {
+                            //如果商品下架就修改套餐商品的信息商品
+                            if (product.getSellStatus().equals(Byte.parseByte("1"))) {
+                                List<String> ids = Arrays.asList(chdilIds);
+                                ids.remove(i);
+                                fatherProduct.setProductExtra(ids.toString());
+                                fatherProduct.setProductPrice(fatherProduct.getProductPrice().subtract(oldProduct.getProductPrice()));
+                                fatherProduct.setProductSellPrice(fatherProduct.getProductSellPrice().subtract(oldProduct.getProductSellPrice()));
+                                productMapper.updateProduct(fatherProduct);
+                                continue;
+                            }
+                            //如果修改了商品的定价和售价就修改套餐商品的定价和售价
+                            if (!oldProduct.getProductPrice().equals(product.getProductPrice()) ||
+                                    !oldProduct.getProductSellPrice().equals(product.getProductSellPrice())) {
+                                if (!oldProduct.getProductPrice().equals(product.getProductPrice())) {
+                                    BigDecimal oldPrice = oldProduct.getProductPrice();
+                                    BigDecimal newProductPrice = fatherProduct.getProductPrice().subtract(oldPrice).add(product.getProductPrice());
+                                    fatherProduct.setProductPrice(newProductPrice);
+                                }
+                                if (!oldProduct.getProductSellPrice().equals(product.getProductSellPrice())) {
+                                    BigDecimal oldSellPrice = oldProduct.getProductSellPrice();
+                                    BigDecimal newProductSellPrice = fatherProduct.getProductSellPrice().subtract(oldSellPrice).add(product.getProductSellPrice());
+                                    fatherProduct.setProductSellPrice(oldSellPrice);
+                                }
+                                productMapper.updateProduct(fatherProduct);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        productMapper.updateProduct(product);
     }
 
     @Override
@@ -73,9 +122,8 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     public void deleteProduct(Long productId) {
         //查询出所有类型为套餐商品的信息
         Product findProduct = new Product();
-        findProduct.setBusinessType(ProductTypeEnum.GROUP.getCode());
+        findProduct.setProductType(ProductTypeEnum.GROUP.getCode());
         List<Product> productList = productMapper.select(findProduct);
-
         if (CollUtil.isNotEmpty(productList)) {
             String childIds = "";
             //循环套餐信息提拼接他们的商品ids
@@ -122,7 +170,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
             String[] productChildArr = productDetailsVo.getProductChildIds().split(",");
             List<Product> productList = new ArrayList<>();
             for (int i = 0; i < productChildArr.length; i++) {
-                Product product = productMapper.selectByPrimaryKey(productChildArr[i]);
+                Product product = productMapper.selectByPrimaryKey(Long.parseLong(productChildArr[i]));
                 if (null != product) {
                     productList.add(product);
                 }
@@ -131,4 +179,5 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         }
         return productDetailsVo;
     }
+
 }

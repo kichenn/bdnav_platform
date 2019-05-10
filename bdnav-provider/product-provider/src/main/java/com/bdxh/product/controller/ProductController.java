@@ -1,7 +1,9 @@
 package com.bdxh.product.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.product.dto.ProductAddDto;
 import com.bdxh.product.dto.ProductQueryDto;
+import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.service.ProductService;
 import com.bdxh.product.vo.ProductDetailsVo;
@@ -10,7 +12,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -39,9 +40,10 @@ public class ProductController {
     @RequestMapping(value = "/findProduct", method = RequestMethod.POST)
     @ApiOperation(value = "查询微校商品")
     public Object findProduct(@RequestBody ProductQueryDto productQueryDto) {
-            PageInfo<Product> productPageInfo = productService.findProduct(productQueryDto);
-            return WrapMapper.ok(productPageInfo);
+        PageInfo<Product> productPageInfo = productService.findProduct(productQueryDto);
+        return WrapMapper.ok(productPageInfo);
     }
+
     /**
      * 查询微校商品
      *
@@ -51,26 +53,54 @@ public class ProductController {
     @RequestMapping(value = "/findProductDetails", method = RequestMethod.POST)
     @ApiOperation(value = "查询微校商品详情")
     public Object findProductDetails(@RequestParam("id") Long id) {
-            ProductDetailsVo productDetailsVo = productService.findProductDetails(id);
-            return WrapMapper.ok(productDetailsVo);
+        ProductDetailsVo productDetailsVo = productService.findProductDetails(id);
+        return WrapMapper.ok(productDetailsVo);
     }
 
     /**
      * 删除商品信息
-     * @param productId
+     *
+     * @param id
      */
     @RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
     @ApiOperation(value = "删除商品信息")
-    public Object deleteProduct(@RequestParam("productId") Long productId){
+    public Object deleteProduct(@RequestParam("id") Long id) {
+      try {
+        productService.deleteProduct(id);
+        return WrapMapper.ok();
+      } catch (Exception e) {
+          return WrapMapper.error(e.getMessage());
+      }
+    }
+
+
+    /**
+     * 新增商品
+     *
+     * @param productDto
+     */
+    @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
+    @ApiOperation(value = "新增商品信息")
+    public Object addProduct(@RequestBody ProductAddDto productDto) {
         try {
-            productService.deleteProduct(productId);
+            productService.addProduct(productDto);
             return WrapMapper.ok();
         }catch (Exception e){
-            e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
+    /**
+     * 更新商品
+     *
+     * @param productUpdateDto
+     */
+    @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
+    @ApiOperation(value = "更新商品信息")
+    public Object updateProduct(@RequestBody ProductUpdateDto productUpdateDto) {
+        productService.updateProduct(productUpdateDto);
+        return WrapMapper.ok();
+    }
 
 
 }

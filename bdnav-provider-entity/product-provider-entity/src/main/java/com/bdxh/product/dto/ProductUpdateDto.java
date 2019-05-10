@@ -50,13 +50,13 @@ public class ProductUpdateDto implements Serializable {
      * 商品类型 1 单品 2 套餐
      */
     @ApiModelProperty("商品类型 1 单品 2 套餐")
-    private Byte productType=1;
+    private Byte productType;
 
     /**
      * 商品上下架状态 1 下架 2 上架
      */
     @ApiModelProperty("商品上下架状态 1 下架 2 上架")
-    private Byte sellStatus=1;
+    private Byte sellStatus;
 
     /**
      * 商品图片地址
@@ -68,7 +68,20 @@ public class ProductUpdateDto implements Serializable {
      * 业务类型 1 微校服务
      */
     @ApiModelProperty("业务类型 1 微校服务")
-    private Byte businessType=1;
+    private Byte businessType;
+
+    /**
+     * 操作人
+     */
+    @ApiModelProperty("操作人")
+    private Long operator;
+
+    /**
+     * 操作姓名
+     */
+    @ApiModelProperty("操作姓名")
+    private String operatorName;
+
 
     /**
      * 备注
@@ -76,15 +89,14 @@ public class ProductUpdateDto implements Serializable {
     @ApiModelProperty("备注")
     private String remark;
 
+
     /**
      * 套餐包含商品
      */
     @ApiModelProperty("套餐包含商品")
     private String productChildIds;
 
-
     @ApiModelProperty("图片详情")
     List<ProductImageUpdateDto> image;
-
 
 }

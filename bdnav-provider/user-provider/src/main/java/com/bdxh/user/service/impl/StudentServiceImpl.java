@@ -33,6 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.json.JsonObject;
 import java.util.*;
 
 /**
@@ -94,11 +95,15 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             JSONObject mesData = new JSONObject();
             mesData.put("tableName", "t_student");
             mesData.put("data", student);
-            mesData.put("del_flag", "1");
+            JSONObject data=mesData.getJSONObject("data");
+            data.put("delFlag",1);
+            mesData.put("data", data);
             Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             mesData.put("tableName", "t_base_user");
             mesData.put("data", baseUser);
-            mesData.put("del_flag", "1");
+            JSONObject data1=mesData.getJSONObject("data");
+            data1.put("delFlag",1);
+            mesData.put("data", data1);
             Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             defaultMQProducer.send(studentMsg);
             defaultMQProducer.send(baseUserMsg);
@@ -201,12 +206,16 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
                 mesData.put("data", student);
-                mesData.put("del_flag", "0");
+                JSONObject data1=mesData.getJSONObject("data");
+                data1.put("delFlag",0);
+                mesData.put("data", data1);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", updateBaseUserDto);
-                mesData.put("del_flag", "0");
+                JSONObject data=mesData.getJSONObject("data");
+                data.put("delFlag",0);
+                mesData.put("data", data);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
@@ -284,12 +293,16 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
                 mesData.put("data", student);
-                mesData.put("del_flag", "0");
+                JSONObject data=mesData.getJSONObject("data");
+                data.put("delFlag",0);
+                mesData.put("data", data);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUser);
-                mesData.put("del_flag", "0");
+                JSONObject data1=mesData.getJSONObject("data");
+                data1.put("delFlag",0);
+                mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
@@ -323,12 +336,16 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
                 mesData.put("data", studentList);
-                mesData.put("del_flag", "0");
+                JSONObject data=mesData.getJSONObject("data");
+                data.put("delFlag",0);
+                mesData.put("data", data);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUserList);
-                mesData.put("del_flag", "0");
+                JSONObject data1=mesData.getJSONObject("data");
+                data1.put("delFlag",0);
+                mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
@@ -371,7 +388,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             JSONObject mesData = new JSONObject();
             mesData.put("tableName", "t_student");
             mesData.put("data", studentList);
-            mesData.put("del_flag", "0");
+            JSONObject data=mesData.getJSONObject("data");
+            data.put("delFlag",0);
+            mesData.put("data", data);
             Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             try {
                 defaultMQProducer.send(studentMsg);
