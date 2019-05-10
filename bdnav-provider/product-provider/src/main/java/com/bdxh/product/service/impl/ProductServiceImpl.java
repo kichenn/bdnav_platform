@@ -80,7 +80,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                             //如果商品下架就修改套餐商品的信息商品
                             if (product.getSellStatus().equals(Byte.parseByte("1"))) {
                                 List<String> ids = Arrays.asList(chdilIds);
-                                ids.remove(i);
+                                ids.remove(ids.get(i));
                                 fatherProduct.setProductExtra(ids.toString());
                                 productMapper.updateProduct(fatherProduct);
                                 continue;
