@@ -64,7 +64,9 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", schoolClass);
             jsonObject.put("tableName", "t_school_class");
-            jsonObject.put("del_flag", "0");
+            JSONObject data=jsonObject.getJSONObject("data");
+            data.put("del_flag","0");
+            jsonObject.put("data", data);
             Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
                 transactionMQProducer.send(message);
@@ -112,7 +114,9 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             jsonObject.put("message", "学校院系组织架构有调整");
             Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             jsonObject.put("tableName", "t_school_class");
-            jsonObject.put("del_flag", "0");
+            JSONObject data=jsonObject.getJSONObject("data");
+            data.put("del_flag","0");
+            jsonObject.put("data", data);
             Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
                 transactionMQProducer.send(message2);

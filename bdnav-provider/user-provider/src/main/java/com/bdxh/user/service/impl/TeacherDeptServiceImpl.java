@@ -64,7 +64,9 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_teacher_dept");
                 mesData.put("data", teacherDepts);
-                mesData.put("del_flag", "0");
+                JSONObject data = mesData.getJSONObject("data");
+                data.put("del_flag", "0");
+                mesData.put("data", data);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 try {
                     defaultMQProducer.send(baseUserMsg);

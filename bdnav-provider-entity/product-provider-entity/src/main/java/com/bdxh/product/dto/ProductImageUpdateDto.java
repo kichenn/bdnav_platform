@@ -1,6 +1,7 @@
 package com.bdxh.product.dto;
 
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -10,6 +11,11 @@ public class ProductImageUpdateDto implements Serializable {
 
     private static final long serialVersionUID = 5295579643785690138L;
 
+    /**
+     * id
+     */
+    @ApiModelProperty("id")
+    private Long id;
     /**
      * 图片地址
      */

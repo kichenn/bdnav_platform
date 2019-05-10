@@ -65,8 +65,10 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("data", schoolDept);
                 jsonObject.put("tableName", "t_school_dept");
-                jsonObject.put("del_flag", "0");
-                Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+                JSONObject data=jsonObject.getJSONObject("data");
+                data.put("del_flag","0");
+                jsonObject.put("data", data);
+                Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 try {
                     transactionMQProducer.send(message);
                 } catch (Exception e) {
@@ -111,7 +113,9 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             jsonObject.put("data", schoolDept);
             jsonObject.put("message", "学校部门组织架构有调整");
             Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-            jsonObject.put("del_flag", "0");
+            JSONObject data=jsonObject.getJSONObject("data");
+            data.put("del_flag","0");
+            jsonObject.put("data", data);
             jsonObject.put("tableName", "t_school_dept");
             Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
