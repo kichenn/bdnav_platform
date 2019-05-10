@@ -86,7 +86,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             mesData.put("tableName", "t_teacher");
             mesData.put("data", teacher);
             mesData.put("del_flag", "1");
-            Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+            Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             mesData.put("tableName", "t_base_user");
             mesData.put("data", baseUser);
             mesData.put("del_flag", "1");
@@ -94,7 +94,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             mesData.put("tableName", "t_teacher_dept");
             mesData.put("data", teacherDept);
             mesData.put("del_flag", "1");
-            Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+            Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             defaultMQProducer.send(studentMsg);
             defaultMQProducer.send(baseUserMsg);
             defaultMQProducer.send(teacherDeptMsg);
