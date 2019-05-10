@@ -3,10 +3,10 @@ package com.bdxh.app.configration.security.properties;
 import java.util.concurrent.TimeUnit;
 
 /**
-* @Description:  安全属性配置
-* @Author: Kang
-* @Date: 2019/5/10 15:03
-*/
+ * @Description: 安全属性配置
+ * @Author: Kang
+ * @Date: 2019/5/10 15:03
+ */
 public interface SecurityConstant {
 
     /**
@@ -20,14 +20,14 @@ public interface SecurityConstant {
     String TOKEN_SIGN_KEY = "bdnav-app";
 
     /**
-     * token过期时间14天
+     * token过期时间14天(转换成秒)
      */
-    long TOKEN_EXPIRE_TIME = TimeUnit.DAYS.toMillis(14);
+    int TOKEN_EXPIRE_TIME = (int) TimeUnit.DAYS.toSeconds(14);
 
     /**
-     * token刷新时间7天
+     * token刷新时间7天 (转换成秒)
      */
-    long TOKEN_REFRESH_TIME = TimeUnit.DAYS.toMillis(7);
+    int TOKEN_REFRESH_TIME = (int) TimeUnit.DAYS.toSeconds(7);
 
     /**
      * token请求header

@@ -118,9 +118,9 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
             }
         } else if (authHeader != null && authHeader.equals("BDXH_TEST")) {
             User user = new User();
-            user.setUserName("xuyuan");
+            user.setUserName("ceshi");
             user.setPassword(new BCryptPasswordEncoder().encode("123456"));
-            user.setRealName("徐圆");
+            user.setRealName("测试");
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             MyUserDetails myUserDetails = new MyUserDetails(user.getUserName(), "", true, authorities, user);
