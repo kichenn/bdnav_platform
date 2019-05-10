@@ -65,7 +65,7 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
                 mesData.put("tableName", "t_teacher_dept");
                 mesData.put("data", teacherDepts);
                 JSONObject data = mesData.getJSONObject("data");
-                data.put("del_flag", "0");
+                data.put("delFlag",0);
                 mesData.put("data", data);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 try {

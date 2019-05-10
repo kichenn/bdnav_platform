@@ -65,7 +65,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             jsonObject.put("data", schoolClass);
             jsonObject.put("tableName", "t_school_class");
             JSONObject data=jsonObject.getJSONObject("data");
-            data.put("del_flag","0");
+            data.put("delFlag",0);
             jsonObject.put("data", data);
             Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
@@ -115,7 +115,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             jsonObject.put("tableName", "t_school_class");
             JSONObject data=jsonObject.getJSONObject("data");
-            data.put("del_flag","0");
+            data.put("delFlag",0);
             jsonObject.put("data", data);
             Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
@@ -133,6 +133,20 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     //id删除院校关系
     @Override
     public Boolean delSchoolClassById(Long id) {
+        JSONObject jsonObject = new JSONObject();
+        SchoolClass schoolClass=schoolClassMapper.selectByPrimaryKey(id);
+        jsonObject.put("tableName", "t_school_class");
+        jsonObject.put("data", schoolClass);
+        JSONObject data=jsonObject.getJSONObject("data");
+        data.put("delFlag",1);
+        jsonObject.put("data", data);
+        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        try {
+            transactionMQProducer.send(message);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("消息推送MQ失败");
+        }
         return schoolClassMapper.deleteByPrimaryKey(id) > 0;
     }
 
@@ -146,6 +160,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     //删除院校底下信息
     @Override
     public Boolean delSchoolClassBySchoolId(Long schoolId) {
+
         return schoolClassMapper.delSchoolClassBySchoolId(schoolId) > 0;
     }
 
