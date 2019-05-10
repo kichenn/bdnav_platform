@@ -34,7 +34,7 @@ public class YuanJingDaLogin{
         JSONObject jsonObject=new JSONObject();
        SchoolUser schoolUsers=schoolUserControllerClient.findSchoolUserByName(schoolUser.getUserName()).getResult();
         jsonObject.put("username",schoolUsers.getUserName());
-        jsonObject.put("password",schoolUsers.getPassword());
+        jsonObject.put("password",schoolUsers.getPassword().substring(0,16));
         return WrapMapper.ok(jsonObject);
     }
 }
