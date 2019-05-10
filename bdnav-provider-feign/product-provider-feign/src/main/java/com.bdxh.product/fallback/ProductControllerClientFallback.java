@@ -5,11 +5,12 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.product.dto.ProductAddDto;
 import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
+import com.bdxh.product.entity.Product;
 import com.bdxh.product.feign.ProductControllerClient;
+import com.bdxh.product.vo.ProductDetailsVo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 
 /**
  * @description: 应用分类feign降级服务
@@ -19,4 +20,28 @@ import javax.validation.constraints.NotNull;
 @Component
 public class ProductControllerClientFallback implements ProductControllerClient {
 
+    @Override
+    public Wrapper<PageInfo<Product>> findProduct(ProductQueryDto productQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<ProductDetailsVo> findProductDetails(Long id) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper deleteProduct(Long id) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper addProduct(ProductAddDto productDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper updateProduct(ProductUpdateDto productUpdateDto) {
+        return WrapMapper.error();
+    }
 }

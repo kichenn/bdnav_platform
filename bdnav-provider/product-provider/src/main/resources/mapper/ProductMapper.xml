@@ -78,11 +78,11 @@
                 and <![CDATA[date(update_date) <= date(#{endDate,jdbcType=TIMESTAMP})]]>
             </if>
         </where>
-        order by update_date
+        order by update_date desc
     </select>
     <!--查询商品的详情信息-->
 
-    <select id="findProductDetails" resultMap="ProductDetailsMap">
+    <select id="findProductDetails" resultMap="ProductDetailsMap" parameterType="java.lang.Long">
     SELECT
         product.id AS id,
         product.product_name AS productName,
@@ -183,4 +183,8 @@
             #{remark}
          );
 </insert>
+    <select id="findProductByName" resultType="java.lang.Integer" parameterType="java.lang.String">
+        select count(1) from product
+        where product_name=#{productName}
+    </select>
 </mapper>
