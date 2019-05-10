@@ -36,15 +36,15 @@ import java.util.stream.Collectors;
 @Api(value = "商品服务", tags = "商品服务")
 public class ProductWebController {
 
-    @Autowired
-    private ProductControllerClient productControllerClient;
+  /*  @Autowired
+    private ProductControllerClient productControllerClient;*/
 
     @ApiOperation("根据id查询商品")
     @RequestMapping(value = "/queryProduct", method = RequestMethod.GET)
     public Object queryProduct(@RequestParam(name = "id") @NotNull(message = "商品id不能为空") Long id) {
         try {
-            Wrapper wrapper = productControllerClient.queryProduct(id);
-            return wrapper;
+           /* Wrapper wrapper = productControllerClient.queryProduct(id);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -65,8 +65,8 @@ public class ProductWebController {
             User user = SecurityUtils.getCurrentUser();
             productAddDto.setOperator(user.getId());
             productAddDto.setOperatorName(user.getUserName());
-            Wrapper wrapper = productControllerClient.addProduct(productAddDto);
-            return wrapper;
+           /* Wrapper wrapper = productControllerClient.addProduct(productAddDto);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -86,8 +86,8 @@ public class ProductWebController {
             return WrapMapper.error(errors);
         }
         try {
-            Wrapper wrapper = productControllerClient.updateProduct(productUpdateDto);
-            return wrapper;
+        /*    Wrapper wrapper = productControllerClient.updateProduct(productUpdateDto);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -100,8 +100,8 @@ public class ProductWebController {
     public Object deleteProduct(@RequestParam(name = "productId") @NotNull(message = "商品id不能为空") Long productId) {
 
         try {
-            Wrapper wrapper = productControllerClient.deleteProduct(productId);
-            return wrapper;
+          /*  Wrapper wrapper = productControllerClient.deleteProduct(productId);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -114,8 +114,8 @@ public class ProductWebController {
     public Object queryListPage(@Valid @RequestBody ProductQueryDto productQueryDto) {
 
         try {
-            Wrapper wrapper = productControllerClient.queryListPage(productQueryDto);
-            return wrapper;
+         /*   Wrapper wrapper = productControllerClient.queryListPage(productQueryDto);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -129,8 +129,8 @@ public class ProductWebController {
     public Object queryList(@Valid @RequestBody ProductQueryDto productQueryDto) {
 
         try {
-            Wrapper wrapper = productControllerClient.queryList(productQueryDto);
-            return wrapper;
+           /* Wrapper wrapper = productControllerClient.queryList(productQueryDto);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -143,8 +143,8 @@ public class ProductWebController {
     @RequestMapping(value = "/exists", method = RequestMethod.GET)
     public Object exists(@RequestParam(name = "productShowName") @NotEmpty(message = "商品展示名称不能为空") String productShowName) {
         try {
-            Wrapper wrapper = productControllerClient.exists(productShowName);
-            return wrapper;
+          /*  Wrapper wrapper = productControllerClient.exists(productShowName);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -156,8 +156,8 @@ public class ProductWebController {
     @RequestMapping(value = "/buyShow", method = RequestMethod.GET)
     public Object buyShow(@RequestParam(name = "businessType") @NotNull(message = "业务类型不能为空") Byte businessType) {
         try {
-            Wrapper wrapper = productControllerClient.buyShow(businessType);
-            return wrapper;
+           /* Wrapper wrapper = productControllerClient.buyShow(businessType);*/
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
