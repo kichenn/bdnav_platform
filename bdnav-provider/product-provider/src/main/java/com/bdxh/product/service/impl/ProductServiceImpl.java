@@ -2,10 +2,7 @@ package com.bdxh.product.service.impl;
 
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.product.dto.ProductAddDto;
-import com.bdxh.product.dto.ProductImageAddDto;
-import com.bdxh.product.dto.ProductQueryDto;
-import com.bdxh.product.dto.ProductUpdateDto;
+import com.bdxh.product.dto.*;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.entity.ProductImage;
 import com.bdxh.product.enums.ProductTypeEnum;
@@ -21,10 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.applet.Main;
 
-import java.math.BigDecimal;
-import java.sql.Array;
 import java.util.*;
 
 /**
@@ -46,12 +40,13 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     public void addProduct(ProductAddDto productDto) {
         Product product = BeanMapUtils.map(productDto, Product.class);
         Integer count = productMapper.findProductByName(product.getProductName());
-        Preconditions.checkArgument(count > 0, "已有重复的商品名称");
+        Preconditions.checkArgument(count == 0, "已有重复的商品名称");
         //判断是不是新增的套餐
         if (productDto.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
             product.setProductExtra(productDto.getProductChildIds());
         }
-        Long productId = productMapper.insertProduct(product).getId();
+        productMapper.insertProduct(product);
+        Long productId = product.getId();
         //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
         Byte i = 1;
         for (ProductImageAddDto productImageAddDto : productDto.getImage()) {
@@ -70,8 +65,6 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     @Transactional(rollbackFor = Exception.class)
     public void updateProduct(ProductUpdateDto productUpdateDto) {
         Product product = BeanMapUtils.map(productUpdateDto, Product.class);
-        //修改的当前商品修改之前的数据
-        Product oldProduct = productMapper.selectByPrimaryKey(product.getId());
         //如果是修改普通的单品
         if (product.getProductType().equals(ProductTypeEnum.SINGLE.getCode())) {
             Product findProduct = new Product();
@@ -83,37 +76,35 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                     String[] chdilIds = fatherProduct.getProductExtra().split(",");
                     for (int i = 0; i < chdilIds.length; i++) {
                         //如果该商品存在于套餐那么就修改套餐的定价金额
-                        if (product.getId().equals(chdilIds[i])) {
+                        if (product.getId().equals(Long.parseLong(chdilIds[i]))) {
                             //如果商品下架就修改套餐商品的信息商品
                             if (product.getSellStatus().equals(Byte.parseByte("1"))) {
                                 List<String> ids = Arrays.asList(chdilIds);
                                 ids.remove(i);
                                 fatherProduct.setProductExtra(ids.toString());
-                                fatherProduct.setProductPrice(fatherProduct.getProductPrice().subtract(oldProduct.getProductPrice()));
-                                fatherProduct.setProductSellPrice(fatherProduct.getProductSellPrice().subtract(oldProduct.getProductSellPrice()));
                                 productMapper.updateProduct(fatherProduct);
                                 continue;
-                            }
-                            //如果修改了商品的定价和售价就修改套餐商品的定价和售价
-                            if (!oldProduct.getProductPrice().equals(product.getProductPrice()) ||
-                                    !oldProduct.getProductSellPrice().equals(product.getProductSellPrice())) {
-                                if (!oldProduct.getProductPrice().equals(product.getProductPrice())) {
-                                    BigDecimal oldPrice = oldProduct.getProductPrice();
-                                    BigDecimal newProductPrice = fatherProduct.getProductPrice().subtract(oldPrice).add(product.getProductPrice());
-                                    fatherProduct.setProductPrice(newProductPrice);
-                                }
-                                if (!oldProduct.getProductSellPrice().equals(product.getProductSellPrice())) {
-                                    BigDecimal oldSellPrice = oldProduct.getProductSellPrice();
-                                    BigDecimal newProductSellPrice = fatherProduct.getProductSellPrice().subtract(oldSellPrice).add(product.getProductSellPrice());
-                                    fatherProduct.setProductSellPrice(oldSellPrice);
-                                }
-                                productMapper.updateProduct(fatherProduct);
                             }
                         }
                     }
                 }
             }
         }
+        //修改图片
+        List<ProductImageUpdateDto> productImages = productUpdateDto.getImage();
+        List<ProductImage> productImageList = BeanMapUtils.mapList(productImages, ProductImage.class);
+        Byte i = 1;
+        productImageMapper.deleteProductImageByProductId(product.getId());
+        for (ProductImage productImage : productImageList) {
+            productImage.setSort(i);
+            productImage.setProductId(product.getId());
+            productImage.setOperator(product.getOperator());
+            productImage.setOperatorName(product.getOperatorName());
+            productImage.setRemark(product.getRemark());
+            productImageMapper.insert(productImage);
+            i++;
+        }
+        product.setProductExtra(productUpdateDto.getProductChildIds());
         productMapper.updateProduct(product);
     }
 
@@ -141,7 +132,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                 List<String> idList = new ArrayList<>(ids);
                 for (String s : idList) {
                     //判断是否有套餐商品的IDS中存在当前商品的ID
-                    Preconditions.checkArgument(productId.equals(s), "该商品被套餐包含，不能删除");
+                    Preconditions.checkArgument(!productId.equals(Long.parseLong(s)), "该商品被套餐包含，不能删除");
                 }
             }
         }

@@ -33,5 +33,7 @@
 	          #{id, jdbcType = BIGINT}
 	     </foreach >
 	</delete>
-
+	<delete id="deleteProductImageByProductId">
+	DELETE FROM t_product_image where product_id=#{id}
+	</delete>
 </mapper>

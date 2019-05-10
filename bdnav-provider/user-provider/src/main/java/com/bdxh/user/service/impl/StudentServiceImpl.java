@@ -1,5 +1,6 @@
 package com.bdxh.user.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
@@ -320,6 +321,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     @Transactional
     public void batchSaveStudentInfo(List<AddStudentDto> addStudentDtoList) {
+        try {
         List<Student> studentList = BeanMapUtils.mapList(addStudentDtoList, Student.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(studentList, BaseUser.class);
         for (int i = 0; i < baseUserList.size(); i++) {
@@ -330,21 +332,24 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         }
         Boolean stuResult = studentMapper.batchSaveStudentInfo(studentList) > 0;
         Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;
-        try {
             //将新增的信息推送至rocketMQ
             if (stuResult && baseUserResult) {
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
                 mesData.put("data", studentList);
-                JSONObject data=mesData.getJSONObject("data");
-                data.put("delFlag",0);
+                JSONArray data=mesData.getJSONArray("data");
+                Map<String,Object> map=new HashMap<>();
+                map.put("delFlag",1);
+                data.add(data.size()-1,map);
                 mesData.put("data", data);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUserList);
-                JSONObject data1=mesData.getJSONObject("data");
-                data1.put("delFlag",0);
+                JSONArray data1=mesData.getJSONArray("data");
+                Map<String,Object> map1=new HashMap<>();
+                map1.put("delFlag",1);
+                data.add(data.size()-1,map1);
                 mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);

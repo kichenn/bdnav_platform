@@ -27,4 +27,9 @@ public interface ProductImageMapper extends Mapper<ProductImage> {
 	 *批量删除方法
 	 */
 	 Integer delProductImageInIds(@Param("ids") List<Long> ids);
+
+	/**
+	 * 根据商品ID删除图片
+	 */
+	int deleteProductImageByProductId(@Param("id")Long id);
 }
