@@ -30,6 +30,9 @@ public class ServiceUser {
     @Column(name = "product_id")
     private Long productId;
 
+    @Column(name = "product_name")
+    private String productName;
+
     @Column(name = "school_id")
     private Long schoolId;
 
