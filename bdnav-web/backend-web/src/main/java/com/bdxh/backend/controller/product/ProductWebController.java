@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/ProductWeb")
+@RequestMapping("/productWeb")
 @Validated
 @Slf4j
 @Api(value = "商品服务", tags = "商品服务")
@@ -43,7 +43,7 @@ public class ProductWebController {
     @RequestMapping(value = "/queryProduct", method = RequestMethod.GET)
     public Object queryProduct(@RequestParam(name = "id") @NotNull(message = "商品id不能为空") Long id) {
         try {
-            Wrapper wrapper = productControllerClient.queryProduct(id);
+            Wrapper wrapper = productControllerClient.findProductDetails(id);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -85,6 +85,9 @@ public class ProductWebController {
             return WrapMapper.error(errors);
         }
         try {
+            User user = SecurityUtils.getCurrentUser();
+            productUpdateDto.setOperator(user.getId());
+            productUpdateDto.setOperatorName(user.getUserName());
             Wrapper wrapper = productControllerClient.updateProduct(productUpdateDto);
             return wrapper;
         } catch (Exception e) {
@@ -111,56 +114,14 @@ public class ProductWebController {
     @ApiOperation("商品列表查询")
     @RequestMapping(value = "/queryListPage", method = RequestMethod.POST)
     public Object queryListPage(@Valid @RequestBody ProductQueryDto productQueryDto) {
-
         try {
-            Wrapper wrapper = productControllerClient.queryListPage(productQueryDto);
+            Wrapper wrapper = productControllerClient.findProduct(productQueryDto);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
 
-    }
-
-
-    @ApiOperation("根据条件查询商品")
-    @RequestMapping(value = "/queryList", method = RequestMethod.POST)
-    public Object queryList(@Valid @RequestBody ProductQueryDto productQueryDto) {
-
-        try {
-            Wrapper wrapper = productControllerClient.queryList(productQueryDto);
-            return wrapper;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-
-    }
-
-
-    @ApiOperation("判断商品展示名称是否重复")
-    @RequestMapping(value = "/exists", method = RequestMethod.GET)
-    public Object exists(@RequestParam(name = "productShowName") @NotEmpty(message = "商品展示名称不能为空") String productShowName) {
-        try {
-            Wrapper wrapper = productControllerClient.exists(productShowName);
-            return wrapper;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
-
-    }
-
-    @ApiOperation("商品购买展示")
-    @RequestMapping(value = "/buyShow", method = RequestMethod.GET)
-    public Object buyShow(@RequestParam(name = "businessType") @NotNull(message = "业务类型不能为空") Byte businessType) {
-        try {
-            Wrapper wrapper = productControllerClient.buyShow(businessType);
-            return wrapper;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
     }
 
 }
