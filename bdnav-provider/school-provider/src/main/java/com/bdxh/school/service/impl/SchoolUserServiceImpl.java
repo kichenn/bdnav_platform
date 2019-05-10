@@ -151,7 +151,9 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                 if (userReleResult) {
                     JSONObject msgData = new JSONObject();
                     msgData.put("tableName", "t_school_user_role");
-                    msgData.put("data", schoolUserRole);
+                    JSONObject data=msgData.getJSONObject("data");
+                    data.put("delFlag",0);
+                    msgData.put("data", data);
                     Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
                     try {
                         defaultMQProducer.send(schoolUserMsg);
@@ -165,7 +167,9 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         if (schoolUserResult) {
             JSONObject msgData = new JSONObject();
             msgData.put("tableName", "t_school_user");
-            msgData.put("data", schoolUser);
+            JSONObject data=msgData.getJSONObject("data");
+            data.put("delFlag",0);
+            msgData.put("data", data);
             Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
             try {
                 defaultMQProducer.send(schoolUserMsg);
@@ -219,6 +223,9 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                     JSONObject msgData = new JSONObject();
                     msgData.put("tableName", "t_school_user_role");
                     msgData.put("data", schoolUserRole);
+                    JSONObject data=msgData.getJSONObject("data");
+                    data.put("delFlag",0);
+                    msgData.put("data", data);
                     Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
                     try {
                         defaultMQProducer.send(schoolUserMsg);
@@ -234,7 +241,9 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         if (schoolUserResult) {
             JSONObject msgData = new JSONObject();
             msgData.put("tableName", "t_school_user");
-            msgData.put("data", schoolUser);
+            JSONObject data=msgData.getJSONObject("data");
+            data.put("delFlag",0);
+            msgData.put("data", data);
             Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
             try {
                 defaultMQProducer.send(schoolUserMsg);
