@@ -7,6 +7,7 @@
       <!--  <result column="id" jdbcType="BIGINT" property="id"/>-->
         <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
         <result column="product_id" jdbcType="BIGINT" property="productId"/>
+        <result column="product_name" jdbcType="VARCHAR" property="productName"/>
         <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
@@ -25,7 +26,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-	id,order_no,product_id,school_id,school_code,school_name,family_id,card_number,family_name,start_time,end_time,`status`,`type`,create_date,update_date,operator,operator_name,remark
+	id,order_no,product_id,product_name,school_id,school_code,school_name,family_id,card_number,family_name,start_time,end_time,`status`,`type`,create_date,update_date,operator,operator_name,remark
 	</sql>
 
     <select id="getServiceUserAllCount" resultType="Integer">
@@ -49,7 +50,7 @@
         <include refid="BaseColumns"/>
         FROM t_service_user
         <where>
-            <if test="cardNumber!=null">
+            <if test="cardNumber!=null and cardNumber!=''">
                 AND card_number=#{cardNumber}
             </if>
             <if test="familyName!=null and familyName!=''">

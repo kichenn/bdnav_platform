@@ -20,6 +20,9 @@ public class ModifyServiceUserDto {
     @ApiModelProperty("产品主键")
     private Long productId;
 
+    @ApiModelProperty("产品名称")
+    private String productName;
+
     @ApiModelProperty("学校主键")
     private Long schoolId;
 
