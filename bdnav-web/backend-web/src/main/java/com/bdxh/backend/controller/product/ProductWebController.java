@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 
 
 @RestController
-@RequestMapping("/ProductWeb")
+@RequestMapping("/productWeb")
 @Validated
 @Slf4j
 @Api(value = "商品服务", tags = "商品服务")
