@@ -3,21 +3,21 @@ package com.bdxh.app.configration.security.properties;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description: 安全配置属性
- * @author: xuyuan
- * @create: 2019-02-28 16:28
- **/
+* @Description:  安全属性配置
+* @Author: Kang
+* @Date: 2019/5/10 15:03
+*/
 public interface SecurityConstant {
 
     /**
      * token分割
      */
-    String TOKEN_SPLIT = "Bearer ";
+    String TOKEN_SPLIT = "BearerApp ";
 
     /**
      * token加密key
      */
-    String TOKEN_SIGN_KEY = "bdnav-platform";
+    String TOKEN_SIGN_KEY = "bdnav-app";
 
     /**
      * token过期时间14天

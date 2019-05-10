@@ -69,12 +69,6 @@
             <groupId>com.aliyun</groupId>
             <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
         </dependency>
-        <!-- poi -->
-        <!--<dependency>-->
-        <!--<groupId>org.apache.poi</groupId>-->
-        <!--<artifactId>poi</artifactId>-->
-        <!--<version>3.17</version>-->
-        <!--</dependency>-->
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-excelant</artifactId>
@@ -145,6 +139,13 @@
             <version>1.0.0.1</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/resources/lib/gexin-rp-fastjson-1.0.0.1.jar</systemPath>
+        </dependency>
+
+        <!--拼音4j-->
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>2.5.0</version>
         </dependency>
     </dependencies>
 

@@ -2,7 +2,7 @@ package com.bdxh.backend.configration.security.properties;
 
 /**
  * @description: 安全配置属性
- * @author: xuyuan
+ * @author: Kang
  * @create: 2019-02-28 16:28
  **/
 public interface SecurityConstant {

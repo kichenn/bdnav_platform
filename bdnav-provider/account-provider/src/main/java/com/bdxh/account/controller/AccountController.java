@@ -5,6 +5,7 @@ import com.bdxh.account.dto.AddAccountDto;
 import com.bdxh.account.dto.UpdateAccountDto;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.service.AccountService;
+import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
@@ -20,9 +21,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -103,4 +106,24 @@ public class AccountController {
         return WrapMapper.ok(accounts);
     }
 
+    @ApiOperation(value = "用户名或者手机号查询账户信息", response = Account.class)
+    @RequestMapping(value = "/findAccountByLoginNameOrPhone", method = RequestMethod.GET)
+    public Object findAccountByLoginNameOrPhone(@RequestParam(value = "phone", required = false) String phone,
+                                                @RequestParam(value = "loginName", required = false) String loginName) {
+        //效验参数
+        boolean expression = (phone == null || phone == "") && (loginName == null || loginName == "");
+        Preconditions.checkArgument(expression, "请输入用户名或者手机号信息");
+        return WrapMapper.ok(accountService.findAccountByLoginNameOrPhone(phone, loginName));
+    }
+
+//    @ApiOperation(value = "导入账户数据", response = Boolean.class)
+//    @RequestMapping(value = "/importAcountInfo", method = RequestMethod.POST)
+//    public Object importAcountInfo(@RequestParam("accountFile") MultipartFile file) {
+//        try {
+//            List<String[]> studentList = ExcelImportUtil.readExcelNums(file, 0);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        return WrapMapper.ok();
+//    }
 }

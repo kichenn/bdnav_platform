@@ -1,21 +1,22 @@
 package com.bdxh.client.configration.security.properties;
 
 /**
- * @description: 安全配置属性
- * @author: xuyuan
- * @create: 2019-02-28 16:28
- **/
+ * @Description: 安全配置属性
+ * @Author: Kang
+ * @Date: 2019/5/10 14:50
+ */
 public interface SecurityConstant {
+
 
     /**
      * token分割
      */
-    String TOKEN_SPLIT = "Bearer ";
+    String TOKEN_SPLIT = "BearerClient ";
 
     /**
      * token加密key
      */
-    String TOKEN_SIGN_KEY = "bdnav-platform";
+    String TOKEN_SIGN_KEY = "bdnav-client";
 
     /**
      * token过期时间120分钟
@@ -55,6 +56,6 @@ public interface SecurityConstant {
     /**
      * token是否失效前缀
      */
-    String TOKEN_IS_REFRESH = "user_token_is_refresh:";
+    String TOKEN_IS_REFRESH = "school_token_is_refresh:";
 
 }

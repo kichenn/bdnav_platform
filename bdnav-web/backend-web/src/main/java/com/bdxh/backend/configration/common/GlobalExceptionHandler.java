@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 /**
  * @description: 全局异常处理器
- * @author: xuyuan
+ * @author: Kang
  * @create: 2019-01-10 12:16
  **/
 @ControllerAdvice

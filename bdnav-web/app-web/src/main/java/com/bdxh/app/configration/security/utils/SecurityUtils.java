@@ -5,22 +5,23 @@ import com.bdxh.app.configration.security.userdetail.MyUserDetails;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
- * @description: 用户信息工具类
- * @author: xuyuan
- * @create: 2019-02-28 16:22
- **/
+ * @Description: 用户信息工具类
+ * @Author: Kang
+ * @Date: 2019/5/10 15:04
+ */
 public class SecurityUtils {
 
     /**
      * 获取当前登录用户信息
+     *
      * @return
      */
-    public static Account getCurrentUser(){
+    public static Account getCurrentUser() {
         Account account = null;
         try {
             MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             account = myUserDetails.getAccount();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return account;
@@ -28,14 +29,15 @@ public class SecurityUtils {
 
     /**
      * 获取当前登录用户名
+     *
      * @return
      */
-    public static String getLoginName(){
+    public static String getLoginName() {
         String loginName = null;
         try {
             Account account = getCurrentUser();
             loginName = account.getLoginName();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return loginName;
@@ -43,14 +45,15 @@ public class SecurityUtils {
 
     /**
      * 获取当前登录用户姓名
+     *
      * @return
      */
-    public static String getRealName(){
+    public static String getRealName() {
         String realName = null;
         try {
             Account account = getCurrentUser();
             realName = account.getUserName();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return realName;

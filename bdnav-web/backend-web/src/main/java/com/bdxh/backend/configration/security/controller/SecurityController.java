@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @description:
- * @author: xuyuan
+ * @author: Kang
  * @create: 2019-02-28 10:47
  **/
 @RestController

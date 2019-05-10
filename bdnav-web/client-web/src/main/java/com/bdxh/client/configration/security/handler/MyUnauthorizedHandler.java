@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * @description:
- * @author: xuyuan
- * @create: 2019-02-28 11:44
- **/
+* @Description:
+* @Author: Kang
+* @Date: 2019/5/10 14:59
+*/
 @Component
 public class MyUnauthorizedHandler implements AuthenticationEntryPoint{
 

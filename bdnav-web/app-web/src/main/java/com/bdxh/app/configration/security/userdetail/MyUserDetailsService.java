@@ -8,10 +8,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 /**
- * @description:
- * @author: xuyuan
- * @create: 2019-02-28 14:32
- **/
+* @Description:   
+* @Author: Kang
+* @Date: 2019/5/10 15:04
+*/
 @Component
 public class MyUserDetailsService implements UserDetailsService {
 
