@@ -75,13 +75,13 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                 if (StringUtils.isNotEmpty(fatherProduct.getProductExtra())) {
                     String[] chdilIds = fatherProduct.getProductExtra().split(",");
                     for (int i = 0; i < chdilIds.length; i++) {
-                        //如果该商品存在于套餐那么就修改套餐的定价金额
-                        if (product.getId().equals(Long.parseLong(chdilIds[i]))) {
+                        if (product.getId().equals(Long.parseLong(chdilIds[i].trim()))) {
                             //如果商品下架就修改套餐商品的信息商品
                             if (product.getSellStatus().equals(Byte.parseByte("1"))) {
                                 List<String> ids = Arrays.asList(chdilIds);
-                                ids.remove(ids.get(i));
-                                fatherProduct.setProductExtra(ids.toString());
+                                List<String> idsArrayList=new ArrayList<>(ids);
+                                idsArrayList.remove(i);
+                                fatherProduct.setProductExtra(idsArrayList.toString().replaceAll("\\[","").replaceAll("\\]","").trim());
                                 productMapper.updateProduct(fatherProduct);
                                 continue;
                             }
@@ -161,7 +161,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
             String[] productChildArr = productDetailsVo.getProductChildIds().split(",");
             List<Product> productList = new ArrayList<>();
             for (int i = 0; i < productChildArr.length; i++) {
-                Product product = productMapper.selectByPrimaryKey(Long.parseLong(productChildArr[i]));
+                Product product = productMapper.selectByPrimaryKey(Long.parseLong(productChildArr[i].trim()));
                 if (null != product) {
                     productList.add(product);
                 }
