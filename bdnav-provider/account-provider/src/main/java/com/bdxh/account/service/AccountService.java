@@ -40,6 +40,13 @@ public interface AccountService extends IService<Account> {
     PageInfo<Account> queryAccountListPage(AccountQueryDto accountQueryDto);
 
     /**
+     * 手机号或者用户昵称查询账户信息
+     *
+     * @return
+     */
+    Account findAccountByLoginNameOrPhone(String phone, String loginName);
+
+    /**
      * 修改用户名
      *
      * @param schoolCode

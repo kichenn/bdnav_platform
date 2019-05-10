@@ -33,12 +33,11 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description:
- * @author: xuyuan
- * @create: 2019-02-28 10:47
- **/
+ * @Description:
+ * @Author: Kang
+ * @Date: 2019/5/10 15:01
+ */
 @RestController
-@RequestMapping("/authentication")
 @Slf4j
 public class SecurityController {
 
@@ -49,7 +48,7 @@ public class SecurityController {
     private RedisTemplate<String, Object> redisTemplate;
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    @RequestMapping(value = "/authenticationApp/login", method = RequestMethod.GET)
     public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) throws IOException {
         try {
             Preconditions.checkArgument(StringUtils.isNotEmpty(username), "用户名不能为空");
@@ -65,12 +64,12 @@ public class SecurityController {
             long currentTimeMillis = System.currentTimeMillis();
             redisTemplate.opsForValue().set(SecurityConstant.TOKEN_IS_REFRESH + myUserDetails.getId(), new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME), SecurityConstant.TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(account.getLoginName())
-                    .claim(SecurityConstant.ACCOUNT,accountStr)
+                    .claim(SecurityConstant.ACCOUNT, accountStr)
                     .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME))
                     .signWith(SignatureAlgorithm.HS512, SecurityConstant.TOKEN_SIGN_KEY)
                     .compressWith(CompressionCodecs.GZIP).compact();
             //将token放入redis
-            redisTemplate.opsForValue().set(SecurityConstant.TOKEN_KEY+myUserDetails.getId(),token);
+            redisTemplate.opsForValue().set(SecurityConstant.TOKEN_KEY + myUserDetails.getId(), token);
             Wrapper wrapper = WrapMapper.ok(token);
             String str = JSON.toJSONString(wrapper);
             response.setHeader("Access-Control-Allow-Origin", "*");
@@ -84,7 +83,7 @@ public class SecurityController {
             if (e instanceof UsernameNotFoundException || e instanceof BadCredentialsException) {
                 message = "用户名或者密码不正确";
             }
-            if (e instanceof AccountExpiredException){
+            if (e instanceof AccountExpiredException) {
                 message = "账户已过期";
             }
             if (e instanceof LockedException) {

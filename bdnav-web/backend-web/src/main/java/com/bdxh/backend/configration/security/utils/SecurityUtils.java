@@ -6,7 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 /**
  * @description: 用户信息工具类
- * @author: xuyuan
+ * @author: Kang
  * @create: 2019-02-28 16:22
  **/
 public class SecurityUtils {

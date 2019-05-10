@@ -103,5 +103,18 @@
 
         ORDER BY create_date DESC
     </select>
+    <select id="findAccountByLoginNameOrPhone" resultMap="BaseResultMap">
+        select
+        <include refid="BaseCloumns"/>
+        from t_account
+        <where>
+            <if test="phone!=null and phone !=''">
+                user_phone =#{phone}
+            </if>
+            <if test="loginName!=null and phone !=''">
+                AND login_name=#{loginName}
+            </if>
+        </where>
+    </select>
 
 </mapper>

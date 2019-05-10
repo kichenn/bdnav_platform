@@ -7,10 +7,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 /**
- * @description:
- * @author: xuyuan
- * @create: 2019-02-28 14:20
- **/
+* @Description:   
+* @Author: Kang
+* @Date: 2019/5/10 15:04
+*/
 public class MyUserDetails implements UserDetails {
 
     private Long id;

@@ -33,8 +33,8 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description:
- * @author: xuyuan
+ * @description: token异常
+ * @author: Kang
  * @create: 2019-02-28 14:21
  **/
 @Component
@@ -127,6 +127,16 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+        } else {
+            Wrapper wrapper = WrapMapper.wrap(401, "token异常");
+            String str = JSON.toJSONString(wrapper);
+            httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+            httpServletResponse.setStatus(200);
+            httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
+            httpServletResponse.setCharacterEncoding("utf-8");
+            httpServletResponse.setContentType("application/json;charset=utf-8");
+            httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
+            return;
         }
         filterChain.doFilter(httpServletRequest, httpServletResponse);
     }

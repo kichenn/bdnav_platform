@@ -29,6 +29,16 @@ public interface AccountMapper extends Mapper<Account> {
 
 
     /**
+     * 手机号或者登录名查询用户信息
+     *
+     * @param phone
+     * @param loginName
+     * @return
+     */
+    Account findAccountByLoginNameOrPhone(@Param("phone") String phone, @Param("loginName") String loginName);
+
+
+    /**
      * 修改用户名
      *
      * @param schoolCode

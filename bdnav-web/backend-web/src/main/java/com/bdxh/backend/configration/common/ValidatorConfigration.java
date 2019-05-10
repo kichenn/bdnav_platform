@@ -6,7 +6,7 @@ import org.springframework.validation.beanvalidation.MethodValidationPostProcess
 
 /**
  * @description: 校验器配置类
- * @author: xuyuan
+ * @author: Kang
  * @create: 2019-01-10 11:48
  **/
 @Configuration

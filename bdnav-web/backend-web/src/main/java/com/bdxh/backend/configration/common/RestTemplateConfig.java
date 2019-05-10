@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * @description: RestTemplate配置类
- * @author: xuyuan
+ * @author: Kang
  * @create: 2019-02-18 16:04
  **/
 @Configuration

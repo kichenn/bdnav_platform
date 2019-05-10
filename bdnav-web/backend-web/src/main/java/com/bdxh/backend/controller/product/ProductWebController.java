@@ -76,7 +76,6 @@ public class ProductWebController {
     }
 
 
-
     @ApiOperation("更新商品")
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
     public Object updateProduct(@Valid @RequestBody ProductUpdateDto productUpdateDto, BindingResult bindingResult) {

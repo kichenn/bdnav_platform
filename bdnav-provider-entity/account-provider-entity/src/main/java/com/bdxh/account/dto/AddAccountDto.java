@@ -47,16 +47,16 @@ public class AddAccountDto implements Serializable {
     private String loginName;
 
     @ApiModelProperty("修改登录名 1 未修改 2 已修改")
-    private Byte loginNameUpdate;
+    private Byte loginNameUpdate = 1;
 
     @ApiModelProperty("密码")
     private String password;
 
     @ApiModelProperty("账户是否过期 1 正常 2 过期")
-    private Byte accountExpired;
+    private Byte accountExpired = 1;
 
     @ApiModelProperty("账户是否锁定 1 正常 2 锁定")
-    private Byte accountLocked;
+    private Byte accountLocked = 1;
 
     @ApiModelProperty("创建时间")
     private Date createDate;

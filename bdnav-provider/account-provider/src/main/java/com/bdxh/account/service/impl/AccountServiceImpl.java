@@ -50,6 +50,16 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
         return pageInfo;
     }
 
+    /**
+     * 手机号或者用户昵称查询账户信息
+     *
+     * @return
+     */
+    @Override
+    public Account findAccountByLoginNameOrPhone(String phone, String loginName) {
+        return accountMapper.findAccountByLoginNameOrPhone(phone, loginName);
+    }
+
     @Override
     public int updateLoginName(String schoolCode, String cardNumber, String loginName) {
         int result = accountMapper.updateLoginName(schoolCode, cardNumber, loginName);
