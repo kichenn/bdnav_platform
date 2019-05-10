@@ -3,27 +3,25 @@ package com.bdxh.product.service.impl;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.product.dto.ProductAddDto;
+import com.bdxh.product.dto.ProductImageAddDto;
+import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
-import com.bdxh.product.entity.ProductChild;
 import com.bdxh.product.entity.ProductImage;
-import com.bdxh.product.enums.BusinessTypeEnum;
 import com.bdxh.product.enums.ProductTypeEnum;
-import com.bdxh.product.persistence.ProductChildMapper;
 import com.bdxh.product.persistence.ProductImageMapper;
 import com.bdxh.product.persistence.ProductMapper;
 import com.bdxh.product.service.ProductService;
+import com.bdxh.product.vo.ProductDetailsVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang3.StringUtils;
+import com.xiaoleilu.hutool.collection.CollUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description: 商品service实现
@@ -39,134 +37,98 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     @Autowired
     private ProductImageMapper productImageMapper;
 
-    @Autowired
-    private ProductChildMapper productChildMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public boolean addProduct(ProductAddDto productAddDto) {
-        //判断同名商品是否存在
-        Product product = new Product();
-        product.setProductShowName(productAddDto.getProductShowName());
-        Product productData = productMapper.selectOne(product);
-        Preconditions.checkArgument(productData==null,"不能重复添加商品");
-        BeanMapUtils.copy(productAddDto,product);
-        //判断是单品还是套餐 单品
-        if (productAddDto.getProductType().intValue()== ProductTypeEnum.SINGLE.getCode().intValue()){
-            productMapper.insertSelective(product);
-            //图片详情表
-            List<ProductImage> productImages = BeanMapUtils.mapList(productAddDto.getImage(), ProductImage.class);
-            for (int i=0;i<productImages.size();i++) {
-                //明细主键
-                ProductImage productImage = productImages.get(i);
-              return  productImageMapper.insertSelective(productImage) > 0;
-            }
+    public void addProduct(ProductAddDto productDto) {
+        Product product = BeanMapUtils.map(productDto, Product.class);
+        //判断是不是新增的套餐
+        if (productDto.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
+
+
         }
-        //套餐
-        if (productAddDto.getProductType().intValue()== ProductTypeEnum.GROUP.getCode().intValue()){
-            //判断商品的业务类型 微校增值服务
-            if (productAddDto.getBusinessType().intValue()== BusinessTypeEnum.WEIXIAO_ADD_SERVICE.getCode().intValue()){
-                String productChildIds=productAddDto.getProductChildIds();
-                //设置套餐包含的子产品
-                product.setProductExtra(productAddDto.getProductChildIds());
-                productMapper.insertSelective(product);
-                if (StringUtils.isNotEmpty(productChildIds)){
-                    String[] ids = productChildIds.split(",");
-                    for (int i=0;i<ids.length;i++){
-                        String id=ids[i];
-                        ProductChild productChild=new ProductChild();
-                        productChild.setProductId(product.getId());
-                        productChild.setProductChildId(Long.valueOf(id));
-                        return   productChildMapper.insertSelective(productChild) > 0;
-                    }
-                }
-            }
+       Long productId= productMapper.insertProduct(product).getId();
+        //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
+        Byte i = 1;
+        for (ProductImageAddDto productImageAddDto : productDto.getImage()) {
+            ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
+            productImage.setSort(i);
+            productImage.setProductId(productId);
+            productImage.setOperator(productDto.getOperator());
+            productImage.setOperatorName(productDto.getOperatorName());
+            productImage.setRemark(productDto.getRemark());
+            productImageMapper.insert(productImage);
+            i++;
         }
-        return false;
+
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void updateProduct(ProductUpdateDto productUpdateDto) {
-        //根据id查询商品
-        Product oldProduct = productMapper.selectByPrimaryKey(productUpdateDto.getId());
-        Preconditions.checkNotNull(oldProduct,"商品信息不存在，无法进行更新");
-        //判断名称是否重复
-        if(!StringUtils.equals(productUpdateDto.getProductShowName(),oldProduct.getProductShowName())){
-            Product product = new Product();
-            product.setProductShowName(productUpdateDto.getProductShowName());
-            Product productData = productMapper.selectOne(product);
-            Preconditions.checkArgument(productData==null,"不能重复添加商品");
-        }
-        //将dto转换成实体对象
-        Product product = BeanMapUtils.map(productUpdateDto, Product.class);
-        //设置更新时间
-        product.setUpdateDate(new Date());
-        //判断是单品还是套餐 单品
-        if (productUpdateDto.getProductType().intValue()== ProductTypeEnum.SINGLE.getCode().intValue()){
-            //删除之前的子产品 重新插入
-            ProductChild productChild = new ProductChild();
-            productChild.setProductId(productUpdateDto.getId());
-            productChildMapper.delete(productChild);
-            product.setProductExtra("");
-            productMapper.updateByPrimaryKeySelective(product);
-        }
-        //套餐
-        if (productUpdateDto.getProductType().intValue()== ProductTypeEnum.GROUP.getCode().intValue()){
-            //判断商品的业务类型 微校增值服务
-            if (productUpdateDto.getBusinessType().intValue()== BusinessTypeEnum.WEIXIAO_ADD_SERVICE.getCode().intValue()){
-                String productChildIds=productUpdateDto.getProductChildIds();
-                //设置套餐包含的子产品
-                product.setProductExtra(productUpdateDto.getProductChildIds());
-                productMapper.updateByPrimaryKeySelective(product);
-                if (StringUtils.isNotEmpty(productChildIds)){
-                    //删除之前的子产品 重新插入
-                    ProductChild productChild = new ProductChild();
-                    productChild.setProductId(productUpdateDto.getId());
-                    productChildMapper.delete(productChild);
-                    String[] ids = productChildIds.split(",");
-                    for (int i=0;i<ids.length;i++){
-                        String id=ids[i];
-                        productChild=new ProductChild();
-                        productChild.setProductId(product.getId());
-                        productChild.setProductChildId(Long.valueOf(id));
-                        productChildMapper.insertSelective(productChild);
-                    }
-                }
-            }
-        }
+
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteProduct(Long productId) {
-        //查询商品
-        Product product = productMapper.selectByPrimaryKey(productId);
-        Preconditions.checkNotNull(product,"商品信息不存在");
-        //单品时，被套餐商品包含不能删除
-        if (product.getProductType().intValue()==ProductTypeEnum.SINGLE.getCode().intValue()){
-            int exists = productChildMapper.exists(productId);
-            Preconditions.checkArgument(exists==0,"该商品被套餐包含，不能删除");
+        //查询出所有类型为套餐商品的信息
+        Product findProduct = new Product();
+        findProduct.setBusinessType(ProductTypeEnum.GROUP.getCode());
+        List<Product> productList = productMapper.select(findProduct);
+
+        if (CollUtil.isNotEmpty(productList)) {
+            String childIds = "";
+            //循环套餐信息提拼接他们的商品ids
+            for (int i = 0; i < productList.size(); i++) {
+                if ((i + 1) >= productList.size()) {
+                    childIds += productList.get(i).getProductExtra();
+                } else {
+                    childIds += productList.get(i).getProductExtra() + ",";
+                }
+            }
+            if (!childIds.equals("")) {
+                //子商品ID去重
+                String[] idsArray = childIds.split(",");
+                Set<String> ids = new HashSet(Arrays.asList(idsArray));
+                List<String> idList = new ArrayList<>(ids);
+                for (String s : idList) {
+                    //判断是否有套餐商品的IDS中存在当前商品的ID
+                    Preconditions.checkArgument(productId.equals(s), "该商品被套餐包含，不能删除");
+                }
+            }
         }
+        ProductImage productImage = new ProductImage();
+        productImage.setProductId(productId);
+        //删除商品的图片数据
+        productImageMapper.delete(productImage);
+        //删除商品表数据
         productMapper.deleteByPrimaryKey(productId);
-        //删除子产品
-        ProductChild productChild = new ProductChild();
-        productChild.setProductId(productId);
-        productChildMapper.delete(productChild);
+    }
+
+
+    @Override
+    public PageInfo<Product> findProduct(ProductQueryDto productQueryDto) {
+        PageHelper.startPage(productQueryDto.getPageNum(), productQueryDto.getPageSize());
+        List<Product> productList = productMapper.findProduct(productQueryDto);
+        PageInfo<Product> pageInfoStudent = new PageInfo<>(productList);
+        return pageInfoStudent;
     }
 
     @Override
-    public PageInfo queryListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<Product> products = productMapper.getByCondition(param);
-        PageInfo pageInfo = new PageInfo<>(products);
-        return pageInfo;
+    public ProductDetailsVo findProductDetails(Long id) {
+        ProductDetailsVo productDetailsVo = productMapper.findProductDetails(id);
+        //判断商品是不是套餐
+        if (productDetailsVo.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
+            String[] productChildArr = productDetailsVo.getProductChildIds().split(",");
+            List<Product> productList = new ArrayList<>();
+            for (int i = 0; i < productChildArr.length; i++) {
+                Product product = productMapper.selectByPrimaryKey(productChildArr[i]);
+                if (null != product) {
+                    productList.add(product);
+                }
+            }
+            productDetailsVo.setProductList(productList);
+        }
+        return productDetailsVo;
     }
-
-    @Override
-    public List<Product> queryList(Map<String, Object> param) {
-        List<Product> products = productMapper.getByCondition(param);
-        return products;
-    }
-
 }

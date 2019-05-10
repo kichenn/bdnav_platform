@@ -101,7 +101,6 @@ public class BaseUserController {
      * 根据学校码和卡号查询用户信息
      */
     @RequestMapping(value ="/queryBaseUserBySchoolCodeAndCardNumber",method = RequestMethod.POST)
-    @ResponseBody
     public Object  queryBaseUserBySchoolCodeAndCardNumber(@RequestParam("schoolCode") String schoolCode,
                                                           @RequestParam("cardNumber") String cardNumber){
         try {
@@ -115,7 +114,6 @@ public class BaseUserController {
      * 校方激活同步用户接口
      */
     @RequestMapping(value ="/baseUserActivation",method = RequestMethod.POST)
-    @ResponseBody
     public Object  baseUserActivation(@RequestBody ActivationBaseUserDto activationBaseUserDto){
         try {
             return WrapMapper.ok(baseUserService.baseUserActivation(activationBaseUserDto)) ;

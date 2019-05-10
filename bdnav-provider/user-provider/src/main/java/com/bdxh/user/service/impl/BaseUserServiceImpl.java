@@ -22,6 +22,7 @@ import com.sun.org.apache.xml.internal.resolver.readers.TR9401CatalogReader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -95,6 +96,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
     }
 
     @Override
+    @Transactional
     public Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
         try {
             //更具学校Code和cardNumber查出我们本地用户的基本信息
@@ -103,10 +105,11 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                 //判断用户类型  用户类型 1 学生 2 老师 3 家长
                 switch (baseUser.getUserType()) {
                     case 1: {
+                        //同步类型为学生的
                         log.info("卡号为" + baseUser.getCardNumber() + "的学生激活");
                         Student student = BeanMapUtils.map(activationBaseUserDto, Student.class);
                         student.setActivate(Byte.parseByte("2"));
-                        studentMapper.updateStudentInfo(student);
+                        studentMapper.updateStudentActivation(student.getSchoolCode(),student.getCardNumber(),student.getActivate());
                         Student studentInfo = studentMapper.findStudentInfo(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
                         synUserInfoRequest.setSchool_code(studentInfo.getSchoolCode());
@@ -141,20 +144,36 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         JSONObject jsonObject = JSONObject.parseObject(result);
                         if (!jsonObject.get("errcode").equals(0)) {
                             throw new Exception("激活失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
+                        }else{
+                            return true;
                         }
-                        return true;
+
                     }
                     case 2: {
                         log.info("卡号为" + baseUser.getCardNumber() + "的老师激活");
                         Teacher teacher = BeanMapUtils.map(activationBaseUserDto, Teacher.class);
                         teacherMapper.updateTeacher(teacher);
-                        return true;
+                        SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
+                        String result = AuthenticationUtils.authUserInfo(synUserInfoRequest, activationBaseUserDto.getAppKey(), activationBaseUserDto.getAppSecret(), activationBaseUserDto.getState());
+                        JSONObject jsonObject = JSONObject.parseObject(result);
+                        if (!jsonObject.get("errcode").equals(0)) {
+                            throw new Exception("激活失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
+                        }else{
+                            return true;
+                        }
                     }
                     case 3: {
                         log.info("卡号为" + baseUser.getCardNumber() + "的家长激活");
                         Family family = BeanMapUtils.map(activationBaseUserDto, Family.class);
                         familyMapper.updateFamilyInfo(family);
-                        return true;
+                        SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
+                        String result = AuthenticationUtils.authUserInfo(synUserInfoRequest, activationBaseUserDto.getAppKey(), activationBaseUserDto.getAppSecret(), activationBaseUserDto.getState());
+                        JSONObject jsonObject = JSONObject.parseObject(result);
+                        if (!jsonObject.get("errcode").equals(0)) {
+                            throw new Exception("激活失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
+                        }else{
+                            return true;
+                        }
                     }
                     default: {
 
