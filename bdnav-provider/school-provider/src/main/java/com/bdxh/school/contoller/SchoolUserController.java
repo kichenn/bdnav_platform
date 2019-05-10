@@ -26,6 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -67,7 +68,16 @@ public class SchoolUserController {
         if (userData != null) {
             return WrapMapper.error("该用户名已经存在");
         }
-        schoolUserService.addSchoolUser(addSchoolUserDto);
+        try {
+            schoolUserService.addSchoolUser(addSchoolUserDto);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //手机号
+                return WrapMapper.error("该手机号已存在");
+            }
+            e.printStackTrace();
+        }
+
         return WrapMapper.ok();
     }
 
@@ -84,7 +94,15 @@ public class SchoolUserController {
         if (userData != null && (!modifySchoolUserDto.getId().equals(userData.getId()))) {
             return WrapMapper.error("该用户名已经存在");
         }
-        schoolUserService.modifySchoolUser(modifySchoolUserDto);
+        try {
+            schoolUserService.modifySchoolUser(modifySchoolUserDto);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //手机号
+                return WrapMapper.error("该手机号已存在");
+            }
+            e.printStackTrace();
+        }
         return WrapMapper.ok();
     }
 
@@ -163,6 +181,7 @@ public class SchoolUserController {
     public Object modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "statusEnum") SchoolUserStatusEnum statusEnum) {
         return WrapMapper.ok(schoolUserService.modifySchoolUserStatusById(id, statusEnum.getKey()));
     }
+
     /**
      * 查询所有系统用户信息
      *
@@ -170,7 +189,7 @@ public class SchoolUserController {
      */
     @RequestMapping(value = "/findAllSchoolUserInfo", method = RequestMethod.GET)
     @ApiOperation(value = "查询所有系统用户信息", response = Boolean.class)
-    public Object findAllSchoolUserInfo(){
+    public Object findAllSchoolUserInfo() {
         return WrapMapper.ok(schoolUserService.selectAll());
     }
 }
