@@ -2,6 +2,7 @@ package com.bdxh.app.configration.security.filter;
 
 import com.alibaba.fastjson.JSON;
 import com.bdxh.account.entity.Account;
+import com.bdxh.app.configration.redis.RedisUtil;
 import com.bdxh.app.configration.security.exception.MutiLoginException;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
@@ -45,7 +46,7 @@ import java.util.concurrent.TimeUnit;
 public class MyAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -57,7 +58,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 String username = claims.getSubject();
                 String accountStr = (String) claims.get(SecurityConstant.ACCOUNT);
                 Account account = JSON.parseObject(accountStr, Account.class);
-                String redisToken = (String) redisTemplate.opsForValue().get(SecurityConstant.TOKEN_KEY + account.getId());
+                String redisToken = redisUtil.get(SecurityConstant.TOKEN_KEY + account.getId());
                 if (StringUtils.isNotEmpty(redisToken)) {
                     if (!StringUtils.equals(authHeader, redisToken)) {
                         throw new MutiLoginException();
@@ -74,13 +75,13 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
                 //刷新token 时效14天 刷新7天 token最小时长14天 最大操作间隔7天 否则需重新登录
-                Date date = (Date) redisTemplate.opsForValue().get(SecurityConstant.TOKEN_IS_REFRESH + account.getId());
+                Date date = (Date) redisUtil.get(SecurityConstant.TOKEN_IS_REFRESH + account.getId());
                 Instant instant = date.toInstant();
                 ZoneId zoneId = ZoneId.systemDefault();
                 LocalDateTime refreshTime = instant.atZone(zoneId).toLocalDateTime();
                 if (LocalDateTime.now().isAfter(refreshTime)) {
                     long currentTimeMillis = System.currentTimeMillis();
-                    redisTemplate.opsForValue().set(SecurityConstant.TOKEN_IS_REFRESH + account.getId(), new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME), SecurityConstant.TOKEN_EXPIRE_TIME, TimeUnit.MILLISECONDS);
+                    redisUtil.setWithExpireTime(SecurityConstant.TOKEN_IS_REFRESH + account.getId(), new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME), SecurityConstant.TOKEN_EXPIRE_TIME);
                     String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(account.getLoginName())
                             .claim(SecurityConstant.ACCOUNT, accountStr)
                             .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME))
@@ -122,13 +123,13 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         } else if (authHeader != null && authHeader.equals("BDXH_TEST")) {
-            User user = new User();
-            user.setUserName("xuyuan");
-            user.setPassword(new BCryptPasswordEncoder().encode("123456"));
-            user.setRealName("徐圆");
+            Account account = new Account();
+            account.setId(new Long("001"));
+            account.setLoginName("ceshi");
+            account.setPassword(new BCryptPasswordEncoder().encode("123456"));
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            MyUserDetails myUserDetails = new MyUserDetails(user.getUserName(), "", true, authorities, user);
+            MyUserDetails myUserDetails = new MyUserDetails(account.getId(), account.getUserName(), "", true, true, account);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

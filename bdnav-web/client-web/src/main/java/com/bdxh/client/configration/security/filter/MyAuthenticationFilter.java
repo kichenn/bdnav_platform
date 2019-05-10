@@ -116,9 +116,9 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
             }
         } else if (authHeader != null && authHeader.equals("BDXH_TEST")) {
             SchoolUser user = new SchoolUser();
-            user.setUserName("xuyuan");
+            user.setUserName("ceshi");
             user.setPassword(new BCryptPasswordEncoder().encode("123456"));
-            user.setRealName("徐圆");
+            user.setRealName("测试");
             user.setSchoolCode("111");
             user.setSchoolId(new Long("3"));
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
