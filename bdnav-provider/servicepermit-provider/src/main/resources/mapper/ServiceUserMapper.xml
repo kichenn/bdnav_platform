@@ -49,7 +49,7 @@
         <include refid="BaseColumns"/>
         FROM t_service_user
         <where>
-            <if test="cardNumber!=null">
+            <if test="cardNumber!=null and cardNumber!=''">
                 AND card_number=#{cardNumber}
             </if>
             <if test="familyName!=null and familyName!=''">
