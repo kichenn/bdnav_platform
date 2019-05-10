@@ -20,11 +20,11 @@ import javax.validation.constraints.NotNull;
  * @create: 2019-04-10 17:31
  **/
 @RestController
-@RequestMapping("/teacherDept")
+@RequestMapping("/teacherDeptWeb")
 @Validated
 @Slf4j
 @Api(value = "教师部门信息交互API", tags = "教师部门信息交互API")
-public class TeacherDeptController {
+public class TeacherDeptWebController {
     @Autowired
     private TeacherDeptControllerClient teacherDeptControllerClient;
     /**

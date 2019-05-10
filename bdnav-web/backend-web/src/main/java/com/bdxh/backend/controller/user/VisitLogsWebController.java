@@ -26,11 +26,11 @@ import java.util.stream.Collectors;
  * @create: 2019-04-19 16:17
  **/
 @RestController
-@RequestMapping("/visitLogs")
+@RequestMapping("/visitLogsWeb")
 @Slf4j
 @Validated
 @Api(value = "学生网站访问日志控制器", tags = "学生网站访问日志控制器")
-public class VisitLogsController {
+public class VisitLogsWebController {
     @Autowired
     private VisitLogsControllerClient visitLogsControllerClient;
 

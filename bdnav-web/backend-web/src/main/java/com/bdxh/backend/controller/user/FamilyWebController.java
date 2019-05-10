@@ -45,11 +45,11 @@ import java.util.List;
  * @create: 2019-03-13 10:02
  **/
 @RestController
-@RequestMapping("/family")
+@RequestMapping("/familyWeb")
 @Validated
 @Slf4j
 @Api(value = "家长信息交互API", tags = "家长信息交互API")
-public class FamilyController {
+public class FamilyWebController {
 
     @Autowired
     private FamilyControllerClient familyControllerClient;

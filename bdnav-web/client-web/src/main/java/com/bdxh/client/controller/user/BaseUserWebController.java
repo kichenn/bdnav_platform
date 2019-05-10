@@ -19,11 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
  * @create: 2019-04-25 16:38
  **/
 @RestController
-@RequestMapping("/baseUser")
+@RequestMapping("/baseUserWeb")
 @Validated
 @Slf4j
 @Api(value = "学校用户信息交互API", tags = "学校用户信息交互API")
-public class BaseUserController {
+public class BaseUserWebController {
     @Autowired
     private BaseUserControllerClient baseUserControllerClient;
     /**

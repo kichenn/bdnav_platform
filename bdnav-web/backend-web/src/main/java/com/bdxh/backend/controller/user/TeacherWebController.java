@@ -39,11 +39,11 @@ import java.util.stream.Collectors;
  * @create: 2019-03-13 10:02
  **/
 @RestController
-@RequestMapping("/teacher")
+@RequestMapping("/teacherWeb")
 @Validated
 @Slf4j
 @Api(value = "老师信息交互API", tags = "老师信息交互API")
-public class TeacherController {
+public class TeacherWebController {
     @Autowired
     private TeacherControllerClient teacherControllerClient;
     @Autowired

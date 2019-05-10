@@ -1,9 +1,9 @@
-package com.bdxh.client.controller.user;
+package com.bdxh.backend.controller.user;
 
-import com.bdxh.client.configration.security.utils.SecurityUtils;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.system.entity.User;
 import com.bdxh.user.dto.AddFamilyStudentDto;
 import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.feign.FamilyControllerClient;
@@ -21,7 +21,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
@@ -32,11 +31,11 @@ import java.util.stream.Collectors;
  * @create: 2019-03-13 10:02
  **/
 @RestController
-@RequestMapping("/familyStudent")
+@RequestMapping("/familyStudentWeb")
 @Validated
 @Slf4j
 @Api(value = "家长学生关系交互API", tags = "家长学生关系交互API")
-public class FamilyStudentController {
+public class FamilyStudentWebController {
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
 
@@ -53,8 +52,7 @@ public class FamilyStudentController {
      * @param bindingResult
      * @return
      */
-    @RolesAllowed({"ADMIN"})
-    @ApiOperation(value="家长绑定孩子接口", response = Boolean.class)
+    @ApiOperation(value="家长绑定孩子接口")
     @RequestMapping(value = "/bindingStudent",method = RequestMethod.POST)
     public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult){
         //检验参数
@@ -63,20 +61,17 @@ public class FamilyStudentController {
             return WrapMapper.error(errors);
         }
         try {
-            SchoolUser user= SecurityUtils.getCurrentUser();
             FamilyStudentQueryDto familyStudentQueryDto=new FamilyStudentQueryDto();
-         //   familyStudentQueryDto.setCardNumber(addFamilyStudentDto.getCardNumber());
             familyStudentQueryDto.setStudentNumber(addFamilyStudentDto.getStudentNumber());
-            familyStudentQueryDto.setSchoolCode(user.getSchoolCode());
+            familyStudentQueryDto.setSchoolCode(addFamilyStudentDto.getSchoolCode());
             Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
             PageInfo pageInfo=(PageInfo)wrapper.getResult();
             if(pageInfo.getTotal()!=0){
-                return WrapMapper.error("已存在绑定关系");
+                return WrapMapper.error("该学生已存在绑定关系");
             }
+            User user= SecurityUtils.getCurrentUser();
             addFamilyStudentDto.setOperator(user.getId());
             addFamilyStudentDto.setOperatorName(user.getUserName());
-            addFamilyStudentDto.setSchoolCode(user.getSchoolCode());
-            addFamilyStudentDto.setSchoolId(user.getSchoolId());
             Wrapper wrappers =familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
             return wrappers;
         } catch (Exception e) {
@@ -87,18 +82,18 @@ public class FamilyStudentController {
 
     /**
      * 删除学生家长绑定关系
+     * @param schoolCode
      * @param cardNumber
      * @param id
      * @return
      */
-    @RolesAllowed({"ADMIN"})
-    @ApiOperation(value = "删除学生家长绑定关系", response = Boolean.class)
+    @ApiOperation(value = "删除学生家长绑定关系")
     @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.GET)
-    public Object removeFamilyOrStudent(@RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
+    public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
+                                        @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
                                         @RequestParam(name = "id") @NotNull(message="id不能为空")String id){
         try{
-            SchoolUser user= SecurityUtils.getCurrentUser();
-            familyStudentControllerClient.removeFamilyOrStudent(user.getSchoolCode(), cardNumber,id);
+            familyStudentControllerClient.removeFamilyOrStudent(schoolCode, cardNumber,id);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -115,8 +110,6 @@ public class FamilyStudentController {
     @RequestMapping(value = "/queryAllFamilyStudent",method =RequestMethod.POST)
     public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
         try{
-            SchoolUser user= SecurityUtils.getCurrentUser();
-            familyStudentQueryDto.setSchoolCode(user.getSchoolCode());
             Wrapper wrapper =familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
             return WrapMapper.ok(wrapper.getResult());
         }catch (Exception e){
@@ -128,9 +121,8 @@ public class FamilyStudentController {
     @RequestMapping(value = "/queryFamilyStudentDetails",method =RequestMethod.POST)
     public Object queryFamilyStudentDetails(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
         try{
-            SchoolUser user= SecurityUtils.getCurrentUser();
-            FamilyVo familyVo=familyControllerClient.queryFamilyInfo(user.getSchoolCode(),familyStudentQueryDto.getCardNumber()).getResult();
-            StudentVo studentVo= studentControllerClient.queryStudentInfo(user.getSchoolCode(),familyStudentQueryDto.getStudentNumber()).getResult();
+            FamilyVo familyVo=familyControllerClient.queryFamilyInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getCardNumber()).getResult();
+            StudentVo studentVo= studentControllerClient.queryStudentInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getStudentNumber()).getResult();
             FamilyStudentDetailsVo familyStudentDetailsVo=new FamilyStudentDetailsVo();
             familyStudentDetailsVo.setFamilyVo(familyVo);
             familyStudentDetailsVo.setStudentVo(studentVo);

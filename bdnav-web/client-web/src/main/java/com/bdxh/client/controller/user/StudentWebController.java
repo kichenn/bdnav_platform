@@ -48,11 +48,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/studentWeb")
 @Validated
 @Slf4j
 @Api(value = "学生信息交互API", tags = "学生信息交互API")
-public class StudentController {
+public class StudentWebController {
 
     @Autowired
     private StudentControllerClient studentControllerClient;

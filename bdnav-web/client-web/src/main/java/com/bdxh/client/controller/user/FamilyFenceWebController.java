@@ -1,7 +1,9 @@
-package com.bdxh.backend.controller.user;
+package com.bdxh.client.controller.user;
 
+import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.user.dto.AddFamilyFenceDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.UpdateFamilyFenceDto;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 /**
@@ -22,10 +25,10 @@ import javax.validation.Valid;
  **/
 @Validated
 @RestController
-@RequestMapping("/familyFence")
+@RequestMapping("/familyFenceWeb")
 @Slf4j
 @Api(value = "家长围栏交互API", tags = "家长围栏交互API")
-public class FamilyFenceController {
+public class FamilyFenceWebController {
     @Autowired
     private FamilyFenceControllerClient familyFenceControllerClient;
 
@@ -34,10 +37,13 @@ public class FamilyFenceController {
      * @param updateFamilyFenceDto
      * @return
      */
-    @ApiOperation(value="修改围栏信息")
+    @RolesAllowed({"ADMIN"})
+    @ApiOperation(value="修改围栏信息", response = Boolean.class)
     @RequestMapping(value = "/updateFamilyFenceInfo",method = RequestMethod.POST)
     public Object updateFamilyFenceInfo(@Valid @RequestBody UpdateFamilyFenceDto updateFamilyFenceDto){
         try {
+            SchoolUser user= SecurityUtils.getCurrentUser();
+            updateFamilyFenceDto.setSchoolCode(user.getSchoolCode());
             Wrapper wrapper = familyFenceControllerClient.updateFamilyFenceInfo(updateFamilyFenceDto);
             return wrapper;
         } catch (Exception e) {
@@ -49,18 +55,18 @@ public class FamilyFenceController {
 
     /**
      *  删除围栏表信息
-     * @param schoolCode
      * @param cardNumber
      * @param id
      * @return
      */
-    @ApiOperation(value="删除围栏信息")
+    @RolesAllowed({"ADMIN"})
+    @ApiOperation(value="删除围栏信息", response = Boolean.class)
     @RequestMapping(value = "/removeFamilyFenceInfo",method = RequestMethod.POST)
-    public Object removeFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
-                                        @RequestParam("cardNumber") String cardNumber,
+    public Object removeFamilyFenceInfo(@RequestParam("cardNumber") String cardNumber,
                                         @RequestParam("id") String id){
         try {
-            Wrapper wrapper = familyFenceControllerClient.removeFamilyFenceInfo(schoolCode,cardNumber,id);
+            SchoolUser user= SecurityUtils.getCurrentUser();
+            Wrapper wrapper = familyFenceControllerClient.removeFamilyFenceInfo(user.getSchoolCode(),cardNumber,id);
             return wrapper;
         }catch (Exception e){
             e.printStackTrace();
@@ -73,11 +79,14 @@ public class FamilyFenceController {
      * @param familyFenceQueryDto
      * @return
      */
+
     @ApiOperation(value="获取围栏表所有信息")
     @RequestMapping(value = "/getFamilyFenceInfos",method = RequestMethod.POST)
-    public Object getFamilyFenceInfos(@Valid @RequestBody  FamilyFenceQueryDto familyFenceQueryDto){
+    public Object getFamilyFenceInfos(@Valid @RequestBody FamilyFenceQueryDto familyFenceQueryDto){
         try {
-            Wrapper wrapper=familyFenceControllerClient.getFamilyFenceInfos(familyFenceQueryDto);
+            SchoolUser user= SecurityUtils.getCurrentUser();
+            familyFenceQueryDto.setSchoolCode(user.getSchoolCode());
+            Wrapper wrapper = familyFenceControllerClient.getFamilyFenceInfos(familyFenceQueryDto);
             return wrapper;
         }catch (Exception e){
             e.printStackTrace();
@@ -87,18 +96,17 @@ public class FamilyFenceController {
 
     /**
      * 获取围栏表单个信息
-     * @param schoolCode
      * @param cardNumber
      * @param id
      * @return
      */
     @ApiOperation(value="获取围栏表单个信息")
     @RequestMapping(value = "/getFamilyFenceInfo",method = RequestMethod.POST)
-    public Object getFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
-                                     @RequestParam("cardNumber") String cardNumber,
+    public Object getFamilyFenceInfo(@RequestParam("cardNumber") String cardNumber,
                                      @RequestParam("id") String id){
         try {
-            Wrapper wrapper=familyFenceControllerClient.getFamilyFenceInfo(schoolCode,cardNumber,id);
+            SchoolUser user= SecurityUtils.getCurrentUser();
+            Wrapper wrapper =familyFenceControllerClient.getFamilyFenceInfo(user.getSchoolCode(),cardNumber,id);
             return wrapper;
         }catch (Exception e){
             e.printStackTrace();
@@ -110,10 +118,14 @@ public class FamilyFenceController {
      * 新增围栏设置
      * @param addFamilyFenceDto
      */
-    @ApiOperation(value="新增围栏设置")
+    @RolesAllowed({"ADMIN"})
+    @ApiOperation(value="新增围栏设置", response = Boolean.class)
     @RequestMapping(value = "/addFamilyFenceInfo",method = RequestMethod.POST)
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto){
         try {
+            SchoolUser user= SecurityUtils.getCurrentUser();
+            addFamilyFenceDto.setSchoolCode(user.getSchoolCode());
+            addFamilyFenceDto.setSchoolId(user.getSchoolId());
             Wrapper wrapper =  familyFenceControllerClient.addFamilyFenceInfo(addFamilyFenceDto);
             return wrapper;
         }catch (Exception e){
