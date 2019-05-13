@@ -116,7 +116,7 @@ public class SecurityController {
 
     @GetMapping("/getSchoolUserInfoByToken")
     @ApiOperation(value = "token获取用户信息", response = String.class)
-    public Object getUserInfoByToken() {
+    public Object getSchoolUserInfoByToken() {
         SchoolUser schoolUser = SecurityUtils.getCurrentUser();
         //组装数据，获取当前学校用户的角色信息
         SchoolUserShowVo schoolUserShowVo = new SchoolUserShowVo();

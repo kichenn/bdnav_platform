@@ -21,6 +21,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 /**
  * @description: security配置类
  * @author: xuyuan
@@ -41,11 +42,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
-    @Autowired
-    private MyAuthenticationFilter myAuthenticationFilter;
-
     @Bean
-    static BCryptPasswordEncoder getBCryptPasswordEncoder(){
+    static BCryptPasswordEncoder getBCryptPasswordEncoder() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         return bCryptPasswordEncoder;
     }
@@ -55,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
 
     @Override
     public void configure(WebSecurity web) {
@@ -71,13 +70,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable().headers().frameOptions().disable()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-                .antMatchers("/swagger-ui.html","/webjars/springfox-swagger-ui/**","/swagger-resources/**","/v2/api-docs/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/swagger-ui.html", "/webjars/springfox-swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**").permitAll()
                 .antMatchers("/authentication/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().authenticated()//其他路径进行权限验证
                 .and().headers().cacheControl();
-        httpSecurity.addFilterBefore(myAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        //设置jwt filter
+        httpSecurity.addFilterAt(myAuthenticationFilterBean(), UsernamePasswordAuthenticationFilter.class);
         httpSecurity.exceptionHandling().authenticationEntryPoint(myUnauthorizedHandler).accessDeniedHandler(myAccessDeniedHandler);
     }
 
+    @Bean
+    public MyAuthenticationFilter myAuthenticationFilterBean() {
+        return new MyAuthenticationFilter();
+    }
 }

@@ -127,7 +127,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-        } else if (authHeader != null ) {
+        } else if (authHeader != null && authHeader != "") {
             Wrapper wrapper = WrapMapper.wrap(401, "token异常");
             String str = JSON.toJSONString(wrapper);
             httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");

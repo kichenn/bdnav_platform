@@ -1,18 +1,18 @@
 package com.bdxh.app.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.bdxh.account.dto.ModifyAccountPwdDto;
 import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.redis.RedisUtil;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
+import com.bdxh.app.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.google.common.base.Preconditions;
-import io.jsonwebtoken.CompressionCodecs;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,15 +20,17 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -48,9 +50,9 @@ public class SecurityController {
     private RedisUtil redisUtil;
 
 
-    @ApiOperation(value = "获取token", response = Boolean.class)
+    @ApiOperation(value = "获取token(用户登录)", response = Boolean.class)
     @RequestMapping(value = "/authenticationApp/login", method = RequestMethod.GET)
-    public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletResponse response) throws IOException {
+    public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             Preconditions.checkArgument(StringUtils.isNotEmpty(username), "用户名不能为空");
             Preconditions.checkArgument(StringUtils.isNotEmpty(password), "密码不能为空");
@@ -63,14 +65,22 @@ public class SecurityController {
             String accountStr = JSON.toJSONString(accountTemp);
             //登录成功生成token
             long currentTimeMillis = System.currentTimeMillis();
-            redisUtil.setWithExpireTime(SecurityConstant.TOKEN_IS_REFRESH + account.getId(), DateUtil.format(new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME), "yyyy-MM-dd HH:mm:ss"), SecurityConstant.TOKEN_EXPIRE_TIME);
+            redisUtil.setWithExpireTime(SecurityConstant.TOKEN_IS_REFRESH + account.getId(), DateUtil.format(new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME * 60 * 1000), "yyyy-MM-dd HH:mm:ss"), SecurityConstant.TOKEN_EXPIRE_TIME);
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(account.getLoginName())
                     .claim(SecurityConstant.ACCOUNT, accountStr)
-                    .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME))
+                    .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))
                     .signWith(SignatureAlgorithm.HS512, SecurityConstant.TOKEN_SIGN_KEY)
                     .compressWith(CompressionCodecs.GZIP).compact();
             //将token放入redis
             redisUtil.set(SecurityConstant.TOKEN_KEY + myUserDetails.getId(), token);
+            //设置用户登录状态
+            log.info("authenticated user {}, setting security context", username);
+            //将认证信息存入securitycontext，在jwt的过滤器中(MyAuthenticationFilter)一直为null(给security内置过滤器清除了)
+            //此处将认证信息存入session
+            SecurityContext securityContext = SecurityContextHolder.getContext();
+            securityContext.setAuthentication(authenticate);
+            request.getSession().setAttribute(SecurityConstant.TOKEN_SESSION, securityContext);
+
             Wrapper wrapper = WrapMapper.ok(token);
             String str = JSON.toJSONString(wrapper);
             response.setHeader("Access-Control-Allow-Origin", "*");
@@ -101,4 +111,64 @@ public class SecurityController {
         }
     }
 
+
+    @ApiOperation(value = "注销token(用户登出)", response = Boolean.class)
+    @RequestMapping(value = "/accountLogout", method = RequestMethod.GET)
+    public void accountLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+            SecurityUtils.logout(request);
+            Wrapper wrapper = WrapMapper.ok("注销成功");
+            String str = JSON.toJSONString(wrapper);
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Content-type", "application/json; charset=UTF-8");
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/json;charset=utf-8");
+            response.getOutputStream().write(str.getBytes("utf-8"));
+        } catch (Exception e) {
+            Wrapper wrapper = WrapMapper.error(e.getMessage());
+            String str = JSON.toJSONString(wrapper);
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            response.setStatus(401);
+            response.setHeader("Content-type", "application/json; charset=UTF-8");
+            response.setCharacterEncoding("utf-8");
+            response.setContentType("application/json;charset=utf-8");
+            response.getOutputStream().write(str.getBytes("utf-8"));
+        }
+    }
+
+    @GetMapping("/getAccountInfoByToken")
+    @ApiOperation(value = "token获取用户信息", response = String.class)
+    public Object getAccountInfoByToken() {
+        Account account = SecurityUtils.getCurrentUser();
+        return WrapMapper.ok(account);
+    }
+
+    @GetMapping("/getTokenTime")
+    @ApiOperation(value = "获取token的有效时间", response = String.class)
+    public Object getTokenTime(@RequestParam(name = "loseToken") String loseToken) {
+        String authHeader = loseToken;
+        if (authHeader != null && authHeader.startsWith(SecurityConstant.TOKEN_SPLIT)) {
+            String auth = authHeader.substring(SecurityConstant.TOKEN_SPLIT.length());
+            try {
+                Claims claims = Jwts.parser().setSigningKey(SecurityConstant.TOKEN_SIGN_KEY).parseClaimsJws(auth).getBody();
+                String resultDate = DateUtil.format(claims.getExpiration(), "yyyy-MM-dd HH:mm:ss");
+                return WrapMapper.ok(resultDate);
+            } catch (ExpiredJwtException e) {
+                return WrapMapper.ok(e.getClaims().getExpiration());
+            }
+        }
+        return WrapMapper.error();
+    }
+
+    @PostMapping("/modifyPwd")
+    @ApiOperation(value = "修改密码", response = Boolean.class)
+    public Object modifyPwd(@RequestBody @Validated ModifyAccountPwdDto modifyAccountPwdDto) {
+        return null;
+    }
+
+    @PostMapping("/forgetPwd")
+    @ApiOperation(value = "找回密码", response = Boolean.class)
+    public Object forgetPwd() {
+        return null;
+    }
 }
