@@ -3,6 +3,7 @@ package com.bdxh.product;
 import com.ctrip.framework.apollo.spring.annotation.EnableApolloConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
@@ -11,6 +12,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
  * @create: 2019-01-19 16:19
  **/
 @SpringBootApplication
+@ServletComponentScan
 @EnableEurekaClient
 @EnableApolloConfig
 public class ProductApplication {
