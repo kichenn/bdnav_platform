@@ -22,7 +22,7 @@ public interface ProductMapper extends Mapper<Product> {
     int updateProduct(Product product);
 
     //新增商品信息
-    Product insertProduct(Product product);
+    int insertProduct(Product product);
 
     //根据名字查询商品判断是否重复
     int findProductByName(@Param("productName")String productName);

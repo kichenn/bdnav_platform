@@ -1,5 +1,6 @@
 package com.bdxh.user.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
@@ -323,15 +324,19 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_teacher");
                 mesData.put("data", saveTeacherList);
-                JSONObject data=mesData.getJSONObject("data");
-                data.put("delFlag",0);
+                JSONArray data=mesData.getJSONArray("data");
+                Map<String,Object> map=new HashMap<>();
+                map.put("delFlag",1);
+                data.add(data.size()-1,map);
                 mesData.put("data", data);
                 Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
                 defaultMQProducer.send(teacherMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUserList);
-                JSONObject data1=mesData.getJSONObject("data");
-                data1.put("delFlag",0);
+                JSONArray data1=mesData.getJSONArray("data");
+                Map<String,Object> map1=new HashMap<>();
+                map1.put("delFlag",1);
+                data.add(data.size()-1,map1);
                 mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);

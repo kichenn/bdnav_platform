@@ -150,8 +150,8 @@
     </update>
 
     <!--添加商品信息-->
-    <insert id="insertProduct" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        INSERT INTO bdxh_product.product (
+    <insert id="insertProduct" useGeneratedKeys="true" keyProperty="id" parameterType="com.bdxh.product.entity.Product">
+        INSERT INTO product (
         product_name,
         product_show_name,
         product_price,

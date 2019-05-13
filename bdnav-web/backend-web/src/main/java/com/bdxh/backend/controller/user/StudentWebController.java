@@ -325,15 +325,15 @@ public class StudentWebController {
            List<AddStudentDto> students=new ArrayList<>();
            List<SchoolClass>   schoolClassList =new ArrayList<>();
            List<String> cardNumberList=new ArrayList<>();
+           List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
            School school = new School();
            User user=SecurityUtils.getCurrentUser();
            Long uId=user.getId();
            String uName=user.getUserName();
-            int addNumber=1;
+
            for (int i=1;i<studentList.size();i++) {
                String[] columns = studentList.get(i);
                    if (!studentList.get(i)[0].equals(i - 1 >= studentList.size() ? studentList.get(studentList.size())[0] : studentList.get(i - 1)[0])||i==1) {
-                       //判断得出在同一个班级直接从缓存中拉取数据
                         Wrapper  schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
                         Wrapper  schoolClassWrapper = schoolClassControllerClient.queryClassUrlBySchoolCode(columns[0]);
                         Wrapper  studentWeapper =studentControllerClient.queryCardNumberBySchoolCode(columns[0]);
@@ -354,7 +354,6 @@ public class StudentWebController {
                         cardNumberList=new ArrayList<>();
                    }
                    //导入时判断手机号是否存在
-                   List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
                    for (String phone : phoneList) {
                        if(columns[11].equals(phone)){
                            return  WrapMapper.error("请检查第" + i + "条手机号已存在");
@@ -419,7 +418,7 @@ public class StudentWebController {
                    student.setClassNames(classNames);
                    students.add(student);
                    log.info("已经添加完第"+i+"条");
-                   addNumber++;
+
                   }else {
                    return WrapMapper.ok("当前EXACLE文档为NULL，请检查");
                  }
@@ -430,7 +429,7 @@ public class StudentWebController {
            studentControllerClient.batchSaveStudentInfo(students);
            long end=System.currentTimeMillis();
            log.info("总计用时："+(end-start)+"毫秒");
-           return  WrapMapper.ok("导入完成,成功导入了"+(addNumber-1)+"条数据");
+           return  WrapMapper.ok("导入完成");
        }catch (Exception e){
            log.error(e.getMessage());
            return WrapMapper.error(e.getMessage());

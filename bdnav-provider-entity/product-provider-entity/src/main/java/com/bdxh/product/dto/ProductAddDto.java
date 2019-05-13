@@ -65,7 +65,6 @@ public class ProductAddDto implements Serializable {
     /**
      * 商品图片地址
      */
-    @NotEmpty(message = "商品图片地址不能为空")
     @ApiModelProperty("商品图片地址")
     private String imgUrl;
 

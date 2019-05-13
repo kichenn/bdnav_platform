@@ -16,7 +16,7 @@ spring:
 
 #apollo配置
 app:
-  id: product-provider-cluster
+  id: product-provider-cluster1
 apollo:
   meta: http://47.107.255.252:8080
   bootstrap:
