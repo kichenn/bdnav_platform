@@ -1,4 +1,4 @@
-package com.bdxh.app.configration.common;
+package com.bdxh.backend.configration.common;
 
 
 import org.springframework.context.annotation.Bean;
@@ -26,6 +26,7 @@ public class Swagger2Config {
         List<Parameter> list = Arrays.asList(
                 new ParameterBuilder()
                         .name("Authorization")
+                        .defaultValue("BDXH_TEST")
                         .description("访问令牌")
                         .modelRef(new ModelRef("string"))
                         .parameterType("header")
@@ -33,14 +34,14 @@ public class Swagger2Config {
         );
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(buildApiInfo()).globalOperationParameters(list).select()
-                .apis(RequestHandlerSelectors.basePackage("com.bdxh.backend"))
+                .apis(RequestHandlerSelectors.basePackage("com.bdxh.app"))
                 .paths(PathSelectors.any())
                 .build();
     }
 
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
-                .title("北斗星航核心业务系统")
+                .title("北斗星航App业务系统")
                 .description("接口文档")
                 .version("1.0")
                 .build();

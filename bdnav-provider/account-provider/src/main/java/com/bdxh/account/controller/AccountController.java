@@ -111,7 +111,7 @@ public class AccountController {
     public Object findAccountByLoginNameOrPhone(@RequestParam(value = "phone", required = false) String phone,
                                                 @RequestParam(value = "loginName", required = false) String loginName) {
         //效验参数
-        boolean expression = (phone == null || phone == "") && (loginName == null || loginName == "");
+        boolean expression = (phone == null || phone == "") || (loginName == null || loginName == "");
         Preconditions.checkArgument(expression, "请输入用户名或者手机号信息");
         return WrapMapper.ok(accountService.findAccountByLoginNameOrPhone(phone, loginName));
     }

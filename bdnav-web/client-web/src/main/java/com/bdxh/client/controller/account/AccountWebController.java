@@ -2,10 +2,8 @@ package com.bdxh.client.controller.account;
 
 
 import com.bdxh.account.dto.AccountQueryDto;
-import com.bdxh.account.dto.AddAccountDto;
-import com.bdxh.account.dto.UpdateAccountDto;
 import com.bdxh.account.entity.Account;
-import com.bdxh.appburied.feign.AccountControllerClient;
+import com.bdxh.account.feign.AccountControllerClient;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.school.entity.SchoolUser;
 import io.swagger.annotations.Api;

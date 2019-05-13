@@ -1,15 +1,14 @@
-package com.bdxh.appburied.feign;
+package com.bdxh.account.feign;
 
 import com.bdxh.account.dto.AccountQueryDto;
 import com.bdxh.account.dto.AddAccountDto;
 import com.bdxh.account.dto.UpdateAccountDto;
 import com.bdxh.account.entity.Account;
-import com.bdxh.appburied.fallback.AccountControllerClientFallback;
+import com.bdxh.account.fallback.AccountControllerClientFallback;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -70,4 +69,16 @@ public interface AccountControllerClient {
     @ResponseBody
     Wrapper<PageInfo<Account>> queryCategoryListPage(@Valid @RequestBody AccountQueryDto accountQueryDto);
 
+
+    /**
+     * 用户名或者手机号查询账户信息
+     *
+     * @param phone
+     * @param loginName
+     * @return
+     */
+    @RequestMapping(value = "/account/findAccountByLoginNameOrPhone", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<Account> findAccountByLoginNameOrPhone(@RequestParam(value = "phone", required = false) String phone,
+                                                   @RequestParam(value = "loginName", required = false) String loginName);
 }

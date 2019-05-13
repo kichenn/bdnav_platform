@@ -111,7 +111,7 @@
             <if test="phone!=null and phone !=''">
                 user_phone =#{phone}
             </if>
-            <if test="loginName!=null and phone !=''">
+            <if test="loginName!=null and loginName !=''">
                 AND login_name=#{loginName}
             </if>
         </where>

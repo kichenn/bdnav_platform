@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description: token异常
+ * @description: token处理
  * @author: Kang
  * @create: 2019-02-28 14:21
  **/

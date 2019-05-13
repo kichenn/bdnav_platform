@@ -6,6 +6,7 @@ import com.bdxh.app.configration.redis.RedisUtil;
 import com.bdxh.app.configration.security.exception.MutiLoginException;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import io.jsonwebtoken.*;
@@ -75,20 +76,20 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
                 //刷新token 时效14天 刷新7天 token最小时长14天 最大操作间隔7天 否则需重新登录
-                Date date = (Date) redisUtil.get(SecurityConstant.TOKEN_IS_REFRESH + account.getId());
+                Date date = DateUtil.format(redisUtil.get(SecurityConstant.TOKEN_IS_REFRESH + account.getId()), "yyyy-MM-dd HH:mm:ss");
                 Instant instant = date.toInstant();
                 ZoneId zoneId = ZoneId.systemDefault();
                 LocalDateTime refreshTime = instant.atZone(zoneId).toLocalDateTime();
                 if (LocalDateTime.now().isAfter(refreshTime)) {
                     long currentTimeMillis = System.currentTimeMillis();
-                    redisUtil.setWithExpireTime(SecurityConstant.TOKEN_IS_REFRESH + account.getId(), new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME), SecurityConstant.TOKEN_EXPIRE_TIME);
+                    redisUtil.setWithExpireTime(SecurityConstant.TOKEN_IS_REFRESH + account.getId(), DateUtil.format(new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME), "yyyy-MM-dd HH:mm:ss"), SecurityConstant.TOKEN_EXPIRE_TIME);
                     String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(account.getLoginName())
                             .claim(SecurityConstant.ACCOUNT, accountStr)
                             .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME))
                             .signWith(SignatureAlgorithm.HS512, SecurityConstant.TOKEN_SIGN_KEY)
                             .compressWith(CompressionCodecs.GZIP).compact();
                     //将token放入redis
-                    redisTemplate.opsForValue().set(SecurityConstant.TOKEN_KEY + account.getId(), token);
+                    redisUtil.set(SecurityConstant.TOKEN_KEY + account.getId(), token);
                     httpServletResponse.addHeader(SecurityConstant.TOKEN_RESPONSE_HEADER, token);
                 }
             } catch (ExpiredJwtException e) {
