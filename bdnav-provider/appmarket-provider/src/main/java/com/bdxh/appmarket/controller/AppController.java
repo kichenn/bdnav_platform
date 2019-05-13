@@ -207,5 +207,16 @@ public class AppController {
         }
     }
 
+    @ApiOperation("根据id查询应用")
+    @RequestMapping(value = "/versionUpdating",method = RequestMethod.GET)
+    public Object versionUpdating(@RequestParam(name = "id")Long id){
+        try {
+           App app=appService.versionUpdating(id);
+            return WrapMapper.ok(app);
+        }catch (Exception e){
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 
 }

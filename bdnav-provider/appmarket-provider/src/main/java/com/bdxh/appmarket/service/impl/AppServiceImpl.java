@@ -120,5 +120,10 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
         return appLists;
     }
 
+    @Override
+    public App versionUpdating(Long id) {
+        return appMapper.selectByPrimaryKey(id);
+    }
+
 
 }
