@@ -5,7 +5,7 @@ import com.bdxh.account.dto.AccountQueryDto;
 import com.bdxh.account.dto.AddAccountDto;
 import com.bdxh.account.dto.UpdateAccountDto;
 import com.bdxh.account.entity.Account;
-import com.bdxh.appburied.feign.AccountControllerClient;
+import com.bdxh.account.feign.AccountControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

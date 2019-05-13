@@ -12,12 +12,12 @@ public interface SecurityConstant {
     /**
      * token分割
      */
-    String TOKEN_SPLIT = "Bearer ";
+    String TOKEN_SPLIT = "BearerWeixiao ";
 
     /**
      * token加密key
      */
-    String TOKEN_SIGN_KEY = "bdnav-platform";
+    String TOKEN_SIGN_KEY = "bdnav-weixiao";
 
     /**
      * token过期时间7天

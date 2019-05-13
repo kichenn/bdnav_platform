@@ -13,8 +13,8 @@ import java.util.Collection;
 */
 public class MyUserDetails implements UserDetails {
 
-    private Long id;
 
+    private Long id;
     private String loginname;
 
     private String password;

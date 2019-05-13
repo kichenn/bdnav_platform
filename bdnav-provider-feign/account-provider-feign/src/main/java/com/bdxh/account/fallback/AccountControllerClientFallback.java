@@ -1,15 +1,15 @@
-package com.bdxh.appburied.fallback;
+package com.bdxh.account.fallback;
 
 import com.bdxh.account.dto.AccountQueryDto;
 import com.bdxh.account.dto.AddAccountDto;
 import com.bdxh.account.dto.UpdateAccountDto;
 import com.bdxh.account.entity.Account;
-import com.bdxh.appburied.feign.AccountControllerClient;
+import com.bdxh.account.feign.AccountControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -49,6 +49,12 @@ public class AccountControllerClientFallback implements AccountControllerClient 
 
     @Override
     public Wrapper<PageInfo<Account>> queryCategoryListPage(AccountQueryDto accountQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<Account> findAccountByLoginNameOrPhone(@RequestParam(value = "phone", required = false) String phone,
+                                                          @RequestParam(value = "loginName", required = false) String loginName) {
         return WrapMapper.error();
     }
 }
