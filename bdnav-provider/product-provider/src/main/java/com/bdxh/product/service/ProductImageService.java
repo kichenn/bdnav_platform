@@ -13,14 +13,5 @@ import java.util.List;
 @Service
 public interface ProductImageService extends IService<ProductImage> {
 
-	/**
-	 *查询所有数量
-	 */
- 	Integer getProductImageAllCount();
-
-	/**
-	 *批量删除方法
-	 */
- 	Boolean batchDelProductImageInIds(List<Long> id);
 
 }
