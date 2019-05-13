@@ -58,7 +58,7 @@ public class UserInfoJob {
     /**
      * 每天同步一次
      */
-    @Scheduled(cron = "0 0 0/24 * * ?")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void pushMessageToMq() {
         synchronized (this) {
             log.info("===========每天0点推送信息至MQ给第三方同步============");
