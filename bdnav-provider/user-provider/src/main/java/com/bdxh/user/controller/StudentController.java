@@ -249,4 +249,16 @@ public class StudentController {
         }
     }
 
+
+    /**
+     * 根据条件查询学生
+     * @param studentQueryDto
+     * @return
+     */
+    @ApiOperation(value = "根据条件查询学生")
+    @RequestMapping(value = "/findStudentInfo", method = RequestMethod.POST)
+    public Object findStudentInfo(@RequestBody StudentQueryDto studentQueryDto){
+        return WrapMapper.ok(studentService.findStudentInfo(studentQueryDto));
+    }
+
 }
