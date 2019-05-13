@@ -192,4 +192,20 @@ public class SchoolUserController {
     public Object findAllSchoolUserInfo() {
         return WrapMapper.ok(schoolUserService.selectAll());
     }
+
+    /**
+     * 根据学校ID和username查找用户信息
+     * @param schoolId
+     * @param userName
+     * @return
+     */
+    @RequestMapping(value = "/findSchoolUserByUserNameAndSchoolId", method = RequestMethod.GET)
+    @ApiOperation(value = "根据学校ID和username查找用户信息", response = Boolean.class)
+    public Object findSchoolUserByUserNameAndSchoolId(@RequestParam(name = "schoolId")Long schoolId,@RequestParam(name = "userName")String userName)
+    {
+        SchoolUser schoolUser=new SchoolUser();
+        schoolUser.setSchoolId(schoolId);
+        schoolUser.setUserName(userName);
+        return WrapMapper.ok(schoolUserService.select(schoolUser));
+    }
 }

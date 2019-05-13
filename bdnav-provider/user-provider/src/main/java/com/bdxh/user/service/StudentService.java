@@ -124,4 +124,10 @@ public interface StudentService extends IService<Student> {
      * @param schoolName
      */
     void updateSchoolName(String schoolCode,String schoolName);
+
+    /**
+     *
+     * @return
+     */
+    boolean downloadStudentExcel();
 }
