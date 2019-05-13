@@ -14,25 +14,9 @@
 	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
 	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
 	</resultMap>
-
 	<sql id="BaseColumns">
 	  id,product_id,image_url,image_name,sort,create_date,update_date,operator,operator_name,remark
 	</sql>
-	<select id="getProductImageAllCount" resultType="Integer">
-	  SELECT 
-	   COUNT(1)
-	  FROM t_product_image 
-	</select>
-
-	<delete id="delProductImageInIds" parameterType="Integer">
-	  DELETE
-	   FROM t_product_image
-	  WHERE
-	   id IN
-	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	          #{id, jdbcType = BIGINT}
-	     </foreach >
-	</delete>
 	<delete id="deleteProductImageByProductId">
 	DELETE FROM t_product_image where product_id=#{id}
 	</delete>

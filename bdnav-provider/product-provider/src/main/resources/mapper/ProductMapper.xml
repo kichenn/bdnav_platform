@@ -38,7 +38,7 @@
         <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <collection property="image" ofType="ProductImage" column="product_id">
+        <collection property="image" column="product_id">
             <id column="imageId" jdbcType="BIGINT" property="id"/>
             <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl"/>
             <result column="imageName" jdbcType="VARCHAR" property="imageName"/>
