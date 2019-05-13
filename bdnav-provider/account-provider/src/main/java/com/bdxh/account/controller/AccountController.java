@@ -2,6 +2,7 @@ package com.bdxh.account.controller;
 
 import com.bdxh.account.dto.AccountQueryDto;
 import com.bdxh.account.dto.AddAccountDto;
+import com.bdxh.account.dto.ModifyAccountPwdDto;
 import com.bdxh.account.dto.UpdateAccountDto;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.service.AccountService;
@@ -80,6 +81,12 @@ public class AccountController {
                                   @RequestParam("loginName") @NotEmpty(message = "登录名不能为空") String loginName) {
         accountService.updateLoginName(schoolCode, cardNumber, loginName);
         return WrapMapper.ok();
+    }
+
+    @ApiOperation(value = "根据登录名修改密码", response = Boolean.class)
+    @RequestMapping(value = "/modifyPwd", method = RequestMethod.POST)
+    public Object modifyPwd(@RequestBody @Validated ModifyAccountPwdDto modifyAccountPwdDto) {
+        return null;
     }
 
     @ApiOperation(value = "查询账户信息", response = Account.class)

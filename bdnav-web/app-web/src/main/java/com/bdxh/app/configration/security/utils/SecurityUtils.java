@@ -1,8 +1,14 @@
 package com.bdxh.app.configration.security.utils;
 
 import com.bdxh.account.entity.Account;
+import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Description: 用户信息工具类
@@ -59,4 +65,12 @@ public class SecurityUtils {
         return realName;
     }
 
+    /**
+     * 登出
+     *
+     * @return
+     */
+    public static void logout(HttpServletRequest request) {
+        request.getSession().removeAttribute(SecurityConstant.TOKEN_SESSION);
+    }
 }

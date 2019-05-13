@@ -3,6 +3,7 @@ package com.bdxh.app.configration.security.filter;
 import com.alibaba.fastjson.JSON;
 import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.redis.RedisUtil;
+import com.bdxh.app.configration.security.exception.LogoutException;
 import com.bdxh.app.configration.security.exception.MutiLoginException;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
@@ -13,12 +14,12 @@ import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
@@ -42,12 +43,13 @@ import java.util.concurrent.TimeUnit;
  * @Author: Kang
  * @Date: 2019/5/10 14:48
  */
-@Component
+//@Component
 @Slf4j
 public class MyAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
     private RedisUtil redisUtil;
+
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -56,25 +58,27 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
             String auth = authHeader.substring(SecurityConstant.TOKEN_SPLIT.length());
             try {
                 Claims claims = Jwts.parser().setSigningKey(SecurityConstant.TOKEN_SIGN_KEY).parseClaimsJws(auth).getBody();
-                String username = claims.getSubject();
+//                String username = claims.getSubject();
                 String accountStr = (String) claims.get(SecurityConstant.ACCOUNT);
                 Account account = JSON.parseObject(accountStr, Account.class);
                 String redisToken = redisUtil.get(SecurityConstant.TOKEN_KEY + account.getId());
                 if (StringUtils.isNotEmpty(redisToken)) {
+                    //只允许一处设备登录
                     if (!StringUtils.equals(authHeader, redisToken)) {
+                        //重复登录
                         throw new MutiLoginException();
                     }
                 }
-                SecurityContext securityContext = SecurityContextHolder.getContext();
-                if (securityContext != null) {
-                    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-                    if (authentication == null) {
-                        MyUserDetails myUserDetails = new MyUserDetails(account.getId(), username, "", true, true, account);
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, null);
-                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
-                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-                    }
+                //从安全框架中的上下文取(妈了个鸡，一直取不到【getAuthentication 一直为null】)
+//                SecurityContext securityContext = SecurityContextHolder.getContext();
+                SecurityContext securityContext = (SecurityContext) httpServletRequest.getSession().getAttribute(SecurityConstant.TOKEN_SESSION);
+                if (securityContext == null) {
+                    //该token已注销，不允许访问
+                    throw new LogoutException();
                 }
+                //获取认证信息
+                Authentication authentication = securityContext.getAuthentication();
+                SecurityContextHolder.getContext().setAuthentication(authentication);
                 //刷新token 时效14天 刷新7天 token最小时长14天 最大操作间隔7天 否则需重新登录
                 Date date = DateUtil.format(redisUtil.get(SecurityConstant.TOKEN_IS_REFRESH + account.getId()), "yyyy-MM-dd HH:mm:ss");
                 Instant instant = date.toInstant();
@@ -94,6 +98,16 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 }
             } catch (ExpiredJwtException e) {
                 Wrapper wrapper = WrapMapper.error("登录已失效");
+                String str = JSON.toJSONString(wrapper);
+                httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+                httpServletResponse.setStatus(401);
+                httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
+                httpServletResponse.setCharacterEncoding("utf-8");
+                httpServletResponse.setContentType("application/json;charset=utf-8");
+                httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
+                return;
+            } catch (LogoutException e) {
+                Wrapper wrapper = WrapMapper.error("该token已经注销");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);
@@ -134,7 +148,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-        } else if (authHeader != null) {
+        } else if (authHeader != null && authHeader != "") {
             Wrapper wrapper = WrapMapper.wrap(401, "token异常");
             String str = JSON.toJSONString(wrapper);
             httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
