@@ -10,6 +10,7 @@ import com.bdxh.school.enums.SchoolUserStatusEnum;
 import com.bdxh.school.fallback.SchoolUserControllerClientFallback;
 import com.bdxh.school.vo.SchoolUserShowVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -108,4 +109,12 @@ public interface SchoolUserControllerClient {
     @ResponseBody
     Wrapper modifySchoolUserStatusById(@RequestParam(name = "id") Long id, @RequestParam(name = "statusEnum") SchoolUserStatusEnum statusEnum);
 
+    /**
+     * @Description: 根据学校ID和username查找用户信息
+     * @Author: Kang
+     * @Date: 2019/3/27 10:35
+     */
+    @RequestMapping(value = "/schoolUser/findSchoolUserByUserNameAndSchoolId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<SchoolUser> findSchoolUserByUserNameAndSchoolId(@RequestParam(name = "schoolId")Long schoolId,@RequestParam(name = "userName")String userName);
 }

@@ -48,7 +48,7 @@ public class VisitLogsMongoMapper {
             Pattern pattern = Pattern.compile("^.*"+visitLogsQueryDto.getSchoolName()+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("school_name").regex(pattern);
         }
-        if(null!=visitLogsQueryDto.getStatus()){
+        if(null!=visitLogsQueryDto.getStatus()&&visitLogsQueryDto.getStatus()!=0){
             criteria.and("status").is(visitLogsQueryDto.getStatus());
         }
         if(StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolCode())){

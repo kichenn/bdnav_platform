@@ -23,20 +23,5 @@ public class ProductImageServiceImpl extends BaseService<ProductImage> implement
 	@Autowired
 	private ProductImageMapper productImageMapper;
 
-	/*
-	 *查询总条数
-	 */
-	@Override
-	public Integer getProductImageAllCount(){
-		return productImageMapper.getProductImageAllCount();
-	}
 
-	/*
-	 *批量删除方法
-	 */
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public Boolean batchDelProductImageInIds(List<Long> ids){
-		return productImageMapper.delProductImageInIds(ids) > 0;
-	}
 }

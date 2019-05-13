@@ -421,7 +421,7 @@ public class StudentWebController {
            }
            studentControllerClient.batchSaveStudentInfo(students);
            long end=System.currentTimeMillis();
-           log.info("导入一万条数据总计用时："+(end-start));
+           log.info("导入数据总计用时："+(end-start));
            return  WrapMapper.ok("导入完成");
        }catch (Exception e){
            log.error(e.getMessage());

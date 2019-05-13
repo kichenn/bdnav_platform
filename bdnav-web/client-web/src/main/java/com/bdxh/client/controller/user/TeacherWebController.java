@@ -311,7 +311,6 @@ public class TeacherWebController {
             }
             teacherControllerClient.batchSaveTeacherInfo(saveTeacherList);
             long end=System.currentTimeMillis();
-            log.info("导入10条数据总计用时："+(end-start));
             return WrapMapper.ok("导入完成");
         } catch (Exception e) {
             e.printStackTrace();

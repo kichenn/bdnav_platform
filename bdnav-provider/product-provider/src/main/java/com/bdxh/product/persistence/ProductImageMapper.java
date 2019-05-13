@@ -18,15 +18,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProductImageMapper extends Mapper<ProductImage> {
 
-	/**
-	 *查询总条数
-	 */
-	 Integer getProductImageAllCount();
-
-	/**
-	 *批量删除方法
-	 */
-	 Integer delProductImageInIds(@Param("ids") List<Long> ids);
 
 	/**
 	 * 根据商品ID删除图片

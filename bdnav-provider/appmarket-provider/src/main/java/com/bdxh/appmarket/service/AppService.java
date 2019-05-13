@@ -88,5 +88,5 @@ public interface AppService extends IService<App> {
      */
     List<App> getAppListByids(String ids);
 
-
+    App versionUpdating(Long id);
 }
