@@ -90,7 +90,7 @@ public class VisitLogsWebController {
     @RequestMapping(value = "/removeVisitLogsInfo", method = RequestMethod.GET)
     public Object removeVisitLogsInfo(@RequestParam("id") String id, @RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
         try {
-            return visitLogsControllerClient.removeVisitLogsInfo(schoolCode, cardNumber, id);
+            return visitLogsControllerClient.removeVisitLogsInfo(id,schoolCode,cardNumber );
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
