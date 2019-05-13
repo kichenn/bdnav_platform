@@ -255,6 +255,7 @@ public class TeacherWebController {
             long start=System.currentTimeMillis();
             List<String[]> teacherList= ExcelImportUtil.readExcelNums(teacherFile,0);
             List<AddTeacherDto> saveTeacherList=new ArrayList<>();
+            List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
             SchoolUser user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
             String uName=user.getUserName();
@@ -289,7 +290,6 @@ public class TeacherWebController {
                         cardNumberList=new ArrayList<>();
                     }
                     //导入时判断手机号是否存在
-                    List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
                     for (String phone : phoneList) {
                         if(columns[4].equals(phone)){
                             return  WrapMapper.error("请检查第" + i + "条手机号已存在或者重复");

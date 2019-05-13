@@ -354,7 +354,6 @@ public class StudentWebController {
                         cardNumberList=new ArrayList<>();
                    }
                    //导入时判断手机号是否存在
-
                    for (String phone : phoneList) {
                        if(columns[11].equals(phone)){
                            return  WrapMapper.error("请检查第" + i + "条手机号已存在");
