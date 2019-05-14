@@ -20,9 +20,9 @@ public interface SecurityConstant {
     String TOKEN_SIGN_KEY = "bdnav-weixiao";
 
     /**
-     * token过期时间7天
+     * token时间7天 (转换成分钟)
      */
-    long TOKEN_EXPIRE_TIME = TimeUnit.DAYS.toMillis(365*15);
+    int TOKEN_EXPIRE_TIME = (int) TimeUnit.DAYS.toMinutes(7);
 
     /**
      * token请求header
@@ -44,9 +44,8 @@ public interface SecurityConstant {
      */
     String USER_INFO = "user_info";
 
-    /**
-     * 获取token地址
-     */
-    String AUTHENTICATION_URL = "/authentication/login";
 
+    public static void main(String[] args) {
+        System.out.println(SecurityConstant.TOKEN_EXPIRE_TIME * 60);
+    }
 }

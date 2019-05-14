@@ -1,9 +1,8 @@
-package com.bdxh.app.configration.security;
+package com.bdxh.weixiao.configration.security;
 
-import com.bdxh.app.configration.security.filter.MyAuthenticationFilter;
-import com.bdxh.app.configration.security.handler.MyAccessDeniedHandler;
-import com.bdxh.app.configration.security.handler.MyUnauthorizedHandler;
-import com.bdxh.app.configration.security.userdetail.MyUserDetailsService;
+import com.bdxh.weixiao.configration.security.filter.MyAuthenticationFilter;
+import com.bdxh.weixiao.configration.security.handler.MyAccessDeniedHandler;
+import com.bdxh.weixiao.configration.security.handler.MyUnauthorizedHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -23,9 +22,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 
 /**
-* @Description:  配置类
+* @Description: security配置类
 * @Author: Kang
-* @Date: 2019/5/14 15:39
+* @Date: 2019/5/14 16:52
 */
 @Configuration
 @EnableWebSecurity
@@ -39,8 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyAccessDeniedHandler myAccessDeniedHandler;
 
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
+//    @Autowired
+//    private MyUserDetailsService myUserDetailsService;
 
     @Bean
     static BCryptPasswordEncoder getBCryptPasswordEncoder() {
@@ -48,11 +47,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return bCryptPasswordEncoder;
     }
 
-    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+//    @Bean(name = BeanIds.AUTHENTICATION_MANAGER)
+//    @Override
+//    public AuthenticationManager authenticationManagerBean() throws Exception {
+//        return super.authenticationManagerBean();
+//    }
 
 
     @Override
@@ -60,10 +59,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/public/**", "/static/**", "/resources/**", "/META-INF/resources/**");
     }
 
-    @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder builder) throws Exception {
-        builder.userDetailsService(myUserDetailsService).passwordEncoder(getBCryptPasswordEncoder());
-    }
+//    @Autowired
+//    public void configureAuthentication(AuthenticationManagerBuilder builder) throws Exception {
+//        builder.userDetailsService(myUserDetailsService).passwordEncoder(getBCryptPasswordEncoder());
+//    }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -71,8 +70,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .antMatchers("/favicon.ico").permitAll()//图标放行
+                .antMatchers("/*.html").permitAll() //静态资源放行
                 .antMatchers("/swagger-ui.html", "/webjars/springfox-swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**").permitAll()
-                .antMatchers("/authenticationApp/**").permitAll()
+                .antMatchers("/authenticationWeixiao/**").permitAll()
                 .anyRequest().authenticated()//其他路径进行权限验证
                 .and().headers().cacheControl();
         //设置jwt filter

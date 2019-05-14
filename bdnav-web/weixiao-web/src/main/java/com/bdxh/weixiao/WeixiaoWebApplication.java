@@ -8,10 +8,10 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
- * @description: weixiao服务启动类
- * @author: xuyuan
- * @create: 2019-03-13 10:02
- **/
+ * @Description: weixiao服务启动类
+ * @Author: Kang
+ * @Date: 2019/5/14 18:08
+ */
 @SpringBootApplication
 @ServletComponentScan
 @EnableEurekaClient
@@ -19,6 +19,6 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableFeignClients(basePackages = {"com.bdxh"})
 public class WeixiaoWebApplication {
     public static void main(String[] args) {
-        SpringApplication.run(WeixiaoWebApplication.class,args);
+        SpringApplication.run(WeixiaoWebApplication.class, args);
     }
 }

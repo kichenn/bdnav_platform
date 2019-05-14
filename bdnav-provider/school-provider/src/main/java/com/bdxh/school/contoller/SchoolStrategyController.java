@@ -114,6 +114,8 @@ public class SchoolStrategyController {
 			return WrapMapper.error(errors);
 		}
 		try{
+			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),addPolicyDto.getPriority());
+			Preconditions.checkArgument(strategy == null, "该策略已有相同优先级值,请更换后重试");
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
 			schoolStrategy.setRecursionPermission(Integer.valueOf(addPolicyDto.getRecursionPermission().getKey()));
@@ -140,11 +142,21 @@ public class SchoolStrategyController {
 			return WrapMapper.error(errors);
 		}
 		try{
+			Boolean falg;
+			SchoolStrategy strategy=schoolStrategyService.getByPriority(modifyPolicyDto.getSchoolCode(),modifyPolicyDto.getPriority());
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
 			schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
-			Boolean result =  schoolStrategyService.update(schoolStrategy)>0;
-			return WrapMapper.ok(result);
+			if (strategy!=null){
+				if(strategy.getPriority().equals(modifyPolicyDto.getPriority())&&strategy.getSchoolCode().equals(modifyPolicyDto.getSchoolCode())&&!strategy.getId().equals(modifyPolicyDto.getId())){
+					return WrapMapper.error("该策略已有相同优先级值,请更换后重试");
+				}else{
+					falg =  schoolStrategyService.update(schoolStrategy)>0;
+				}
+			}else{
+				falg =  schoolStrategyService.update(schoolStrategy)>0;
+			}
+			return WrapMapper.ok(falg);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			return WrapMapper.error(e.getMessage());
@@ -163,7 +175,7 @@ public class SchoolStrategyController {
 		try{
 			SchoolStrategy schoolStrategy=schoolStrategyService.getByPriority(SchoolCode,Priority);
 			if (schoolStrategy!=null){
-				return WrapMapper.ok("该学校策略已有该优先级值,请更换后重试");
+				return WrapMapper.error("该学校策略已有该优先级值,请更换后重试");
 			}else{
 				return WrapMapper.ok();
 			}
