@@ -26,7 +26,7 @@ import org.springframework.validation.annotation.Validated;
 @Slf4j
 @Validated
 @Api(value = "手机设备控制器", tags = "手机设备控制器")
-public class MobileDeviceController {
+public class  MobileDeviceController {
 
 	@Autowired
 	private MobileDeviceService mobileDeviceService;

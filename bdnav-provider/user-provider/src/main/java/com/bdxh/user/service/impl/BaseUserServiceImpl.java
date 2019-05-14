@@ -9,14 +9,8 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
-import com.bdxh.user.entity.BaseUser;
-import com.bdxh.user.entity.Family;
-import com.bdxh.user.entity.Student;
-import com.bdxh.user.entity.Teacher;
-import com.bdxh.user.persistence.BaseUserMapper;
-import com.bdxh.user.persistence.FamilyMapper;
-import com.bdxh.user.persistence.StudentMapper;
-import com.bdxh.user.persistence.TeacherMapper;
+import com.bdxh.user.entity.*;
+import com.bdxh.user.persistence.*;
 import com.bdxh.user.service.BaseUserService;
 import com.sun.org.apache.xml.internal.resolver.readers.TR9401CatalogReader;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +40,8 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
 
     @Autowired
     private TeacherMapper teacherMapper;
+    @Autowired
+    private TeacherDeptMapper teacherDeptMapper;
 
     @Override
     public List<BaseUser> queryBaseUserInfo(BaseUserQueryDto baseUserQueryDto) {
@@ -147,13 +143,35 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         }else{
                             return true;
                         }
-
                     }
                     case 2: {
                         log.info("卡号为" + baseUser.getCardNumber() + "的老师激活");
                         Teacher teacher = BeanMapUtils.map(activationBaseUserDto, Teacher.class);
+                        teacher.setActivate(Byte.parseByte("2"));
                         teacherMapper.updateTeacher(teacher);
+                        teacher = teacherMapper.selectTeacherDetails(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
+                        TeacherDept teacherDept= teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
+                        synUserInfoRequest.setSchool_code(teacher.getSchoolCode());
+                        synUserInfoRequest.setCard_number(teacher.getCardNumber());
+                        synUserInfoRequest.setName(teacher.getName());
+                        synUserInfoRequest.setGender(teacher.getGender() == 1 ? "男" : "女");
+                        synUserInfoRequest.setReal_name_verify(Byte.valueOf("0"));
+                        synUserInfoRequest.setCard_type("1");
+                        synUserInfoRequest.setIdentity_type(AuthenticationConstant.TEACHER);
+                        synUserInfoRequest.setOrganization(teacherDept.getDeptNames());
+                        synUserInfoRequest.setTelephone(teacher.getPhone());
+                        synUserInfoRequest.setId_card(teacher.getIdcard());
+                        synUserInfoRequest.setHead_image(teacher.getImage());
+                        synUserInfoRequest.setIdentity_title(teacher.getPosition());
+                        synUserInfoRequest.setNation(teacher.getNationName());
+                        synUserInfoRequest.setQq(teacher.getQqNumber());
+                        synUserInfoRequest.setAddress(teacher.getAdress());
+                        synUserInfoRequest.setEmail(teacher.getEmail());
+                        synUserInfoRequest.setPhysical_card_number(teacher.getPhysicalNumber());
+                        synUserInfoRequest.setPhysical_chip_number(teacher.getPhysicalChipNumber());
+                        synUserInfoRequest.setDorm_number(teacher.getDormitoryAddress());
+                        synUserInfoRequest.setCampus(teacher.getCampusName());
                         String result = AuthenticationUtils.authUserInfo(synUserInfoRequest, activationBaseUserDto.getAppKey(), activationBaseUserDto.getAppSecret(), activationBaseUserDto.getState());
                         JSONObject jsonObject = JSONObject.parseObject(result);
                         if (!jsonObject.get("errcode").equals(0)) {
@@ -165,8 +183,31 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                     case 3: {
                         log.info("卡号为" + baseUser.getCardNumber() + "的家长激活");
                         Family family = BeanMapUtils.map(activationBaseUserDto, Family.class);
+                        family.setActivate(Byte.parseByte("2"));
                         familyMapper.updateFamilyInfo(family);
+                        family=familyMapper.findFamilyInfo(family.getSchoolCode(),family.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
+                        synUserInfoRequest.setName(family.getName());
+                        synUserInfoRequest.setSchool_code(family.getSchoolCode());
+                        synUserInfoRequest.setCard_number(family.getCardNumber());
+                        synUserInfoRequest.setIdentity_type(AuthenticationConstant.FAMILY);
+                        synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);
+                        synUserInfoRequest.setHead_image(family.getImage());
+                        synUserInfoRequest.setGender(family.getGender() == 1 ? "男" : "女");
+                        if (activationBaseUserDto.getSchoolType() >= Byte.parseByte("4")) {
+                            synUserInfoRequest.setCollege(family.getSchoolName());
+                        }
+                        synUserInfoRequest.setReal_name_verify(Byte.valueOf("0"));
+                        synUserInfoRequest.setOrganization(family.getSchoolName());
+                        synUserInfoRequest.setTelephone(family.getPhone());
+                        synUserInfoRequest.setCard_type("1");
+                        synUserInfoRequest.setId_card(family.getIdcard());
+                        synUserInfoRequest.setEmail(family.getEmail());
+                        synUserInfoRequest.setQq(family.getQqNumber());
+                        synUserInfoRequest.setNation(family.getNationName());
+                        synUserInfoRequest.setAddress(family.getAdress());
+                        synUserInfoRequest.setPhysical_card_number(family.getPhysicalNumber());
+                        synUserInfoRequest.setPhysical_chip_number(family.getPhysicalChipNumber());
                         String result = AuthenticationUtils.authUserInfo(synUserInfoRequest, activationBaseUserDto.getAppKey(), activationBaseUserDto.getAppSecret(), activationBaseUserDto.getState());
                         JSONObject jsonObject = JSONObject.parseObject(result);
                         if (!jsonObject.get("errcode").equals(0)) {

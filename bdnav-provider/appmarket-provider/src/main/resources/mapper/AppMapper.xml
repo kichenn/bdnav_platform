@@ -2,35 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.appmarket.persistence.AppMapper">
   <resultMap id="BaseResultMap" type="com.bdxh.appmarket.entity.App">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="id" jdbcType="BIGINT" property="id" />
-    <result column="school_id" jdbcType="BIGINT" property="schoolId" />
-    <result column="school_code" jdbcType="VARCHAR" property="schoolCode" />
-    <result column="platform" jdbcType="TINYINT" property="platform" />
-    <result column="category_id" jdbcType="BIGINT" property="categoryId" />
-    <result column="app_name" jdbcType="VARCHAR" property="appName" />
-    <result column="app_package" jdbcType="VARCHAR" property="appPackage" />
-    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl" />
-    <result column="icon_name" jdbcType="VARCHAR" property="iconName" />
-    <result column="app_version" jdbcType="VARCHAR" property="appVersion" />
-    <result column="app_desc" jdbcType="VARCHAR" property="appDesc" />
-    <result column="apk_name" jdbcType="VARCHAR" property="apkName" />
-    <result column="apk_url" jdbcType="VARCHAR" property="apkUrl" />
-    <result column="apk_url_name" jdbcType="VARCHAR" property="apkUrlName" />
-    <result column="apk_size" jdbcType="INTEGER" property="apkSize" />
-    <result column="status" jdbcType="TINYINT" property="status" />
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="operator" jdbcType="BIGINT" property="operator" />
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName" />
-    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <id column="id" jdbcType="BIGINT" property="id"/>
+    <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+    <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+    <result column="platform" jdbcType="TINYINT" property="platform"/>
+    <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+    <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+    <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
+    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl"/>
+    <result column="icon_name" jdbcType="VARCHAR" property="iconName"/>
+    <result column="app_version" jdbcType="VARCHAR" property="appVersion"/>
+    <result column="app_desc" jdbcType="VARCHAR" property="appDesc"/>
+    <result column="status" jdbcType="TINYINT" property="status"/>
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+    <result column="operator" jdbcType="BIGINT" property="operator"/>
+    <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+    <result column="remark" jdbcType="VARCHAR" property="remark"/>
   </resultMap>
 
   <sql id="BaseColumns">
-    id, school_id, school_code, platform, category_id, app_name, app_package, icon_url, icon_name, app_version, app_desc, apk_name, apk_url, apk_url_name, apk_size, status, create_date, update_date, operator, operator_name, remark  </sql>
-
+	  id,school_id,school_code,platform,category_id,app_name,app_package,icon_url,icon_name,app_version,app_desc,status,create_date,update_date,operator,operator_name,remark
+	</sql>
   <select id="isCategoryAppExist" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select 1 from t_app where category_id = #{categoryId} limit 1;
   </select>

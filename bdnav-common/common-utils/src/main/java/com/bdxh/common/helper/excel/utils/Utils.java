@@ -268,11 +268,17 @@ public class Utils {
 
         Method method = bean.getClass().getDeclaredMethod(getOrSet(fieldClass, fieldName, MethodType.GET));
         Object object = method.invoke(bean);
-        if (null != writeConvertible && writeConvertible.getClass() != DefaultConvertible.class) {
-            // 写入转换器
-            object = writeConvertible.execWrite(object);
-        }
-        return object.toString();
+       try {
+           if (null != writeConvertible && writeConvertible.getClass() != DefaultConvertible.class) {
+               // 写入转换器
+               object = writeConvertible.execWrite(object);
+           }
+           return object.toString();
+       }catch (Exception e){
+            System.out.println("出错的代码"+bean);
+           e.printStackTrace();
+           return e.getMessage();
+       }
     }
 
 }
