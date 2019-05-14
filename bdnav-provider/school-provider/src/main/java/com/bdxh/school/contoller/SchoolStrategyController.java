@@ -147,7 +147,7 @@ public class SchoolStrategyController {
 			schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
 			if (strategy!=null){
 				if(strategy.getPriority().equals(modifyPolicyDto.getPriority())&&strategy.getSchoolCode().equals(modifyPolicyDto.getSchoolCode())&&!strategy.getId().equals(modifyPolicyDto.getId())){
-					return WrapMapper.ok("该策略已有相同优先级值,请更换后重试");
+					return WrapMapper.error("该策略已有相同优先级值,请更换后重试");
 				}else{
 					falg =  schoolStrategyService.update(schoolStrategy)>0;
 				}
