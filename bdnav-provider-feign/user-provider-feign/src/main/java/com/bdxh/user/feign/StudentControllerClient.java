@@ -132,4 +132,12 @@ public interface StudentControllerClient {
     @ResponseBody
     Wrapper<List<Student>>  findAllStudent();
 
+    /**
+     * 根据条件查询学生
+     * @return
+     */
+    @RequestMapping(value = "/student/findStudentInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<List<Student>> findStudentInfo(@RequestBody StudentQueryDto studentQueryDto);
+
 }

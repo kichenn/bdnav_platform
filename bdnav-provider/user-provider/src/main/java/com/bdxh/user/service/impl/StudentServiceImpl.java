@@ -414,4 +414,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public void updateSchoolName(String schoolCode, String schoolName) {
         studentMapper.updateSchoolName(schoolCode, schoolName);
     }
+
+    @Override
+    public List<Student> findStudentInfo(StudentQueryDto studentQueryDto) {
+        return  studentMapper.selectAllStudentInfo(studentQueryDto);
+    }
 }

@@ -124,4 +124,11 @@ public interface StudentService extends IService<Student> {
      * @param schoolName
      */
     void updateSchoolName(String schoolCode,String schoolName);
+
+    /**
+     * 根据条件查询学生
+     * @param studentQueryDto
+     * @return
+     */
+    List<Student> findStudentInfo(StudentQueryDto studentQueryDto);
 }
