@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
+import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.service.AppImageService;
 import com.bdxh.appmarket.service.AppService;
 import com.bdxh.common.utils.BeanMapUtils;
@@ -57,9 +58,10 @@ public class AppController {
             Integer isAppExist = appService.isAppExist(addAppDto.getAppPackage());
             Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
             App app = BeanMapUtils.map(addAppDto, App.class);
+            AppVersion appVersion =BeanMapUtils.map(addAppDto,AppVersion.class);
             List<AddAppImageDto> addImageDtos = addAppDto.getAddImageDtos();
             List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
-            appService.saveApp(app,appImages);
+            appService.saveApp(app,appImages,appVersion);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
