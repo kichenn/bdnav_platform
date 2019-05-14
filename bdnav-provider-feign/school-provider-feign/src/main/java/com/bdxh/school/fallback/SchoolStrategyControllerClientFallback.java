@@ -31,4 +31,9 @@ public class SchoolStrategyControllerClientFallback implements SchoolStrategyCon
     public Wrapper<PageInfo<QuerySchoolStrategy>> findPolicyInConditionPage(QuerySchoolStrategy querySchoolStrategy) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper getByPriority(String SchoolCode, Integer Priority) {
+        return WrapMapper.error();
+    }
 }

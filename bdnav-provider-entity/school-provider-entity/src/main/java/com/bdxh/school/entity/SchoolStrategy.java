@@ -49,6 +49,10 @@ public class SchoolStrategy {
 	@ApiModelProperty("递归权限ids")
 	private String RecursionPermissionIds;
 
+	@Column(name = "priority")
+	@ApiModelProperty("优先级")
+	private Integer Priority;
+
 
 	@Column(name = "model_id")
 	@ApiModelProperty("模式主键")

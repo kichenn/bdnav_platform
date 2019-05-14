@@ -79,4 +79,9 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
         return new PageInfo(schoolModeLogs);
     }
 
+    @Override
+    public SchoolStrategy getByPriority(String SchoolCode, Integer Priority) {
+        return schoolStrategyMapper.getByPriority(SchoolCode,Priority);
+    }
+
 }

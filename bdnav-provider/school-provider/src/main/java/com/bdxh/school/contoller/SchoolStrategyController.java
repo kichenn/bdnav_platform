@@ -6,9 +6,11 @@ import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.service.SchoolStrategyService;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -149,6 +151,30 @@ public class SchoolStrategyController {
 		}
 
 	}
+
+
+	/**
+	 * @Description: 验证学校策略优先级
+	 * @Date 2019-05-14 09:52:43
+	 */
+	@RequestMapping(value = "/getByPriority", method = RequestMethod.GET)
+	@ApiOperation(value = "验证学校策略优先级", response = Boolean.class)
+	public Object getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority) {
+		try{
+			SchoolStrategy schoolStrategy=schoolStrategyService.getByPriority(SchoolCode,Priority);
+			if (schoolStrategy!=null){
+				return WrapMapper.ok("该学校策略已有该优先级值,请更换后重试");
+			}else{
+				return WrapMapper.ok();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
+
+	}
+
+
 
 
 }
