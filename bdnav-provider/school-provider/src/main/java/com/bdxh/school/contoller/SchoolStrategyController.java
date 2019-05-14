@@ -115,7 +115,7 @@ public class SchoolStrategyController {
 		}
 		try{
 			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),addPolicyDto.getPriority());
-			Preconditions.checkArgument(strategy == null, "该模式已存在,请更换后添加");
+			Preconditions.checkArgument(strategy == null, "该策略已有相同优先级值,请更换后重试");
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
 			schoolStrategy.setRecursionPermission(Integer.valueOf(addPolicyDto.getRecursionPermission().getKey()));
