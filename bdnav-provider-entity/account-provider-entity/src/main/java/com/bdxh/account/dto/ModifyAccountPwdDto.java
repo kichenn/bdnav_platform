@@ -17,11 +17,15 @@ public class ModifyAccountPwdDto {
     @ApiModelProperty("用户登录名")
     private String loginName;
 
-    @NotEmpty(message = "用户密码不能为空")
-    @ApiModelProperty("用户密码")
+    @NotEmpty(message = "用户旧密码不能为空")
+    @ApiModelProperty("用户旧密码")
+    private String usedPwd;
+
+    @NotEmpty(message = "用户新密码不能为空")
+    @ApiModelProperty("用户新密码")
     private String pwd;
 
-    @NotEmpty(message = "重复密码不能为空")
-    @ApiModelProperty("重复密码")
+    @NotEmpty(message = "重复新密码不能为空")
+    @ApiModelProperty("重复新密码")
     private String rePwd;
 }

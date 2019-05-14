@@ -7,8 +7,10 @@ import com.bdxh.account.service.AccountService;
 import com.bdxh.common.support.BaseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,4 +74,16 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
         return accountMapper.updateAccount(account) > 0;
     }
 
+    /**
+     * 根据登录名或者手机号修改密码
+     *
+     * @return
+     */
+    @Override
+    public boolean modifyPwd(String phone, String loginName, String pwd) throws Exception {
+        if (StringUtil.isEmpty(phone) && StringUtil.isEmpty(loginName)) {
+            throw new Exception("手机号和登录名不能同时为空，请检查");
+        }
+        return accountMapper.modifyPwd(phone, loginName, pwd) > 0;
+    }
 }

@@ -4,6 +4,7 @@ import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.entity.SchoolStrategy;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -40,4 +41,6 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 	//根据条件分页查询用户列表
 	PageInfo<QuerySchoolStrategy> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);
 
+	//对比同一学校下策略优先级
+	SchoolStrategy getByPriority(String SchoolCode,Integer Priority);
 }

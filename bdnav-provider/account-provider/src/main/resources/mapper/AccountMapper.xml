@@ -54,6 +54,20 @@
         where school_code = #{account.schoolCode} and card_number = #{account.cardNumber}
     </update>
 
+    <update id="modifyPwd">
+        update
+        t_account
+        set password=#{pwd}
+        <where>
+            <if test="phone!=null and phone !=''">
+                user_phone =#{phone}
+            </if>
+            <if test="loginName!=null and loginName !=''">
+                AND login_name=#{loginName}
+            </if>
+        </where>
+    </update>
+
     <select id="getAccount" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
         <include refid="BaseCloumns"/>

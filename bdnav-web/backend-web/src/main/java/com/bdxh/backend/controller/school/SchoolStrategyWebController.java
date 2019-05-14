@@ -85,4 +85,42 @@ public class SchoolStrategyWebController {
         }
 
     }
+
+    /**
+     * @Description: 验证学校策略优先级
+     * @Date 2019-04-18 09:52:43
+     */
+    @RequestMapping(value = "/getByPriority", method = RequestMethod.GET)
+    @ApiOperation(value = "验证学校策略优先级", response = Boolean.class)
+    public Object getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority) {
+        try {
+            Wrapper wrapper=schoolStrategyControllerClient.getByPriority(SchoolCode,Priority);
+            return wrapper;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+
+    }
+
+
+    /**
+     * @RequestMapping(value = "/getByPriority", method = RequestMethod.GET)
+     * 	@ApiOperation(value = "验证学校策略优先级", response = Boolean.class)
+     * 	public Object getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority) {
+     * 		try{
+     * 			SchoolStrategy schoolStrategy=schoolStrategyService.getByPriority(SchoolCode,Priority);
+     * 			if (schoolStrategy!=null){
+     * 				return WrapMapper.ok("该学校策略已有该优先级值,请更换后重试");
+     * 			}else{
+     * 				return WrapMapper.ok();
+     * 			}
+     * 		} catch (Exception e) {
+     * 			e.printStackTrace();
+     * 			return WrapMapper.error(e.getMessage());
+     * 		}
+     *
+     * 	}
+     */
+
 }

@@ -52,4 +52,11 @@ public interface AccountMapper extends Mapper<Account> {
      */
     int updateAccount(@Param("account") Account account);
 
+
+    /**
+     * 根据登录名或者手机号修改密码
+     *
+     * @return
+     */
+    int modifyPwd(@Param("phone") String phone,@Param("loginName") String loginName,@Param("pwd") String pwd);
 }

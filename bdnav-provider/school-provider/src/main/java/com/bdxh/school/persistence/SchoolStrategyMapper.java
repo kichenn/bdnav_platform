@@ -22,4 +22,8 @@ public interface SchoolStrategyMapper extends Mapper<SchoolStrategy> {
 	public Integer delSchoolStrategyInIds(@Param("ids") List<Long> ids);
 	//带条件查询
 	List<QuerySchoolStrategy> getByCondition(Map<String,Object> param);
+
+	//对比同一学校下策略优先级
+	SchoolStrategy getByPriority(@Param("SchoolCode") String SchoolCode,@Param("Priority")Integer Priority);
+
 }

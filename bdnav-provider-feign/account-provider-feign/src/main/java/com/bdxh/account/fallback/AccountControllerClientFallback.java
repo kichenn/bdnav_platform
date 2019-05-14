@@ -1,8 +1,6 @@
 package com.bdxh.account.fallback;
 
-import com.bdxh.account.dto.AccountQueryDto;
-import com.bdxh.account.dto.AddAccountDto;
-import com.bdxh.account.dto.UpdateAccountDto;
+import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.feign.AccountControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -38,6 +36,16 @@ public class AccountControllerClientFallback implements AccountControllerClient 
     }
 
     @Override
+    public Wrapper modifyPwd(ModifyAccountPwdDto modifyAccountPwdDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper forgetPwd(ForgetPwd forgetPwd) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper<Account> queryAccount(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
@@ -55,6 +63,11 @@ public class AccountControllerClientFallback implements AccountControllerClient 
     @Override
     public Wrapper<Account> findAccountByLoginNameOrPhone(@RequestParam(value = "phone", required = false) String phone,
                                                           @RequestParam(value = "loginName", required = false) String loginName) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper getCaptcha(String phone) {
         return WrapMapper.error();
     }
 }

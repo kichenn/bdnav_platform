@@ -60,4 +60,10 @@ public interface AccountService extends IService<Account> {
      */
     boolean updateAccount(Account account);
 
+    /**
+     * 根据登录名或者手机号修改密码
+     *
+     * @return
+     */
+    boolean modifyPwd(String phone, String loginName, String pwd) throws Exception;
 }

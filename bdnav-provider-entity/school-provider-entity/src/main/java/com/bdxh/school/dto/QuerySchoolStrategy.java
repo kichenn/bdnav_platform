@@ -42,6 +42,9 @@ public class QuerySchoolStrategy extends Query {
     private String RecursionPermissionIds;
 
 
+    @ApiModelProperty("优先级")
+    private Integer Priority;
+
     @ApiModelProperty("模式主键")
     private Long ModelId;
 
