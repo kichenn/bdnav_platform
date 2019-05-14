@@ -38,8 +38,7 @@ public class MyUserDetailsService implements UserDetailsService {
         boolean isAccountNonExpired = account.getAccountExpired() == 1 ? Boolean.TRUE : Boolean.FALSE;
         //true为未锁定,false 已锁定
         boolean isAccountNonLocked = account.getAccountLocked() == 1 ? Boolean.TRUE : Boolean.FALSE;
-        ;
-        MyUserDetails myUserDetails = new MyUserDetails(account.getId(), username,new BCryptPasswordEncoder().encode("123456") , isAccountNonExpired, isAccountNonLocked, account);
+        MyUserDetails myUserDetails = new MyUserDetails(account.getId(), username, account.getPassword(), isAccountNonExpired, isAccountNonLocked, account);
         return myUserDetails;
     }
 

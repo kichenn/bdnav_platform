@@ -1,14 +1,13 @@
 package com.bdxh.account.feign;
 
-import com.bdxh.account.dto.AccountQueryDto;
-import com.bdxh.account.dto.AddAccountDto;
-import com.bdxh.account.dto.UpdateAccountDto;
+import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.fallback.AccountControllerClientFallback;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -48,6 +47,26 @@ public interface AccountControllerClient {
                             @RequestParam("loginName") @NotEmpty(message = "登录名不能为空") String loginName);
 
     /**
+     * 登录名修改密码
+     *
+     * @param modifyAccountPwdDto
+     * @return
+     */
+    @RequestMapping(value = "/account/modifyPwd", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper modifyPwd(@RequestBody @Validated ModifyAccountPwdDto modifyAccountPwdDto);
+
+    /**
+     * 忘记密码(根据手机号，验证码找回密码)
+     *
+     * @param forgetPwd
+     * @return
+     */
+    @RequestMapping(value = "/account/forgetPwd", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper forgetPwd(@RequestBody @Validated ForgetPwd forgetPwd);
+
+    /**
      * 查询账户信息
      */
     @RequestMapping(value = "/account/queryAccount", method = RequestMethod.GET)
@@ -81,4 +100,13 @@ public interface AccountControllerClient {
     @ResponseBody
     Wrapper<Account> findAccountByLoginNameOrPhone(@RequestParam(value = "phone", required = false) String phone,
                                                    @RequestParam(value = "loginName", required = false) String loginName);
+
+    /**
+     * 获取验证码
+     * @param phone
+     * @return
+     */
+    @RequestMapping(value = "/account/getCaptcha", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper getCaptcha(@RequestParam("phone") String phone);
 }

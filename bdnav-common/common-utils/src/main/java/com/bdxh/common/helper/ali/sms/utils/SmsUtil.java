@@ -25,26 +25,27 @@ public class SmsUtil {
 
     /**
      * 发送短信工具类
+     *
      * @param smsTempletEnum 模板枚举类 包含参数名称
-     * @param phones 手机号 多个逗号分隔
-     * @param params 参数值 多个逗号分隔
+     * @param phones         手机号 多个逗号分隔
+     * @param params         参数值 多个逗号分隔
      * @return
      * @throws ClientException
      */
     public static boolean sendMsgHelper(SmsTempletEnum smsTempletEnum, String phones, String params) {
         boolean isSuccess = false;
         try {
-            Preconditions.checkNotNull(smsTempletEnum,"短信模板不能为空");
-            Preconditions.checkArgument(StringUtils.isNotEmpty(phones),"手机号不能为空");
+            Preconditions.checkNotNull(smsTempletEnum, "短信模板不能为空");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(phones), "手机号不能为空");
             JSONObject jsonObject = new JSONObject();
             String smsParamName = smsTempletEnum.getSmsParamName();
             if (StringUtils.isNotEmpty(smsParamName)) {
                 String[] smsParamNames = StringUtils.split(smsParamName, ",");
-                Preconditions.checkArgument(StringUtils.isNotEmpty(params),"参数有误");
+                Preconditions.checkArgument(StringUtils.isNotEmpty(params), "参数有误");
                 String[] smsParams = StringUtils.split(params, ",");
-                Preconditions.checkArgument(smsParamNames.length==smsParams.length,"参数个数不正确");
-                for (int i=0;i<smsParamNames.length;i++){
-                    jsonObject.put(smsParamNames[i],smsParams[i]);
+                Preconditions.checkArgument(smsParamNames.length == smsParams.length, "参数个数不正确");
+                for (int i = 0; i < smsParamNames.length; i++) {
+                    jsonObject.put(smsParamNames[i], smsParams[i]);
                 }
             }
             //添加短信参数
@@ -52,9 +53,9 @@ public class SmsUtil {
             // 发送短信 此处可能会抛出异常，注意catch
             resultResponse(request);
             isSuccess = true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            log.error("手机号：{}发送短信失败，参数：{}",phones,params);
+            log.error("手机号：{}发送短信失败，参数：{}", phones, params);
         }
         return isSuccess;
     }
@@ -97,7 +98,6 @@ public class SmsUtil {
     }
 
     public static void main(String[] args) {
-        SmsUtil smsUtil=new SmsUtil();
-        smsUtil.sendMsgHelper(SmsTempletEnum.VERIFICATION_CODE,"13168718611","1111");
+        sendMsgHelper(SmsTempletEnum.VERIFICATION_CODE, "13168718111", "1111");
     }
 }

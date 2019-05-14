@@ -1,8 +1,10 @@
 package com.bdxh.app.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.bdxh.account.dto.ForgetPwd;
 import com.bdxh.account.dto.ModifyAccountPwdDto;
 import com.bdxh.account.entity.Account;
+import com.bdxh.account.feign.AccountControllerClient;
 import com.bdxh.app.configration.redis.RedisUtil;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
@@ -47,6 +49,9 @@ public class SecurityController {
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private AccountControllerClient accountControllerClient;
+
+    @Autowired
     private RedisUtil redisUtil;
 
 
@@ -54,8 +59,6 @@ public class SecurityController {
     @RequestMapping(value = "/authenticationApp/login", method = RequestMethod.GET)
     public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            Preconditions.checkArgument(StringUtils.isNotEmpty(username), "用户名不能为空");
-            Preconditions.checkArgument(StringUtils.isNotEmpty(password), "密码不能为空");
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
             Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
             MyUserDetails myUserDetails = (MyUserDetails) authenticate.getPrincipal();
@@ -163,12 +166,18 @@ public class SecurityController {
     @PostMapping("/modifyPwd")
     @ApiOperation(value = "修改密码", response = Boolean.class)
     public Object modifyPwd(@RequestBody @Validated ModifyAccountPwdDto modifyAccountPwdDto) {
-        return null;
+        return accountControllerClient.modifyPwd(modifyAccountPwdDto);
     }
 
     @PostMapping("/forgetPwd")
     @ApiOperation(value = "找回密码", response = Boolean.class)
-    public Object forgetPwd() {
-        return null;
+    public Object forgetPwd(@RequestBody @Validated ForgetPwd forgetPwd) {
+        return accountControllerClient.forgetPwd(forgetPwd);
+    }
+
+    @GetMapping("/getCaptcha")
+    @ApiOperation(value = "获取验证码", response = Boolean.class)
+    public Object getCaptcha(@RequestParam("phone") String phone) {
+        return accountControllerClient.getCaptcha(phone);
     }
 }

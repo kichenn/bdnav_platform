@@ -1,17 +1,18 @@
 package com.bdxh.account.controller;
 
-import com.bdxh.account.dto.AccountQueryDto;
-import com.bdxh.account.dto.AddAccountDto;
-import com.bdxh.account.dto.ModifyAccountPwdDto;
-import com.bdxh.account.dto.UpdateAccountDto;
+import com.bdxh.account.configration.redis.RedisUtil;
+import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.service.AccountService;
+import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
+import com.bdxh.common.helper.ali.sms.enums.SmsTempletEnum;
+import com.bdxh.common.helper.ali.sms.utils.SmsUtil;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
-import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.BeanToMapUtil;
-import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -29,6 +30,7 @@ import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 /**
@@ -48,6 +50,9 @@ public class AccountController {
 
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @ApiOperation(value = "增加账户信息", response = Boolean.class)
     @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
@@ -86,7 +91,49 @@ public class AccountController {
     @ApiOperation(value = "根据登录名修改密码", response = Boolean.class)
     @RequestMapping(value = "/modifyPwd", method = RequestMethod.POST)
     public Object modifyPwd(@RequestBody @Validated ModifyAccountPwdDto modifyAccountPwdDto) {
-        return null;
+        //登录名查询账户信息
+        Account account = accountService.findAccountByLoginNameOrPhone("", modifyAccountPwdDto.getLoginName());
+        try {
+            //效验参数
+            if (account == null) {
+                throw new Exception("用户名错误，请检查");
+            } else if (!ValidatorUtil.isPassword(modifyAccountPwdDto.getPwd())) {
+                throw new Exception("密码格式错误,长度不可超过6 - 20");
+            } else if (!modifyAccountPwdDto.getPwd().equals(modifyAccountPwdDto.getRePwd())) {
+                throw new Exception("俩次输入的密码不同，请检查");
+            } else if (!new BCryptPasswordEncoder().matches(modifyAccountPwdDto.getUsedPwd(), account.getPassword())) {
+                //matches(第一个参数为前端传递的值，未加密，后一个为数据库已经加密的串对比)
+                throw new Exception("旧密码错误，请检查");
+            } else if (modifyAccountPwdDto.getPwd().equals(modifyAccountPwdDto.getUsedPwd())) {
+                throw new Exception("新旧密码相同，请勿重复操作");
+            }
+            boolean result = accountService.modifyPwd(null, modifyAccountPwdDto.getLoginName(), new BCryptPasswordEncoder().encode(modifyAccountPwdDto.getPwd()));
+            return WrapMapper.ok(result);
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "忘记密码(根据手机号，验证码找回密码)", response = Boolean.class)
+    @RequestMapping(value = "/forgetPwd", method = RequestMethod.POST)
+    public Object forgetPwd(@RequestBody @Validated ForgetPwd forgetPwd) {
+        try {
+            //效验参数
+            String captchaCode = redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX + forgetPwd.getPhone());
+            if (StringUtil.isEmpty(captchaCode)) {
+                throw new Exception("请先获取验证码");
+            } else if (!ValidatorUtil.isPassword(forgetPwd.getPwd())) {
+                throw new Exception("密码格式错误,长度不可超过6 - 20");
+            } else if (!forgetPwd.getPwd().equals(forgetPwd.getRePwd())) {
+                throw new Exception("俩次输入的密码不同，请检查");
+            } else if (!forgetPwd.getCaptcha().equals(captchaCode)) {
+                throw new Exception("验证码错误");
+            }
+            boolean result = accountService.modifyPwd(forgetPwd.getPhone(), forgetPwd.getLoginName(), new BCryptPasswordEncoder().encode(forgetPwd.getPwd()));
+            return WrapMapper.ok(result);
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
     }
 
     @ApiOperation(value = "查询账户信息", response = Account.class)
@@ -118,9 +165,26 @@ public class AccountController {
     public Object findAccountByLoginNameOrPhone(@RequestParam(value = "phone", required = false) String phone,
                                                 @RequestParam(value = "loginName", required = false) String loginName) {
         //效验参数
-        boolean expression = (phone == null || phone == "") || (loginName == null || loginName == "");
-        Preconditions.checkArgument(expression, "请输入用户名或者手机号信息");
+        try {
+            boolean expression = StringUtil.isEmpty(phone) && StringUtil.isEmpty(loginName);
+            Preconditions.checkArgument(!expression, "请输入用户名或者手机号信息");
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
         return WrapMapper.ok(accountService.findAccountByLoginNameOrPhone(phone, loginName));
+    }
+
+    @ApiOperation(value = "获取验证码", response = Boolean.class)
+    @RequestMapping(value = "/getCaptcha", method = RequestMethod.GET)
+    public Object getCaptcha(@RequestParam("phone") String phone) {
+        if (!ValidatorUtil.isMobile(phone)) {
+            return WrapMapper.error("请输入正确的手机号");
+        }
+        //生成随机数
+        String code = RandomUtil.createNumberCode(4);
+        redisUtil.setWithExpireTime(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX + phone, code, AliyunSmsConstants.CodeConstants.CAPTCHA_TIME);
+        SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_VERIFICATION, phone, code + ",:找回密码");
+        return WrapMapper.ok(Boolean.TRUE);
     }
 
 //    @ApiOperation(value = "导入账户数据", response = Boolean.class)
