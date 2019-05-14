@@ -154,10 +154,6 @@ public class SchoolStrategyController {
 			}else{
 				falg =  schoolStrategyService.update(schoolStrategy)>0;
 			}
-/*			SchoolStrategy schoolStrategy=new SchoolStrategy();
-			BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
-			schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
-			Boolean result =  schoolStrategyService.update(schoolStrategy)>0;*/
 			return WrapMapper.ok(falg);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
