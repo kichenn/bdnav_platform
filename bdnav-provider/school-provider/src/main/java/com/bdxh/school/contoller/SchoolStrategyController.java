@@ -114,7 +114,6 @@ public class SchoolStrategyController {
 			return WrapMapper.error(errors);
 		}
 		try{
-			Boolean falg;
 			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),addPolicyDto.getPriority());
 			Preconditions.checkArgument(strategy != null, "该模式已存在,请更换后添加");
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
