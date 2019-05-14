@@ -114,6 +114,9 @@ public class SchoolStrategyController {
 			return WrapMapper.error(errors);
 		}
 		try{
+			Boolean falg;
+			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),addPolicyDto.getPriority());
+			Preconditions.checkArgument(strategy != null, "该模式已存在,请更换后添加");
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
 			schoolStrategy.setRecursionPermission(Integer.valueOf(addPolicyDto.getRecursionPermission().getKey()));
@@ -173,7 +176,7 @@ public class SchoolStrategyController {
 		try{
 			SchoolStrategy schoolStrategy=schoolStrategyService.getByPriority(SchoolCode,Priority);
 			if (schoolStrategy!=null){
-				return WrapMapper.ok("该学校策略已有该优先级值,请更换后重试");
+				return WrapMapper.error("该学校策略已有该优先级值,请更换后重试");
 			}else{
 				return WrapMapper.ok();
 			}
