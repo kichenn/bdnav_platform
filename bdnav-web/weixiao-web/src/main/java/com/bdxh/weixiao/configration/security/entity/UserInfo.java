@@ -5,21 +5,30 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @description: 用户信息
- * @author: xuyuan
- * @create: 2019-03-13 15:27
- **/
+ * @Description: 用户信息
+ * @Author: Kang
+ * @Date: 2019/5/14 15:57
+ */
 @Data
 public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 8541838882121685433L;
 
+    //学校编码
     private String schoolCode;
 
+    //名称
     private String name;
 
+    //手机号
     private String phone;
 
+    //学号
     private String cardNumber;
 
+    //微校学生id
+    private String weixiaoStuId;
+
+    // 身份类型，1为其他，2为学生，3为教职工，4为校友
+    private String identityType;
 }
