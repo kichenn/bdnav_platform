@@ -1,6 +1,5 @@
 package com.bdxh.appmarket.service;
 
-import com.bdxh.appmarket.dto.AddAppVersionDto;
 import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.common.support.IService;
 import org.springframework.stereotype.Service;
@@ -37,5 +36,12 @@ public interface AppVersionService extends IService<AppVersion> {
 	 * @return
 	 */
  	List<AppVersion> findAppVersion(Long appId);
+
+	/**
+	 * 查询最新的应用版本
+	 * @param appId
+	 * @return
+	 */
+	AppVersion findNewAppVersion(Long appId);
 
 }

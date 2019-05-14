@@ -42,4 +42,9 @@
 	<select id="findAppVersion" resultMap="BaseResultMap">
 		select <include refid="BaseColumns"/> from t_app_version where app_id=#{id}
 	</select>
+
+	<select id="findNewAppVersion" resultMap="BaseResultMap">
+		select <include refid="BaseColumns"/> from t_app_version where app_id=#{id}
+		order by id DESC LIMIT 0,1 ;
+	</select>
 </mapper>

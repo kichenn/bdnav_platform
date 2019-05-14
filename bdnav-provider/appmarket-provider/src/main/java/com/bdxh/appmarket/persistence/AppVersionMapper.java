@@ -2,6 +2,7 @@ package com.bdxh.appmarket.persistence;
 
 import java.util.List;
 
+import sun.misc.Version;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -40,4 +41,11 @@ public interface AppVersionMapper extends Mapper<AppVersion> {
 	 * @return
 	 */
 	 List<AppVersion> findAppVersion(@Param("id")Long id);
+
+	/**
+	 * 查询最新版本
+	 * @param id
+	 * @return
+	 */
+	 AppVersion findNewAppVersion(@Param("id")Long id);
 }

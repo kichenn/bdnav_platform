@@ -61,4 +61,9 @@ public class AppVersionServiceImpl extends BaseService<AppVersion> implements Ap
 	public List<AppVersion> findAppVersion(Long appId) {
 		return appVersionMapper.findAppVersion(appId);
 	}
+
+	@Override
+	public AppVersion findNewAppVersion(Long appId) {
+		return appVersionMapper.findNewAppVersion(appId);
+	}
 }

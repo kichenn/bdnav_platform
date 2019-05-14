@@ -7,6 +7,7 @@ import com.bdxh.appmarket.entity.AppImage;
 import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.service.AppImageService;
 import com.bdxh.appmarket.service.AppService;
+import com.bdxh.appmarket.service.AppVersionService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -45,6 +46,9 @@ public class AppController {
 
     @Autowired
     private AppImageService appImageService;
+
+    @Autowired
+    private AppVersionService appVersionService;
 
     @ApiOperation("增加应用")
     @RequestMapping(value = "/addApp",method = RequestMethod.POST)
@@ -125,6 +129,9 @@ public class AppController {
         try {
             Map<String,Object> param = new HashMap<>();
             App app = appService.selectByKey(id);
+            AppVersion appVersion=appVersionService.findNewAppVersion(id);
+            param.put("apkSize",appVersion.getApkSize());
+            param.put("apkName",appVersion.getApkName());
             param.put("appId",id);
             List<AppImage> appImageList = appImageService.getAppImageList(param);
             param.clear();
