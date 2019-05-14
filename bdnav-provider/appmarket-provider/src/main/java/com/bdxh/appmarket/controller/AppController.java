@@ -130,12 +130,12 @@ public class AppController {
             Map<String,Object> param = new HashMap<>();
             App app = appService.selectByKey(id);
             AppVersion appVersion=appVersionService.findNewAppVersion(id);
-            param.put("apkSize",appVersion.getApkSize());
-            param.put("apkName",appVersion.getApkName());
             param.put("appId",id);
             List<AppImage> appImageList = appImageService.getAppImageList(param);
             param.clear();
             param.put("app",app);
+            param.put("apkSize",appVersion.getApkSize());
+            param.put("apkName",appVersion.getApkName());
             param.put("images",appImageList);
             String jsonString = JSON.toJSONString(param);
             return WrapMapper.ok(jsonString);
