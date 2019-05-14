@@ -140,11 +140,25 @@ public class SchoolStrategyController {
 			return WrapMapper.error(errors);
 		}
 		try{
+			Boolean falg;
+			SchoolStrategy strategy=schoolStrategyService.getByPriority(modifyPolicyDto.getSchoolCode(),modifyPolicyDto.getPriority());
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
 			schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
-			Boolean result =  schoolStrategyService.update(schoolStrategy)>0;
-			return WrapMapper.ok(result);
+			if (strategy!=null){
+				if(strategy.getPriority().equals(modifyPolicyDto.getPriority())&&strategy.getSchoolCode().equals(modifyPolicyDto.getSchoolCode())&&!strategy.getId().equals(modifyPolicyDto.getId())){
+					return WrapMapper.ok("该策略已有相同优先级值,请更换后重试");
+				}else{
+					falg =  schoolStrategyService.update(schoolStrategy)>0;
+				}
+			}else{
+				falg =  schoolStrategyService.update(schoolStrategy)>0;
+			}
+/*			SchoolStrategy schoolStrategy=new SchoolStrategy();
+			BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
+			schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
+			Boolean result =  schoolStrategyService.update(schoolStrategy)>0;*/
+			return WrapMapper.ok(falg);
 		} catch (RuntimeException e) {
 			e.printStackTrace();
 			return WrapMapper.error(e.getMessage());
