@@ -477,18 +477,18 @@ public class StudentWebController {
             return WrapMapper.error("抱歉，暂无学生数据");
         }
         List<StudentExcelReportBean> studentExcelReportBeanList = students.stream().map(e -> {
-            StudentExcelReportBean studentExcelReportBean= BeanMapUtils.map(e,StudentExcelReportBean.class);
-                    if (e.getGender().equals(Byte.parseByte("1"))) {
-                        studentExcelReportBean.setGender("男");
-                    } else {
-                        studentExcelReportBean.setGender("女");
-                    }
-                    if(e.getActivate().equals(Byte.parseByte("1"))){
-                        studentExcelReportBean.setActivate("未激活");
-                    }else{
-                        studentExcelReportBean.setActivate("已激活");
-                    }
-                return studentExcelReportBean;
+            StudentExcelReportBean studentExcelReportBean = BeanMapUtils.map(e, StudentExcelReportBean.class);
+            if (e.getGender().equals(Byte.parseByte("1"))) {
+                studentExcelReportBean.setGender("男");
+            } else {
+                studentExcelReportBean.setGender("女");
+            }
+            if (e.getActivate().equals(Byte.parseByte("1"))) {
+                studentExcelReportBean.setActivate("未激活");
+            } else {
+                studentExcelReportBean.setActivate("已激活");
+            }
+            return studentExcelReportBean;
         }).collect(Collectors.toList());
         try (OutputStream out = response.getOutputStream()) {
             String fileName = URLEncoder.encode("学生信息表格", StandardCharsets.UTF_8.toString());

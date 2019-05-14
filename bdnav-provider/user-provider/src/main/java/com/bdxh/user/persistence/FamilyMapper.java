@@ -17,6 +17,9 @@ public interface FamilyMapper extends Mapper<Family> {
     //查询家长详细信息
     FamilyVo selectByCodeAndCard(@Param("schoolCode") String schoolCode,@Param("cardNumber") String cardNumber);
 
+    //查询家长信息
+    Family findFamilyInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
+
     //删除家长信息
     int removeFamilyInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
 

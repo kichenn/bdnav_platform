@@ -68,6 +68,9 @@ public class FamilyStudentWebController {
             if (pageInfo.getTotal() != 0) {
                 return WrapMapper.error(addFamilyStudentDto.getStudentName() + "已存在绑定关系");
             }
+            FamilyVo family=familyControllerClient.queryFamilyInfo(addFamilyStudentDto.getSchoolCode(),addFamilyStudentDto.getCardNumber()).getResult();
+            addFamilyStudentDto.setOperator(Long.parseLong(family.getId()));
+            addFamilyStudentDto.setOperatorName(family.getName());
             Wrapper wrappers = familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
             return wrappers;
         } catch (Exception e) {
@@ -108,7 +111,6 @@ public class FamilyStudentWebController {
     @RequestMapping(value = "/familyFindStudentList", method = RequestMethod.POST)
     public Object familyFindStudentList(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
         try {
-            log.info(familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto).getResult() + "");
             return WrapMapper.ok(familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto).getResult());
         } catch (Exception e) {
             e.printStackTrace();

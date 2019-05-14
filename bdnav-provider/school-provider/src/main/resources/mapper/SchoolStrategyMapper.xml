@@ -11,6 +11,7 @@
         <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
         <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
         <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
+        <result column="priority" jdbcType="TINYINT" property="Priority"/>
         <result column="model_id" jdbcType="BIGINT" property="ModelId"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
@@ -33,6 +34,7 @@
         <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
         <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
         <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
+        <result column="priority" jdbcType="TINYINT" property="Priority"/>
         <result column="model_id" jdbcType="BIGINT" property="ModelId"/>
         <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
         <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
@@ -51,7 +53,7 @@
 
 
 	<sql id="BaseColumns">
-	id,policy_name,school_id,school_code,school_name,group_id,recursion_permission,recursion_permission_ids,model_id,start_date,end_date,day_mark,time_mark,exclusion_days,create_date,update_date,operator,operator_name,remark
+	id,policy_name,school_id,school_code,school_name,group_id,recursion_permission,recursion_permission_ids,priority,model_id,start_date,end_date,day_mark,time_mark,exclusion_days,create_date,update_date,operator,operator_name,remark
 	</sql>
 	<select id="getSchoolStrategyAllCount" resultType="Integer">
         SELECT 
@@ -89,5 +91,15 @@
         </where>
         ORDER BY t_school_strategy.create_date DESC
     </select>
+
+    <select id="getByPriority" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_school_strategy
+        WHERE
+        school_code=#{SchoolCode} AND priority=#{Priority}
+    </select>
+
 
 </mapper>

@@ -40,4 +40,11 @@ public interface SchoolStrategyControllerClient {
     @RequestMapping(value = "/schoolStrategy/findPolicyInConditionPage", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<PageInfo<QuerySchoolStrategy>> findPolicyInConditionPage(@RequestBody QuerySchoolStrategy querySchoolStrategy);
+
+    /**
+     * @Description: 验证学校策略优先级
+     */
+    @RequestMapping(value = "/schoolStrategy/getByPriority", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority);
 }

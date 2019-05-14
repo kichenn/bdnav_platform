@@ -38,6 +38,8 @@ public class ModifyPolicyDto {
     @ApiModelProperty("递归权限ids")
     private String RecursionPermissionIds;
 
+    @ApiModelProperty("优先级")
+    private Integer Priority;
 
     @ApiModelProperty("模式主键")
     private Long ModelId;

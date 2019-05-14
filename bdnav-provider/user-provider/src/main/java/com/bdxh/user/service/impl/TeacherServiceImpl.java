@@ -25,6 +25,7 @@ import com.github.pagehelper.PageInfo;
 import com.netflix.discovery.converters.Auto;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -256,8 +257,10 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 synUserInfoRequest.setGender(updateTeacherDto.getGender() == 1 ? "男" : "女");
                 String names[] = updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames().split("\\/");
                 //判断是K12 还是中高职
-                if (updateTeacherDto.getSchoolType() >= Byte.parseByte("4")) {
-                    synUserInfoRequest.setCollege(names[names.length - 1]);
+                if(names.length>0){
+                    if (updateTeacherDto.getSchoolType() >= Byte.parseByte("4")) {
+                        synUserInfoRequest.setCollege(names[names.length - 1]);
+                    }
                 }
                 synUserInfoRequest.setOrganization(updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames());
                 synUserInfoRequest.setTelephone(updateTeacherDto.getPhone());
