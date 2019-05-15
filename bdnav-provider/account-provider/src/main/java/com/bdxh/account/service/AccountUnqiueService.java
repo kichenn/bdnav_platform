@@ -42,5 +42,4 @@ public interface AccountUnqiueService extends IService<AccountUnqiue> {
 
 
 
-    List<AccountUnqiue> find();
 }

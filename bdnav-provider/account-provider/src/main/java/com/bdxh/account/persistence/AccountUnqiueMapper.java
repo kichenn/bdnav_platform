@@ -35,7 +35,6 @@ public interface AccountUnqiueMapper extends Mapper<AccountUnqiue> {
     int delAccountUnqiue(@Param("id") String id);
 
 
-    List<AccountUnqiue> find();
 
     /**
      * 修改索引字典信息

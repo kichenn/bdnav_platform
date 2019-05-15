@@ -5,6 +5,10 @@ import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.dto.AppStatusQueryDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
+import com.bdxh.appmarket.entity.AppVersion;
+import com.bdxh.appmarket.feign.AppVersionControllerClient;
+import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
@@ -43,6 +47,9 @@ public class ApplyControlsWebController {
     @Autowired
     private AppStatusControllerClient appStatusControllerClient;
 
+    @Autowired
+    private AppVersionControllerClient appVersionControllerClient;
+
 
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
     @RequestMapping(value = "/modifyInfo", method = RequestMethod.POST)
@@ -74,11 +81,13 @@ public class ApplyControlsWebController {
         return appStatusControllerClient.findAppStatusInContionPaging(appStatusQueryDto);
     }
 
-/*    @ApiOperation(value = "应用版本查询", response = Boolean.class)
-    @RequestMapping(value = "/versionUpdating", method = RequestMethod.POST)
-    public Object versionUpdating(@Validated @RequestBody BlackUrlQueryDto blackUrlQueryDto) {
-        return blackUrlControllerClient.findBlackInConditionPaging(blackUrlQueryDto);
-    }*/
+   @ApiOperation(value = "最新应用版本查询", response = Boolean.class)
+    @RequestMapping(value = "/versionUpdating", method = RequestMethod.GET)
+    public Object versionUpdating(@RequestParam("appId")Long appId) {
+       Wrapper<AppVersion> wrapper = appVersionControllerClient.findNewAppVersion(appId);
+       return WrapMapper.ok(wrapper.getResult());
+
+    }
 
 
 }

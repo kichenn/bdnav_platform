@@ -25,4 +25,9 @@ public class AppVersionControllerClientFallback implements AppVersionControllerC
     public Wrapper<List<AppVersion>> findAppVersion(Long appId) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<AppVersion> findNewAppVersion(Long appId) {
+        return WrapMapper.error();
+    }
 }

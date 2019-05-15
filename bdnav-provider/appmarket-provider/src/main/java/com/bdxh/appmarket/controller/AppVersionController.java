@@ -49,4 +49,16 @@ public class AppVersionController {
 	public Object findAppVersion(@RequestParam("appId")Long appId){
 		return appVersionService.findAppVersion(appId);
 	}
+
+
+	/**
+	 * 最新版本APP版本
+	 */
+	@RequestMapping(value = "/findNewAppVersion",method = RequestMethod.GET)
+	@ApiOperation("最新APP版本查询")
+	public Object findNewAppVersion(@RequestParam("appId")Long appId){
+		return appVersionService.findNewAppVersion(appId);
+	}
+
+
 }

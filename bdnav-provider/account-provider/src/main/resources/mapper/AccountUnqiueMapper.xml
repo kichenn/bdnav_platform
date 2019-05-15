@@ -38,10 +38,5 @@
         WHERE id=#{id}
     </delete>
 
-    <select id="find" resultMap="BaseResultMap">
-        SELECT
-        <include refid="BaseColumns"/>
-        FROM t_account_unqiue
-    </select>
 
 </mapper>
