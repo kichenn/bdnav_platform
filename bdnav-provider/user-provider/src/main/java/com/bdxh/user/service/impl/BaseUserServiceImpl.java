@@ -227,4 +227,8 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
         return false;
     }
 
+    @Override
+    public List<String> findSchoolNumberBySchool(String schoolCode) {
+        return baseUserMapper.findSchoolNumberBySchool(schoolCode);
+    }
 }

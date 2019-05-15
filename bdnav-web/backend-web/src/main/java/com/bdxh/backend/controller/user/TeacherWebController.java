@@ -65,8 +65,8 @@ public class TeacherWebController {
     @RequestMapping(value = "/addTeacher",method = RequestMethod.POST)
     public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
         try {
-            TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber()).getResult();
-           if(null!=teacherVo){
+            List<String> cardNumberList=baseUserControllerClient.findSchoolNumberBySchool(addTeacherDto.getSchoolCode()).getResult();
+           if(cardNumberList.size()>0){
                return WrapMapper.error("当前学校已存在相同教师工号");
            }
             if(addTeacherDto.getImage().equals("")||addTeacherDto.getImageName().equals("")){
@@ -246,7 +246,7 @@ public class TeacherWebController {
                 if(StringUtils.isNotBlank(teacherList.get(i)[0])){
                 if(!teacherList.get(i)[0].equals(i-1>=teacherList.size()?teacherList.get(teacherList.size()-1)[0]:teacherList.get(i-1)[0])||i==1){
                     Wrapper wrapper=schoolControllerClient.findSchoolBySchoolCode(columns[0]);
-                    Wrapper teacherWeapper=teacherControllerClient.queryTeacherCardNumberBySchoolCode(columns[0]);
+                    Wrapper teacherWeapper=baseUserControllerClient.findSchoolNumberBySchool(columns[0]);
                     school=(School)wrapper.getResult();
                     cardNumberList=(List<String>)teacherWeapper.getResult();
                 }

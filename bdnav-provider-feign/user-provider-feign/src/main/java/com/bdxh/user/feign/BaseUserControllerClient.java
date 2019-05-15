@@ -77,4 +77,13 @@ public interface BaseUserControllerClient {
     @RequestMapping(value = "/baseUser/baseUserActivation", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<Boolean> baseUserActivation(@RequestBody ActivationBaseUserDto activationBaseUserDto);
+
+    /**
+     * 判断卡号是否重复查询一个学校所有卡号
+     * @param schoolCode
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value ="/baseUser/findSchoolNumberBySchool",method = RequestMethod.POST)
+    Wrapper<List<String>>  findSchoolNumberBySchool(@RequestParam("schoolCode") String schoolCode);
 }

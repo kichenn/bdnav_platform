@@ -134,8 +134,8 @@ public class StudentWebController {
             User user = SecurityUtils.getCurrentUser();
             addStudentDto.setOperator(user.getId());
             addStudentDto.setOperatorName(user.getUserName());
-            StudentVo student = (StudentVo) studentControllerClient.queryStudentInfo(addStudentDto.getSchoolCode(), addStudentDto.getCardNumber()).getResult();
-            if (null != student) {
+            List<String> cardNumberList=baseUserControllerClient.findSchoolNumberBySchool(addStudentDto.getSchoolCode()).getResult();
+            if(cardNumberList.size()>0){
                 return WrapMapper.error("当前学校已存在相同学生学号");
             }
 
@@ -351,7 +351,7 @@ public class StudentWebController {
                 if (!studentList.get(i)[0].equals(i - 1 >= studentList.size() ? studentList.get(studentList.size())[0] : studentList.get(i - 1)[0]) || i == 1) {
                     Wrapper schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
                     Wrapper schoolClassWrapper = schoolClassControllerClient.queryClassUrlBySchoolCode(columns[0]);
-                    Wrapper studentWeapper = studentControllerClient.queryCardNumberBySchoolCode(columns[0]);
+                    Wrapper studentWeapper = baseUserControllerClient.findSchoolNumberBySchool(columns[0]);
                     schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
                     school = (School) schoolWrapper.getResult();
                     cardNumberList = (List<String>) studentWeapper.getResult();

@@ -46,4 +46,9 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
     public Wrapper<Boolean> baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<String>> findSchoolNumberBySchool(String schoolCode) {
+        return WrapMapper.error();
+    }
 }
