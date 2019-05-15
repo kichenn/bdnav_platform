@@ -18,6 +18,13 @@ public class UpdateFamilyFenceDto  implements Serializable {
     private static final long serialVersionUID = -3640130486836469791L;
 
     /**
+     * 围栏ID
+     */
+    @NotNull(message ="围栏ID不能为空")
+    @ApiModelProperty("围栏ID")
+    private Long id;
+
+    /**
      * 学校id
      */
     @ApiModelProperty("学校id")

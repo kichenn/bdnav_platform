@@ -1,22 +1,22 @@
 package com.bdxh.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
-import com.bdxh.user.configration.rocketmq.listener.RocketMqProducerTransactionListener;
 import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
+import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.Family;
-import com.bdxh.user.entity.Student;
 import com.bdxh.user.persistence.BaseUserMapper;
+import com.bdxh.user.persistence.BaseUserUnqiueMapper;
 import com.bdxh.user.persistence.FamilyMapper;
 import com.bdxh.user.persistence.FamilyStudentMapper;
 import com.bdxh.user.service.FamilyService;
@@ -24,11 +24,12 @@ import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.common.collect.Lists;
+import com.google.common.base.Preconditions;
+import com.google.protobuf.compiler.PluginProtos;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
-import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,6 +57,9 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     private FamilyStudentMapper familyStudentMapper;
 
     @Autowired
+    private BaseUserUnqiueMapper baseUserUnqiueMapper;
+
+    @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
     @Autowired
@@ -75,6 +79,8 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     @Override
     @Transactional
     public void deleteFamilyInfo(String scoolCode, String cardNumber) {
+        BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(scoolCode,cardNumber);
+        baseUserUnqiueMapper.deleteByPrimaryKey(baseUser.getId());
         familyMapper.removeFamilyInfo(scoolCode, cardNumber);
         familyStudentMapper.familyRemoveFamilyStudent(scoolCode, cardNumber, null);
         baseUserMapper.deleteBaseUserInfo(scoolCode, cardNumber);
@@ -119,10 +125,27 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     @Transactional
     public void updateFamily(UpdateFamilyDto updateFamilyDto) {
         try {
+            //查出修改之前的基础用户信息
+            BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateFamilyDto.getSchoolCode(),
+                    updateFamilyDto.getCardNumber());
+            //如果改了手机号码就进行修改
+            if(!baseUser.getPhone().equals(updateFamilyDto.getPhone())){
+                try {
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),baseUser.getPhone());
+                }catch (Exception e){
+                    String message=e.getMessage();
+                    if (e instanceof DuplicateKeyException) {
+                        Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
+                    }
+                }
+            }
+            //修改家长信息
             Family family = BeanMapUtils.map(updateFamilyDto, Family.class);
             familyMapper.updateFamilyInfo(family);
+            //修改基础用户信息
             BaseUser updateBaseUserDto = BeanMapUtils.map(updateFamilyDto, BaseUser.class);
             baseUserMapper.updateBaseUserInfo(updateBaseUserDto);
+
             //修改时判断用户是否已经激活
             if (updateFamilyDto.getActivate().equals(Byte.parseByte("2"))) {
                 SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
@@ -161,14 +184,22 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     @Override
     @Transactional
     public void saveFamily(Family family) {
-        family.setId(snowflakeIdWorker.nextId());
-        family.setActivate(Byte.valueOf("1"));
-        familyMapper.insert(family);
         BaseUser baseUser = BeanMapUtils.map(family, BaseUser.class);
         baseUser.setUserType(3);
         baseUser.setUserId(family.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
+        try {
+            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
+        }catch (Exception e){
+            String message=e.getMessage();
+            if (e instanceof DuplicateKeyException) {
+                Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
+            }
+        }
         baseUserMapper.insert(baseUser);
+        family.setId(snowflakeIdWorker.nextId());
+        family.setActivate(Byte.valueOf("1"));
+        familyMapper.insert(family);
     }
 
     @Override
@@ -176,15 +207,16 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     public void batchSaveFamilyInfo(List<AddFamilyDto> addFamilyDtoList) {
         List<Family> familyList = BeanMapUtils.mapList(addFamilyDtoList, Family.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(familyList, BaseUser.class);
+        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             familyList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setUserType(3);
             baseUserList.get(i).setUserId(familyList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
+        baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
         familyMapper.batchSaveFamilyInfo(familyList);
         baseUserMapper.batchSaveBaseUserInfo(baseUserList);
-
     }
 
     @Override

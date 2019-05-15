@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value ="家长学生绑定接口API", tags = "家长学生绑定接口API")
@@ -97,16 +96,13 @@ private SnowflakeIdWorker snowflakeIdWorker;
      */
     @ApiOperation(value = "查询所有家长与孩子关系")
     @RequestMapping(value = "/queryAllFamilyStudent",method =RequestMethod.POST)
-    public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto){
-        try{
-            PageInfo<FamilyStudentVo> familyStudentVoPageInfo=familyStudentService.queryAllFamilyStudent(familyStudentQueryDto);
-            return  WrapMapper.ok(familyStudentVoPageInfo);
-        }catch (Exception e){
+    public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
+        try {
+            PageInfo<FamilyStudentVo> familyStudentVoPageInfo = familyStudentService.queryAllFamilyStudent(familyStudentQueryDto);
+            return WrapMapper.ok(familyStudentVoPageInfo);
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
-
-
-
 }

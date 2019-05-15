@@ -6,6 +6,7 @@ import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.service.BaseUserService;
+import com.bdxh.user.service.BaseUserUnqiueService;
 import com.bdxh.user.vo.FamilyVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,6 +34,8 @@ public class BaseUserController {
     @Autowired
     private BaseUserService baseUserService;
 
+    @Autowired
+    private BaseUserUnqiueService baseUserUnqiueService;
 
     /**
      * 查询所有用户手机号
@@ -42,7 +45,7 @@ public class BaseUserController {
     @RequestMapping(value ="/queryAllUserPhone",method = RequestMethod.GET)
     public Object queryAllUserPhone() {
         try {
-            List<String> list=baseUserService.queryAllUserPhone();
+            List<String> list=baseUserUnqiueService.queryAllUserPhone();
             return WrapMapper.ok(list) ;
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,7 +60,7 @@ public class BaseUserController {
     @RequestMapping(value ="/queryUserPhoneByPhone",method = RequestMethod.POST)
     public Object queryUserPhoneByPhone(@RequestBody  BaseUserQueryDto baseUserQueryDto) {
         try {
-           Integer phoneCount=baseUserService.queryUserPhoneByPhone(baseUserQueryDto);
+            Integer phoneCount=baseUserUnqiueService.queryUserPhone(baseUserQueryDto.getPhone());
             return WrapMapper.ok(phoneCount) ;
         } catch (Exception e) {
             e.printStackTrace();

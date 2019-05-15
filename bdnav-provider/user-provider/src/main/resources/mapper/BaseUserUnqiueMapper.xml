@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.user.persistence.BaseUserUnqiueMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.BaseUserUnqiue">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="phone" jdbcType="VARCHAR" property="phone"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,phone
+	</sql>
+
+	<insert id="batchSaveBaseUserPhone">
+		INSERT INTO t_base_user_unqiue (id, phone) VALUES
+		<foreach collection="list" index="index" separator="," item="baseUserUnqiueList">
+			(#{id},#{phone})
+		</foreach>
+	</insert>
+
+	<!--查询全局索引表查phone-->
+	<select id="queryAllUserPhone"  resultType="java.lang.String">
+        select phone from t_base_user_unqiue
+    </select>
+	<!--修改用户手机号码时修改手机号码表-->
+	<update id="updateUserPhoneByUserId" >
+        update t_base_user_unqiue
+        set   phone=#{phone}
+        where id=#{id}
+    </update>
+
+	<!--新增用户时新增手机号码表-->
+	<insert id="insertUserPhone">
+    INSERT INTO t_base_user_unqiue (id, phone) VALUES (#{id},#{phone});
+    </insert>
+
+	<select id="queryUserPhone">
+		select count(1) from t_base_user_unqiue where phone =#{phone}
+	</select>
+</mapper>
