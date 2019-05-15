@@ -12,6 +12,7 @@ import com.bdxh.common.support.BaseService;
 import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.persistence.BaseUserMapper;
@@ -64,8 +65,6 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Autowired
     private BaseUserUnqiueMapper baseUserUnqiueMapper;
 
-    @Autowired
-    private RocketMqProducerProperties rocketMqProducerProperties;
 
     @Autowired
     private DefaultMQProducer defaultMQProducer;
@@ -243,11 +242,15 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 }
             }
             Boolean baseUserResult = baseUserMapper.updateBaseUserInfo(updateBaseUserDto) > 0;
-            TeacherDept teacherDepts = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
-            teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber(), 0);
             for (int i = 0; i < updateTeacherDto.getTeacherDeptDtoList().size(); i++) {
+                TeacherDept teacherDepts = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
+                teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber(), 0);
                 TeacherDeptDto teacherDeptDto = new TeacherDeptDto();
+                if(null==teacherDepts.getId()){
                 teacherDeptDto.setId(teacherDepts.getId());
+                }else{
+                    teacherDeptDto.setId(snowflakeIdWorker.nextId());
+                }
                 teacherDeptDto.setSchoolCode(updateTeacherDto.getSchoolCode());
                 teacherDeptDto.setCardNumber(updateTeacherDto.getCardNumber());
                 teacherDeptDto.setTeacherId(updateTeacherDto.getId());
