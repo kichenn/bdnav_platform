@@ -262,6 +262,6 @@
             where school_code=#{schoolCode}
 	</update>
     <select id="findSchoolNumberBySchool" resultType="java.lang.String">
-        select card_number from t_baseUser where school_code=#{schoolCode}
+        select card_number from t_base_user where school_code=#{schoolCode}
     </select>
 </mapper>
