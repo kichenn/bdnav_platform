@@ -88,7 +88,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param cardNumber
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteStudentInfo(String schoolCode, String cardNumber) {
         Student student = studentMapper.findStudentInfo(schoolCode, cardNumber);
         BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode, cardNumber);
@@ -124,7 +124,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param cardNumber
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBatchesStudentInfo(String schoolCode, String cardNumber) {
         String[] schoolCodes = schoolCode.split(",");
         String[] cardNumbers = cardNumber.split(",");
@@ -148,7 +148,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param updateStudentDto
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
         try {
             //查出修改之前的基础用户信息
@@ -295,7 +295,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param student
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveStudent(Student student) {
         BaseUser baseUser = BeanMapUtils.map(student, BaseUser.class);
         baseUser.setUserType(1);
@@ -345,7 +345,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param addStudentDtoList
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void batchSaveStudentInfo(List<AddStudentDto> addStudentDtoList) {
         try {
         List<Student> studentList = BeanMapUtils.mapList(addStudentDtoList, Student.class);

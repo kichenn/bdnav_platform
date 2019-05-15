@@ -77,7 +77,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteFamilyInfo(String scoolCode, String cardNumber) {
         BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(scoolCode,cardNumber);
         baseUserUnqiueMapper.deleteByPrimaryKey(baseUser.getId());
@@ -87,7 +87,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBatchesFamilyInfo(String schoolCode, String cardNumber) {
         String[] schoolCodes = schoolCode.split(",");
         String[] cardNumbers = cardNumber.split(",");
@@ -122,7 +122,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateFamily(UpdateFamilyDto updateFamilyDto) {
         try {
             //查出修改之前的基础用户信息
@@ -182,7 +182,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveFamily(Family family) {
         BaseUser baseUser = BeanMapUtils.map(family, BaseUser.class);
         baseUser.setUserType(3);
@@ -203,7 +203,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void batchSaveFamilyInfo(List<AddFamilyDto> addFamilyDtoList) {
         List<Family> familyList = BeanMapUtils.mapList(addFamilyDtoList, Family.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(familyList, BaseUser.class);

@@ -34,7 +34,7 @@
     INSERT INTO t_base_user_unqiue (id, phone) VALUES (#{id},#{phone});
     </insert>
 
-	<select id="queryUserPhone">
+	<select id="queryUserPhone" resultType="java.lang.Integer">
 		select count(1) from t_base_user_unqiue where phone =#{phone}
 	</select>
 </mapper>

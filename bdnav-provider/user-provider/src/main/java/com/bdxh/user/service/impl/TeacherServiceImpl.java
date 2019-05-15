@@ -80,7 +80,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteTeacherInfo(String schoolCode, String cardNumber) {
         BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode, cardNumber);
         baseUserUnqiueMapper.deleteByPrimaryKey(baseUser.getId());
@@ -119,7 +119,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBatchesTeacherInfo(String schoolCodes, String cardNumbers) {
         String[] schoolCode = schoolCodes.split(",");
         String[] cardNumber = cardNumbers.split(",");
@@ -138,7 +138,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveTeacherDeptInfo(AddTeacherDto teacherDto) {
         Teacher teacher = BeanMapUtils.map(teacherDto, Teacher.class);
         teacher.setId(snowflakeIdWorker.nextId());
@@ -224,16 +224,15 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateTeacherInfo(UpdateTeacherDto updateTeacherDto) {
         try {
-            Teacher teacher = BeanMapUtils.map(updateTeacherDto, Teacher.class);
-            Boolean teaResult = teacherMapper.updateTeacher(teacher) > 0;
+           BaseUser baseuser= baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
             BaseUser updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, BaseUser.class);
             //如果改了手机号码就进行修改
-            if(!updateBaseUserDto.getPhone().equals(updateTeacherDto.getPhone())){
+            if(!baseuser.getPhone().equals(updateTeacherDto.getPhone())){
                 try {
-                    baseUserUnqiueMapper.updateUserPhoneByUserId(updateBaseUserDto.getId(),updateBaseUserDto.getPhone());
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseuser.getId(),updateBaseUserDto.getPhone());
                 }catch (Exception e){
                     String message=e.getMessage();
                     if (e instanceof DuplicateKeyException) {
@@ -241,12 +240,14 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                     }
                 }
             }
+            Teacher teacher = BeanMapUtils.map(updateTeacherDto, Teacher.class);
+            Boolean teaResult = teacherMapper.updateTeacher(teacher) > 0;
             Boolean baseUserResult = baseUserMapper.updateBaseUserInfo(updateBaseUserDto) > 0;
             for (int i = 0; i < updateTeacherDto.getTeacherDeptDtoList().size(); i++) {
                 TeacherDept teacherDepts = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
                 teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber(), 0);
                 TeacherDeptDto teacherDeptDto = new TeacherDeptDto();
-                if(null==teacherDepts.getId()){
+                if(null!=teacherDepts){
                 teacherDeptDto.setId(teacherDepts.getId());
                 }else{
                     teacherDeptDto.setId(snowflakeIdWorker.nextId());
