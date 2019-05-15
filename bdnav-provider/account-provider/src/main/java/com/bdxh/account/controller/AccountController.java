@@ -260,10 +260,4 @@ public class AccountController {
 //        }
 //        return WrapMapper.ok();
 //    }
-
-    @ApiOperation(value = "temp", response = Boolean.class)
-    @RequestMapping(value = "/temp", method = RequestMethod.GET)
-    public Object temp() {
-        return WrapMapper.ok(accountUnqiueService.find());
-    }
 }

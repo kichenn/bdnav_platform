@@ -39,8 +39,4 @@ public class AccountUnqiueServiceImpl extends BaseService<AccountUnqiue> impleme
         return accountUnqiueMapper.modifyAccountUnqiue(accountUnqiue) > 0;
     }
 
-    @Override
-    public List<AccountUnqiue> find() {
-        return accountUnqiueMapper.find();
-    }
 }
