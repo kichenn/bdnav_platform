@@ -23,7 +23,7 @@ import java.util.List;
 public interface BaseUserControllerClient {
 
     /**
-     * 查询单个家长信息
+     * 查询所有手机号信息
      *
      * @return
      */

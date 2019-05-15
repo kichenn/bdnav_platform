@@ -14,6 +14,7 @@ import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.TeacherControllerClient;
@@ -69,8 +70,8 @@ public class TeacherWebController {
     public Object addTeacher(@RequestBody AddTeacherDto addTeacherDto){
         try {
             SchoolUser user= SecurityUtils.getCurrentUser();
-            TeacherVo teacherVo=(TeacherVo) teacherControllerClient.queryTeacherInfo(user.getSchoolCode(),addTeacherDto.getCardNumber()).getResult();
-           if(null!=teacherVo){
+            BaseUser baseUser=baseUserControllerClient.queryBaseUserBySchoolCodeAndCardNumber(addTeacherDto.getSchoolCode(),addTeacherDto.getCardNumber()).getResult();
+            if(null!=baseUser){
                return WrapMapper.error("当前学校已存在相同教师工号");
            }
             if(addTeacherDto.getImage().equals("")||addTeacherDto.getImageName().equals("")){

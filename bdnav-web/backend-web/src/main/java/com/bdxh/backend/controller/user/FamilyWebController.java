@@ -15,6 +15,7 @@ import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyFence;
 import com.bdxh.user.feign.BaseUserControllerClient;
@@ -56,8 +57,6 @@ public class FamilyWebController {
     @Autowired
     private SchoolControllerClient schoolControllerClient;
     @Autowired
-    private FamilyFenceControllerClient familyFenceControllerClient;
-    @Autowired
     private SinglePermissionControllerClient singlePermissionControllerClient;
     @Autowired
     private BaseUserControllerClient baseUserControllerClient;
@@ -75,8 +74,8 @@ public class FamilyWebController {
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
         try {
 
-            List<String> cardNumberList=baseUserControllerClient.findSchoolNumberBySchool(addFamilyDto.getSchoolCode()).getResult();
-            if(cardNumberList.size()>0){
+            BaseUser baseUser=baseUserControllerClient.queryBaseUserBySchoolCodeAndCardNumber(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
+            if(null!=baseUser){
                 return WrapMapper.error("当前学校已存在相同家长卡号");
             }
 

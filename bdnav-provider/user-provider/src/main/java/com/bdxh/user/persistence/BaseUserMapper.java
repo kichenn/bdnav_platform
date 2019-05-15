@@ -55,6 +55,6 @@ public interface BaseUserMapper extends Mapper<BaseUser> {
 	//修改学校名字
 	int updateSchoolName(@Param("schoolCode")String schoolCode, @Param("schoolName")String schoolName);
 
-	//根据学校Codec查询所有卡号
-	List<String> findSchoolNumberBySchool(@Param("schoolCode")String schoolCode);
+
+
 }
