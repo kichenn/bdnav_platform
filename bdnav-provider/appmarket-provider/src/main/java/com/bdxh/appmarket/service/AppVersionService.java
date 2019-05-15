@@ -23,4 +23,25 @@ public interface AppVersionService extends IService<AppVersion> {
 	 */
  	Boolean batchDelAppVersionInIds(List<Long> id);
 
+	/**
+	 * 添加app新的版本信息
+	 * @param appVersion
+	 * @return
+	 */
+ 	void addAppVersionInfo(AppVersion appVersion);
+
+	/**
+	 * 查看APP版本历史
+	 * @param appId
+	 * @return
+	 */
+ 	List<AppVersion> findAppVersion(Long appId);
+
+	/**
+	 * 查询最新的应用版本
+	 * @param appId
+	 * @return
+	 */
+	AppVersion findNewAppVersion(Long appId);
+
 }

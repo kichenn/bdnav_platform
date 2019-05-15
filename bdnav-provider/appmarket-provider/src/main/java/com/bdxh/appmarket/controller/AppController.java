@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
+import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.service.AppImageService;
 import com.bdxh.appmarket.service.AppService;
+import com.bdxh.appmarket.service.AppVersionService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -45,6 +47,9 @@ public class AppController {
     @Autowired
     private AppImageService appImageService;
 
+    @Autowired
+    private AppVersionService appVersionService;
+
     @ApiOperation("增加应用")
     @RequestMapping(value = "/addApp",method = RequestMethod.POST)
     public Object addApp(@Valid @RequestBody AddAppDto addAppDto, BindingResult bindingResult){
@@ -57,9 +62,10 @@ public class AppController {
             Integer isAppExist = appService.isAppExist(addAppDto.getAppPackage());
             Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
             App app = BeanMapUtils.map(addAppDto, App.class);
+            AppVersion appVersion =BeanMapUtils.map(addAppDto,AppVersion.class);
             List<AddAppImageDto> addImageDtos = addAppDto.getAddImageDtos();
             List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
-            appService.saveApp(app,appImages);
+            appService.saveApp(app,appImages,appVersion);
             return WrapMapper.ok();
         }catch (Exception e){
             e.printStackTrace();
@@ -123,10 +129,13 @@ public class AppController {
         try {
             Map<String,Object> param = new HashMap<>();
             App app = appService.selectByKey(id);
+            AppVersion appVersion=appVersionService.findNewAppVersion(id);
             param.put("appId",id);
             List<AppImage> appImageList = appImageService.getAppImageList(param);
             param.clear();
             param.put("app",app);
+            param.put("apkSize",appVersion.getApkSize());
+            param.put("apkName",appVersion.getApkName());
             param.put("images",appImageList);
             String jsonString = JSON.toJSONString(param);
             return WrapMapper.ok(jsonString);

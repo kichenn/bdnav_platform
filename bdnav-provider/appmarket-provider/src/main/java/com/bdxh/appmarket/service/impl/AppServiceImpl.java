@@ -2,12 +2,15 @@ package com.bdxh.appmarket.service.impl;
 
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
+import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.persistence.AppImageMapper;
 import com.bdxh.appmarket.persistence.AppMapper;
+import com.bdxh.appmarket.persistence.AppVersionMapper;
 import com.bdxh.appmarket.service.AppService;
 import com.bdxh.common.support.BaseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,7 +35,10 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     @Autowired
     private AppImageMapper appImageMapper;
 
-    public Integer isCategoryAppExist(Long categoryId){
+    @Autowired
+    private AppVersionMapper appVersionMapper;
+
+    public Integer isCategoryAppExist(Long categoryId) {
         Integer isCategoryAppExist = appMapper.isCategoryAppExist(categoryId);
         return isCategoryAppExist;
     }
@@ -45,10 +51,13 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void saveApp(App app, List<AppImage> appImages) {
+    public void saveApp(App app, List<AppImage> appImages,AppVersion appVersion) {
         appMapper.insertSelective(app);
-        if (appImages!=null&&appImages.size()>0){
-            for (int i=0;i<appImages.size();i++){
+        appVersion.setApkDesc(app.getAppDesc());
+        appVersion.setAppId(app.getId());
+        appVersionMapper.insertSelective(appVersion);
+        if (appImages != null && appImages.size() > 0) {
+            for (int i = 0; i < appImages.size(); i++) {
                 AppImage appImage = appImages.get(i);
                 appImage.setAppId(app.getId());
                 appImage.setOperator(app.getOperator());
@@ -63,15 +72,17 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     public void delApp(Long id) {
         appMapper.deleteByPrimaryKey(id);
         appImageMapper.deleteByAppId(id);
+        appVersionMapper.deleteByAppId(id);
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void updateApp(App app, List<AppImage> appImages) {
+        App OldAppInfo=appMapper.selectByPrimaryKey(app.getId());
         appMapper.updateByPrimaryKeySelective(app);
         appImageMapper.deleteByAppId(app.getId());
-        if (appImages!=null&&appImages.size()>0){
-            for (int i=0;i<appImages.size();i++){
+        if (appImages != null && appImages.size() > 0) {
+            for (int i = 0; i < appImages.size(); i++) {
                 AppImage appImage = appImages.get(i);
                 appImage.setAppId(app.getId());
                 appImage.setOperator(app.getOperator());
@@ -89,32 +100,32 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
 
     @Override
     public PageInfo<App> getAppListPage(Map<String, Object> param, int pageNum, int pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<App> apps = appMapper.getByCondition(param);
         PageInfo<App> appPageInfo = new PageInfo<>(apps);
         return appPageInfo;
     }
 
     @Override
-    public PageInfo<App> getApplicationOfCollection(Long schoolId,String appName,Byte platform,Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
-        List<App> apps = appMapper.getApplicationOfCollection(schoolId,appName,platform);
+    public PageInfo<App> getApplicationOfCollection(Long schoolId, String appName, Byte platform, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<App> apps = appMapper.getApplicationOfCollection(schoolId, appName, platform);
         return new PageInfo(apps);
     }
 
     @Override
     public PageInfo<App> findAppList(Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum,pageSize);
+        PageHelper.startPage(pageNum, pageSize);
         List<App> apps = appMapper.selectAll();
         return new PageInfo(apps);
     }
 
     @Override
     public List<App> getAppListByids(String ids) {
-        String [] appIds=ids.split(",");
-        List<App> appLists=new ArrayList<>();
-        for (String s:appIds){
-            App apps=appMapper.selectByPrimaryKey(Long.valueOf(s));
+        String[] appIds = ids.split(",");
+        List<App> appLists = new ArrayList<>();
+        for (String s : appIds) {
+            App apps = appMapper.selectByPrimaryKey(Long.valueOf(s));
             appLists.add(apps);
         }
         return appLists;

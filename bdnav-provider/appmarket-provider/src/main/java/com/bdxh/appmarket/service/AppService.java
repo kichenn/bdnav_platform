@@ -2,6 +2,7 @@ package com.bdxh.appmarket.service;
 
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
+import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.common.support.IService;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
@@ -35,7 +36,7 @@ public interface AppService extends IService<App> {
      * @param app
      * @param appImages
      */
-    void saveApp(App app, List<AppImage> appImages);
+    void saveApp(App app, List<AppImage> appImages, AppVersion appVersion);
 
     /**
      * 根据id删除应用
