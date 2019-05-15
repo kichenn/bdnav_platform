@@ -83,4 +83,8 @@ public interface BaseUserService extends IService<BaseUser> {
      * @param activationBaseUserDto
      */
     Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto);
+
+
+
+
 }

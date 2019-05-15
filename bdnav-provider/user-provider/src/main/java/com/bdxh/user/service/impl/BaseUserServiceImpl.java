@@ -217,7 +217,6 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         }
                     }
                     default: {
-
                         return false;
                     }
                 }

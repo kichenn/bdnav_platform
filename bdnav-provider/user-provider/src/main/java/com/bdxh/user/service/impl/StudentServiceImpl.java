@@ -12,18 +12,17 @@ import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.configration.rocketmq.properties.RocketMqConsumerProperties;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.entity.Student;
-import com.bdxh.user.persistence.BaseUserMapper;
-import com.bdxh.user.persistence.FamilyMapper;
-import com.bdxh.user.persistence.FamilyStudentMapper;
-import com.bdxh.user.persistence.StudentMapper;
+import com.bdxh.user.persistence.*;
 import com.bdxh.user.service.StudentService;
 import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import com.xiaoleilu.hutool.collection.CollUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -31,6 +30,7 @@ import org.apache.rocketmq.client.consumer.DefaultMQPushConsumer;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,6 +62,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     private StudentMapper studentMapper;
 
     @Autowired
+    private BaseUserUnqiueMapper baseUserUnqiueMapper;
+
+    @Autowired
     private DefaultMQProducer defaultMQProducer;
 
     /**
@@ -89,6 +92,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public void deleteStudentInfo(String schoolCode, String cardNumber) {
         Student student = studentMapper.findStudentInfo(schoolCode, cardNumber);
         BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode, cardNumber);
+        baseUserUnqiueMapper.deleteByPrimaryKey(baseUser.getId());
         studentMapper.removeStudentInfo(schoolCode, cardNumber);
         familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCode, cardNumber);
         baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
@@ -147,6 +151,20 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
         try {
+            //查出修改之前的基础用户信息
+            BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateStudentDto.getSchoolCode(),
+                    updateStudentDto.getCardNumber());
+            //如果改了手机号码就进行修改
+            if(!baseUser.getPhone().equals(updateStudentDto.getPhone())){
+                try {
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),baseUser.getPhone());
+                }catch (Exception e){
+                    String message=e.getMessage();
+                    if (e instanceof DuplicateKeyException) {
+                        Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
+                    }
+                }
+            }
             Student student = BeanMapUtils.map(updateStudentDto, Student.class);
             student.getClassNames().trim();
             Boolean stuResult = studentMapper.updateStudentInfo(student) > 0;
@@ -279,15 +297,23 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     @Transactional
     public void saveStudent(Student student) {
-        student.setId(snowflakeIdWorker.nextId());
-        student.setActivate(Byte.valueOf("1"));
-        student.getClassNames().trim();
-        Boolean stuResult = studentMapper.insert(student) > 0;
         BaseUser baseUser = BeanMapUtils.map(student, BaseUser.class);
         baseUser.setUserType(1);
         baseUser.setUserId(student.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
+        try {
+            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
+        }catch (Exception e){
+            String message=e.getMessage();
+            if (e instanceof DuplicateKeyException) {
+                Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
+            }
+        }
         Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
+        student.setId(snowflakeIdWorker.nextId());
+        student.setActivate(Byte.valueOf("1"));
+        student.getClassNames().trim();
+        Boolean stuResult = studentMapper.insert(student) > 0;
         try {
             if (stuResult && baseUserResult) {
                 //将新增的信息推送至rocketMQ
@@ -324,12 +350,14 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         try {
         List<Student> studentList = BeanMapUtils.mapList(addStudentDtoList, Student.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(studentList, BaseUser.class);
+            List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             studentList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setUserType(1);
             baseUserList.get(i).setUserId(studentList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
+        baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
         Boolean stuResult = studentMapper.batchSaveStudentInfo(studentList) > 0;
         Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;
             //将新增的信息推送至rocketMQ

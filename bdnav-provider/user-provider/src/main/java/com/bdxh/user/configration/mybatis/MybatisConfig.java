@@ -70,7 +70,7 @@ public class MybatisConfig {
 		shardingRuleConfig.getTableRuleConfigs().add(getTeacherDeptTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getBaseUserTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getFamilyFenceTableRuleConfiguration());
-
+		shardingRuleConfig.getTableRuleConfigs().add(getBaseUserNuqiueTableRuleConfiguration());
 		//级联绑定表，用于优化查询
 		shardingRuleConfig.getBindingTableGroups().add("t_family,t_family_student");
 		shardingRuleConfig.getBindingTableGroups().add("t_family,t_family_fence");
@@ -195,5 +195,13 @@ public class MybatisConfig {
 		return result;
 	}
 
+	//默认定向第一个库
+	@Bean
+	public TableRuleConfiguration getBaseUserNuqiueTableRuleConfiguration() {
+		TableRuleConfiguration result = new TableRuleConfiguration();
+		result.setLogicTable("t_base_user_unqiue");
+		result.setActualDataNodes("ds_${0}.t_base_user_unqiue");
+		return result;
+	}
 
 }

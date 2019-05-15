@@ -29,4 +29,11 @@ public interface AppVersionControllerClient {
     @ResponseBody
     @RequestMapping(value = "/appVersion/findAppVersion",method = RequestMethod.GET)
     Wrapper<List<AppVersion>> findAppVersion(@RequestParam("appId")Long appId);
+
+    /**
+     * 查看最新APP版本
+     */
+    @ResponseBody
+    @RequestMapping(value = "/appVersion/findNewAppVersion",method = RequestMethod.GET)
+    Wrapper<AppVersion> findNewAppVersion(@RequestParam("appId")Long appId);
 }

@@ -261,5 +261,4 @@
             set school_name=#{schoolName}
             where school_code=#{schoolCode}
 	</update>
-
 </mapper>

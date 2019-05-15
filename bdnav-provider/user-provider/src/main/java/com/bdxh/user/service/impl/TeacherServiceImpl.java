@@ -15,6 +15,7 @@ import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.persistence.BaseUserMapper;
+import com.bdxh.user.persistence.BaseUserUnqiueMapper;
 import com.bdxh.user.persistence.TeacherDeptMapper;
 import com.bdxh.user.persistence.TeacherMapper;
 import com.bdxh.user.service.TeacherService;
@@ -22,6 +23,7 @@ import com.bdxh.user.vo.TeacherDeptVo;
 import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import com.netflix.discovery.converters.Auto;
 import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,6 +62,9 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     private BaseUserMapper baseUserMapper;
 
     @Autowired
+    private BaseUserUnqiueMapper baseUserUnqiueMapper;
+
+    @Autowired
     private RocketMqProducerProperties rocketMqProducerProperties;
 
     @Autowired
@@ -77,8 +83,9 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     @Transactional
     public void deleteTeacherInfo(String schoolCode, String cardNumber) {
-        Teacher teacher = teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
         BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode, cardNumber);
+        baseUserUnqiueMapper.deleteByPrimaryKey(baseUser.getId());
+        Teacher teacher = teacherMapper.selectTeacherDetails(schoolCode, cardNumber);
         TeacherDept teacherDept = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(schoolCode, cardNumber);
         teacherMapper.deleteTeacher(schoolCode, cardNumber);
         teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber, 0);
@@ -134,15 +141,22 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     @Transactional
     public void saveTeacherDeptInfo(AddTeacherDto teacherDto) {
-
         Teacher teacher = BeanMapUtils.map(teacherDto, Teacher.class);
         teacher.setId(snowflakeIdWorker.nextId());
         teacher.setActivate(Byte.valueOf("1"));
-        Boolean teaResult = teacherMapper.insert(teacher) > 0;
         BaseUser baseUser = BeanMapUtils.map(teacher, BaseUser.class);
         baseUser.setUserType(2);
         baseUser.setUserId(teacher.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
+        try {
+            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
+        }catch (Exception e){
+            String message=e.getMessage();
+            if (e instanceof DuplicateKeyException) {
+                Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
+            }
+        }
+        Boolean teaResult = teacherMapper.insert(teacher) > 0;
         Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
         TeacherDept teacherDept = new TeacherDept();
         try {
@@ -217,6 +231,17 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             Teacher teacher = BeanMapUtils.map(updateTeacherDto, Teacher.class);
             Boolean teaResult = teacherMapper.updateTeacher(teacher) > 0;
             BaseUser updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, BaseUser.class);
+            //如果改了手机号码就进行修改
+            if(!updateBaseUserDto.getPhone().equals(updateTeacherDto.getPhone())){
+                try {
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(updateBaseUserDto.getId(),updateBaseUserDto.getPhone());
+                }catch (Exception e){
+                    String message=e.getMessage();
+                    if (e instanceof DuplicateKeyException) {
+                        Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
+                    }
+                }
+            }
             Boolean baseUserResult = baseUserMapper.updateBaseUserInfo(updateBaseUserDto) > 0;
             TeacherDept teacherDepts = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
             teacherDeptMapper.deleteTeacherDept(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber(), 0);

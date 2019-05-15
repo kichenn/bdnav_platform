@@ -71,11 +71,6 @@ public class FamilyVo implements Serializable {
     @ApiModelProperty("是否激活 1 未激活 2 激活")
     private Byte activate;
 
-
-    //学生数据集合
-    @ApiModelProperty("学生数据集合")
-    private List<FamilyStudentVo> students;
-
     //备注
     @ApiModelProperty("备注")
     private String remark;
@@ -83,4 +78,8 @@ public class FamilyVo implements Serializable {
     //创建时间
     @ApiModelProperty("创建时间")
     private String createDates;
+
+    //学生数据集合
+    @ApiModelProperty("学生数据集合")
+    private List<FamilyStudentVo> students;
 }
