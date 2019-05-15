@@ -60,7 +60,6 @@
         <module>bdnav-monitor</module>
         <module>bdnav-provider-entity</module>
         <module>bdnav-provider</module>
-        <module>bdnav-config-server</module>
         <module>bdnav-eureka-server</module>
         <module>bdnav-gateway</module>
         <module>bdnav-provider-feign</module>
