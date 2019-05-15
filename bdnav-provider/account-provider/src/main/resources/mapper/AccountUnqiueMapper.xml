@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.account.persistence.AccountUnqiueMapper">
+
+    <resultMap id="BaseResultMap" type="com.bdxh.account.entity.AccountUnqiue">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+	  id,phone,login_name,school_code,card_number
+	</sql>
+
+    <insert id="addAccountUnqiue" parameterType="com.bdxh.account.entity.AccountUnqiue">
+        INSERT INTO t_account_unqiue
+        (id,phone,login_name,school_code,card_number)
+        VALUES(#{accountUnqiue.id},#{accountUnqiue.phone},#{accountUnqiue.loginName},#{accountUnqiue.schoolCode},#{accountUnqiue.cardNumber});
+    </insert>
+
+    <update id="modifyAccountUnqiue" parameterType="com.bdxh.account.entity.AccountUnqiue">
+        UPDATE t_account_unqiue
+        <set>
+            <if test="accountUnqiue.phone!=null and accountUnqiue.phone!=''">
+                phone=#{accountUnqiue.phone},
+            </if>
+            <if test="accountUnqiue.loginName!=null and accountUnqiue.loginName!=''">
+                login_name=#{accountUnqiue.loginName},
+            </if>
+        </set>
+        WHERE school_code = #{accountUnqiue.schoolCode} AND card_number = #{accountUnqiue.cardNumber}
+    </update>
+
+    <delete id="delAccountUnqiue" parameterType="java.lang.String">
+        DELETE FROM t_account_unqiue
+        WHERE id=#{id}
+    </delete>
+
+    <select id="find" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_account_unqiue
+    </select>
+
+</mapper>

@@ -63,10 +63,10 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
     }
 
     @Override
-    public int updateLoginName(String schoolCode, String cardNumber, String loginName) {
+    public boolean updateLoginName(String schoolCode, String cardNumber, String loginName) {
         int result = accountMapper.updateLoginName(schoolCode, cardNumber, loginName);
         Preconditions.checkArgument(result == 1, "修改用户名失败");
-        return result;
+        return result > 0;
     }
 
     @Override

@@ -53,7 +53,7 @@ public interface AccountService extends IService<Account> {
      * @param cardNumber
      * @param loginName
      */
-    int updateLoginName(String schoolCode, String cardNumber, String loginName);
+    boolean updateLoginName(String schoolCode, String cardNumber, String loginName);
 
     /**
      * 更新账户信息

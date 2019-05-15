@@ -3,7 +3,9 @@ package com.bdxh.account.controller;
 import com.bdxh.account.configration.redis.RedisUtil;
 import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
+import com.bdxh.account.entity.AccountUnqiue;
 import com.bdxh.account.service.AccountService;
+import com.bdxh.account.service.AccountUnqiueService;
 import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
 import com.bdxh.common.helper.ali.sms.enums.SmsTempletEnum;
 import com.bdxh.common.helper.ali.sms.utils.SmsUtil;
@@ -19,6 +21,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -49,6 +52,9 @@ public class AccountController {
     private AccountService accountService;
 
     @Autowired
+    private AccountUnqiueService accountUnqiueService;
+
+    @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
     @Autowired
@@ -57,26 +63,65 @@ public class AccountController {
     @ApiOperation(value = "增加账户信息", response = Boolean.class)
     @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
     public Object addAccount(@Valid @RequestBody AddAccountDto addAccountDto) {
-        Account account = new Account();
-        account.setSchoolCode(addAccountDto.getSchoolCode());
-        account.setCardNumber(addAccountDto.getCardNumber());
-        Account accountData = accountService.selectOne(account);
-        Preconditions.checkArgument(accountData == null, "账户已存在");
-        BeanMapUtils.copy(addAccountDto, account);
-        //密码加密
-        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
-        account.setId(snowflakeIdWorker.nextId());
-        return WrapMapper.ok(accountService.save(account) > 0);
+        try {
+            long id = snowflakeIdWorker.nextId();
+            //组装全局字典表
+            AccountUnqiue accountUnqiue = new AccountUnqiue();
+            accountUnqiue.setId(id);
+            accountUnqiue.setLoginName(addAccountDto.getLoginName());
+            accountUnqiue.setPhone(addAccountDto.getUserPhone());
+            accountUnqiue.setCardNumber(addAccountDto.getCardNumber());
+            accountUnqiue.setSchoolCode(addAccountDto.getSchoolCode());
+            accountUnqiueService.addAccountUnqiue(accountUnqiue);
+            //增加账户信息
+            Account account = new Account();
+            BeanMapUtils.copy(addAccountDto, account);
+            //密码加密
+            account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+            account.setId(id);
+            return WrapMapper.ok(accountService.save(account) > 0);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            if (e instanceof DuplicateKeyException) {
+                if (e.getMessage().contains("unqiue_login_name")) {
+                    message = "该用户名已存在";
+                } else if (e.getMessage().contains("unqiue_phone")) {
+                    message = "该手机号已存在";
+                } else if (e.getMessage().contains("unqiue_schoolCode_cardNumber")) {
+                    message = "该账户已存在";
+                }
+            }
+            e.printStackTrace();
+            return WrapMapper.error(message);
+        }
     }
 
     @ApiOperation(value = "修改账户信息", response = Boolean.class)
     @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
     public Object updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto) {
-        Account account = new Account();
-        BeanUtils.copyProperties(updateAccountDto, account);
-        //密码加密
-        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
-        return WrapMapper.ok(accountService.updateAccount(account));
+        try {
+            //组装全局字典表
+            AccountUnqiue accountUnqiue = new AccountUnqiue();
+            accountUnqiue.setPhone(updateAccountDto.getUserPhone());
+            accountUnqiue.setCardNumber(updateAccountDto.getCardNumber());
+            accountUnqiue.setSchoolCode(updateAccountDto.getSchoolCode());
+            accountUnqiueService.modifyAccountUnqiue(accountUnqiue);
+            //修改账户信息
+            Account account = new Account();
+            BeanUtils.copyProperties(updateAccountDto, account);
+            //密码加密
+            account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+            return WrapMapper.ok(accountService.updateAccount(account));
+        } catch (Exception e) {
+            String message = e.getMessage();
+            if (e instanceof DuplicateKeyException) {
+                if (e.getMessage().contains("unqiue_login_name")) {
+                    message = "该手机号已存在";
+                }
+            }
+            e.printStackTrace();
+            return WrapMapper.error(message);
+        }
     }
 
     @ApiOperation(value = "修改账户登录名", response = Boolean.class)
@@ -84,8 +129,26 @@ public class AccountController {
     public Object updateLoginName(@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode,
                                   @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber,
                                   @RequestParam("loginName") @NotEmpty(message = "登录名不能为空") String loginName) {
-        accountService.updateLoginName(schoolCode, cardNumber, loginName);
-        return WrapMapper.ok();
+        try {
+            //组装全局字典表
+            AccountUnqiue accountUnqiue = new AccountUnqiue();
+            accountUnqiue.setLoginName(loginName);
+            accountUnqiue.setCardNumber(cardNumber);
+            accountUnqiue.setSchoolCode(schoolCode);
+            accountUnqiueService.modifyAccountUnqiue(accountUnqiue);
+            //修改登录名
+            boolean result = accountService.updateLoginName(schoolCode, cardNumber, loginName);
+            return WrapMapper.ok(result);
+        } catch (Exception e) {
+            String message = e.getMessage();
+            if (e instanceof DuplicateKeyException) {
+                if (e.getMessage().contains("unqiue_phone")) {
+                    message = "该手机号已存在";
+                }
+            }
+            e.printStackTrace();
+            return WrapMapper.error(message);
+        }
     }
 
     @ApiOperation(value = "根据登录名修改密码", response = Boolean.class)
@@ -197,4 +260,10 @@ public class AccountController {
 //        }
 //        return WrapMapper.ok();
 //    }
+
+    @ApiOperation(value = "temp", response = Boolean.class)
+    @RequestMapping(value = "/temp", method = RequestMethod.GET)
+    public Object temp() {
+        return WrapMapper.ok(accountUnqiueService.find());
+    }
 }
