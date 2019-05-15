@@ -1,4 +1,4 @@
-package com.bdxh.account.configration.common;
+package com.bdxh.pay.configration.common;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

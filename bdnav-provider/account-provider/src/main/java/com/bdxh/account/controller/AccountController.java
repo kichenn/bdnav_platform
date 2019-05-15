@@ -84,9 +84,9 @@ public class AccountController {
             String message = e.getMessage();
             if (e instanceof DuplicateKeyException) {
                 if (e.getMessage().contains("unqiue_login_name")) {
-                    message = "该用户名已存在";
+                    message = "该用户名已被人使用";
                 } else if (e.getMessage().contains("unqiue_phone")) {
-                    message = "该手机号已存在";
+                    message = "该手机号已有账户";
                 } else if (e.getMessage().contains("unqiue_schoolCode_cardNumber")) {
                     message = "该账户已存在";
                 }
@@ -116,7 +116,7 @@ public class AccountController {
             String message = e.getMessage();
             if (e instanceof DuplicateKeyException) {
                 if (e.getMessage().contains("unqiue_login_name")) {
-                    message = "该手机号已存在";
+                    message = "该用户名已被人使用";
                 }
             }
             e.printStackTrace();
@@ -143,7 +143,7 @@ public class AccountController {
             String message = e.getMessage();
             if (e instanceof DuplicateKeyException) {
                 if (e.getMessage().contains("unqiue_phone")) {
-                    message = "该手机号已存在";
+                    message = "该手机号已有账户";
                 }
             }
             e.printStackTrace();
