@@ -3,11 +3,14 @@ package com.bdxh.school.feign;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolMode;
+import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.fallback.SchoolStrategyControllerClientFallback;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Service
 @FeignClient(value = "school-provider-cluster", fallback = SchoolStrategyControllerClientFallback.class)
@@ -47,4 +50,21 @@ public interface SchoolStrategyControllerClient {
     @RequestMapping(value = "/schoolStrategy/getByPriority", method = RequestMethod.GET)
     @ResponseBody
     Wrapper getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority);
+
+
+    /**
+     * @Description: 查询全部策略
+     */
+    @RequestMapping(value = "/schoolStrategy/findAllStrategy", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<List<SchoolStrategy>> findAllStrategy();
+
+
+    /**
+     * @Description: 根据schoolcode查询全部策略列表
+     */
+    @RequestMapping(value = "/schoolStrategy/getStrategyList", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolStrategy>> getStrategyList(@RequestParam("SchoolCode") String SchoolCode);
+
 }

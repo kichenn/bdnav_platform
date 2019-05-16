@@ -43,4 +43,7 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 
 	//对比同一学校下策略优先级
 	SchoolStrategy getByPriority(String SchoolCode,Integer Priority);
+
+	//根据学校code查询策略列表
+	List<QuerySchoolStrategy> getStrategyList(String SchoolCode);
 }

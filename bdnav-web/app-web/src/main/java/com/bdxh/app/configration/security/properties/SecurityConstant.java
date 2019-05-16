@@ -60,5 +60,5 @@ public interface SecurityConstant {
     /**
      * token的session名称
      */
-    String TOKEN_SESSION = "securityContext";
+    String TOKEN_SESSION = "securityContext:";
 }
