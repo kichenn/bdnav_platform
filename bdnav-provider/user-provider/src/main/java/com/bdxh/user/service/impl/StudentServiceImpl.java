@@ -150,14 +150,14 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
-        try {
+
             //查出修改之前的基础用户信息
             BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateStudentDto.getSchoolCode(),
                     updateStudentDto.getCardNumber());
             //如果改了手机号码就进行修改
             if(!baseUser.getPhone().equals(updateStudentDto.getPhone())){
                 try {
-                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),baseUser.getPhone());
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),updateStudentDto.getPhone());
                 }catch (Exception e){
                     String message=e.getMessage();
                     if (e instanceof DuplicateKeyException) {
@@ -165,6 +165,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                     }
                 }
             }
+            try {
             Student student = BeanMapUtils.map(updateStudentDto, Student.class);
             student.getClassNames().trim();
             Boolean stuResult = studentMapper.updateStudentInfo(student) > 0;
@@ -350,13 +351,13 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         try {
         List<Student> studentList = BeanMapUtils.mapList(addStudentDtoList, Student.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(studentList, BaseUser.class);
-            List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             studentList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setUserType(1);
             baseUserList.get(i).setUserId(studentList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
+        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
         Boolean stuResult = studentMapper.batchSaveStudentInfo(studentList) > 0;
         Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;

@@ -226,7 +226,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateTeacherInfo(UpdateTeacherDto updateTeacherDto) {
-        try {
+
            BaseUser baseuser= baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
             BaseUser updateBaseUserDto = BeanMapUtils.map(updateTeacherDto, BaseUser.class);
             //如果改了手机号码就进行修改
@@ -240,6 +240,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                     }
                 }
             }
+        try {
             Teacher teacher = BeanMapUtils.map(updateTeacherDto, Teacher.class);
             Boolean teaResult = teacherMapper.updateTeacher(teacher) > 0;
             Boolean baseUserResult = baseUserMapper.updateBaseUserInfo(updateBaseUserDto) > 0;
@@ -348,6 +349,8 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             baseUserList.get(i).setUserId(teacherList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
+        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
+        baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
         Boolean teaResult = teacherMapper.batchSaveTeacherInfo(saveTeacherList) > 0;
         Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;
         try {

@@ -14,7 +14,7 @@
 	<insert id="batchSaveBaseUserPhone">
 		INSERT INTO t_base_user_unqiue (id, phone) VALUES
 		<foreach collection="list" index="index" separator="," item="baseUserUnqiueList">
-			(#{id},#{phone})
+			(#{baseUserUnqiueList.id},#{baseUserUnqiueList.phone})
 		</foreach>
 	</insert>
 

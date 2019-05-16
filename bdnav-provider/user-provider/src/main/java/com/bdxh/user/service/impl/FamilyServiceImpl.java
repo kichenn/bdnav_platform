@@ -124,14 +124,14 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateFamily(UpdateFamilyDto updateFamilyDto) {
-        try {
+
             //查出修改之前的基础用户信息
             BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateFamilyDto.getSchoolCode(),
                     updateFamilyDto.getCardNumber());
             //如果改了手机号码就进行修改
             if(!baseUser.getPhone().equals(updateFamilyDto.getPhone())){
                 try {
-                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),baseUser.getPhone());
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),updateFamilyDto.getPhone());
                 }catch (Exception e){
                     String message=e.getMessage();
                     if (e instanceof DuplicateKeyException) {
@@ -139,6 +139,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
                     }
                 }
             }
+        try {
             //修改家长信息
             Family family = BeanMapUtils.map(updateFamilyDto, Family.class);
             familyMapper.updateFamilyInfo(family);
@@ -207,13 +208,13 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     public void batchSaveFamilyInfo(List<AddFamilyDto> addFamilyDtoList) {
         List<Family> familyList = BeanMapUtils.mapList(addFamilyDtoList, Family.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(familyList, BaseUser.class);
-        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             familyList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setUserType(3);
             baseUserList.get(i).setUserId(familyList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
+        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
         familyMapper.batchSaveFamilyInfo(familyList);
         baseUserMapper.batchSaveBaseUserInfo(baseUserList);
