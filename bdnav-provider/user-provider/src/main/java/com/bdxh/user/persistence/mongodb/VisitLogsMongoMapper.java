@@ -1,10 +1,6 @@
-package com.bdxh.user.persistence.mongoPersistence;
+package com.bdxh.user.persistence.mongodb;
 
-import com.bdxh.common.helper.excel.utils.DateUtils;
-import com.bdxh.common.helper.tree.utils.LongUtils;
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.user.dto.AddVisitLogsDto;
-import com.bdxh.user.dto.UpdateVisitLogsDto;
 import com.bdxh.user.dto.VisitLogsQueryDto;
 import com.bdxh.user.mongo.VisitLogsMongo;
 import com.bdxh.user.vo.VisitLogsVo;
@@ -18,10 +14,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.SimpleTimeZone;
 import java.util.regex.Pattern;
 
 /**

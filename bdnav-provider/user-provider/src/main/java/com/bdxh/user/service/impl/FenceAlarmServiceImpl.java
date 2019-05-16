@@ -1,28 +1,20 @@
 package com.bdxh.user.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.AddFenceAlarmDto;
 import com.bdxh.user.dto.FenceAlarmQueryDto;
 import com.bdxh.user.dto.UpdateFenceAlarmDto;
 import com.bdxh.user.entity.FenceAlarm;
 import com.bdxh.user.mongo.FenceAlarmMongo;
-import com.bdxh.user.persistence.FenceAlarmMapper;
-import com.bdxh.user.persistence.mongoPersistence.FenceAlarmMongoMapper;
+import com.bdxh.user.persistence.mongodb.FenceAlarmMongoMapper;
 import com.bdxh.user.service.FenceAlarmService;
 import com.bdxh.user.vo.FenceAlarmVo;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.bdxh.common.support.BaseService;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Description: 业务层实现

@@ -1,14 +1,12 @@
 package com.bdxh.user.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateVisitLogsDto;
 import com.bdxh.user.dto.VisitLogsQueryDto;
 import com.bdxh.user.entity.VisitLogs;
-import com.bdxh.user.mongo.FenceAlarmMongo;
 import com.bdxh.user.mongo.VisitLogsMongo;
-import com.bdxh.user.persistence.mongoPersistence.VisitLogsMongoMapper;
+import com.bdxh.user.persistence.mongodb.VisitLogsMongoMapper;
 import com.bdxh.user.service.VisitLogsService;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;

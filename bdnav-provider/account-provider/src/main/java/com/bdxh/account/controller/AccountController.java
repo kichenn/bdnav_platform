@@ -62,7 +62,7 @@ public class AccountController {
 
     @ApiOperation(value = "增加账户信息", response = Boolean.class)
     @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
-    public Object addAccount(@Valid @RequestBody AddAccountDto addAccountDto) {
+    public Object addAccount(@Validated @RequestBody AddAccountDto addAccountDto) {
         try {
             long id = snowflakeIdWorker.nextId();
             //组装全局字典表
@@ -98,7 +98,7 @@ public class AccountController {
 
     @ApiOperation(value = "修改账户信息", response = Boolean.class)
     @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
-    public Object updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto) {
+    public Object updateAccount(@Validated @RequestBody UpdateAccountDto updateAccountDto) {
         try {
             //组装全局字典表
             AccountUnqiue accountUnqiue = new AccountUnqiue();
@@ -153,7 +153,7 @@ public class AccountController {
 
     @ApiOperation(value = "根据登录名修改密码", response = Boolean.class)
     @RequestMapping(value = "/modifyPwd", method = RequestMethod.POST)
-    public Object modifyPwd(@RequestBody @Validated ModifyAccountPwdDto modifyAccountPwdDto) {
+    public Object modifyPwd(@Validated @RequestBody ModifyAccountPwdDto modifyAccountPwdDto) {
         //登录名查询账户信息
         Account account = accountService.findAccountByLoginNameOrPhone("", modifyAccountPwdDto.getLoginName());
         try {
@@ -179,7 +179,7 @@ public class AccountController {
 
     @ApiOperation(value = "忘记密码(根据手机号，验证码找回密码)", response = Boolean.class)
     @RequestMapping(value = "/forgetPwd", method = RequestMethod.POST)
-    public Object forgetPwd(@RequestBody @Validated ForgetPwd forgetPwd) {
+    public Object forgetPwd(@Validated @RequestBody ForgetPwd forgetPwd) {
         try {
             //效验参数
             String captchaCode = redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX + forgetPwd.getPhone());
@@ -209,7 +209,7 @@ public class AccountController {
 
     @ApiOperation(value = "查询账户信息列表", response = Account.class)
     @RequestMapping(value = "/queryAccountList", method = RequestMethod.POST)
-    public Object queryAccountList(@Valid @RequestBody AccountQueryDto accountQueryDto) {
+    public Object queryAccountList(@Validated @RequestBody AccountQueryDto accountQueryDto) {
         Account account = new Account();
         BeanUtils.copyProperties(accountQueryDto, account);
         List<Account> accounts = accountService.queryAccountList(account);
@@ -218,7 +218,7 @@ public class AccountController {
 
     @ApiOperation(value = "分页查询账户信息列表", response = Account.class)
     @RequestMapping(value = "/queryAccountListPage", method = RequestMethod.POST)
-    public Object queryCategoryListPage(@Valid @RequestBody AccountQueryDto accountQueryDto) {
+    public Object queryCategoryListPage(@Validated @RequestBody AccountQueryDto accountQueryDto) {
         PageInfo<Account> accounts = accountService.queryAccountListPage(accountQueryDto);
         return WrapMapper.ok(accounts);
     }

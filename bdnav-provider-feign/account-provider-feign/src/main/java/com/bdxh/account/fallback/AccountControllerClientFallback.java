@@ -61,8 +61,7 @@ public class AccountControllerClientFallback implements AccountControllerClient 
     }
 
     @Override
-    public Wrapper<Account> findAccountByLoginNameOrPhone(@RequestParam(value = "phone", required = false) String phone,
-                                                          @RequestParam(value = "loginName", required = false) String loginName) {
+    public Wrapper<Account> findAccountByLoginNameOrPhone(String phone, String loginName) {
         return WrapMapper.error();
     }
 

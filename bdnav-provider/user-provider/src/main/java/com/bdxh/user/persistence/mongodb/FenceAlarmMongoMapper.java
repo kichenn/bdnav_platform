@@ -1,14 +1,11 @@
-package com.bdxh.user.persistence.mongoPersistence;
+package com.bdxh.user.persistence.mongodb;
 
 
 
-import com.bdxh.common.helper.excel.utils.DateUtils;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.mongo.FenceAlarmMongo;
-import com.bdxh.user.mongo.VisitLogsMongo;
 import com.bdxh.user.vo.FenceAlarmVo;
-import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +16,6 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 

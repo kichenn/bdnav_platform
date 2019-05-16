@@ -82,7 +82,7 @@ public class SecurityController {
             //此处将认证信息存入session
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(authenticate);
-            request.getSession().setAttribute(SecurityConstant.TOKEN_SESSION, securityContext);
+            request.getSession().setAttribute(SecurityConstant.TOKEN_SESSION + account.getId(), securityContext);
 
             Wrapper wrapper = WrapMapper.ok(token);
             String str = JSON.toJSONString(wrapper);

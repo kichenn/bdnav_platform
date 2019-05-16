@@ -61,6 +61,15 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
 //                String username = claims.getSubject();
                 String accountStr = (String) claims.get(SecurityConstant.ACCOUNT);
                 Account account = JSON.parseObject(accountStr, Account.class);
+                //判断token状态
+                //从安全框架中的上下文取(妈了个鸡，一直取不到【getAuthentication 一直为null】)
+//                SecurityContext securityContext = SecurityContextHolder.getContext();
+                SecurityContext securityContext = (SecurityContext) httpServletRequest.getSession().getAttribute(SecurityConstant.TOKEN_SESSION + account.getId());
+                if (securityContext == null) {
+                    //该token已注销，不允许访问
+                    throw new LogoutException();
+                }
+                //判断token所在设备
                 String redisToken = redisUtil.get(SecurityConstant.TOKEN_KEY + account.getId());
                 if (StringUtils.isNotEmpty(redisToken)) {
                     //只允许一处设备登录
@@ -68,13 +77,6 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                         //重复登录
                         throw new MutiLoginException();
                     }
-                }
-                //从安全框架中的上下文取(妈了个鸡，一直取不到【getAuthentication 一直为null】)
-//                SecurityContext securityContext = SecurityContextHolder.getContext();
-                SecurityContext securityContext = (SecurityContext) httpServletRequest.getSession().getAttribute(SecurityConstant.TOKEN_SESSION);
-                if (securityContext == null) {
-                    //该token已注销，不允许访问
-                    throw new LogoutException();
                 }
                 //获取认证信息
                 Authentication authentication = securityContext.getAuthentication();
