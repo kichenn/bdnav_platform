@@ -346,7 +346,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         for (int i = 0; i < baseUserList.size(); i++) {
             saveTeacherList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setUserType(2);
-            baseUserList.get(i).setUserId(teacherList.get(i).getId());
+            baseUserList.get(i).setUserId(saveTeacherList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
         List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);

@@ -67,6 +67,8 @@ public class AppControllerClientFallback implements AppControllerClient {
         return WrapMapper.error();
     }
 
-
-
+    @Override
+    public Wrapper<List<App>> familyFindAppInfo(String schoolCode) {
+        return WrapMapper.error();
+    }
 }

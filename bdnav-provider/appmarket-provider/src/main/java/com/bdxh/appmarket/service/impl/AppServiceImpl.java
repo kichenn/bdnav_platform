@@ -136,5 +136,8 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
         return appMapper.selectByPrimaryKey(id);
     }
 
-
+    @Override
+    public List<App> familyFindAppInfo(String schoolCode) {
+        return appMapper.familyFindAppInfo(schoolCode);
+    }
 }

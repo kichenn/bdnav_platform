@@ -299,8 +299,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional(rollbackFor = Exception.class)
     public void saveStudent(Student student) {
         BaseUser baseUser = BeanMapUtils.map(student, BaseUser.class);
-        baseUser.setUserType(1);
-        baseUser.setUserId(student.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
             baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
@@ -312,6 +310,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         }
         Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
         student.setId(snowflakeIdWorker.nextId());
+        baseUser.setUserType(1);
+        baseUser.setUserId(student.getId());
         student.setActivate(Byte.valueOf("1"));
         student.getClassNames().trim();
         Boolean stuResult = studentMapper.insert(student) > 0;

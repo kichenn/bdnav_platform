@@ -25,6 +25,14 @@ public class FamilyStudentVo implements Serializable {
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
+    //学生头像
+    @ApiModelProperty("学生头像")
+    private String image;
+
+    //学生头像名称
+    @ApiModelProperty("学生头像名称")
+    private String imageName;
+
     @ApiModelProperty("学生姓名")
     private String sName;
 

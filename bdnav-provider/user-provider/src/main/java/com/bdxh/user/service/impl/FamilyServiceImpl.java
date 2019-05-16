@@ -186,8 +186,6 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     @Transactional(rollbackFor = Exception.class)
     public void saveFamily(Family family) {
         BaseUser baseUser = BeanMapUtils.map(family, BaseUser.class);
-        baseUser.setUserType(3);
-        baseUser.setUserId(family.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
             baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
@@ -199,6 +197,8 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
         }
         baseUserMapper.insert(baseUser);
         family.setId(snowflakeIdWorker.nextId());
+        baseUser.setUserType(3);
+        baseUser.setUserId(family.getId());
         family.setActivate(Byte.valueOf("1"));
         familyMapper.insert(family);
     }
