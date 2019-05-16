@@ -89,9 +89,9 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
                 jsonObject.put("tableName", "t_school_dept");
                 jsonObject.put("data", schoolDepts);
                 JSONArray data=jsonObject.getJSONArray("data");
-               // Map<String,Object> map=new HashMap<>();
-             //   map.put("delFlag",0);
-               // data.add(data.size()-1,map);
+                Map<String,Object> map=new HashMap<>();
+                map.put("delFlag",0);
+                data.add(data.size()-1,map);
                 jsonObject.put("data", data);
                 Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 try {
@@ -162,9 +162,9 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             jsonObject1.put("tableName", "t_school_dept");
             jsonObject1.put("data", schoolDepts);
             JSONArray data1=jsonObject1.getJSONArray("data");
-          //  Map<String,Object> map=new HashMap<>();
-            //map.put("delFlag",0);
-           // data1.add(data1.size()-1,map);
+            Map<String,Object> map=new HashMap<>();
+            map.put("delFlag",0);
+            data1.add(data1.size()-1,map);
             jsonObject1.put("data", data1);
             Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject1.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
