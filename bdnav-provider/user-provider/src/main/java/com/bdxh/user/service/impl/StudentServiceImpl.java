@@ -223,16 +223,18 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             }
             //将修改的信息推送至rocketMQ
             if (stuResult && baseUserResult) {
+                Student student1=studentMapper.findStudentInfo(student.getSchoolCode(),student.getCardNumber());
+                BaseUser baseUser1=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(student.getSchoolCode(),student.getCardNumber());
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
-                mesData.put("data", student);
+                mesData.put("data", student1);
                 JSONObject data1=mesData.getJSONObject("data");
                 data1.put("delFlag",0);
                 mesData.put("data", data1);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
-                mesData.put("data", updateBaseUserDto);
+                mesData.put("data", baseUser1);
                 JSONObject data=mesData.getJSONObject("data");
                 data.put("delFlag",0);
                 mesData.put("data", data);
@@ -299,6 +301,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional(rollbackFor = Exception.class)
     public void saveStudent(Student student) {
         BaseUser baseUser = BeanMapUtils.map(student, BaseUser.class);
+        baseUser.setCreateDate(new Date());
+        baseUser.setUpdateDate(new Date());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
             baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
@@ -308,17 +312,19 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
             }
         }
-        Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
         student.setId(snowflakeIdWorker.nextId());
         baseUser.setUserType(1);
         baseUser.setUserId(student.getId());
         student.setActivate(Byte.valueOf("1"));
         student.getClassNames().trim();
+        student.setCreateDate(new Date());
+        student.setUpdateDate(new Date());
         Boolean stuResult = studentMapper.insert(student) > 0;
+        Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
         try {
             if (stuResult && baseUserResult) {
                 //将新增的信息推送至rocketMQ
-                JSONObject mesData = new JSONObject();
+               JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_student");
                 mesData.put("data", student);
                 JSONObject data=mesData.getJSONObject("data");
@@ -353,8 +359,12 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         List<BaseUser> baseUserList = BeanMapUtils.mapList(studentList, BaseUser.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             studentList.get(i).setId(snowflakeIdWorker.nextId());
+            studentList.get(i).setCreateDate(new Date());
+            studentList.get(i).setUpdateDate(new Date());
             baseUserList.get(i).setUserType(1);
             baseUserList.get(i).setUserId(studentList.get(i).getId());
+            baseUserList.get(i).setCreateDate(new Date());
+            baseUserList.get(i).setUpdateDate(new Date());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
         List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
@@ -368,7 +378,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 mesData.put("data", studentList);
                 JSONArray data=mesData.getJSONArray("data");
                 Map<String,Object> map=new HashMap<>();
-                map.put("delFlag",1);
+                map.put("delFlag",0);
                 data.add(data.size()-1,map);
                 mesData.put("data", data);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
@@ -377,8 +387,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 mesData.put("data", baseUserList);
                 JSONArray data1=mesData.getJSONArray("data");
                 Map<String,Object> map1=new HashMap<>();
-                map1.put("delFlag",1);
-                data.add(data.size()-1,map1);
+                map1.put("delFlag",0);
+                data1.add(data1.size()-1,map1);
                 mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
@@ -417,13 +427,17 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public void studentBatchUpdate(List<Student> studentList) {
         if (CollUtil.isNotEmpty(studentList)) {
             for (Student student : studentList) {
+                student.setUpdateDate(new Date());
                 studentMapper.updateStudentInfo(student);
             }
             JSONObject mesData = new JSONObject();
             mesData.put("tableName", "t_student");
             mesData.put("data", studentList);
-            JSONObject data=mesData.getJSONObject("data");
-            data.put("delFlag",0);
+            JSONArray data=mesData.getJSONArray("data");
+            Map<String,Object> map=new HashMap<>();
+            map.put("delFlag",0);
+            data.add(data.size()-1,map);
+            mesData.put("delFlag",0);
             mesData.put("data", data);
             Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             try {

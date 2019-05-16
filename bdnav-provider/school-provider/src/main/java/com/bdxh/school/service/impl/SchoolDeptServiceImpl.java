@@ -10,6 +10,7 @@ import com.bdxh.school.dto.SchoolDeptDto;
 import com.bdxh.school.dto.SchoolDeptModifyDto;
 import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.persistence.SchoolDeptMapper;
+import com.bdxh.school.persistence.SchoolMapper;
 import com.bdxh.school.service.SchoolDeptService;
 import com.bdxh.school.vo.SchoolDeptTreeVo;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +41,9 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     private SchoolDeptMapper schoolDeptMapper;
 
     @Autowired
+    private SchoolMapper schoolMapper;
+
+    @Autowired
     private TransactionMQProducer transactionMQProducer;
 
     //增加学校组织
@@ -67,6 +71,9 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
                 jsonObject.put("tableName", "t_school_dept");
                 JSONObject data=jsonObject.getJSONObject("data");
                 data.put("delFlag",0);
+                if(schoolDept.getParentId().equals(Long.parseLong("-1"))){
+                    data.put("parent",schoolMapper.findSchoolBySchoolCode(schoolDept.getSchoolCode()));
+                }
                 jsonObject.put("data", data);
                 Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 try {
@@ -115,6 +122,9 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             JSONObject data=jsonObject.getJSONObject("data");
             data.put("delFlag",0);
+            if(schoolDept.getParentId().equals(Long.parseLong("-1"))){
+                data.put("parent",schoolMapper.findSchoolBySchoolCode(schoolDept.getSchoolCode()));
+            }
             jsonObject.put("data", data);
             jsonObject.put("tableName", "t_school_dept");
             Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));

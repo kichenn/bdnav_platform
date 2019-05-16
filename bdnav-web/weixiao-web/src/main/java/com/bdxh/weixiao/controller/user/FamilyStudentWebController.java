@@ -108,19 +108,19 @@ public class FamilyStudentWebController {
     /**
      * 微校平台----家长查询孩子列表
      *
-     * @param familyStudentQueryDto
+     * @param schoolCode
      * @return
      */
     @ApiOperation(value = "微校平台----家长查询孩子列表")
     @RequestMapping(value = "/familyFindStudentList", method = RequestMethod.POST)
-    public Object familyFindStudentList(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
+    public Object familyFindStudentList(@RequestParam(name = "schoolCode", required = false)String schoolCode) {
         try {
-            familyStudentQueryDto.setCardNumber("20190516002");
-            familyStudentQueryDto.setSchoolCode("20110329");
+            schoolCode="20110329";
+            String cardNumber="20190516002";
             JSONObject jsonObject=new JSONObject();
-            FamilyVo family=familyControllerClient.queryFamilyInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getCardNumber()).getResult();
+            FamilyVo family=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
             for (FamilyStudentVo s : family.getStudents()) {
-                StudentVo student=studentControllerClient.queryStudentInfo( familyStudentQueryDto.getSchoolCode(),s.getSCardNumber()).getResult();
+                StudentVo student=studentControllerClient.queryStudentInfo(schoolCode,s.getSCardNumber()).getResult();
                 s.setImage(student.getImage());
                 s.setImageName(student.getImageName());
             }
@@ -134,14 +134,16 @@ public class FamilyStudentWebController {
     /**
      * 微校平台----查询家长与孩子关系详细
      *
-     * @param familyStudentQueryDto
+     * @param schoolCode
+     * @param cardNumber
      * @return
      */
     @ApiOperation(value = "微校平台----查询家长与孩子关系详细")
     @RequestMapping(value = "/queryFamilyStudentDetails", method = RequestMethod.POST)
-    public Object queryFamilyStudentDetails(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
+    public Object queryFamilyStudentDetails(@RequestParam(name = "schoolCode", required = false)String schoolCode,
+                                            @RequestParam(name = "cardNumber", required = false)String cardNumber) {
         try {
-            StudentVo studentVo = studentControllerClient.queryStudentInfo(familyStudentQueryDto.getSchoolCode(), familyStudentQueryDto.getStudentNumber()).getResult();
+            StudentVo studentVo = studentControllerClient.queryStudentInfo(schoolCode, cardNumber).getResult();
             return WrapMapper.ok(studentVo);
         } catch (Exception e) {
             e.printStackTrace();

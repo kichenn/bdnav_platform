@@ -11,10 +11,7 @@ import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.*;
-import com.bdxh.user.entity.BaseUser;
-import com.bdxh.user.entity.BaseUserUnqiue;
-import com.bdxh.user.entity.Teacher;
-import com.bdxh.user.entity.TeacherDept;
+import com.bdxh.user.entity.*;
 import com.bdxh.user.persistence.BaseUserMapper;
 import com.bdxh.user.persistence.BaseUserUnqiueMapper;
 import com.bdxh.user.persistence.TeacherDeptMapper;
@@ -175,9 +172,10 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                             Boolean terDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
                             if (terDeptResult) {
                                 try {
+                                    TeacherDept teacherDept1=teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(teacher.getSchoolCode(),teacher.getCardNumber());
                                     JSONObject mesData = new JSONObject();
                                     mesData.put("tableName", "t_teacher_dept");
-                                    mesData.put("data", teacherDept);
+                                    mesData.put("data", teacherDept1);
                                     JSONObject data=mesData.getJSONObject("data");
                                     data.put("delFlag",0);
                                     mesData.put("data", data);
@@ -192,16 +190,18 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             }
             //将修改的信息推送至rocketMQ
             if (teaResult && baseUserResult) {
+                Teacher teacher1=teacherMapper.selectTeacherDetails(teacher.getSchoolCode(),teacher.getCardNumber());
+                BaseUser baseUser1=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(teacher.getSchoolCode(),teacher.getCardNumber());
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_teacher");
-                mesData.put("data", teacher);
+                mesData.put("data", teacher1);
                 JSONObject data=mesData.getJSONObject("data");
                 data.put("delFlag",0);
                 mesData.put("data", data);
                 Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(teacherMsg);
                 mesData.put("tableName", "t_base_user");
-                mesData.put("data", baseUser);
+                mesData.put("data", baseUser1);
                 JSONObject data1=mesData.getJSONObject("data");
                 data1.put("delFlag",0);
                 mesData.put("data", data1);
@@ -269,8 +269,9 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 //推送消息至MQ
                 if (teaDeptResult) {
                     JSONObject mesData = new JSONObject();
+                    TeacherDept teacherDept1=teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
                     mesData.put("tableName", "t_teacher_dept");
-                    mesData.put("data", teacherDept);
+                    mesData.put("data", teacherDept1);
                     JSONObject data=mesData.getJSONObject("data");
                     data.put("del_flag","0");
                     mesData.put("data", data);
@@ -315,16 +316,18 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             }
             //将修改的信息推送至rocketMQ
             if (teaResult && baseUserResult) {
+                Teacher teacher1=teacherMapper.selectTeacherDetails(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
+                BaseUser baseUser1=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_teacher");
-                mesData.put("data", teacher);
+                mesData.put("data", teacher1);
                 JSONObject data=mesData.getJSONObject("data");
                 data.put("delFlag",0);
                 mesData.put("data", data);
                 Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
                 defaultMQProducer.send(teacherMsg);
                 mesData.put("tableName", "t_base_user");
-                mesData.put("data", updateBaseUserDto);
+                mesData.put("data", baseUser1);
                 JSONObject data1=mesData.getJSONObject("data");
                 data1.put("delFlag",0);
                 mesData.put("data", data1);
@@ -361,7 +364,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 mesData.put("data", saveTeacherList);
                 JSONArray data=mesData.getJSONArray("data");
                 Map<String,Object> map=new HashMap<>();
-                map.put("delFlag",1);
+                map.put("delFlag",0);
                 data.add(data.size()-1,map);
                 mesData.put("data", data);
                 Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
@@ -370,8 +373,8 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 mesData.put("data", baseUserList);
                 JSONArray data1=mesData.getJSONArray("data");
                 Map<String,Object> map1=new HashMap<>();
-                map1.put("delFlag",1);
-                data.add(data.size()-1,map1);
+                map1.put("delFlag",0);
+                data1.add(data1.size()-1,map1);
                 mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);

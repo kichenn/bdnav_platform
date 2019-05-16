@@ -1,5 +1,6 @@
 package com.bdxh.user.service.impl;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.support.BaseService;
@@ -17,7 +18,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.json.JsonObject;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 老师部门关联表service实现
@@ -64,8 +67,10 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
                 JSONObject mesData = new JSONObject();
                 mesData.put("tableName", "t_teacher_dept");
                 mesData.put("data", teacherDepts);
-                JSONObject data = mesData.getJSONObject("data");
-                data.put("delFlag",0);
+               JSONArray data=mesData.getJSONArray("data");
+                Map<String,Object> map1=new HashMap<>();
+                map1.put("delFlag",0);
+                data.add(data.size()-1,map1);
                 mesData.put("data", data);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 try {
