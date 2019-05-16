@@ -1,10 +1,12 @@
 package com.bdxh.app.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.bdxh.account.dto.AddAccountLogDto;
 import com.bdxh.account.dto.ForgetPwd;
 import com.bdxh.account.dto.ModifyAccountPwdDto;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.feign.AccountControllerClient;
+import com.bdxh.account.feign.AccountLogControllerClient;
 import com.bdxh.app.configration.redis.RedisUtil;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
@@ -52,6 +54,9 @@ public class SecurityController {
     private AccountControllerClient accountControllerClient;
 
     @Autowired
+    private AccountLogControllerClient accountLogControllerClient;
+
+    @Autowired
     private RedisUtil redisUtil;
 
 
@@ -83,6 +88,13 @@ public class SecurityController {
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(authenticate);
             request.getSession().setAttribute(SecurityConstant.TOKEN_SESSION + account.getId(), securityContext);
+
+            //写入登录日志
+            AddAccountLogDto addAccountLogDto=new AddAccountLogDto();
+//            addAccountLogDto.setSchoolId();
+//            addAccountLogDto.setSchoolCode();
+//            addAccountLogDto.setSchoolName();
+            accountLogControllerClient.addAccountLog(addAccountLogDto);
 
             Wrapper wrapper = WrapMapper.ok(token);
             String str = JSON.toJSONString(wrapper);

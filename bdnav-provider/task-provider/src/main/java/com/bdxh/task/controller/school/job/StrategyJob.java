@@ -23,10 +23,11 @@ public class StrategyJob implements Job {
      */
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        String result = jobExecutionContext.getMergedJobDataMap().getString("site");
         //打印当前的执行时间
         Date date = new Date();
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println("现在的时间是：" + sf.format(date));
+        System.out.println("result:" + result + "现在的时间是：" + sf.format(date));
         //具体的业务逻辑
         //StrategyToPush.pushStrategy(String schoolCode,Long );
         //更改策略状态
