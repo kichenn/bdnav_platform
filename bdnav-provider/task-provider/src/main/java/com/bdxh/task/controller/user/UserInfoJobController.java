@@ -37,7 +37,7 @@ import java.util.List;
 @Slf4j
 @Configurable
 @EnableScheduling
-public class UserInfoJob {
+public class UserInfoJobController {
     @Autowired
     private StudentControllerClient studentControllerClient;
     @Autowired
