@@ -87,9 +87,11 @@
     </where>
   </select>
 
-
-
-
-
-
+  <!-- 家长查询应用市场列表-->
+  <select id="familyFindAppInfo" resultMap="BaseResultMap">
+    select <include refid="BaseColumns"/> from t_app
+    <where>
+    school_code=#{schoolCode} or ISNULL(school_code)
+    </where>
+  </select>
 </mapper>

@@ -92,7 +92,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
         try {
             //更具学校Code和cardNumber查出我们本地用户的基本信息
@@ -227,4 +227,8 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
         return false;
     }
 
+    @Override
+    public List<String> findSchoolNumberBySchool(String schoolCode) {
+        return baseUserMapper.findSchoolNumberBySchool(schoolCode);
+    }
 }

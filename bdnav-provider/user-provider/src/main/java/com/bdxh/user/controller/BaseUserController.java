@@ -121,5 +121,16 @@ public class BaseUserController {
             return WrapMapper.error(e.getMessage());
         }
     }
-
+    /**
+     * 判断卡号是否重复
+     */
+    @RequestMapping(value ="/findSchoolNumberBySchool",method = RequestMethod.POST)
+    public Object  findSchoolNumberBySchool(@RequestParam("schoolCode") String schoolCode){
+        try {
+            return WrapMapper.ok(baseUserService.findSchoolNumberBySchool(schoolCode)) ;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 }

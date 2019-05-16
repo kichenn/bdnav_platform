@@ -88,7 +88,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param cardNumber
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteStudentInfo(String schoolCode, String cardNumber) {
         Student student = studentMapper.findStudentInfo(schoolCode, cardNumber);
         BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(schoolCode, cardNumber);
@@ -124,7 +124,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param cardNumber
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBatchesStudentInfo(String schoolCode, String cardNumber) {
         String[] schoolCodes = schoolCode.split(",");
         String[] cardNumbers = cardNumber.split(",");
@@ -148,16 +148,16 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param updateStudentDto
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
-        try {
+
             //查出修改之前的基础用户信息
             BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateStudentDto.getSchoolCode(),
                     updateStudentDto.getCardNumber());
             //如果改了手机号码就进行修改
             if(!baseUser.getPhone().equals(updateStudentDto.getPhone())){
                 try {
-                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),baseUser.getPhone());
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),updateStudentDto.getPhone());
                 }catch (Exception e){
                     String message=e.getMessage();
                     if (e instanceof DuplicateKeyException) {
@@ -165,6 +165,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                     }
                 }
             }
+            try {
             Student student = BeanMapUtils.map(updateStudentDto, Student.class);
             student.getClassNames().trim();
             Boolean stuResult = studentMapper.updateStudentInfo(student) > 0;
@@ -295,11 +296,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param student
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveStudent(Student student) {
         BaseUser baseUser = BeanMapUtils.map(student, BaseUser.class);
-        baseUser.setUserType(1);
-        baseUser.setUserId(student.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
             baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
@@ -311,6 +310,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         }
         Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
         student.setId(snowflakeIdWorker.nextId());
+        baseUser.setUserType(1);
+        baseUser.setUserId(student.getId());
         student.setActivate(Byte.valueOf("1"));
         student.getClassNames().trim();
         Boolean stuResult = studentMapper.insert(student) > 0;
@@ -345,18 +346,18 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param addStudentDtoList
      */
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void batchSaveStudentInfo(List<AddStudentDto> addStudentDtoList) {
         try {
         List<Student> studentList = BeanMapUtils.mapList(addStudentDtoList, Student.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(studentList, BaseUser.class);
-            List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             studentList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setUserType(1);
             baseUserList.get(i).setUserId(studentList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
+        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
         Boolean stuResult = studentMapper.batchSaveStudentInfo(studentList) > 0;
         Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;

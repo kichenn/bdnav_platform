@@ -26,4 +26,6 @@ public interface InstallAppsService extends IService<InstallApps> {
      */
     PageInfo<InstallApps> findInstallAppsInConationPaging(InstallAppsQueryDto installAppsQueryDto);
 
+
+    List<InstallApps> findInstallAppsInConation(String schoolCode,String cardNumber);
 }

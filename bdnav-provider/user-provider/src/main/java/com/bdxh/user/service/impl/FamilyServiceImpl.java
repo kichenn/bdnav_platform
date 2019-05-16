@@ -77,7 +77,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteFamilyInfo(String scoolCode, String cardNumber) {
         BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(scoolCode,cardNumber);
         baseUserUnqiueMapper.deleteByPrimaryKey(baseUser.getId());
@@ -87,7 +87,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void deleteBatchesFamilyInfo(String schoolCode, String cardNumber) {
         String[] schoolCodes = schoolCode.split(",");
         String[] cardNumbers = cardNumber.split(",");
@@ -122,16 +122,16 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void updateFamily(UpdateFamilyDto updateFamilyDto) {
-        try {
+
             //查出修改之前的基础用户信息
             BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateFamilyDto.getSchoolCode(),
                     updateFamilyDto.getCardNumber());
             //如果改了手机号码就进行修改
             if(!baseUser.getPhone().equals(updateFamilyDto.getPhone())){
                 try {
-                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),baseUser.getPhone());
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),updateFamilyDto.getPhone());
                 }catch (Exception e){
                     String message=e.getMessage();
                     if (e instanceof DuplicateKeyException) {
@@ -139,6 +139,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
                     }
                 }
             }
+        try {
             //修改家长信息
             Family family = BeanMapUtils.map(updateFamilyDto, Family.class);
             familyMapper.updateFamilyInfo(family);
@@ -182,11 +183,9 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveFamily(Family family) {
         BaseUser baseUser = BeanMapUtils.map(family, BaseUser.class);
-        baseUser.setUserType(3);
-        baseUser.setUserId(family.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
             baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
@@ -198,22 +197,24 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
         }
         baseUserMapper.insert(baseUser);
         family.setId(snowflakeIdWorker.nextId());
+        baseUser.setUserType(3);
+        baseUser.setUserId(family.getId());
         family.setActivate(Byte.valueOf("1"));
         familyMapper.insert(family);
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void batchSaveFamilyInfo(List<AddFamilyDto> addFamilyDtoList) {
         List<Family> familyList = BeanMapUtils.mapList(addFamilyDtoList, Family.class);
         List<BaseUser> baseUserList = BeanMapUtils.mapList(familyList, BaseUser.class);
-        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             familyList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setUserType(3);
             baseUserList.get(i).setUserId(familyList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
+        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
         familyMapper.batchSaveFamilyInfo(familyList);
         baseUserMapper.batchSaveBaseUserInfo(baseUserList);

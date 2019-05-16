@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Description: 控制器
  * @Author Kang
@@ -75,5 +77,11 @@ public class InstallAppsController {
     @ApiOperation(value = "分页上报App信息查询", response = InstallApps.class)
     public Object findInstallAppsInContionPaging(@Validated @RequestBody InstallAppsQueryDto installAppsQueryDto) {
         return WrapMapper.ok(installAppsService.findInstallAppsInConationPaging(installAppsQueryDto));
+    }
+
+    @RequestMapping(value = "/findInstallAppsInConation", method = RequestMethod.POST)
+    @ApiOperation(value = "上报App信息查询", response = InstallApps.class)
+    public Object findInstallAppsInConation(String schoolCode, String cardNumber){
+        return WrapMapper.ok(installAppsService.findInstallAppsInConation(schoolCode,cardNumber));
     }
 }

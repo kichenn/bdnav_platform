@@ -51,5 +51,8 @@ public interface AppControllerClient {
     Wrapper<List<App>> getAppListByids(@RequestParam(name = "ids")String ids);
 
 
+    @RequestMapping(value = "/familyFindAppInfo", method = RequestMethod.POST)
+    Wrapper<List<App>> familyFindAppInfo(@RequestParam("schoolCode") String schoolCode);
+
 
 }

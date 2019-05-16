@@ -35,6 +35,7 @@ public interface AppMapper extends Mapper<App> {
     //显示全部应用or学校特定应用
     List<App> getApplicationOfCollection(@Param("schoolId") Long schoolId,@Param("appName") String appName,@Param("platform") Byte platform);
 
-
+    //家长查询学校应用市场列表
+    List<App> familyFindAppInfo(@Param("schoolCode")String schoolCode);
 
 }

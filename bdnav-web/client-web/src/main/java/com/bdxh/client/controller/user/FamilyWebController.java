@@ -15,6 +15,7 @@ import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.FamilyControllerClient;
@@ -71,16 +72,15 @@ public class FamilyWebController {
     @RequestMapping(value = "/addFamily",method = RequestMethod.POST)
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
         try {
-
-            FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
-            if(null!=familyVo){
+            SchoolUser user= SecurityUtils.getCurrentUser();
+            BaseUser baseUser=baseUserControllerClient.queryBaseUserBySchoolCodeAndCardNumber(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
+            if(null!=baseUser){
                 return WrapMapper.error("当前学校已存在相同家长卡号");
             }
             if(addFamilyDto.getImage().equals("")||addFamilyDto.getImageName().equals("")){
                 addFamilyDto.setImageName(IMG_NAME);
                 addFamilyDto.setImage(IMG_URL);
             }
-            SchoolUser user= SecurityUtils.getCurrentUser();
             addFamilyDto.setOperator(user.getId());
             addFamilyDto.setOperatorName(user.getUserName());
             SchoolInfoVo school= schoolControllerClient.findSchoolById(user.getSchoolId()).getResult();

@@ -15,6 +15,7 @@ import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyFence;
 import com.bdxh.user.feign.BaseUserControllerClient;
@@ -56,8 +57,6 @@ public class FamilyWebController {
     @Autowired
     private SchoolControllerClient schoolControllerClient;
     @Autowired
-    private FamilyFenceControllerClient familyFenceControllerClient;
-    @Autowired
     private SinglePermissionControllerClient singlePermissionControllerClient;
     @Autowired
     private BaseUserControllerClient baseUserControllerClient;
@@ -75,8 +74,8 @@ public class FamilyWebController {
     public Object addFamily(@RequestBody AddFamilyDto addFamilyDto){
         try {
 
-            FamilyVo familyVo=(FamilyVo) familyControllerClient.queryFamilyInfo(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
-            if(null!=familyVo){
+            BaseUser baseUser=baseUserControllerClient.queryBaseUserBySchoolCodeAndCardNumber(addFamilyDto.getSchoolCode(),addFamilyDto.getCardNumber()).getResult();
+            if(null!=baseUser){
                 return WrapMapper.error("当前学校已存在相同家长卡号");
             }
 
@@ -250,7 +249,7 @@ public class FamilyWebController {
                 if (StringUtils.isNotBlank(familyList.get(i)[0])) {
                      if (!familyList.get(i)[0].equals(i - 1 >= familyList.size() ? familyList.get(familyList.size() - 1)[0] : familyList.get(i - 1)[0])|| i==1) {
                         Wrapper wrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
-                        Wrapper familyWeapper=familyControllerClient.queryFamilyCardNumberBySchoolCode(columns[0]);
+                        Wrapper familyWeapper=baseUserControllerClient.findSchoolNumberBySchool(columns[0]);
                         school = (School) wrapper.getResult();
                         cardNumberList=(List<String>)familyWeapper.getResult();
                     }

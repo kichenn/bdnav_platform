@@ -1,5 +1,6 @@
 package com.bdxh.weixiao.controller.user;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyStudentDto;
@@ -7,9 +8,10 @@ import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
-import com.bdxh.user.vo.FamilyStudentDetailsVo;
+import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +46,8 @@ public class FamilyStudentWebController {
     @Autowired
     private StudentControllerClient studentControllerClient;
 
+    @Autowired
+    private RedisUtil redisUtil;
     /**
      * 微校平台----家长绑定孩子
      *
@@ -111,7 +115,16 @@ public class FamilyStudentWebController {
     @RequestMapping(value = "/familyFindStudentList", method = RequestMethod.POST)
     public Object familyFindStudentList(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
         try {
-            return WrapMapper.ok(familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto).getResult());
+            familyStudentQueryDto.setCardNumber("20190516002");
+            familyStudentQueryDto.setSchoolCode("20110329");
+            JSONObject jsonObject=new JSONObject();
+            FamilyVo family=familyControllerClient.queryFamilyInfo(familyStudentQueryDto.getSchoolCode(),familyStudentQueryDto.getCardNumber()).getResult();
+            for (FamilyStudentVo s : family.getStudents()) {
+                StudentVo student=studentControllerClient.queryStudentInfo( familyStudentQueryDto.getSchoolCode(),s.getSCardNumber()).getResult();
+                s.setImage(student.getImage());
+                s.setImageName(student.getImageName());
+            }
+            return WrapMapper.ok(family);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -128,12 +141,8 @@ public class FamilyStudentWebController {
     @RequestMapping(value = "/queryFamilyStudentDetails", method = RequestMethod.POST)
     public Object queryFamilyStudentDetails(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
         try {
-            FamilyVo familyVo = familyControllerClient.queryFamilyInfo(familyStudentQueryDto.getSchoolCode(), familyStudentQueryDto.getCardNumber()).getResult();
             StudentVo studentVo = studentControllerClient.queryStudentInfo(familyStudentQueryDto.getSchoolCode(), familyStudentQueryDto.getStudentNumber()).getResult();
-            FamilyStudentDetailsVo familyStudentDetailsVo = new FamilyStudentDetailsVo();
-            familyStudentDetailsVo.setFamilyVo(familyVo);
-            familyStudentDetailsVo.setStudentVo(studentVo);
-            return WrapMapper.ok(familyStudentDetailsVo);
+            return WrapMapper.ok(studentVo);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

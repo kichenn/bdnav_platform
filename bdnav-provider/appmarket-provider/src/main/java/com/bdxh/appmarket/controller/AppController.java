@@ -51,105 +51,105 @@ public class AppController {
     private AppVersionService appVersionService;
 
     @ApiOperation("增加应用")
-    @RequestMapping(value = "/addApp",method = RequestMethod.POST)
-    public Object addApp(@Valid @RequestBody AddAppDto addAppDto, BindingResult bindingResult){
+    @RequestMapping(value = "/addApp", method = RequestMethod.POST)
+    public Object addApp(@Valid @RequestBody AddAppDto addAppDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
             Integer isAppExist = appService.isAppExist(addAppDto.getAppPackage());
-            Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
+            Preconditions.checkArgument(isAppExist == null, "应用包名已存在");
             App app = BeanMapUtils.map(addAppDto, App.class);
-            AppVersion appVersion =BeanMapUtils.map(addAppDto,AppVersion.class);
+            AppVersion appVersion = BeanMapUtils.map(addAppDto, AppVersion.class);
             List<AddAppImageDto> addImageDtos = addAppDto.getAddImageDtos();
             List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
-            appService.saveApp(app,appImages,appVersion);
+            appService.saveApp(app, appImages, appVersion);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
     @ApiOperation("根据id删除应用")
-    @RequestMapping(value = "/delApp",method = RequestMethod.POST)
-    public Object delApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
+    @RequestMapping(value = "/delApp", method = RequestMethod.POST)
+    public Object delApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id) {
         try {
             appService.delApp(id);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
     @ApiOperation("根据id更新应用")
-    @RequestMapping(value = "/updateApp",method = RequestMethod.POST)
-    public Object updateApp(@Valid @RequestBody UpdateAppDto updateAppDto, BindingResult bindingResult){
+    @RequestMapping(value = "/updateApp", method = RequestMethod.POST)
+    public Object updateApp(@Valid @RequestBody UpdateAppDto updateAppDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
             App appData = appService.selectByKey(updateAppDto.getId());
-            Preconditions.checkNotNull(appData,"应用不存在");
-            if (!StringUtils.equals(updateAppDto.getAppPackage(),appData.getAppPackage())){
+            Preconditions.checkNotNull(appData, "应用不存在");
+            if (!StringUtils.equals(updateAppDto.getAppPackage(), appData.getAppPackage())) {
                 Integer isAppExist = appService.isAppExist(updateAppDto.getAppPackage());
-                Preconditions.checkArgument(isAppExist == null,"应用包名已存在");
+                Preconditions.checkArgument(isAppExist == null, "应用包名已存在");
             }
             App app = BeanMapUtils.map(updateAppDto, App.class);
             List<AddAppImageDto> addImageDtos = updateAppDto.getAddImageDtos();
             List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
-            appService.updateApp(app,appImages);
+            appService.updateApp(app, appImages);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
     @ApiOperation("查询应用")
-    @RequestMapping(value = "/queryApp",method = RequestMethod.GET)
-    public Object queryApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
+    @RequestMapping(value = "/queryApp", method = RequestMethod.GET)
+    public Object queryApp(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id) {
         try {
             App app = appService.selectByKey(id);
             return WrapMapper.ok(app);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
     @ApiOperation("查询应用和图片")
-    @RequestMapping(value = "/queryAppAndImages",method = RequestMethod.GET)
-    public Object queryAppAndImages(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id){
+    @RequestMapping(value = "/queryAppAndImages", method = RequestMethod.GET)
+    public Object queryAppAndImages(@RequestParam(name = "id") @NotNull(message = "应用id不能为空") Long id) {
         try {
-            Map<String,Object> param = new HashMap<>();
+            Map<String, Object> param = new HashMap<>();
             App app = appService.selectByKey(id);
-            AppVersion appVersion=appVersionService.findNewAppVersion(id);
-            param.put("appId",id);
+            AppVersion appVersion = appVersionService.findNewAppVersion(id);
+            param.put("appId", id);
             List<AppImage> appImageList = appImageService.getAppImageList(param);
             param.clear();
-            param.put("app",app);
-            param.put("apkSize",appVersion.getApkSize());
-            param.put("apkName",appVersion.getApkName());
-            param.put("images",appImageList);
+            param.put("app", app);
+            param.put("apkSize", appVersion.getApkSize());
+            param.put("apkName", appVersion.getApkName());
+            param.put("images", appImageList);
             String jsonString = JSON.toJSONString(param);
             return WrapMapper.ok(jsonString);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
     @ApiOperation("查询应用列表")
-    @RequestMapping(value = "/queryAppList",method = RequestMethod.POST)
-    public Object queryAppList(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult){
+    @RequestMapping(value = "/queryAppList", method = RequestMethod.POST)
+    public Object queryAppList(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
@@ -157,17 +157,17 @@ public class AppController {
             Map<String, Object> param = BeanToMapUtil.objectToMap(appQueryDto);
             List<App> apps = appService.getAppList(param);
             return WrapMapper.ok(apps);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
     @ApiOperation("分页查询应用列表")
-    @RequestMapping(value = "/queryAppListPage",method = RequestMethod.POST)
-    public Object queryAppListPage(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult){
+    @RequestMapping(value = "/queryAppListPage", method = RequestMethod.POST)
+    public Object queryAppListPage(@Valid @RequestBody AppQueryDto appQueryDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
@@ -175,7 +175,7 @@ public class AppController {
             Map<String, Object> param = BeanToMapUtil.objectToMap(appQueryDto);
             PageInfo<App> appListPage = appService.getAppListPage(param, appQueryDto.getPageNum(), appQueryDto.getPageSize());
             return WrapMapper.ok(appListPage);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -183,46 +183,57 @@ public class AppController {
 
 
     @ApiOperation("显示全部应用or学校特定应用")
-    @RequestMapping(value = "/getApplicationOfCollection",method = RequestMethod.POST)
-    public Object getApplicationOfCollection(@Valid @RequestBody QueryAppDto queryAppDto, BindingResult bindingResult){
+    @RequestMapping(value = "/getApplicationOfCollection", method = RequestMethod.POST)
+    public Object getApplicationOfCollection(@Valid @RequestBody QueryAppDto queryAppDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
         try {
             PageInfo<App> appListPage;
-            if(queryAppDto.getSchoolId()==null){
-             appListPage  = appService.findAppList(queryAppDto.getPageNum(), queryAppDto.getPageSize());
-            }else{
-             appListPage = appService.getApplicationOfCollection(queryAppDto.getSchoolId(),queryAppDto.getAppName(),queryAppDto.getPlatform(),queryAppDto.getPageNum(), queryAppDto.getPageSize());
+            if (queryAppDto.getSchoolId() == null) {
+                appListPage = appService.findAppList(queryAppDto.getPageNum(), queryAppDto.getPageSize());
+            } else {
+                appListPage = appService.getApplicationOfCollection(queryAppDto.getSchoolId(), queryAppDto.getAppName(), queryAppDto.getPlatform(), queryAppDto.getPageNum(), queryAppDto.getPageSize());
             }
             return WrapMapper.ok(appListPage);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
     @ApiOperation("根据ids查询应用列表")
-    @RequestMapping(value = "/getAppListByids",method = RequestMethod.GET)
-    public Object getAppListByids(@RequestParam(name = "ids")String ids){
+    @RequestMapping(value = "/getAppListByids", method = RequestMethod.GET)
+    public Object getAppListByids(@RequestParam(name = "ids") String ids) {
         try {
-          List<App> app=appService.getAppListByids(ids);
+            List<App> app = appService.getAppListByids(ids);
             return WrapMapper.ok(app);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
 
     @ApiOperation("根据id查询应用")
-    @RequestMapping(value = "/versionUpdating",method = RequestMethod.GET)
-    public Object versionUpdating(@RequestParam(name = "id")Long id){
+    @RequestMapping(value = "/versionUpdating", method = RequestMethod.GET)
+    public Object versionUpdating(@RequestParam(name = "id") Long id) {
         try {
-           App app=appService.versionUpdating(id);
+            App app = appService.versionUpdating(id);
             return WrapMapper.ok(app);
-        }catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    @ApiOperation("家长查询学校应用列表")
+    @RequestMapping(value = "/familyFindAppInfo", method = RequestMethod.POST)
+    public Object familyFindAppInfo(@RequestParam("schoolCode") String schoolCode) {
+        try {
+            return  appService.familyFindAppInfo(schoolCode);
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }

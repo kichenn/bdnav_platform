@@ -85,6 +85,11 @@ public interface BaseUserService extends IService<BaseUser> {
     Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto);
 
 
+    /**
+     * 根据学校Codec查询所有卡号
+     * @param schoolCode
+     */
+    List<String> findSchoolNumberBySchool(String schoolCode);
 
 
 }

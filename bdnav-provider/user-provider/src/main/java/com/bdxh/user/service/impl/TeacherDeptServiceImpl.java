@@ -54,7 +54,7 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void batchUpdateTeacherDept(List<TeacherDept> teacherDepts) {
         if(CollUtil.isNotEmpty(teacherDepts)){
             for (TeacherDept teacherDept : teacherDepts) {

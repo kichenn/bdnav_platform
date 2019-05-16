@@ -52,4 +52,12 @@ public class InstallAppsServiceImpl extends BaseService<InstallApps> implements 
         PageInfo<InstallApps> pageInfoFamily = new PageInfo<>(appStatuses);
         return pageInfoFamily;
     }
+
+    @Override
+    public List<InstallApps> findInstallAppsInConation(String schoolCode, String cardNumber) {
+        InstallApps installApps=new InstallApps();
+        installApps.setSchoolCode(schoolCode);
+        installApps.setCardNumber(cardNumber);
+        return installAppsMapper.findInstallAppsInContionPaging(installApps);
+    }
 }

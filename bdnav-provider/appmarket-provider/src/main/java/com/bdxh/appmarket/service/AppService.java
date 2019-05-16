@@ -90,4 +90,7 @@ public interface AppService extends IService<App> {
     List<App> getAppListByids(String ids);
 
     App versionUpdating(Long id);
+
+    //家长查询应用市场列表
+    List<App> familyFindAppInfo(String schoolCode);
 }
