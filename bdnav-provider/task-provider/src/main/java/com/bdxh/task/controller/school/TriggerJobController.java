@@ -10,6 +10,7 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -24,9 +25,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "Quartz学校定时任务触发控制器", tags = "Quartz学校定时任务触发控制器")
 public class TriggerJobController {
 
+
     @ApiOperation("启动学校策略定时任务")
     @RequestMapping(value = "/startStrategyJob", method = RequestMethod.GET)
-    public Object startStrategyJob() throws SchedulerException {
+    public Object startStrategyJob(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") Long groupId) throws SchedulerException {
+
         //创建一个jobDetail的实例，将该实例与HelloJob Class绑定
         JobDetail jobDetail = JobBuilder.newJob(StrategyJob.class).withIdentity("myJob").build();
         //创建一个Trigger触发器的实例，定义该job立即执行，并且每2秒执行一次，一直执行

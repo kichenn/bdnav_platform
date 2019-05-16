@@ -50,4 +50,9 @@ public class AccountLogServiceImpl implements AccountLogService {
     public AccountLog findAccountLogByUserId(String userId) {
         return accountLogMapper.findAccountLogByUserId(userId);
     }
+
+    @Override
+    public List<AccountLog> findAccountLogBySchoolCodeAndGroupId(String schoolCode, Long groupId) {
+        return accountLogMapper.findAccountLogBySchoolCodeAndGroupId(schoolCode,groupId);
+    }
 }

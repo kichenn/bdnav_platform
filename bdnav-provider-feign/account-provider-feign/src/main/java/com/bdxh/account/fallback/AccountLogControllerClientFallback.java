@@ -7,6 +7,8 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
  * @Description: 登录日志相关熔断
@@ -33,6 +35,11 @@ public class AccountLogControllerClientFallback implements AccountLogControllerC
 
     @Override
     public Wrapper<AccountLog> findAcountLogByUserId(String userId) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<AccountLog>> findAccountLogBySchoolCodeAndGroupId(String schoolCode, Long groupId) {
         return WrapMapper.error();
     }
 }
