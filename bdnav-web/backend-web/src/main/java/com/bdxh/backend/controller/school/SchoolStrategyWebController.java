@@ -4,6 +4,7 @@ import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
+import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
@@ -13,6 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/schoolStrategyWebController")
@@ -103,24 +106,16 @@ public class SchoolStrategyWebController {
 
     }
 
-
     /**
-     * @RequestMapping(value = "/getByPriority", method = RequestMethod.GET)
-     * 	@ApiOperation(value = "验证学校策略优先级", response = Boolean.class)
-     * 	public Object getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority) {
-     * 		try{
-     * 			SchoolStrategy schoolStrategy=schoolStrategyService.getByPriority(SchoolCode,Priority);
-     * 			if (schoolStrategy!=null){
-     * 				return WrapMapper.ok("该学校策略已有该优先级值,请更换后重试");
-     * 			}else{
-     * 				return WrapMapper.ok();
-     * 			}
-     * 		} catch (Exception e) {
-     * 			e.printStackTrace();
-     * 			return WrapMapper.error(e.getMessage());
-     * 		}
-     *
-     * 	}
+     * @Description: 查询列表信息
+     * @Date 2019-04-18 09:52:43
      */
+    @PostMapping("/findAllStrategy")
+    @ApiOperation(value = "查询列表信息")
+    public Object findAllStrategy() {
+        Wrapper wrapper = schoolStrategyControllerClient.findAllStrategy();
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
 
 }

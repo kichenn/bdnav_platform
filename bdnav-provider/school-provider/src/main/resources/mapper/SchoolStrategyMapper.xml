@@ -6,7 +6,7 @@
         <id column="id" jdbcType="BIGINT" property="Id"/>
         <result column="policy_name" jdbcType="VARCHAR" property="PolicyName"/>
         <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
-        <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
+        <result column="school_code" jdbcType="VARCHAR" property="SchoolCode"/>
         <result column="school_name" jdbcType="VARCHAR" property="SchoolName"/>
         <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
         <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
@@ -18,6 +18,7 @@
         <result column="day_mark" jdbcType="VARCHAR" property="DayMark"/>
         <result column="time_mark" jdbcType="VARCHAR" property="TimeMark"/>
         <result column="exclusion_days" jdbcType="VARCHAR" property="ExclusionDays"/>
+        <result column="push_state" jdbcType="TINYINT" property="PushState"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
         <result column="operator" jdbcType="BIGINT" property="Operator"/>
@@ -29,7 +30,7 @@
         <id column="id" jdbcType="BIGINT" property="Id"/>
         <result column="policy_name" jdbcType="VARCHAR" property="PolicyName"/>
         <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
-        <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
+        <result column="school_code" jdbcType="VARCHAR" property="SchoolCode"/>
         <result column="school_name" jdbcType="VARCHAR" property="SchoolName"/>
         <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
         <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
@@ -41,6 +42,7 @@
         <result column="day_mark" jdbcType="VARCHAR" property="DayMark"/>
         <result column="time_mark" jdbcType="VARCHAR" property="TimeMark"/>
         <result column="exclusion_days" jdbcType="VARCHAR" property="ExclusionDays"/>
+        <result column="push_state" jdbcType="TINYINT" property="PushState"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
         <result column="operator" jdbcType="BIGINT" property="Operator"/>
@@ -53,7 +55,7 @@
 
 
 	<sql id="BaseColumns">
-	id,policy_name,school_id,school_code,school_name,group_id,recursion_permission,recursion_permission_ids,priority,model_id,start_date,end_date,day_mark,time_mark,exclusion_days,create_date,update_date,operator,operator_name,remark
+	id,policy_name,school_id,school_code,school_name,group_id,recursion_permission,recursion_permission_ids,priority,model_id,start_date,end_date,day_mark,time_mark,exclusion_days,push_state,create_date,update_date,operator,operator_name,remark
 	</sql>
 	<select id="getSchoolStrategyAllCount" resultType="Integer">
         SELECT 
@@ -85,6 +87,9 @@
             <if test="SchoolName !=null and SchoolName!=''">
                 AND t_school_strategy.school_name LIKE CONCAT(CONCAT('%',#{SchoolName}),'%')
             </if>
+            <if test="SchoolCode !=null and SchoolCode!=''">
+                AND t_school_strategy.school_code=#{SchoolCode}
+            </if>
             <if test="Platform !=null and Platform!=''">
                 AND t_school_mode.platform =#{Platform}
             </if>
@@ -99,6 +104,15 @@
         t_school_strategy
         WHERE
         school_code=#{SchoolCode} AND priority=#{Priority}
+    </select>
+
+    <select id="getStrategyList" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_school_strategy
+        WHERE
+        school_code=#{SchoolCode}
     </select>
 
 

@@ -63,6 +63,9 @@ public class ModifyPolicyDto {
     private String ExclusionDays;
 
 
+    @ApiModelProperty("推送状态")
+    private Integer PushState;
+
     @ApiModelProperty("创建时间")
     private Date CreateDate;
 

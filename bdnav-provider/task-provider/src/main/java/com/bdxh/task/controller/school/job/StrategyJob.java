@@ -1,5 +1,6 @@
 package com.bdxh.task.controller.school.job;
 
+import com.bdxh.task.controller.strategy.StrategyToPush;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -27,6 +28,8 @@ public class StrategyJob implements Job {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("现在的时间是：" + sf.format(date));
         //具体的业务逻辑
+        //StrategyToPush.pushStrategy(String schoolCode,Long );
+        //更改策略状态
         System.out.println("Hello Quartz");
     }
 }

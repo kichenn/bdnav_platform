@@ -187,6 +187,28 @@ public class SchoolStrategyController {
 	}
 
 
+	/**
+	 * @Description: 查询列表信息
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/findAllStrategy", method = RequestMethod.POST)
+	@ApiOperation(value = "根据查询列表", response = SchoolStrategy.class)
+	public Object findAllStrategy() {
+		List<SchoolStrategy> datas = schoolStrategyService.selectAll();
+		return WrapMapper.ok(datas);
+	}
+
+
+	/**
+	 * @Description: 根据schoolcode查询策略列表信息
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/getStrategyList", method = RequestMethod.GET)
+	@ApiOperation(value = "根据查询策略列表")
+	public Object getStrategyList(@RequestParam("SchoolCode") String SchoolCode) {
+		List<QuerySchoolStrategy> datas = schoolStrategyService.getStrategyList(SchoolCode);
+		return WrapMapper.ok(datas);
+	}
 
 
 }

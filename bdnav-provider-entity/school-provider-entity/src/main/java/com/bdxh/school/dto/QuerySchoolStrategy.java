@@ -67,6 +67,9 @@ public class QuerySchoolStrategy extends Query {
     @ApiModelProperty("排除日期")
     private String ExclusionDays;
 
+    @ApiModelProperty("推送状态")
+    private Integer PushState;
+
 
     @ApiModelProperty("创建时间")
     private Date CreateDate;
@@ -86,6 +89,8 @@ public class QuerySchoolStrategy extends Query {
 
     @ApiModelProperty("备注")
     private String Remark;
+
+
 
 /*    @ApiModelProperty("学校code")
     private String getSchoolCode;
