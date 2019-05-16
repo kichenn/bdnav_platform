@@ -51,12 +51,22 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         //school.setAppKey();
         //school.setAppSecret();
         Boolean result = schoolMapper.insertSelective(school) > 0;
-//        SchoolShowVo schoolvo = new SchoolShowVo();
-//        BeanUtils.copyProperties(school, schoolvo);
-       /* if (result) {
-            //删除列表缓存
-            redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
-        }*/
+       School pushSchool=schoolMapper.selectByPrimaryKey(school.getId());
+        if(result){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("data", pushSchool);
+            JSONObject data=jsonObject.getJSONObject("data");
+            data.put("delFlag",0);
+            jsonObject.put("data", pushSchool);
+            jsonObject.put("tableName", "t_school");
+            Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_school, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            try {
+                defaultMQProducer.send(message);
+            }catch (Exception e){
+                e.printStackTrace();
+                log.info("推送学校消息至user服务");
+            }
+        }
         return result;
     }
 
@@ -72,8 +82,16 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
             jsonObject.put("data", school);
             jsonObject.put("message", "学校有调整");
             Message message = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_school, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            JSONObject jsonObject2 = new JSONObject();
+            jsonObject2.put("data", school);
+            JSONObject data=jsonObject2.getJSONObject("data");
+            data.put("delFlag",0);
+            jsonObject2.put("data", data);
+            jsonObject2.put("tableName", "t_school");
+            Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_school, jsonObject2.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
                 defaultMQProducer.send(message);
+                defaultMQProducer.send(message2);
             }catch (Exception e){
                 e.printStackTrace();
                 log.info("推送学校消息至user服务");
@@ -91,7 +109,23 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     //删除学校信息
     @Override
     public Boolean delSchool(Long id) {
+        School school=schoolMapper.selectByPrimaryKey(id);
         Boolean result = schoolMapper.deleteByPrimaryKey(id) > 0;
+        if(result){
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("data", school);
+            JSONObject data=jsonObject.getJSONObject("data");
+            data.put("delFlag",1);
+            jsonObject.put("data", data);
+            jsonObject.put("tableName", "t_school");
+            Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_school, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            try {
+                defaultMQProducer.send(message);
+            }catch (Exception e){
+                e.printStackTrace();
+                log.info("推送学校消息至user服务");
+            }
+        }
        /* if (result) {
             //删除列表缓存
             redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
