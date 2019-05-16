@@ -4,11 +4,14 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddPolicyDto;
 import com.bdxh.school.dto.ModifyPolicyDto;
-import com.bdxh.school.dto.QuerySchoolMode;
 import com.bdxh.school.dto.QuerySchoolStrategy;
+import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+
 
 @Component
 public class SchoolStrategyControllerClientFallback implements SchoolStrategyControllerClient {
@@ -34,6 +37,11 @@ public class SchoolStrategyControllerClientFallback implements SchoolStrategyCon
 
     @Override
     public Wrapper getByPriority(String SchoolCode, Integer Priority) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<SchoolStrategy>> findAllStrategy() {
         return WrapMapper.error();
     }
 }

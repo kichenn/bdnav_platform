@@ -84,4 +84,9 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
         return schoolStrategyMapper.getByPriority(SchoolCode,Priority);
     }
 
+    @Override
+    public List<QuerySchoolStrategy> getStrategyList(String SchoolCode) {
+        return schoolStrategyMapper.getStrategyList(SchoolCode);
+    }
+
 }

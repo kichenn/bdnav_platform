@@ -78,6 +78,10 @@ public class SchoolStrategy {
 	@ApiModelProperty("排除日期")
 	private String ExclusionDays;
 
+	@Column(name = "push_state")
+	@ApiModelProperty("推送状态")
+	private Integer PushState;
+
 	@Column(name = "create_date")
 	@ApiModelProperty("创建时间")
 	private Date CreateDate;

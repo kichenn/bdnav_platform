@@ -20,7 +20,7 @@ public class AppNotificationTemplate implements Serializable {
     private String title = "";
 
     /**
-     * 个推内容
+     * 个推内容(单推内容存放处)
      */
     private String text = "";
 
@@ -60,7 +60,7 @@ public class AppNotificationTemplate implements Serializable {
     private int transmissionType = 2;
 
     /**
-     * 穿透消息的内容信息
+     * 穿透消息的内容信息(群推内容存放处)
      */
     private String transmissionContent;
 }
