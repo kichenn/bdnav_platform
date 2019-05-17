@@ -126,6 +126,7 @@
         WHERE
          school_code = #{schoolCode}
      and card_number = #{cardNumber}
+     limit 1
 </select>
     <update id="updateStudentInfo">
         UPDATE t_student

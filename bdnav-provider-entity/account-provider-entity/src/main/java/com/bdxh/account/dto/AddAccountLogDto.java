@@ -29,7 +29,7 @@ public class AddAccountLogDto implements Serializable {
     private String schoolName;
 
     @ApiModelProperty("所属班级主键")
-    private Long groupId;
+    private String groupId;
 
     @ApiModelProperty("用户主键")
     private Long userId;

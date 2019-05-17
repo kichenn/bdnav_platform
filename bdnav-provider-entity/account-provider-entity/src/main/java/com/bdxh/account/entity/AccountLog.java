@@ -50,7 +50,7 @@ public class AccountLog implements Serializable {
      * 所属班级主键
      */
     @Field("group_id")
-    private Long groupId;
+    private String groupId;
 
     /**
      * 用户主键
