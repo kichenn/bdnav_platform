@@ -15,6 +15,9 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.user.entity.Student;
+import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.vo.StudentVo;
 import com.google.common.base.Preconditions;
 import io.jsonwebtoken.*;
 import io.swagger.annotations.Api;
@@ -57,12 +60,19 @@ public class SecurityController {
     private AccountLogControllerClient accountLogControllerClient;
 
     @Autowired
+    private StudentControllerClient studentControllerClient;
+
+    @Autowired
     private RedisUtil redisUtil;
 
 
     @ApiOperation(value = "获取token(用户登录)", response = Boolean.class)
     @RequestMapping(value = "/authenticationApp/login", method = RequestMethod.GET)
-    public void login(@RequestParam("username") String username, @RequestParam("password") String password, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void login(@RequestParam("username") String username, @RequestParam("password") String password,
+                      @RequestParam("imei") String imei,
+                      @RequestParam("clientId") String clientId,
+                      @RequestParam("operationSystem") Byte operationSystem,
+                      HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(username, password);
             Authentication authenticate = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
@@ -88,14 +98,35 @@ public class SecurityController {
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(authenticate);
             request.getSession().setAttribute(SecurityConstant.TOKEN_SESSION + account.getId(), securityContext);
-
             //写入登录日志
-            AddAccountLogDto addAccountLogDto=new AddAccountLogDto();
-//            addAccountLogDto.setSchoolId();
-//            addAccountLogDto.setSchoolCode();
-//            addAccountLogDto.setSchoolName();
-            accountLogControllerClient.addAccountLog(addAccountLogDto);
-
+            switch (account.getUserType()) {
+                case 1:
+                    //学生
+                    //查询该学生的信息
+                    StudentVo student = studentControllerClient.queryStudentInfo(account.getSchoolCode(), account.getCardNumber()).getResult();
+                    AddAccountLogDto addAccountLogDto = new AddAccountLogDto();
+                    addAccountLogDto.setSchoolId(account.getSchoolId());
+                    addAccountLogDto.setSchoolCode(account.getSchoolCode());
+                    addAccountLogDto.setSchoolName(account.getSchoolName());
+                    addAccountLogDto.setGroupId(student.getClassId());
+                    addAccountLogDto.setUserId(account.getUserId());
+                    addAccountLogDto.setCardNumber(account.getCardNumber());
+                    addAccountLogDto.setUserPhone(account.getUserPhone());
+                    addAccountLogDto.setUserName(account.getUserName());
+                    addAccountLogDto.setLoginName(account.getLoginName());
+                    addAccountLogDto.setImei(imei);
+                    addAccountLogDto.setClientId(clientId);
+                    addAccountLogDto.setOperationSystem(operationSystem);
+                    addAccountLogDto.setRemark("");
+                    accountLogControllerClient.addAccountLog(addAccountLogDto);
+                    break;
+                case 2:
+                    //老师
+                    break;
+                case 3:
+                    //家长
+                    break;
+            }
             Wrapper wrapper = WrapMapper.ok(token);
             String str = JSON.toJSONString(wrapper);
             response.setHeader("Access-Control-Allow-Origin", "*");
