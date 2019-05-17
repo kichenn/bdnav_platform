@@ -133,17 +133,16 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public void deleteBatchesStudentInfo(String schoolCode, String cardNumber) {
         String[] schoolCodes = schoolCode.split(",");
         String[] cardNumbers = cardNumber.split(",");
-
         List<Map<String, String>> list = new ArrayList<>();
         for (int i = 0; i < cardNumbers.length; i++) {
             Map<String, String> map = new HashMap<>();
             map.put("cardNumber", cardNumbers[i]);
             map.put("schoolCode", schoolCodes[i]);
             list.add(map);
-            studentMapper.batchRemoveStudentInfo(list);
-            familyStudentMapper.batchRemoveFamilyStudentInfo(list);
-            baseUserMapper.batchRemoveBaseUserInfo(list);
         }
+        studentMapper.batchRemoveStudentInfo(list);
+        familyStudentMapper.batchRemoveFamilyStudentInfo(list);
+        baseUserMapper.batchRemoveBaseUserInfo(list);
     }
 
 
