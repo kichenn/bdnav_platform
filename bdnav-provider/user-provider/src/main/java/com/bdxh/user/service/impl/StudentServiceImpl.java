@@ -232,11 +232,15 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 JSONObject mesData = new JSONObject();
                 mesData.put("delFlag",0);
                 mesData.put("tableName", "t_student");
-                mesData.put("data", student1);
+                List<Student> studentList=new ArrayList<>();
+                studentList.add(student1);
+                mesData.put("data", studentList);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
-                mesData.put("data", baseUser1);
+                List<BaseUser> baseUserList=new ArrayList<>();
+                baseUserList.add(baseUser1);
+                mesData.put("data", baseUserList);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
@@ -326,11 +330,15 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                JSONObject mesData = new JSONObject();
                 mesData.put("delFlag",0);
                 mesData.put("tableName", "t_student");
-                mesData.put("data", student);
+                List<Student> studentList=new ArrayList<>();
+                studentList.add(student);
+                mesData.put("data", studentList);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(studentMsg);
                 mesData.put("tableName", "t_base_user");
-                mesData.put("data", baseUser);
+                List<BaseUser> baseUserList=new ArrayList<>();
+                baseUserList.add(baseUser);
+                mesData.put("data", baseUserList);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }

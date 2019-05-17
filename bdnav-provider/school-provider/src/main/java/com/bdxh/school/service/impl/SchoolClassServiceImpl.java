@@ -64,7 +64,9 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             schoolClass.setCreateDate(new Date());
             schoolClass.setUpdateDate(new Date());
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("data", schoolClass);
+            List<SchoolClass> schoolClassList=new ArrayList<>();
+            schoolClassList.add(schoolClass);
+            jsonObject.put("data", schoolClassList);
             jsonObject.put("tableName", "t_school_class");
             jsonObject.put("delFlag",0);
             Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
@@ -115,6 +117,9 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             schoolClass.setUpdateDate(new Date());
             jsonObject.put("tableName", "t_school_class");
+            List<SchoolClass> schoolClassList=new ArrayList<>();
+            schoolClassList.add(schoolClass);
+            jsonObject.put("data", schoolClassList);
             jsonObject.put("delFlag",0);
             Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
