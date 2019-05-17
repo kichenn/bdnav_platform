@@ -82,9 +82,9 @@ public class AccountLogMapper {
     }
 
     /**
-     *  查询学校下的班级组织机构列表(schoolcode+groupId)
+     * 查询学校下的班级组织机构列表(schoolcode+groupId)[此处有问题，比如重复登录，返回很多重复，需要筛选根据cardnumber去重]
      */
-    public List<AccountLog> findAccountLogBySchoolCodeAndGroupId(String schoolCode,Long groupId) {
+    public List<AccountLog> findAccountLogBySchoolCodeAndGroupId(String schoolCode, Long groupId) {
         Query query = new Query(Criteria.where("school_code").is(schoolCode)
                 .and("group_id").is(groupId)).with(new Sort(Sort.Direction.DESC, "create_date"));
         List<AccountLog> accountLog = mongoTemplate.find(query, AccountLog.class);
@@ -93,7 +93,6 @@ public class AccountLogMapper {
         }
         return accountLog;
     }
-
 
 
 }

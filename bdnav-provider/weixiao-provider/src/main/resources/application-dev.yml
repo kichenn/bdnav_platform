@@ -9,7 +9,7 @@ eureka:
     prefer-ip-address: false
   client:
     serviceUrl:
-      defaultZone: http://eureka-server1:9001/eureka/,http://eureka-server2:9002/eureka/,http://eureka-server3:9003/eureka/
+      defaultZone: http://admin:bdxh123456@eureka-server1:9001/eureka/,http://admin:bdxh123456@eureka-server2:9002/eureka/,http://admin:bdxh123456@eureka-server3:9003/eureka/
 management:
   endpoints:
     web:

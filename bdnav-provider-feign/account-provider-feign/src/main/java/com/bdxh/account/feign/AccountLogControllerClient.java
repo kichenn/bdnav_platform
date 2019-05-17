@@ -2,7 +2,7 @@ package com.bdxh.account.feign;
 
 import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.AccountLog;
-import com.bdxh.account.fallback.AccountControllerClientFallback;
+import com.bdxh.account.fallback.AccountLogControllerClientFallback;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -18,7 +18,7 @@ import java.util.List;
  * @Date 2019-04-11 16:39:55
  */
 @Service
-@FeignClient(value = "account-provider-cluster", fallback = AccountControllerClientFallback.class)
+@FeignClient(value = "account-provider-cluster", fallback = AccountLogControllerClientFallback.class)
 public interface AccountLogControllerClient {
 
     /**

@@ -11,12 +11,12 @@ eureka:
     register-with-eureka: true #单机时，false代表不向注册中心注册自己,集群必须开启
     fetch-registry: false #表明自己是注册中心，不需要检索服务
     serviceUrl:
-     defaultZone: http://eureka-server1:9001/eureka/,http://eureka-server3:9003/eureka/
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@eureka-server1:9001/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@eureka-server3:9003/eureka/
 management:
   endpoints:
     web:
       exposure:
         include: '*'
   endpoint:
-      health:
-        show-details: ALWAYS
+    health:
+      show-details: ALWAYS
