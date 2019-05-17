@@ -4,7 +4,7 @@ info:
   version: @project.version@
 #端口
 server:
-  port: 9032
+  port: 9033
 spring:
   application:
     name: task-provider-cluster
