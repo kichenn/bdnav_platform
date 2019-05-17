@@ -12,6 +12,7 @@ import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.*;
 import com.bdxh.user.persistence.*;
 import com.bdxh.user.service.BaseUserService;
+import com.google.common.base.Preconditions;
 import com.sun.org.apache.xml.internal.resolver.readers.TR9401CatalogReader;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -97,6 +98,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
         try {
             //更具学校Code和cardNumber查出我们本地用户的基本信息
             BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(),activationBaseUserDto.getCardNumber());
+            Preconditions.checkArgument(null!=baseUser,"不存在当前用户信息");
             if (baseUser.getUserType() != 0) {
                 //判断用户类型  用户类型 1 学生 2 老师 3 家长
                 switch (baseUser.getUserType()) {
@@ -108,9 +110,10 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         studentMapper.updateStudentActivation(student.getSchoolCode(),student.getCardNumber(),student.getActivate());
                         Student studentInfo = studentMapper.findStudentInfo(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-                        synUserInfoRequest.setSchool_code(studentInfo.getSchoolCode());
+                        synUserInfoRequest.setSchool_code(/*studentInfo.getSchoolCode()*/"1044695883");
                         synUserInfoRequest.setCard_number(studentInfo.getCardNumber());
                         synUserInfoRequest.setName(studentInfo.getName());
+                        studentInfo.setGender(Byte.parseByte(baseUser.getGender()+""));
                         synUserInfoRequest.setGender(studentInfo.getGender() == 1 ? "男" : "女");
                         if (activationBaseUserDto.getSchoolType() >= Byte.parseByte("4")) {
                             synUserInfoRequest.setClass_name(studentInfo.getClassName());
@@ -152,9 +155,10 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         teacher = teacherMapper.selectTeacherDetails(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         TeacherDept teacherDept= teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-                        synUserInfoRequest.setSchool_code(teacher.getSchoolCode());
+                        synUserInfoRequest.setSchool_code("1044695883"/*teacher.getSchoolCode()*/);
                         synUserInfoRequest.setCard_number(teacher.getCardNumber());
                         synUserInfoRequest.setName(teacher.getName());
+                        teacher.setGender(Byte.parseByte(baseUser.getGender()+""));
                         synUserInfoRequest.setGender(teacher.getGender() == 1 ? "男" : "女");
                         synUserInfoRequest.setReal_name_verify(Byte.valueOf("0"));
                         synUserInfoRequest.setCard_type("1");
@@ -188,11 +192,12 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         family=familyMapper.findFamilyInfo(family.getSchoolCode(),family.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
                         synUserInfoRequest.setName(family.getName());
-                        synUserInfoRequest.setSchool_code(family.getSchoolCode());
+                        synUserInfoRequest.setSchool_code("1044695883"/*family.getSchoolCode()*/);
                         synUserInfoRequest.setCard_number(family.getCardNumber());
                         synUserInfoRequest.setIdentity_type(AuthenticationConstant.FAMILY);
                         synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);
                         synUserInfoRequest.setHead_image(family.getImage());
+                        family.setGender(Byte.parseByte(baseUser.getGender()+""));
                         synUserInfoRequest.setGender(family.getGender() == 1 ? "男" : "女");
                         if (activationBaseUserDto.getSchoolType() >= Byte.parseByte("4")) {
                             synUserInfoRequest.setCollege(family.getSchoolName());

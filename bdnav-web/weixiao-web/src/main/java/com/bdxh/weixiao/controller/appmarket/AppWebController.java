@@ -49,8 +49,7 @@ public class AppWebController {
     public Object familyFindAppInfo(@RequestParam("schoolCode") String schoolCode,@RequestParam("cardNumber")String cardNumber) {
         try {
             StudentVo student=studentControllerClient.queryStudentInfo(schoolCode,cardNumber).getResult();
-
-       /*     installAppsControllerClient.findInstallAppsInContionPaging(schoolCode,cardNumber);*/
+            /*installAppsControllerClient.findInstallAppsInContionPaging(schoolCode,cardNumber);*/
             JSONObject data=new JSONObject();
             data.put("studentName",student);
             //true为已安装，false为未安装

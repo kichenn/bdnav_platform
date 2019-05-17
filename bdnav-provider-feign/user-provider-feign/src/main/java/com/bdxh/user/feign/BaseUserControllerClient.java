@@ -10,6 +10,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -86,4 +87,14 @@ public interface BaseUserControllerClient {
     @ResponseBody
     @RequestMapping(value ="/baseUser/findSchoolNumberBySchool",method = RequestMethod.POST)
     Wrapper<List<String>>  findSchoolNumberBySchool(@RequestParam("schoolCode") String schoolCode);
+
+
+    /**
+     * 激活校园卡时手机号码获取验证码
+     * @param phone
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/baseUser/getPhoneCode",method = RequestMethod.POST)
+    Wrapper<Boolean> getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone);
 }

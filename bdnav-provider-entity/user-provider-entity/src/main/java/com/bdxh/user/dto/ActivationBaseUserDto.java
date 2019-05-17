@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModelProperty;
 import javax.persistence.Column;
 import java.io.Serializable;
 import java.util.Date;
+
+import io.swagger.annotations.ApiOperation;
 import lombok.Data;
 
 /**
@@ -30,8 +32,20 @@ public class ActivationBaseUserDto extends WeiXiaoDto implements Serializable {
     private String cardNumber;
 
     /**
+     * 姓名
+     */
+    @ApiModelProperty("用户姓名")
+    private String userName;
+
+    /**
      * 手机号码
      */
     @ApiModelProperty("手机号")
     private String phone;
+
+    /**
+     * 手机验证码
+     */
+    @ApiModelProperty("验证码")
+    private String code;
 }
