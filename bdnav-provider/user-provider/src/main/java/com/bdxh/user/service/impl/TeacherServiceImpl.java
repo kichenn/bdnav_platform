@@ -33,10 +33,7 @@ import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.IntStream;
 
 /**
@@ -88,23 +85,15 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
         try {
             JSONObject mesData = new JSONObject();
+            mesData.put("delFlag",1);
             mesData.put("tableName", "t_teacher");
-            mesData.put("data", teacher);
-            JSONObject data=mesData.getJSONObject("data");
-            data.put("delFlag",1);
-            mesData.put("data", data);
+            mesData.put("id", teacher.getId());
             Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             mesData.put("tableName", "t_base_user");
-            mesData.put("data", baseUser);
-            JSONObject data2=mesData.getJSONObject("data");
-            data2.put("delFlag",1);
-            mesData.put("data", data2);
+            mesData.put("id", baseUser.getId());
             Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             mesData.put("tableName", "t_teacher_dept");
-            mesData.put("data", teacherDept);
-            JSONObject data3=mesData.getJSONObject("data");
-            data3.put("delFlag",1);
-            mesData.put("data", data3);
+            mesData.put("id", teacherDept.getId());
             Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             defaultMQProducer.send(studentMsg);
             defaultMQProducer.send(baseUserMsg);
@@ -176,9 +165,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                                     JSONObject mesData = new JSONObject();
                                     mesData.put("tableName", "t_teacher_dept");
                                     mesData.put("data", teacherDept1);
-                                    JSONObject data=mesData.getJSONObject("data");
-                                    data.put("delFlag",0);
-                                    mesData.put("data", data);
+                                    mesData.put("delFlag",0);
                                     Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                                     defaultMQProducer.send(teacherDeptMsg);
                                 } catch (Exception e) {
@@ -193,18 +180,13 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 Teacher teacher1=teacherMapper.selectTeacherDetails(teacher.getSchoolCode(),teacher.getCardNumber());
                 BaseUser baseUser1=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(teacher.getSchoolCode(),teacher.getCardNumber());
                 JSONObject mesData = new JSONObject();
+                mesData.put("delFlag",0);
                 mesData.put("tableName", "t_teacher");
                 mesData.put("data", teacher1);
-                JSONObject data=mesData.getJSONObject("data");
-                data.put("delFlag",0);
-                mesData.put("data", data);
                 Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(teacherMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUser1);
-                JSONObject data1=mesData.getJSONObject("data");
-                data1.put("delFlag",0);
-                mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
@@ -269,12 +251,10 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 //推送消息至MQ
                 if (teaDeptResult) {
                     JSONObject mesData = new JSONObject();
+                    mesData.put("del_flag",0);
                     TeacherDept teacherDept1=teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
                     mesData.put("tableName", "t_teacher_dept");
                     mesData.put("data", teacherDept1);
-                    JSONObject data=mesData.getJSONObject("data");
-                    data.put("del_flag","0");
-                    mesData.put("data", data);
                     Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                     defaultMQProducer.send(teacherDeptMsg);
                 }
@@ -319,18 +299,13 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 Teacher teacher1=teacherMapper.selectTeacherDetails(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
                 BaseUser baseUser1=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
                 JSONObject mesData = new JSONObject();
+                mesData.put("delFlag",0);
                 mesData.put("tableName", "t_teacher");
                 mesData.put("data", teacher1);
-                JSONObject data=mesData.getJSONObject("data");
-                data.put("delFlag",0);
-                mesData.put("data", data);
                 Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
                 defaultMQProducer.send(teacherMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUser1);
-                JSONObject data1=mesData.getJSONObject("data");
-                data1.put("delFlag",0);
-                mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }
@@ -348,9 +323,13 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         List<BaseUser> baseUserList = BeanMapUtils.mapList(teacherList, BaseUser.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             saveTeacherList.get(i).setId(snowflakeIdWorker.nextId());
+            saveTeacherList.get(i).setCreateDate(new Date());
+            saveTeacherList.get(i).setUpdateDate(new Date());
             baseUserList.get(i).setUserType(2);
             baseUserList.get(i).setUserId(saveTeacherList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
+            baseUserList.get(i).setCreateDate(new Date());
+            baseUserList.get(i).setUpdateDate(new Date());
         }
         List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
         baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
@@ -360,22 +339,13 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             //推送至MQ
             if (teaResult && baseUserResult) {
                 JSONObject mesData = new JSONObject();
+                mesData.put("delFlag",0);
                 mesData.put("tableName", "t_teacher");
                 mesData.put("data", saveTeacherList);
-                JSONArray data=mesData.getJSONArray("data");
-                Map<String,Object> map=new HashMap<>();
-                map.put("delFlag",0);
-                data.add(data.size()-1,map);
-                mesData.put("data", data);
                 Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
                 defaultMQProducer.send(teacherMsg);
                 mesData.put("tableName", "t_base_user");
                 mesData.put("data", baseUserList);
-                JSONArray data1=mesData.getJSONArray("data");
-                Map<String,Object> map1=new HashMap<>();
-                map1.put("delFlag",0);
-                data1.add(data1.size()-1,map1);
-                mesData.put("data", data1);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
                 defaultMQProducer.send(baseUserMsg);
             }

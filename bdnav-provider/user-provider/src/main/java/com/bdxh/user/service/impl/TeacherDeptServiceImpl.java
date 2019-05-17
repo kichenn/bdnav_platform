@@ -65,13 +65,9 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
             }
             //修改完成之后同步到第三方给第三方修改
                 JSONObject mesData = new JSONObject();
+                mesData.put("delFlag",0);
                 mesData.put("tableName", "t_teacher_dept");
                 mesData.put("data", teacherDepts);
-               JSONArray data=mesData.getJSONArray("data");
-                Map<String,Object> map1=new HashMap<>();
-                map1.put("delFlag",0);
-                data.add(data.size()-1,map1);
-                mesData.put("data", data);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                 try {
                     defaultMQProducer.send(baseUserMsg);

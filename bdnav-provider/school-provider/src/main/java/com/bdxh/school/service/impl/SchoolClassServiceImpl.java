@@ -61,12 +61,12 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
         Boolean result = schoolClassMapper.insertSelective(schoolClass) > 0;
         if (result) {
             //院系新增成功之后，发送异步消息，通知第三方，学校院系组织架构有变动，
+            schoolClass.setCreateDate(new Date());
+            schoolClass.setUpdateDate(new Date());
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", schoolClass);
             jsonObject.put("tableName", "t_school_class");
-            JSONObject data=jsonObject.getJSONObject("data");
-            data.put("delFlag",0);
-            jsonObject.put("data", data);
+            jsonObject.put("delFlag",0);
             Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
                 transactionMQProducer.send(message);
@@ -113,10 +113,9 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             jsonObject.put("data", schoolClass);
             jsonObject.put("message", "学校院系组织架构有调整");
             Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+            schoolClass.setUpdateDate(new Date());
             jsonObject.put("tableName", "t_school_class");
-            JSONObject data=jsonObject.getJSONObject("data");
-            data.put("delFlag",0);
-            jsonObject.put("data", data);
+            jsonObject.put("delFlag",0);
             Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             try {
                 transactionMQProducer.send(message2);
@@ -134,12 +133,9 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     @Override
     public Boolean delSchoolClassById(Long id) {
         JSONObject jsonObject = new JSONObject();
-        SchoolClass schoolClass=schoolClassMapper.selectByPrimaryKey(id);
         jsonObject.put("tableName", "t_school_class");
-        jsonObject.put("data", schoolClass);
-        JSONObject data=jsonObject.getJSONObject("data");
-        data.put("delFlag",1);
-        jsonObject.put("data", data);
+        jsonObject.put("data", id);
+        jsonObject.put("delFlag",1);
         Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
         try {
             transactionMQProducer.send(message);

@@ -176,6 +176,17 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     //删除学校组织信息
     @Override
     public Boolean delSchoolDeptById(Long id) {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("tableName", "t_school_dept");
+        jsonObject.put("id", id);
+        jsonObject.put("delFlag",1);
+        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        try {
+            transactionMQProducer.send(message);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("消息推送MQ失败");
+        }
         return schoolDeptMapper.deleteByPrimaryKey(id) > 0;
     }
 
