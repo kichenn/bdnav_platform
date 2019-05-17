@@ -437,7 +437,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             Map<String,Object> map=new HashMap<>();
             map.put("delFlag",0);
             data.add(data.size()-1,map);
-            mesData.put("delFlag",0);
             mesData.put("data", data);
             Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             try {

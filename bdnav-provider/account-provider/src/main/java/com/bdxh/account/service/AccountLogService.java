@@ -2,6 +2,8 @@ package com.bdxh.account.service;
 
 import com.bdxh.account.entity.AccountLog;
 
+import java.util.List;
+
 /**
  * @Description: 账户service
  * @Author: Kang
@@ -42,4 +44,14 @@ public interface AccountLogService {
      * @return
      */
     AccountLog findAccountLogByUserId(String userId);
+
+
+    /**
+     * 查询学校下的班级组织机构列表(schoolcode+groupId)
+     * @param schoolCode
+     * @param groupId
+     * @return
+     */
+    List<AccountLog> findAccountLogBySchoolCodeAndGroupId(String schoolCode,Long groupId);
+
 }
