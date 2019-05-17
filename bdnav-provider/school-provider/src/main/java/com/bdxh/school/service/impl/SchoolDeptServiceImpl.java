@@ -178,7 +178,10 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     public Boolean delSchoolDeptById(Long id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("tableName", "t_school_dept");
-        jsonObject.put("id", id);
+        List<Map<String,String>> data=new ArrayList<>();
+        Map<String,String> map=new HashMap<>();
+        map.put("id",id.toString());
+        jsonObject.put("data", data);
         jsonObject.put("delFlag",1);
         Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
         try {

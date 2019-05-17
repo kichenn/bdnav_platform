@@ -28,10 +28,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Description: 系统用户管理service实现
@@ -87,10 +84,17 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         JSONObject msgData = new JSONObject();
         msgData.put("delFlag",1);
         msgData.put("tableName", "t_school_user");
-        msgData.put("id",id);
+        List<Map<String,String>> data=new ArrayList<>();
+        Map<String,String> map=new HashMap<>();
+        map.put("id",id.toString());
+        msgData.put("data", data);
         Message schoolUserRoleMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
         msgData.put("tableName", "t_school_user_role");
-        msgData.put("id",id);
+        data.clear();
+        map.clear();
+        map.put("id",id.toString());
+        data.add(map);
+        msgData.put("data",data);
         Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
 
         try {
