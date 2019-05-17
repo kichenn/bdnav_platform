@@ -8,10 +8,16 @@
  */
 package com.bdxh.user.controller;
 
+import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
+import com.bdxh.common.helper.ali.sms.enums.SmsTempletEnum;
+import com.bdxh.common.helper.ali.sms.utils.SmsUtil;
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.RandomUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.common.utils.ValidatorUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.user.configration.redis.RedisUtil;
 import com.bdxh.user.dto.AddFamilyStudentDto;
 import com.bdxh.user.dto.FamilyStudentQueryDto;
 import com.bdxh.user.entity.FamilyStudent;
@@ -39,8 +45,12 @@ public class FamilyStudentController {
 
 @Autowired
 private FamilyStudentService familyStudentService;
+
 @Autowired
 private SnowflakeIdWorker snowflakeIdWorker;
+
+@Autowired
+private RedisUtil redisUtil;
 
     /**
      * 绑定孩子接口
@@ -104,5 +114,18 @@ private SnowflakeIdWorker snowflakeIdWorker;
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
+    }
+
+    @ApiOperation(value = "微校平台----手机获取短信验证码")
+    @RequestMapping(value = "/getPhoneCode",method = RequestMethod.POST)
+    public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
+        if (!ValidatorUtil.isMobile(phone)) {
+            return WrapMapper.error("请输入正确的手机号");
+        }
+        //生成随机数
+        String code = RandomUtil.createNumberCode(4);
+        redisUtil.setWithExpireTime(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +phone,code,AliyunSmsConstants.CodeConstants.CAPTCHA_TIME);
+        SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_VERIFICATION, phone, code + ",:绑定孩子");
+        return WrapMapper.ok(Boolean.TRUE);
     }
 }

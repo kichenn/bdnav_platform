@@ -178,7 +178,11 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     public Boolean delSchoolDeptById(Long id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("tableName", "t_school_dept");
-        jsonObject.put("id", id);
+        List<Map<String,String>> data=new ArrayList<>();
+        Map<String,String> map=new HashMap<>();
+        map.put("id",id.toString());
+        data.add(map);
+        jsonObject.put("data", data);
         jsonObject.put("delFlag",1);
         Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
         try {
@@ -194,12 +198,52 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean batchDelSchoolDeptInIds(List<Long> ids) {
+        //循环拼接数据结构然后推送给第三方
+        List<Map<String,String>> data=new ArrayList<>();
+        Map<String,String> map=new HashMap<>();
+        for (Long id : ids) {
+            map.put("id",id.toString());
+            data.add(map);
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("tableName", "t_school_dept");
+        jsonObject.put("data", data);
+        jsonObject.put("delFlag",1);
+        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        try {
+            transactionMQProducer.send(message);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("消息推送MQ失败");
+        }
         return schoolDeptMapper.batchDelSchoolDeptInIds(ids) > 0;
     }
 
     //删除学校组织信息By SchoolId
     @Override
     public Boolean delSchoolDeptBySchoolId(Long schoolId) {
+        //查出要删除的组织信息
+        SchoolDept schoolDept=new SchoolDept();
+        schoolDept.setSchoolId(schoolId);
+        List<SchoolDept> schoolDepts=schoolDeptMapper.select(schoolDept);
+        List<Map<String,String>> data=new ArrayList<>();
+        Map<String,String> map=new HashMap<>();
+        //循环拼接数据结构然后推送给第三方
+        for (SchoolDept dept : schoolDepts) {
+                map.put("id",dept.getId().toString());
+                data.add(map);
+        }
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("tableName", "t_school_dept");
+        jsonObject.put("data", data);
+        jsonObject.put("delFlag",1);
+        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        try {
+            transactionMQProducer.send(message);
+        }catch (Exception e){
+            e.printStackTrace();
+            log.info("消息推送MQ失败");
+        }
         return schoolDeptMapper.delSchoolDeptBySchoolId(schoolId) > 0;
     }
 

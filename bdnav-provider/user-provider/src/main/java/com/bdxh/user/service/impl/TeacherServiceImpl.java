@@ -87,13 +87,28 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             JSONObject mesData = new JSONObject();
             mesData.put("delFlag",1);
             mesData.put("tableName", "t_teacher");
-            mesData.put("id", teacher.getId());
+            List<Map<String,String>> data=new ArrayList<>();
+            Map<String,String> map=new HashMap<>();
+            map.put("id",baseUser.getUserId().toString());
+            map.put("cardNumber",cardNumber);
+            data.add(map);
+            mesData.put("data", data);
             Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             mesData.put("tableName", "t_base_user");
-            mesData.put("id", baseUser.getId());
+            //清空格式
+            data.clear();
+            map.clear();
+            map.put("id",baseUser.getId().toString());
+            data.add(map);
+            mesData.put("data",data);
             Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             mesData.put("tableName", "t_teacher_dept");
-            mesData.put("id", teacherDept.getId());
+            //清空格式
+            data.clear();
+            map.clear();
+            map.put("id",teacherDept.getId().toString());
+            data.add(map);
+            mesData.put("data",data);
             Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             defaultMQProducer.send(studentMsg);
             defaultMQProducer.send(baseUserMsg);

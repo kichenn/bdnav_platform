@@ -99,10 +99,21 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             JSONObject mesData = new JSONObject();
             mesData.put("delFlag",1);
             mesData.put("tableName", "t_student");
-            mesData.put("id", baseUser.getUserId());
+            //设置格式
+            List<Map<String,String>> data=new ArrayList<>();
+            Map<String,String> map=new HashMap<>();
+            map.put("id",baseUser.getUserId().toString());
+            map.put("cardNumber",cardNumber);
+            data.add(map);
+            mesData.put("data", data);
             Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             mesData.put("tableName", "t_base_user");
-            mesData.put("id", baseUser.getId());
+            //清空格式
+            data.clear();
+            map.clear();
+            map.put("id",baseUser.getId().toString());
+            data.add(map);
+            mesData.put("data",data);
             Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
             defaultMQProducer.send(studentMsg);
             defaultMQProducer.send(baseUserMsg);
@@ -122,17 +133,16 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     public void deleteBatchesStudentInfo(String schoolCode, String cardNumber) {
         String[] schoolCodes = schoolCode.split(",");
         String[] cardNumbers = cardNumber.split(",");
-
         List<Map<String, String>> list = new ArrayList<>();
         for (int i = 0; i < cardNumbers.length; i++) {
             Map<String, String> map = new HashMap<>();
             map.put("cardNumber", cardNumbers[i]);
             map.put("schoolCode", schoolCodes[i]);
             list.add(map);
-            studentMapper.batchRemoveStudentInfo(list);
-            familyStudentMapper.batchRemoveFamilyStudentInfo(list);
-            baseUserMapper.batchRemoveBaseUserInfo(list);
         }
+        studentMapper.batchRemoveStudentInfo(list);
+        familyStudentMapper.batchRemoveFamilyStudentInfo(list);
+        baseUserMapper.batchRemoveBaseUserInfo(list);
     }
 
 
