@@ -68,6 +68,8 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             if (result) {
                 //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
                 List<SchoolDept> schoolDepts=new ArrayList<>();
+                schoolDept.setCreateDate(new Date());
+                schoolDept.setUpdateDate(new Date());
                 schoolDepts.add(schoolDept);
                 //将学校信息转为部门信息的父节点
                 School school=schoolMapper.findSchoolBySchoolCode(schoolDept.getSchoolCode());
@@ -136,6 +138,7 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
             JSONObject data=jsonObject.getJSONObject("data");
             List<SchoolDept> schoolDepts=new ArrayList<>();
+            schoolDept.setUpdateDate(new Date());
             schoolDepts.add(schoolDept);
             //将学校信息转为部门信息的父节点
             School school=schoolMapper.findSchoolBySchoolCode(schoolDept.getSchoolCode());
