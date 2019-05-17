@@ -87,6 +87,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         List<Map<String,String>> data=new ArrayList<>();
         Map<String,String> map=new HashMap<>();
         map.put("id",id.toString());
+        data.add(map);
         msgData.put("data", data);
         Message schoolUserRoleMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
         msgData.put("tableName", "t_school_user_role");
@@ -108,6 +109,33 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
 
     @Override
     public Boolean delBatchSchoolUserInIds(List<Long> ids) {
+        List<Map<String,String>> data=new ArrayList<>();
+        Map<String,String> map=new HashMap<>();
+        for (Long id : ids) {
+            map.put("id",id.toString());
+            data.add(map);
+        }
+        JSONObject msgData = new JSONObject();
+        msgData.put("delFlag",1);
+        msgData.put("tableName", "t_school_user");
+        msgData.put("data", data);
+        Message schoolUserRoleMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
+        msgData.put("tableName", "t_school_user_role");
+        data.clear();
+        map.clear();
+        for (Long id : ids) {
+            map.put("id",id.toString());
+            data.add(map);
+        }
+        msgData.put("data",data);
+        Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
+        try {
+            defaultMQProducer.send(schoolUserMsg);
+            defaultMQProducer.send(schoolUserRoleMsg);
+        } catch (Exception e) {
+            log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
+            e.printStackTrace();
+        }
         return schoolUserMapper.delBatchSchoolUserInIds(ids) > 0;
     }
 
