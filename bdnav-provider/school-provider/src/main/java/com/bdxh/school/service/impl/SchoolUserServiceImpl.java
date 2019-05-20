@@ -196,40 +196,46 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                 schoolUserRole.setUserId(schoolUser.getId());
                 schoolUserRole.setRoleId(Long.valueOf(addSchoolUserDto.getRoles().get(i)));
                 Boolean userReleResult = schoolUserRoleMapper.insertSelective(schoolUserRole) > 0;
-                //推送消息
-                if (userReleResult) {
-                    JSONObject msgData = new JSONObject();
-                    msgData.put("delFlag",0);
-                    msgData.put("tableName", "t_school_user_role");
-                    List<SchoolUserRole> schoolClassList=new ArrayList<>();
-                    schoolClassList.add(schoolUserRole);
-                    msgData.put("data", schoolClassList);
-                    Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
-                    try {
-                        defaultMQProducer.send(schoolUserMsg);
-                    } catch (Exception e) {
-                        log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
-                        e.printStackTrace();
+                //添加判断测试时只推送石齐的数据根据学校ID判断
+                if (schoolUser.getSchoolId().equals(64)) {
+                    //推送消息
+                    if (userReleResult) {
+                        JSONObject msgData = new JSONObject();
+                        msgData.put("delFlag", 0);
+                        msgData.put("tableName", "t_school_user_role");
+                        List<SchoolUserRole> schoolClassList = new ArrayList<>();
+                        schoolClassList.add(schoolUserRole);
+                        msgData.put("data", schoolClassList);
+                        Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
+                        try {
+                            defaultMQProducer.send(schoolUserMsg);
+                        } catch (Exception e) {
+                            log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
-        }//推送消息
-        if (schoolUserResult) {
-            JSONObject msgData = new JSONObject();
-            msgData.put("tableName", "t_school_user");
-            msgData.put("delFlag",0);
-            List<SchoolUser> schoolUserList=new ArrayList<>();
-            schoolUserList.add(schoolUser);
-            msgData.put("data", schoolUserList);
-            Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
-            try {
-                defaultMQProducer.send(schoolUserMsg);
-            } catch (Exception e) {
-                log.info("推送学校用户信息失败，错误信息：" + e.getMessage());
-                e.printStackTrace();
+        }
+        //添加判断测试时只推送石齐的数据根据学校ID判断
+        if(schoolUser.getSchoolId().equals(64)) {
+            //推送消息
+            if (schoolUserResult) {
+                JSONObject msgData = new JSONObject();
+                msgData.put("tableName", "t_school_user");
+                msgData.put("delFlag", 0);
+                List<SchoolUser> schoolUserList = new ArrayList<>();
+                schoolUserList.add(schoolUser);
+                msgData.put("data", schoolUserList);
+                Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
+                try {
+                    defaultMQProducer.send(schoolUserMsg);
+                } catch (Exception e) {
+                    log.info("推送学校用户信息失败，错误信息：" + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
-
     }
 
     /**
@@ -270,41 +276,45 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                 schoolUserRole.setUserId(schoolUser.getId());
                 schoolUserRole.setRoleId(Long.valueOf(modifySchoolUserDto.getRoles().get(i)));
                 Boolean userReleResult = schoolUserRoleMapper.insertSelective(schoolUserRole) > 0;
-                if (userReleResult) {
-                    JSONObject msgData = new JSONObject();
-                    msgData.put("tableName", "t_school_user_role");
-                    List<SchoolUserRole> schoolUserRoleList=new ArrayList<>();
-                    schoolUserRoleList.add(schoolUserRole);
-                    msgData.put("data", schoolUserRoleList);
-                    msgData.put("delFlag",0);
-                    Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
-                    try {
-                        defaultMQProducer.send(schoolUserMsg);
-                    } catch (Exception e) {
-                        log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
-                        e.printStackTrace();
+                //添加判断测试时只推送石齐的数据根据学校ID判断
+                if(schoolUser.getSchoolId().equals(64)) {
+                    if (userReleResult) {
+                        JSONObject msgData = new JSONObject();
+                        msgData.put("tableName", "t_school_user_role");
+                        List<SchoolUserRole> schoolUserRoleList = new ArrayList<>();
+                        schoolUserRoleList.add(schoolUserRole);
+                        msgData.put("data", schoolUserRoleList);
+                        msgData.put("delFlag", 0);
+                        Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUserRole, msgData.toString().getBytes());
+                        try {
+                            defaultMQProducer.send(schoolUserMsg);
+                        } catch (Exception e) {
+                            log.info("推送学校用户角色信息失败，错误信息：" + e.getMessage());
+                            e.printStackTrace();
+                        }
                     }
                 }
+
             }
         }
         //推送消息
-
-        if (schoolUserResult) {
-            JSONObject msgData = new JSONObject();
-            msgData.put("tableName", "t_school_user");
-            List<SchoolUser> schoolUserList=new ArrayList<>();
-            schoolUserList.add(schoolUser);
-            msgData.put("data", schoolUserList);
-            msgData.put("delFlag",0);
-            Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
-            try {
-                defaultMQProducer.send(schoolUserMsg);
-            } catch (Exception e) {
-                log.info("推送学校用户信息失败，错误信息：" + e.getMessage());
-                e.printStackTrace();
+        //添加判断测试时只推送石齐的数据根据学校ID判断
+        if(schoolUser.getSchoolId().equals(64)) {
+            if (schoolUserResult) {
+                JSONObject msgData = new JSONObject();
+                msgData.put("tableName", "t_school_user");
+                List<SchoolUser> schoolUserList = new ArrayList<>();
+                schoolUserList.add(schoolUser);
+                msgData.put("data", schoolUserList);
+                msgData.put("delFlag", 0);
+                Message schoolUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, msgData.toString().getBytes());
+                try {
+                    defaultMQProducer.send(schoolUserMsg);
+                } catch (Exception e) {
+                    log.info("推送学校用户信息失败，错误信息：" + e.getMessage());
+                    e.printStackTrace();
+                }
             }
         }
-
-
     }
 }

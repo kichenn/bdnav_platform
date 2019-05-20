@@ -60,7 +60,7 @@ public class UserInfoJobController {
      */
     @Scheduled(cron = "0 0 0 * * ?")
     public void pushMessageToMq() {
-        synchronized (this) {
+      /*  synchronized (this) {
             log.info("===========每天0点推送信息至MQ给第三方同步============");
             JSONObject mesData = new JSONObject();
             //学生用户信息
@@ -242,6 +242,6 @@ public class UserInfoJobController {
                 log.info("=======================推送异常=======================");
             }
             log.info("=======================推送结束=======================");
-        }
+        }*/
     }
 }

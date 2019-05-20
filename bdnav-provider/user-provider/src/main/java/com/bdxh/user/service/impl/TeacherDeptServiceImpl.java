@@ -59,13 +59,15 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void batchUpdateTeacherDept(List<TeacherDept> teacherDepts) {
-        if(CollUtil.isNotEmpty(teacherDepts)){
+        if (CollUtil.isNotEmpty(teacherDepts)) {
             for (TeacherDept teacherDept : teacherDepts) {
                 teacherDeptMapper.batchUpdateTeacherDept(teacherDept);
             }
-            //修改完成之后同步到第三方给第三方修改
+            //添加判断测试时只推送石齐的数据根据学校ID判断
+            if (teacherDepts.get(0).getSchoolCode().equals("20190426")) {
+                //修改完成之后同步到第三方给第三方修改
                 JSONObject mesData = new JSONObject();
-                mesData.put("delFlag",0);
+                mesData.put("delFlag", 0);
                 mesData.put("tableName", "t_teacher_dept");
                 mesData.put("data", teacherDepts);
                 Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
@@ -75,7 +77,7 @@ public class TeacherDeptServiceImpl extends BaseService<TeacherDept> implements 
                     e.printStackTrace();
                     log.info("批量修改组织架构时推送失败");
                 }
-
+            }
         }
 
 

@@ -174,42 +174,48 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                             teacherDept.setDeptIds(teacherDto.getTeacherDeptDtoList().get(i).getDeptIds());
                             teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames().trim());
                             Boolean terDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
-                            if (terDeptResult) {
-                                try {
-                                    TeacherDept teacherDept1=teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(teacher.getSchoolCode(),teacher.getCardNumber());
-                                    JSONObject mesData = new JSONObject();
-                                    mesData.put("tableName", "t_teacher_dept");
-                                    List<TeacherDept> teacherDeptList=new ArrayList<>();
-                                    teacherDeptList.add(teacherDept1);
-                                    mesData.put("data", teacherDeptList);
-                                    mesData.put("delFlag",0);
-                                    Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                                    defaultMQProducer.send(teacherDeptMsg);
-                                } catch (Exception e) {
-                                    log.info("推送教职工部门关系信息失败，错误信息:" + e.getMessage());
-                                    e.printStackTrace();
+                            //添加判断测试时只推送石齐的数据
+                            if(teacherDto.getSchoolId().equals(64)) {
+                                if (terDeptResult) {
+                                    try {
+                                        TeacherDept teacherDept1 = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(teacher.getSchoolCode(), teacher.getCardNumber());
+                                        JSONObject mesData = new JSONObject();
+                                        mesData.put("tableName", "t_teacher_dept");
+                                        List<TeacherDept> teacherDeptList = new ArrayList<>();
+                                        teacherDeptList.add(teacherDept1);
+                                        mesData.put("data", teacherDeptList);
+                                        mesData.put("delFlag", 0);
+                                        Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                                        defaultMQProducer.send(teacherDeptMsg);
+                                    } catch (Exception e) {
+                                        log.info("推送教职工部门关系信息失败，错误信息:" + e.getMessage());
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         });
             }
             //将修改的信息推送至rocketMQ
-            if (teaResult && baseUserResult) {
-                Teacher teacher1=teacherMapper.selectTeacherDetails(teacher.getSchoolCode(),teacher.getCardNumber());
-                BaseUser baseUser1=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(teacher.getSchoolCode(),teacher.getCardNumber());
-                JSONObject mesData = new JSONObject();
-                mesData.put("delFlag",0);
-                mesData.put("tableName", "t_teacher");
-                List<Teacher> teacherList=new ArrayList<>();
-                teacherList.add(teacher1);
-                mesData.put("data", teacherList);
-                Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                defaultMQProducer.send(teacherMsg);
-                mesData.put("tableName", "t_base_user");
-                List<BaseUser> baseUserList=new ArrayList<>();
-                baseUserList.add(baseUser1);
-                mesData.put("data", baseUserList);
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                defaultMQProducer.send(baseUserMsg);
+            //添加判断测试时只推送石齐的数据
+            if(teacherDto.getSchoolId().equals(64)) {
+                if (teaResult && baseUserResult) {
+                    Teacher teacher1 = teacherMapper.selectTeacherDetails(teacher.getSchoolCode(), teacher.getCardNumber());
+                    BaseUser baseUser1 = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(teacher.getSchoolCode(), teacher.getCardNumber());
+                    JSONObject mesData = new JSONObject();
+                    mesData.put("delFlag", 0);
+                    mesData.put("tableName", "t_teacher");
+                    List<Teacher> teacherList = new ArrayList<>();
+                    teacherList.add(teacher1);
+                    mesData.put("data", teacherList);
+                    Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(teacherMsg);
+                    mesData.put("tableName", "t_base_user");
+                    List<BaseUser> baseUserList = new ArrayList<>();
+                    baseUserList.add(baseUser1);
+                    mesData.put("data", baseUserList);
+                    Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(baseUserMsg);
+                }
             }
         } catch (Exception e) {
             log.info("推送教职工信息失败，错误信息:" + e.getMessage());
@@ -270,17 +276,20 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 TeacherDept teacherDept = BeanMapUtils.map(teacherDeptDto, TeacherDept.class);
                 Boolean teaDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
                 //推送消息至MQ
-                if (teaDeptResult) {
-                    JSONObject mesData = new JSONObject();
-                    mesData.put("del_flag",0);
-                    TeacherDept teacherDept1=teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
-                    mesData.put("tableName", "t_teacher_dept");
-                    List<TeacherDept> teacherDeptList=new ArrayList<>();
-                    teacherDeptList.add(teacherDept1);
-                    mesData.put("data", teacherDeptList);
+                //添加判断测试时只推送石齐的数据
+                if(updateTeacherDto.getSchoolId().equals(64)) {
+                    if (teaDeptResult) {
+                        JSONObject mesData = new JSONObject();
+                        mesData.put("del_flag", 0);
+                        TeacherDept teacherDept1 = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
+                        mesData.put("tableName", "t_teacher_dept");
+                        List<TeacherDept> teacherDeptList = new ArrayList<>();
+                        teacherDeptList.add(teacherDept1);
+                        mesData.put("data", teacherDeptList);
 
-                    Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                    defaultMQProducer.send(teacherDeptMsg);
+                        Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                        defaultMQProducer.send(teacherDeptMsg);
+                    }
                 }
             }
             //修改时判断用户是否已经激活
@@ -318,24 +327,28 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                     throw new Exception("教职工信息同步失败,返回的错误码" + jsonObject.get("errcode") + "，同步教职工卡号=" + updateTeacherDto.getCardNumber() + "学校名称=" + updateTeacherDto.getSchoolName());
                 }
             }
+
             //将修改的信息推送至rocketMQ
-            if (teaResult && baseUserResult) {
-                Teacher teacher1=teacherMapper.selectTeacherDetails(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
-                BaseUser baseUser1=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(),updateTeacherDto.getCardNumber());
-                JSONObject mesData = new JSONObject();
-                mesData.put("delFlag",0);
-                mesData.put("tableName", "t_teacher");
-                List<Teacher> teacherList=new ArrayList<>();
-                teacherList.add(teacher1);
-                mesData.put("data", teacherList);
-                Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
-                defaultMQProducer.send(teacherMsg);
-                mesData.put("tableName", "t_base_user");
-                List<BaseUser> baseUserList=new ArrayList<>();
-                baseUserList.add(baseUser1);
-                mesData.put("data", baseUserList);
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
-                defaultMQProducer.send(baseUserMsg);
+            //添加判断测试时只推送石齐的数据根据学校ID判断
+            if(updateTeacherDto.getSchoolId().equals(64)) {
+                if (teaResult && baseUserResult) {
+                    Teacher teacher1 = teacherMapper.selectTeacherDetails(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
+                    BaseUser baseUser1 = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
+                    JSONObject mesData = new JSONObject();
+                    mesData.put("delFlag", 0);
+                    mesData.put("tableName", "t_teacher");
+                    List<Teacher> teacherList = new ArrayList<>();
+                    teacherList.add(teacher1);
+                    mesData.put("data", teacherList);
+                    Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(teacherMsg);
+                    mesData.put("tableName", "t_base_user");
+                    List<BaseUser> baseUserList = new ArrayList<>();
+                    baseUserList.add(baseUser1);
+                    mesData.put("data", baseUserList);
+                    Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(baseUserMsg);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -365,17 +378,20 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;
         try {
             //推送至MQ
-            if (teaResult && baseUserResult) {
-                JSONObject mesData = new JSONObject();
-                mesData.put("delFlag",0);
-                mesData.put("tableName", "t_teacher");
-                mesData.put("data", saveTeacherList);
-                Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
-                defaultMQProducer.send(teacherMsg);
-                mesData.put("tableName", "t_base_user");
-                mesData.put("data", baseUserList);
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
-                defaultMQProducer.send(baseUserMsg);
+            //添加判断测试时只推送石齐的数据根据学校ID判断
+            if(teacherList.get(0).getSchoolId().equals(64)) {
+                if (teaResult && baseUserResult) {
+                    JSONObject mesData = new JSONObject();
+                    mesData.put("delFlag", 0);
+                    mesData.put("tableName", "t_teacher");
+                    mesData.put("data", saveTeacherList);
+                    Message teacherMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(teacherMsg);
+                    mesData.put("tableName", "t_base_user");
+                    mesData.put("data", baseUserList);
+                    Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(baseUserMsg);
+                }
             }
         } catch (Exception e) {
             log.info("推送教职工信息失败，错误信息:" + e.getMessage());
