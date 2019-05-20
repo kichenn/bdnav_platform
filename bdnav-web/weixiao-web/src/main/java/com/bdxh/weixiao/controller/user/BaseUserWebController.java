@@ -48,7 +48,7 @@ public class BaseUserWebController {
      * @param
      * @return
      */
-    @ApiOperation(value = "用户激活接口")
+    @ApiOperation(value = "微校平台----用户激活接口")
     @RequestMapping(value = "/activationBaseUser", method = RequestMethod.POST)
     public Object activationBaseUser(@RequestBody ActivationBaseUserDto activationBaseUserDto) {
         //查询出激活用户所需要的第三方参数

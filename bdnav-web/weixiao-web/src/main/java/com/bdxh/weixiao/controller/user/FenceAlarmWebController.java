@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/fenceAlarm")
 @Validated
 @Slf4j
-@Api(value = "微校平台----学生出入围栏日志API", tags = "微校平台----学生出入围栏日志API")
+@Api(value = "电子围栏-----学生出入围栏日志API", tags = "电子围栏-----学生出入围栏日志API")
 public class FenceAlarmWebController {
     @Autowired
     private FenceAlarmControllerClient fenceAlarmControllerClient;
@@ -34,18 +34,17 @@ public class FenceAlarmWebController {
     private SchoolControllerClient schoolControllerClient;
     /**
      * 查询所有
-     * @param fenceAlarmQueryDto
+     * @param schoolCode
+     * @param cardNumber
      * @return
      */
-    @ApiOperation("查询所有围栏警报接口")
+    @ApiOperation("电子围栏-----查询所有围栏警报接口")
     @RequestMapping(value = "/getAllFenceAlarmInfos",method = RequestMethod.POST)
-    public Object getAllFenceAlarmInfos(@Valid @RequestBody FenceAlarmQueryDto fenceAlarmQueryDto, BindingResult bindingResult){
+    public Object getAllFenceAlarmInfos(@RequestParam("schoolCode")String schoolCode,@RequestParam("cardNumber")String cardNumber){
         try {
-            //检验参数
-            if (bindingResult.hasErrors()) {
-                String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-                return WrapMapper.error(errors);
-            }
+            FenceAlarmQueryDto fenceAlarmQueryDto=new FenceAlarmQueryDto();
+            fenceAlarmQueryDto.setSchoolCode(schoolCode);
+            fenceAlarmQueryDto.setCardNumber(cardNumber);
             return WrapMapper.ok(fenceAlarmControllerClient.getAllFenceAlarmInfos(fenceAlarmQueryDto).getResult());
         }catch (Exception e){
             e.printStackTrace();
@@ -59,7 +58,7 @@ public class FenceAlarmWebController {
      * @param id
      * @return
      */
-    @ApiOperation("查询单个围栏警报接口")
+    @ApiOperation("电子围栏-----查询单个围栏警报接口")
     @RequestMapping(value="/getFenceAlarmInfo",method = RequestMethod.POST)
     public Object getFenceAlarmInfo(
             @RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空")  String schoolCode,

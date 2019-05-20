@@ -24,6 +24,22 @@ public class PushAndroidAppInfo {
      */
     private String schoolCode;
 
+/*    *//**
+     * 学号
+     *//*
+    private String cardNumber;
+
+    *//**
+     * 平台 1.android 2.ios
+     *//*
+    private String platform;
+
+    *//**
+     * 用户姓名
+     *//*
+    private String userName;*/
+
+
     /**
      * 应用名称
      */

@@ -31,7 +31,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping(value = "/app")
 @RestController
-@Api(value = "微校平台----应用市场", tags = "微校平台----应用市场")
+@Api(value = "应用市场----应用市场", tags = "应用市场----应用市场")
 @Validated
 public class AppWebController {
 
@@ -47,7 +47,7 @@ public class AppWebController {
     @Autowired
     private InstallAppsControllerClient installAppsControllerClient;
 
-    @ApiOperation("家长查询学校应用列表")
+    @ApiOperation("应用市场----家长查询学校应用列表")
     @RequestMapping(value = "/familyFindAppInfo", method = RequestMethod.POST)
     public Object familyFindAppInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
         try {
@@ -69,7 +69,7 @@ public class AppWebController {
             return WrapMapper.error(e.getMessage());
         }
     }
-    @ApiOperation("根据APPId查看应用详情")
+    @ApiOperation("应用市场----根据APPId查看应用详情")
     @RequestMapping(value = "/findAppDetailsById", method = RequestMethod.POST)
     public Object findAppDetailsById(@RequestParam(value = "id")
                                      @NotNull(message = "应用ID不能为空") Long id){
@@ -81,7 +81,7 @@ public class AppWebController {
         }
     }
 
-    @ApiOperation("家长给孩子安装应用推送")
+    @ApiOperation("应用市场----家长给孩子安装应用推送")
     @RequestMapping(value = "/pushInstalledApp",method = RequestMethod.POST)
     public Object pushInstalledApp(@RequestParam(value = "id")
                                    @NotNull(message = "应用ID不能为空") Long id){
