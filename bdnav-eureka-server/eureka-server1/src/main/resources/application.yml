@@ -9,3 +9,6 @@ spring:
     user:
       name: admin
       password: bdxh123456
+      #忽略springboot 监控的路径
+    basic:
+      path: /actuator
