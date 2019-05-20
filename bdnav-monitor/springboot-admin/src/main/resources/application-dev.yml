@@ -11,6 +11,7 @@ eureka:
       user:
         name: admin
         password: bdxh123456
+    health-check-url-path: /actuator/health
   client:
     serviceUrl:
       defaultZone: http://admin:bdxh123456@eureka-server1:9001/eureka/,http://admin:bdxh123456@eureka-server2:9002/eureka/,http://admin:bdxh123456@eureka-server3:9003/eureka/
