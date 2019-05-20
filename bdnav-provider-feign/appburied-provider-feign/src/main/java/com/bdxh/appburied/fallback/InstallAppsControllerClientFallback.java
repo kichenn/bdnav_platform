@@ -11,6 +11,8 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
  * @Description: 控制器
@@ -42,6 +44,11 @@ public class InstallAppsControllerClientFallback implements InstallAppsControlle
 
     @Override
     public Wrapper<PageInfo<InstallApps>> findInstallAppsInContionPaging(InstallAppsQueryDto installAppsQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<InstallApps>> findInstallAppsInConation(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
 }

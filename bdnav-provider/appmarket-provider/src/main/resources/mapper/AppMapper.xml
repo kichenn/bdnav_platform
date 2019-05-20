@@ -91,6 +91,7 @@
   <select id="familyFindAppInfo" resultMap="BaseResultMap">
     select <include refid="BaseColumns"/> from t_app
     <where>
+    status =1 AND
     school_code=#{schoolCode} or ISNULL(school_code)
     </where>
   </select>

@@ -71,4 +71,9 @@ public class AppControllerClientFallback implements AppControllerClient {
     public Wrapper<List<App>> familyFindAppInfo(String schoolCode) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<Boolean> pushInstallApps(Long id) {
+        return WrapMapper.error();
+    }
 }

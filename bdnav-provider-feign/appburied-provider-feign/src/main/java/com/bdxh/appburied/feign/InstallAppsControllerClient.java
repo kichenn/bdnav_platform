@@ -7,6 +7,7 @@ import com.bdxh.appburied.dto.ModifyInstallAppsDto;
 import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.entity.InstallApps;
 import com.bdxh.appburied.fallback.InstallAppsControllerClientFallback;
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -15,6 +16,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -39,4 +43,9 @@ public interface InstallAppsControllerClient {
 
     @RequestMapping(value = "/installApps/findInstallAppsInContionPaging", method = RequestMethod.POST)
     Wrapper<PageInfo<InstallApps>> findInstallAppsInContionPaging(@Validated @RequestBody InstallAppsQueryDto installAppsQueryDto);
+
+    @RequestMapping(value = "/installApps/findInstallAppsInConation", method = RequestMethod.POST)
+    Wrapper<List<InstallApps>> findInstallAppsInConation(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber);
+
+
 }
