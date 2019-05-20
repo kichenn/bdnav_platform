@@ -301,6 +301,8 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         //添加判断测试时只推送石齐的数据根据学校ID判断
         if(schoolUser.getSchoolId().equals(Long.parseLong("64"))) {
             if (schoolUserResult) {
+                SchoolUser oldUser=schoolUserMapper.selectByPrimaryKey(schoolUser.getId());
+                schoolUser.setPassword(oldUser.getPassword());
                 JSONObject msgData = new JSONObject();
                 msgData.put("tableName", "t_school_user");
                 List<SchoolUser> schoolUserList = new ArrayList<>();
