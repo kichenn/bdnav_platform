@@ -52,7 +52,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         //school.setAppSecret();
         Boolean result = schoolMapper.insertSelective(school) > 0;
        School pushSchool=schoolMapper.selectByPrimaryKey(school.getId());
-        if(result){
+/*        if(result){
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", pushSchool);
             JSONObject data=jsonObject.getJSONObject("data");
@@ -66,7 +66,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
                 e.printStackTrace();
                 log.info("推送学校消息至user服务");
             }
-        }
+        }*/
         return result;
     }
 
@@ -77,7 +77,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
         BeanUtils.copyProperties(schoolDto, school);
         school.setUpdateDate(new Date());
         Boolean result = schoolMapper.updateByPrimaryKeySelective(school) > 0;
-        if(result){
+        /*if(result){
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", school);
             jsonObject.put("message", "学校有调整");
@@ -96,7 +96,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
                 e.printStackTrace();
                 log.info("推送学校消息至user服务");
             }
-        }
+        }*/
         /*if (result) {
             //删除列表缓存
             redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);
@@ -111,7 +111,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     public Boolean delSchool(Long id) {
         School school=schoolMapper.selectByPrimaryKey(id);
         Boolean result = schoolMapper.deleteByPrimaryKey(id) > 0;
-        if(result){
+      /*  if(result){
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("data", school);
             JSONObject data=jsonObject.getJSONObject("data");
@@ -125,7 +125,7 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
                 e.printStackTrace();
                 log.info("推送学校消息至user服务");
             }
-        }
+        }*/
        /* if (result) {
             //删除列表缓存
             redisCache.deleteByPrex(SCHOOL_LIST_PREFIX);

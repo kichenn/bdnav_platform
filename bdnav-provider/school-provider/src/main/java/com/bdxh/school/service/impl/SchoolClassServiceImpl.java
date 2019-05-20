@@ -60,7 +60,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
         }
         Boolean result = schoolClassMapper.insertSelective(schoolClass) > 0;
         //添加判断测试时只推送石齐的数据根据学校ID判断
-        if (schoolClassDto.getSchoolId().equals(64)) {
+        if (schoolClassDto.getSchoolId().equals(Long.parseLong("64"))) {
             if (result) {
                 //院系新增成功之后，发送异步消息，通知第三方，学校院系组织架构有变动，
                 schoolClass.setCreateDate(new Date());
@@ -121,7 +121,7 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
                 Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 transactionMQProducer.sendMessageInTransaction(message1, null);
                 //添加判断测试时只推送石齐的数据根据学校ID判断
-                if (schoolClassDto.getSchoolId().equals(64)) {
+                if (schoolClassDto.getSchoolId().equals(Long.parseLong("64"))) {
                     schoolClass.setUpdateDate(new Date());
                     jsonObject.put("tableName", "t_school_class");
                     List<SchoolClass> schoolClassList = new ArrayList<>();

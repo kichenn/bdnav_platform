@@ -67,7 +67,7 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
         Boolean result = schoolDeptMapper.insertSelective(schoolDept) > 0;
 
         //添加判断测试时只推送石齐的数据根据学校ID判断
-        if (schoolDeptDto.getSchoolId().equals(64)) {
+        if (schoolDeptDto.getSchoolId().equals(Long.parseLong("64"))) {
             if (result) {
                 //学校院系组织架构有变动，
                 List<SchoolDept> schoolDepts = new ArrayList<>();
@@ -145,7 +145,7 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
                 Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 transactionMQProducer.sendMessageInTransaction(message1, null);
                 //添加判断测试时只推送石齐的数据根据学校ID判断
-                if (schoolDeptDto.getSchoolId().equals(64)) {
+                if (schoolDeptDto.getSchoolId().equals(Long.parseLong("64"))) {
                     JSONObject data = jsonObject.getJSONObject("data");
                     List<SchoolDept> schoolDepts = new ArrayList<>();
                     schoolDept.setUpdateDate(new Date());
