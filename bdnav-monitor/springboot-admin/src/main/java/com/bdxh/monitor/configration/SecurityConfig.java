@@ -57,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        //密码：bdxh@123456
         auth.inMemoryAuthentication().passwordEncoder(bCryptPasswordEncoder()).withUser("admin").
                 password("$2a$10$kphDuyKOSTKUws2uIh4O6eTKVHOKktj4vg0odQCZn0fRltBCkzIP6").roles("system");
     }
