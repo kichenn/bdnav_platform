@@ -197,7 +197,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                 schoolUserRole.setRoleId(Long.valueOf(addSchoolUserDto.getRoles().get(i)));
                 Boolean userReleResult = schoolUserRoleMapper.insertSelective(schoolUserRole) > 0;
                 //添加判断测试时只推送石齐的数据根据学校ID判断
-                if (schoolUser.getSchoolId().equals(64)) {
+                if (schoolUser.getSchoolId().equals(Long.parseLong("64"))) {
                     //推送消息
                     if (userReleResult) {
                         JSONObject msgData = new JSONObject();
@@ -218,7 +218,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
             }
         }
         //添加判断测试时只推送石齐的数据根据学校ID判断
-        if(schoolUser.getSchoolId().equals(64)) {
+        if(schoolUser.getSchoolId().equals(Long.parseLong("64"))) {
             //推送消息
             if (schoolUserResult) {
                 JSONObject msgData = new JSONObject();
@@ -277,7 +277,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
                 schoolUserRole.setRoleId(Long.valueOf(modifySchoolUserDto.getRoles().get(i)));
                 Boolean userReleResult = schoolUserRoleMapper.insertSelective(schoolUserRole) > 0;
                 //添加判断测试时只推送石齐的数据根据学校ID判断
-                if(schoolUser.getSchoolId().equals(64)) {
+                if(schoolUser.getSchoolId().equals(Long.parseLong("64"))) {
                     if (userReleResult) {
                         JSONObject msgData = new JSONObject();
                         msgData.put("tableName", "t_school_user_role");
@@ -299,7 +299,7 @@ public class SchoolUserServiceImpl extends BaseService<SchoolUser> implements Sc
         }
         //推送消息
         //添加判断测试时只推送石齐的数据根据学校ID判断
-        if(schoolUser.getSchoolId().equals(64)) {
+        if(schoolUser.getSchoolId().equals(Long.parseLong("64"))) {
             if (schoolUserResult) {
                 JSONObject msgData = new JSONObject();
                 msgData.put("tableName", "t_school_user");

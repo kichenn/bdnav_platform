@@ -175,7 +175,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                             teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames().trim());
                             Boolean terDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
                             //添加判断测试时只推送石齐的数据
-                            if(teacherDto.getSchoolId().equals(64)) {
+                            if(teacherDto.getSchoolId().equals(Long.parseLong("64"))) {
                                 if (terDeptResult) {
                                     try {
                                         TeacherDept teacherDept1 = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(teacher.getSchoolCode(), teacher.getCardNumber());
@@ -197,7 +197,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             }
             //将修改的信息推送至rocketMQ
             //添加判断测试时只推送石齐的数据
-            if(teacherDto.getSchoolId().equals(64)) {
+            if(teacherDto.getSchoolId().equals(Long.parseLong("64"))) {
                 if (teaResult && baseUserResult) {
                     Teacher teacher1 = teacherMapper.selectTeacherDetails(teacher.getSchoolCode(), teacher.getCardNumber());
                     BaseUser baseUser1 = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(teacher.getSchoolCode(), teacher.getCardNumber());
@@ -277,7 +277,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 Boolean teaDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
                 //推送消息至MQ
                 //添加判断测试时只推送石齐的数据
-                if(updateTeacherDto.getSchoolId().equals(64)) {
+                if(updateTeacherDto.getSchoolId().equals(Long.parseLong("64"))) {
                     if (teaDeptResult) {
                         JSONObject mesData = new JSONObject();
                         mesData.put("del_flag", 0);
@@ -330,7 +330,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
             //将修改的信息推送至rocketMQ
             //添加判断测试时只推送石齐的数据根据学校ID判断
-            if(updateTeacherDto.getSchoolId().equals(64)) {
+            if(updateTeacherDto.getSchoolId().equals(Long.parseLong("64"))) {
                 if (teaResult && baseUserResult) {
                     Teacher teacher1 = teacherMapper.selectTeacherDetails(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
                     BaseUser baseUser1 = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
@@ -379,7 +379,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         try {
             //推送至MQ
             //添加判断测试时只推送石齐的数据根据学校ID判断
-            if(teacherList.get(0).getSchoolId().equals(64)) {
+            if(teacherList.get(0).getSchoolId().equals(Long.parseLong("64"))) {
                 if (teaResult && baseUserResult) {
                     JSONObject mesData = new JSONObject();
                     mesData.put("delFlag", 0);

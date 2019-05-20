@@ -97,7 +97,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
         try {
             //添加判断测试时只推送石齐的数据根据学校ID判断
-            if (baseUser.getSchoolId().equals(64)) {
+            if (baseUser.getSchoolId().equals(Long.parseLong("64"))) {
                 JSONObject mesData = new JSONObject();
                 mesData.put("delFlag", 1);
                 mesData.put("tableName", "t_student");
@@ -229,7 +229,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 }
             }
             //添加判断测试时只推送石齐的数据根据学校ID判断
-            if (baseUser.getSchoolId().equals(64)) {
+            if (baseUser.getSchoolId().equals(Long.parseLong("64"))) {
                 //将修改的信息推送至rocketMQ
                 if (stuResult && baseUserResult) {
                     Student student1 = studentMapper.findStudentInfo(student.getSchoolCode(), student.getCardNumber());
@@ -331,7 +331,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         Boolean stuResult = studentMapper.insert(student) > 0;
         Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
         //添加判断测试时只推送石齐的数据根据学校ID判断
-        if(baseUser.getSchoolId().equals(64)) {
+        if(baseUser.getSchoolId().equals(Long.parseLong("64"))) {
             try {
                 if (stuResult && baseUserResult) {
                     //将新增的信息推送至rocketMQ
@@ -384,7 +384,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;
             //将新增的信息推送至rocketMQ
             //添加判断测试时只推送石齐的数据根据学校ID判断
-            if(studentList.get(0).getSchoolId().equals(64)) {
+            if(studentList.get(0).getSchoolId().equals(Long.parseLong("64"))) {
                 if (stuResult && baseUserResult) {
                     JSONObject mesData = new JSONObject();
                     mesData.put("delFlag", 0);
@@ -436,7 +436,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 studentMapper.updateStudentInfo(student);
             }
             //添加判断测试时只推送石齐的数据根据学校ID判断
-            if(studentList.get(0).getSchoolId().equals(64)) {
+            if(studentList.get(0).getSchoolId().equals(Long.parseLong("64"))) {
                 JSONObject mesData = new JSONObject();
                 mesData.put("delFlag", 0);
                 mesData.put("tableName", "t_student");
