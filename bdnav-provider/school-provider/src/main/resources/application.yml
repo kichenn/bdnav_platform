@@ -13,12 +13,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-
-#忽略
-management:
-  health:
-    rocketBinder:
-      enabled: false
 #apollo配置
 app:
   id: school-provider-cluster1
