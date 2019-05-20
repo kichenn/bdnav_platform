@@ -21,7 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        // #忽略springboot 监控的路径
+        http.csrf().disable().headers().frameOptions().disable().and().authorizeRequests().antMatchers("/actuator/**").permitAll();
         super.configure(http);
     }
 
