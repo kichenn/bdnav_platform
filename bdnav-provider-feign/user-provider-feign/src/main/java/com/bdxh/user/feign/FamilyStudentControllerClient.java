@@ -11,6 +11,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
+
 
 /**
  * @description:
@@ -49,5 +51,12 @@ public interface FamilyStudentControllerClient {
     @RequestMapping(value = "/familyStudent/queryAllFamilyStudent",method =RequestMethod.POST)
     Wrapper<PageInfo<FamilyStudentVo>>  queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto);
 
-
+    /**
+     * 手机号码获取验证码
+     * @param phone
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/familyStudent/getPhoneCode",method = RequestMethod.POST)
+    Wrapper<Boolean> getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone);
 }

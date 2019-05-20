@@ -10,6 +10,8 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @description:
  * @author: binzh
@@ -32,5 +34,8 @@ public class FamilyStudentControllerFallback implements FamilyStudentControllerC
         return WrapMapper.error();
     }
 
-
+    @Override
+    public Wrapper<Boolean> getPhoneCode(@NotNull(message = "手机号码不能为空") String phone) {
+        return WrapMapper.error();
+    }
 }

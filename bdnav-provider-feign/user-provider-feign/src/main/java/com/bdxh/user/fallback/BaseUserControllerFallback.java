@@ -8,6 +8,7 @@ import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import org.springframework.stereotype.Component;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -49,6 +50,11 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
 
     @Override
     public Wrapper<List<String>> findSchoolNumberBySchool(String schoolCode) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<Boolean> getPhoneCode(@NotNull(message = "手机号码不能为空") String phone) {
         return WrapMapper.error();
     }
 }

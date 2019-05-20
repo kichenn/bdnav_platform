@@ -96,27 +96,30 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         familyStudentMapper.studentRemoveFamilyStudentInfo(schoolCode, cardNumber);
         baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
         try {
-            JSONObject mesData = new JSONObject();
-            mesData.put("delFlag",1);
-            mesData.put("tableName", "t_student");
-            //设置格式
-            List<Map<String,String>> data=new ArrayList<>();
-            Map<String,String> map=new HashMap<>();
-            map.put("id",baseUser.getUserId().toString());
-            map.put("cardNumber",cardNumber);
-            data.add(map);
-            mesData.put("data", data);
-            Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-            mesData.put("tableName", "t_base_user");
-            //清空格式
-            data.clear();
-            map.clear();
-            map.put("id",baseUser.getId().toString());
-            data.add(map);
-            mesData.put("data",data);
-            Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-            defaultMQProducer.send(studentMsg);
-            defaultMQProducer.send(baseUserMsg);
+            //添加判断测试时只推送石齐的数据根据学校ID判断
+            if (baseUser.getSchoolId().equals(64)) {
+                JSONObject mesData = new JSONObject();
+                mesData.put("delFlag", 1);
+                mesData.put("tableName", "t_student");
+                //设置格式
+                List<Map<String, String>> data = new ArrayList<>();
+                Map<String, String> map = new HashMap<>();
+                map.put("id", baseUser.getUserId().toString());
+                map.put("cardNumber", cardNumber);
+                data.add(map);
+                mesData.put("data", data);
+                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                mesData.put("tableName", "t_base_user");
+                //清空格式
+                data.clear();
+                map.clear();
+                map.put("id", baseUser.getId().toString());
+                data.add(map);
+                mesData.put("data", data);
+                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                defaultMQProducer.send(studentMsg);
+                defaultMQProducer.send(baseUserMsg);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -155,21 +158,21 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional(rollbackFor = Exception.class)
     public void updateStudentInfo(UpdateStudentDto updateStudentDto) {
 
-            //查出修改之前的基础用户信息
-            BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateStudentDto.getSchoolCode(),
-                    updateStudentDto.getCardNumber());
-            //如果改了手机号码就进行修改
-            if(!baseUser.getPhone().equals(updateStudentDto.getPhone())){
-                try {
-                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),updateStudentDto.getPhone());
-                }catch (Exception e){
-                    String message=e.getMessage();
-                    if (e instanceof DuplicateKeyException) {
-                        Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
-                    }
+        //查出修改之前的基础用户信息
+        BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateStudentDto.getSchoolCode(),
+                updateStudentDto.getCardNumber());
+        //如果改了手机号码就进行修改
+        if (!baseUser.getPhone().equals(updateStudentDto.getPhone())) {
+            try {
+                baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(), updateStudentDto.getPhone());
+            } catch (Exception e) {
+                String message = e.getMessage();
+                if (e instanceof DuplicateKeyException) {
+                    Preconditions.checkArgument(false, "当前手机号码已重复请重新填写");
                 }
             }
-            try {
+        }
+        try {
             Student student = BeanMapUtils.map(updateStudentDto, Student.class);
             student.getClassNames().trim();
             Boolean stuResult = studentMapper.updateStudentInfo(student) > 0;
@@ -225,20 +228,27 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                     throw new Exception("学生信息同步失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + updateStudentDto.getCardNumber() + "学校名称=" + updateStudentDto.getSchoolName());
                 }
             }
-            //将修改的信息推送至rocketMQ
-            if (stuResult && baseUserResult) {
-                Student student1=studentMapper.findStudentInfo(student.getSchoolCode(),student.getCardNumber());
-                BaseUser baseUser1=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(student.getSchoolCode(),student.getCardNumber());
-                JSONObject mesData = new JSONObject();
-                mesData.put("delFlag",0);
-                mesData.put("tableName", "t_student");
-                mesData.put("data", student1);
-                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                defaultMQProducer.send(studentMsg);
-                mesData.put("tableName", "t_base_user");
-                mesData.put("data", baseUser1);
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                defaultMQProducer.send(baseUserMsg);
+            //添加判断测试时只推送石齐的数据根据学校ID判断
+            if (baseUser.getSchoolId().equals(64)) {
+                //将修改的信息推送至rocketMQ
+                if (stuResult && baseUserResult) {
+                    Student student1 = studentMapper.findStudentInfo(student.getSchoolCode(), student.getCardNumber());
+                    BaseUser baseUser1 = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(student.getSchoolCode(), student.getCardNumber());
+                    JSONObject mesData = new JSONObject();
+                    mesData.put("delFlag", 0);
+                    mesData.put("tableName", "t_student");
+                    List<Student> studentList = new ArrayList<>();
+                    studentList.add(student1);
+                    mesData.put("data", studentList);
+                    Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(studentMsg);
+                    mesData.put("tableName", "t_base_user");
+                    List<BaseUser> baseUserList = new ArrayList<>();
+                    baseUserList.add(baseUser1);
+                    mesData.put("data", baseUserList);
+                    Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(baseUserMsg);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -304,11 +314,11 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         baseUser.setUpdateDate(new Date());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
-            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
-        }catch (Exception e){
-            String message=e.getMessage();
+            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(), baseUser.getPhone());
+        } catch (Exception e) {
+            String message = e.getMessage();
             if (e instanceof DuplicateKeyException) {
-                Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
+                Preconditions.checkArgument(false, "当前手机号码已重复请重新填写");
             }
         }
         student.setId(snowflakeIdWorker.nextId());
@@ -320,23 +330,30 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         student.setUpdateDate(new Date());
         Boolean stuResult = studentMapper.insert(student) > 0;
         Boolean baseUserResult = baseUserMapper.insert(baseUser) > 0;
-        try {
-            if (stuResult && baseUserResult) {
-                //将新增的信息推送至rocketMQ
-               JSONObject mesData = new JSONObject();
-                mesData.put("delFlag",0);
-                mesData.put("tableName", "t_student");
-                mesData.put("data", student);
-                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                defaultMQProducer.send(studentMsg);
-                mesData.put("tableName", "t_base_user");
-                mesData.put("data", baseUser);
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                defaultMQProducer.send(baseUserMsg);
+        //添加判断测试时只推送石齐的数据根据学校ID判断
+        if(baseUser.getSchoolId().equals(64)) {
+            try {
+                if (stuResult && baseUserResult) {
+                    //将新增的信息推送至rocketMQ
+                    JSONObject mesData = new JSONObject();
+                    mesData.put("delFlag", 0);
+                    mesData.put("tableName", "t_student");
+                    List<Student> studentList = new ArrayList<>();
+                    studentList.add(student);
+                    mesData.put("data", studentList);
+                    Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(studentMsg);
+                    mesData.put("tableName", "t_base_user");
+                    List<BaseUser> baseUserList = new ArrayList<>();
+                    baseUserList.add(baseUser);
+                    mesData.put("data", baseUserList);
+                    Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(baseUserMsg);
+                }
+            } catch (Exception e) {
+                log.info("推送学生信息失败，错误信息:" + e.getMessage());
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            log.info("推送学生信息失败，错误信息:" + e.getMessage());
-            e.printStackTrace();
         }
     }
 
@@ -349,34 +366,37 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
     @Transactional(rollbackFor = Exception.class)
     public void batchSaveStudentInfo(List<AddStudentDto> addStudentDtoList) {
         try {
-        List<Student> studentList = BeanMapUtils.mapList(addStudentDtoList, Student.class);
-        List<BaseUser> baseUserList = BeanMapUtils.mapList(studentList, BaseUser.class);
-        for (int i = 0; i < baseUserList.size(); i++) {
-            studentList.get(i).setId(snowflakeIdWorker.nextId());
-            studentList.get(i).setCreateDate(new Date());
-            studentList.get(i).setUpdateDate(new Date());
-            baseUserList.get(i).setUserType(1);
-            baseUserList.get(i).setUserId(studentList.get(i).getId());
-            baseUserList.get(i).setCreateDate(new Date());
-            baseUserList.get(i).setUpdateDate(new Date());
-            baseUserList.get(i).setId(snowflakeIdWorker.nextId());
-        }
-        List<BaseUserUnqiue> baseUserUnqiueList=BeanMapUtils.mapList(baseUserList,BaseUserUnqiue.class);
-        baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
-        Boolean stuResult = studentMapper.batchSaveStudentInfo(studentList) > 0;
-        Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;
+            List<Student> studentList = BeanMapUtils.mapList(addStudentDtoList, Student.class);
+            List<BaseUser> baseUserList = BeanMapUtils.mapList(studentList, BaseUser.class);
+            for (int i = 0; i < baseUserList.size(); i++) {
+                studentList.get(i).setId(snowflakeIdWorker.nextId());
+                studentList.get(i).setCreateDate(new Date());
+                studentList.get(i).setUpdateDate(new Date());
+                baseUserList.get(i).setUserType(1);
+                baseUserList.get(i).setUserId(studentList.get(i).getId());
+                baseUserList.get(i).setCreateDate(new Date());
+                baseUserList.get(i).setUpdateDate(new Date());
+                baseUserList.get(i).setId(snowflakeIdWorker.nextId());
+            }
+            List<BaseUserUnqiue> baseUserUnqiueList = BeanMapUtils.mapList(baseUserList, BaseUserUnqiue.class);
+            baseUserUnqiueMapper.batchSaveBaseUserPhone(baseUserUnqiueList);
+            Boolean stuResult = studentMapper.batchSaveStudentInfo(studentList) > 0;
+            Boolean baseUserResult = baseUserMapper.batchSaveBaseUserInfo(baseUserList) > 0;
             //将新增的信息推送至rocketMQ
-            if (stuResult && baseUserResult) {
-                JSONObject mesData = new JSONObject();
-                mesData.put("delFlag",0);
-                mesData.put("tableName", "t_student");
-                mesData.put("data", studentList);
-                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                defaultMQProducer.send(studentMsg);
-                mesData.put("tableName", "t_base_user");
-                mesData.put("data", baseUserList);
-                Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-                defaultMQProducer.send(baseUserMsg);
+            //添加判断测试时只推送石齐的数据根据学校ID判断
+            if(studentList.get(0).getSchoolId().equals(64)) {
+                if (stuResult && baseUserResult) {
+                    JSONObject mesData = new JSONObject();
+                    mesData.put("delFlag", 0);
+                    mesData.put("tableName", "t_student");
+                    mesData.put("data", studentList);
+                    Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(studentMsg);
+                    mesData.put("tableName", "t_base_user");
+                    mesData.put("data", baseUserList);
+                    Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                    defaultMQProducer.send(baseUserMsg);
+                }
             }
         } catch (Exception e) {
             log.info("推送学生信息失败，错误信息:" + e.getMessage());
@@ -415,15 +435,18 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 student.setUpdateDate(new Date());
                 studentMapper.updateStudentInfo(student);
             }
-            JSONObject mesData = new JSONObject();
-            mesData.put("delFlag",0);
-            mesData.put("tableName", "t_student");
-            mesData.put("data", studentList);
-            Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-            try {
-                defaultMQProducer.send(studentMsg);
-            } catch (Exception e) {
-                e.printStackTrace();
+            //添加判断测试时只推送石齐的数据根据学校ID判断
+            if(studentList.get(0).getSchoolId().equals(64)) {
+                JSONObject mesData = new JSONObject();
+                mesData.put("delFlag", 0);
+                mesData.put("tableName", "t_student");
+                mesData.put("data", studentList);
+                Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
+                try {
+                    defaultMQProducer.send(studentMsg);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -440,6 +463,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
 
     @Override
     public List<Student> findStudentInfo(StudentQueryDto studentQueryDto) {
-        return  studentMapper.selectAllStudentInfo(studentQueryDto);
+        return studentMapper.selectAllStudentInfo(studentQueryDto);
     }
 }

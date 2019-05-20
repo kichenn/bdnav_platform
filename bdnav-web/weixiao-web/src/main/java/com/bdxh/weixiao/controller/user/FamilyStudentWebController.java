@@ -1,6 +1,11 @@
 package com.bdxh.weixiao.controller.user;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
+import com.bdxh.common.helper.ali.sms.enums.SmsTempletEnum;
+import com.bdxh.common.helper.ali.sms.utils.SmsUtil;
+import com.bdxh.common.utils.RandomUtil;
+import com.bdxh.common.utils.ValidatorUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyStudentDto;
@@ -16,15 +21,12 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.stream.Collectors;
-
 /**
  * @description:
  * @author: binzh
@@ -51,28 +53,52 @@ public class FamilyStudentWebController {
     /**
      * 微校平台----家长绑定孩子
      *
-     * @param addFamilyStudentDto
-     * @param bindingResult
+     * @param studentName
+     * @param studentCardNumber
+     * @param relation
+     * @param phone
      * @return
      */
     @ApiOperation(value = "微校平台----家长绑定孩子接口")
     @RequestMapping(value = "/bindingStudent", method = RequestMethod.POST)
-    public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult) {
-        //检验参数
-        if (bindingResult.hasErrors()) {
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
+    public Object bindingStudent(@RequestParam("studentName")String  studentName,
+                                 @RequestParam("studentCardNumber")String studentCardNumber,
+                                 @RequestParam("relation")String relation,
+                                 @RequestParam("phone")String phone,
+                                 @RequestParam("schoolCode")String schoolCode,
+                                 @RequestParam("code")String code) {
         try {
+            //判断手机验证码是否正确
+            String saveCode=redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +phone);
+            if(!code.equals(saveCode)){
+                return WrapMapper.error("手机验证码错误");
+            }
+            String cardNumber="20190516002";
+            FamilyVo familyVo=familyControllerClient.queryFamilyInfo(schoolCode, cardNumber).getResult();
+            //判断是否存在对呀学号的学生
+            StudentVo studentVo=studentControllerClient.queryStudentInfo(schoolCode,studentCardNumber).getResult();
+            if(null==studentVo){
+                return WrapMapper.error("不存在该学生");
+            }
+            //判断当前学生是否已存在绑定关系
             FamilyStudentQueryDto familyStudentQueryDto = new FamilyStudentQueryDto();
-            familyStudentQueryDto.setStudentNumber(addFamilyStudentDto.getStudentNumber());
-            familyStudentQueryDto.setSchoolCode(addFamilyStudentDto.getSchoolCode());
+            familyStudentQueryDto.setStudentNumber(studentCardNumber);
+            familyStudentQueryDto.setSchoolCode(schoolCode);
             Wrapper wrapper = familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
             PageInfo pageInfo = (PageInfo) wrapper.getResult();
             if (pageInfo.getTotal() != 0) {
-                return WrapMapper.error(addFamilyStudentDto.getStudentName() + "已存在绑定关系");
+                return WrapMapper.error(studentName + "已存在绑定关系");
             }
-            FamilyVo family=familyControllerClient.queryFamilyInfo(addFamilyStudentDto.getSchoolCode(),addFamilyStudentDto.getCardNumber()).getResult();
+            AddFamilyStudentDto addFamilyStudentDto=new AddFamilyStudentDto();
+            addFamilyStudentDto.setSchoolId(Long.parseLong(familyVo.getSchoolId()));
+            addFamilyStudentDto.setSchoolCode(schoolCode);
+            addFamilyStudentDto.setCardNumber(cardNumber);
+            addFamilyStudentDto.setFamilyId(Long.parseLong(familyVo.getId()));
+            addFamilyStudentDto.setStudentId(studentVo.getSId());
+            addFamilyStudentDto.setStudentName(studentName);
+            addFamilyStudentDto.setStudentNumber(studentCardNumber);
+            addFamilyStudentDto.setRelation(relation);
+            FamilyVo family=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
             addFamilyStudentDto.setOperator(Long.parseLong(family.getId()));
             addFamilyStudentDto.setOperatorName(family.getName());
             Wrapper wrappers = familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
@@ -150,4 +176,10 @@ public class FamilyStudentWebController {
             return WrapMapper.error(e.getMessage());
         }
     }
+    @ApiOperation(value = "微校平台----手机获取短信验证码")
+    @RequestMapping(value = "/getPhoneCode",method = RequestMethod.POST)
+    public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
+        return familyStudentControllerClient.getPhoneCode(phone);
+    }
+
 }

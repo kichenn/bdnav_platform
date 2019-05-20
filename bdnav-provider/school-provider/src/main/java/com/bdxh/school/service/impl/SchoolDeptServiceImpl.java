@@ -64,16 +64,19 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
             schoolDept.setThisUrl(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName() + "/" + schoolDept.getName());
             schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
         }
-       Boolean result= schoolDeptMapper.insertSelective(schoolDept) > 0;
+        Boolean result = schoolDeptMapper.insertSelective(schoolDept) > 0;
+
+        //添加判断测试时只推送石齐的数据根据学校ID判断
+        if (schoolDeptDto.getSchoolId().equals(64)) {
             if (result) {
-                //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
-                List<SchoolDept> schoolDepts=new ArrayList<>();
+                //学校院系组织架构有变动，
+                List<SchoolDept> schoolDepts = new ArrayList<>();
                 schoolDept.setCreateDate(new Date());
                 schoolDept.setUpdateDate(new Date());
                 schoolDepts.add(schoolDept);
                 //将学校信息转为部门信息的父节点
-                School school=schoolMapper.findSchoolBySchoolCode(schoolDept.getSchoolCode());
-                SchoolDept schoolDept1=new SchoolDept();
+                School school = schoolMapper.findSchoolBySchoolCode(schoolDept.getSchoolCode());
+                SchoolDept schoolDept1 = new SchoolDept();
                 schoolDept1.setName(school.getSchoolName());
                 schoolDept1.setId(school.getId());
                 schoolDept1.setSchoolCode(school.getSchoolCode());
@@ -90,7 +93,7 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("tableName", "t_school_dept");
                 jsonObject.put("data", schoolDepts);
-                jsonObject.put("delFlag",0);
+                jsonObject.put("delFlag", 0);
                 Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 try {
                     transactionMQProducer.send(message);
@@ -99,78 +102,86 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
                     log.error("发送学校院系组织新增消息");
                 }
             }
+        }
+
         return result;
     }
 
     //修改学校组织信息
     @Override
     public Boolean modifySchoolDept(SchoolDeptModifyDto schoolDeptDto) {
-        SchoolDept schoolDept = new SchoolDept();
-        BeanUtils.copyProperties(schoolDeptDto, schoolDept);
-        if (new Long("-1").equals(schoolDept.getParentId())) {
-            schoolDept.setParentNames("");
-            schoolDept.setThisUrl(schoolDept.getName());
-            schoolDept.setParentIds("");
-        } else {
-            //查询父亲节点
-            SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
-            //树状
-            schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
-            schoolDept.setThisUrl(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName() + "/" + schoolDept.getName());
-            schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
-        }
-        //查询当前节点的子节点
-        // 修改当前组织，  子部门组织的 url parentnames 要跟着修改
-        List<SchoolDept> depts = findSchoolByParentId(schoolDept.getId());
-        if (CollectionUtils.isNotEmpty(depts)) {
-            depts.forEach(e -> {
-                e.setParentNames(schoolDept.getParentNames() + "/" + schoolDept.getName());
-                e.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName() + "/" + e.getName());
-                schoolDeptMapper.updateByPrimaryKeySelective(e);
-            });
-        }
-        Boolean result = schoolDeptMapper.updateByPrimaryKeySelective(schoolDept) > 0;
-        if (result) {
-            //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("data", schoolDept);
-            jsonObject.put("message", "学校部门组织架构有调整");
-            Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-            JSONObject data=jsonObject.getJSONObject("data");
-            List<SchoolDept> schoolDepts=new ArrayList<>();
-            schoolDept.setUpdateDate(new Date());
-            schoolDepts.add(schoolDept);
-            //将学校信息转为部门信息的父节点
-            School school=schoolMapper.findSchoolBySchoolCode(schoolDept.getSchoolCode());
-            SchoolDept schoolDept1=new SchoolDept();
-            schoolDept1.setName(school.getSchoolName());
-            schoolDept1.setId(school.getId());
-            schoolDept1.setSchoolCode(school.getSchoolCode());
-            schoolDept1.setThisUrl(school.getSchoolName());
-            schoolDept1.setSort(1);
-            schoolDept1.setUpdateDate(school.getUpdateDate());
-            schoolDept1.setCreateDate(school.getCreateDate());
-            schoolDept1.setSchoolId(school.getId());
-            schoolDept1.setParentIds(" ");
-            schoolDept1.setParentId(Long.parseLong("0"));
-            schoolDept1.setRemark(" ");
-            schoolDept1.setParentNames(" ");
-            schoolDepts.add(schoolDept1);
-            //处理数据格式
-            JSONObject jsonObject1 = new JSONObject();
-            jsonObject1.put("tableName", "t_school_dept");
-            jsonObject1.put("data", schoolDepts);
-            jsonObject1.put("delFlag",0);
-            Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject1.toJSONString().getBytes(Charset.forName("utf-8")));
-            try {
-                transactionMQProducer.sendMessageInTransaction(message1, null);
-                transactionMQProducer.send(message2);
-            } catch (Exception e) {
-                e.printStackTrace();
-                log.error("发送学校院系组织更新消息");
+        try {
+            SchoolDept schoolDept = new SchoolDept();
+            BeanUtils.copyProperties(schoolDeptDto, schoolDept);
+            if (new Long("-1").equals(schoolDept.getParentId())) {
+                schoolDept.setParentNames("");
+                schoolDept.setThisUrl(schoolDept.getName());
+                schoolDept.setParentIds("");
+            } else {
+                //查询父亲节点
+                SchoolDept schoolDeptTemp = findSchoolDeptById(schoolDeptDto.getParentId()).orElse(new SchoolDept());
+                //树状
+                schoolDept.setParentNames(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName());
+                schoolDept.setThisUrl(schoolDeptTemp.getParentNames() + "/" + schoolDeptTemp.getName() + "/" + schoolDept.getName());
+                schoolDept.setParentIds(schoolDeptTemp.getParentIds() + "," + schoolDeptTemp.getId());
             }
+            //查询当前节点的子节点
+            // 修改当前组织，  子部门组织的 url parentnames 要跟着修改
+            List<SchoolDept> depts = findSchoolByParentId(schoolDept.getId());
+            if (CollectionUtils.isNotEmpty(depts)) {
+                depts.forEach(e -> {
+                    e.setParentNames(schoolDept.getParentNames() + "/" + schoolDept.getName());
+                    e.setThisUrl(schoolDept.getParentNames() + "/" + schoolDept.getName() + "/" + e.getName());
+                    schoolDeptMapper.updateByPrimaryKeySelective(e);
+                });
+            }
+            Boolean result = schoolDeptMapper.updateByPrimaryKeySelective(schoolDept) > 0;
+
+            if (result) {
+                //院系修改成功之后，发送异步消息，通知user服务，学校院系组织架构有变动，
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("data", schoolDept);
+                jsonObject.put("message", "学校部门组织架构有调整");
+                Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+                transactionMQProducer.sendMessageInTransaction(message1, null);
+                //添加判断测试时只推送石齐的数据根据学校ID判断
+                if (schoolDeptDto.getSchoolId().equals(64)) {
+                    JSONObject data = jsonObject.getJSONObject("data");
+                    List<SchoolDept> schoolDepts = new ArrayList<>();
+                    schoolDept.setUpdateDate(new Date());
+                    schoolDepts.add(schoolDept);
+                    //将学校信息转为部门信息的父节点
+                    School school = schoolMapper.findSchoolBySchoolCode(schoolDept.getSchoolCode());
+                    SchoolDept schoolDept1 = new SchoolDept();
+                    schoolDept1.setName(school.getSchoolName());
+                    schoolDept1.setId(school.getId());
+                    schoolDept1.setSchoolCode(school.getSchoolCode());
+                    schoolDept1.setThisUrl(school.getSchoolName());
+                    schoolDept1.setSort(1);
+                    schoolDept1.setUpdateDate(school.getUpdateDate());
+                    schoolDept1.setCreateDate(school.getCreateDate());
+                    schoolDept1.setSchoolId(school.getId());
+                    schoolDept1.setParentIds(" ");
+                    schoolDept1.setParentId(Long.parseLong("0"));
+                    schoolDept1.setRemark(" ");
+                    schoolDept1.setParentNames(" ");
+                    schoolDepts.add(schoolDept1);
+                    //处理数据格式
+                    JSONObject jsonObject1 = new JSONObject();
+                    jsonObject1.put("tableName", "t_school_dept");
+                    jsonObject1.put("data", schoolDepts);
+                    jsonObject1.put("delFlag", 0);
+                    Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject1.toJSONString().getBytes(Charset.forName("utf-8")));
+                    transactionMQProducer.send(message2);
+                }
+
+            }
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("发送学校院系组织更新消息");
+            return false;
         }
-        return result;
     }
 
     //删除学校组织信息
@@ -178,16 +189,16 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     public Boolean delSchoolDeptById(Long id) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("tableName", "t_school_dept");
-        List<Map<String,String>> data=new ArrayList<>();
-        Map<String,String> map=new HashMap<>();
-        map.put("id",id.toString());
+        List<Map<String, String>> data = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
+        map.put("id", id.toString());
         data.add(map);
         jsonObject.put("data", data);
-        jsonObject.put("delFlag",1);
-        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        jsonObject.put("delFlag", 1);
+        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
         try {
             transactionMQProducer.send(message);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.info("消息推送MQ失败");
         }
@@ -199,20 +210,20 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     @Transactional(rollbackFor = Exception.class)
     public Boolean batchDelSchoolDeptInIds(List<Long> ids) {
         //循环拼接数据结构然后推送给第三方
-        List<Map<String,String>> data=new ArrayList<>();
-        Map<String,String> map=new HashMap<>();
+        List<Map<String, String>> data = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
         for (Long id : ids) {
-            map.put("id",id.toString());
+            map.put("id", id.toString());
             data.add(map);
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("tableName", "t_school_dept");
         jsonObject.put("data", data);
-        jsonObject.put("delFlag",1);
-        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        jsonObject.put("delFlag", 1);
+        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
         try {
             transactionMQProducer.send(message);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.info("消息推送MQ失败");
         }
@@ -223,24 +234,24 @@ public class SchoolDeptServiceImpl extends BaseService<SchoolDept> implements Sc
     @Override
     public Boolean delSchoolDeptBySchoolId(Long schoolId) {
         //查出要删除的组织信息
-        SchoolDept schoolDept=new SchoolDept();
+        SchoolDept schoolDept = new SchoolDept();
         schoolDept.setSchoolId(schoolId);
-        List<SchoolDept> schoolDepts=schoolDeptMapper.select(schoolDept);
-        List<Map<String,String>> data=new ArrayList<>();
-        Map<String,String> map=new HashMap<>();
+        List<SchoolDept> schoolDepts = schoolDeptMapper.select(schoolDept);
+        List<Map<String, String>> data = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
         //循环拼接数据结构然后推送给第三方
         for (SchoolDept dept : schoolDepts) {
-                map.put("id",dept.getId().toString());
-                data.add(map);
+            map.put("id", dept.getId().toString());
+            data.add(map);
         }
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("tableName", "t_school_dept");
         jsonObject.put("data", data);
-        jsonObject.put("delFlag",1);
-        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic,RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        jsonObject.put("delFlag", 1);
+        Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
         try {
             transactionMQProducer.send(message);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             log.info("消息推送MQ失败");
         }

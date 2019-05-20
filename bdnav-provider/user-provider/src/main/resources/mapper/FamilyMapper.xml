@@ -78,7 +78,7 @@
          image_name as imageName,
          birth,
          remark,
-         school_id AS shoolId,
+         school_id AS schoolId,
          school_code AS schoolCode,
          card_number AS cardNumber,
          create_date AS createDate,

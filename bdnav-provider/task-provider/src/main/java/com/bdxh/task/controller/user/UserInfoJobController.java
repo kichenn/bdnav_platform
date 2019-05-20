@@ -60,7 +60,7 @@ public class UserInfoJobController {
      */
     @Scheduled(cron = "0 0 0 * * ?")
     public void pushMessageToMq() {
-        synchronized (this) {
+      /*  synchronized (this) {
             log.info("===========每天0点推送信息至MQ给第三方同步============");
             JSONObject mesData = new JSONObject();
             //学生用户信息
@@ -78,7 +78,7 @@ public class UserInfoJobController {
 
                     mesData.put("tableName", "t_student");
                     mesData.put("data", studentList);
-                    mesData.put("del_flag","0");
+                    mesData.put("delFlag",0);
                     Message studentsMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_student, System.currentTimeMillis() + "", mesData.toJSONString().getBytes());
                     try {
                         defaultMQProducer.send(studentsMsg);
@@ -100,7 +100,7 @@ public class UserInfoJobController {
                     }
                     mesData.put("tableName", "t_teacher");
                     mesData.put("data", teacherList);
-                    mesData.put("del_flag","0");
+                    mesData.put("delFlag",0);
                     Message teachersMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, System.currentTimeMillis() + "", mesData.toJSONString().getBytes());
                     try {
                         defaultMQProducer.send(teachersMsg);
@@ -125,7 +125,7 @@ public class UserInfoJobController {
                     }
                     mesData.put("tableName", "t_teacher_dept");
                     mesData.put("data", teacherDepts);
-                    mesData.put("del_flag","0");
+                    mesData.put("delFlag",0);
                     Message teacherDeptListMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, System.currentTimeMillis() + "", mesData.toJSONString().getBytes());
                     try {
                         defaultMQProducer.send(teacherDeptListMsg);
@@ -149,7 +149,7 @@ public class UserInfoJobController {
                     }
                     mesData.put("tableName", "t_base_user");
                     mesData.put("data", baseUsers);
-                    mesData.put("del_flag","0");
+                    mesData.put("delFlag",0);
                     Message baseUserListMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, System.currentTimeMillis() + "", mesData.toJSONString().getBytes());
                     try {
                         defaultMQProducer.send(baseUserListMsg);
@@ -174,7 +174,7 @@ public class UserInfoJobController {
                     }
                     mesData.put("tableName", "t_school_user");
                     mesData.put("data", schoolUsers);
-                    mesData.put("del_flag","0");
+                    mesData.put("delFlag",0);
                     Message schoolUserListMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolUserInfoTag_schoolUser, System.currentTimeMillis() + "", mesData.toJSONString().getBytes());
                     try {
                         defaultMQProducer.send(schoolUserListMsg);
@@ -199,7 +199,7 @@ public class UserInfoJobController {
                     }
                     mesData.put("tableName", "t_school_dept");
                     mesData.put("data", schoolDeptList);
-                    mesData.put("del_flag","0");
+                    mesData.put("delFlag",0);
                     Message schoolDeptsMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_dept, System.currentTimeMillis() + "", mesData.toJSONString().getBytes());
                     try {
                         defaultMQProducer.send(schoolDeptsMsg);
@@ -224,7 +224,7 @@ public class UserInfoJobController {
                     }
                     mesData.put("tableName", "t_school_class");
                     mesData.put("data", schoolClassList);
-                    mesData.put("del_flag","0");
+                    mesData.put("delFlag",0);
                     Message schoolClassesMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, System.currentTimeMillis() + "", mesData.toJSONString().getBytes());
                     try {
                         defaultMQProducer.send(schoolClassesMsg);
@@ -242,6 +242,6 @@ public class UserInfoJobController {
                 log.info("=======================推送异常=======================");
             }
             log.info("=======================推送结束=======================");
-        }
+        }*/
     }
 }
