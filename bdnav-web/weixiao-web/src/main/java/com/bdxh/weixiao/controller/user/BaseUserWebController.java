@@ -31,7 +31,7 @@ import javax.validation.constraints.NotNull;
 @Slf4j
 @RequestMapping(value = "/baseUser")
 @RestController
-@Api(value = "微校平台----学校用户(学生 ， 家长 ， 老师)控制器", tags = "微校平台----学校用户(学生 ， 家长 ， 老师)控制器")
+@Api(value = "微校平台----微校学校用户(学生 ， 家长 ， 老师)控制器", tags = "微校平台----微校学校用户(学生 ， 家长 ， 老师)控制器")
 @Validated
 public class BaseUserWebController {
     @Autowired

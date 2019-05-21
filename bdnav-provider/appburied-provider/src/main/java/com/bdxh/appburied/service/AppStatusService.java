@@ -26,4 +26,19 @@ public interface AppStatusService extends IService<AppStatus> {
      * 条件分页查询app状态
      */
     PageInfo<AppStatus> findAppStatusInConationPaging(AppStatusQueryDto appStatusQueryDto);
+
+    /**
+     * 根据学校Code和学生卡号查询APP状态信息
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    List<AppStatus> findAppStatusInfoBySchoolCodeAndCardNumber(String schoolCode,String cardNumber);
+
+    /**
+     * 家长锁定加解锁
+     * @param appStatus
+     * @return
+     */
+    Boolean appStatusLockingAndUnlock(AppStatus appStatus);
 }

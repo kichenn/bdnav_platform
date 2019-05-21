@@ -3,21 +3,21 @@ package com.bdxh.appburied.controller;
 import com.bdxh.appburied.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.AppStatus;
+import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.bdxh.appburied.service.AppStatusService;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 控制器
@@ -86,5 +86,24 @@ public class AppStatusController {
     @ApiOperation(value = "分页上报App状态信息查询", response = AppStatus.class)
     public Object findAppStatusInContionPaging(@Validated @RequestBody AppStatusQueryDto appStatusQueryDto) {
         return WrapMapper.ok(appStatusService.findAppStatusInConationPaging(appStatusQueryDto));
+    }
+
+    @RequestMapping(value = "/findAppStatusInfoBySchoolCodeAndCardNumber", method = RequestMethod.POST)
+    @ApiOperation(value = "根据学生卡号和学校Code查询app状态")
+    public Object findAppStatusInfoBySchoolCodeAndCardNumber(@RequestParam("schoolCode") String schoolCode,
+                                                             @RequestParam("cardNumber") String cardNumber) {
+       return WrapMapper.ok(appStatusService.findAppStatusInfoBySchoolCodeAndCardNumber(schoolCode,cardNumber));
+    }
+
+    /**
+     * 管控锁定解锁应用接口 推送个推给移动端
+     * @param appStatus
+     * @return
+     */
+    @ApiOperation(value = "应用管控----锁定以及解锁App", tags = "应用管控----锁定以及解锁App")
+    @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
+    public Object appStatusLockingAndUnlock(@RequestBody  AppStatus appStatus) {
+        Boolean result=appStatusService.appStatusLockingAndUnlock(appStatus);
+        return WrapMapper.ok(result);
     }
 }
