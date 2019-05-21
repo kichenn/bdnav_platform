@@ -107,8 +107,8 @@ public class SchoolModesWebController {
 
     @RequestMapping(value = "/getListByPlatform", method = RequestMethod.GET)
     @ApiOperation(value = "根据平台查询所有模式")
-    public Object getListByPlatform(@RequestParam("SchoolId") Long SchoolId,@RequestParam("Platform") String Platform) {
-        Wrapper wrapper = schoolModeControllerClient.getListByPlatform(SchoolId,Platform);
+    public Object getListByPlatform(@RequestParam("schoolId") Long schoolId,@RequestParam("platform") String platform) {
+        Wrapper wrapper = schoolModeControllerClient.getListByPlatform(schoolId,platform);
         return WrapMapper.ok(wrapper.getResult());
     }
 }

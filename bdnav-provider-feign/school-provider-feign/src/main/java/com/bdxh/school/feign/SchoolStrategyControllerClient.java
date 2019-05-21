@@ -49,7 +49,7 @@ public interface SchoolStrategyControllerClient {
      */
     @RequestMapping(value = "/schoolStrategy/getByPriority", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority);
+    Wrapper getByPriority(@RequestParam("schoolCode") String schoolCode, @RequestParam("priority")Integer priority);
 
 
     /**
@@ -65,6 +65,6 @@ public interface SchoolStrategyControllerClient {
      */
     @RequestMapping(value = "/schoolStrategy/getStrategyList", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolStrategy>> getStrategyList(@RequestParam("SchoolCode") String SchoolCode);
+    Wrapper<List<SchoolStrategy>> getStrategyList(@RequestParam("schoolCode") String schoolCode);
 
 }

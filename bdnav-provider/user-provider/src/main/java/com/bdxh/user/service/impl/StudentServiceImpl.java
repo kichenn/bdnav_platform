@@ -263,6 +263,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
      * @param cardNumber
      * @return
      */
+
     @Override
     public StudentVo selectStudentVo(String schoolCode, String cardNumber) {
         StudentVo studentVo = studentMapper.selectStudentVo(schoolCode, cardNumber);

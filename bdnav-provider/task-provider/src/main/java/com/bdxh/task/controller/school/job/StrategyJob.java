@@ -1,5 +1,6 @@
 package com.bdxh.task.controller.school.job;
 
+
 import com.bdxh.account.feign.AccountLogControllerClient;
 import com.bdxh.common.helper.getui.constant.GeTuiConstant;
 import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
@@ -37,33 +38,38 @@ public class StrategyJob implements Job {
      */
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        String result = jobExecutionContext.getMergedJobDataMap().getString("site");
+        String schoolCode = jobExecutionContext.getMergedJobDataMap().getString("schoolCode");
+        Long groupId = jobExecutionContext.getMergedJobDataMap().getLong("groupId");
+        System.out.println("数据1========"+schoolCode);
+        System.out.println("数据2========"+groupId);
         //打印当前的执行时间
         Date date = new Date();
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println("result:" + result + "现在的时间是：" + sf.format(date));
+        System.out.println("result:" + schoolCode + "打印出现在的时间是：" + sf.format(date));
         //具体的业务逻辑
-      /*  List<AccountLog> AccountMongoList=accountLogControllerClient.findAccountLogBySchoolCodeAndGroupId()*/
+/*        List<AccountLog> AccountMongoList=accountLogControllerClient.findAccountLogBySchoolCodeAndGroupId(schoolCode,groupId).getResult();*/
         AppPushRequest appPushRequest= new AppPushRequest();
         appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
         appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
         appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
         List<String> clientIds = new ArrayList<>();
-      /*  for(AccountLog attribute : AccountMongoList) {
+        clientIds.add("59dc219038fde0484eebcbb6d5476f0c");
+/*        for(AccountLog attribute : AccountMongoList) {
             clientIds.add(attribute.getClientId());
-            System.out.println(attribute.getGroupId());
+            System.out.println("推送数据"+attribute.getClientId());
         }*/
         appPushRequest.setClientId(clientIds);
         //穿透模版
         AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
         appNotificationTemplate.setTitle("学校策略模式推送");
         //查询该学校下的所有策略
-       /* List<SchoolStrategy> list=schoolStrategyControllerClient.getStrategyList(schoolCode).getResult();*/
+     /*   List<SchoolStrategy> list=schoolStrategyControllerClient.getStrategyList(schoolCode).getResult();*/
         appNotificationTemplate.getTransmissionContent();
         appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
         //群发穿透模版
         Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
         //更改策略状态
+        System.out.println(resultMap.toString());
         System.out.println("Hello Quartz");
     }
 }
