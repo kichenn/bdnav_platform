@@ -114,7 +114,7 @@ public class SchoolStrategyController {
 			return WrapMapper.error(errors);
 		}
 		try{
-			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),Integer.valueOf(addPolicyDto.getPriority()));
+			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),addPolicyDto.getPriority());
 			Preconditions.checkArgument(strategy == null, "该策略已有相同优先级值,请更换后重试");
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
@@ -143,7 +143,7 @@ public class SchoolStrategyController {
 		}
 		try{
 			Boolean falg;
-			SchoolStrategy strategy=schoolStrategyService.getByPriority(modifyPolicyDto.getSchoolCode(),Integer.valueOf(modifyPolicyDto.getPriority()));
+			SchoolStrategy strategy=schoolStrategyService.getByPriority(modifyPolicyDto.getSchoolCode(),modifyPolicyDto.getPriority());
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
 			schoolStrategy.setRecursionPermission(Byte.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
@@ -171,7 +171,7 @@ public class SchoolStrategyController {
 	 */
 	@RequestMapping(value = "/getByPriority", method = RequestMethod.GET)
 	@ApiOperation(value = "验证学校策略优先级", response = Boolean.class)
-	public Object getByPriority(@RequestParam("schoolCode") String schoolCode, @RequestParam("priority")Integer priority) {
+	public Object getByPriority(@RequestParam("schoolCode") String schoolCode, @RequestParam("priority")Byte priority) {
 		try{
 			SchoolStrategy schoolStrategy=schoolStrategyService.getByPriority(schoolCode,priority);
 			if (schoolStrategy!=null){
@@ -205,8 +205,8 @@ public class SchoolStrategyController {
 	 */
 	@RequestMapping(value = "/getStrategyList", method = RequestMethod.GET)
 	@ApiOperation(value = "根据查询策略列表")
-	public Object getStrategyList(@RequestParam("schoolCode") String schoolCode) {
-		List<QuerySchoolStrategy> datas = schoolStrategyService.getStrategyList(schoolCode);
+	public Object getStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("pushState") Byte pushState) {
+		List<QuerySchoolStrategy> datas = schoolStrategyService.getStrategyList(schoolCode,pushState);
 		return WrapMapper.ok(datas);
 	}
 

@@ -112,7 +112,7 @@
         FROM
         t_school_strategy
         WHERE
-        school_code=#{schoolCode}
+        school_code=#{schoolCode} and push_state=#{pushState}
     </select>
 
 

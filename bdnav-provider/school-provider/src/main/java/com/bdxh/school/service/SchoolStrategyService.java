@@ -42,8 +42,8 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 	PageInfo<QuerySchoolStrategy> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);
 
 	//对比同一学校下策略优先级
-	SchoolStrategy getByPriority(String schoolCode,Integer priority);
+	SchoolStrategy getByPriority(String schoolCode,Byte priority);
 
 	//根据学校code查询策略列表
-	List<QuerySchoolStrategy> getStrategyList(String schoolCode);
+	List<QuerySchoolStrategy> getStrategyList(String schoolCode,Byte pushState);
 }

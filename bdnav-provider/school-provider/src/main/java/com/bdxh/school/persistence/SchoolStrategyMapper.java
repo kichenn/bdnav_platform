@@ -24,9 +24,9 @@ public interface SchoolStrategyMapper extends Mapper<SchoolStrategy> {
 	List<QuerySchoolStrategy> getByCondition(Map<String,Object> param);
 
 	//对比同一学校下策略优先级
-	SchoolStrategy getByPriority(@Param("schoolCode") String schoolCode,@Param("priority")Integer priority);
+	SchoolStrategy getByPriority(@Param("schoolCode") String schoolCode,@Param("priority")Byte priority);
 
 	//根据schoolcode查询学校策略
-	List<QuerySchoolStrategy> getStrategyList(@Param("schoolCode") String schoolCode);
+	List<QuerySchoolStrategy> getStrategyList(@Param("schoolCode") String schoolCode,@Param("pushState") Byte pushState);
 
 }
