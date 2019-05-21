@@ -73,7 +73,7 @@ public class AppControllerClientFallback implements AppControllerClient {
     }
 
     @Override
-    public Wrapper<Boolean> pushInstallApps(Long id) {
+    public Wrapper<Boolean> pushInstallApps(Long id, String userName, String cardNumber) {
         return WrapMapper.error();
     }
 }

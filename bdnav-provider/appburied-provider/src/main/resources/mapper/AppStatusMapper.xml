@@ -38,10 +38,10 @@
                 AND school_id=#{appStatus.schoolId,jdbcType = BIGINT}
             </if>
             <if test="appStatus.schoolName !=null and appStatus.schoolName!=''">
-                AND school_name  like CONCAT(CONCAT('%',#{appStatus.schoolName,jdbcType = VARCHAR}),'%')
+                AND school_name like CONCAT(CONCAT('%',#{appStatus.schoolName,jdbcType = VARCHAR}),'%')
             </if>
             <if test="appStatus.userName !=null and appStatus.userName!=''">
-                AND user_name  like CONCAT(CONCAT('%',#{appStatus.userName,jdbcType = VARCHAR}),'%')
+                AND user_name like CONCAT(CONCAT('%',#{appStatus.userName,jdbcType = VARCHAR}),'%')
             </if>
             <if test="appStatus.schoolCode !=null and appStatus.schoolCode!=''">
                 AND school_code like CONCAT(CONCAT('%',#{appStatus.schoolCode,jdbcType = VARCHAR}),'%')
@@ -54,7 +54,89 @@
             </if>
         </where>
 
-         ORDER BY create_date DESC
+        ORDER BY create_date DESC
+    </select>
+    <!--
+    根据学号和学校Code查询一个学生的所有应用管控信息
+    -->
+    <select id="findAppStatusInfoBySchoolCodeAndCardNumber" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_app_status
+        where school_code=#{schoolCode}
+        and card_number=#{cardNumber}
     </select>
 
+    <!--
+    根据包名查询单个应用的管控信息
+    -->
+    <select id="finAppStatusInfoByPackage" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_app_status
+        where school_code=#{schoolCode}
+        and card_number=#{cardNumber}
+        and app_package=#{appPackage}
+    </select>
+
+    <update id="updateAppStatus">
+        UPDATE t_app_status
+        <set >
+            <if test="platform!=null and platform!=''">
+                platform = #{platform},
+            </if>
+            <if test="accountId!=null and accountId!=''">
+                account_id = #{accountId},
+            </if>
+            <if test="userName!=null and userName!=''">
+                user_name = #{userName},
+            </if>
+            <if test="appPackage!=null and appPackage!=''">
+                app_package = #{appPackage},
+            </if>
+            <if test="appStatus!=0 and appStatus!=''">
+                app_status = #{appStatus},
+            </if>
+            <if test="userName!=null and userName!=''">
+                user_name = #{userName},
+            </if>
+                 update_date =NOW()
+        </set>
+            WHERE
+                id = #{id} and
+                school_code=#{schoolCode} and
+                card_number=#{cardNumber}
+    </update>
+
+    <insert id="addAppStatus">
+        INSERT INTO bdxh_appburied.t_app_status (
+            id,
+            platform,
+            account_id,
+            school_id,
+            school_code,
+            school_name,
+            user_name,
+            card_number,
+            app_package,
+            app_status,
+            create_date,
+            update_date
+        )
+        VALUES
+            (
+                #{id},
+                #{platform},
+                #{accountId},
+                #{schoolId},
+                #{schoolCode},
+                #{schoolName},
+                #{userName},
+                #{cardNumber},
+                #{appPackage},
+                #{appStatus},
+                NOW(),
+                NOW()
+            );
+    </insert>
 </mapper>

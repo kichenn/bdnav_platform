@@ -12,6 +12,8 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
  * @Description: 控制器
@@ -42,6 +44,16 @@ public class AppStatusControllerClientFallback implements AppStatusControllerCli
 
     @Override
     public Wrapper<PageInfo<AppStatus>> findAppStatusInContionPaging(AppStatusQueryDto appStatusQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<AppStatus>> findAppStatusInfoBySchoolCodeAndCardNumber(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper appStatusLockingAndUnlock(AppStatus appStatus) {
         return WrapMapper.error();
     }
 }

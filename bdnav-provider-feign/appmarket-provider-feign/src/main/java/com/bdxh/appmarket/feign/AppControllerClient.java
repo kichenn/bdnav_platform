@@ -55,5 +55,7 @@ public interface AppControllerClient {
     Wrapper<List<App>> familyFindAppInfo(@RequestParam("schoolCode") String schoolCode);
 
     @RequestMapping(value = "/app/pushInstallApps",method = RequestMethod.POST)
-    Wrapper<Boolean> pushInstallApps(@RequestParam("id") Long id);
+    Wrapper<Boolean> pushInstallApps(@RequestParam("id") Long id,
+                                     @RequestParam("userName")String userName,
+                                     @RequestParam("cardNumber")String cardNumber);
 }

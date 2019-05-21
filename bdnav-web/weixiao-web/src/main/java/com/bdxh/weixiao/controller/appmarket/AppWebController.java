@@ -29,9 +29,9 @@ import java.util.List;
  * @create: 2019-05-15 15:23
  **/
 @Slf4j
-@RequestMapping(value = "/app")
+@RequestMapping(value = "/appWeb")
 @RestController
-@Api(value = "应用市场----应用市场", tags = "应用市场----应用市场")
+@Api(value = "应用市场----微校应用市场API", tags = "应用市场----微校应用市场API")
 @Validated
 public class AppWebController {
 
@@ -63,32 +63,34 @@ public class AppWebController {
                     }
                 }
             }
-            return WrapMapper.ok(weiXiaoAppVoList);
+            return weiXiaoAppVoList;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
     }
+
     @ApiOperation("应用市场----根据APPId查看应用详情")
     @RequestMapping(value = "/findAppDetailsById", method = RequestMethod.POST)
     public Object findAppDetailsById(@RequestParam(value = "id")
-                                     @NotNull(message = "应用ID不能为空") Long id){
+                                     @NotNull(message = "应用ID不能为空") Long id) {
         try {
-            App app=appControllerClient.queryApp(id).getResult();
-            return WrapMapper.ok(app);
-        }catch (Exception e){
+            App app = appControllerClient.queryApp(id).getResult();
+            return app;
+        } catch (Exception e) {
             return WrapMapper.error();
         }
     }
 
     @ApiOperation("应用市场----家长给孩子安装应用推送")
-    @RequestMapping(value = "/pushInstalledApp",method = RequestMethod.POST)
-    public Object pushInstalledApp(@RequestParam(value = "id")
-                                   @NotNull(message = "应用ID不能为空") Long id){
+    @RequestMapping(value = "/pushInstalledApp", method = RequestMethod.POST)
+    public Object pushInstalledApp(@RequestParam("id") @NotNull(message = "应用ID不能为空") Long id,
+                                   @RequestParam("userName") @NotNull(message = "学生姓名不能为空") String userName,
+                                   @RequestParam("cardNumber") @NotNull(message = "学生卡号不能为空") String cardNumber) {
         try {
-            return WrapMapper.ok(appControllerClient.pushInstallApps(id).getResult());
-        }catch (Exception e){
-         return WrapMapper.error();
+            return appControllerClient.pushInstallApps(id, userName, cardNumber).getResult();
+        } catch (Exception e) {
+            return WrapMapper.error();
         }
     }
 }

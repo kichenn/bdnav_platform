@@ -36,7 +36,7 @@ import javax.validation.constraints.NotNull;
 @RequestMapping("/familyStudent")
 @Validated
 @Slf4j
-@Api(value = "子女关系----家长学生关系API", tags = "子女关系----家长学生关系API")
+@Api(value = "子女关系----微校家长学生关系API", tags = "子女关系----微校家长学生关系API")
 public class FamilyStudentWebController {
 
     @Autowired

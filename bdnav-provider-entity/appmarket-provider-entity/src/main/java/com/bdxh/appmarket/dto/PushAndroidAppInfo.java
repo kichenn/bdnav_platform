@@ -2,7 +2,6 @@ package com.bdxh.appmarket.dto;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 
 /**
  * @description:
@@ -24,20 +23,20 @@ public class PushAndroidAppInfo {
      */
     private String schoolCode;
 
-/*    *//**
+    /**
      * 学号
-     *//*
+     */
     private String cardNumber;
 
-    *//**
+    /**
      * 平台 1.android 2.ios
-     *//*
-    private String platform;
+     */
+    private Byte platform;
 
-    *//**
+    /**
      * 用户姓名
-     *//*
-    private String userName;*/
+     */
+    private String userName;
 
 
     /**

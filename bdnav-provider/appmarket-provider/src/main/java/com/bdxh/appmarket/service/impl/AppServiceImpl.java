@@ -55,6 +55,7 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
         appMapper.insertSelective(app);
         appVersion.setApkDesc(app.getAppDesc());
         appVersion.setAppId(app.getId());
+        appVersion.setApkName(app.getAppPackage());
         appVersionMapper.insertSelective(appVersion);
         if (appImages != null && appImages.size() > 0) {
             for (int i = 0; i < appImages.size(); i++) {

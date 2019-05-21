@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @RequestMapping("/familyFence")
 @Validated
 @Slf4j
-@Api(value = "电子围栏-----家长围栏API", tags = "电子围栏-----家长围栏API")
+@Api(value = "电子围栏-----微校家长围栏API", tags = "电子围栏-----微校家长围栏API")
 public class FamilyFenceWebController {
     @Autowired
     private FamilyFenceControllerClient familyFenceControllerClient;

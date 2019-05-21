@@ -1,6 +1,7 @@
 package com.bdxh.appmarket.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
@@ -246,7 +247,9 @@ public class AppController {
 
     @RequestMapping(value = "/pushInstallApps", method = RequestMethod.POST)
     @ApiOperation(value = "推送安装消息给安卓")
-    public Object pushInstallApps(@RequestParam("id") Long id) {
+    public Object pushInstallApps(@RequestParam("id") Long id,
+                                  @RequestParam("userName")String userName,
+                                  @RequestParam("cardNumber")String cardNumber) {
         //获取应用信息
         App app = appService.selectByKey(id);
         //获取应用最新的版本信息和包
@@ -262,9 +265,12 @@ public class AppController {
         pushAndroidAppInfo.setApkName(appVersion.getApkName());
         pushAndroidAppInfo.setApkSize(appVersion.getApkSize());
         pushAndroidAppInfo.setApkUrl(appVersion.getApkUrl());
+        pushAndroidAppInfo.setPlatform(app.getPlatform());
         pushAndroidAppInfo.setApkUrlName(appVersion.getApkUrlName());
         pushAndroidAppInfo.setAppVersion(appVersion.getAppVersion());
         pushAndroidAppInfo.setApkUrlName(appVersion.getApkUrlName());
+        pushAndroidAppInfo.setUserName(userName);
+        pushAndroidAppInfo.setCardNumber(cardNumber);
         //个推请求参数类
         AppPushRequest appPushRequest = new AppPushRequest();
         appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
@@ -277,7 +283,9 @@ public class AppController {
         //穿透模版:发送后不会在系统通知栏展现，SDK将消息传给第三方应用后需要开发者写展现代码才能看到。
         AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
         appNotificationTemplate.setTitle("安装应用");
-        System.out.println(pushAndroidAppInfo.toString());
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("data",pushAndroidAppInfo);
+        System.out.println(jsonObject.toString());
         appNotificationTemplate.setText(pushAndroidAppInfo.toString());
         /*appNotificationTemplate.setUrl();*/
         appNotificationTemplate.setLogo(app.getIconName());
