@@ -116,6 +116,8 @@ public class TriggerJobController {
                     scheduler.scheduleJob(jobDetail, cronTrigger);
                 }
             }
+        } else {
+            return WrapMapper.error("策略为空");
         }
         return WrapMapper.ok();
 
