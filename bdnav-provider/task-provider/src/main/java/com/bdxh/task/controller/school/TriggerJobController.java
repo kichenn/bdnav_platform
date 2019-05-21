@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.text.ParseException;
 import java.time.DayOfWeek;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Description: Quartz学校定时任务触发controller
@@ -47,11 +47,12 @@ public class TriggerJobController {
     public Object startStrategyJob(@RequestParam(value = "schoolCode") String schoolCode, @RequestParam(value = "groupId") Long groupId) throws SchedulerException, ParseException {
 
 
-        //创建一个jobDetail的实例，将该实例与HelloJob Class绑定
-        JobDetail jobDetail = JobBuilder.newJob(StrategyJob.class).withIdentity("myJob").build();
         //查询策略触发条件
         List<SchoolStrategy> strategyList = schoolStrategyControllerClient.getStrategyList(schoolCode).getResult();
         if (CollectionUtils.isNotEmpty(strategyList)) {
+            //创建schedule实例
+            StdSchedulerFactory factory = new StdSchedulerFactory();
+
             for (SchoolStrategy e : strategyList) {
                 //获取周时间段
                 String dayMark = e.getDayMark();
@@ -76,44 +77,44 @@ public class TriggerJobController {
                 for (String tempDay : exclusionDays) {
                     holidayCalendar.addExcludedDate(DateUtil.format(tempDay, "yyyy-MM-dd HH:mm:ss"));
                 }
+                //日时间段时间集合
+                Set<String> timeMarkResult = new HashSet<>();
 
                 //获取日时间段
                 String timeMark = e.getTimeMark();
                 //获取 2:00-3:00,3:00-4:00
                 String[] timeMarks = timeMark.split(",");
-
+                for (String tempTimeMark : timeMarks) {
+                    String[] sections = tempTimeMark.split("-");
+                    timeMarkResult.add(sections[0]);
+                    timeMarkResult.add(sections[1]);
+                }
                 //入参
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("schoolCode", schoolCode);
                 jsonObject.put("groupId", groupId);
 
-                int i = 0;
-                for (String tempTimeMark : timeMarks) {
+                for (String time : timeMarkResult) {
+                    //创建一个jobDetail的实例，将该实例与HelloJob Class绑定
+                    JobDetail jobDetail = JobBuilder.newJob(StrategyJob.class).withIdentity("startStrategyJob:" + e.getId() + ",time:" + time).build();
                     //执行表达式(#替换字段[分钟]，S小时)
                     String cronScheduleStr = "0 # S * * ?";
                     //获取 2:00 , 3:00
-                    String[] sections = timeMark.split("-");
-                    cronScheduleStr = cronScheduleStr.replace("#", sections[0].substring(sections[0].indexOf(":") + 1, sections.length));
-                    cronScheduleStr = cronScheduleStr.replace("S", sections[0].substring(0, sections[0].indexOf(":")));
+                    cronScheduleStr = cronScheduleStr.replace("#", time.substring(time.indexOf(":") + 1, time.length()));
+                    cronScheduleStr = cronScheduleStr.replace("S", time.substring(0, time.indexOf(":")));
 
-                    //创建schedule实例
-                    StdSchedulerFactory factory = new StdSchedulerFactory();
                     Scheduler scheduler = factory.getScheduler();
                     //添加排除周时间段筛选条件
                     scheduler.addCalendar("dayMark", weeklyCalendar, true, true);
                     //获取排除时间段
                     scheduler.addCalendar("exclusionDay", holidayCalendar, true, true);
-                    //排除日时间段(2:00 - 4:00) 只在 2点钟推送一次，4点钟推送一次，3点不推
-
-
                     //第二步：创建CronTrigger，指定组及名称,并设置Cron表达式
-                    CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity("startStrategyTrigger" + i)
+                    CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity("startStrategyTrigger:" + e.getId() + ",time:" + time)
                             .withSchedule(CronScheduleBuilder.cronSchedule(cronScheduleStr))
                             .usingJobData("data", jsonObject.toJSONString())
                             .build();
                     scheduler.start();
                     scheduler.scheduleJob(jobDetail, cronTrigger);
-                    i++;
                 }
             }
         }
@@ -121,9 +122,18 @@ public class TriggerJobController {
 
     }
 
+
     public static void main(String[] args) {
-        String s = "01:00-03:00,03";
+        String s = "01:10-03:20,03:00-04:00,04:00-05:00";
+
+        Set<String> result = new HashSet<>();
         String strs[] = s.split(",");
+        int i = 0;
+        for (String str : strs) {
+            String[] sections = str.split("-");
+            result.add(sections[0]);
+            result.add(sections[1]);
+        }
 
         System.out.println(s.substring(s.indexOf(":") + 1, s.length()));
         System.out.println(s.substring(0, s.indexOf(":")));
