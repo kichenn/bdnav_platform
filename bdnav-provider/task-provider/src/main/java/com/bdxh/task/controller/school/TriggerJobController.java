@@ -28,13 +28,13 @@ public class TriggerJobController {
 
     @ApiOperation("启动学校策略定时任务")
     @RequestMapping(value = "/startStrategyJob", method = RequestMethod.GET)
-    public Object startStrategyJob(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") Long groupId) throws SchedulerException {
+    public Object startStrategyJob(@RequestParam(value = "schoolCode") String schoolCode,@RequestParam(value = "groupId" ) Long groupId) throws SchedulerException {
 
         //创建一个jobDetail的实例，将该实例与HelloJob Class绑定
         JobDetail jobDetail = JobBuilder.newJob(StrategyJob.class).withIdentity("myJob").build();
         //创建一个Trigger触发器的实例，定义该job立即执行，并且每2秒执行一次，一直执行
-        SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity("myTrigger").usingJobData("site", "11111")
-                .startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(2).repeatForever()).build();
+        SimpleTrigger trigger = TriggerBuilder.newTrigger().withIdentity("myTrigger").usingJobData("schoolCode", schoolCode).usingJobData("groupId",groupId)
+                .startNow().withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(20).repeatForever()).build();
         //每日的9点40触发任务
 //        CronTrigger cronTrigger = TriggerBuilder.newTrigger().withIdentity("cronTrigger").withSchedule(CronScheduleBuilder.cronSchedule("0 40 9 * * ? ")).build();
         //创建schedule实例
@@ -43,5 +43,6 @@ public class TriggerJobController {
         scheduler.start();
         scheduler.scheduleJob(jobDetail, trigger);
         return WrapMapper.ok();
+
     }
 }
