@@ -67,6 +67,6 @@ public interface SchoolModeControllerClient {
      */
     @RequestMapping(value = "/schoolMode/getListByPlatform", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolMode>> getListByPlatform(@RequestParam("SchoolId") Long SchoolId,@RequestParam("Platform") String Platform);
+    Wrapper<List<SchoolMode>> getListByPlatform(@RequestParam("schoolId") Long schoolId,@RequestParam("platform") String platform);
 
 }

@@ -3,54 +3,54 @@
 <mapper namespace="com.bdxh.school.persistence.SchoolStrategyMapper">
 
     <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolStrategy">
-        <id column="id" jdbcType="BIGINT" property="Id"/>
-        <result column="policy_name" jdbcType="VARCHAR" property="PolicyName"/>
-        <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
-        <result column="school_code" jdbcType="VARCHAR" property="SchoolCode"/>
-        <result column="school_name" jdbcType="VARCHAR" property="SchoolName"/>
-        <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
-        <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
-        <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
-        <result column="priority" jdbcType="TINYINT" property="Priority"/>
-        <result column="model_id" jdbcType="BIGINT" property="ModelId"/>
-        <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
-        <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
-        <result column="day_mark" jdbcType="VARCHAR" property="DayMark"/>
-        <result column="time_mark" jdbcType="VARCHAR" property="TimeMark"/>
-        <result column="exclusion_days" jdbcType="VARCHAR" property="ExclusionDays"/>
-        <result column="push_state" jdbcType="TINYINT" property="PushState"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
-        <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
-        <result column="operator" jdbcType="BIGINT" property="Operator"/>
-        <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
-        <result column="remark" jdbcType="VARCHAR" property="Remark"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="policy_name" jdbcType="VARCHAR" property="policyName"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="recursion_permission" jdbcType="TINYINT" property="recursionPermission"/>
+        <result column="recursion_permission_ids" jdbcType="VARCHAR" property="recursionPermissionIds"/>
+        <result column="priority" jdbcType="TINYINT" property="priority"/>
+        <result column="model_id" jdbcType="BIGINT" property="modelId"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="day_mark" jdbcType="VARCHAR" property="dayMark"/>
+        <result column="time_mark" jdbcType="VARCHAR" property="timeMark"/>
+        <result column="exclusion_days" jdbcType="VARCHAR" property="exclusionDays"/>
+        <result column="push_state" jdbcType="TINYINT" property="pushState"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
     <resultMap id="BResultMap" type="com.bdxh.school.dto.QuerySchoolStrategy">
-        <id column="id" jdbcType="BIGINT" property="Id"/>
-        <result column="policy_name" jdbcType="VARCHAR" property="PolicyName"/>
-        <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
-        <result column="school_code" jdbcType="VARCHAR" property="SchoolCode"/>
-        <result column="school_name" jdbcType="VARCHAR" property="SchoolName"/>
-        <result column="group_id" jdbcType="BIGINT" property="GroupId"/>
-        <result column="recursion_permission" jdbcType="TINYINT" property="RecursionPermission"/>
-        <result column="recursion_permission_ids" jdbcType="VARCHAR" property="RecursionPermissionIds"/>
-        <result column="priority" jdbcType="TINYINT" property="Priority"/>
-        <result column="model_id" jdbcType="BIGINT" property="ModelId"/>
-        <result column="start_date" jdbcType="TIMESTAMP" property="StartDate"/>
-        <result column="end_date" jdbcType="TIMESTAMP" property="EndDate"/>
-        <result column="day_mark" jdbcType="VARCHAR" property="DayMark"/>
-        <result column="time_mark" jdbcType="VARCHAR" property="TimeMark"/>
-        <result column="exclusion_days" jdbcType="VARCHAR" property="ExclusionDays"/>
-        <result column="push_state" jdbcType="TINYINT" property="PushState"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
-        <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
-        <result column="operator" jdbcType="BIGINT" property="Operator"/>
-        <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
-        <result column="remark" jdbcType="VARCHAR" property="Remark"/>
-        <result column="name" jdbcType="VARCHAR" property="GroupName"/>
-        <result column="model_name" jdbcType="VARCHAR" property="ModelName"/>
-        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="policy_name" jdbcType="VARCHAR" property="policyName"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="group_id" jdbcType="BIGINT" property="groupId"/>
+        <result column="recursion_permission" jdbcType="TINYINT" property="recursionPermission"/>
+        <result column="recursion_permission_ids" jdbcType="VARCHAR" property="recursionPermissionIds"/>
+        <result column="priority" jdbcType="TINYINT" property="priority"/>
+        <result column="model_id" jdbcType="BIGINT" property="modelId"/>
+        <result column="start_date" jdbcType="TIMESTAMP" property="startDate"/>
+        <result column="end_date" jdbcType="TIMESTAMP" property="endDate"/>
+        <result column="day_mark" jdbcType="VARCHAR" property="dayMark"/>
+        <result column="time_mark" jdbcType="VARCHAR" property="timeMark"/>
+        <result column="exclusion_days" jdbcType="VARCHAR" property="exclusionDays"/>
+        <result column="push_state" jdbcType="TINYINT" property="pushState"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="name" jdbcType="VARCHAR" property="groupName"/>
+        <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
+        <result column="platform" jdbcType="VARCHAR" property="platform"/>
     </resultMap>
 
 
@@ -82,16 +82,16 @@
         LEFT JOIN t_school_class ON t_school_strategy.group_id = t_school_class.id
         <where>
             <if test="PolicyName !=null and PolicyName !=''">
-                AND t_school_strategy.policy_name LIKE CONCAT(CONCAT('%',#{PolicyName}),'%')
+                AND t_school_strategy.policy_name LIKE CONCAT(CONCAT('%',#{policyName}),'%')
             </if>
             <if test="SchoolName !=null and SchoolName!=''">
-                AND t_school_strategy.school_name LIKE CONCAT(CONCAT('%',#{SchoolName}),'%')
+                AND t_school_strategy.school_name LIKE CONCAT(CONCAT('%',#{schoolName}),'%')
             </if>
             <if test="SchoolCode !=null and SchoolCode!=''">
-                AND t_school_strategy.school_code=#{SchoolCode}
+                AND t_school_strategy.school_code=#{schoolCode}
             </if>
-            <if test="Platform !=null and Platform!=''">
-                AND t_school_mode.platform =#{Platform}
+            <if test="platform !=null and platform!=''">
+                AND t_school_mode.platform =#{platform}
             </if>
         </where>
         ORDER BY t_school_strategy.create_date DESC
@@ -103,7 +103,7 @@
         FROM
         t_school_strategy
         WHERE
-        school_code=#{SchoolCode} AND priority=#{Priority}
+        school_code=#{schoolCode} AND priority=#{priority}
     </select>
 
     <select id="getStrategyList" resultMap="BaseResultMap" parameterType="java.util.Map">
@@ -112,7 +112,7 @@
         FROM
         t_school_strategy
         WHERE
-        school_code=#{SchoolCode}
+        school_code=#{schoolCode} and push_state=#{pushState}
     </select>
 
 

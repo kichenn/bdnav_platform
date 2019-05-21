@@ -36,7 +36,7 @@ public class SchoolStrategyControllerClientFallback implements SchoolStrategyCon
     }
 
     @Override
-    public Wrapper getByPriority(String SchoolCode, Integer Priority) {
+    public Wrapper getByPriority(String schoolCode, Integer priority) {
         return WrapMapper.error();
     }
 
@@ -46,7 +46,7 @@ public class SchoolStrategyControllerClientFallback implements SchoolStrategyCon
     }
 
     @Override
-    public Wrapper<List<SchoolStrategy>> getStrategyList(String SchoolCode) {
+    public Wrapper<List<SchoolStrategy>> getStrategyList(String schoolCode) {
         return WrapMapper.error();
     }
 }

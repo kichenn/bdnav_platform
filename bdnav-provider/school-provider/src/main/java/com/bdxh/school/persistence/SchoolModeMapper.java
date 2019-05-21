@@ -23,9 +23,9 @@ public interface SchoolModeMapper extends Mapper<SchoolMode> {
 	 //带条件查询
      List<QuerySchoolMode> getByCondition(Map<String,Object> param);
      //根据名称查询模式信息
-	SchoolMode getSchoolModesByName(@Param("ModelName")String ModelName,@Param("SchoolId")Long SchoolId);
+	SchoolMode getSchoolModesByName(@Param("modelName")String modelName,@Param("schoolId")Long schoolId);
 	//根据模式平台查询模式
-	List<SchoolMode> getListByPlatform(@Param("SchoolId") Long SchoolId,@Param("Platform") String Platform);
+	List<SchoolMode> getListByPlatform(@Param("schoolId") Long schoolId,@Param("platform") String platform);
 
 
 }

@@ -14,93 +14,131 @@ import java.util.Date;
 @Data
 @Table(name = "t_school_strategy")
 public class SchoolStrategy {
-
+	/**
+	 * 主键
+	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty("主键")
-	private Long Id;
+	private Long id;
 
+	/**
+	 * 策略名称
+	 */
 	@Column(name = "policy_name")
-	@ApiModelProperty("策略名称")
-	private String PolicyName;
+	private String policyName;
 
+	/**
+	 * 学校ID
+	 */
 	@Column(name = "school_id")
-	@ApiModelProperty("学校ID")
-	private Long SchoolId;
+	private Long schoolId;
 
+	/**
+	 * 学校编码
+	 */
 	@Column(name = "school_code")
-	@ApiModelProperty("学校编码")
-	private String SchoolCode;
+	private String schoolCode;
 
-
+	/**
+	 * 学校名称
+	 */
 	@Column(name = "school_name")
-	@ApiModelProperty("学校名称")
-	private String SchoolName;
+	private String schoolName;
 
+	/**
+	 * 部门ID
+	 */
 	@Column(name = "group_id")
-	@ApiModelProperty("部门ID")
-	private Long GroupId;
+	private Long groupId;
 
+	/**
+	 * 是否递归权限 1 是 2 否
+	 */
 	@Column(name = "recursion_permission")
-	@ApiModelProperty("是否递归权限 1 是 2 否")
-	private Integer RecursionPermission;
+	private Byte recursionPermission;
 
+	/**
+	 * 递归权限ids
+	 */
 	@Column(name = "recursion_permission_ids")
-	@ApiModelProperty("递归权限ids")
-	private String RecursionPermissionIds;
+	private String recursionPermissionIds;
 
+	/**
+	 * 模式优先级
+	 */
 	@Column(name = "priority")
-	@ApiModelProperty("优先级")
-	private Integer Priority;
+	private Byte priority;
 
-
+	/**
+	 * 模式主键
+	 */
 	@Column(name = "model_id")
-	@ApiModelProperty("模式主键")
-	private Long ModelId;
+	private Long modelId;
 
+	/**
+	 * 开始日期
+	 */
 	@Column(name = "start_date")
-	@ApiModelProperty("开始日期")
-	private Date StartDate;
+	private Date startDate;
 
+	/**
+	 * 结束日期
+	 */
 	@Column(name = "end_date")
-	@ApiModelProperty("结束日期")
-	private Date EndDate;
+	private Date endDate;
 
+	/**
+	 * 周时间段(1允许，0不允许)
+	 */
 	@Column(name = "day_mark")
-	@ApiModelProperty("周时间段")
-	private String DayMark;
+	private String dayMark;
 
+	/**
+	 * 日时间段
+	 */
 	@Column(name = "time_mark")
-	@ApiModelProperty("日时间段")
-	private String TimeMark;
+	private String timeMark;
 
+	/**
+	 * 排除日期
+	 */
 	@Column(name = "exclusion_days")
-	@ApiModelProperty("排除日期")
-	private String ExclusionDays;
+	private String exclusionDays;
 
+	/**
+	 * 推送状态 1 未推送 2 已推送
+	 */
 	@Column(name = "push_state")
-	@ApiModelProperty("推送状态")
-	private Integer PushState;
+	private Byte pushState;
 
+	/**
+	 * 创建时间
+	 */
 	@Column(name = "create_date")
-	@ApiModelProperty("创建时间")
-	private Date CreateDate;
+	private Date createDate;
 
+	/**
+	 * 修改时间
+	 */
 	@Column(name = "update_date")
-	@ApiModelProperty("修改时间")
-	private Date UpdateDate;
+	private Date updateDate;
 
+	/**
+	 * 操作人
+	 */
 	@Column(name = "operator")
-	@ApiModelProperty("操作人")
-	private Long Operator;
+	private Long operator;
 
+	/**
+	 * 操作人姓名
+	 */
 	@Column(name = "operator_name")
-	@ApiModelProperty("操作人姓名")
-	private String OperatorName;
+	private String operatorName;
 
+	/**
+	 * 备注
+	 */
 	@Column(name = "remark")
-	@ApiModelProperty("备注")
-	private String Remark;
-
+	private String remark;
 
 }

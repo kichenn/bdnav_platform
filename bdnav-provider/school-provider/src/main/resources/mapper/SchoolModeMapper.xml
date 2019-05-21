@@ -3,35 +3,35 @@
 <mapper namespace="com.bdxh.school.persistence.SchoolModeMapper">
 
     <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolMode">
-        <id column="id" jdbcType="BIGINT" property="Id"/>
-        <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
-        <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
-        <result column="model_name" jdbcType="VARCHAR" property="ModelName"/>
-        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
-        <result column="priority" jdbcType="TINYINT" property="Priority"/>
-        <result column="usable_app" jdbcType="VARCHAR" property="UsableApp"/>
-        <result column="usable_device" jdbcType="VARCHAR" property="UsableDevice"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
-        <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
-        <result column="operator" jdbcType="BIGINT" property="Operator"/>
-        <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
-        <result column="remark" jdbcType="VARCHAR" property="Remark"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
+        <result column="platform" jdbcType="VARCHAR" property="platform"/>
+        <result column="priority" jdbcType="TINYINT" property="priority"/>
+        <result column="usable_app" jdbcType="VARCHAR" property="usableApp"/>
+        <result column="usable_device" jdbcType="VARCHAR" property="usableDevice"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
 
     <resultMap id="BResultMap" type="com.bdxh.school.dto.QuerySchoolMode">
-        <id column="id" jdbcType="BIGINT" property="Id"/>
-        <result column="school_id" jdbcType="BIGINT" property="SchoolId"/>
-        <result column="school_code" jdbcType="CHAR" property="SchoolCode"/>
-        <result column="model_name" jdbcType="VARCHAR" property="ModelName"/>
-        <result column="platform" jdbcType="VARCHAR" property="Platform"/>
-        <result column="priority" jdbcType="TINYINT" property="Priority"/>
-        <result column="usable_app" jdbcType="VARCHAR" property="UsableApp"/>
-        <result column="usable_device" jdbcType="VARCHAR" property="UsableDevice"/>
-        <result column="create_date" jdbcType="TIMESTAMP" property="CreateDate"/>
-        <result column="update_date" jdbcType="TIMESTAMP" property="UpdateDate"/>
-        <result column="operator" jdbcType="BIGINT" property="Operator"/>
-        <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
-        <result column="remark" jdbcType="VARCHAR" property="Remark"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="CHAR" property="schoolCode"/>
+        <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
+        <result column="platform" jdbcType="VARCHAR" property="platform"/>
+        <result column="priority" jdbcType="TINYINT" property="priority"/>
+        <result column="usable_app" jdbcType="VARCHAR" property="usableApp"/>
+        <result column="usable_device" jdbcType="VARCHAR" property="usableDevice"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="school_code" jdbcType="CHAR" property="schoolCodeList"/>
         <result column="school_name" jdbcType="VARCHAR" property="schoolNameList"/>
     </resultMap>
@@ -58,7 +58,7 @@
         SELECT
         <include refid="BaseColumns"/>
         FROM t_school_mode
-        WHERE model_name= #{ModelName} AND school_id=#{SchoolId} limit 1;
+        WHERE model_name= #{modelName} AND school_id=#{schoolId} limit 1;
 	</select>
 
 
@@ -70,14 +70,14 @@
         t_school_mode
         INNER JOIN t_school ON t_school_mode.school_id=t_school.id
         <where>
-            <if test="ModelName !=null and ModelName !=''">
-                t_school_mode.model_name LIKE CONCAT(CONCAT('%',#{ModelName}),'%')
+            <if test="modelName !=null and modelName !=''">
+                t_school_mode.model_name LIKE CONCAT(CONCAT('%',#{modelName}),'%')
             </if>
             <if test="schoolNameList !=null and schoolNameList!=''">
               AND t_school.school_name LIKE CONCAT(CONCAT('%',#{schoolNameList}),'%')
             </if>
-            <if test="Platform !=null and Platform!=''">
-              AND t_school_mode.platform =#{Platform}
+            <if test="platform !=null and platform!=''">
+              AND t_school_mode.platform =#{platform}
             </if>
         </where>
         ORDER BY t_school_mode.create_date DESC
@@ -100,7 +100,7 @@
         <include refid="BaseColumns"/>
         FROM t_school_mode
         WHERE
-        school_id=#{SchoolId} AND platform=#{Platform}
+        school_id=#{schoolId} AND platform=#{platform}
     </select>
 
 </mapper>

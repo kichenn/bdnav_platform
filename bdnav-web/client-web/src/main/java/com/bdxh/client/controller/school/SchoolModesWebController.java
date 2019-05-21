@@ -121,10 +121,10 @@ public class SchoolModesWebController {
 
     @RequestMapping(value = "/getListByPlatform", method = RequestMethod.GET)
     @ApiOperation(value = "根据平台查询所有模式")
-    public Object getListByPlatform(@RequestParam("Platform") String Platform) {
+    public Object getListByPlatform(@RequestParam("platform") String platform) {
         //设置操作人
         SchoolUser user = SecurityUtils.getCurrentUser();
-        Wrapper wrapper = schoolModeControllerClient.getListByPlatform(user.getSchoolId(),Platform);
+        Wrapper wrapper = schoolModeControllerClient.getListByPlatform(user.getSchoolId(),platform);
         return WrapMapper.ok(wrapper.getResult());
     }
 
