@@ -109,4 +109,22 @@ public class SchoolStrategyWebController {
         }
 
     }
+
+
+    /**
+     * @Description: 验证学校策略优先级
+     * @Date 2019-04-18 09:52:43
+     */
+    @RequestMapping(value = "/getBySchoolPriority", method = RequestMethod.GET)
+    @ApiOperation(value = "验证学校策略优先级", response = Boolean.class)
+    public Object getBySchoolPriority(@RequestParam("schoolCode") String schoolCode, @RequestParam("priority")Integer priority) {
+        try {
+            Wrapper wrapper=schoolStrategyControllerClient.getByPriority(schoolCode,priority);
+            return wrapper;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+
+    }
 }
