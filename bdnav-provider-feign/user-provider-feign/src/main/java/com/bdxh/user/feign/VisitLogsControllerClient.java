@@ -2,6 +2,7 @@ package com.bdxh.user.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.*;
+import com.bdxh.user.entity.VisitLogs;
 import com.bdxh.user.fallback.VisitLogsControllerFallback;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @description:
@@ -79,4 +81,10 @@ public interface VisitLogsControllerClient {
     @RequestMapping(value="/visitLogs/insertVisitLogsInfo",method = RequestMethod.POST)
     @ResponseBody
     Wrapper insertVisitLogsInfo( @RequestBody AddVisitLogsDto addVisitLogsDto);
+
+
+    @RequestMapping(value="/visitLogs/queryVisitLogByCardNumber",method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<PageInfo<VisitLogsVo>> queryVisitLogByCardNumber(@RequestParam(name="schoolCode") String schoolCode,
+                                                       @RequestParam(name="cardNumber") String cardNumber);
 }

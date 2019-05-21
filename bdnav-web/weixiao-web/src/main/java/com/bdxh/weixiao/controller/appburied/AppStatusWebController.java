@@ -42,7 +42,7 @@ public class AppStatusWebController {
     @Autowired
     private InstallAppsControllerClient installAppsControllerClient;
 
-    @ApiOperation(value = "应用管控----获取某个孩子的应用列表以及状态")
+    @ApiOperation(value = "家长应用管控----获取某个孩子的应用列表以及状态")
     @RequestMapping(value = "/queryAppStatusInfo", method = RequestMethod.POST)
     public Object queryAppStatusInfo(@RequestParam("schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
                                      @RequestParam("cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {
@@ -66,7 +66,7 @@ public class AppStatusWebController {
         }
     }
 
-    @ApiOperation(value = "应用管控----锁定以及解锁App")
+    @ApiOperation(value = "家长应用管控----锁定以及解锁App")
     @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
     public Object appStatusLockingAndUnlock(@RequestBody @Validated WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         try {

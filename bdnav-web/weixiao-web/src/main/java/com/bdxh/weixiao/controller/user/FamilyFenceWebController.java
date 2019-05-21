@@ -34,7 +34,7 @@ public class FamilyFenceWebController {
      * @param updateFamilyFenceDto
      * @return
      */
-    @ApiOperation(value="电子围栏-----修改围栏信息")
+    @ApiOperation(value="家长电子围栏-----修改围栏信息")
     @RequestMapping(value = "/updateFamilyFenceInfo",method = RequestMethod.POST)
     public Object updateFamilyFenceInfo(@Valid @RequestBody UpdateFamilyFenceDto updateFamilyFenceDto){
         try {
@@ -54,7 +54,7 @@ public class FamilyFenceWebController {
      * @param id
      * @return
      */
-    @ApiOperation(value="电子围栏-----删除围栏信息")
+    @ApiOperation(value="家长电子围栏-----删除围栏信息")
     @RequestMapping(value = "/removeFamilyFenceInfo",method = RequestMethod.POST)
     public Object removeFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
                                         @RequestParam("cardNumber") String cardNumber,
@@ -73,7 +73,7 @@ public class FamilyFenceWebController {
      * @param familyFenceQueryDto
      * @return
      */
-    @ApiOperation(value="电子围栏-----获取围栏表所有信息")
+    @ApiOperation(value="家长电子围栏-----获取围栏表所有信息")
     @RequestMapping(value = "/getFamilyFenceInfos",method = RequestMethod.POST)
     public Object getFamilyFenceInfos(@Valid @RequestBody FamilyFenceQueryDto familyFenceQueryDto){
         try {
@@ -92,7 +92,7 @@ public class FamilyFenceWebController {
      * @param id
      * @return
      */
-    @ApiOperation(value="电子围栏-----获取围栏表单个信息")
+    @ApiOperation(value="家长电子围栏-----获取围栏表单个信息")
     @RequestMapping(value = "/getFamilyFenceInfo",method = RequestMethod.POST)
     public Object getFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
                                      @RequestParam("cardNumber") String cardNumber,
@@ -110,7 +110,7 @@ public class FamilyFenceWebController {
      * 新增围栏设置
      * @param addFamilyFenceDto
      */
-    @ApiOperation(value="电子围栏-----新增围栏设置")
+    @ApiOperation(value="家长电子围栏-----新增围栏设置")
     @RequestMapping(value = "/addFamilyFenceInfo",method = RequestMethod.POST)
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto){
         try {

@@ -72,4 +72,12 @@ public interface VisitLogsService extends IService<VisitLogs> {
 	 * @param schoolName
 	 */
 	void updateSchoolName(String schoolCode,String schoolName);
+
+	/**
+	 * 微校平台--------查询单个孩子的浏览器访问日志
+	 * @param schoolCode
+	 * @param cardNumber 学生学号
+	 * @return
+	 */
+	PageInfo<VisitLogsVo> queryVisitLogByCardNumber(String schoolCode, String cardNumber);
 }

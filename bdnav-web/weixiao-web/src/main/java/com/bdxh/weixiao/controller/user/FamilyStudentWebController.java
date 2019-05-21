@@ -59,7 +59,7 @@ public class FamilyStudentWebController {
      * @param phone
      * @return
      */
-    @ApiOperation(value = "子女关系----家长绑定孩子接口")
+    @ApiOperation(value = "家长子女关系----家长绑定孩子接口")
     @RequestMapping(value = "/bindingStudent", method = RequestMethod.POST)
     public Object bindingStudent(@RequestParam("studentName")String  studentName,
                                  @RequestParam("studentCardNumber")String studentCardNumber,
@@ -117,7 +117,7 @@ public class FamilyStudentWebController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "子女关系----删除学生家长绑定关系")
+    @ApiOperation(value = "家长子女关系----删除学生家长绑定关系")
     @RequestMapping(value = "/removeFamilyOrStudent", method = RequestMethod.GET)
     public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
                                         @RequestParam(name = "cardNumber") @NotNull(message = "微校卡号不能为空") String cardNumber,
