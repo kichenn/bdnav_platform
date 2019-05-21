@@ -108,7 +108,7 @@ public class SecurityController {
                     addAccountLogDto.setSchoolId(account.getSchoolId());
                     addAccountLogDto.setSchoolCode(account.getSchoolCode());
                     addAccountLogDto.setSchoolName(account.getSchoolName());
-                    addAccountLogDto.setGroupId(student.getClassId());
+                    addAccountLogDto.setGroupId(student == null ? "testGroupId" : student.getClassId());
                     addAccountLogDto.setUserId(account.getUserId());
                     addAccountLogDto.setCardNumber(account.getCardNumber());
                     addAccountLogDto.setUserPhone(account.getUserPhone());
