@@ -46,7 +46,6 @@ public class TriggerJobController {
     @RequestMapping(value = "/startStrategyJob", method = RequestMethod.GET)
     public Object startStrategyJob(@RequestParam(value = "schoolCode") String schoolCode, @RequestParam(value = "groupId") Long groupId) throws SchedulerException, ParseException {
 
-
         //查询策略触发条件
         List<SchoolStrategy> strategyList = schoolStrategyControllerClient.getStrategyList(schoolCode).getResult();
         if (CollectionUtils.isNotEmpty(strategyList)) {
