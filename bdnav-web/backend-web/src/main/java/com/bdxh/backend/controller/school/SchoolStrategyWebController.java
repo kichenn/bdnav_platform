@@ -95,9 +95,9 @@ public class SchoolStrategyWebController {
      */
     @RequestMapping(value = "/getByPriority", method = RequestMethod.GET)
     @ApiOperation(value = "验证学校策略优先级", response = Boolean.class)
-    public Object getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority) {
+    public Object getByPriority(@RequestParam("schoolCode") String schoolCode, @RequestParam("priority")Integer priority) {
         try {
-            Wrapper wrapper=schoolStrategyControllerClient.getByPriority(SchoolCode,Priority);
+            Wrapper wrapper=schoolStrategyControllerClient.getByPriority(schoolCode,priority);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -114,6 +114,17 @@ public class SchoolStrategyWebController {
     @ApiOperation(value = "查询列表信息")
     public Object findAllStrategy() {
         Wrapper wrapper = schoolStrategyControllerClient.findAllStrategy();
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
+    /**
+     * @Description: 根据schoolcode查询学校列表信息
+     * @Date 2019-04-18 09:52:43
+     */
+    @RequestMapping(value="/getStrategyList",method = RequestMethod.GET)
+    @ApiOperation(value = "根据schoolcode查询列表信息")
+    public Object getStrategyList(@RequestParam("schoolCode") String schoolCode) {
+        Wrapper wrapper = schoolStrategyControllerClient.getStrategyList(schoolCode);
         return WrapMapper.ok(wrapper.getResult());
     }
 

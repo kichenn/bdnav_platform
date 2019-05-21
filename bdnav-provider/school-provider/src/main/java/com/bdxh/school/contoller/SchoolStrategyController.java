@@ -114,11 +114,11 @@ public class SchoolStrategyController {
 			return WrapMapper.error(errors);
 		}
 		try{
-			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),addPolicyDto.getPriority());
+			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),Integer.valueOf(addPolicyDto.getPriority()));
 			Preconditions.checkArgument(strategy == null, "该策略已有相同优先级值,请更换后重试");
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
-			schoolStrategy.setRecursionPermission(Integer.valueOf(addPolicyDto.getRecursionPermission().getKey()));
+			schoolStrategy.setRecursionPermission(Byte.valueOf(addPolicyDto.getRecursionPermission().getKey()));
 			Boolean result = schoolStrategyService.save(schoolStrategy)>0;
 			return WrapMapper.ok(result);
 		} catch (RuntimeException e) {
@@ -143,10 +143,10 @@ public class SchoolStrategyController {
 		}
 		try{
 			Boolean falg;
-			SchoolStrategy strategy=schoolStrategyService.getByPriority(modifyPolicyDto.getSchoolCode(),modifyPolicyDto.getPriority());
+			SchoolStrategy strategy=schoolStrategyService.getByPriority(modifyPolicyDto.getSchoolCode(),Integer.valueOf(modifyPolicyDto.getPriority()));
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(modifyPolicyDto, schoolStrategy);
-			schoolStrategy.setRecursionPermission(Integer.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
+			schoolStrategy.setRecursionPermission(Byte.valueOf(modifyPolicyDto.getRecursionPermission().getKey()));
 			if (strategy!=null){
 				if(strategy.getPriority().equals(modifyPolicyDto.getPriority())&&strategy.getSchoolCode().equals(modifyPolicyDto.getSchoolCode())&&!strategy.getId().equals(modifyPolicyDto.getId())){
 					return WrapMapper.error("该策略已有相同优先级值,请更换后重试");
@@ -171,9 +171,9 @@ public class SchoolStrategyController {
 	 */
 	@RequestMapping(value = "/getByPriority", method = RequestMethod.GET)
 	@ApiOperation(value = "验证学校策略优先级", response = Boolean.class)
-	public Object getByPriority(@RequestParam("SchoolCode") String SchoolCode, @RequestParam("Priority")Integer Priority) {
+	public Object getByPriority(@RequestParam("schoolCode") String schoolCode, @RequestParam("priority")Integer priority) {
 		try{
-			SchoolStrategy schoolStrategy=schoolStrategyService.getByPriority(SchoolCode,Priority);
+			SchoolStrategy schoolStrategy=schoolStrategyService.getByPriority(schoolCode,priority);
 			if (schoolStrategy!=null){
 				return WrapMapper.error("该学校策略已有该优先级值,请更换后重试");
 			}else{
@@ -205,8 +205,8 @@ public class SchoolStrategyController {
 	 */
 	@RequestMapping(value = "/getStrategyList", method = RequestMethod.GET)
 	@ApiOperation(value = "根据查询策略列表")
-	public Object getStrategyList(@RequestParam("SchoolCode") String SchoolCode) {
-		List<QuerySchoolStrategy> datas = schoolStrategyService.getStrategyList(SchoolCode);
+	public Object getStrategyList(@RequestParam("schoolCode") String schoolCode) {
+		List<QuerySchoolStrategy> datas = schoolStrategyService.getStrategyList(schoolCode);
 		return WrapMapper.ok(datas);
 	}
 

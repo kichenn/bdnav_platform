@@ -7,48 +7,83 @@ import java.util.Date;
 
 @Data
 public class SchoolModeDto {
+
+
+    /**
+     * 主键
+     */
     @ApiModelProperty("主键")
-    private Long Id;
+    private Long id;
 
-
+    /**
+     * 学校ID
+     */
     @ApiModelProperty("学校ID")
-    private Long SchoolId;
+    private Long schoolId;
 
-
+    /**
+     * 学校CODE
+     */
     @ApiModelProperty("学校CODE")
-    private String SchoolCode;
+    private String schoolCode;
 
+    /**
+     * 模式名称
+     */
     @ApiModelProperty("模式名称")
-    private String ModelName;
+    private String modelName;
 
+    /**
+     * 使用平台 1安卓 2苹果
+     */
+    @ApiModelProperty("使用平台 1安卓 2苹果")
+    private String platform;
 
+    /**
+     * 模式优先级
+     */
     @ApiModelProperty("模式优先级")
-    private Integer Priority;
+    private Byte priority;
 
+    /**
+     * 可用的应用
+     */
     @ApiModelProperty("可用的应用")
-    private String UsableApp;
+    private String usableApp;
 
-
+    /**
+     * 可用的设备
+     */
     @ApiModelProperty("可用的设备")
-    private String UsableDevice;
+    private String usableDevice;
 
-
+    /**
+     * 创建时间
+     */
     @ApiModelProperty("创建时间")
-    private Date CreateDate;
+    private Date createDate;
 
-
+    /**
+     * 修改时间
+     */
     @ApiModelProperty("修改时间")
-    private Date UpdateDate;
+    private Date updateDate;
 
-
+    /**
+     * 操作人
+     */
     @ApiModelProperty("操作人")
-    private Long Operator;
+    private Long operator;
 
-
+    /**
+     * 操作人姓名
+     */
     @ApiModelProperty("操作人姓名")
-    private String OperatorName;
+    private String operatorName;
 
-
+    /**
+     * 备注
+     */
     @ApiModelProperty("备注")
-    private String Remark;
+    private String remark;
 }
