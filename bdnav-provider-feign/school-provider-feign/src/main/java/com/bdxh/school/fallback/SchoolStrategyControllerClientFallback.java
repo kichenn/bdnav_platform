@@ -46,7 +46,13 @@ public class SchoolStrategyControllerClientFallback implements SchoolStrategyCon
     }
 
     @Override
-    public Wrapper<List<SchoolStrategy>> getStrategyList(String schoolCode) {
+    public Wrapper<List<SchoolStrategy>> getStrategyList(String schoolCode, Byte pushState) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper updatePolicyPushStatus(Long id, Byte pushState) {
+        return WrapMapper.error();
+    }
+
 }
