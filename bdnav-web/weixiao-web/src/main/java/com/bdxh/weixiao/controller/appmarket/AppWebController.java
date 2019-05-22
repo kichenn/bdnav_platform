@@ -47,6 +47,12 @@ public class AppWebController {
     @Autowired
     private InstallAppsControllerClient installAppsControllerClient;
 
+    /**
+     *
+     * @param schoolCode 学校Code
+     * @param cardNumber 学生学号
+     * @return
+     */
     @ApiOperation("家长应用市场----家长查询学校应用列表")
     @RequestMapping(value = "/familyFindAppInfo", method = RequestMethod.POST)
     public Object familyFindAppInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
@@ -70,6 +76,11 @@ public class AppWebController {
         }
     }
 
+    /**
+     *
+     * @param id 应用Id
+     * @return
+     */
     @ApiOperation("家长应用市场----根据APPId查看应用详情")
     @RequestMapping(value = "/findAppDetailsById", method = RequestMethod.POST)
     public Object findAppDetailsById(@RequestParam(value = "id")
@@ -82,7 +93,7 @@ public class AppWebController {
         }
     }
 
-    @ApiOperation("应用市场----家长给孩子安装应用推送")
+    @ApiOperation("家长应用市场----家长给孩子安装应用推送")
     @RequestMapping(value = "/pushInstalledApp", method = RequestMethod.POST)
     public Object pushInstalledApp(@RequestParam("id") @NotNull(message = "应用ID不能为空") Long id,
                                    @RequestParam("userName") @NotNull(message = "学生姓名不能为空") String userName,

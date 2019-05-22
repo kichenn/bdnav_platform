@@ -8,6 +8,7 @@ import com.bdxh.product.entity.Product;
 import com.bdxh.product.fallback.ProductControllerClientFallback;
 import com.bdxh.product.vo.ProductDetailsVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -67,4 +68,13 @@ public interface ProductControllerClient {
     @RequestMapping(value = "/product/updateProduct", method = RequestMethod.POST)
     @ResponseBody
     Wrapper updateProduct(@RequestBody ProductUpdateDto productUpdateDto);
+
+    /**
+     * 根据ID查询商品
+     *
+     * @param id
+     */
+    @RequestMapping(value = "/product/findProductById", method = RequestMethod.POST)
+    @ApiOperation(value = "根据ID查询商品")
+    Wrapper<Product> findProductById(@RequestParam("id") Long id);
 }

@@ -49,16 +49,25 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         Long productId = product.getId();
         //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
         Byte i = 1;
-        for (ProductImageAddDto productImageAddDto : productDto.getImage()) {
-            ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
-            productImage.setSort(i);
-            productImage.setProductId(productId);
-            productImage.setOperator(productDto.getOperator());
-            productImage.setOperatorName(productDto.getOperatorName());
-            productImage.setRemark(productDto.getRemark());
-            productImageMapper.insert(productImage);
-            i++;
+        if(productDto.getImage().size()>0){
+            for (ProductImageAddDto productImageAddDto : productDto.getImage()) {
+                ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
+                if(i==1){
+                    productDto.setImgUrl(productImage.getImageUrl());
+                }
+                productImage.setSort(i);
+                productImage.setProductId(productId);
+                productImage.setOperator(productDto.getOperator());
+                productImage.setOperatorName(productDto.getOperatorName());
+                productImage.setRemark(productDto.getRemark());
+                productImageMapper.insert(productImage);
+                i++;
+            }
+        }else{
+            productDto.setImgUrl("");
         }
+
+
     }
 
     @Override
