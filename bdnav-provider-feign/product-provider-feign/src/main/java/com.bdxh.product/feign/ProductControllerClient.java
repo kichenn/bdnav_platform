@@ -75,6 +75,6 @@ public interface ProductControllerClient {
      * @param id
      */
     @RequestMapping(value = "/product/findProductById", method = RequestMethod.POST)
-    @ApiOperation(value = "根据ID查询商品")
+    @ResponseBody
     Wrapper<Product> findProductById(@RequestParam("id") Long id);
 }

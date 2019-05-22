@@ -9,6 +9,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
 public interface MobileDeviceControllerClient {
 
     @RequestMapping(value = "/mobileDevice/findMobileDevices",method = RequestMethod.GET)
+    @ResponseBody
     Wrapper<List<MobileDevice>> findMobileDevices();
 
 }

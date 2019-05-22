@@ -14,6 +14,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Description:
@@ -25,18 +26,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public interface ApplyLogControllerClient {
 
     @RequestMapping(value = "/applyLog/addApplyLog", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper addApplyLog(@Validated @RequestBody AddApplyLogDto addApplyLogDto);
 
     @RequestMapping(value = "/applyLog/modifyApplyLog", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper modifyApplyLog(@Validated @RequestBody ModifyApplyLogDto modifyApplyLogDto);
 
     @RequestMapping(value = "/applyLog/delApplyLogById", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper delApplyLogById(@Validated @RequestBody DelOrFindAppBuriedDto AddapplyLogDto);
 
     @RequestMapping(value = "/applyLog/findApplyLogById", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<ApplyLog> findApplyLogById(@Validated @RequestBody DelOrFindAppBuriedDto findApplyLogDto);
 
     @RequestMapping(value = "/applyLog/findApplyLogInContionPaging", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<PageInfo<ApplyLog>> findApplyLogInContionPaging(@Validated @RequestBody ApplyLogQueryDto applyLogQueryDto);
 
 }
