@@ -45,5 +45,5 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 	SchoolStrategy getByPriority(String schoolCode,Byte priority);
 
 	//根据学校code查询策略列表
-	List<QuerySchoolStrategy> getStrategyList(String schoolCode,Byte pushState);
+	List<QuerySchoolStrategy> getStrategyList(Map<String,Object> param);
 }
