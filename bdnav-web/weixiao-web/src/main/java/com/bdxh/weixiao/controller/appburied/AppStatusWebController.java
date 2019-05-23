@@ -8,6 +8,7 @@ import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import com.bdxh.weixiao.dto.WeiXiaoAppStatusUnlockOrLokingDto;
 import com.bdxh.weixiao.vo.WeiXiaoAppVo;
 import com.bdxh.weixiao.vo.WeiXiaoInstallAppsVo;
@@ -15,6 +16,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,8 +44,16 @@ public class AppStatusWebController {
     @Autowired
     private InstallAppsControllerClient installAppsControllerClient;
 
-    @ApiOperation(value = "应用管控----获取某个孩子的应用列表以及状态")
+    /**
+     * 收费服务
+     * @param schoolCode 学校Code
+     * @param cardNumber 学生学号
+     * @return
+     */
+
+    @ApiOperation(value = "家长应用管控----获取某个孩子的应用列表以及状态")
     @RequestMapping(value = "/queryAppStatusInfo", method = RequestMethod.POST)
+    @WeiXiaoChargeApp
     public Object queryAppStatusInfo(@RequestParam("schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
                                      @RequestParam("cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {
         try {
@@ -55,7 +65,7 @@ public class AppStatusWebController {
                 for (AppStatus appStatus : appStatusList) {
                     //如果安装的包名对应的应用状态包名切状态为锁定时为Vo类添加锁定状态默认为1
                     if (weiXiaoInstallAppsVo.getAppPackage().equals(appStatus.getAppPackage()) &&
-                            appStatus.getAppStatus().equals(2)) {
+                            appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
                         weiXiaoInstallAppsVo.setAppStatus(Byte.valueOf("2"));
                     }
                 }
@@ -66,7 +76,13 @@ public class AppStatusWebController {
         }
     }
 
-    @ApiOperation(value = "应用管控----锁定以及解锁App")
+    /**
+     * 收费服务
+     * @param weiXiaoAppStatusUnlockOrLokingDto
+     * @return
+     */
+    @WeiXiaoChargeApp
+    @ApiOperation(value = "家长应用管控----锁定以及解锁App")
     @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
     public Object appStatusLockingAndUnlock(@RequestBody @Validated WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         try {

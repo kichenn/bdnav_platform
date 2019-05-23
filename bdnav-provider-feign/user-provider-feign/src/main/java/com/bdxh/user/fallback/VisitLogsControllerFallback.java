@@ -5,12 +5,14 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateVisitLogsDto;
 import com.bdxh.user.dto.VisitLogsQueryDto;
+import com.bdxh.user.entity.VisitLogs;
 import com.bdxh.user.feign.VisitLogsControllerClient;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @description:
@@ -46,6 +48,11 @@ public class VisitLogsControllerFallback implements VisitLogsControllerClient {
 
     @Override
     public Wrapper insertVisitLogsInfo(AddVisitLogsDto addVisitLogsDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<PageInfo<VisitLogsVo>> queryVisitLogByCardNumber(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
 }

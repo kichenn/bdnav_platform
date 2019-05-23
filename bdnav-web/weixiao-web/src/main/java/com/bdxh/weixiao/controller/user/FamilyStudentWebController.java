@@ -59,7 +59,7 @@ public class FamilyStudentWebController {
      * @param phone
      * @return
      */
-    @ApiOperation(value = "子女关系----家长绑定孩子接口")
+    @ApiOperation(value = "家长家长子女关系----家长绑定孩子接口")
     @RequestMapping(value = "/bindingStudent", method = RequestMethod.POST)
     public Object bindingStudent(@RequestParam("studentName")String  studentName,
                                  @RequestParam("studentCardNumber")String studentCardNumber,
@@ -117,7 +117,7 @@ public class FamilyStudentWebController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "子女关系----删除学生家长绑定关系")
+    @ApiOperation(value = "家长家长子女关系----删除学生家长绑定关系")
     @RequestMapping(value = "/removeFamilyOrStudent", method = RequestMethod.GET)
     public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
                                         @RequestParam(name = "cardNumber") @NotNull(message = "微校卡号不能为空") String cardNumber,
@@ -137,18 +137,20 @@ public class FamilyStudentWebController {
      * @param schoolCode
      * @return
      */
-    @ApiOperation(value = "子女关系----家长查询孩子列表")
+    @ApiOperation(value = "家长子女关系----家长查询孩子列表")
     @RequestMapping(value = "/familyFindStudentList", method = RequestMethod.POST)
     public Object familyFindStudentList(@RequestParam(name = "schoolCode", required = false)String schoolCode) {
         try {
             schoolCode="20110329";
             String cardNumber="20190516002";
+
             JSONObject jsonObject=new JSONObject();
             FamilyVo family=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
             for (FamilyStudentVo s : family.getStudents()) {
                 StudentVo student=studentControllerClient.queryStudentInfo(schoolCode,s.getSCardNumber()).getResult();
                 s.setImage(student.getImage());
                 s.setImageName(student.getImageName());
+                s.setId(student.getSId());
             }
             return WrapMapper.ok(family);
         } catch (Exception e) {
@@ -164,7 +166,7 @@ public class FamilyStudentWebController {
      * @param cardNumber
      * @return
      */
-    @ApiOperation(value = "子女关系----查询家长与孩子关系详细")
+    @ApiOperation(value = "家长子女关系----查询家长与孩子关系详细")
     @RequestMapping(value = "/queryFamilyStudentDetails", method = RequestMethod.POST)
     public Object queryFamilyStudentDetails(@RequestParam(name = "schoolCode", required = false)String schoolCode,
                                             @RequestParam(name = "cardNumber", required = false)String cardNumber) {
@@ -176,7 +178,7 @@ public class FamilyStudentWebController {
             return WrapMapper.error(e.getMessage());
         }
     }
-    @ApiOperation(value = "子女关系----手机获取短信验证码")
+    @ApiOperation(value = "家长子女关系----手机获取短信验证码")
     @RequestMapping(value = "/getPhoneCode",method = RequestMethod.POST)
     public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
         return familyStudentControllerClient.getPhoneCode(phone);

@@ -123,8 +123,8 @@ public class SchoolStrategyWebController {
      */
     @RequestMapping(value="/getStrategyList",method = RequestMethod.GET)
     @ApiOperation(value = "根据schoolcode查询列表信息")
-    public Object getStrategyList(@RequestParam("schoolCode") String schoolCode) {
-        Wrapper wrapper = schoolStrategyControllerClient.getStrategyList(schoolCode);
+    public Object getStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("pushState")Byte pushState) {
+        Wrapper wrapper = schoolStrategyControllerClient.getStrategyList(schoolCode,pushState);
         return WrapMapper.ok(wrapper.getResult());
     }
 

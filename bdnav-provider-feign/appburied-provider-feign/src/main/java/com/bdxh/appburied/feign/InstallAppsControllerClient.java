@@ -13,10 +13,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,21 +27,27 @@ import java.util.List;
 public interface InstallAppsControllerClient {
 
     @RequestMapping(value = "/installApps/addInstallApp", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper addInstallApp(@Validated @RequestBody AddInstallAppsDto addInstallAppsDto);
 
     @RequestMapping(value = "/installApps/modifyInstallApp", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper modifyInstallApp(@Validated @RequestBody ModifyInstallAppsDto modifyInstallAppsDto);
 
     @RequestMapping(value = "/installApps/delInstallAppById", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper delInstallAppById(@Validated @RequestBody DelOrFindAppBuriedDto delInstallAppsDto);
 
     @RequestMapping(value = "/installApps/findInstallAppById", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<InstallApps> findInstallAppById(@Validated @RequestBody DelOrFindAppBuriedDto findInstallAppsDto);
 
     @RequestMapping(value = "/installApps/findInstallAppsInContionPaging", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<PageInfo<InstallApps>> findInstallAppsInContionPaging(@Validated @RequestBody InstallAppsQueryDto installAppsQueryDto);
 
     @RequestMapping(value = "/installApps/findInstallAppsInConation", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<List<InstallApps>> findInstallAppsInConation(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber);
 
 

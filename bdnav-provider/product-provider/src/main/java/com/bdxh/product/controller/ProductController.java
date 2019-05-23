@@ -73,6 +73,20 @@ public class ProductController {
       }
     }
 
+    /**
+     * 根据ID查询商品
+     *
+     * @param id
+     */
+    @RequestMapping(value = "/findProductById", method = RequestMethod.POST)
+    @ApiOperation(value = "根据ID查询商品")
+    public Object findProductById(@RequestParam("id") Long id) {
+        try {
+            return WrapMapper.ok( productService.selectByKey(id));
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 
     /**
      * 新增商品
@@ -101,6 +115,5 @@ public class ProductController {
         productService.updateProduct(productUpdateDto);
         return WrapMapper.ok();
     }
-
 
 }

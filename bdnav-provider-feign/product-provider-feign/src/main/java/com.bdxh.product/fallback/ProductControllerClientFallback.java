@@ -44,4 +44,9 @@ public class ProductControllerClientFallback implements ProductControllerClient 
     public Wrapper updateProduct(ProductUpdateDto productUpdateDto) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<Product> findProductById(Long id) {
+        return WrapMapper.error();
+    }
 }

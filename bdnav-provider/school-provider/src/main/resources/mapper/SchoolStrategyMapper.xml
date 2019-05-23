@@ -113,6 +113,7 @@
         t_school_strategy
         WHERE
         school_code=#{schoolCode} and push_state=#{pushState}
+        ORDER BY priority
     </select>
 
 

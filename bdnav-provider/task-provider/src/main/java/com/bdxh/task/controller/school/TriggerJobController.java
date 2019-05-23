@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.calendar.DailyCalendar;
 import org.quartz.impl.calendar.HolidayCalendar;
 import org.quartz.impl.calendar.WeeklyCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ public class TriggerJobController {
     public Object startStrategyJob(@RequestParam(value = "schoolCode") String schoolCode, @RequestParam(value = "groupId") Long groupId) throws SchedulerException, ParseException {
 
         //查询策略触发条件
-        List<SchoolStrategy> strategyList = schoolStrategyControllerClient.getStrategyList(schoolCode).getResult();
+        List<SchoolStrategy> strategyList = schoolStrategyControllerClient.getStrategyList(schoolCode,new Byte("1")).getResult();
         if (CollectionUtils.isNotEmpty(strategyList)) {
             //创建schedule实例
             StdSchedulerFactory factory = new StdSchedulerFactory();
@@ -56,7 +55,7 @@ public class TriggerJobController {
                 //获取周时间段
                 String dayMark = e.getDayMark();
                 String[] dayMarks = dayMark.split(",");
-                if (dayMark.length() != 7) {
+                if (dayMark.length() != 13) {
                     return WrapMapper.error("周时间段格式不正确，请检查");
                 }
                 //排除周时间段
@@ -92,11 +91,12 @@ public class TriggerJobController {
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("schoolCode", schoolCode);
                 jsonObject.put("groupId", groupId);
+                jsonObject.put("strategyList",strategyList);
 
                 for (String time : timeMarkResult) {
                     //创建一个jobDetail的实例，将该实例与HelloJob Class绑定
                     JobDetail jobDetail = JobBuilder.newJob(StrategyJob.class).withIdentity("startStrategyJob:" + e.getId() + ",time:" + time).build();
-                    //执行表达式(#替换字段[分钟]，S小时)
+                    //      //执行表达式(#替换字段[分钟]，S小时)
                     String cronScheduleStr = "0 # S * * ?";
                     //获取 2:00 , 3:00
                     cronScheduleStr = cronScheduleStr.replace("#", time.substring(time.indexOf(":") + 1, time.length()));

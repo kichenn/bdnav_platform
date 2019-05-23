@@ -77,16 +77,4 @@ public class WeiXiaoAppStatusUnlockOrLokingDto {
     @NotNull(message = "应用状态不能为空")
     @ApiModelProperty(value ="应用状态 1 正常 2 锁定",name = "应用状态 1 正常 2 锁定")
     private Byte appStatus;
-
-    /**
-     * 创建时间
-     */
-    @ApiModelProperty(value ="创建时间",name = "创建时间")
-    private Date createDate;
-
-    /**
-     * 修改时间
-     */
-    @ApiModelProperty(value ="修改时间",name = "修改时间")
-    private Date updateDate;
 }

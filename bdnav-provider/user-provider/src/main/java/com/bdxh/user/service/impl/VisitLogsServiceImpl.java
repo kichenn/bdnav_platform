@@ -65,4 +65,13 @@ public class VisitLogsServiceImpl extends BaseService<VisitLogs> implements Visi
     public void updateSchoolName(String schoolCode, String schoolName) {
         visitLogsMongoMapper.updateSchoolName(schoolCode, schoolName);
     }
+
+    @Override
+    public PageInfo<VisitLogsVo> queryVisitLogByCardNumber(String schoolCode, String cardNumber) {
+        VisitLogsQueryDto visitLogsQueryDto=new VisitLogsQueryDto();
+        visitLogsQueryDto.setCardNumber(cardNumber);
+        visitLogsQueryDto.setSchoolCode(schoolCode);
+
+        return visitLogsMongoMapper.getVisitLogsInfos(visitLogsQueryDto);
+    }
 }

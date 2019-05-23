@@ -47,13 +47,19 @@ public class AppWebController {
     @Autowired
     private InstallAppsControllerClient installAppsControllerClient;
 
-    @ApiOperation("应用市场----家长查询学校应用列表")
+    /**
+     *
+     * @param schoolCode 学校Code
+     * @param cardNumber 学生学号
+     * @return
+     */
+    @ApiOperation("家长应用市场----家长查询学校应用列表")
     @RequestMapping(value = "/familyFindAppInfo", method = RequestMethod.POST)
     public Object familyFindAppInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
         try {
             //查出当前所在学校的应用和平台开放应用
             List<App> appList = appControllerClient.familyFindAppInfo(schoolCode).getResult();
-            //根据学号查询出学生的应用安装记录
+            //根据学号查询出学生的应用安装记录 已安装 ：2，未安装 ：1
             List<InstallApps> installAppsList = installAppsControllerClient.findInstallAppsInConation(schoolCode, cardNumber).getResult();
             List<WeiXiaoAppVo> weiXiaoAppVoList = BeanMapUtils.mapList(appList, WeiXiaoAppVo.class);
             for (WeiXiaoAppVo weiXiaoAppVo : weiXiaoAppVoList) {
@@ -70,7 +76,12 @@ public class AppWebController {
         }
     }
 
-    @ApiOperation("应用市场----根据APPId查看应用详情")
+    /**
+     *
+     * @param id 应用Id
+     * @return
+     */
+    @ApiOperation("家长应用市场----根据APPId查看应用详情")
     @RequestMapping(value = "/findAppDetailsById", method = RequestMethod.POST)
     public Object findAppDetailsById(@RequestParam(value = "id")
                                      @NotNull(message = "应用ID不能为空") Long id) {
@@ -82,7 +93,7 @@ public class AppWebController {
         }
     }
 
-    @ApiOperation("应用市场----家长给孩子安装应用推送")
+    @ApiOperation("家长应用市场----家长给孩子安装应用推送")
     @RequestMapping(value = "/pushInstalledApp", method = RequestMethod.POST)
     public Object pushInstalledApp(@RequestParam("id") @NotNull(message = "应用ID不能为空") Long id,
                                    @RequestParam("userName") @NotNull(message = "学生姓名不能为空") String userName,

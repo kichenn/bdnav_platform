@@ -53,7 +53,7 @@ public class AppStatusControllerClientFallback implements AppStatusControllerCli
     }
 
     @Override
-    public Wrapper appStatusLockingAndUnlock(AppStatus appStatus) {
+    public Wrapper<Boolean> appStatusLockingAndUnlock(AppStatus appStatus) {
         return WrapMapper.error();
     }
 }

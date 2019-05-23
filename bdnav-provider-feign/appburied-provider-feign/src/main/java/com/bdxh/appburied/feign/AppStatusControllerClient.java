@@ -12,10 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -31,25 +28,32 @@ public interface AppStatusControllerClient {
 
 
     @RequestMapping(value = "/appStatus/addAppStatus", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper addAppStatus(@Validated @RequestBody AddAppStatusDto addAppStatusDto);
 
     @RequestMapping(value = "/appStatus/modifyAppStatus", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper modifyAppStatus(@Validated @RequestBody ModifyAppStatusDto modifyAppStatusDto);
 
 
     @RequestMapping(value = "/appStatus/delAppStatusById", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper delAppStatusById(@Validated @RequestBody DelOrFindAppBuriedDto appStatusDto);
 
     @RequestMapping(value = "/appStatus/findAppStatusById", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<AppStatus> findAppStatusById(@Validated @RequestBody DelOrFindAppBuriedDto findAppStatusDto);
 
     @RequestMapping(value = "/appStatus/findAppStatusInContionPaging", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<PageInfo<AppStatus>> findAppStatusInContionPaging(@Validated @RequestBody AppStatusQueryDto appStatusQueryDto);
 
     @RequestMapping(value = "/appStatus/findAppStatusInfoBySchoolCodeAndCardNumber",method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<List<AppStatus>> findAppStatusInfoBySchoolCodeAndCardNumber(@RequestParam("schoolCode")String schoolCode,
                                                                         @RequestParam("cardNumber")String cardNumber);
 
     @RequestMapping(value = "/appStatus/appStatusLockingAndUnlock",method = RequestMethod.POST)
-    Wrapper appStatusLockingAndUnlock(@RequestBody AppStatus appStatus);
+    @ResponseBody
+    Wrapper<Boolean> appStatusLockingAndUnlock(@RequestBody AppStatus appStatus);
 }

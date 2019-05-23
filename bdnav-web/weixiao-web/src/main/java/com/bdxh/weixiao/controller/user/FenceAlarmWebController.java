@@ -5,6 +5,7 @@ import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.user.dto.FenceAlarmQueryDto;
 import com.bdxh.user.feign.FenceAlarmControllerClient;
+import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,12 +34,14 @@ public class FenceAlarmWebController {
     @Autowired
     private SchoolControllerClient schoolControllerClient;
     /**
+     * 收费服务
      * 查询所有
      * @param schoolCode
-     * @param cardNumber
+     * @param cardNumber 学生学号
      * @return
      */
-    @ApiOperation("电子围栏-----查询所有围栏警报接口")
+    @WeiXiaoChargeApp
+    @ApiOperation("家长电子围栏-----查询所有围栏警报接口")
     @RequestMapping(value = "/getAllFenceAlarmInfos",method = RequestMethod.POST)
     public Object getAllFenceAlarmInfos(@RequestParam("schoolCode")String schoolCode,@RequestParam("cardNumber")String cardNumber){
         try {
@@ -53,16 +56,18 @@ public class FenceAlarmWebController {
     }
 
     /**
+     * 收费服务
      * 查询单个
      * @param cardNumber
      * @param id
      * @return
      */
-    @ApiOperation("电子围栏-----查询单个围栏警报接口")
+    @WeiXiaoChargeApp
+    @ApiOperation("家长电子围栏-----查询单个围栏警报接口")
     @RequestMapping(value="/getFenceAlarmInfo",method = RequestMethod.POST)
     public Object getFenceAlarmInfo(
             @RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空")  String schoolCode,
-            @RequestParam(name="cardNumber")@NotNull(message = "cardNumber不能为空")  String cardNumber,
+            @RequestParam(name="cardNumber")@NotNull(message = "学生cardNumber不能为空")  String cardNumber,
             @RequestParam(name="id") @NotNull(message = "id不能为空")  String id){
         try {
             return WrapMapper.ok(fenceAlarmControllerClient.getFenceAlarmInfo(schoolCode,cardNumber,id).getResult());

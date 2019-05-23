@@ -200,15 +200,32 @@ public class SchoolStrategyController {
 
 
 	/**
-	 * @Description: 根据schoolcode查询策略列表信息
+	 * @Description: 根据schoolcode和推送状态查询策略列表信息
 	 * @Date 2019-04-18 09:52:43
 	 */
 	@RequestMapping(value = "/getStrategyList", method = RequestMethod.GET)
-	@ApiOperation(value = "根据查询策略列表")
+	@ApiOperation(value = "根据schoolcode查询策略列表")
 	public Object getStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("pushState") Byte pushState) {
 		List<QuerySchoolStrategy> datas = schoolStrategyService.getStrategyList(schoolCode,pushState);
+
 		return WrapMapper.ok(datas);
 	}
+
+
+	/**
+	 * @Description: 修改推送状态
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/updatePolicyPushStatus", method = RequestMethod.GET)
+	@ApiOperation(value = "修改推送状态")
+	public Object updatePolicyPushStatus(@RequestParam("id") Long id,@RequestParam("pushState") Byte pushState) {
+		SchoolStrategy schoolStrategy=new SchoolStrategy();
+		schoolStrategy.setId(id);
+		schoolStrategy.setPushState(pushState);
+		Boolean flag=schoolStrategyService.update(schoolStrategy)>0;
+		return WrapMapper.ok(flag);
+	}
+
 
 
 }
