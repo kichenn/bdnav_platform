@@ -65,6 +65,15 @@ public interface SchoolStrategyControllerClient {
      */
     @RequestMapping(value = "/schoolStrategy/getStrategyList", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolStrategy>> getStrategyList(@RequestParam("schoolCode") String schoolCode);
+    Wrapper<List<SchoolStrategy>> getStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("pushState")Byte pushState);
+
+
+    /**
+     * @Description: 修改推送状态
+     */
+    @RequestMapping(value = "/schoolStrategy/updatePolicyPushStatus", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper updatePolicyPushStatus(@RequestParam("id") Long id,@RequestParam("pushState") Byte pushState);
+
 
 }

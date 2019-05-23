@@ -1,11 +1,16 @@
 package com.bdxh.task.controller.school.job;
 
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.account.feign.AccountLogControllerClient;
 import com.bdxh.common.helper.getui.constant.GeTuiConstant;
 import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
 import com.bdxh.common.helper.getui.request.AppPushRequest;
 import com.bdxh.common.helper.getui.utils.GeTuiUtil;
+import com.bdxh.school.dto.ModifyPolicyDto;
+import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -38,14 +43,16 @@ public class StrategyJob implements Job {
      */
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        String schoolCode = jobExecutionContext.getMergedJobDataMap().getString("schoolCode");
-        Long groupId = jobExecutionContext.getMergedJobDataMap().getLong("groupId");
-        System.out.println("数据1========"+schoolCode);
-        System.out.println("数据2========"+groupId);
+        String data = jobExecutionContext.getMergedJobDataMap().getString("data");
+        JSONObject json=(JSONObject)JSONObject.parse(data);
+  /*      String schoolCode=json.getString("schoolCode");
+        Long groupId=json.getLong("groupId");*/
+        JSONArray jsonArray = JSON.parseArray(json.getString("strategyList"));
+        System.out.println(json.getString("strategyList"));
         //打印当前的执行时间
         Date date = new Date();
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        System.out.println("result:" + schoolCode + "打印出现在的时间是：" + sf.format(date));
+        System.out.println("result:" + data + "打印出现在的时间是：" + sf.format(date));
         //具体的业务逻辑
 /*        List<AccountLog> AccountMongoList=accountLogControllerClient.findAccountLogBySchoolCodeAndGroupId(schoolCode,groupId).getResult();*/
         AppPushRequest appPushRequest= new AppPushRequest();
@@ -62,13 +69,17 @@ public class StrategyJob implements Job {
         //穿透模版
         AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
         appNotificationTemplate.setTitle("学校策略模式推送");
-        //查询该学校下的所有策略
-     /*   List<SchoolStrategy> list=schoolStrategyControllerClient.getStrategyList(schoolCode).getResult();*/
-        appNotificationTemplate.getTransmissionContent();
+        appNotificationTemplate.setText("穿透内容测试");
+        appNotificationTemplate.setTransmissionContent(json.get("strategyList").toString());
         appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
         //群发穿透模版
         Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
         //更改策略状态
+        for (int i = 0; i < jsonArray.size(); i++) {
+            JSONObject jsonObject = (JSONObject) jsonArray.get(i);
+          /*  schoolStrategyControllerClient.updatePolicyPushStatus(jsonObject.getLong("id"),new Byte("2"));*/
+        }
+
         System.out.println(resultMap.toString());
         System.out.println("Hello Quartz");
     }
