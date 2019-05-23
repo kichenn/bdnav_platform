@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
  * @create: 2019-04-26 14:06
  **/
 @Slf4j
-@RequestMapping(value = "/baseUser")
+@RequestMapping(value = "/baseUserWeb")
 @RestController
 @Api(value = "微校平台----微校学校用户(学生 ， 家长 ， 老师)控制器", tags = "微校平台----微校学校用户(学生 ， 家长 ， 老师)控制器")
 @Validated

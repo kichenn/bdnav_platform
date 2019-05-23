@@ -65,7 +65,9 @@ public class FenceAlarmQueryDto extends Query implements Serializable {
     @ApiModelProperty("学生卡号")
     private String cardNumber;
 
-
-
-
+    /**
+     * 本地围栏表ID不是百度返回的
+     */
+    @ApiModelProperty("本地围栏表ID")
+    private String fenceId;
 }

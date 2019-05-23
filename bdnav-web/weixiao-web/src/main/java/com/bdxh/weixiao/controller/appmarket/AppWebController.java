@@ -99,7 +99,7 @@ public class AppWebController {
                                    @RequestParam("userName") @NotNull(message = "学生姓名不能为空") String userName,
                                    @RequestParam("cardNumber") @NotNull(message = "学生卡号不能为空") String cardNumber) {
         try {
-            return appControllerClient.pushInstallApps(id, userName, cardNumber).getResult();
+            return appControllerClient.pushInstallApps(id, userName, cardNumber);
         } catch (Exception e) {
             return WrapMapper.error();
         }

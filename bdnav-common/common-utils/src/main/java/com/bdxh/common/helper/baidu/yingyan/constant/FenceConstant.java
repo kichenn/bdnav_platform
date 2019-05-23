@@ -65,4 +65,19 @@ public class FenceConstant {
      * 查询围栏底下所有entity URL get请求
      */
     public static final String SEL_ROUND_IN_ENTITY_URL="http://yingyan.baidu.com/api/v3/entity/list";
+
+    /**
+     * 查询所有围栏信息 GET请求
+     */
+    public static final String SEL_ROUND_IN_FENCE_URL="http://yingyan.baidu.com/api/v3/fence/list";
+
+    /**
+     * 查询单个实体的鹰眼轨迹 GET请求
+     */
+    public static final String SEL_YINYAN_TRACK_URL ="http://yingyan.baidu.com/api/v3/track/gettrack";
+
+    /**
+     * 查询某service下的某一个围栏下的所有entity，方便开发者管理查询entity GET请求
+     */
+    public static final String SEL_ENTITY_IN_FENCE_URL="http://yingyan.baidu.com/api/v3/fence/listmonitoredperson";
 }

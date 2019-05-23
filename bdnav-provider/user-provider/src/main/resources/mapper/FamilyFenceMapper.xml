@@ -27,7 +27,7 @@
     <result column="remark" jdbcType="VARCHAR" property="remark" />
   </resultMap>
   <sql id="BaseColumns">
-    id,school_id,school_code,school_name,card_number,family_id,student_id,student_name,student_number,fence_id,fence_name,longitude,latitude,radius,coord_type,denoise,status,create_date,update_date,remark
+    id,school_id,school_code,card_number,family_id,student_id,student_name,student_number,fence_id,fence_name,longitude,latitude,radius,coord_type,denoise,status,create_date,update_date,remark
   </sql>
   <!--获取围栏表所有信息-->
   <select id="getFamilyFenceInfos" resultType="com.bdxh.user.vo.FamilyFenceVo" >
@@ -138,4 +138,9 @@ WHERE
 	school_code=#{familyFence.schoolCode} and card_number=#{familyFence.cardNumber} and id=#{familyFence.id}
   </update>
 
+  <select id="findOneStudentFenceId" resultType="java.lang.Integer">
+select fence_id from t_family_fence where school_code=#{schoolCode}
+and card_number=#{cardNumber}
+and student_number=#{studentNumber}
+  </select>
 </mapper>

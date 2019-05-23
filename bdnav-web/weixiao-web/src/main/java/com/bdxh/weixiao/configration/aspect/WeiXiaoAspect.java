@@ -55,7 +55,11 @@ public class WeiXiaoAspect {
         Method method = methodSignature.getMethod();
         Class[] parameterType=methodSignature.getParameterTypes();
         System.out.println("---------------参数列表开始-------------------------");
+        String studentCardNumber=null;
         for (int i =0 ,len=parameterNames.length;i < len ;i++){
+            if(parameterNames[i].equals("cardNumber")){
+                studentCardNumber+=args[i];
+            }
             System.out.println("参数名："+ parameterNames[i] + " = " +args[i]+"参数类型等于"+parameterType[i]);
         }
         //判断当前家长是否有服务购买记录或者试用记录

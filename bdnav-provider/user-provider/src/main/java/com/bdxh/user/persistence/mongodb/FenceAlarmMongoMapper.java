@@ -45,6 +45,9 @@ public class FenceAlarmMongoMapper{
             Pattern pattern = Pattern.compile("^.*"+fenceAlarmQueryDto.getSchoolName()+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("school_name").regex(pattern);
         }
+        if(StringUtils.isNotEmpty(fenceAlarmQueryDto.getFenceId())){
+            criteria.and("fence_id").is(fenceAlarmQueryDto.getFenceId());
+        }
         if(StringUtils.isNotEmpty(fenceAlarmQueryDto.getAction())){
             criteria.and("action").is(fenceAlarmQueryDto.getAction());
         }
@@ -67,6 +70,7 @@ public class FenceAlarmMongoMapper{
             Pattern pattern = Pattern.compile("^.*"+fenceAlarmQueryDto.getMonitoredPerson()+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("monitored_person").regex(pattern);
         }
+
         if (StringUtils.isNotEmpty(fenceAlarmQueryDto.getCardNumber())){
             Pattern pattern = Pattern.compile("^.*"+fenceAlarmQueryDto.getCardNumber()+".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("card_number").regex(pattern);
@@ -83,13 +87,32 @@ public class FenceAlarmMongoMapper{
 
 
     /**
+     * 查询单个围栏的所有警报
+     * @param schoolCode
+     * @param cardNumber
+     * @param fenceId
+     * @return
+     */
+    public  List<FenceAlarmVo> getFenceAlarmInfos(String schoolCode, String cardNumber, String fenceId) {
+        Query query=new Query(Criteria.where("school_code").is(schoolCode)
+                .and("card_number").is(cardNumber)
+                .and("fence_id").is(Long.parseLong(fenceId)));
+        List<FenceAlarmMongo> fenceAlarmMongo=mongoTemplate.find(query,FenceAlarmMongo.class);
+        if(null==fenceAlarmMongo){
+            return null;
+        }
+        List<FenceAlarmVo> fenceAlarmVo=BeanMapUtils.mapList(fenceAlarmMongo,FenceAlarmVo.class);
+        return fenceAlarmVo;
+    }
+
+    /**
      * 查询单个学生围栏警报数据
      * @param schoolCode
      * @param cardNumber
      * @param id
      * @return
      */
-    public FenceAlarmVo getFenceAlarmInfo(String schoolCode, String cardNumber, String id) {
+    public  FenceAlarmVo getFenceAlarmInfo(String schoolCode, String cardNumber, String id) {
         Query query=new Query(Criteria.where("school_code").is(schoolCode)
                 .and("card_number").is(cardNumber)
                 .and("id").is(id));
@@ -100,7 +123,6 @@ public class FenceAlarmMongoMapper{
         FenceAlarmVo fenceAlarmVo=BeanMapUtils.map(fenceAlarmMongo,FenceAlarmVo.class);
         return fenceAlarmVo;
     }
-
     /**
      * 修改学生围栏警报数据
      * @param fenceAlarmMongo
@@ -120,6 +142,7 @@ public class FenceAlarmMongoMapper{
         update.set("update_date",fenceAlarmMongo.getUpdateDate());
         mongoTemplate.updateFirst(query,update,FenceAlarmMongo.class);
     }
+
     /**
      * 修改学生围栏警报数据
      * @param schoolCode

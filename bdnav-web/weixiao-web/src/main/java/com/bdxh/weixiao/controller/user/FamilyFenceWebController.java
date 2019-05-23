@@ -22,7 +22,7 @@ import javax.validation.Valid;
  * @create: 2019-04-23 09:16
  **/
 @RestController
-@RequestMapping("/familyFence")
+@RequestMapping("/familyFenceWeb")
 @Validated
 @Slf4j
 @Api(value = "电子围栏-----微校家长围栏API", tags = "电子围栏-----微校家长围栏API")
@@ -47,9 +47,7 @@ public class FamilyFenceWebController {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
-
     }
-
     /**
      *  收费服务
      *  删除围栏表信息

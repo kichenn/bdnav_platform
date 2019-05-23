@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import com.bdxh.common.support.BaseService;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.List;
+
 /**
  * @Description: 业务层实现
  * @Author Kang
@@ -64,5 +66,10 @@ public class FenceAlarmServiceImpl extends BaseService<FenceAlarm> implements Fe
     @Override
     public void updateSchoolName(String schoolCode, String schoolName) {
         fenceAlarmMongoMapper.updateSchoolName(schoolCode, schoolName);
+    }
+
+    @Override
+    public List<FenceAlarmVo> findFenceAlarmInfos(String schoolCode,String  cardNumber,String fenceId) {
+        return fenceAlarmMongoMapper.getFenceAlarmInfos(schoolCode,cardNumber,fenceId);
     }
 }

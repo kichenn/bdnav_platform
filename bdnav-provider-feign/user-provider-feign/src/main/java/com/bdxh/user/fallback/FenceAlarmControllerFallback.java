@@ -11,6 +11,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @description:
@@ -46,6 +47,11 @@ public class FenceAlarmControllerFallback implements FenceAlarmControllerClient 
 
     @Override
     public Wrapper insertFenceAlarmInfo(AddFenceAlarmDto addFenceAlarmDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<FenceAlarmVo>> getFenceAlarmInfos(@NotNull(message = "schoolCode不能为空") String schoolCode, @NotNull(message = "cardNumber不能为空") String cardNumber, @NotNull(message = "围栏Id不能为空") String fenceId) {
         return WrapMapper.error();
     }
 }
