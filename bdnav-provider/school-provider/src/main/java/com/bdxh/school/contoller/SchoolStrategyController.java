@@ -203,11 +203,16 @@ public class SchoolStrategyController {
 	 * @Description: 根据schoolcode和推送状态查询策略列表信息
 	 * @Date 2019-04-18 09:52:43
 	 */
-	@RequestMapping(value = "/getStrategyList", method = RequestMethod.GET)
+	@RequestMapping(value = "/getStrategyList", method = RequestMethod.POST)
 	@ApiOperation(value = "根据schoolcode查询策略列表")
-	public Object getStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("pushState") Byte pushState) {
-		List<QuerySchoolStrategy> datas = schoolStrategyService.getStrategyList(schoolCode,pushState);
-
+	public Object getStrategyList(@Validated @RequestBody QuerySchoolStrategy querySchoolStrategy,BindingResult bindingResult) {
+		//检验参数
+		if(bindingResult.hasErrors()){
+			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+			return WrapMapper.error(errors);
+		}
+		Map<String, Object> param = BeanToMapUtil.objectToMap(querySchoolStrategy);
+		List<QuerySchoolStrategy> datas = schoolStrategyService.getStrategyList(param);
 		return WrapMapper.ok(datas);
 	}
 

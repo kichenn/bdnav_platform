@@ -81,14 +81,17 @@
         LEFT JOIN  t_school_mode ON t_school_strategy.model_id = t_school_mode.id
         LEFT JOIN t_school_class ON t_school_strategy.group_id = t_school_class.id
         <where>
-            <if test="PolicyName !=null and PolicyName !=''">
+            <if test="policyName !=null and policyName !=''">
                 AND t_school_strategy.policy_name LIKE CONCAT(CONCAT('%',#{policyName}),'%')
             </if>
-            <if test="SchoolName !=null and SchoolName!=''">
+            <if test="schoolName !=null and schoolName!=''">
                 AND t_school_strategy.school_name LIKE CONCAT(CONCAT('%',#{schoolName}),'%')
             </if>
-            <if test="SchoolCode !=null and SchoolCode!=''">
+            <if test="schoolCode !=null and schoolCode!=''">
                 AND t_school_strategy.school_code=#{schoolCode}
+            </if>
+            <if test="pushState !=null">
+                AND t_school_strategy.push_state=#{pushState}
             </if>
             <if test="platform !=null and platform!=''">
                 AND t_school_mode.platform =#{platform}
