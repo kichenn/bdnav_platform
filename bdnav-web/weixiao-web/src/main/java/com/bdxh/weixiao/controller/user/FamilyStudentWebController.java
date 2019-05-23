@@ -143,12 +143,14 @@ public class FamilyStudentWebController {
         try {
             schoolCode="20110329";
             String cardNumber="20190516002";
+
             JSONObject jsonObject=new JSONObject();
             FamilyVo family=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
             for (FamilyStudentVo s : family.getStudents()) {
                 StudentVo student=studentControllerClient.queryStudentInfo(schoolCode,s.getSCardNumber()).getResult();
                 s.setImage(student.getImage());
                 s.setImageName(student.getImageName());
+                s.setId(student.getSId());
             }
             return WrapMapper.ok(family);
         } catch (Exception e) {

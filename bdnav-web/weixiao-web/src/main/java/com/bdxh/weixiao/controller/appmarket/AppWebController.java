@@ -59,7 +59,7 @@ public class AppWebController {
         try {
             //查出当前所在学校的应用和平台开放应用
             List<App> appList = appControllerClient.familyFindAppInfo(schoolCode).getResult();
-            //根据学号查询出学生的应用安装记录
+            //根据学号查询出学生的应用安装记录 已安装 ：2，未安装 ：1
             List<InstallApps> installAppsList = installAppsControllerClient.findInstallAppsInConation(schoolCode, cardNumber).getResult();
             List<WeiXiaoAppVo> weiXiaoAppVoList = BeanMapUtils.mapList(appList, WeiXiaoAppVo.class);
             for (WeiXiaoAppVo weiXiaoAppVo : weiXiaoAppVoList) {

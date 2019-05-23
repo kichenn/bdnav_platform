@@ -65,7 +65,7 @@ public class AppStatusWebController {
                 for (AppStatus appStatus : appStatusList) {
                     //如果安装的包名对应的应用状态包名切状态为锁定时为Vo类添加锁定状态默认为1
                     if (weiXiaoInstallAppsVo.getAppPackage().equals(appStatus.getAppPackage()) &&
-                            appStatus.getAppStatus().equals(2)) {
+                            appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
                         weiXiaoInstallAppsVo.setAppStatus(Byte.valueOf("2"));
                     }
                 }
