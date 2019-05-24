@@ -3,6 +3,7 @@ package com.bdxh.task.controller.school;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.task.controller.school.job.StrategyJob;
@@ -46,7 +47,11 @@ public class TriggerJobController {
     public Object startStrategyJob(@RequestParam(value = "schoolCode") String schoolCode, @RequestParam(value = "groupId") Long groupId) throws SchedulerException, ParseException {
 
         //查询策略触发条件
-        List<SchoolStrategy> strategyList = schoolStrategyControllerClient.getStrategyList(schoolCode,new Byte("1")).getResult();
+        QuerySchoolStrategy qss=new QuerySchoolStrategy();
+        qss.setSchoolCode(schoolCode);
+        qss.setPushState(new Byte("1"));
+        List<SchoolStrategy> strategyList = schoolStrategyControllerClient.getStrategyList(qss).getResult();
+        System.out.println(strategyList.toString());
         if (CollectionUtils.isNotEmpty(strategyList)) {
             //创建schedule实例
             StdSchedulerFactory factory = new StdSchedulerFactory();
@@ -68,6 +73,7 @@ public class TriggerJobController {
                 weeklyCalendar.setDayExcluded(DayOfWeek.FRIDAY.getValue(), dayMarks[4].equals("0") ? Boolean.FALSE : Boolean.TRUE);
                 weeklyCalendar.setDayExcluded(DayOfWeek.SATURDAY.getValue(), dayMarks[5].equals("0") ? Boolean.FALSE : Boolean.TRUE);
                 weeklyCalendar.setDayExcluded(DayOfWeek.SUNDAY.getValue(), dayMarks[6].equals("0") ? Boolean.FALSE : Boolean.TRUE);
+
                 //获取排除时间段
                 String exclusionDay = e.getExclusionDays();
                 String[] exclusionDays = exclusionDay.split(",");
@@ -112,8 +118,8 @@ public class TriggerJobController {
                             .withSchedule(CronScheduleBuilder.cronSchedule(cronScheduleStr))
                             .usingJobData("data", jsonObject.toJSONString())
                             .build();
-                    scheduler.start();
                     scheduler.scheduleJob(jobDetail, cronTrigger);
+                    scheduler.start();
                 }
             }
         } else {

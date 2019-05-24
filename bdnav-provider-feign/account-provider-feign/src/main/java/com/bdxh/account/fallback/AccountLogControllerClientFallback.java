@@ -38,8 +38,4 @@ public class AccountLogControllerClientFallback implements AccountLogControllerC
         return WrapMapper.error();
     }
 
-    @Override
-    public Wrapper<List<AccountLog>> findAccountLogBySchoolCodeAndGroupId(String schoolCode, Long groupId) {
-        return WrapMapper.error();
-    }
 }

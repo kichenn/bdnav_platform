@@ -46,12 +46,5 @@ public interface AccountLogService {
     AccountLog findAccountLogByUserId(String userId);
 
 
-    /**
-     * 查询学校下的班级组织机构列表(schoolcode+groupId)
-     * @param schoolCode
-     * @param groupId
-     * @return
-     */
-    List<AccountLog> findAccountLogBySchoolCodeAndGroupId(String schoolCode,Long groupId);
 
 }

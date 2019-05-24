@@ -4,14 +4,12 @@ package com.bdxh.task.controller.school.job;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.bdxh.account.feign.AccountLogControllerClient;
+import com.bdxh.account.entity.UserDevice;
+import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.common.helper.getui.constant.GeTuiConstant;
 import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
 import com.bdxh.common.helper.getui.request.AppPushRequest;
 import com.bdxh.common.helper.getui.utils.GeTuiUtil;
-import com.bdxh.school.dto.ModifyPolicyDto;
-import com.bdxh.school.entity.SchoolStrategy;
-import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -30,10 +28,7 @@ import java.util.Map;
 public class StrategyJob implements Job {
 
     @Autowired
-    private AccountLogControllerClient accountLogControllerClient;
-
-    @Autowired
-    private SchoolStrategyControllerClient schoolStrategyControllerClient;
+    private UserDeviceControllerClient userDeviceControllerClient;
 
     /**
      * 执行逻辑。
@@ -45,8 +40,8 @@ public class StrategyJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         String data = jobExecutionContext.getMergedJobDataMap().getString("data");
         JSONObject json=(JSONObject)JSONObject.parse(data);
-  /*      String schoolCode=json.getString("schoolCode");
-        Long groupId=json.getLong("groupId");*/
+        String schoolCode=json.getString("schoolCode");
+        Long groupId=json.getLong("groupId");
         JSONArray jsonArray = JSON.parseArray(json.getString("strategyList"));
         System.out.println(json.getString("strategyList"));
         //打印当前的执行时间
@@ -54,17 +49,18 @@ public class StrategyJob implements Job {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("result:" + data + "打印出现在的时间是：" + sf.format(date));
         //具体的业务逻辑
-/*        List<AccountLog> AccountMongoList=accountLogControllerClient.findAccountLogBySchoolCodeAndGroupId(schoolCode,groupId).getResult();*/
+        List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(schoolCode,groupId).getResult();
         AppPushRequest appPushRequest= new AppPushRequest();
         appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
         appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
         appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
         List<String> clientIds = new ArrayList<>();
-        clientIds.add("59dc219038fde0484eebcbb6d5476f0c");
-/*        for(AccountLog attribute : AccountMongoList) {
+/*        clientIds.add("59dc219038fde0484eebcbb6d5476f0c");*/
+        //添加用户设备号
+       for(UserDevice attribute : userDeviceList) {
             clientIds.add(attribute.getClientId());
             System.out.println("推送数据"+attribute.getClientId());
-        }*/
+        }
         appPushRequest.setClientId(clientIds);
         //穿透模版
         AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
@@ -74,7 +70,7 @@ public class StrategyJob implements Job {
         appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
         //群发穿透模版
         Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
-        //更改策略状态
+        //更改策略为已推送状态
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = (JSONObject) jsonArray.get(i);
           /*  schoolStrategyControllerClient.updatePolicyPushStatus(jsonObject.getLong("id"),new Byte("2"));*/

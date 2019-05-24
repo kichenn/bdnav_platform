@@ -2,6 +2,7 @@ package com.bdxh.account.persistence.mongodb;
 
 import com.bdxh.account.entity.AccountLog;
 import com.bdxh.common.utils.BeanMapUtils;
+import com.mongodb.BasicDBObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -79,19 +80,6 @@ public class AccountLogMapper {
         }
         AccountLog accountLogVo = BeanMapUtils.map(accountLog, AccountLog.class);
         return accountLogVo;
-    }
-
-    /**
-     * 查询学校下的班级组织机构列表(schoolcode+groupId)[此处有问题，比如重复登录，返回很多重复，需要筛选根据cardnumber去重]
-     */
-    public List<AccountLog> findAccountLogBySchoolCodeAndGroupId(String schoolCode, Long groupId) {
-        Query query = new Query(Criteria.where("school_code").is(schoolCode)
-                .and("group_id").is(groupId)).with(new Sort(Sort.Direction.DESC, "create_date"));
-        List<AccountLog> accountLog = mongoTemplate.find(query, AccountLog.class);
-        if (null == accountLog) {
-            return null;
-        }
-        return accountLog;
     }
 
 

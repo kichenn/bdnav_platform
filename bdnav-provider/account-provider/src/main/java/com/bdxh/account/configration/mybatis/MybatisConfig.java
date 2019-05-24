@@ -51,6 +51,7 @@ public class MybatisConfig {
         ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
         //分库分表策略
         shardingRuleConfig.getTableRuleConfigs().add(getAccountTableRuleConfiguration());
+        shardingRuleConfig.getTableRuleConfigs().add(getUserDeviceTableRuleConfiguration());
         shardingRuleConfig.getTableRuleConfigs().add(getAccountNuqiueTableRuleConfiguration());
         Map<String, DataSource> dataSourceMap = new HashMap<>();
         dataSourceMap.put("ds_0", dataSource0);
@@ -107,6 +108,16 @@ public class MybatisConfig {
         result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
         return result;
     }
+
+    @Bean
+    public TableRuleConfiguration getUserDeviceTableRuleConfiguration() {
+        TableRuleConfiguration result = new TableRuleConfiguration();
+        result.setLogicTable("t_user_device");
+        result.setActualDataNodes("ds_${0}.t_user_device");
+        result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
+        return result;
+    }
+
 
     //默认定向第一个库
     @Bean
