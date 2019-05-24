@@ -84,6 +84,7 @@ public class AppStatusServiceImpl extends BaseService<AppStatus> implements AppS
     @Transactional
     public Boolean appStatusLockingAndUnlock(AppStatus appStatus) {
         try {
+            log.debug("---------------------------------家长锁定解锁应用进入Service");
             //查询是否有家长管控记录
             AppStatus oldAppStatus= appStatusMapper.finAppStatusInfoByPackage(appStatus.getSchoolCode(),appStatus.getCardNumber(), appStatus.getAppPackage());
             Boolean result;
@@ -99,6 +100,7 @@ public class AppStatusServiceImpl extends BaseService<AppStatus> implements AppS
             }
             //如果数据库记录插入成功推送个推
             if(result){
+                log.debug("---------------------------------准备推送个推");
                 Boolean pushResult;
                 //判断状态选择推送模板
                 JSONObject jsonObject=new JSONObject();
@@ -106,15 +108,18 @@ public class AppStatusServiceImpl extends BaseService<AppStatus> implements AppS
                 if(appStatus.getAppStatus().equals(Byte.valueOf("2"))){
                     List<String> clientId = new ArrayList<>();
                     clientId.add("59dc219038fde0484eebcbb6d5476f0c");
-
+                    log.debug("---------------------------------家长锁定锁定应用");
                     pushResult= GeTuiUtils.pushMove(clientId,"锁定应用",jsonObject.toString());
                 }else{
                     List<String> clientId = new ArrayList<>();
                     clientId.add("59dc219038fde0484eebcbb6d5476f0c");
+                    log.debug("---------------------------------家长锁定解锁应用");
                     pushResult= GeTuiUtils.pushMove(clientId,"解锁应用",jsonObject.toString());
                 }
+                log.debug("---------------------------------推送至安卓端失败");
                 Preconditions.checkArgument(pushResult,"推送至安卓端失败");
             }
+            log.debug("---------------------------------执行完成");
             return result;
         } catch (Exception e) {
             e.printStackTrace();

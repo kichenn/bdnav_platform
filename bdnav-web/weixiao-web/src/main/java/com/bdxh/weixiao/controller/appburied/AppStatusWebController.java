@@ -85,6 +85,7 @@ public class AppStatusWebController {
     @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
     public Object appStatusLockingAndUnlock(@RequestBody @Validated WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         try {
+            log.debug("---------------------------------家长锁定解锁应用WEB层");
             AppStatus appStatus=BeanMapUtils.map(weiXiaoAppStatusUnlockOrLokingDto,AppStatus.class);
             return appStatusControllerClient.appStatusLockingAndUnlock(appStatus);
         }catch (Exception e){

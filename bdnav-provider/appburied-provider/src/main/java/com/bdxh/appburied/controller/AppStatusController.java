@@ -103,6 +103,7 @@ public class AppStatusController {
     @ApiOperation(value = "应用管控----锁定以及解锁App", tags = "应用管控----锁定以及解锁App")
     @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
     public Object appStatusLockingAndUnlock(@RequestBody  AppStatus appStatus) {
+        log.debug("---------------------------------家长锁定解锁应用controller");
         Boolean result=appStatusService.appStatusLockingAndUnlock(appStatus);
         return WrapMapper.ok(result);
     }
