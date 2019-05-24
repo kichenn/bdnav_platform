@@ -80,4 +80,9 @@ public class FenceConstant {
      * 查询某service下的某一个围栏下的所有entity，方便开发者管理查询entity GET请求
      */
     public static final String SEL_ENTITY_IN_FENCE_URL="http://yingyan.baidu.com/api/v3/fence/listmonitoredperson";
+
+    /**
+     * 查找entity最近一个轨迹点，支持实时纠偏。 GET请求
+     */
+    public static final String SEL_YINYAN_LATESTPOINT_URL="http://yingyan.baidu.com/api/v3/track/getlatestpoint";
 }

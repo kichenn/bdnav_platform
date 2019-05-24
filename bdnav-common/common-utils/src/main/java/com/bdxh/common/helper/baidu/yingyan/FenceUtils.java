@@ -206,6 +206,25 @@ public class FenceUtils {
         return result;
     }
 
+    /**
+     * 查找entity最近一个轨迹点，支持实时纠偏
+     * @param entity
+     * @return
+     */
+    public static String getLatestPoint(String entity){
+        Map<String, Object> map = new HashMap<>();
+        map.put("ak", FenceConstant.AK);
+        map.put("service_id", FenceConstant.SERVICE_ID);
+        map.put("entity_name", entity);
+        String result = "";
+        try {
+            result = HttpClientUtils.doGet(FenceConstant.SEL_YINYAN_LATESTPOINT_URL, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
     private static Map<String, Object> toMap(Object obj) {
         Map<String, Object> map = new HashMap<>();
         if (obj == null) {
@@ -231,7 +250,37 @@ public class FenceUtils {
      */
     public static void main(String[] args) {
 
-        String createRoundResult =listmonitoredperson(33);
+        /**  String result=getLatestPoint("2011032919040314");
+        JSONObject jsonObject=JSONObject.parseObject(result);
+        System.out.println(jsonObject);
+        if(jsonObject.get("status").equals(0)){
+            System.out.println(jsonObject.getString("latest_point"));
+        }
+       */
+/*try {
+    Map<String, Object> map = new HashMap<>();
+    map.put("ak", FenceConstant.AK);
+    map.put("service_id", FenceConstant.SERVICE_ID);
+    map.put("entity_name", "2011032919040317");
+    map.put("latitude","22.54867136486452");
+    map.put("longitude","113.89774966210476");
+    log.info("======"+Long.toString(new Date().getTime()/1000));
+    map.put("loc_time",Long.toString(new Date().getTime()/1000));
+    map.put("coord_type_input","bd09ll");
+    String result="";
+    result = HttpClientUtils.doPost("http://yingyan.baidu.com/api/v3/track/addpoint", map);
+    System.out.println(result);
+}
+catch (Exception e){
+
+}*/
+
+
+       String monitoredPerson="2011032920190516001";
+        String entityResult = FenceUtils.deleteNewEntity(monitoredPerson);
+        JSONObject entityResultJson = JSONObject.parseObject(entityResult);
+        System.out.println(entityResult);
+ /*     String createRoundResult =listmonitoredperson(63);
         JSONObject createRoundJson = JSONObject.parseObject(createRoundResult);
         System.out.println(createRoundJson);
 /*

@@ -1,10 +1,12 @@
 package com.bdxh.common.helper.baidu.yingyan.request;
 
+import lombok.Data;
 /**
  * @description:
  * @author: binzh
  * @create: 2019-05-23 17:03
  **/
+@Data
 public class FindTrackRequest {
 
     /**
@@ -15,7 +17,7 @@ public class FindTrackRequest {
     /**
      * service的ID，service 的唯一标识
      */
-    private String service_id;
+    private int service_id;
 
     /**
      * entity唯一标识
@@ -35,7 +37,7 @@ public class FindTrackRequest {
     /**
      * 是否返回纠偏后轨迹
      */
-    private String is_processed;
+    private int is_processed;
 
     /**
      * 纠偏选项
@@ -65,12 +67,12 @@ public class FindTrackRequest {
     /**
      * 分页索引
      */
-    private String page_index;
+    private int page_index;
 
     /**
      * 分页大小
      */
-    private String page_size;
+    private int page_size;
 
     /**
      * 用户的权限签名，若用户所用AK的校验方式为SN校验时该参数必须。

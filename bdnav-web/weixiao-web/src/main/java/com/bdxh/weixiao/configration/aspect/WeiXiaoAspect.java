@@ -57,16 +57,16 @@ public class WeiXiaoAspect {
         System.out.println("---------------参数列表开始-------------------------");
         String studentCardNumber=null;
         for (int i =0 ,len=parameterNames.length;i < len ;i++){
-            if(parameterNames[i].equals("cardNumber")){
+/*            if(parameterNames[i].equals("cardNumber")){
                 studentCardNumber+=args[i];
-            }
+            }*/
             System.out.println("参数名："+ parameterNames[i] + " = " +args[i]+"参数类型等于"+parameterType[i]);
         }
         //判断当前家长是否有服务购买记录或者试用记录
-        QueryServiceUserDto queryServiceUserDto=new QueryServiceUserDto();
+/*        QueryServiceUserDto queryServiceUserDto=new QueryServiceUserDto();
        PageInfo<ServiceUser> pageInfo= serviceUserControllerClient.queryServiceUser(queryServiceUserDto).getResult();
        productControllerClient.findProductById(pageInfo.getList().get(0).getProductId());
-       log.info(pageInfo+"");
+       log.info(pageInfo+"");*/
        log.info("前置增强进来了");
     }
 }
