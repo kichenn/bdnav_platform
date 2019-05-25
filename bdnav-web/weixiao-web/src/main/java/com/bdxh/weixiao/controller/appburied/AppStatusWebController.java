@@ -10,7 +10,6 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import com.bdxh.weixiao.dto.WeiXiaoAppStatusUnlockOrLokingDto;
-import com.bdxh.weixiao.vo.WeiXiaoAppVo;
 import com.bdxh.weixiao.vo.WeiXiaoInstallAppsVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

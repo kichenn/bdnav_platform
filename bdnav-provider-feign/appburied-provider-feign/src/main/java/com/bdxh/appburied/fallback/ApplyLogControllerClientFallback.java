@@ -12,6 +12,8 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
  * @Description: 控制器
@@ -42,6 +44,16 @@ public class ApplyLogControllerClientFallback implements ApplyLogControllerClien
 
     @Override
     public Wrapper<PageInfo<ApplyLog>> findApplyLogInContionPaging(ApplyLogQueryDto applyLogQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<ApplyLog>> familyFindApplyLogInfo(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper modifyVerifyApplyLog(ModifyApplyLogDto modifyApplyLogDto) {
         return WrapMapper.error();
     }
 }

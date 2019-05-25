@@ -26,4 +26,6 @@ public interface ApplyLogMapper extends Mapper<ApplyLog> {
      * 分页条件查询 上报App状态日志
      */
     List<ApplyLog> findApplyLogInConationPaging(@Param("applyLog") ApplyLog applyLog);
+
+    int modifyVerifyApplyLog(ApplyLog applyLog);
 }

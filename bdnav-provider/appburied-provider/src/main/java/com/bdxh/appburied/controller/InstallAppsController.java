@@ -1,16 +1,10 @@
 package com.bdxh.appburied.controller;
 
-import com.bdxh.appburied.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.InstallApps;
 import com.bdxh.appburied.service.InstallAppsService;
-import com.bdxh.common.helper.getui.constant.GeTuiConstant;
-import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
-import com.bdxh.common.helper.getui.request.AppPushRequest;
-import com.bdxh.common.helper.getui.utils.GeTuiUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Description: 控制器

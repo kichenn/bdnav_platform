@@ -1,10 +1,13 @@
 package com.bdxh.appburied.service.impl;
 
 import com.bdxh.appburied.dto.ApplyLogQueryDto;
+import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.service.ApplyLogService;
+import com.bdxh.common.utils.BeanMapUtils;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -59,4 +62,17 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
         return pageInfoFamily;
     }
 
+    @Override
+    public List<ApplyLog> familyFindApplyLogInfo(String schoolCode, String cardNumber) {
+        ApplyLog applyLog=new ApplyLog();
+        applyLog.setSchoolCode(schoolCode);
+        applyLog.setCardNumber(cardNumber);
+        return applyLogMapper.findApplyLogInConationPaging(applyLog);
+    }
+
+    @Override
+    public void modifyVerifyApplyLog(ModifyApplyLogDto modifyApplyLogDto) {
+        ApplyLog applyLog=BeanMapUtils.map(modifyApplyLogDto,ApplyLog.class);
+        applyLogMapper.modifyVerifyApplyLog(applyLog);
+    }
 }

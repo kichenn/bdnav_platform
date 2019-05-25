@@ -3,15 +3,8 @@ package com.bdxh.appburied.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.appburied.configration.utils.GeTuiUtils;
 import com.bdxh.appburied.dto.AppStatusQueryDto;
-import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.service.AppStatusService;
-import com.bdxh.common.helper.getui.constant.GeTuiConstant;
-import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
-import com.bdxh.common.helper.getui.request.AppPushRequest;
-import com.bdxh.common.helper.getui.utils.GeTuiUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
-import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -25,10 +18,8 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.persistence.AppStatusMapper;
 
-import java.sql.ClientInfoStatus;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description: 业务层实现

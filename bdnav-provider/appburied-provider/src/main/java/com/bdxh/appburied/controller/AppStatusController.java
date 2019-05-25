@@ -1,12 +1,9 @@
 package com.bdxh.appburied.controller;
 
-import com.bdxh.appburied.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.AppStatus;
-import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

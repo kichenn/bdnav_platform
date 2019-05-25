@@ -70,12 +70,26 @@
                 AND operator_name like CONCAT(CONCAT('%',#{applyLog.operatorName,jdbcType=VARCHAR}),'%')
             </if>
             <if test="applyLog.operatorStatus !=null and applyLog.operatorName!=''">
-                AND  operator_status=#{applyLog.operatorStatus,jdbcType = TINYINT}
+                AND operator_status=#{applyLog.operatorStatus,jdbcType = TINYINT}
             </if>
         </where>
 
         ORDER BY create_date DESC
     </select>
 
+    <update id="modifyVerifyApplyLog">
+        UPDATE t_apply_log
+        SET
+         operator_code = #{operatorCode},
+         operator_name = #{operatorName},
+         operator_status = #{operatorStatus},
+         review = #{review},
+         start_date = #{startDate},
+         end_date = #{endDate},
+         update_date = NOW(),
+         remark = NULL
+        WHERE
+           school_code =#{schoolCode} and card_number = #{cardNumber} and  id = #{id}
+    </update>
 
 </mapper>
