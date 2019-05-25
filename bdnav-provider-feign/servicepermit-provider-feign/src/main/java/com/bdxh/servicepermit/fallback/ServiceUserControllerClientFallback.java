@@ -10,6 +10,7 @@ import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 
 
 @Component
@@ -33,5 +34,10 @@ public class ServiceUserControllerClientFallback implements ServiceUserControlle
     @Override
     public Wrapper createServiceUser(AddServiceUserDto addServiceUserDto) {
         return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<ServiceUser>> queryAllServiceUser(String cardNumber, String schoolCode, String studentNumber) {
+        return  WrapMapper.error();
     }
 }

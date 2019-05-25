@@ -44,7 +44,7 @@ public class VisitLogsWebController {
             return visitLogsControllerClient.queryVisitLogByCardNumber(schoolCode,cardNumber);
         }catch (Exception e){
             e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
+            return WrapMapper.error();
         }
     }
 }

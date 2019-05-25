@@ -42,4 +42,12 @@ public interface ServiceUserService extends IService<ServiceUser> {
 	Boolean deleteByServiceId(String SchoolCode,String cardNumber,Long id);
 
 
+	/**
+	 * 查询单个学生的购买记录
+	 * @param SchoolCode
+	 * @param cardNumber
+	 * @param studentNumber
+	 * @return
+	 */
+	List<ServiceUser> queryAllServiceUser(String SchoolCode,String cardNumber,String studentNumber);
 }

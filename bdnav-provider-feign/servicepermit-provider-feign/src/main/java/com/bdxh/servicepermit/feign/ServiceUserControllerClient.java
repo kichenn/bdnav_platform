@@ -11,6 +11,8 @@ import com.bdxh.servicepermit.dto.QueryServiceUserDto;
 import com.bdxh.servicepermit.entity.ServiceUser;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 @Service
 @FeignClient(value = "servicepermit-provider-cluster", fallback = ServiceUserControllerClientFallback.class)
 public interface ServiceUserControllerClient {
@@ -33,6 +35,13 @@ public interface ServiceUserControllerClient {
         @ResponseBody
         Wrapper createServiceUser(@RequestBody AddServiceUserDto addServiceUserDto);
 
+
+
+        @RequestMapping(value = "/serviceUser/queryAllServiceUser",method = RequestMethod.GET)
+        @ResponseBody
+        Wrapper<List<ServiceUser>> queryAllServiceUser(@RequestParam("cardNumber")String cardNumber,
+                                                       @RequestParam("schoolCode")String schoolCode,
+                                                       @RequestParam("studentNumber")String studentNumber);
 
 
 }

@@ -69,6 +69,11 @@ public class BaseUserWebController {
         }
     }
 
+    /**
+     * 激活校园卡时手机获取短信验证码
+     * @param phone
+     * @return
+     */
     @ApiOperation(value = "微校平台----激活校园卡时手机获取短信验证码")
     @RequestMapping(value = "/getPhoneCode",method = RequestMethod.POST)
     public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
