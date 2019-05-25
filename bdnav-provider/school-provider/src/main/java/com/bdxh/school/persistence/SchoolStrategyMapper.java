@@ -32,4 +32,7 @@ public interface SchoolStrategyMapper extends Mapper<SchoolStrategy> {
 
 	//添加策略
 	Integer addSchoolStrategy(SchoolStrategy schoolStrategy);
+
+	//根据id查询策略
+    QuerySchoolStrategy findStrategyById(@Param("id") Long id);
 }

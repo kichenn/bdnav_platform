@@ -124,5 +124,12 @@
         VALUES(#{policyName},#{schoolId},#{schoolCode},#{schoolName},#{groupId},#{recursionPermission},#{recursionPermissionIds},#{priority},#{modelId},#{startDate},#{endDate},#{dayMark},#{timeMark},#{exclusionDays},#{pushState},#{createDate},#{updateDate},#{operator},#{operatorName},#{remark})
     </insert>
 
+    <select id="findStrategyById" resultMap="BResultMap" parameterType="java.util.Map">
+    SELECT t_school_strategy.*,t_school_mode.*
+        FROM
+        t_school_strategy
+        INNER JOIN  t_school_mode ON t_school_strategy.model_id = t_school_mode.id
+     WHERE t_school_strategy.id=#{id}
+    </select>
 
 </mapper>

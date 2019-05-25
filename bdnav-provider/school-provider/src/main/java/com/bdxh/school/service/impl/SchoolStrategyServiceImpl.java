@@ -49,11 +49,16 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
         return schoolStrategyMapper.delSchoolStrategyInIds(ids) > 0;
     }
 
-    //根据ID查询对象的方法
+    @Override
+    public QuerySchoolStrategy findStrategyById(Long id) {
+        return schoolStrategyMapper.findStrategyById(id);
+    }
+
+/*    //根据ID查询对象的方法
     @Override
     public SchoolStrategy findSchoolStrategyById(Long id){
         return schoolStrategyMapper.selectByPrimaryKey(id);
-    }
+    }*/
 
     @Override
     public PageInfo<QuerySchoolStrategy> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
