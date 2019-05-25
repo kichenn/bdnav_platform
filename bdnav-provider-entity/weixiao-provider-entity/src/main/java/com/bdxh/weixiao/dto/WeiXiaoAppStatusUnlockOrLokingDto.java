@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description:
@@ -77,4 +78,10 @@ public class WeiXiaoAppStatusUnlockOrLokingDto {
     @NotNull(message = "应用状态不能为空")
     @ApiModelProperty(value ="应用状态 1 正常 2 锁定",name = "应用状态 1 正常 2 锁定")
     private Byte appStatus;
+
+    /**
+     * 客户端Ids
+     */
+    @ApiModelProperty(value ="客户端Ids",name = "客户端Ids")
+    private List<String> clientId;
 }

@@ -23,10 +23,12 @@
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="review" jdbcType="VARCHAR" property="review"/>
+        <result column="reason" jdbcType="VARCHAR" property="reason"/>
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark
+	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark,review,reason
 	</sql>
     <select id="getApplyLogAllCount" resultType="Integer">
 	  SELECT 

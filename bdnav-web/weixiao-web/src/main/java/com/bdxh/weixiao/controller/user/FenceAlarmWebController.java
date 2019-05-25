@@ -31,8 +31,6 @@ import java.util.stream.Collectors;
 public class FenceAlarmWebController {
     @Autowired
     private FenceAlarmControllerClient fenceAlarmControllerClient;
-    @Autowired
-    private SchoolControllerClient schoolControllerClient;
     /**
      * 收费服务
      * 查询所有
@@ -62,7 +60,6 @@ public class FenceAlarmWebController {
      * @param id
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation("家长电子围栏-----查询单个围栏警报接口")
     @RequestMapping(value="/getFenceAlarmInfo",method = RequestMethod.POST)
     public Object getFenceAlarmInfo(

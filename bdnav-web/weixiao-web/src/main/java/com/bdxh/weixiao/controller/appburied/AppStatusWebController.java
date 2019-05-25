@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -85,8 +86,10 @@ public class AppStatusWebController {
     public Object appStatusLockingAndUnlock(@RequestBody @Validated WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         try {
             log.debug("---------------------------------家长锁定解锁应用WEB层");
-            AppStatus appStatus=BeanMapUtils.map(weiXiaoAppStatusUnlockOrLokingDto,AppStatus.class);
-            return appStatusControllerClient.appStatusLockingAndUnlock(appStatus);
+            List<String> clientId = new ArrayList<>();
+            clientId.add("59dc219038fde0484eebcbb6d5476f0c");
+            weiXiaoAppStatusUnlockOrLokingDto.setClientId(clientId);
+            return appStatusControllerClient.appStatusLockingAndUnlock(weiXiaoAppStatusUnlockOrLokingDto);
         }catch (Exception e){
             return WrapMapper.error();
         }

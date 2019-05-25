@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @description:
  * @author: binzh
@@ -33,6 +36,9 @@ public class ApplyLogWebController {
     @RequestMapping(value = "/modifyVerifyApplyLog", method = RequestMethod.POST)
     @ApiOperation(value = "家长审批自己孩子的App申请信息")
     public Object modifyVerifyApplyLog(@RequestBody ModifyApplyLogDto modifyApplyLogDto) {
+        List<String> clientId = new ArrayList<>();
+        clientId.add("59dc219038fde0484eebcbb6d5476f0c");
+        modifyApplyLogDto.setClientId(clientId);
             return applyLogControllerClient.modifyVerifyApplyLog(modifyApplyLogDto);
     }
 }

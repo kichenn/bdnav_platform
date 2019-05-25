@@ -3,6 +3,7 @@ package com.bdxh.appburied.service;
 import com.bdxh.appburied.dto.AppStatusQueryDto;
 import com.bdxh.common.support.IService;
 import com.bdxh.appburied.entity.AppStatus;
+import com.bdxh.weixiao.dto.WeiXiaoAppStatusUnlockOrLokingDto;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +38,8 @@ public interface AppStatusService extends IService<AppStatus> {
 
     /**
      * 家长锁定加解锁
-     * @param appStatus
+     * @param weiXiaoAppStatusUnlockOrLokingDto
      * @return
      */
-    Boolean appStatusLockingAndUnlock(AppStatus appStatus);
+    Boolean appStatusLockingAndUnlock(WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto);
 }

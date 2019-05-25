@@ -9,8 +9,10 @@ import com.bdxh.appburied.entity.InstallApps;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.weixiao.dto.WeiXiaoAppStatusUnlockOrLokingDto;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -53,7 +55,7 @@ public class AppStatusControllerClientFallback implements AppStatusControllerCli
     }
 
     @Override
-    public Wrapper<Boolean> appStatusLockingAndUnlock(AppStatus appStatus) {
+    public Wrapper<Boolean> appStatusLockingAndUnlock( WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         return WrapMapper.error();
     }
 }

@@ -4,6 +4,7 @@ import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.weixiao.dto.WeiXiaoAppStatusUnlockOrLokingDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -94,14 +95,14 @@ public class AppStatusController {
 
     /**
      * 管控锁定解锁应用接口 推送个推给移动端
-     * @param appStatus
+     * @param weiXiaoAppStatusUnlockOrLokingDto
      * @return
      */
     @ApiOperation(value = "应用管控----锁定以及解锁App", tags = "应用管控----锁定以及解锁App")
     @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
-    public Object appStatusLockingAndUnlock(@RequestBody  AppStatus appStatus) {
+    public Object appStatusLockingAndUnlock(@RequestBody WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         log.debug("---------------------------------家长锁定解锁应用controller");
-        Boolean result=appStatusService.appStatusLockingAndUnlock(appStatus);
+        Boolean result=appStatusService.appStatusLockingAndUnlock(weiXiaoAppStatusUnlockOrLokingDto);
         return WrapMapper.ok(result);
     }
 }
