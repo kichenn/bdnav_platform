@@ -14,9 +14,11 @@ import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -48,28 +50,33 @@ public class SchoolStrategyWebController {
             addPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.addPolicyInCondition(addPolicyDto);
             String aap=String.valueOf(wrapper.getResult());
-            SchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
+            QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
+            Preconditions.checkArgument(ssl == null, "未找到相应模式或策略,请检查后重试");
             List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
-            AppPushRequest appPushRequest= new AppPushRequest();
-            appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
-            appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
-            appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
-            List<String> clientIds = new ArrayList<>();
-            //添加用户设备号
-            for(UserDevice attribute : userDeviceList) {
-                clientIds.add(attribute.getClientId());
+            if (CollectionUtils.isNotEmpty(userDeviceList)){
+                AppPushRequest appPushRequest= new AppPushRequest();
+                appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+                appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+                appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+                List<String> clientIds = new ArrayList<>();
+                //添加用户设备号
+                for(UserDevice attribute : userDeviceList) {
+                    clientIds.add(attribute.getClientId());
+                }
+                appPushRequest.setClientId(clientIds);
+                //穿透模版
+                AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
+                appNotificationTemplate.setTitle("学校策略模式推送");
+                appNotificationTemplate.setText("穿透内容测试");
+                appNotificationTemplate.setTransmissionContent(ssl.toString());
+                appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
+                //群发穿透模版
+                Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
+                System.out.println(resultMap.toString());
+            }else{
+                return WrapMapper.error("未找到对应设备信息");
             }
-            appPushRequest.setClientId(clientIds);
-            //穿透模版
-            AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
-            appNotificationTemplate.setTitle("学校策略模式推送");
-            appNotificationTemplate.setText("穿透内容测试");
-            appNotificationTemplate.setTransmissionContent(ssl.toString());
-            appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
-            //群发穿透模版
-            Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
-            System.out.println(resultMap.toString());
-            return wrapper.getCode();
+            return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -88,28 +95,32 @@ public class SchoolStrategyWebController {
             modifyPolicyDto.setOperator(user.getId());
             modifyPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.updatePolicyInCondition(modifyPolicyDto);
-            SchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
-            System.out.println(modifyPolicyDto.getId());
-            List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
-            AppPushRequest appPushRequest= new AppPushRequest();
-            appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
-            appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
-            appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
-            List<String> clientIds = new ArrayList<>();
-            //添加用户设备号
-            for(UserDevice attribute : userDeviceList) {
-                clientIds.add(attribute.getClientId());
-            }
-            appPushRequest.setClientId(clientIds);
-            //穿透模版
-            AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
-            appNotificationTemplate.setTitle("学校策略模式推送");
-            appNotificationTemplate.setText("穿透内容测试");
-            appNotificationTemplate.setTransmissionContent(ssl.toString());
-            appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
-            //群发穿透模版
-            Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
-            System.out.println(resultMap.toString());
+                QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
+               Preconditions.checkArgument(ssl == null, "未找到相应模式或策略,请检查后重试");
+                List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+               if (CollectionUtils.isNotEmpty(userDeviceList)){
+                    AppPushRequest appPushRequest= new AppPushRequest();
+                    appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+                    appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+                    appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+                    List<String> clientIds = new ArrayList<>();
+                    //添加用户设备号
+                    for(UserDevice attribute : userDeviceList) {
+                        clientIds.add(attribute.getClientId());
+                    }
+                    appPushRequest.setClientId(clientIds);
+                    //穿透模版
+                    AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
+                    appNotificationTemplate.setTitle("学校策略模式推送");
+                    appNotificationTemplate.setText("穿透内容测试");
+                    appNotificationTemplate.setTransmissionContent(ssl.toString());
+                    appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
+                    //群发穿透模版
+                    Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
+                    System.out.println(resultMap.toString());
+                }else{
+                   return WrapMapper.error("未找到对应设备信息");
+                }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();

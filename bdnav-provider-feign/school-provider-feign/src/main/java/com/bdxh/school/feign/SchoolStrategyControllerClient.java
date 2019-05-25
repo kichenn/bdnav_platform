@@ -80,7 +80,7 @@ public interface SchoolStrategyControllerClient {
      */
     @RequestMapping(value = "/schoolStrategy/findStrategyById", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<SchoolStrategy> findStrategyById(@RequestParam("id") Long id);
+    Wrapper<QuerySchoolStrategy> findStrategyById(@RequestParam("id") Long id);
 
 
 }

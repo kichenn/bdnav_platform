@@ -237,7 +237,7 @@ public class SchoolStrategyController {
 	@RequestMapping(value = "/findStrategyById", method = RequestMethod.GET)
 	@ApiOperation(value = "根据id查询策略", response = SchoolStrategy.class)
 	public Object findStrategyById(@RequestParam("id") Long id) {
-	    SchoolStrategy ss = schoolStrategyService.findSchoolStrategyById(id);
+        QuerySchoolStrategy ss = schoolStrategyService.findStrategyById(id);
 		return WrapMapper.ok(ss);
 	}
 

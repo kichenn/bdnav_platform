@@ -27,8 +27,11 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 	//批量删除方法
 	Boolean batchDelSchoolStrategyInIds(List<Long> id);
 
-	//根据ID查询对象的方法
-	SchoolStrategy findSchoolStrategyById(Long id);
+/*	//根据ID查询对象的方法
+	SchoolStrategy findSchoolStrategyById(Long id);*/
+
+    //根据ID查询对象的方法
+    QuerySchoolStrategy findStrategyById(Long id);
 
 	//根据条件分页查询用户列表
 	PageInfo<QuerySchoolStrategy> findListPage(Map<String,Object> param, Integer pageNum, Integer pageSize);
