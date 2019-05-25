@@ -11,6 +11,12 @@ import java.util.Date;
 public class AddPolicyDto {
 
     /**
+     * id
+     */
+    @ApiModelProperty("策略id")
+    private Long id;
+
+    /**
      * 策略名称
      */
     @ApiModelProperty("策略名称")

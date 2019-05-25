@@ -1,6 +1,12 @@
 package com.bdxh.backend.controller.school;
 
+import com.bdxh.account.entity.UserDevice;
+import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
+import com.bdxh.common.helper.getui.constant.GeTuiConstant;
+import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
+import com.bdxh.common.helper.getui.request.AppPushRequest;
+import com.bdxh.common.helper.getui.utils.GeTuiUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
@@ -15,7 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/schoolStrategyWebController")
@@ -27,8 +35,11 @@ public class SchoolStrategyWebController {
     @Autowired
     private SchoolStrategyControllerClient schoolStrategyControllerClient;
 
+    @Autowired
+    private UserDeviceControllerClient userDeviceControllerClient;
+
     @RequestMapping(value = "/addPolicyInCondition", method = RequestMethod.POST)
-    @ApiOperation(value = "增加学校模式", response = Boolean.class)
+    @ApiOperation(value = "增加学校模式策略", response = Boolean.class)
     public Object addPolicyInCondition(@Validated @RequestBody AddPolicyDto addPolicyDto) {
         try {
             //设置操作人
@@ -36,7 +47,29 @@ public class SchoolStrategyWebController {
             addPolicyDto.setOperator(user.getId());
             addPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.addPolicyInCondition(addPolicyDto);
-            return wrapper;
+            String aap=String.valueOf(wrapper.getResult());
+            SchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
+            List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+            AppPushRequest appPushRequest= new AppPushRequest();
+            appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+            appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+            appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+            List<String> clientIds = new ArrayList<>();
+            //添加用户设备号
+            for(UserDevice attribute : userDeviceList) {
+                clientIds.add(attribute.getClientId());
+            }
+            appPushRequest.setClientId(clientIds);
+            //穿透模版
+            AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
+            appNotificationTemplate.setTitle("学校策略模式推送");
+            appNotificationTemplate.setText("穿透内容测试");
+            appNotificationTemplate.setTransmissionContent(ssl.toString());
+            appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
+            //群发穿透模版
+            Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
+            System.out.println(resultMap.toString());
+            return wrapper.getCode();
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -55,6 +88,28 @@ public class SchoolStrategyWebController {
             modifyPolicyDto.setOperator(user.getId());
             modifyPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.updatePolicyInCondition(modifyPolicyDto);
+            SchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
+            System.out.println(modifyPolicyDto.getId());
+            List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+            AppPushRequest appPushRequest= new AppPushRequest();
+            appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+            appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+            appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+            List<String> clientIds = new ArrayList<>();
+            //添加用户设备号
+            for(UserDevice attribute : userDeviceList) {
+                clientIds.add(attribute.getClientId());
+            }
+            appPushRequest.setClientId(clientIds);
+            //穿透模版
+            AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
+            appNotificationTemplate.setTitle("学校策略模式推送");
+            appNotificationTemplate.setText("穿透内容测试");
+            appNotificationTemplate.setTransmissionContent(ssl.toString());
+            appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
+            //群发穿透模版
+            Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
+            System.out.println(resultMap.toString());
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();

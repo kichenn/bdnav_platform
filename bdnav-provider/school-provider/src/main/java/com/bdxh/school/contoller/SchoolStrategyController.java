@@ -10,7 +10,6 @@ import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -118,9 +117,9 @@ public class SchoolStrategyController {
 			Preconditions.checkArgument(strategy == null, "该策略已有相同优先级值,请更换后重试");
 			SchoolStrategy schoolStrategy=new SchoolStrategy();
 			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
-			schoolStrategy.setRecursionPermission(Byte.valueOf(addPolicyDto.getRecursionPermission().getKey()));
-			Boolean result = schoolStrategyService.save(schoolStrategy)>0;
-			return WrapMapper.ok(result);
+			schoolStrategy.setRecursionPermission(addPolicyDto.getRecursionPermission().getKey());
+			Boolean result = schoolStrategyService.addSchoolStrategy(schoolStrategy);
+			return WrapMapper.ok(schoolStrategy.getId());
 		} catch (RuntimeException e) {
 		e.printStackTrace();
 		return WrapMapper.error(e.getMessage());
@@ -230,6 +229,18 @@ public class SchoolStrategyController {
 		Boolean flag=schoolStrategyService.update(schoolStrategy)>0;
 		return WrapMapper.ok(flag);
 	}
+
+	/**
+	 * @Description: 根据id查询列表信息
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/findStrategyById", method = RequestMethod.GET)
+	@ApiOperation(value = "根据id查询策略", response = SchoolStrategy.class)
+	public Object findStrategyById(@RequestParam("id") Long id) {
+	    SchoolStrategy ss = schoolStrategyService.findSchoolStrategyById(id);
+		return WrapMapper.ok(ss);
+	}
+
 
 
 
