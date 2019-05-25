@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.AddPolicyDto;
 import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.entity.SchoolStrategy;
 import com.github.pagehelper.PageInfo;
@@ -20,15 +21,6 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 	//查询列表信息根据条件
 	List<SchoolStrategy> findSchoolStrategyInCondition(SchoolStrategy schoolStrategy);
 
-	//查询所有数量
-	Integer getSchoolStrategyAllCount();
-
-	//新增方法
-	Boolean addSchoolStrategy(SchoolStrategy schoolStrategy);
-
-	//修改方法
-	Boolean modifySchoolStrategy(SchoolStrategy schoolStrategy);
-
 	//删除方法
 	Boolean delSchoolStrategyById(Long id);
 
@@ -46,4 +38,7 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 
 	//根据学校code查询策略列表
 	List<QuerySchoolStrategy> getStrategyList(Map<String,Object> param);
+
+	//添加策略
+	Boolean addSchoolStrategy(SchoolStrategy schoolStrategy);
 }
