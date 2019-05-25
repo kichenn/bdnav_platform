@@ -45,7 +45,6 @@ public class FenceAlarmWebController {
                                         @RequestParam("cardNumber")String cardNumber,
                                         @RequestParam("fenceId")String fenceId){
         try {
-
             return fenceAlarmControllerClient.getFenceAlarmInfos(schoolCode,cardNumber,fenceId);
         }catch (Exception e){
             e.printStackTrace();
