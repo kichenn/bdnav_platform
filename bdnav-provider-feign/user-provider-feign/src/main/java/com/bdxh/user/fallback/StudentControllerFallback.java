@@ -90,10 +90,7 @@ public class StudentControllerFallback implements StudentControllerClient {
         return WrapMapper.error();
     }
 
-    @Override
-    public Wrapper queryAllStudentCountInCondition(String schoolCode) {
-        return WrapMapper.error();
-    }
+
 
 
 }
