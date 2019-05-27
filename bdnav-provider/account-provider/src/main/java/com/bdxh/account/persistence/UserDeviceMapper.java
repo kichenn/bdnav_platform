@@ -33,6 +33,12 @@ public interface UserDeviceMapper extends Mapper<UserDevice> {
 	 * @param groupId
 	 * @return
 	 */
-	 List<UserDevice> getUserDeviceAll(String schoolCode,Long groupId);
+	 List<UserDevice> getUserDeviceAll( @Param("schoolCode") String schoolCode, @Param("groupId")Long groupId);
+
+	/**
+	 * 查询设备表中是否存在相同的数值
+	 * @return
+	 */
+	UserDevice findUserDeviceByCodeOrCard(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
 
 }

@@ -119,4 +119,25 @@ public class UserDeviceController {
 
 	}
 
+
+	/**
+	 * @Description: 根据条件查询用户设备信息是否存在
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/findUserDeviceByCodeOrCard", method = RequestMethod.GET)
+	@ApiOperation(value = "根据条件查询用户设备信息", response = Boolean.class)
+	public Object findUserDeviceByCodeOrCard(@RequestParam("schoolCode")String schoolCode,@RequestParam("cardNumber")String cardNumber) {
+		try{
+			UserDevice ud=userDeviceService.findUserDeviceByCodeOrCard(schoolCode,cardNumber);
+			return WrapMapper.ok(ud);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
+
+	}
+
+
+
+
 }

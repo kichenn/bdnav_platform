@@ -83,15 +83,12 @@ public class StudentControllerFallback implements StudentControllerClient {
     @Override
     public Wrapper<List<Student>> findAllStudent() {
         return WrapMapper.error();
-
     }
 
     @Override
     public Wrapper<List<Student>> findStudentInfo(StudentQueryDto studentQueryDto) {
         return WrapMapper.error();
     }
-
-
 
 
 }
