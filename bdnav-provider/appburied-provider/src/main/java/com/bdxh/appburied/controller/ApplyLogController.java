@@ -104,7 +104,7 @@ public class ApplyLogController {
     public Object modifyVerifyApplyLog(@RequestBody  ModifyApplyLogDto modifyApplyLogDto) {
         try {
             applyLogService.modifyVerifyApplyLog(modifyApplyLogDto);
-            return WrapMapper.ok();
+            return WrapMapper.ok("审批完成");
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error();

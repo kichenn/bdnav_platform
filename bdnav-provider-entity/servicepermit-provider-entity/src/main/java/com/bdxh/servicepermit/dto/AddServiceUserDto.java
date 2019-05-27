@@ -41,6 +41,11 @@ public class AddServiceUserDto {
     @ApiModelProperty("家长姓名")
     private String familyName;
 
+    @ApiModelProperty("学生卡号")
+    private String studentNumber;
+
+    @ApiModelProperty("学生姓名")
+    private String studentName;
 
     @ApiModelProperty("开始使用时间")
     private Date startTime;

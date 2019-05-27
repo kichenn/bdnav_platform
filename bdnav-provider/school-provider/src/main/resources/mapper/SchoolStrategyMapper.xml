@@ -119,5 +119,17 @@
         ORDER BY priority
     </select>
 
+    <insert id="addSchoolStrategy" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_school_strategy(policy_name,school_id,school_code,school_name,group_id,recursion_permission,recursion_permission_ids,priority,model_id,start_date,end_date,day_mark,time_mark,exclusion_days,push_state,create_date,update_date,operator,operator_name,remark)
+        VALUES(#{policyName},#{schoolId},#{schoolCode},#{schoolName},#{groupId},#{recursionPermission},#{recursionPermissionIds},#{priority},#{modelId},#{startDate},#{endDate},#{dayMark},#{timeMark},#{exclusionDays},#{pushState},#{createDate},#{updateDate},#{operator},#{operatorName},#{remark})
+    </insert>
+
+    <select id="findStrategyById" resultMap="BResultMap" parameterType="java.util.Map">
+    SELECT t_school_strategy.*,t_school_mode.*
+        FROM
+        t_school_strategy
+        INNER JOIN  t_school_mode ON t_school_strategy.model_id = t_school_mode.id
+     WHERE t_school_strategy.id=#{id}
+    </select>
 
 </mapper>

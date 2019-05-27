@@ -19,6 +19,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,13 +38,11 @@ public class AppStatusWebController {
     private AppStatusControllerClient appStatusControllerClient;
 
     @Autowired
-    private AppControllerClient appControllerClient;
-
-    @Autowired
     private InstallAppsControllerClient installAppsControllerClient;
 
     /**
      * 收费服务
+     * 家长应用管控----获取某个孩子的应用列表以及状态
      * @param schoolCode 学校Code
      * @param cardNumber 学生学号
      * @return
@@ -63,7 +62,7 @@ public class AppStatusWebController {
                 for (AppStatus appStatus : appStatusList) {
                     //如果安装的包名对应的应用状态包名切状态为锁定时为Vo类添加锁定状态默认为1
                     if (weiXiaoInstallAppsVo.getAppPackage().equals(appStatus.getAppPackage()) &&
-                            appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
+                        appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
                         weiXiaoInstallAppsVo.setAppStatus(Byte.valueOf("2"));
                     }
                 }
@@ -75,18 +74,20 @@ public class AppStatusWebController {
     }
 
     /**
-     * 收费服务
+     * 家长应用管控----锁定以及解锁App
      * @param weiXiaoAppStatusUnlockOrLokingDto
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation(value = "家长应用管控----锁定以及解锁App")
     @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
     public Object appStatusLockingAndUnlock(@RequestBody @Validated WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         try {
             log.debug("---------------------------------家长锁定解锁应用WEB层");
-            AppStatus appStatus=BeanMapUtils.map(weiXiaoAppStatusUnlockOrLokingDto,AppStatus.class);
-            return appStatusControllerClient.appStatusLockingAndUnlock(appStatus);
+            List<String> clientId = new ArrayList<>();
+            //先给测试默认的clientId
+            clientId.add("59dc219038fde0484eebcbb6d5476f0c");
+            weiXiaoAppStatusUnlockOrLokingDto.setClientId(clientId);
+            return appStatusControllerClient.appStatusLockingAndUnlock(weiXiaoAppStatusUnlockOrLokingDto);
         }catch (Exception e){
             return WrapMapper.error();
         }

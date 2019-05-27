@@ -1,7 +1,9 @@
 package com.bdxh.servicepermit.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.servicepermit.dto.ModifyServiceUserDto;
+import com.bdxh.servicepermit.dto.QueryServiceUserDto;
 import com.bdxh.servicepermit.service.ServiceUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import com.bdxh.servicepermit.entity.ServiceUser;
 import com.bdxh.servicepermit.persistence.ServiceUserMapper;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -58,6 +62,14 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
 		return serviceUserMapper.deleteByServiceId(SchoolCode,cardNumber,id)>0;
 	}
 
+	@Override
+	public List<ServiceUser> queryAllServiceUser(String SchoolCode, String cardNumber, String studentNumber) {
+		QueryServiceUserDto queryServiceUserDto=new QueryServiceUserDto();
+		queryServiceUserDto.setSchoolCode(SchoolCode);
+		queryServiceUserDto.setCardNumber(cardNumber);
+		queryServiceUserDto.setStudentNumber(studentNumber);
+		Map<String, Object> param = BeanToMapUtil.objectToMap(queryServiceUserDto);
 
-
+		return serviceUserMapper.getServiceByCondition(param);
+	}
 }

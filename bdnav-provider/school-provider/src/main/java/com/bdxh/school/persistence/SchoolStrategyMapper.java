@@ -1,5 +1,6 @@
 package com.bdxh.school.persistence;
 
+
 import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.entity.SchoolStrategy;
 import org.apache.ibatis.annotations.Param;
@@ -29,4 +30,9 @@ public interface SchoolStrategyMapper extends Mapper<SchoolStrategy> {
 	//根据schoolcode查询学校策略
 	List<QuerySchoolStrategy> getStrategyList(@Param("schoolCode") String schoolCode,@Param("pushState") Byte pushState);
 
+	//添加策略
+	Integer addSchoolStrategy(SchoolStrategy schoolStrategy);
+
+	//根据id查询策略
+    QuerySchoolStrategy findStrategyById(@Param("id") Long id);
 }

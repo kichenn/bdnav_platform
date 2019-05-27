@@ -6,10 +6,12 @@ import com.bdxh.appburied.enums.InstallAppsPlatformEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 修改APP应用上报日志DTO
@@ -74,14 +76,29 @@ public class ModifyApplyLogDto {
     @ApiModelProperty("结束时间")
     private Date endDate;
 
-//    @ApiModelProperty("创建时间")
-//    private Date createDate;
-
     @ApiModelProperty("修改时间")
     private Date updateDate;
 
     @ApiModelProperty("备注")
     private String remark;
+
+    /**
+     * 审核意见
+     */
+    @ApiModelProperty("审核意见")
+    private String review;
+
+    /**
+     *申请理由
+     */
+    @ApiModelProperty("申请理由")
+    private String reason;
+
+    /**
+     * 客户端Ids
+     */
+    @ApiModelProperty(value ="客户端Ids",name = "客户端Ids")
+    private List<String> clientId;
 
 
 }

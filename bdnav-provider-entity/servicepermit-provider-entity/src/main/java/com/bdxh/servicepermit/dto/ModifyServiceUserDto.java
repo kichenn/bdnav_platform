@@ -77,4 +77,9 @@ public class ModifyServiceUserDto {
     @ApiModelProperty("备注")
     private String remark;
 
+    @ApiModelProperty("学生卡号")
+    private String studentNumber;
+
+    @ApiModelProperty("学生姓名")
+    private String studentName;
 }

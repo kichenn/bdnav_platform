@@ -32,24 +32,7 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
         return results;
     }
 
-    //查询所有数量
-    @Override
-    public Integer getSchoolStrategyAllCount(){
-        return schoolStrategyMapper.getSchoolStrategyAllCount();
-    }
 
-    //新增方法
-    @Override
-    public Boolean addSchoolStrategy(SchoolStrategy schoolStrategy){
-        return schoolStrategyMapper.insertSelective(schoolStrategy) > 0;
-    }
-
-
-    //修改方法
-    @Override
-    public Boolean modifySchoolStrategy(SchoolStrategy schoolStrategy) {
-        return schoolStrategyMapper.updateByPrimaryKey(schoolStrategy) > 0;
-    }
 
 
     //删除方法
@@ -66,11 +49,16 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
         return schoolStrategyMapper.delSchoolStrategyInIds(ids) > 0;
     }
 
-    //根据ID查询对象的方法
+    @Override
+    public QuerySchoolStrategy findStrategyById(Long id) {
+        return schoolStrategyMapper.findStrategyById(id);
+    }
+
+/*    //根据ID查询对象的方法
     @Override
     public SchoolStrategy findSchoolStrategyById(Long id){
         return schoolStrategyMapper.selectByPrimaryKey(id);
-    }
+    }*/
 
     @Override
     public PageInfo<QuerySchoolStrategy> findListPage(Map<String, Object> param, Integer pageNum, Integer pageSize) {
@@ -87,6 +75,12 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
     @Override
     public List<QuerySchoolStrategy> getStrategyList(Map<String, Object> param) {
         return schoolStrategyMapper.getByCondition(param);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean addSchoolStrategy(SchoolStrategy schoolStrategy) {
+        return schoolStrategyMapper.addSchoolStrategy(schoolStrategy)>0;
     }
 
 }

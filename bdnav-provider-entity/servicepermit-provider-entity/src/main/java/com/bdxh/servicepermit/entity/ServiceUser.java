@@ -18,7 +18,6 @@ import java.lang.Long;
 public class ServiceUser {
 
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -50,6 +49,12 @@ public class ServiceUser {
 
     @Column(name = "family_name")
     private String familyName;
+
+    @Column(name = "student_number")
+    private String studentNumber;
+
+    @Column(name = "student_name")
+    private String studentName;
 
     @Column(name = "start_time")
     private Date startTime;

@@ -8,6 +8,7 @@ import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.fallback.AppStatusControllerClientFallback;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.weixiao.dto.WeiXiaoAppStatusUnlockOrLokingDto;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -55,5 +56,5 @@ public interface AppStatusControllerClient {
 
     @RequestMapping(value = "/appStatus/appStatusLockingAndUnlock",method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<Boolean> appStatusLockingAndUnlock(@RequestBody AppStatus appStatus);
+    Wrapper<Boolean> appStatusLockingAndUnlock(@RequestBody WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto);
 }

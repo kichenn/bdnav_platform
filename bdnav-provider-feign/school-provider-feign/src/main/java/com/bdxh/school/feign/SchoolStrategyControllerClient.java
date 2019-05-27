@@ -75,5 +75,12 @@ public interface SchoolStrategyControllerClient {
     @ResponseBody
     Wrapper updatePolicyPushStatus(@RequestParam("id") Long id,@RequestParam("pushState") Byte pushState);
 
+    /**
+     * @Description: 根据id查询策略信息
+     */
+    @RequestMapping(value = "/schoolStrategy/findStrategyById", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<QuerySchoolStrategy> findStrategyById(@RequestParam("id") Long id);
+
 
 }

@@ -128,4 +128,22 @@ public class ServiceUserController {
 		}
 	}
 
+	@ApiOperation("查询所有家长为单个学生购买的许可")
+	@RequestMapping(value = "/queryAllServiceUser",method = RequestMethod.GET)
+	public Object queryAllServiceUser(@RequestParam("cardNumber")String cardNumber,
+												   @RequestParam("schoolCode")String schoolCode,
+												   @RequestParam("studentNumber")String studentNumber){
+
+		try {
+
+			return WrapMapper.ok(serviceUserService.queryAllServiceUser(schoolCode,cardNumber,studentNumber));
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error(e.getMessage(), e.getStackTrace());
+			return WrapMapper.error(e.getMessage());
+		}
+
+	}
+
+
 }

@@ -55,8 +55,9 @@ public class TrajectoryWebController {
 
     /**
      * 家长端鹰眼轨迹------查询单个孩子的实时位置信息
-     * @param schoolCode 学校Code     用来拼接ENTITY 查询entity的轨迹点
+     * @param schoolCode 学校Code
      * @param cardNumber 学生卡号
+     *  用来拼接ENTITY 查询entity的轨迹点
      * @return
      */
     @WeiXiaoChargeApp

@@ -4,7 +4,6 @@
 
     <resultMap id="BaseResultMap" type="com.bdxh.servicepermit.entity.ServiceUser">
         <id column="id" jdbcType="BIGINT" property="id"/>
-      <!--  <result column="id" jdbcType="BIGINT" property="id"/>-->
         <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
         <result column="product_id" jdbcType="BIGINT" property="productId"/>
         <result column="product_name" jdbcType="VARCHAR" property="productName"/>
@@ -23,10 +22,11 @@
         <result column="operator" jdbcType="BIGINT" property="operator"/>
         <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="student_number" jdbcType="VARCHAR" property="studentNumber"/>
+        <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
     </resultMap>
-
     <sql id="BaseColumns">
-	id,order_no,product_id,product_name,school_id,school_code,school_name,family_id,card_number,family_name,start_time,end_time,`status`,`type`,create_date,update_date,operator,operator_name,remark
+	id,order_no,product_id,product_name,school_id,school_code,school_name,family_id,card_number,family_name,start_time,end_time,`status`,`type`,create_date,update_date,operator,operator_name,remark,student_number,student_name
 	</sql>
 
     <select id="getServiceUserAllCount" resultType="Integer">
@@ -64,6 +64,9 @@
             </if>
             <if test="type!=null">
                 AND `type`=#{type}
+            </if>
+            <if test="studentNumber!=null and studentNumber!=''">
+                AND student_number=#{studentNumber}
             </if>
         </where>
         ORDER BY create_date DESC

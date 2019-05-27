@@ -1,13 +1,14 @@
 package com.bdxh.appburied.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.appburied.configration.utils.GeTuiUtils;
 import com.bdxh.appburied.dto.ApplyLogQueryDto;
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.service.ApplyLogService;
 import com.bdxh.common.utils.BeanMapUtils;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
+import com.google.common.base.Preconditions;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -73,6 +74,23 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
     @Override
     public void modifyVerifyApplyLog(ModifyApplyLogDto modifyApplyLogDto) {
         ApplyLog applyLog=BeanMapUtils.map(modifyApplyLogDto,ApplyLog.class);
-        applyLogMapper.modifyVerifyApplyLog(applyLog);
+        if (modifyApplyLogDto.getInstallAppsPlatformEnum() != null) {
+            applyLog.setPlatform(modifyApplyLogDto.getInstallAppsPlatformEnum().getKey());
+        }
+        if (modifyApplyLogDto.getApplyLogModelEnum() != null) {
+            applyLog.setModel(modifyApplyLogDto.getApplyLogModelEnum().getKey());
+        }
+        if (modifyApplyLogDto.getApplyLogOperatorStatusEnum() != null) {
+            applyLog.setOperatorStatus(modifyApplyLogDto.getApplyLogOperatorStatusEnum().getKey());
+        }
+       Boolean result= applyLogMapper.modifyVerifyApplyLog(applyLog)>0;
+        JSONObject jsonObject=new JSONObject();
+        jsonObject.put("data",applyLog);
+        if(result){
+            Boolean  pushResult= GeTuiUtils.pushMove(modifyApplyLogDto.getClientId(),"家长审批",jsonObject.toString());
+            if (!pushResult) {
+                Preconditions.checkArgument(pushResult, "推送至安卓端失败");
+            }
+        }
     }
 }

@@ -10,6 +10,9 @@ public class QueryServiceUserDto extends Query {
     @ApiModelProperty("家长号")
     private String cardNumber;
 
+    @ApiModelProperty("学生卡号")
+    private String studentNumber;
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 

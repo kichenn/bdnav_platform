@@ -7,8 +7,6 @@ import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.user.feign.FamilyStudentControllerClient;
-import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.weixiao.vo.WeiXiaoAppVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,12 +35,6 @@ public class AppWebController {
 
     @Autowired
     private AppControllerClient appControllerClient;
-
-    @Autowired
-    private FamilyStudentControllerClient familyStudentControllerClient;
-
-    @Autowired
-    private StudentControllerClient studentControllerClient;
 
     @Autowired
     private InstallAppsControllerClient installAppsControllerClient;
@@ -77,7 +69,7 @@ public class AppWebController {
     }
 
     /**
-     *
+     *家长应用市场----根据APPId查看应用详情
      * @param id 应用Id
      * @return
      */
@@ -93,13 +85,22 @@ public class AppWebController {
         }
     }
 
+    /**
+     * 家长应用市场----家长给孩子安装应用推送
+     * @param id
+     * @param userName
+     * @param cardNumber
+     * @return
+     */
     @ApiOperation("家长应用市场----家长给孩子安装应用推送")
     @RequestMapping(value = "/pushInstalledApp", method = RequestMethod.POST)
     public Object pushInstalledApp(@RequestParam("id") @NotNull(message = "应用ID不能为空") Long id,
                                    @RequestParam("userName") @NotNull(message = "学生姓名不能为空") String userName,
                                    @RequestParam("cardNumber") @NotNull(message = "学生卡号不能为空") String cardNumber) {
         try {
-            return appControllerClient.pushInstallApps(id, userName, cardNumber);
+            //先给测试默认的clientId
+           String  clientId="59dc219038fde0484eebcbb6d5476f0c";
+            return appControllerClient.pushInstallApps(id, userName, cardNumber,clientId);
         } catch (Exception e) {
             return WrapMapper.error();
         }

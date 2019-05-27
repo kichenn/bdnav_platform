@@ -144,7 +144,6 @@ public class FamilyStudentWebController {
         try {
             schoolCode="20110329";
             String cardNumber="20190516002";
-
             JSONObject jsonObject=new JSONObject();
             FamilyVo family=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
             if(CollectionUtils.isNotEmpty(family.getStudents())){
@@ -155,7 +154,6 @@ public class FamilyStudentWebController {
                     s.setId(student.getSId());
                 }
             }
-
             return WrapMapper.ok(family);
         } catch (Exception e) {
             e.printStackTrace();
@@ -182,6 +180,12 @@ public class FamilyStudentWebController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 手机获取短信验证码
+     * @param phone
+     * @return
+     */
     @ApiOperation(value = "家长子女关系----手机获取短信验证码")
     @RequestMapping(value = "/getPhoneCode",method = RequestMethod.POST)
     public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){

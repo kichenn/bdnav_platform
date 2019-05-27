@@ -1,6 +1,12 @@
 package com.bdxh.backend.controller.school;
 
+import com.bdxh.account.entity.UserDevice;
+import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
+import com.bdxh.common.helper.getui.constant.GeTuiConstant;
+import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
+import com.bdxh.common.helper.getui.request.AppPushRequest;
+import com.bdxh.common.helper.getui.utils.GeTuiUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
@@ -8,14 +14,18 @@ import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/schoolStrategyWebController")
@@ -27,8 +37,11 @@ public class SchoolStrategyWebController {
     @Autowired
     private SchoolStrategyControllerClient schoolStrategyControllerClient;
 
+    @Autowired
+    private UserDeviceControllerClient userDeviceControllerClient;
+
     @RequestMapping(value = "/addPolicyInCondition", method = RequestMethod.POST)
-    @ApiOperation(value = "增加学校模式", response = Boolean.class)
+    @ApiOperation(value = "增加学校模式策略", response = Boolean.class)
     public Object addPolicyInCondition(@Validated @RequestBody AddPolicyDto addPolicyDto) {
         try {
             //设置操作人
@@ -36,6 +49,33 @@ public class SchoolStrategyWebController {
             addPolicyDto.setOperator(user.getId());
             addPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.addPolicyInCondition(addPolicyDto);
+            String aap=String.valueOf(wrapper.getResult());
+            QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
+            Preconditions.checkArgument(ssl == null, "未找到相应模式或策略,请检查后重试");
+            List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+            if (CollectionUtils.isNotEmpty(userDeviceList)){
+                AppPushRequest appPushRequest= new AppPushRequest();
+                appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+                appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+                appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+                List<String> clientIds = new ArrayList<>();
+                //添加用户设备号
+                for(UserDevice attribute : userDeviceList) {
+                    clientIds.add(attribute.getClientId());
+                }
+                appPushRequest.setClientId(clientIds);
+                //穿透模版
+                AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
+                appNotificationTemplate.setTitle("学校策略模式推送");
+                appNotificationTemplate.setText("穿透内容测试");
+                appNotificationTemplate.setTransmissionContent(ssl.toString());
+                appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
+                //群发穿透模版
+                Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
+                System.out.println(resultMap.toString());
+            }else{
+                return WrapMapper.error("未找到对应设备信息");
+            }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,6 +95,32 @@ public class SchoolStrategyWebController {
             modifyPolicyDto.setOperator(user.getId());
             modifyPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.updatePolicyInCondition(modifyPolicyDto);
+                QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
+               Preconditions.checkArgument(ssl == null, "未找到相应模式或策略,请检查后重试");
+                List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+               if (CollectionUtils.isNotEmpty(userDeviceList)){
+                    AppPushRequest appPushRequest= new AppPushRequest();
+                    appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+                    appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+                    appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+                    List<String> clientIds = new ArrayList<>();
+                    //添加用户设备号
+                    for(UserDevice attribute : userDeviceList) {
+                        clientIds.add(attribute.getClientId());
+                    }
+                    appPushRequest.setClientId(clientIds);
+                    //穿透模版
+                    AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
+                    appNotificationTemplate.setTitle("学校策略模式推送");
+                    appNotificationTemplate.setText("穿透内容测试");
+                    appNotificationTemplate.setTransmissionContent(ssl.toString());
+                    appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
+                    //群发穿透模版
+                    Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
+                    System.out.println(resultMap.toString());
+                }else{
+                   return WrapMapper.error("未找到对应设备信息");
+                }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
