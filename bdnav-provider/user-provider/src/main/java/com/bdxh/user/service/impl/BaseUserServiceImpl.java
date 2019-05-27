@@ -1,6 +1,7 @@
 package com.bdxh.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
@@ -12,13 +13,18 @@ import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.*;
 import com.bdxh.user.persistence.*;
 import com.bdxh.user.service.BaseUserService;
+import com.bdxh.user.vo.BaseEchartsVo;
 import com.google.common.base.Preconditions;
 import com.sun.org.apache.xml.internal.resolver.readers.TR9401CatalogReader;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.Lifecycle;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -235,5 +241,35 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
     @Override
     public List<String> findSchoolNumberBySchool(String schoolCode) {
         return baseUserMapper.findSchoolNumberBySchool(schoolCode);
+    }
+
+    /**
+     * 查询学校用户的分类数量
+     * @param schoolCode 学校编码
+     * @return
+     */
+    @Override
+    public List<BaseEchartsVo> querySchoolUserCategoryCount(String schoolCode) {
+        //有schoolCode查各自学校的用户分类数   无schoolCode查大后台用户分类数据
+        //用户 1学生 2老师 3家长
+        List<BaseEchartsVo> baseEchartsVos = baseUserMapper.querySchoolUserCategoryCount(schoolCode, null);
+        if(CollectionUtils.isNotEmpty(baseEchartsVos)){
+            baseEchartsVos.stream().forEach(echarts->{
+                switch (echarts.getName()){
+                    case "1":
+                        echarts.setName(BaseUserTypeEnum.STUDENT.getDesc());
+                        break;
+                    case "2":
+                        echarts.setName(BaseUserTypeEnum.TEACHER.getDesc());
+                        break;
+                    case "3":
+                        echarts.setName(BaseUserTypeEnum.FAMILY.getDesc());
+                        break;
+                        default:
+                }
+            });
+        }
+        return baseEchartsVos;
+
     }
 }

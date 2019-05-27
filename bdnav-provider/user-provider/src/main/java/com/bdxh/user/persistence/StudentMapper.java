@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,4 +54,6 @@ public interface StudentMapper extends Mapper<Student> {
 
     //学生激活
     int updateStudentActivation(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("activate")Byte activate);
+
+
 }

@@ -8,6 +8,7 @@ import com.bdxh.school.dto.SchoolExcelDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.PageInfo;
@@ -70,6 +71,11 @@ public class SchoolControllerClientFallback implements SchoolControllerClient {
 
     @Override
     public Wrapper<School> findSchoolBySchoolCode(String schoolCode) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<BaseEchartsVo>> querySchoolNumByArea() {
         return WrapMapper.error();
     }
 }

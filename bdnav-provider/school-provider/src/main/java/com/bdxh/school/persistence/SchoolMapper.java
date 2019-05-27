@@ -3,6 +3,7 @@ package com.bdxh.school.persistence;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
+import com.bdxh.school.vo.BaseEchartsVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -23,4 +24,7 @@ public interface SchoolMapper extends Mapper<School> {
 
     //根据Code查询学校
     School findSchoolBySchoolCode(@Param("schoolCode")String schoolCode);
+
+    //查询不同地区下的学校的数量
+    List<BaseEchartsVo> querySchoolNumByArea();
 }

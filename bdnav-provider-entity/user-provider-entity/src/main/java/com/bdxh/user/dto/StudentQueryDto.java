@@ -16,6 +16,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Date;
+
 @Data
 public class StudentQueryDto extends Query implements Serializable {
 
@@ -64,5 +66,7 @@ public class StudentQueryDto extends Query implements Serializable {
      */
     @ApiModelProperty(value = "院校IDs")
     private String classIds;
+
+
 
 }
