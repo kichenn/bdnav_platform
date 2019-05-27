@@ -229,4 +229,6 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
     public void updateSchoolName(String schoolCode, String schoolName) {
         familyMapper.updateSchoolName(schoolCode, schoolName);
     }
+
+
 }

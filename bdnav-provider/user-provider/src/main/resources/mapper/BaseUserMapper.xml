@@ -264,4 +264,18 @@
     <select id="findSchoolNumberBySchool" resultType="java.lang.String">
         select card_number from t_base_user where school_code=#{schoolCode}
     </select>
+
+    <!--用户分类查询-->
+    <select id="querySchoolUserCategoryCount" resultType="com.bdxh.user.vo.BaseEchartsVo">
+        select user_type as `name`,count(user_type) as `value` from t_base_user
+        <where>
+            <if test="schoolCode!=null and schoolCode!=''">
+                and school_code=#{schoolCode}
+            </if>
+            <if test="userType!=null">
+                and user_type=#{userType}
+            </if>
+        </where>
+        group  by user_type
+    </select>
 </mapper>

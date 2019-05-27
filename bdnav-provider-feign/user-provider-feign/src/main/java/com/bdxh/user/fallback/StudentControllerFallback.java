@@ -17,6 +17,7 @@ import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -88,4 +89,11 @@ public class StudentControllerFallback implements StudentControllerClient {
     public Wrapper<List<Student>> findStudentInfo(StudentQueryDto studentQueryDto) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper queryAllStudentCountInCondition(String schoolCode) {
+        return WrapMapper.error();
+    }
+
+
 }

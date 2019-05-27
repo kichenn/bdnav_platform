@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.bdxh.user.dto.BaseUserQueryDto;
+import com.bdxh.user.vo.BaseEchartsVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -57,4 +58,6 @@ public interface BaseUserMapper extends Mapper<BaseUser> {
 
     List<String> findSchoolNumberBySchool(@Param("schoolCode")String schoolCode);
 
+    //统计用户分类的数量
+    List<BaseEchartsVo> querySchoolUserCategoryCount(@Param("schoolCode")String schoolCode, @Param("userType")Integer userType);
 }

@@ -155,4 +155,14 @@ public class BaseUserController {
         SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_VERIFICATION, phone, code + ",:校园卡激活");
         return WrapMapper.ok(Boolean.TRUE);
     }
+
+    /**
+     * 展示学校用户分类数据量的信息
+     * @return 学校用户分类数据量
+     */
+    @RequestMapping(value = "/querySchoolUserCategoryCount", method = RequestMethod.GET)
+    @ApiOperation(value = "查询学校用户分类数量")
+    public Object querySchoolUserCategoryCount(@RequestParam(value = "schoolCode", required = false) String schoolCode) {
+        return WrapMapper.ok(baseUserService.querySchoolUserCategoryCount(schoolCode));
+    }
 }

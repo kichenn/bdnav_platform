@@ -5,6 +5,7 @@ import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.vo.BaseEchartsVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -92,4 +93,10 @@ public interface BaseUserService extends IService<BaseUser> {
     List<String> findSchoolNumberBySchool(String schoolCode);
 
 
+    /**
+     * 查询学校用户的分类数量
+     * @param schoolCode
+     * @return
+     */
+    List<BaseEchartsVo> querySchoolUserCategoryCount(String schoolCode);
 }

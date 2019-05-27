@@ -290,4 +290,18 @@ public class SchoolController {
     }
 
 
+    /**
+     * @Description: 查询不同地区下的学校数量
+     * @Author: wanMing
+     * @Date: 2019/5/24 17:38
+     */
+    @RequestMapping(value = "/querySchoolNumByArea", method = RequestMethod.GET)
+    @ApiOperation(value = "查询不同地区下的学校数量")
+    @ResponseBody
+    public Object querySchoolNumByArea() {
+        return WrapMapper.ok(schoolService.querySchoolNumByArea());
+
+    }
+
+
 }

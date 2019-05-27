@@ -100,4 +100,6 @@ public interface TeacherService extends IService<Teacher> {
      * @param schoolName
      */
     void updateSchoolName(String schoolCode,String schoolName);
+
+
 }

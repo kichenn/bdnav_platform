@@ -1,14 +1,17 @@
 package com.bdxh.school.feign;
 
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.fallback.SchoolControllerClientFallback;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -115,4 +118,14 @@ public interface SchoolControllerClient {
     @RequestMapping(value = "/school/findSchoolBySchoolCode", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<School> findSchoolBySchoolCode(@RequestParam("schoolCode") String schoolCode);
+
+    /**
+     * @Description: 查询不同地区下的学校数量
+     * @Author: wanming
+     * @Date: 2019/5/24 17:38
+     */
+    @RequestMapping(value = "/school/querySchoolNumByArea", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<BaseEchartsVo>> querySchoolNumByArea();
+
 }

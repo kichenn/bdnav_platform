@@ -95,4 +95,6 @@ public interface FamilyService extends IService<Family> {
      * @param schoolName
      */
     void updateSchoolName(String schoolCode,String schoolName);
+
+
 }

@@ -14,7 +14,7 @@ import org.springframework.context.annotation.Configuration;
  **/
 @Configuration
 @Slf4j
-public class HttpPoolClientConfig {
+public class   HttpPoolClientConfig {
 
     /**
      * 最大连接数

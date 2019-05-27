@@ -413,4 +413,6 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
     public void updateSchoolName(String schoolCode, String schoolName) {
         teacherMapper.updateSchoolName(schoolCode, schoolName);
     }
+
+
 }
