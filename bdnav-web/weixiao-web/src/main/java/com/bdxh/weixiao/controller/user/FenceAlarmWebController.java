@@ -24,15 +24,13 @@ import java.util.stream.Collectors;
  * @create: 2019-04-23 09:16
  **/
 @RestController
-@RequestMapping("/fenceAlarm")
+@RequestMapping("/fenceAlarmWeb")
 @Validated
 @Slf4j
 @Api(value = "电子围栏-----微校学生出入围栏日志API", tags = "电子围栏-----微校学生出入围栏日志API")
 public class FenceAlarmWebController {
     @Autowired
     private FenceAlarmControllerClient fenceAlarmControllerClient;
-    @Autowired
-    private SchoolControllerClient schoolControllerClient;
     /**
      * 收费服务
      * 查询所有
@@ -43,12 +41,11 @@ public class FenceAlarmWebController {
     @WeiXiaoChargeApp
     @ApiOperation("家长电子围栏-----查询所有围栏警报接口")
     @RequestMapping(value = "/getAllFenceAlarmInfos",method = RequestMethod.POST)
-    public Object getAllFenceAlarmInfos(@RequestParam("schoolCode")String schoolCode,@RequestParam("cardNumber")String cardNumber){
+    public Object getAllFenceAlarmInfos(@RequestParam("schoolCode")String schoolCode,
+                                        @RequestParam("cardNumber")String cardNumber,
+                                        @RequestParam("fenceId")String fenceId){
         try {
-            FenceAlarmQueryDto fenceAlarmQueryDto=new FenceAlarmQueryDto();
-            fenceAlarmQueryDto.setSchoolCode(schoolCode);
-            fenceAlarmQueryDto.setCardNumber(cardNumber);
-            return WrapMapper.ok(fenceAlarmControllerClient.getAllFenceAlarmInfos(fenceAlarmQueryDto).getResult());
+            return fenceAlarmControllerClient.getFenceAlarmInfos(schoolCode,cardNumber,fenceId);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -62,7 +59,6 @@ public class FenceAlarmWebController {
      * @param id
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation("家长电子围栏-----查询单个围栏警报接口")
     @RequestMapping(value="/getFenceAlarmInfo",method = RequestMethod.POST)
     public Object getFenceAlarmInfo(

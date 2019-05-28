@@ -249,7 +249,8 @@ public class AppController {
     @ApiOperation(value = "推送安装消息给安卓")
     public Object pushInstallApps(@RequestParam("id") Long id,
                                   @RequestParam("userName")String userName,
-                                  @RequestParam("cardNumber")String cardNumber) {
+                                  @RequestParam("cardNumber")String cardNumber,
+                                  @RequestParam("clientId")String clientId) {
         //获取应用信息
         App app = appService.selectByKey(id);
         //获取应用最新的版本信息和包
@@ -276,9 +277,8 @@ public class AppController {
         appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
         appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
         appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
-        //测试阶段先写一个死的clientId 之后会动态获取clientId
         List<String> clientIds = new ArrayList<>();
-        clientIds.add("59dc219038fde0484eebcbb6d5476f0c");
+        clientIds.add(clientId);
         appPushRequest.setClientId(clientIds);
         //穿透模版:发送后不会在系统通知栏展现，SDK将消息传给第三方应用后需要开发者写展现代码才能看到。
         AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
@@ -286,7 +286,7 @@ public class AppController {
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("data",pushAndroidAppInfo);
         System.out.println(jsonObject.toString());
-        appNotificationTemplate.setText(pushAndroidAppInfo.toString());
+        appNotificationTemplate.setText(jsonObject.toJSONString());
         /*appNotificationTemplate.setUrl();*/
         appNotificationTemplate.setLogo(app.getIconName());
         appNotificationTemplate.setLogoUrl(app.getIconUrl());

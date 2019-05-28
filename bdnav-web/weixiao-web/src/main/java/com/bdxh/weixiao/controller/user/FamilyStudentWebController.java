@@ -21,6 +21,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -33,7 +34,7 @@ import javax.validation.constraints.NotNull;
  * @create: 2019-04-22 15:57
  **/
 @RestController
-@RequestMapping("/familyStudent")
+@RequestMapping("/familyStudentWeb")
 @Validated
 @Slf4j
 @Api(value = "子女关系----微校家长学生关系API", tags = "子女关系----微校家长学生关系API")
@@ -143,14 +144,15 @@ public class FamilyStudentWebController {
         try {
             schoolCode="20110329";
             String cardNumber="20190516002";
-
             JSONObject jsonObject=new JSONObject();
             FamilyVo family=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
-            for (FamilyStudentVo s : family.getStudents()) {
-                StudentVo student=studentControllerClient.queryStudentInfo(schoolCode,s.getSCardNumber()).getResult();
-                s.setImage(student.getImage());
-                s.setImageName(student.getImageName());
-                s.setId(student.getSId());
+            if(CollectionUtils.isNotEmpty(family.getStudents())){
+                for (FamilyStudentVo s : family.getStudents()) {
+                    StudentVo student=studentControllerClient.queryStudentInfo(schoolCode,s.getSCardNumber()).getResult();
+                    s.setImage(student.getImage());
+                    s.setImageName(student.getImageName());
+                    s.setId(student.getSId());
+                }
             }
             return WrapMapper.ok(family);
         } catch (Exception e) {
@@ -178,6 +180,12 @@ public class FamilyStudentWebController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 手机获取短信验证码
+     * @param phone
+     * @return
+     */
     @ApiOperation(value = "家长子女关系----手机获取短信验证码")
     @RequestMapping(value = "/getPhoneCode",method = RequestMethod.POST)
     public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){

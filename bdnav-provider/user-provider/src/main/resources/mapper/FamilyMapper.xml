@@ -242,4 +242,7 @@
         select <include refid="familyColumn"/> from t_family
         where school_code=#{schoolCode} and card_number=#{cardNumber}
     </select>
+
+
+
 </mapper>

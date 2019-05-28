@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @description:
@@ -42,6 +43,19 @@ public interface FenceAlarmControllerClient {
     Wrapper<FenceAlarmVo> getFenceAlarmInfo(@RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空") String schoolCode,
                                             @RequestParam(name="cardNumber")@NotNull(message = "cardNumber不能为空")  String cardNumber,
                                             @RequestParam(name="id") @NotNull(message = "id不能为空")  String id);
+
+    /**
+     * 查询单个
+     * @param schoolCode
+     * @param cardNumber
+     * @param fenceId
+     * @return
+     */
+    @RequestMapping(value="/fenceAlarm/getFenceAlarmInfos",method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<List<FenceAlarmVo>> getFenceAlarmInfos(@RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空") String schoolCode,
+                                                   @RequestParam(name="cardNumber")@NotNull(message = "cardNumber不能为空")  String cardNumber,
+                                                   @RequestParam(name="fenceId") @NotNull(message = "围栏Id不能为空")  String fenceId);
 
     /**
      * 删除单个

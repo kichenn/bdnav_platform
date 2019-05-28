@@ -1,5 +1,6 @@
 package com.bdxh.product.service.impl;
 
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.product.dto.*;
@@ -14,6 +15,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.xiaoleilu.hutool.collection.CollUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -49,10 +51,10 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         Long productId = product.getId();
         //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
         Byte i = 1;
-        if(productDto.getImage().size()>0){
+        if (productDto.getImage().size() > 0) {
             for (ProductImageAddDto productImageAddDto : productDto.getImage()) {
                 ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
-                if(i==1){
+                if (i == 1) {
                     productDto.setImgUrl(productImage.getImageUrl());
                 }
                 productImage.setSort(i);
@@ -63,7 +65,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                 productImageMapper.insert(productImage);
                 i++;
             }
-        }else{
+        } else {
             productDto.setImgUrl("");
         }
 
@@ -88,9 +90,9 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                             //如果商品下架就修改套餐商品的信息商品
                             if (product.getSellStatus().equals(Byte.parseByte("1"))) {
                                 List<String> ids = Arrays.asList(chdilIds);
-                                List<String> idsArrayList=new ArrayList<>(ids);
+                                List<String> idsArrayList = new ArrayList<>(ids);
                                 idsArrayList.remove(i);
-                                fatherProduct.setProductExtra(idsArrayList.toString().replaceAll("\\[","").replaceAll("\\]","").trim());
+                                fatherProduct.setProductExtra(idsArrayList.toString().replaceAll("\\[", "").replaceAll("\\]", "").trim());
                                 productMapper.updateProduct(fatherProduct);
                                 continue;
                             }
@@ -147,8 +149,14 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         }
         ProductImage productImage = new ProductImage();
         productImage.setProductId(productId);
-        //删除商品的图片数据
-        productImageMapper.delete(productImage);
+        List<ProductImage> productImages = productImageMapper.select(productImage);
+        if (CollectionUtils.isNotEmpty(productImages)) {
+            for (ProductImage image : productImages) {
+                FileOperationUtils.deleteFile(image.getImageName(), null);
+            }
+            //删除商品的图片数据
+            productImageMapper.delete(productImage);
+        }
         //删除商品表数据
         productMapper.deleteByPrimaryKey(productId);
     }

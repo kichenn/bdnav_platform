@@ -1,6 +1,8 @@
 package com.bdxh.product.controller;
 
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.product.dto.ProductAddDto;
 import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
@@ -14,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @description: 商品服务控制器
@@ -67,6 +71,7 @@ public class ProductController {
     public Object deleteProduct(@RequestParam("id") Long id) {
       try {
         productService.deleteProduct(id);
+
         return WrapMapper.ok();
       } catch (Exception e) {
           return WrapMapper.error(e.getMessage());
@@ -115,5 +120,17 @@ public class ProductController {
         productService.updateProduct(productUpdateDto);
         return WrapMapper.ok();
     }
+
+    /**
+     * 查询所有商品信息
+     * @param productQueryDto
+     * @return
+     */
+    @RequestMapping(value = "/findAllProduct",method =RequestMethod.GET)
+    @ApiOperation(value = "查询所有商品信息")
+    Wrapper<List<Product>> findAllProduct(@RequestBody ProductQueryDto productQueryDto){
+        return WrapMapper.ok(productService.selectAll());
+    }
+
 
 }

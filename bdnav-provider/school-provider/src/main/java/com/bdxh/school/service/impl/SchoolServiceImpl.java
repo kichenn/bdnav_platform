@@ -13,6 +13,7 @@ import com.bdxh.school.entity.School;
 import com.bdxh.school.enums.SchoolTypeEnum;
 import com.bdxh.school.persistence.SchoolMapper;
 import com.bdxh.school.service.SchoolService;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -29,10 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.OutputStream;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -225,5 +223,12 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     @Override
     public School findSchoolBySchoolCode(String schoolCode) {
         return schoolMapper.findSchoolBySchoolCode(schoolCode);
+    }
+
+
+    //根据学校的地区查询学校的数量
+    @Override
+    public List<BaseEchartsVo> querySchoolNumByArea() {
+        return schoolMapper.querySchoolNumByArea();
     }
 }

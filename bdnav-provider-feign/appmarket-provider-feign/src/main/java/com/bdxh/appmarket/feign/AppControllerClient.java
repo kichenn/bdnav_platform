@@ -68,5 +68,6 @@ public interface AppControllerClient {
     @ResponseBody
     Wrapper<Boolean> pushInstallApps(@RequestParam("id") Long id,
                                      @RequestParam("userName")String userName,
-                                     @RequestParam("cardNumber")String cardNumber);
+                                     @RequestParam("cardNumber")String cardNumber,
+                                     @RequestParam("clientId")String clientId);
 }

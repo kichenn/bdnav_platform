@@ -22,7 +22,7 @@ import javax.validation.Valid;
  * @create: 2019-04-23 09:16
  **/
 @RestController
-@RequestMapping("/familyFence")
+@RequestMapping("/familyFenceWeb")
 @Validated
 @Slf4j
 @Api(value = "电子围栏-----微校家长围栏API", tags = "电子围栏-----微校家长围栏API")
@@ -36,7 +36,6 @@ public class FamilyFenceWebController {
      * @param updateFamilyFenceDto
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation(value="家长电子围栏-----修改围栏信息")
     @RequestMapping(value = "/updateFamilyFenceInfo",method = RequestMethod.POST)
     public Object updateFamilyFenceInfo(@Valid @RequestBody UpdateFamilyFenceDto updateFamilyFenceDto){
@@ -47,9 +46,7 @@ public class FamilyFenceWebController {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
-
     }
-
     /**
      *  收费服务
      *  删除围栏表信息
@@ -58,7 +55,6 @@ public class FamilyFenceWebController {
      * @param id
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation(value="家长电子围栏-----删除围栏信息")
     @RequestMapping(value = "/removeFamilyFenceInfo",method = RequestMethod.POST)
     public Object removeFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
@@ -100,7 +96,6 @@ public class FamilyFenceWebController {
      * @param id
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation(value="家长电子围栏-----获取围栏表单个信息")
     @RequestMapping(value = "/getFamilyFenceInfo",method = RequestMethod.POST)
     public Object getFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
@@ -120,7 +115,6 @@ public class FamilyFenceWebController {
      * 新增围栏设置
      * @param addFamilyFenceDto
      */
-    @WeiXiaoChargeApp
     @ApiOperation(value="家长电子围栏-----新增围栏设置")
     @RequestMapping(value = "/addFamilyFenceInfo",method = RequestMethod.POST)
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto){

@@ -6,6 +6,7 @@ import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
+import com.bdxh.user.vo.BaseEchartsVo;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
@@ -55,6 +56,12 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
 
     @Override
     public Wrapper<Boolean> getPhoneCode(@NotNull(message = "手机号码不能为空") String phone) {
+        return WrapMapper.error();
+    }
+
+
+    @Override
+    public Wrapper<List<BaseEchartsVo>> querySchoolUserCategoryCount(String schoolCode) {
         return WrapMapper.error();
     }
 }

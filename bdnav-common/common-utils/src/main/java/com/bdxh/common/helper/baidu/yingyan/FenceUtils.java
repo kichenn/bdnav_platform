@@ -1,8 +1,10 @@
 package com.bdxh.common.helper.baidu.yingyan;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
 import com.bdxh.common.helper.baidu.yingyan.request.CreateFenceRoundRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
+import com.bdxh.common.helper.baidu.yingyan.request.FindTrackRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.ModifyFenceRoundRequest;
 import com.bdxh.common.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -151,6 +153,77 @@ public class FenceUtils {
         return result;
     }
 
+    /**
+     * 查询围栏信息
+     * @param fenceIds  1,2,3,4
+     * @return
+     */
+    public static String findFence(String fenceIds){
+        Map<String, Object> map = new HashMap<>();
+        map.put("ak", FenceConstant.AK);
+        map.put("service_id", FenceConstant.SERVICE_ID);
+        map.put("fence_ids", fenceIds);
+        String result = "";
+        try {
+            result = HttpClientUtils.doGet(FenceConstant.SEL_ROUND_IN_FENCE_URL, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     *  获取单个实体的鹰眼轨迹
+     * @param findTrackRequest
+     * @return
+     */
+    public static String getTrack(FindTrackRequest findTrackRequest){
+        Map<String, Object> map = toMap(findTrackRequest);
+        String result = "";
+        try {
+            result = HttpClientUtils.doGet(FenceConstant.SEL_YINYAN_TRACK_URL, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 获取单个围栏下的所有entity
+     * @return
+     */
+    public static String listmonitoredperson(Integer fenceId){
+        Map<String, Object> map = new HashMap<>();
+        map.put("ak", FenceConstant.AK);
+        map.put("service_id", FenceConstant.SERVICE_ID);
+        map.put("fence_id", fenceId);
+        String result = "";
+        try {
+            result = HttpClientUtils.doGet(FenceConstant.SEL_ENTITY_IN_FENCE_URL, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    /**
+     * 查找entity最近一个轨迹点，支持实时纠偏
+     * @param entity
+     * @return
+     */
+    public static String getLatestPoint(String entity){
+        Map<String, Object> map = new HashMap<>();
+        map.put("ak", FenceConstant.AK);
+        map.put("service_id", FenceConstant.SERVICE_ID);
+        map.put("entity_name", entity);
+        String result = "";
+        try {
+            result = HttpClientUtils.doGet(FenceConstant.SEL_YINYAN_LATESTPOINT_URL, map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
     private static Map<String, Object> toMap(Object obj) {
         Map<String, Object> map = new HashMap<>();
@@ -177,6 +250,40 @@ public class FenceUtils {
      */
     public static void main(String[] args) {
 
+ /*        String result=getLatestPoint("2011032919040314");
+        JSONObject jsonObject=JSONObject.parseObject(result);
+        System.out.println(jsonObject);
+        if(jsonObject.get("status").equals(0)){
+            System.out.println(jsonObject.getString("latest_point"));
+        }*/
+
+try {
+    Map<String, Object> map = new HashMap<>();
+    map.put("ak", FenceConstant.AK);
+    map.put("service_id", FenceConstant.SERVICE_ID);
+    map.put("entity_name", "2011032919040317");
+    map.put("latitude","22.550738738891674");
+    map.put("longitude","113.91204626688796");
+    log.info("======"+Long.toString(new Date().getTime()/1000));
+    map.put("loc_time",Long.toString(new Date().getTime()/1000));
+    map.put("coord_type_input","bd09ll");
+    String result="";
+    result = HttpClientUtils.doPost("http://yingyan.baidu.com/api/v3/track/addpoint", map);
+    System.out.println(result);
+}
+catch (Exception e){
+
+}
+
+/*
+       String monitoredPerson="2011032920190516001";
+        String entityResult = FenceUtils.deleteNewEntity(monitoredPerson);
+        JSONObject entityResultJson = JSONObject.parseObject(entityResult);
+        System.out.println(entityResult);*/
+ /*     String createRoundResult =listmonitoredperson(63);
+        JSONObject createRoundJson = JSONObject.parseObject(createRoundResult);
+        System.out.println(createRoundJson);
+/*
         CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
         entityRequest.setAk(FenceConstant.AK);
         entityRequest.setService_id(FenceConstant.SERVICE_ID);
@@ -195,7 +302,8 @@ public class FenceUtils {
         request.setLongitude(114.10987);
         request.setRadius(1603);
         request.setMonitored_person("测试监控对象一");
+*/
 
-        createRoundFence(request);
+       // createRoundFence(request);
     }
 }

@@ -63,9 +63,9 @@ public interface SchoolStrategyControllerClient {
     /**
      * @Description: 根据schoolcode查询全部策略列表
      */
-    @RequestMapping(value = "/schoolStrategy/getStrategyList", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolStrategy/getStrategyList", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<List<SchoolStrategy>> getStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("pushState")Byte pushState);
+    Wrapper<List<SchoolStrategy>> getStrategyList(@RequestBody QuerySchoolStrategy querySchoolStrategy);
 
 
     /**
@@ -74,6 +74,13 @@ public interface SchoolStrategyControllerClient {
     @RequestMapping(value = "/schoolStrategy/updatePolicyPushStatus", method = RequestMethod.GET)
     @ResponseBody
     Wrapper updatePolicyPushStatus(@RequestParam("id") Long id,@RequestParam("pushState") Byte pushState);
+
+    /**
+     * @Description: 根据id查询策略信息
+     */
+    @RequestMapping(value = "/schoolStrategy/findStrategyById", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<QuerySchoolStrategy> findStrategyById(@RequestParam("id") Long id);
 
 
 }

@@ -8,13 +8,13 @@ import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.fallback.ApplyLogControllerClientFallback;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Description:
@@ -45,4 +45,11 @@ public interface ApplyLogControllerClient {
     @ResponseBody
     Wrapper<PageInfo<ApplyLog>> findApplyLogInContionPaging(@Validated @RequestBody ApplyLogQueryDto applyLogQueryDto);
 
+    @RequestMapping(value="/applyLog/familyFindApplyLogInfo",method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<ApplyLog>> familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber);
+
+    @RequestMapping(value = "/applyLog/modifyVerifyApplyLog", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper modifyVerifyApplyLog(@RequestBody  ModifyApplyLogDto modifyApplyLogDto);
 }

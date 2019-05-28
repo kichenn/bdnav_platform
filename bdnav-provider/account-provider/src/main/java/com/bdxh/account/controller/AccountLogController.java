@@ -58,12 +58,6 @@ public class AccountLogController {
         return WrapMapper.ok(accountLogService.findAccountLogByUserId(userId));
     }
 
-    @ApiOperation(value = "查询同一学校下面的组织架构", response = AccountLog.class)
-    @RequestMapping(value = "/findAccountLogBySchoolCodeAndGroupId", method = RequestMethod.GET)
-    public Object findAccountLogBySchoolCodeAndGroupId(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") Long groupId) {
-        return WrapMapper.ok(accountLogService.findAccountLogBySchoolCodeAndGroupId(schoolCode,groupId));
-    }
-
 
 
 }

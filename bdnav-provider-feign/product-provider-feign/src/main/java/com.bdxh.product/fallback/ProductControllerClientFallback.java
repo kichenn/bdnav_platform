@@ -11,6 +11,8 @@ import com.bdxh.product.vo.ProductDetailsVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 
 /**
  * @description: 应用分类feign降级服务
@@ -47,6 +49,11 @@ public class ProductControllerClientFallback implements ProductControllerClient 
 
     @Override
     public Wrapper<Product> findProductById(Long id) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<Product>> findAllProduct(ProductQueryDto productQueryDto) {
         return WrapMapper.error();
     }
 }

@@ -73,6 +73,26 @@ public class FenceAlarmController {
 	}
 
 	/**
+	 * 查询单个
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @param fenceId
+	 * @return
+	 */
+	@ApiOperation("查询单个围栏警报接口")
+	@RequestMapping(value="/getFenceAlarmInfos",method = RequestMethod.POST)
+	public Object getFenceAlarmInfos(@RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空") String schoolCode,
+									@RequestParam(name="cardNumber")@NotNull(message = "cardNumber不能为空")  String cardNumber,
+									@RequestParam(name="fenceId") @NotNull(message = "围栏Id不能为空")  String fenceId){
+		try {
+			return WrapMapper.ok(fenceAlarmService.findFenceAlarmInfos(schoolCode,cardNumber,fenceId));
+		}catch (Exception e){
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
+	}
+
+	/**
 	 * 删除单个
 	 * @param id
 	 * @param schoolCode

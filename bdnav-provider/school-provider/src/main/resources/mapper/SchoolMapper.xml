@@ -96,4 +96,11 @@
         <include refid="Base_Column_List" />
         from t_school where school_code =#{schoolCode}
     </select>
+
+    <!--查询各地区对应的学校数量-->
+    <select id="querySchoolNumByArea" resultType="com.bdxh.school.vo.BaseEchartsVo">
+        select SUBSTRING_INDEX(school_area,'/',1) as `name`,count(SUBSTRING_INDEX(school_area,'/',1)) as `value`
+        FROM t_school GROUP BY SUBSTRING_INDEX(school_area,'/',1);
+    </select>
+
 </mapper>

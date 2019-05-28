@@ -23,4 +23,6 @@ public interface FamilyFenceMapper extends Mapper<FamilyFence> {
     //获取围栏表单个信息
     FamilyFence getFamilyFenceInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("id")String id);
 
+    //获取单个孩子的所有围栏Id
+    List<Integer> findOneStudentFenceId(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("studentNumber")String studentNumber);
 }

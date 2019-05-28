@@ -1,6 +1,7 @@
 package com.bdxh.appburied.service;
 
 import com.bdxh.appburied.dto.ApplyLogQueryDto;
+import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.common.support.IService;
 import com.bdxh.appburied.entity.ApplyLog;
 import com.github.pagehelper.PageInfo;
@@ -25,4 +26,9 @@ public interface ApplyLogService extends IService<ApplyLog> {
      * 分页条件查询 上报App状态日志
      */
     PageInfo<ApplyLog> findApplyLogInConationPaging(ApplyLogQueryDto applyLogQueryDto);
+
+    List<ApplyLog> familyFindApplyLogInfo(String schoolCode,String cardNumber);
+
+    //修改应用审核状态
+    void modifyVerifyApplyLog(ModifyApplyLogDto modifyApplyLogDto);
 }

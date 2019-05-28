@@ -34,6 +34,7 @@ public class productWebController {
     @RequestMapping(value = "/findProductInfo",method = RequestMethod.GET)
     public Object findProductInfo(){
         try {
+            //查询还在上架的并且是微校服务的商品
             ProductQueryDto productQueryDto=new ProductQueryDto();
             productQueryDto.setSellStatus(Byte.valueOf("2"));
             productQueryDto.setBusinessType(Byte.valueOf("1"));

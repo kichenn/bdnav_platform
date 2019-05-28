@@ -1,6 +1,5 @@
 package com.bdxh.appburied.controller;
 
-import com.bdxh.appburied.configration.idgenerator.IdGeneratorProperties;
 import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.entity.ApplyLog;
@@ -12,11 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import com.bdxh.appburied.service.ApplyLogService;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Date;
 
@@ -92,4 +88,27 @@ public class ApplyLogController {
     public Object findAppStatusInContionPaging(@Validated @RequestBody ApplyLogQueryDto applyLogQueryDto) {
         return WrapMapper.ok(applyLogService.findApplyLogInConationPaging(applyLogQueryDto));
     }
+
+    @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.GET)
+    @ApiOperation(value = "家长查询自己孩子的App申请信息")
+    public Object familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+        try {
+            return WrapMapper.ok(applyLogService.familyFindApplyLogInfo(schoolCode, cardNumber));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error();
+        }
+    }
+    @RequestMapping(value = "/modifyVerifyApplyLog", method = RequestMethod.POST)
+    @ApiOperation(value = "家长审批自己孩子的App申请信息")
+    public Object modifyVerifyApplyLog(@RequestBody  ModifyApplyLogDto modifyApplyLogDto) {
+        try {
+            applyLogService.modifyVerifyApplyLog(modifyApplyLogDto);
+            return WrapMapper.ok("审批完成");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error();
+        }
+    }
+
 }

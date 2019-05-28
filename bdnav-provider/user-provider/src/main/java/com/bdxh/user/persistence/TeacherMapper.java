@@ -34,4 +34,6 @@ public interface TeacherMapper extends Mapper<Teacher> {
 
     //修改学校名字
     int updateSchoolName(@Param("schoolCode") String schoolCode, @Param("schoolName") String schoolName);
+
+
 }

@@ -13,6 +13,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @description: 应用分类feign客户端
  * @author: xuyuan
@@ -30,6 +32,15 @@ public interface ProductControllerClient {
     @RequestMapping(value = "/product/findProduct", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<PageInfo<Product>> findProduct(@RequestBody ProductQueryDto productQueryDto);
+
+    /**
+     * 查询所有商品
+     * @param productQueryDto
+     * @return
+     */
+    @RequestMapping(value = "/product/findAllProduct",method =RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<Product>> findAllProduct(@RequestBody ProductQueryDto productQueryDto);
 
     /**
      * 查询微校商品

@@ -69,4 +69,6 @@ public interface FenceAlarmService extends IService<FenceAlarm> {
 	 * @param schoolName
 	 */
 	void updateSchoolName(String schoolCode,String schoolName);
+
+	List<FenceAlarmVo> findFenceAlarmInfos(String schoolCode,String  cardNumber,String fenceId);
 }

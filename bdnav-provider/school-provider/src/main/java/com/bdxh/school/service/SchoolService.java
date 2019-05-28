@@ -6,11 +6,13 @@ import com.bdxh.school.dto.ModifySchoolDto;
 import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.PageInfo;
 
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -59,4 +61,7 @@ public interface SchoolService extends IService<School> {
 
     //根据学校Code查询学校
     School findSchoolBySchoolCode(String schoolCode);
+
+    //查询不同地区下学校的数量
+    List<BaseEchartsVo> querySchoolNumByArea();
 }

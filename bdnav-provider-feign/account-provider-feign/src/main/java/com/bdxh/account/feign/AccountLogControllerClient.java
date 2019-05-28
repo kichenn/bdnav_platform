@@ -60,13 +60,4 @@ public interface AccountLogControllerClient {
     Wrapper<AccountLog> findAcountLogByUserId(@RequestParam("userId") String userId);
 
 
-    /**
-     * 查询同一学校下面的组织架构
-     *
-     * @return
-     */
-    @RequestMapping(value = "/findAccountLogBySchoolCodeAndGroupId", method = RequestMethod.GET)
-    @ResponseBody
-    Wrapper<List<AccountLog>> findAccountLogBySchoolCodeAndGroupId(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") Long groupId);
-
 }

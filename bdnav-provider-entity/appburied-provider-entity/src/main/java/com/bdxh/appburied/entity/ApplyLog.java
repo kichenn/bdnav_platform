@@ -2,6 +2,8 @@ package com.bdxh.appburied.entity;
 
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
@@ -24,6 +26,7 @@ public class ApplyLog {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonSerialize(using= ToStringSerializer.class)
 	private Long id;
 
 	/**
@@ -92,6 +95,12 @@ public class ApplyLog {
 	private String appPackage;
 
 	/**
+	 *申请理由
+	 */
+	@Column(name = "reason")
+	private String reason;
+
+	/**
 	 * 操作人编码
 	 */
 	@Column(name = "operator_code")
@@ -108,6 +117,12 @@ public class ApplyLog {
 	 */
 	@Column(name = "operator_status")
 	private Byte operatorStatus;
+
+	/**
+	 * 审核意见
+	 */
+	@Column(name="review")
+	private String review;
 
 	/**
 	 * 开始时间
