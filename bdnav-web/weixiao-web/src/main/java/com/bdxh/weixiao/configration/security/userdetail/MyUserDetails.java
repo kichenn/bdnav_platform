@@ -20,6 +20,8 @@ public class MyUserDetails implements UserDetails {
 
     private UserInfo userInfo;
 
+    private Collection<? extends GrantedAuthority> authorities;
+
     public MyUserDetails(String cardNumber, UserInfo userInfo) {
         this.cardNumber = cardNumber;
         this.password = "";
@@ -58,11 +60,15 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return authorities;
     }
 
     public UserInfo getUserInfo() {
         return userInfo;
+    }
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 
 }

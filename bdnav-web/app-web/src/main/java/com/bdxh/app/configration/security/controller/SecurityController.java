@@ -209,6 +209,7 @@ public class SecurityController {
     @ApiOperation(value = "token获取用户信息", response = String.class)
     public Object getAccountInfoByToken() {
         Account account = SecurityUtils.getCurrentUser();
+        account.setPassword("");
         return WrapMapper.ok(account);
     }
 
