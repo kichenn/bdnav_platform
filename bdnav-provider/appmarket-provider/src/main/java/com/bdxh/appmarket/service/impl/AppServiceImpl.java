@@ -141,4 +141,9 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     public List<App> familyFindAppInfo(String schoolCode) {
         return appMapper.familyFindAppInfo(schoolCode);
     }
+
+    @Override
+    public List<App> thePresetList() {
+        return appMapper.thePresetList();
+    }
 }

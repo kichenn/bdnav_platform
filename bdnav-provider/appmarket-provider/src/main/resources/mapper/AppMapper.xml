@@ -95,4 +95,15 @@
     school_code=#{schoolCode} or ISNULL(school_code)
     </where>
   </select>
+
+  <!-- 查询预置应用app -->
+  <select id="thePresetList" resultMap="BaseResultMap">
+    SELECT
+    <include refid="BaseColumns"/>
+    FROM
+	t_app
+    WHERE
+    school_id IS NULL
+    AND school_code IS NULL
+  </select>
 </mapper>

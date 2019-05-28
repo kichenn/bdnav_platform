@@ -93,4 +93,7 @@ public interface AppService extends IService<App> {
 
     //家长查询应用市场列表
     List<App> familyFindAppInfo(String schoolCode);
+
+    //查询预置应用
+    List<App> thePresetList();
 }
