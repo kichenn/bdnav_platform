@@ -300,4 +300,18 @@ public class AppController {
         return WrapMapper.ok(result);
     }
 
+
+    @ApiOperation("查询系统预置应用列表")
+    @RequestMapping(value = "/thePresetList",method = RequestMethod.POST)
+    public Object thePresetList() {
+        try {
+            List<App> app = appService.thePresetList();
+            return WrapMapper.ok(app);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
 }

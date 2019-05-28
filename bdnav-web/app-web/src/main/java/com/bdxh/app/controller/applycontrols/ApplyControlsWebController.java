@@ -6,6 +6,7 @@ import com.bdxh.appburied.dto.AppStatusQueryDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
 import com.bdxh.appmarket.entity.AppVersion;
+import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.appmarket.feign.AppVersionControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -50,6 +51,9 @@ public class ApplyControlsWebController {
     @Autowired
     private AppVersionControllerClient appVersionControllerClient;
 
+    @Autowired
+    private AppControllerClient appControllerClient;
+
 
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
     @RequestMapping(value = "/modifyInfo", method = RequestMethod.POST)
@@ -89,5 +93,13 @@ public class ApplyControlsWebController {
 
     }
 
+
+    @ApiOperation(value = "查询预置应用列表", response = Boolean.class)
+    @RequestMapping(value = "/thePresetList", method = RequestMethod.POST)
+    public Object thePresetList() {
+        Wrapper wrapper = appControllerClient.thePresetList();
+        return WrapMapper.ok(wrapper.getResult());
+
+    }
 
 }

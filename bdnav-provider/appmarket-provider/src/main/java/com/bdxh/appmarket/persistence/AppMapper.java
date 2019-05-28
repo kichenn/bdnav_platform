@@ -38,4 +38,7 @@ public interface AppMapper extends Mapper<App> {
     //家长查询学校应用市场列表
     List<App> familyFindAppInfo(@Param("schoolCode")String schoolCode);
 
+    //查询预置应用
+    List<App> thePresetList();
+
 }
