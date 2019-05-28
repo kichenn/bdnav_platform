@@ -31,6 +31,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,7 +69,6 @@ public class SecurityController {
 
     @Autowired
     private UserDeviceControllerClient userDeviceControllerClient;
-
 
     @ApiOperation(value = "获取token(用户登录)", response = Boolean.class)
     @RequestMapping(value = "/authenticationApp/login", method = RequestMethod.GET)
