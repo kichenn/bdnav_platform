@@ -1,0 +1,22 @@
+info:
+  groupId: @project.groupId@
+  artifactId: @project.artifactId@
+  version: @project.version@
+eureka:
+  instance:
+    hostname: eureka-server3
+    instance-id: eureka-instance:${server.port}
+    prefer-ip-address: false
+  client:
+    register-with-eureka: true #单机时，false代表不向注册中心注册自己,集群必须开启
+    fetch-registry: false #表明自己是注册中心，不需要检索服务
+    serviceUrl:
+      defaultZone: http://${spring.security.user.name}:${spring.security.user.password}@eureka-server1:9001/eureka/,http://${spring.security.user.name}:${spring.security.user.password}@eureka-server2:9002/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  endpoint:
+    health:
+      show-details: ALWAYS

@@ -236,13 +236,13 @@ public class SecurityController {
         return accountControllerClient.modifyPwd(modifyAccountPwdDto);
     }
 
-    @PostMapping("/forgetPwd")
+    @PostMapping("/authenticationApp/forgetPwd")
     @ApiOperation(value = "找回密码", response = Boolean.class)
     public Object forgetPwd(@RequestBody @Validated ForgetPwd forgetPwd) {
         return accountControllerClient.forgetPwd(forgetPwd);
     }
 
-    @GetMapping("/getCaptcha")
+    @GetMapping("/authenticationApp/getCaptcha")
     @ApiOperation(value = "获取验证码", response = Boolean.class)
     public Object getCaptcha(@RequestParam("phone") String phone) {
         return accountControllerClient.getCaptcha(phone);
