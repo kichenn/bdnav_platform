@@ -43,12 +43,6 @@ public class SchoolClassModifyDto {
     @ApiModelProperty("排序")
     private Integer sort;
 
-//    @ApiModelProperty("管理员id")
-//    private Long managerId;
-//
-//    @ApiModelProperty("管理员姓名")
-//    private String managerName;
-//
 //    @ApiModelProperty("创建时间")
 //    private Date createDate;
 //

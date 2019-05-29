@@ -72,17 +72,6 @@ public class SchoolClass implements Serializable {
      */
     private Integer sort;
 
-    /**
-     * 管理员id
-     */
-    @Column(name = "manager_id")
-    private Long managerId;
-
-    /**
-     * 管理员姓名
-     */
-    @Column(name = "manager_name")
-    private String managerName;
 
     /**
      * 创建时间
@@ -310,41 +299,6 @@ public class SchoolClass implements Serializable {
         this.sort = sort;
     }
 
-    /**
-     * 获取管理员id
-     *
-     * @return manager_id - 管理员id
-     */
-    public Long getManagerId() {
-        return managerId;
-    }
-
-    /**
-     * 设置管理员id
-     *
-     * @param managerId 管理员id
-     */
-    public void setManagerId(Long managerId) {
-        this.managerId = managerId;
-    }
-
-    /**
-     * 获取管理员姓名
-     *
-     * @return manager_name - 管理员姓名
-     */
-    public String getManagerName() {
-        return managerName;
-    }
-
-    /**
-     * 设置管理员姓名
-     *
-     * @param managerName 管理员姓名
-     */
-    public void setManagerName(String managerName) {
-        this.managerName = managerName == null ? null : managerName.trim();
-    }
 
     /**
      * 获取创建时间
