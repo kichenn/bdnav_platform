@@ -174,7 +174,9 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         }
         try {
             Student student = BeanMapUtils.map(updateStudentDto, Student.class);
-            student.getClassNames().trim();
+            if(StringUtils.isNotEmpty(student.getClassNames())){
+                student.getClassNames().trim();
+            }
             Boolean stuResult = studentMapper.updateStudentInfo(student) > 0;
             BaseUser updateBaseUserDto = BeanMapUtils.map(updateStudentDto, BaseUser.class);
             Boolean baseUserResult = baseUserMapper.updateBaseUserInfo(updateBaseUserDto) > 0;
