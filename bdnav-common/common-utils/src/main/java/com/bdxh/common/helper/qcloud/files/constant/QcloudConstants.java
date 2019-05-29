@@ -24,6 +24,8 @@ public class QcloudConstants {
 
     public static final String RESOURCES_PREFIX1 = "files/";
 
-    // bucket 的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式
+    // bucket 的命名规则为{name}-{appid} ，此处填写的存储桶名称必须为此格式 (后台存储桶)
     public static final String BUCKET_NAME = "bdnav-1258570075-1258570075";
+
+    public static final String APP_BUCKET_NAME = "app-1258570075";
 }
