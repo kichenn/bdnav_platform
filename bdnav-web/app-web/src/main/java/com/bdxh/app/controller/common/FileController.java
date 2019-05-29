@@ -32,7 +32,7 @@ public class FileController {
     public Object saveFile(MultipartFile multipartFile) {
         Map<String, String> resultMap = null;
         try {
-            resultMap = FileOperationUtils.saveFile(multipartFile, null);
+            resultMap = FileOperationUtils.saveFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
             log.info("----------上传成功-----------");
         } catch (Exception e) {
             e.printStackTrace();
