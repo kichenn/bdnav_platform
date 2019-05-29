@@ -51,4 +51,9 @@ public class InstallAppsControllerClientFallback implements InstallAppsControlle
     public Wrapper<List<InstallApps>> findInstallAppsInConation(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper batchSaveInstallAppsInfo(List<AddInstallAppsDto> appInstallList) {
+        return WrapMapper.error();
+    }
 }

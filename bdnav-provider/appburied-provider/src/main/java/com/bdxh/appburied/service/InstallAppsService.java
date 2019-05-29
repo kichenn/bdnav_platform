@@ -1,5 +1,6 @@
 package com.bdxh.appburied.service;
 
+import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.dto.InstallAppsQueryDto;
 import com.bdxh.common.support.IService;
 import com.bdxh.appburied.entity.InstallApps;
@@ -28,4 +29,11 @@ public interface InstallAppsService extends IService<InstallApps> {
 
 
     List<InstallApps> findInstallAppsInConation(String schoolCode,String cardNumber);
+
+    /**
+     * 批量上报应用信息
+     * @param appInstallList
+     * @return
+     */
+    Boolean batchSaveInstallAppsInfo(List<AddInstallAppsDto> appInstallList);
 }

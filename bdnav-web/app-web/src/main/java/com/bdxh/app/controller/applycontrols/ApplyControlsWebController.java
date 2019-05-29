@@ -5,6 +5,7 @@ import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.security.utils.SecurityUtils;
 import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.dto.AppStatusQueryDto;
+import com.bdxh.appburied.dto.DelOrFindAppBuriedDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
 import com.bdxh.appmarket.entity.AppVersion;
@@ -29,6 +30,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.Map;
 
 
@@ -51,8 +53,6 @@ public class ApplyControlsWebController {
     @Autowired
     private BlackUrlControllerClient blackUrlControllerClient;
 
-    @Autowired
-    private SchoolStrategyControllerClient schoolStrategyControllerClient;
 
     @Autowired
     private AppStatusControllerClient appStatusControllerClient;
@@ -143,5 +143,23 @@ public class ApplyControlsWebController {
         }
 
     }
+
+    @ApiOperation(value = "批量上报应用信息", response = Boolean.class)
+    @RequestMapping(value = "/batchSaveInstallAppsInfo", method = RequestMethod.POST)
+    public Object batchSaveInstallAppsInfo(@RequestBody List<AddInstallAppsDto> appInstallList) {
+        Wrapper wrapper = installAppsControllerClient.batchSaveInstallAppsInfo(appInstallList);
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
+    @ApiOperation(value = "删除上报应用信息", response = Boolean.class)
+    @RequestMapping(value = "/delInstallAppById", method = RequestMethod.POST)
+    public Object delInstallAppById(@RequestBody DelOrFindAppBuriedDto delInstallAppsDto) {
+        Wrapper wrapper = installAppsControllerClient.delInstallAppById(delInstallAppsDto);
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
+
+
+
 
 }
