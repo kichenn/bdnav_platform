@@ -84,7 +84,7 @@ public class FileOperationUtils {
         if (StringUtils.isNotEmpty(etag)) {
             Map<String, String> map = new HashMap<>();
             map.put("name", key);
-            map.put("url", getUrl(key, null));
+            map.put("url", getUrl(key, buckentName));
             return map;
         }
         return null;
@@ -131,7 +131,7 @@ public class FileOperationUtils {
         if (StringUtils.isNotEmpty(uploadResult.getETag())) {
             Map<String, String> map = new HashMap<>();
             map.put("name", key);
-            map.put("url", getUrl(key, null));
+            map.put("url", getUrl(key, buckentName));
             return map;
         }
         return null;
