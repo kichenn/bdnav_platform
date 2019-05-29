@@ -23,6 +23,7 @@ import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -116,6 +117,7 @@ public class ApplyControlsWebController {
     public Object modifyInfoPhoto(MultipartFile multipartFile) {
         //获取账户信息
         Account account = SecurityUtils.getCurrentUser();
+        if (account!=null){
         //查询此账户学生信息
        StudentVo studentVo = studentControllerClient.queryStudentInfo(account.getSchoolCode(), account.getCardNumber()).getResult();
         //StudentVo studentVo = studentControllerClient.queryStudentInfo("20190426", "20190520010").getResult();
@@ -128,13 +130,18 @@ public class ApplyControlsWebController {
             e.printStackTrace();
         }
         UpdateStudentDto updateStudentDto=new UpdateStudentDto();
+        updateStudentDto.setSchoolCode(account.getSchoolCode());
+        updateStudentDto.setCardNumber(account.getCardNumber());
         updateStudentDto.setImage(result.get("url"));
         updateStudentDto.setImageName(result.get("name"));
         studentControllerClient.updateStudent(updateStudentDto);
 
         return WrapMapper.ok(updateStudentDto.getImage());
 
-    }
+    }else{
+            return WrapMapper.error("获取token信息失败");
+        }
 
+    }
 
 }
