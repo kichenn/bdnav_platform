@@ -112,8 +112,8 @@ public class ApplyControlsWebController {
 
 
     @ApiOperation(value = "修改个人头像", response = Boolean.class)
-    @RequestMapping(value = "/modifyInfoPhone", method = RequestMethod.POST)
-    public Object modifyInfoPhone(MultipartFile multipartFile) {
+    @RequestMapping(value = "/modifyInfoPhoto", method = RequestMethod.POST)
+    public Object modifyInfoPhoto(MultipartFile multipartFile) {
         //获取账户信息
         Account account = SecurityUtils.getCurrentUser();
         //查询此账户学生信息
