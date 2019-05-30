@@ -1,5 +1,5 @@
 #开发环境
 spring:
   profiles: dev
-apollo:
-  cluster: default
+#apollo:
+#  cluster: default
