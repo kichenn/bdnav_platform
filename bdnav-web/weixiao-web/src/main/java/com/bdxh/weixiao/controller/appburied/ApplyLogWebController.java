@@ -34,7 +34,6 @@ public class ApplyLogWebController {
      * @param cardNumber
      * @return
      */
-    @WeiXiaoChargeApp
     @RequestMapping(value="/familyFindApplyLogInfo",method = RequestMethod.GET)
     @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息")
     public Object familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber){
