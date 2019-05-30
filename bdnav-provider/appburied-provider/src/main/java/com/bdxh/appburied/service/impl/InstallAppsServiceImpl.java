@@ -1,7 +1,10 @@
 package com.bdxh.appburied.service.impl;
 
+import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.dto.InstallAppsQueryDto;
 import com.bdxh.appburied.service.InstallAppsService;
+import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -13,6 +16,7 @@ import com.bdxh.common.support.BaseService;
 import lombok.extern.slf4j.Slf4j;
 import com.bdxh.appburied.entity.InstallApps;
 import com.bdxh.appburied.persistence.InstallAppsMapper;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,6 +31,9 @@ public class InstallAppsServiceImpl extends BaseService<InstallApps> implements 
 
     @Autowired
     private InstallAppsMapper installAppsMapper;
+
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     /*
      *查询总条数
@@ -59,5 +66,15 @@ public class InstallAppsServiceImpl extends BaseService<InstallApps> implements 
         installApps.setSchoolCode(schoolCode);
         installApps.setCardNumber(cardNumber);
         return installAppsMapper.findInstallAppsInContionPaging(installApps);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean batchSaveInstallAppsInfo(List<AddInstallAppsDto> appInstallList) {
+        List<InstallApps> appslist= BeanMapUtils.mapList(appInstallList, InstallApps.class);
+        for (int i = 0; i < appslist.size(); i++) {
+            appslist.get(i).setId(snowflakeIdWorker.nextId());
+        }
+        return installAppsMapper.batchSaveInstallAppsInfo(appslist)>0;
     }
 }

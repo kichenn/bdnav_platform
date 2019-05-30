@@ -51,4 +51,9 @@ public interface InstallAppsControllerClient {
     Wrapper<List<InstallApps>> findInstallAppsInConation(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber);
 
 
+    @RequestMapping(value = "/installApps/batchSaveInstallAppsInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper batchSaveInstallAppsInfo(@RequestBody List<AddInstallAppsDto> appInstallList);
+
+
 }

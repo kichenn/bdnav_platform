@@ -31,13 +31,20 @@ public class SchoolReportWebController {
 
     /**
      * 展示用户分类数量的信息
+     * @param schoolCode 学校编号
      * @return 学校用户分类数量
      */
     @RequestMapping(value = "/querySchoolUserCategoryCount",method = RequestMethod.GET)
     @ApiOperation(value = "查询总用户分类数量")
-    public Object querySchoolUserCategoryCount(@RequestParam("schoolCode")String schoolCode){
+    public Object querySchoolUserCategoryCount(@RequestParam(name = "schoolCode")String schoolCode){
         return baseUserControllerClient.querySchoolUserCategoryCount(schoolCode);
     }
+
+
+
+
+
+
 
 
 

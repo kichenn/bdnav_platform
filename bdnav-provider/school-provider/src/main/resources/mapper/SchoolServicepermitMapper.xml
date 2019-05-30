@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.persistence.SchoolServicePermitMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolServicePermit">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	  <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+	  <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+	  <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+	  <result column="status" jdbcType="TINYINT" property="status"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,school_id,school_code,school_name,start_time,end_time,status,remark,create_date,update_date
+	</sql>
+
+	<sql id="Base_Column_List">
+	  id,school_code,school_name,start_time,end_time,status,create_date
+	</sql>
+
+	<!--获取总记录数-->
+	<select id="getSchoolServicePermitAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_school_servicepermit 
+	</select>
+
+	<!--分页+条件查询-->
+    <select id="findSchoolServicePermitInConditionPage" resultMap="BaseResultMap">
+	select
+	<include refid="Base_Column_List" />
+	from t_school_servicepermit
+	<where>
+		<if test="schoolServicePermit.schoolCode!=null and schoolServicePermit.schoolCode!='' ">
+			and school_code like  CONCAT(CONCAT('%',#{schoolServicePermit.schoolCode,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="schoolServicePermit.schoolName!=null and schoolServicePermit.schoolName!='' ">
+			and school_name like  CONCAT(CONCAT('%',#{schoolServicePermit.schoolName,jdbcType=VARCHAR}),'%')
+		</if>
+		<if test="schoolServicePermit.status!=null ">
+			and status = #{schoolServicePermit.status}
+		</if>
+	</where>
+		order by create_date desc
+    </select>
+
+	<!--根据学校编码查询许可记录-->
+    <select id="querySchoolServicePermitCountBySchoolCode" resultType="java.lang.Integer">
+		select
+		count(1)
+		from  t_school_servicepermit where school_code=#{schoolCode}
+	</select>
+
+    <!--批量删除-->
+	<delete id="delSchoolServicePermitInIds" parameterType="Integer">
+	  DELETE
+	   FROM t_school_servicepermit
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>
