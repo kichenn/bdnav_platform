@@ -3,6 +3,9 @@ package com.bdxh.appburied.controller;
 import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.InstallApps;
 import com.bdxh.appburied.service.InstallAppsService;
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
+import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
+import com.bdxh.common.utils.ConvertMultipartUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import io.swagger.annotations.Api;
@@ -12,8 +15,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -39,10 +44,19 @@ public class InstallAppsController {
     public Object addInstallApp(@Validated @RequestBody AddInstallAppsDto addInstallAppsDto) {
         InstallApps installApps = new InstallApps();
         BeanUtils.copyProperties(addInstallAppsDto, installApps);
-        //设置状态值
-        installApps.setPlatform(addInstallAppsDto.getInstallAppsPlatformEnum().getKey());
         //设置id
         installApps.setId(snowflakeIdWorker.nextId());
+        //设置状态值
+        installApps.setPlatform(addInstallAppsDto.getInstallAppsPlatformEnum().getKey());
+        MultipartFile multipartFile = ConvertMultipartUtil.base64ToMultipart(addInstallAppsDto.getIconUrl());
+        Map<String, String> result = null;
+        try {
+            result = FileOperationUtils.saveBatchFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        installApps.setIconUrl(result.get("url"));
+        installApps.setIconName(result.get("name"));
         return WrapMapper.ok(installAppsService.save(installApps) > 0);
     }
 
@@ -96,6 +110,11 @@ public class InstallAppsController {
         }
     }
 
+    @RequestMapping(value = "/delByAppPackage", method = RequestMethod.GET)
+    @ApiOperation(value = "根据包名删除应用", response = Boolean.class)
+    public Object delByAppPackage(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("appPackage") String appPackage) {
+        return WrapMapper.ok(installAppsService.delByAppPackage(schoolCode,cardNumber,appPackage));
+    }
 
 
 }

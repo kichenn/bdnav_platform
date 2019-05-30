@@ -36,4 +36,6 @@ public interface InstallAppsService extends IService<InstallApps> {
      * @return
      */
     Boolean batchSaveInstallAppsInfo(List<AddInstallAppsDto> appInstallList);
+
+    Boolean delByAppPackage(String schoolCode,String cardNumber,String appPackage);
 }

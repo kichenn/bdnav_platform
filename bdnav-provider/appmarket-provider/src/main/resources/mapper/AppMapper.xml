@@ -14,6 +14,7 @@
     <result column="app_version" jdbcType="VARCHAR" property="appVersion"/>
     <result column="app_desc" jdbcType="VARCHAR" property="appDesc"/>
     <result column="status" jdbcType="TINYINT" property="status"/>
+    <result column="preset" jdbcType="TINYINT" property="preset"/>
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
     <result column="operator" jdbcType="BIGINT" property="operator"/>
@@ -22,7 +23,7 @@
   </resultMap>
 
   <sql id="BaseColumns">
-	  id,school_id,school_code,platform,category_id,app_name,app_package,icon_url,icon_name,app_version,app_desc,status,create_date,update_date,operator,operator_name,remark
+	  id,school_id,school_code,platform,category_id,app_name,app_package,icon_url,icon_name,app_version,app_desc,status,preset,create_date,update_date,operator,operator_name,remark
 	</sql>
   <select id="isCategoryAppExist" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select 1 from t_app where category_id = #{categoryId} limit 1;
@@ -52,6 +53,9 @@
       </if>
       <if test="status!=null">
         and status = #{status}
+      </if>
+      <if test="preset!=null">
+        and preset = #{preset}
       </if>
     </where>
     order by create_date desc
@@ -103,7 +107,6 @@
     FROM
 	t_app
     WHERE
-    school_id IS NULL
-    AND school_code IS NULL
+    preset=#{preset}
   </select>
 </mapper>

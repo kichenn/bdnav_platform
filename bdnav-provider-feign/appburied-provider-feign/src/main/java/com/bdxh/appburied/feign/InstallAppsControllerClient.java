@@ -56,4 +56,10 @@ public interface InstallAppsControllerClient {
     Wrapper batchSaveInstallAppsInfo(@RequestBody List<AddInstallAppsDto> appInstallList);
 
 
+    @RequestMapping(value = "/installApps/delByAppPackage", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper delByAppPackage(@RequestParam("schoolCode") String schoolCode,
+                              @RequestParam("cardNumber") String cardNumber,
+                              @RequestParam("appPackage") String appPackage);
+
 }

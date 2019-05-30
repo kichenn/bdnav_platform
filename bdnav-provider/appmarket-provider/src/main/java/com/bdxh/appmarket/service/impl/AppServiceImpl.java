@@ -143,7 +143,7 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     }
 
     @Override
-    public List<App> thePresetList() {
-        return appMapper.thePresetList();
+    public List<App> thePresetList(Byte preset) {
+        return appMapper.thePresetList(preset);
     }
 }

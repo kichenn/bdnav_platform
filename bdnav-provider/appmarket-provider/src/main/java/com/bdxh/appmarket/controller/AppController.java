@@ -302,10 +302,10 @@ public class AppController {
 
 
     @ApiOperation("查询系统预置应用列表")
-    @RequestMapping(value = "/thePresetList",method = RequestMethod.POST)
-    public Object thePresetList() {
+    @RequestMapping(value = "/thePresetList",method = RequestMethod.GET)
+    public Object thePresetList(@RequestParam("preset") Byte preset) {
         try {
-            List<App> app = appService.thePresetList();
+            List<App> app = appService.thePresetList(preset);
             return WrapMapper.ok(app);
         } catch (Exception e) {
             e.printStackTrace();

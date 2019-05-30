@@ -95,5 +95,5 @@ public interface AppService extends IService<App> {
     List<App> familyFindAppInfo(String schoolCode);
 
     //查询预置应用
-    List<App> thePresetList();
+    List<App> thePresetList(Byte preset);
 }
