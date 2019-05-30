@@ -3,6 +3,7 @@
 <mapper namespace="com.bdxh.account.persistence.AccountMapper">
     <resultMap id="BaseResultMap" type="com.bdxh.account.entity.Account">
         <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
         <result column="user_type" jdbcType="TINYINT" property="userType"/>
@@ -20,7 +21,7 @@
     </resultMap>
 
     <sql id="BaseCloumns">
-    id, school_code, school_name, user_type, user_id, user_name, user_phone, card_number, login_name, login_name_update, password, account_expired, account_locked, create_date, update_date
+    id, school_id,school_code, school_name, user_type, user_id, user_name, user_phone, card_number, login_name, login_name_update, password, account_expired, account_locked, create_date, update_date
   </sql>
 
     <update id="updateLoginName" parameterType="java.util.Map">
