@@ -45,4 +45,13 @@
 		WHERE school_code=#{schoolCode} AND group_id=#{groupId}
 	</select>
 
+	<select id="findUserDeviceByCodeOrCard" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM
+		t_user_device
+		WHERE
+		school_code=#{schoolCode} AND card_number=#{cardNumber}
+	</select>
+
 </mapper>

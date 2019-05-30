@@ -1,0 +1,84 @@
+#目前与dev文件一致
+eureka:
+  client:
+    register-with-eureka: false #不向注册中心注册实例
+    fetch-registry: true #表明自己是消费者，只需要检索服务
+    serviceUrl:
+      defaultZone: http://admin:bdxh123456@eureka-server1:9001/eureka/,http://admin:bdxh123456@eureka-server2:9002/eureka/,http://admin:bdxh123456@eureka-server3:9003/eureka/
+spring:
+  #jackson配置
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  #redis配置
+  redis:
+    cluster:
+      nodes: 119.23.185.109:8001,47.107.253.90:8003,47.107.255.252:8005,119.23.185.109:8002,47.107.253.90:8004,47.107.255.252:8006
+    timeout: 5000
+    lettuce:
+      pool:
+        min-idle: 2
+        max-idle: 10
+        max-active: 20
+        max-wait: -1
+    database: 0
+  cloud:
+    loadbalancer:
+      retry:
+        #开启ribbon重试机制
+        enabled: true
+#hystrix配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: true
+        isolation:
+          thread:
+            timeoutInMilliseconds: 12000
+#feigin配置 开启熔断降级
+feign:
+  hystrix:
+    enabled: true
+  #使用httpclient连接池
+  httpclient:
+    enabled: true
+    connection-timeout: 2000
+    connection-timer-repeat: 5000
+    #最大连接数
+    max-connections: 1000
+    #并发数
+    max-connections-per-route: 100
+  okhttp:
+    enabled: false
+  #启用压缩
+  compression:
+    request:
+      enabled: true
+      mime-types: text/xml,application/xml,application/json
+      min-request-size: 1024
+    response:
+      enabled: true
+#ribbon超时配置
+ribbon:
+  eureka:
+    enabled: true
+  eager-load:
+    enabled: true
+  #3秒刷新服务列表
+  ServerListRefreshInterval: 3000
+  #只对GET方法进行重试 POST接口重复执行会造成严重后果，需要对接口做幂等性
+  OkToRetryOnAllOperations: false
+  MaxAutoRetries: 1
+  MaxAutoRetriesNextServer: 2
+  ConnectTimeout: 3000
+  ReadTimeout: 6000
+#httpPoolClient配置
+httpPool:
+  maxTotal: 3000
+  maxPerRoute: 100
+  connectRequestTimeout: 3000
+  connectTimeout: 5000
+  socketTimeout: 10000
+  enable: false

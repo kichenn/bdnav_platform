@@ -44,4 +44,9 @@ public class UserDeviceServiceImpl extends BaseService<UserDevice> implements Us
 	public List<UserDevice> getUserDeviceAll(String schoolcode, Long groupId) {
 		return userDeviceMapper.getUserDeviceAll(schoolcode,groupId);
 	}
+
+	@Override
+	public UserDevice findUserDeviceByCodeOrCard(String schoolCode, String cardNumber) {
+		return userDeviceMapper.findUserDeviceByCodeOrCard(schoolCode,cardNumber);
+	}
 }

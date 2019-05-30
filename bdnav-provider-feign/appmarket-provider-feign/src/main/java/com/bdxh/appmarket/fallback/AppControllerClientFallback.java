@@ -76,4 +76,9 @@ public class AppControllerClientFallback implements AppControllerClient {
     public Wrapper<Boolean> pushInstallApps(Long id, String userName, String cardNumber,String clientId) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<App>> thePresetList() {
+        return WrapMapper.error();
+    }
 }

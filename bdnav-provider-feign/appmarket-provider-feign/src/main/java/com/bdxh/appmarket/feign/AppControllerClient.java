@@ -70,4 +70,9 @@ public interface AppControllerClient {
                                      @RequestParam("userName")String userName,
                                      @RequestParam("cardNumber")String cardNumber,
                                      @RequestParam("clientId")String clientId);
+
+
+    @RequestMapping(value = "/app/thePresetList", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<List<App>> thePresetList();
 }

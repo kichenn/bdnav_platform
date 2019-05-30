@@ -1,0 +1,24 @@
+info:
+  groupId: @project.groupId@
+  artifactId: @project.artifactId@
+  version: @project.version@
+eureka:
+  instance:
+    hostname: admin-server
+    instance-id: admin-instance:${server.port}
+    prefer-ip-address: false
+    metadata-map:
+      user:
+        name: admin
+        password: bdxh@123456
+  client:
+    serviceUrl:
+      defaultZone: http://admin:bdxh123456@eureka-server1:9001/eureka/,http://admin:bdxh123456@eureka-server2:9002/eureka/,http://admin:bdxh123456@eureka-server3:9003/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: ALWAYS

@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 /**
  * @Description: 控制器
@@ -82,5 +84,18 @@ public class InstallAppsController {
     public Object findInstallAppsInConation(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber){
         return WrapMapper.ok(installAppsService.findInstallAppsInConation(schoolCode,cardNumber));
     }
+
+
+    @ApiOperation(value = "批量新增应用上报信息")
+    @RequestMapping(value = "/batchSaveInstallAppsInfo", method = RequestMethod.POST)
+    public Object batchSaveInstallAppsInfo(@RequestBody List<AddInstallAppsDto> appInstallList){
+        try {
+            return WrapMapper.ok(installAppsService.batchSaveInstallAppsInfo(appInstallList));
+        }catch (Exception e){
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
 
 }

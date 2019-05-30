@@ -16,8 +16,6 @@
         <result column="type" jdbcType="TINYINT" property="type"/>
         <result column="level" jdbcType="TINYINT" property="level"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
-        <result column="manager_id" jdbcType="BIGINT" property="managerId"/>
-        <result column="manager_name" jdbcType="VARCHAR" property="managerName"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
         <result column="operator" jdbcType="BIGINT" property="operator"/>
@@ -27,7 +25,7 @@
 
     <sql id="Base_Column_List">
     id,parent_id,parent_ids,parent_names,this_url,school_id,school_code,`name`,`type`,
-    `level`,sort,manager_id,manager_name,create_date,update_date,operator,operator_name,remark
+    `level`,sort,create_date,update_date,operator,operator_name,remark
     </sql>
 
     <delete id="batchDelSchoolClassInIds">

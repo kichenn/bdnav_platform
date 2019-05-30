@@ -1,12 +1,12 @@
 package com.bdxh.app.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.bdxh.account.dto.AddAccountLogDto;
-import com.bdxh.account.dto.ForgetPwd;
-import com.bdxh.account.dto.ModifyAccountPwdDto;
+import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
+import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.feign.AccountControllerClient;
 import com.bdxh.account.feign.AccountLogControllerClient;
+import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.app.configration.redis.RedisUtil;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
@@ -24,12 +24,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.formula.udf.AggregatingUDFFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,6 +67,8 @@ public class SecurityController {
     @Autowired
     private RedisUtil redisUtil;
 
+    @Autowired
+    private UserDeviceControllerClient userDeviceControllerClient;
 
     @ApiOperation(value = "获取token(用户登录)", response = Boolean.class)
     @RequestMapping(value = "/authenticationApp/login", method = RequestMethod.GET)
@@ -119,6 +123,25 @@ public class SecurityController {
                     addAccountLogDto.setOperationSystem(operationSystem);
                     addAccountLogDto.setRemark("");
                     accountLogControllerClient.addAccountLog(addAccountLogDto);
+                    UserDevice ud=userDeviceControllerClient.findUserDeviceByCodeOrCard(account.getSchoolCode(),account.getCardNumber()).getResult();
+                    if (ud!=null){
+                        ModifyUserDevice mud=new ModifyUserDevice();
+                        mud.setId(ud.getId());
+                        mud.setClientId(clientId);
+                        userDeviceControllerClient.modifyUserDeviceInfo(mud);
+                    }else{
+                        AddUserDevice aud=new AddUserDevice();
+                        aud.setSchoolId(account.getSchoolId());
+                        aud.setSchoolCode(account.getSchoolCode());
+                        aud.setSchoolName(account.getSchoolName());
+                        aud.setGroupId(Long.valueOf(student.getClassId()));
+                        aud.setUserId(account.getUserId());
+                        aud.setCardNumber(account.getCardNumber());
+                        aud.setUserName(account.getUserName());
+                        aud.setImei(imei);
+                        aud.setClientId(clientId);
+                        userDeviceControllerClient.addUserDeviceInfo(aud);
+                    }
                     break;
                 case 2:
                     //老师
@@ -186,6 +209,7 @@ public class SecurityController {
     @ApiOperation(value = "token获取用户信息", response = String.class)
     public Object getAccountInfoByToken() {
         Account account = SecurityUtils.getCurrentUser();
+        account.setPassword("");
         return WrapMapper.ok(account);
     }
 
@@ -212,13 +236,13 @@ public class SecurityController {
         return accountControllerClient.modifyPwd(modifyAccountPwdDto);
     }
 
-    @PostMapping("/forgetPwd")
+    @PostMapping("/authenticationApp/forgetPwd")
     @ApiOperation(value = "找回密码", response = Boolean.class)
     public Object forgetPwd(@RequestBody @Validated ForgetPwd forgetPwd) {
         return accountControllerClient.forgetPwd(forgetPwd);
     }
 
-    @GetMapping("/getCaptcha")
+    @GetMapping("/authenticationApp/getCaptcha")
     @ApiOperation(value = "获取验证码", response = Boolean.class)
     public Object getCaptcha(@RequestParam("phone") String phone) {
         return accountControllerClient.getCaptcha(phone);

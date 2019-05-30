@@ -49,4 +49,12 @@ public interface UserDeviceControllerClient {
     Wrapper delUserDeviceById(@RequestParam("id")Long id);
 
 
+    /**
+     * 根据条件查询用户设备信息
+     */
+    @RequestMapping(value = "/userDevice/findUserDeviceByCodeOrCard", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<UserDevice> findUserDeviceByCodeOrCard(@RequestParam("schoolCode")String schoolCode,@RequestParam("cardNumber")String cardNumber);
+
+
 }
