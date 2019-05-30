@@ -115,7 +115,6 @@
                 </configuration>
             </plugin>
 
-
             <!--打包-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -141,8 +140,17 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <encoding>utf-8</encoding>
+                    <useDefaultDelimiters>true</useDefaultDelimiters>
+                </configuration>
+            </plugin>
         </plugins>
         <finalName>school-provider1</finalName>
     </build>
+
 
 </project>
