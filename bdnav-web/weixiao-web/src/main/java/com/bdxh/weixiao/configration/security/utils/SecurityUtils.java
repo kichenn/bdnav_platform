@@ -30,4 +30,18 @@ public class SecurityUtils {
         }
         return account;
     }
+
+    /**
+     * 获取myUserDetails
+     * @return
+     */
+    public static MyUserDetails getMyUserDetails(){
+        MyUserDetails myUserDetails = null;
+        try {
+             myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return myUserDetails;
+    }
 }

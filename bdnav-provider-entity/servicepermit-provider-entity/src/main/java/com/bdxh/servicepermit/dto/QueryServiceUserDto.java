@@ -25,5 +25,9 @@ public class QueryServiceUserDto extends Query {
     @ApiModelProperty("类型 1是试用  2是正式使用")
     private Integer type;
 
+    @ApiModelProperty("可用天数")
+    private Integer days;
 
+    @ApiModelProperty("商品Id")
+    private Integer productId;
 }

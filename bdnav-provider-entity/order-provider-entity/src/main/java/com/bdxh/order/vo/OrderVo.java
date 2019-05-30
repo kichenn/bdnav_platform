@@ -1,5 +1,6 @@
 package com.bdxh.order.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.io.Serializable;
 
@@ -27,4 +28,10 @@ public class OrderVo implements Serializable {
      * 订单号
      */
     private Long orderNo;
+
+    /**
+     * 购买数量
+     */
+    private Integer count;
+
 }

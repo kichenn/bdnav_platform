@@ -56,12 +56,13 @@ public class AppWebController {
             List<WeiXiaoAppVo> weiXiaoAppVoList = BeanMapUtils.mapList(appList, WeiXiaoAppVo.class);
             for (WeiXiaoAppVo weiXiaoAppVo : weiXiaoAppVoList) {
                 for (InstallApps installApps : installAppsList) {
+                    //如果存在就修改状态1为未安装，2为已安装
                     if (weiXiaoAppVo.getAppPackage().equals(installApps.getAppPackage())) {
                         weiXiaoAppVo.setIsInstalled(Byte.valueOf("2"));
                     }
                 }
             }
-            return weiXiaoAppVoList;
+            return WrapMapper.ok(weiXiaoAppVoList);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

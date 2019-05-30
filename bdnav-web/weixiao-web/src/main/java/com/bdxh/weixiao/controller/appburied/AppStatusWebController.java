@@ -4,8 +4,6 @@ import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.entity.InstallApps;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
-import com.bdxh.appmarket.entity.App;
-import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
@@ -18,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +42,7 @@ public class AppStatusWebController {
     /**
      * 收费服务
      * 家长应用管控----获取某个孩子的应用列表以及状态
+     *
      * @param schoolCode 学校Code
      * @param cardNumber 学生学号
      * @return
@@ -50,9 +50,8 @@ public class AppStatusWebController {
 
     @ApiOperation(value = "家长应用管控----获取某个孩子的应用列表以及状态")
     @RequestMapping(value = "/queryAppStatusInfo", method = RequestMethod.POST)
-    @WeiXiaoChargeApp
-    public Object queryAppStatusInfo(@RequestParam("schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
-                                     @RequestParam("cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {
+    public Object queryAppStatusInfo(@RequestParam(name = "schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
+                                     @RequestParam(name = "cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {
         try {
             //根据学号查询出学生的应用安装记录
             List<InstallApps> installAppsList = installAppsControllerClient.findInstallAppsInConation(schoolCode, cardNumber).getResult();
@@ -62,8 +61,8 @@ public class AppStatusWebController {
                 for (AppStatus appStatus : appStatusList) {
                     //如果安装的包名对应的应用状态包名切状态为锁定时为Vo类添加锁定状态默认为1
                     if (weiXiaoInstallAppsVo.getAppPackage().equals(appStatus.getAppPackage()) &&
-                        appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
-                        weiXiaoInstallAppsVo.setAppStatus(Byte.valueOf("2"));
+                            appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
+                            weiXiaoInstallAppsVo.setAppStatus(Byte.valueOf("2"));
                     }
                 }
             }
@@ -75,6 +74,7 @@ public class AppStatusWebController {
 
     /**
      * 家长应用管控----锁定以及解锁App
+     *
      * @param weiXiaoAppStatusUnlockOrLokingDto
      * @return
      */
@@ -88,7 +88,7 @@ public class AppStatusWebController {
             clientId.add("59dc219038fde0484eebcbb6d5476f0c");
             weiXiaoAppStatusUnlockOrLokingDto.setClientId(clientId);
             return appStatusControllerClient.appStatusLockingAndUnlock(weiXiaoAppStatusUnlockOrLokingDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             return WrapMapper.error();
         }
     }

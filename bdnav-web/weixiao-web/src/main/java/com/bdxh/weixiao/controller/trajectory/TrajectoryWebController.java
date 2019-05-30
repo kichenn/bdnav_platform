@@ -38,7 +38,6 @@ public class TrajectoryWebController {
      * @param cardNumber 学生卡号
      * @return
      */
-    @WeiXiaoChargeApp
     @RequestMapping(value = "/findTrajectoryInfo", method = RequestMethod.GET)
     @ApiOperation(value = "家长端鹰眼轨迹------查询单个孩子的轨迹信息")
     public Object findTrajectoryInfo(@RequestParam("startTime") @NotNull(message = "开始时间不能为空") String startTime,
@@ -60,7 +59,6 @@ public class TrajectoryWebController {
      *  用来拼接ENTITY 查询entity的轨迹点
      * @return
      */
-    @WeiXiaoChargeApp
     @RequestMapping(value = "/findLatestPoint", method = RequestMethod.GET)
     @ApiOperation(value = "家长端鹰眼轨迹------查询单个孩子的实时位置信息")
     public Object findLatestPoint (@RequestParam("schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,

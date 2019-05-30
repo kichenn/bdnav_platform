@@ -1,7 +1,10 @@
 package com.bdxh.servicepermit.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.servicepermit.dto.AddServiceUserDto;
 import com.bdxh.servicepermit.dto.ModifyServiceUserDto;
+import com.bdxh.servicepermit.dto.QueryServiceUserDto;
+import com.bdxh.servicepermit.dto.WeiXiaoAddServiceUserDto;
 import com.bdxh.servicepermit.entity.ServiceUser;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -44,10 +47,15 @@ public interface ServiceUserService extends IService<ServiceUser> {
 
 	/**
 	 * 查询单个学生的购买记录
-	 * @param SchoolCode
-	 * @param cardNumber
-	 * @param studentNumber
+	 * @param queryServiceUsedDto
 	 * @return
 	 */
-	List<ServiceUser> queryAllServiceUser(String SchoolCode,String cardNumber,String studentNumber);
+	List<ServiceUser> queryAllServiceUser(QueryServiceUserDto queryServiceUsedDto);
+
+	/**
+	 * 添加许可证或领取试用期
+	 * @param weiXiaoAddServiceUserDto
+	 * @return
+	 */
+	void addServicePermit(WeiXiaoAddServiceUserDto weiXiaoAddServiceUserDto);
 }

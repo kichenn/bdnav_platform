@@ -42,5 +42,6 @@ public class OrderQueryDto extends Query {
     @ApiModelProperty("学号")
     private String CardNumber;
 
-
+    @ApiModelProperty("购买数量")
+    private Integer count;
 }
