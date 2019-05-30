@@ -27,4 +27,12 @@ public interface InstallAppsMapper extends Mapper<InstallApps> {
      * @return
      */
     List<InstallApps> findInstallAppsInContionPaging(@Param("installApps") InstallApps installApps);
+
+    /**
+     * 批量上报应用信息
+     * @param appList
+     * @return
+     */
+    Integer batchSaveInstallAppsInfo(List<InstallApps> appList);
+
 }

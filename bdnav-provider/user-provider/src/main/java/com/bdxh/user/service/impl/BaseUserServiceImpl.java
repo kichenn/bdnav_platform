@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @description: 基础用户service实现
@@ -268,7 +269,9 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         default:
                 }
             });
+
         }
+
         return baseEchartsVos;
 
     }

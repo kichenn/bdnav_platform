@@ -57,4 +57,38 @@
          ORDER BY create_date DESC
     </select>
 
+    <insert id="batchSaveInstallAppsInfo">
+        INSERT INTO t_install_apps (
+        id ,
+        platform ,
+        account_id ,
+        school_id ,
+        school_code ,
+        school_name ,
+        card_number ,
+        user_name ,
+        app_name ,
+        app_package ,
+        icon_url ,
+        icon_name ,
+        create_date
+        )
+        VALUES
+        <foreach collection="list" index="index" separator="," item="appList">
+            ( #{appList.id},
+            #{appList.platform},
+            #{appList.accountId},
+            #{appList.schoolId},
+            #{appList.schoolCode},
+            #{appList.schoolName},
+            #{appList.cardNumber},
+            #{appList.userName},
+            #{appList.appName},
+            #{appList.appPackage},
+            #{appList.iconUrl},
+            #{appList.iconName},
+            #{appList.createDate}
+            )
+        </foreach>
+    </insert>
 </mapper>
