@@ -32,10 +32,11 @@
         <result column="operator" jdbcType="BIGINT" property="Operator"/>
         <result column="operator_name" jdbcType="VARCHAR" property="OperatorName"/>
         <result column="remark" jdbcType="VARCHAR" property="Remark"/>
+        <result column="count" jdbcType="BIGINT" property="count "/>
     </resultMap>
 
     <sql id="BaseColumns">
-	order_no,third_order_no,school_id,school_code,school_name,user_id,card_number,user_name,user_type,open_id,total_money,order_money,pay_money,trade_status,pay_status,business_status,business_type,pay_type,trade_type,pay_time,pay_end_time,product_id,create_date,update_date,operator,operator_name,remark
+	order_no,third_order_no,school_id,school_code,school_name,user_id,card_number,user_name,user_type,open_id,total_money,order_money,pay_money,trade_status,pay_status,business_status,business_type,pay_type,trade_type,pay_time,pay_end_time,product_id,create_date,update_date,operator,operator_name,remark,`count`
 	</sql>
 
     <select id="getOrderByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">

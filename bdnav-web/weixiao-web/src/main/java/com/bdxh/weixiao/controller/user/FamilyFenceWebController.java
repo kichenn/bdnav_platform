@@ -15,6 +15,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * @description:
@@ -72,14 +73,20 @@ public class FamilyFenceWebController {
     /**
      * 收费服务
      * 获取围栏表所有信息
-     * @param familyFenceQueryDto
+     * @param schoolCode
+     * @param cardNumber
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation(value="家长电子围栏-----获取围栏表所有信息")
     @RequestMapping(value = "/getFamilyFenceInfos",method = RequestMethod.POST)
-    public Object getFamilyFenceInfos(@Valid @RequestBody FamilyFenceQueryDto familyFenceQueryDto){
+    public Object getFamilyFenceInfos(@RequestParam("schoolCode")String schoolCode,
+                                      @RequestParam("cardNumber")String cardNumber){
         try {
+            String familyNumber="20190516002";
+            FamilyFenceQueryDto familyFenceQueryDto=new FamilyFenceQueryDto();
+            familyFenceQueryDto.setStudentNumber(cardNumber);
+            familyFenceQueryDto.setSchoolCode(schoolCode);
+            familyFenceQueryDto.setCardNumber(familyNumber);
             Wrapper wrapper=familyFenceControllerClient.getFamilyFenceInfos(familyFenceQueryDto);
             return wrapper;
         }catch (Exception e){

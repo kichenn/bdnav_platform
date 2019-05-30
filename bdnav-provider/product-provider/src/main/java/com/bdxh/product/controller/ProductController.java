@@ -128,9 +128,23 @@ public class ProductController {
      */
     @RequestMapping(value = "/findAllProduct",method =RequestMethod.GET)
     @ApiOperation(value = "查询所有商品信息")
-    Wrapper<List<Product>> findAllProduct(@RequestBody ProductQueryDto productQueryDto){
+    public Object findAllProduct(@RequestBody ProductQueryDto productQueryDto){
         return WrapMapper.ok(productService.selectAll());
     }
+    /**
+     * 根据Ids查询商品集合
+     *
+     * @param productIds
+     */
+    @RequestMapping(value = "/findProductByIds", method = RequestMethod.GET)
+    @ResponseBody
+    public Object  findProductByIds(@RequestParam("productIds") String productIds){
+        try {
+            return WrapMapper.ok(productService.selectAll());
+        }catch (Exception e){
+            return WrapMapper.ok(productService.selectAll());
+        }
 
+    }
 
 }

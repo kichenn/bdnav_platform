@@ -54,7 +54,7 @@
     <select id="findProduct" resultMap="BaseResultMap">
         select
         <include refid="BaseColumns"/>
-        from product
+        from t_product
         <where>
             <if test="productShowName != null and productShowName != ''">
                 product_show_name like CONCAT(CONCAT('%',#{productShowName}),'%')
@@ -104,7 +104,7 @@
         productImage.image_url AS imageUrl,
         productImage.image_name AS imageName
     FROM
-        product AS product
+        t_product AS product
     LEFT JOIN t_product_image AS productImage ON productImage.product_id = product.id
     WHERE
         product.id = #{id}
@@ -112,7 +112,7 @@
   </select>
 
     <update id="updateProduct">
-        UPDATE product
+        UPDATE t_product
         <set>
         <if test="productName != null"> product_name = #{productName},</if>
         <if test="productName == null"> product_name = product_name,</if>
@@ -151,7 +151,7 @@
 
     <!--添加商品信息-->
     <insert id="insertProduct" useGeneratedKeys="true" keyProperty="id" parameterType="com.bdxh.product.entity.Product">
-        INSERT INTO product (
+        INSERT INTO t_product (
         product_name,
         product_show_name,
         product_price,
@@ -184,7 +184,14 @@
          );
 </insert>
     <select id="findProductByName" resultType="java.lang.Integer" parameterType="java.lang.String">
-        select count(1) from product
+        select count(1) from t_product
         where product_name=#{productName}
+    </select>
+
+    <select id="findProductByIds" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select <include refid="BaseColumns"/> from t_product where id in
+        <foreach  item="id" index="index" collection="productIds.split(',')" open="(" separator="," close=")">
+            #{id}
+        </foreach>
     </select>
 </mapper>

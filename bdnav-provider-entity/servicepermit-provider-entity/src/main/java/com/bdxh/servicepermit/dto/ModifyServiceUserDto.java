@@ -44,6 +44,8 @@ public class ModifyServiceUserDto {
     @ApiModelProperty("家长姓名")
     private String familyName;
 
+    @ApiModelProperty("可用天数")
+    private Integer days;
 
     @ApiModelProperty("开始使用时间")
     private Date startTime;

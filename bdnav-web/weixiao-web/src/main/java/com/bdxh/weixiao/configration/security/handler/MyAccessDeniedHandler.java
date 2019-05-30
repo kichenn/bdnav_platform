@@ -24,7 +24,7 @@ public class MyAccessDeniedHandler implements AccessDeniedHandler{
 
     @Override
     public void handle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AccessDeniedException exception) throws IOException, ServletException {
-        Wrapper wrapper= WrapMapper.error("没有相关权限");
+        Wrapper wrapper= WrapMapper.error("暂无操作权限");
         String str = JSON.toJSONString(wrapper);
         httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
         httpServletResponse.setStatus(403);

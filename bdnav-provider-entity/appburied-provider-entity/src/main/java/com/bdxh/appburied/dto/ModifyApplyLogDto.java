@@ -3,6 +3,7 @@ package com.bdxh.appburied.dto;
 import com.bdxh.appburied.enums.ApplyLogModelEnum;
 import com.bdxh.appburied.enums.ApplyLogOperatorStatusEnum;
 import com.bdxh.appburied.enums.InstallAppsPlatformEnum;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -68,7 +69,7 @@ public class ModifyApplyLogDto {
     private String operatorName;
 
     @ApiModelProperty("操作状态 1 待审核 2 审核拒绝 3 审核通过(新增时只能为之待审核) ")
-    private ApplyLogOperatorStatusEnum applyLogOperatorStatusEnum = ApplyLogOperatorStatusEnum.WAIT;
+    private ApplyLogOperatorStatusEnum applyLogOperatorStatusEnum;
 
     @ApiModelProperty("开始时间")
     private Date startDate;
@@ -81,6 +82,12 @@ public class ModifyApplyLogDto {
 
     @ApiModelProperty("备注")
     private String remark;
+
+    /**
+     * 申请畅玩时长
+     */
+    @ApiModelProperty("申请畅玩时长")
+    private Integer duration;
 
     /**
      * 审核意见

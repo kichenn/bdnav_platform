@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.servicepermit.dto.AddServiceUserDto;
 import com.bdxh.servicepermit.dto.ModifyServiceUserDto;
 import com.bdxh.servicepermit.dto.QueryServiceUserDto;
+import com.bdxh.servicepermit.dto.WeiXiaoAddServiceUserDto;
 import com.bdxh.servicepermit.entity.ServiceUser;
 import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
 import com.github.pagehelper.PageInfo;
@@ -37,7 +38,14 @@ public class ServiceUserControllerClientFallback implements ServiceUserControlle
     }
 
     @Override
-    public Wrapper<List<ServiceUser>> queryAllServiceUser(String cardNumber, String schoolCode, String studentNumber) {
+    public Wrapper<List<ServiceUser>> queryAllServiceUser(QueryServiceUserDto queryServiceUsedDto) {
         return  WrapMapper.error();
     }
+
+    @Override
+    public Wrapper addServicePermit(WeiXiaoAddServiceUserDto weiXiaoAddServiceUserDto) {
+        return  WrapMapper.error();
+    }
+
+
 }

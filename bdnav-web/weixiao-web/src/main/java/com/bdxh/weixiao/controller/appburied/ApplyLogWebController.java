@@ -2,7 +2,6 @@ package com.bdxh.weixiao.controller.appburied;
 
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
-import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 

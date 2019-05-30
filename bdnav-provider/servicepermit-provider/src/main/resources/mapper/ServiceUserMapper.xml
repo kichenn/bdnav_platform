@@ -24,9 +24,10 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="student_number" jdbcType="VARCHAR" property="studentNumber"/>
         <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+        <result column="days" jdbcType="BIGINT" property="days"/>
     </resultMap>
     <sql id="BaseColumns">
-	id,order_no,product_id,product_name,school_id,school_code,school_name,family_id,card_number,family_name,start_time,end_time,`status`,`type`,create_date,update_date,operator,operator_name,remark,student_number,student_name
+	id,order_no,product_id,product_name,school_id,school_code,school_name,family_id,card_number,family_name,start_time,end_time,`status`,`type`,create_date,update_date,operator,operator_name,remark,student_number,student_name,days
 	</sql>
 
     <select id="getServiceUserAllCount" resultType="Integer">
