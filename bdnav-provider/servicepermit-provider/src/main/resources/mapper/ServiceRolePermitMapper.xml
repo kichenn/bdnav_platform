@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.servicepermit.persistence.ServiceRolePermitMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.servicepermit.entity.ServiceRolePermit">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="service_user_id" jdbcType="BIGINT" property="serviceUserId"/>
+	  <result column="service_role_id" jdbcType="BIGINT" property="serviceRoleId"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,service_user_id,service_role_id,create_date,update_date,remark
+	</sql>
+	<select id="getServiceRolePermitAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_service_role_permit 
+	</select>
+
+	<delete id="delServiceRolePermitInIds" parameterType="Integer">
+	  DELETE
+	   FROM t_service_role_permit
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>
