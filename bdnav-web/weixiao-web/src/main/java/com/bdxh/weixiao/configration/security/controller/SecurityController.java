@@ -13,9 +13,11 @@ import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.entity.WeixiaoPermit;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
 import com.bdxh.weixiao.configration.security.properties.weixiao.WeixiaoLoginConstant;
 import com.bdxh.weixiao.configration.security.userdetail.MyUserDetails;
+import com.bdxh.weixiao.configration.security.userdetail.WeixiaoGrantedAuthority;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import com.google.common.base.Preconditions;
 import io.jsonwebtoken.*;
@@ -29,13 +31,12 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -112,6 +113,14 @@ public class SecurityController {
             userInfo.setPhone(jsonObject.getString("telephone"));
             userInfo.setIdentityType(jsonObject.getString("identity_type"));
             //组装用户权限信息
+            List<WeixiaoGrantedAuthority> authorities = new ArrayList<>();
+            //查询权限列表
+            // Wrapper<List<String>> permissionWrapper = permissionControllerClient.permissionMenusByUserId(user.getId());
+            //   List<String> permissions = permissionWrapper.getResult();
+            //  if (permissions != null && !permissions.isEmpty()) {
+            //权限的菜单 也需要 以 ROLE_开头(我们库中未以ROLE开头 所以在此累加)
+            //      permissions.forEach(permission -> authorities.add(new WeixiaoGrantedAuthority(WeixiaoPermit weixiaoPermit)));
+            // }
 
             Map<String, Object> claims = new HashMap<>(16);
             UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
@@ -122,7 +131,7 @@ public class SecurityController {
             String claim = JSONObject.toJSONString(userInfo);
             //生成token
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(subject)
-                    .claim(SecurityConstant.USER_INFO, claim)
+                    .addClaims(claims)
                     .setExpiration(new Date(System.currentTimeMillis() + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))
                     .signWith(SignatureAlgorithm.HS512, SecurityConstant.TOKEN_SIGN_KEY)
                     .compressWith(CompressionCodecs.GZIP).compact();

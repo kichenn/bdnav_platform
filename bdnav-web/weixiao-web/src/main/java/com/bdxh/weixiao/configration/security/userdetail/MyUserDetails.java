@@ -67,8 +67,4 @@ public class MyUserDetails implements UserDetails {
         return userInfo;
     }
 
-    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
-        this.authorities = authorities;
-    }
-
 }
