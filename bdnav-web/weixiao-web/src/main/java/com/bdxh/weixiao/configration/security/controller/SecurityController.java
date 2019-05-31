@@ -3,10 +3,13 @@ package com.bdxh.weixiao.configration.security.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.account.entity.Account;
+import com.bdxh.common.utils.AESUtils;
 import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.HttpClientUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.entity.School;
+import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
@@ -29,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,6 +49,20 @@ public class SecurityController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private SchoolControllerClient schoolControllerClient;
+
+    @RequestMapping(value = "/authenticationWeixiao/findAppKeyBySchoolCode", method = RequestMethod.GET)
+    @ApiOperation(value = "schoolCode获取微校appkey信息", response = String.class)
+    public Object findAppKeyBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
+        School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
+        Preconditions.checkArgument(school != null, "schoolCode异常");
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("schoolCode", school.getSchoolCode());
+        result.put("appKey", AESUtils.enCode(school.getAppKey(), AESUtils.AesConstant.WEIXIAO_KEY));
+        return WrapMapper.ok(result);
+    }
 
     /**
      * @param schoolCode 学校code
