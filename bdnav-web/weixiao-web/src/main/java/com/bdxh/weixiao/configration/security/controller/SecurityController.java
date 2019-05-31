@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.account.entity.Account;
 import com.bdxh.common.utils.AESUtils;
+import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.HttpClientUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -14,6 +15,7 @@ import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
 import com.bdxh.weixiao.configration.security.properties.weixiao.WeixiaoLoginConstant;
+import com.bdxh.weixiao.configration.security.userdetail.MyUserDetails;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import com.google.common.base.Preconditions;
 import io.jsonwebtoken.*;
@@ -49,6 +51,9 @@ public class SecurityController {
 
     @Autowired
     private RedisUtil redisUtil;
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     @Autowired
     private SchoolControllerClient schoolControllerClient;
@@ -106,6 +111,12 @@ public class SecurityController {
             userInfo.setWeixiaoStuId(jsonObject.getString("weixiao_stu_id"));
             userInfo.setPhone(jsonObject.getString("telephone"));
             userInfo.setIdentityType(jsonObject.getString("identity_type"));
+            //组装用户权限信息
+
+            Map<String, Object> claims = new HashMap<>(16);
+            UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
+            claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
+            //claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorityList));
 
             String subject = userInfo.getWeixiaoStuId();
             String claim = JSONObject.toJSONString(userInfo);
