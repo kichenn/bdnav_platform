@@ -91,6 +91,13 @@ public class App {
 	private Byte status;
 
 	/**
+	 *  是否预置 1 是 2 否
+	 */
+	@Column(name = "preset")
+	private Byte preset;
+
+
+	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_date")

@@ -7,7 +7,7 @@ import org.springframework.boot.web.servlet.ServletComponentScan;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 /**
- * @description: 应用埋点启动类
+ * @description: 应用上报启动类
  * @author: xuyuan
  * @create: 2019-04-10 18:28
  **/

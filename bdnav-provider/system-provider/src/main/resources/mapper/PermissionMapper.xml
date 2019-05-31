@@ -172,7 +172,7 @@
 
     <select id="findUserRights" resultMap="UpResultMap">
   SELECT
-	P.*, ur.*, rp.id,
+	p.*, ur.*, rp.id,
 	rp.rp_switch,
 	rp.selected,
 	rp.indeterminate,

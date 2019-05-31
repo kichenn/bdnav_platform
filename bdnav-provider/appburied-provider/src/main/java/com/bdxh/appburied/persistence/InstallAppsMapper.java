@@ -3,6 +3,7 @@ package com.bdxh.appburied.persistence;
 import java.util.List;
 
 import com.bdxh.appburied.entity.InstallApps;
+import com.sun.corba.se.spi.presentation.rmi.IDLNameTranslator;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -35,4 +36,6 @@ public interface InstallAppsMapper extends Mapper<InstallApps> {
      */
     Integer batchSaveInstallAppsInfo(List<InstallApps> appList);
 
+    //根据包名删除上报应用
+    Integer delByAppPackage(@Param("schoolCode") String schoolCode,@Param("cardNumber") String cardNumber,@Param("appPackage") String appPackage);
 }

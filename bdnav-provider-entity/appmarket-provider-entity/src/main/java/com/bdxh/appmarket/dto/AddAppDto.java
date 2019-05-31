@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -122,6 +123,12 @@ public class AddAppDto implements Serializable {
      */
     @ApiModelProperty("状态 1 上架 2 下架")
     private Byte status = 2;
+
+    /**
+     *  是否预置 1 是 2 否
+     */
+    @ApiModelProperty("是否预置 1 是 2 否")
+    private Byte preset;
 
     /**
      * 创建时间

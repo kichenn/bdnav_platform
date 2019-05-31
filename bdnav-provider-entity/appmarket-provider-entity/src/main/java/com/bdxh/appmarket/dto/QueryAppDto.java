@@ -18,4 +18,12 @@ public class QueryAppDto extends Query {
     @ApiModelProperty("适用平台 1 安卓 2 ios")
     private Byte platform;
 
+    /**
+     *  是否预置 1 是 2 否
+     */
+    @ApiModelProperty("是否预置 1 是 2 否")
+    private Byte preset;
+
+
+
 }

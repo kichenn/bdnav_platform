@@ -56,4 +56,9 @@ public class InstallAppsControllerClientFallback implements InstallAppsControlle
     public Wrapper batchSaveInstallAppsInfo(List<AddInstallAppsDto> appInstallList) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper delByAppPackage(String schoolCode, String cardNumber, String appPackage) {
+        return WrapMapper.error();
+    }
 }

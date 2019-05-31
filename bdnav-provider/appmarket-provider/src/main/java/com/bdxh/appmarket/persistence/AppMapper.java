@@ -39,6 +39,6 @@ public interface AppMapper extends Mapper<App> {
     List<App> familyFindAppInfo(@Param("schoolCode")String schoolCode);
 
     //查询预置应用
-    List<App> thePresetList();
+    List<App> thePresetList(@Param("preset")Byte preset);
 
 }
