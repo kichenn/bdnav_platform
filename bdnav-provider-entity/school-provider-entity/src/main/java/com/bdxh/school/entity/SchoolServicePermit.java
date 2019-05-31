@@ -62,6 +62,13 @@ public class SchoolServicePermit implements Serializable {
 	@Column(name = "status")
 	private Byte status;
 
+
+	/**
+	 * 延期天数
+	 */
+	@Column(name = "add_days")
+	private Byte addDays;
+
 	/**
 	 * 备注
 	 */

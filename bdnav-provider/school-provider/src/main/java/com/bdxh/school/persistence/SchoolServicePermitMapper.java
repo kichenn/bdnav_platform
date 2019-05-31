@@ -46,5 +46,5 @@ public interface SchoolServicePermitMapper extends Mapper<SchoolServicePermit> {
 	  * @Author: WanMing
 	  * @Date: 2019/5/30 10:04
 	  */
-    Integer querySchoolServicePermitCountBySchoolCode(@Param("schoolCode") String schoolCode);
+     SchoolServicePermit querySchoolServicePermitCountBySchoolCode(@Param("schoolCode") String schoolCode);
 }

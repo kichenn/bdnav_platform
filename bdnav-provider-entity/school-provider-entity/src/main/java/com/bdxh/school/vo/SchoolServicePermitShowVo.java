@@ -37,6 +37,9 @@ public class SchoolServicePermitShowVo {
     @ApiModelProperty("状态 1 服务有效  2 服务无效")
     private Byte status;
 
+    @ApiModelProperty("延期天数")
+    private Byte addDays;
+
 
     @ApiModelProperty("创建时间")
     private Date createDate;
