@@ -72,12 +72,7 @@
         </where>
         ORDER BY create_date DESC
     </select>
-
-
     <delete id="deleteByServiceId" parameterType="java.util.Map">
 		DELETE FROM t_service_user WHERE school_code=#{SchoolCode} AND card_number=#{cardNumber} AND id=#{id}
 	</delete>
-
-
-
 </mapper>
