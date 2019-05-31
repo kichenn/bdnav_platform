@@ -259,7 +259,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
         baseVos.add(stu);
         BaseEchartsVo tea = new BaseEchartsVo();
         tea.setName(BaseUserTypeEnum.TEACHER.getDesc());
-        baseVos.add(stu);
+        baseVos.add(tea);
         BaseEchartsVo fam = new BaseEchartsVo();
         fam.setName(BaseUserTypeEnum.FAMILY.getDesc());
         baseVos.add(fam);
