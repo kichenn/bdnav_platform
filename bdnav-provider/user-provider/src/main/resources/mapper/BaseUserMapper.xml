@@ -267,17 +267,12 @@
 
     <!--用户分类查询-->
     <select id="querySchoolUserCategoryCount" resultType="com.bdxh.user.vo.BaseEchartsVo">
-        select
-        IFNULL(user_type,'4')
-        as `name`,count(user_type) as `value` from t_base_user
+        SELECT user_type AS `name`,count(user_type) AS `value` FROM t_base_user
         <where>
             <if test="schoolCode!=null and schoolCode!=''">
-                and school_code=#{schoolCode}
-            </if>
-            <if test="userType!=null">
-                and user_type=#{userType}
+                AND school_code=#{schoolCode}
             </if>
         </where>
-        group  by user_type
+        GROUP  BY user_type
     </select>
 </mapper>
