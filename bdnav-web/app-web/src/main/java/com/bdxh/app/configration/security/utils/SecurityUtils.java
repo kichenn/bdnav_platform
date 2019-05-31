@@ -65,12 +65,4 @@ public class SecurityUtils {
         return realName;
     }
 
-    /**
-     * 登出
-     *
-     * @return
-     */
-    public static void logout(HttpServletRequest request) {
-        request.getSession().removeAttribute(SecurityConstant.TOKEN_SESSION);
-    }
 }

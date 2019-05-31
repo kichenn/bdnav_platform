@@ -54,7 +54,7 @@
             </if>
         </where>
 
-         ORDER BY create_date DESC
+        ORDER BY create_date DESC
     </select>
 
     <insert id="batchSaveInstallAppsInfo">
@@ -99,4 +99,26 @@
 	  WHERE
 	  school_code=#{schoolCode} AND card_number=#{cardNumber} AND app_package=#{appPackage}
     </delete>
+
+    <!--批量删除上报应用 -->
+    <delete id="batchDelInstallApps" parameterType="Integer">
+        DELETE
+        FROM t_install_apps
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
+
+    <!-- 根据账户id查询上报应用列表 -->
+    <select id="getAccountApplication" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_install_apps
+        WHERE
+        school_code=#{schoolCode} AND card_number=#{cardNumber} AND account_id=#{accountId}
+    </select>
+
+
 </mapper>

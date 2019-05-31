@@ -57,8 +57,4 @@ public interface SecurityConstant {
      */
     String TOKEN_KEY = "account_token:";
 
-    /**
-     * token的session名称
-     */
-    String TOKEN_SESSION = "securityContext:";
 }

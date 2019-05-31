@@ -74,6 +74,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*.html").permitAll() //静态资源放行
                 .antMatchers("/swagger-ui.html", "/webjars/springfox-swagger-ui/**", "/swagger-resources/**", "/v2/api-docs/**").permitAll()
                 .antMatchers("/authenticationWeixiao/**").permitAll()
+                .antMatchers("/MP_verify_fL8hJJpPmRU0cZCm.txt").permitAll()
                 .anyRequest().authenticated()//其他路径进行权限验证
                 .and().headers().cacheControl();
         //设置jwt filter

@@ -91,7 +91,6 @@ public class DeptServiceImpl extends BaseService<Dept> implements DeptService {
     public Boolean addDept(DeptDto deptDto) {
         Dept dDo = new Dept();
         BeanUtils.copyProperties(deptDto, dDo);
-        System.out.println();
         if (new Long("-1").equals(dDo.getParentId())) {
             dDo.setParentIds("");
         } else {
