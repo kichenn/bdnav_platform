@@ -28,7 +28,7 @@ public class WeixiaoBaseController {
             response.setHeader("Content-type", "application/json; charset=UTF-8");
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json;charset=utf-8");
-            response.getOutputStream().write(JSON.toJSONString("fL8hJJpPmRU0cZCm").getBytes("utf-8"));
+            response.getOutputStream().write("fL8hJJpPmRU0cZCm".getBytes("utf-8"));
         } catch (IOException e) {
             e.printStackTrace();
         }
