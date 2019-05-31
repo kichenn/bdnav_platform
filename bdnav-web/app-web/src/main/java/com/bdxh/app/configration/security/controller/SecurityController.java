@@ -181,29 +181,29 @@ public class SecurityController {
     }
 
 
-    @ApiOperation(value = "注销token(用户登出)", response = Boolean.class)
-    @RequestMapping(value = "/accountLogout", method = RequestMethod.GET)
-    public void accountLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            SecurityUtils.logout(request);
-            Wrapper wrapper = WrapMapper.ok("注销成功");
-            String str = JSON.toJSONString(wrapper);
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Content-type", "application/json; charset=UTF-8");
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("application/json;charset=utf-8");
-            response.getOutputStream().write(str.getBytes("utf-8"));
-        } catch (Exception e) {
-            Wrapper wrapper = WrapMapper.error(e.getMessage());
-            String str = JSON.toJSONString(wrapper);
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setStatus(401);
-            response.setHeader("Content-type", "application/json; charset=UTF-8");
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("application/json;charset=utf-8");
-            response.getOutputStream().write(str.getBytes("utf-8"));
-        }
-    }
+//    @ApiOperation(value = "注销token(用户登出)", response = Boolean.class)
+//    @RequestMapping(value = "/accountLogout", method = RequestMethod.GET)
+//    public void accountLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        try {
+//            SecurityUtils.logout(request);
+//            Wrapper wrapper = WrapMapper.ok("注销成功");
+//            String str = JSON.toJSONString(wrapper);
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setHeader("Content-type", "application/json; charset=UTF-8");
+//            response.setCharacterEncoding("utf-8");
+//            response.setContentType("application/json;charset=utf-8");
+//            response.getOutputStream().write(str.getBytes("utf-8"));
+//        } catch (Exception e) {
+//            Wrapper wrapper = WrapMapper.error(e.getMessage());
+//            String str = JSON.toJSONString(wrapper);
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setStatus(401);
+//            response.setHeader("Content-type", "application/json; charset=UTF-8");
+//            response.setCharacterEncoding("utf-8");
+//            response.setContentType("application/json;charset=utf-8");
+//            response.getOutputStream().write(str.getBytes("utf-8"));
+//        }
+//    }
 
     @GetMapping("/getAccountInfoByToken")
     @ApiOperation(value = "token获取用户信息", response = String.class)

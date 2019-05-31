@@ -60,14 +60,21 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = Jwts.parser().setSigningKey(SecurityConstant.TOKEN_SIGN_KEY).parseClaimsJws(auth).getBody();
 //                String username = claims.getSubject();
                 String accountStr = (String) claims.get(SecurityConstant.ACCOUNT);
-                Account account = JSON.parseObject(accountStr, Account.class);
-                //判断token状态
-                //从安全框架中的上下文取(妈了个鸡，一直取不到【getAuthentication 一直为null】)
-//                SecurityContext securityContext = SecurityContextHolder.getContext();
-                SecurityContext securityContext = (SecurityContext) httpServletRequest.getSession().getAttribute(SecurityConstant.TOKEN_SESSION + account.getId());
-                if (securityContext == null) {
-                    //该token已注销，不允许访问
-                    throw new LogoutException();
+                Account account = null;
+                SecurityContext securityContext = SecurityContextHolder.getContext();
+                if (securityContext != null) {
+                    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+                    if (authentication == null) {
+                        account = JSON.parseObject(accountStr, Account.class);
+                        //true为未过期,false  已过期
+                        boolean isAccountNonExpired = account.getAccountExpired() == 1 ? Boolean.TRUE : Boolean.FALSE;
+                        //true为未锁定,false 已锁定
+                        boolean isAccountNonLocked = account.getAccountLocked() == 1 ? Boolean.TRUE : Boolean.FALSE;
+                        MyUserDetails myUserDetails = new MyUserDetails(account.getId(), account.getLoginName(), account.getPassword(), isAccountNonExpired, isAccountNonLocked, account);
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, null);
+                        usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    }
                 }
                 //判断token所在设备
                 String redisToken = redisUtil.get(SecurityConstant.TOKEN_KEY + account.getId());
@@ -96,6 +103,8 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                             .compressWith(CompressionCodecs.GZIP).compact();
                     //将token放入redis
                     redisUtil.set(SecurityConstant.TOKEN_KEY + account.getId(), token);
+                    //允许前端从headers里拿到我的Token
+                    httpServletResponse.setHeader("Access-Control-Expose-Headers", SecurityConstant.TOKEN_RESPONSE_HEADER);
                     httpServletResponse.addHeader(SecurityConstant.TOKEN_RESPONSE_HEADER, token);
                 }
             } catch (ExpiredJwtException e) {
