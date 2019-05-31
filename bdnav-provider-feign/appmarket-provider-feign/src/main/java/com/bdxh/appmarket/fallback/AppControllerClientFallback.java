@@ -78,7 +78,8 @@ public class AppControllerClientFallback implements AppControllerClient {
     }
 
     @Override
-    public Wrapper<List<App>> thePresetList() {
+    public Wrapper<List<App>> thePresetList(Byte preset) {
         return WrapMapper.error();
     }
+
 }

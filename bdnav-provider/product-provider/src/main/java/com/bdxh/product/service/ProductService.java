@@ -50,4 +50,11 @@ public interface ProductService extends IService<Product> {
      */
     ProductDetailsVo findProductDetails(Long id);
 
+    /**
+     * 根据Ids查询商品集合
+     *
+     * @param productIds
+     */
+    List<Product> findProductByIds(String productIds);
+
 }

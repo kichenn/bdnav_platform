@@ -113,6 +113,13 @@ public class AppQueryDto extends Query {
     private Byte status;
 
     /**
+     *  是否预置 1 是 2 否
+     */
+    @ApiModelProperty("是否预置 1 是 2 否")
+    private Byte preset;
+
+
+    /**
      * 创建时间
      */
     @ApiModelProperty("创建时间")

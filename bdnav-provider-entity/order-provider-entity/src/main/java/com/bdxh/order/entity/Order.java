@@ -129,6 +129,10 @@ public class Order {
 	@ApiModelProperty("备注")
 	private String Remark;
 
+	@Column(name="count")
+	@ApiModelProperty("购买数量")
+	private Integer count;
+
 
 
 }

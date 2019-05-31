@@ -119,5 +119,6 @@ public class OrderAddDto {
     @ApiModelProperty("备注")
     private String Remark;
 
-
+    @ApiModelProperty("购买数量")
+    private Integer count;
 }

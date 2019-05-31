@@ -6,6 +6,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.servicepermit.dto.AddServiceUserDto;
 import com.bdxh.servicepermit.dto.ModifyServiceUserDto;
 import com.bdxh.servicepermit.dto.QueryServiceUserDto;
+import com.bdxh.servicepermit.dto.WeiXiaoAddServiceUserDto;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +20,6 @@ import com.bdxh.servicepermit.entity.ServiceUser;
 import com.bdxh.servicepermit.service.ServiceUserService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -44,11 +44,6 @@ public class ServiceUserController {
 	@ApiOperation("带条件分页查询")
 	@RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
 	public Object queryServiceUser(@Valid @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
-		//检验参数
-		if(bindingResult.hasErrors()){
-			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-			return WrapMapper.error(errors);
-		}
 		try {
 			Map<String, Object> param = BeanToMapUtil.objectToMap(queryServiceUsedDto);
 			PageInfo<ServiceUser> qrders = serviceUserService.getServiceByCondition(param, queryServiceUsedDto.getPageNum(),queryServiceUsedDto.getPageSize());
@@ -69,16 +64,11 @@ public class ServiceUserController {
 	@ApiOperation("创建用户服务许可")
 	@RequestMapping(value = "/createService", method = RequestMethod.POST)
 	public Object createService(@Valid @RequestBody AddServiceUserDto addServiceUsedDto, BindingResult bindingResult) {
-		//检验参数
-		if (bindingResult.hasErrors()) {
-			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-			return WrapMapper.error(errors);
-		}
 		try {
-			ServiceUser Su=new ServiceUser();
-			Su.setId(snowflakeIdWorker.nextId());
-			BeanUtils.copyProperties(addServiceUsedDto, Su);
-			Boolean flag =serviceUserService.save(Su)>0;
+			ServiceUser serviceUser=new ServiceUser();
+			serviceUser.setId(snowflakeIdWorker.nextId());
+			BeanUtils.copyProperties(addServiceUsedDto, serviceUser);
+			Boolean flag =serviceUserService.save(serviceUser)>0;
 			return WrapMapper.ok(flag);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,15 +85,10 @@ public class ServiceUserController {
 	@ApiOperation("修改用户服务许可")
 	@RequestMapping(value = "/updateService", method = RequestMethod.POST)
 	public Object updateService(@Valid @RequestBody ModifyServiceUserDto modifyServiceUsedDto, BindingResult bindingResult) {
-		//检验参数
-		if (bindingResult.hasErrors()) {
-			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-			return WrapMapper.error(errors);
-		}
 		try {
-			ServiceUser Su=new ServiceUser();
-			BeanUtils.copyProperties(modifyServiceUsedDto, Su);
-			Boolean flag =serviceUserService.update(Su)>0;
+			ServiceUser serviceUser=new ServiceUser();
+			BeanUtils.copyProperties(modifyServiceUsedDto, serviceUser);
+			Boolean flag =serviceUserService.update(serviceUser)>0;
 			return WrapMapper.ok(flag);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -128,21 +113,29 @@ public class ServiceUserController {
 		}
 	}
 
-	@ApiOperation("查询所有家长为单个学生购买的许可")
-	@RequestMapping(value = "/queryAllServiceUser",method = RequestMethod.GET)
-	public Object queryAllServiceUser(@RequestParam("cardNumber")String cardNumber,
-												   @RequestParam("schoolCode")String schoolCode,
-												   @RequestParam("studentNumber")String studentNumber){
-
+	@ApiOperation("家长查询所有为单个学生购买的许可")
+	@RequestMapping(value = "/queryAllServiceUser",method = RequestMethod.POST)
+	public Object queryAllServiceUser(@RequestBody QueryServiceUserDto queryServiceUsedDto){
 		try {
-
-			return WrapMapper.ok(serviceUserService.queryAllServiceUser(schoolCode,cardNumber,studentNumber));
+			return WrapMapper.ok(serviceUserService.queryAllServiceUser(queryServiceUsedDto));
 		} catch (Exception e) {
 			e.printStackTrace();
 			log.error(e.getMessage(), e.getStackTrace());
 			return WrapMapper.error(e.getMessage());
 		}
+	}
 
+
+	@ApiOperation("家长添加服务许可证试用期")
+	@RequestMapping(value = "/addServicePermit",method = RequestMethod.POST)
+	public Object addServicePermit(@RequestBody WeiXiaoAddServiceUserDto weiXiaoAddServiceUserDto){
+		try {
+			weiXiaoAddServiceUserDto.setId(snowflakeIdWorker.nextId());
+			serviceUserService.addServicePermit(weiXiaoAddServiceUserDto);
+			return  WrapMapper.ok();
+		}catch (Exception e){
+			return WrapMapper.error();
+		}
 	}
 
 

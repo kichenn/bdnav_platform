@@ -61,6 +61,7 @@ public class ApplyControlsWebController {
     private AppControllerClient appControllerClient;
 
 
+
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/modifyInfo", method = RequestMethod.POST)
     public Object modifyInfo(@Validated @RequestBody UpdateStudentDto updateStudentDto) {
@@ -101,9 +102,9 @@ public class ApplyControlsWebController {
 
 
     @ApiOperation(value = "查询预置应用列表", response = Boolean.class)
-    @RequestMapping(value = "/authenticationApp/thePresetList", method = RequestMethod.POST)
-    public Object thePresetList() {
-        Wrapper wrapper = appControllerClient.thePresetList();
+    @RequestMapping(value = "/authenticationApp/thePresetList", method = RequestMethod.GET)
+    public Object thePresetList(@RequestParam(value = "preset",defaultValue = "1") Byte preset) {
+        Wrapper wrapper = appControllerClient.thePresetList(preset);
         return WrapMapper.ok(wrapper.getResult());
 
     }
@@ -149,9 +150,11 @@ public class ApplyControlsWebController {
     }
 
     @ApiOperation(value = "删除上报应用信息", response = Boolean.class)
-    @RequestMapping(value = "/applyControlsWeb/delInstallAppById", method = RequestMethod.POST)
-    public Object delInstallAppById(@RequestBody DelOrFindAppBuriedDto delInstallAppsDto) {
-        Wrapper wrapper = installAppsControllerClient.delInstallAppById(delInstallAppsDto);
+    @RequestMapping(value = "/applyControlsWeb/delByAppPackage", method = RequestMethod.GET)
+    public Object delByAppPackage(@RequestParam("schoolCode") String schoolCode,
+                                    @RequestParam("cardNumber") String cardNumber,
+                                    @RequestParam("appPackage") String appPackage) {
+        Wrapper wrapper = installAppsControllerClient.delByAppPackage(schoolCode,cardNumber,appPackage);
         return WrapMapper.ok(wrapper.getResult());
     }
 

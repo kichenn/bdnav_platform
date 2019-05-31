@@ -68,8 +68,6 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         } else {
             productDto.setImgUrl("");
         }
-
-
     }
 
     @Override
@@ -92,7 +90,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                                 List<String> ids = Arrays.asList(chdilIds);
                                 List<String> idsArrayList = new ArrayList<>(ids);
                                 idsArrayList.remove(i);
-                                fatherProduct.setProductExtra(idsArrayList.toString().replaceAll("\\[", "").replaceAll("\\]", "").trim());
+                                fatherProduct.setProductExtra(StringUtils.strip(idsArrayList.toString(), "[]").replace(" ", ""));
                                 productMapper.updateProduct(fatherProduct);
                                 continue;
                             }
@@ -188,4 +186,9 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         return productDetailsVo;
     }
 
+    @Override
+    public List<Product> findProductByIds(String productIds) {
+
+        return productMapper.findProductByIds(productIds);
+    }
 }

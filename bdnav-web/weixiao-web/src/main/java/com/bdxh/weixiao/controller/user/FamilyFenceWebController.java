@@ -6,7 +6,6 @@ import com.bdxh.user.dto.AddFamilyFenceDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.UpdateFamilyFenceDto;
 import com.bdxh.user.feign.FamilyFenceControllerClient;
-import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -72,14 +71,20 @@ public class FamilyFenceWebController {
     /**
      * 收费服务
      * 获取围栏表所有信息
-     * @param familyFenceQueryDto
+     * @param schoolCode
+     * @param cardNumber
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation(value="家长电子围栏-----获取围栏表所有信息")
     @RequestMapping(value = "/getFamilyFenceInfos",method = RequestMethod.POST)
-    public Object getFamilyFenceInfos(@Valid @RequestBody FamilyFenceQueryDto familyFenceQueryDto){
+    public Object getFamilyFenceInfos(@RequestParam("schoolCode")String schoolCode,
+                                      @RequestParam("cardNumber")String cardNumber){
         try {
+            String familyNumber="20190516002";
+            FamilyFenceQueryDto familyFenceQueryDto=new FamilyFenceQueryDto();
+            familyFenceQueryDto.setStudentNumber(cardNumber);
+            familyFenceQueryDto.setSchoolCode(schoolCode);
+            familyFenceQueryDto.setCardNumber(familyNumber);
             Wrapper wrapper=familyFenceControllerClient.getFamilyFenceInfos(familyFenceQueryDto);
             return wrapper;
         }catch (Exception e){

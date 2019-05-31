@@ -1,22 +1,15 @@
 package com.bdxh.weixiao.controller.user;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.school.entity.SchoolUser;
-import com.bdxh.school.feign.SchoolControllerClient;
-import com.bdxh.user.dto.FenceAlarmQueryDto;
 import com.bdxh.user.feign.FenceAlarmControllerClient;
-import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -38,7 +31,6 @@ public class FenceAlarmWebController {
      * @param cardNumber 学生学号
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation("家长电子围栏-----查询所有围栏警报接口")
     @RequestMapping(value = "/getAllFenceAlarmInfos",method = RequestMethod.POST)
     public Object getAllFenceAlarmInfos(@RequestParam("schoolCode")String schoolCode,

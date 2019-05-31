@@ -91,4 +91,12 @@
             )
         </foreach>
     </insert>
+
+    <!-- 根据应用包名删除应用-->
+    <delete id="delByAppPackage">
+      DELETE
+	   FROM t_install_apps
+	  WHERE
+	  school_code=#{schoolCode} AND card_number=#{cardNumber} AND app_package=#{appPackage}
+    </delete>
 </mapper>

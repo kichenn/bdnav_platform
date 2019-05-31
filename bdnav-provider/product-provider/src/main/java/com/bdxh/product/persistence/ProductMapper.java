@@ -26,4 +26,7 @@ public interface ProductMapper extends Mapper<Product> {
 
     //根据名字查询商品判断是否重复
     int findProductByName(@Param("productName")String productName);
+
+    //根据ID查询
+    List<Product> findProductByIds(@Param("productIds") String productIds);
 }

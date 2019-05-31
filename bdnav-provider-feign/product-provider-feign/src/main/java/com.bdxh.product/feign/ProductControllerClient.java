@@ -88,4 +88,13 @@ public interface ProductControllerClient {
     @RequestMapping(value = "/product/findProductById", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<Product> findProductById(@RequestParam("id") Long id);
+
+    /**
+     * 根据Ids查询商品集合
+     *
+     * @param productIds
+     */
+    @RequestMapping(value = "/product/findProductByIds", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<Product>> findProductByIds(@RequestParam("productIds") String productIds);
 }

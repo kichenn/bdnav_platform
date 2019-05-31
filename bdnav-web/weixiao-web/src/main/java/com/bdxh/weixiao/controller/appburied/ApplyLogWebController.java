@@ -2,14 +2,13 @@ package com.bdxh.weixiao.controller.appburied;
 
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
-import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +33,6 @@ public class ApplyLogWebController {
      * @param cardNumber
      * @return
      */
-    @WeiXiaoChargeApp
     @RequestMapping(value="/familyFindApplyLogInfo",method = RequestMethod.GET)
     @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息")
     public Object familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber){

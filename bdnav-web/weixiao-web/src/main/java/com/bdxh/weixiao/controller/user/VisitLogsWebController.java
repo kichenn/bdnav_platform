@@ -2,7 +2,6 @@ package com.bdxh.weixiao.controller.user;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.feign.VisitLogsControllerClient;
-import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +34,6 @@ public class VisitLogsWebController {
      * @param cardNumber
      * @return
      */
-    @WeiXiaoChargeApp
     @ApiOperation("家长查询单个孩子浏览网站日志接口")
     @RequestMapping(value="/queryVisitLogByCardNumber",method = RequestMethod.POST)
     public Object queryVisitLogByCardNumber(@RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空") String schoolCode,

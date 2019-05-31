@@ -1,5 +1,6 @@
 package com.bdxh.servicepermit.feign;
 
+import com.bdxh.servicepermit.dto.WeiXiaoAddServiceUserDto;
 import com.bdxh.servicepermit.fallback.ServiceUserControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -37,11 +38,12 @@ public interface ServiceUserControllerClient {
 
 
 
-        @RequestMapping(value = "/serviceUser/queryAllServiceUser",method = RequestMethod.GET)
+        @RequestMapping(value = "/serviceUser/queryAllServiceUser",method = RequestMethod.POST)
         @ResponseBody
-        Wrapper<List<ServiceUser>> queryAllServiceUser(@RequestParam("cardNumber")String cardNumber,
-                                                       @RequestParam("schoolCode")String schoolCode,
-                                                       @RequestParam("studentNumber")String studentNumber);
+        Wrapper<List<ServiceUser>> queryAllServiceUser(@RequestBody  QueryServiceUserDto queryServiceUsedDto);
 
 
+        @RequestMapping(value = "/serviceUser/addServicePermit",method = RequestMethod.POST)
+        @ResponseBody
+        Wrapper addServicePermit(@RequestBody WeiXiaoAddServiceUserDto weiXiaoAddServiceUserDto);
 }

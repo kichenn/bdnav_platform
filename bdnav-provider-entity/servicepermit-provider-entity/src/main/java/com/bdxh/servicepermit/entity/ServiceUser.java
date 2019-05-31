@@ -68,6 +68,9 @@ public class ServiceUser {
     @Column(name = "type")
     private Integer type;
 
+    @Column(name = "days ")
+    private Integer days;
+
     @Column(name = "create_date")
     private Date createDate;
 
