@@ -54,9 +54,6 @@ public class SecurityController {
     private RedisUtil redisUtil;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
     private SchoolControllerClient schoolControllerClient;
 
     @RequestMapping(value = "/authenticationWeixiao/findAppKeyBySchoolCode", method = RequestMethod.GET)
@@ -64,7 +61,7 @@ public class SecurityController {
     public Object findAppKeyBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
         School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
         Preconditions.checkArgument(school != null, "schoolCode异常");
-        Map<String, String> result = new HashMap<String, String>();
+        Map<String, String> result = new HashMap<>();
         result.put("schoolCode", school.getSchoolCode());
         result.put("appKey", AESUtils.enCode(school.getAppKey(), AESUtils.AesConstant.WEIXIAO_KEY));
         return WrapMapper.ok(result);
