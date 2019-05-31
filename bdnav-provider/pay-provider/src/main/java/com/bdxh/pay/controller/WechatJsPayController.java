@@ -11,6 +11,8 @@ import com.bdxh.common.wechatpay.js.domain.JsOrderRequest;
 import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.pay.dto.WxPayJsOrderDto;
 import com.google.common.base.Preconditions;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpEntity;
@@ -19,10 +21,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.ServletInputStream;
@@ -39,19 +38,21 @@ import java.util.stream.Collectors;
  * @author: xuyuan
  * @create: 2019-01-14 11:20
  **/
-@Controller
+@RestController
 @RequestMapping("/wechatJsPay")
+@Api(value = "JSAPI支付", tags = "JSAPI支付交互API")
 @Slf4j
 public class WechatJsPayController {
 
     /**
      * JS统一下单接口
+     *
      * @param wxPayJsOrderDto
      * @return
      * @throws Exception
      */
-    @RequestMapping("/order")
-    @ResponseBody
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    @ApiOperation(value = "JS统一下单接口", response = String.class)
     public Object wechatJsPayOrder(@Valid @RequestBody WxPayJsOrderDto wxPayJsOrderDto, BindingResult bindingResult) throws Exception {
         //检验参数
         if (bindingResult.hasErrors()) {
@@ -95,12 +96,12 @@ public class WechatJsPayController {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Charset", "utf-8");
         headers.set("Content-type", "application/xml; charset=utf-8");
-        HttpEntity<byte[]> httpEntity = new HttpEntity<>(requestStr.getBytes("utf-8"),headers);
+        HttpEntity<byte[]> httpEntity = new HttpEntity<>(requestStr.getBytes("utf-8"), headers);
         ResponseEntity<String> responseEntity = restTemplate.exchange(WechatPayConstants.JS.order_url, HttpMethod.POST, httpEntity, String.class);
         if (!(responseEntity.getStatusCode().value() == 200 && responseEntity.hasBody())) {
             return WrapMapper.error("微信下单接口调用失败");
         }
-        String responseEntityStr =responseEntity.getBody();
+        String responseEntityStr = responseEntity.getBody();
         if (StringUtils.isNotEmpty(responseEntityStr)) {
             JsOrderResponse jsOrderResponse = XmlUtils.fromXML(responseEntityStr, JsOrderResponse.class);
             //下单成功
@@ -126,24 +127,25 @@ public class WechatJsPayController {
 
     /**
      * 微信授权接口
+     *
      * @param code
      * @return
      */
-    @RequestMapping("/auth")
-    @ResponseBody
+    @RequestMapping(value = "/auth", method = RequestMethod.GET)
+    @ApiOperation(value="微信授权接口",response = String.class)
     public Object auth(@RequestParam("code") String code) {
         try {
-            Preconditions.checkArgument(StringUtils.isNotEmpty(code),"code不能为空");
-            String url = WxAuthorizedConstants.Letter.urlList+"?appid="+ WxAuthorizedConstants.Letter.appid+"&secret="+WxAuthorizedConstants.Letter.secret+"&code=" + code + "&grant_type="+WxAuthorizedConstants.Letter.grant_type;
+            Preconditions.checkArgument(StringUtils.isNotEmpty(code), "code不能为空");
+            String url = WxAuthorizedConstants.Letter.urlList + "?appid=" + WxAuthorizedConstants.Letter.appid + "&secret=" + WxAuthorizedConstants.Letter.secret + "&code=" + code + "&grant_type=" + WxAuthorizedConstants.Letter.grant_type;
             RestTemplate restTemplate = new RestTemplate();
             String auth = restTemplate.getForObject(url, String.class);
-            Preconditions.checkArgument(StringUtils.isNotEmpty(auth),"拉取授权信息异常");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(auth), "拉取授权信息异常");
             JSONObject jsonObject = JSON.parseObject(auth);
-            Preconditions.checkNotNull(jsonObject,"拉取授权信息异常");
+            Preconditions.checkNotNull(jsonObject, "拉取授权信息异常");
             String openid = jsonObject.getString("openid");
-            Preconditions.checkArgument(StringUtils.isNotEmpty(openid),"拉取授权信息异常");
+            Preconditions.checkArgument(StringUtils.isNotEmpty(openid), "拉取授权信息异常");
             return WrapMapper.ok(openid);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
