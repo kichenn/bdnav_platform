@@ -76,10 +76,6 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
 
     @Override
     public void modifyVerifyApplyLog(ModifyApplyLogDto modifyApplyLogDto) {
-        Date date=new Date();
-        Date endDate= DateUtils.addMinutes(date,modifyApplyLogDto.getDuration());
-        modifyApplyLogDto.setStartDate(date);
-        modifyApplyLogDto.setEndDate(endDate);
         ApplyLog applyLog=BeanMapUtils.map(modifyApplyLogDto,ApplyLog.class);
         if (modifyApplyLogDto.getInstallAppsPlatformEnum() != null) {
             applyLog.setPlatform(modifyApplyLogDto.getInstallAppsPlatformEnum().getKey());
