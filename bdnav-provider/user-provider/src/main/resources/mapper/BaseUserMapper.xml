@@ -267,7 +267,9 @@
 
     <!--用户分类查询-->
     <select id="querySchoolUserCategoryCount" resultType="com.bdxh.user.vo.BaseEchartsVo">
-        select user_type as `name`,count(user_type) as `value` from t_base_user
+        select
+        IFNULL(user_type,'4')
+        as `name`,count(user_type) as `value` from t_base_user
         <where>
             <if test="schoolCode!=null and schoolCode!=''">
                 and school_code=#{schoolCode}

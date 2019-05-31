@@ -17,5 +17,5 @@ public class BaseEchartsVo implements Serializable {
     private String name;
 
     @ApiModelProperty("数据值")
-    private Long value;
+    private Long value = 0L;
 }

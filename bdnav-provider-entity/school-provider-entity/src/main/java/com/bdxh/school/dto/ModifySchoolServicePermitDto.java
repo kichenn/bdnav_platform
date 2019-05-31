@@ -45,6 +45,9 @@ public class ModifySchoolServicePermitDto{
     @ApiModelProperty("状态 1 服务有效  2 服务无效")
     private SchoolServicePermitStatusEnum status;
 
+    @ApiModelProperty("延期天数")
+    private Byte addDays;
+
 
     @ApiModelProperty("备注")
     private String remark;

@@ -96,13 +96,11 @@ public class SchoolServicePermitServiceImpl extends BaseService<SchoolServicePer
 
 	/**
 	 * 根据学校编码查询学校的服务许可权限记录数
-	 *
-	 * @param schoolCode
 	 * @Author: WanMing
 	 * @Date: 2019/5/30 10:17
 	 */
 	@Override
-	public Integer querySchoolServicePermitCountBySchoolCode(String schoolCode) {
+	public SchoolServicePermit querySchoolServicePermitCountBySchoolCode(String schoolCode) {
 		return schoolServicePermitMapper.querySchoolServicePermitCountBySchoolCode(schoolCode);
 	}
 }

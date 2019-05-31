@@ -1,5 +1,6 @@
 package com.bdxh.user.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
@@ -23,9 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -104,8 +103,8 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
     public Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
         try {
             //更具学校Code和cardNumber查出我们本地用户的基本信息
-            BaseUser baseUser=baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(),activationBaseUserDto.getCardNumber());
-            Preconditions.checkArgument(null!=baseUser,"不存在当前用户信息");
+            BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
+            Preconditions.checkArgument(null != baseUser, "不存在当前用户信息");
             if (baseUser.getUserType() != 0) {
                 //判断用户类型  用户类型 1 学生 2 老师 3 家长
                 switch (baseUser.getUserType()) {
@@ -114,13 +113,13 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         log.info("卡号为" + baseUser.getCardNumber() + "的学生激活");
                         Student student = BeanMapUtils.map(activationBaseUserDto, Student.class);
                         student.setActivate(Byte.parseByte("2"));
-                        studentMapper.updateStudentActivation(student.getSchoolCode(),student.getCardNumber(),student.getActivate());
+                        studentMapper.updateStudentActivation(student.getSchoolCode(), student.getCardNumber(), student.getActivate());
                         Student studentInfo = studentMapper.findStudentInfo(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
                         synUserInfoRequest.setSchool_code(/*studentInfo.getSchoolCode()*/"1044695883");
                         synUserInfoRequest.setCard_number(studentInfo.getCardNumber());
                         synUserInfoRequest.setName(studentInfo.getName());
-                        studentInfo.setGender(Byte.parseByte(baseUser.getGender()+""));
+                        studentInfo.setGender(Byte.parseByte(baseUser.getGender() + ""));
                         synUserInfoRequest.setGender(studentInfo.getGender() == 1 ? "男" : "女");
                         if (activationBaseUserDto.getSchoolType() >= Byte.parseByte("4")) {
                             synUserInfoRequest.setClass_name(studentInfo.getClassName());
@@ -150,7 +149,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         JSONObject jsonObject = JSONObject.parseObject(result);
                         if (!jsonObject.get("errcode").equals(0)) {
                             throw new Exception("激活失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
-                        }else{
+                        } else {
                             return true;
                         }
                     }
@@ -160,12 +159,12 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         teacher.setActivate(Byte.parseByte("2"));
                         teacherMapper.updateTeacher(teacher);
                         teacher = teacherMapper.selectTeacherDetails(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
-                        TeacherDept teacherDept= teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
+                        TeacherDept teacherDept = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
                         synUserInfoRequest.setSchool_code("1044695883"/*teacher.getSchoolCode()*/);
                         synUserInfoRequest.setCard_number(teacher.getCardNumber());
                         synUserInfoRequest.setName(teacher.getName());
-                        teacher.setGender(Byte.parseByte(baseUser.getGender()+""));
+                        teacher.setGender(Byte.parseByte(baseUser.getGender() + ""));
                         synUserInfoRequest.setGender(teacher.getGender() == 1 ? "男" : "女");
                         synUserInfoRequest.setReal_name_verify(Byte.valueOf("0"));
                         synUserInfoRequest.setCard_type("1");
@@ -187,7 +186,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         JSONObject jsonObject = JSONObject.parseObject(result);
                         if (!jsonObject.get("errcode").equals(0)) {
                             throw new Exception("激活失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
-                        }else{
+                        } else {
                             return true;
                         }
                     }
@@ -196,7 +195,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         Family family = BeanMapUtils.map(activationBaseUserDto, Family.class);
                         family.setActivate(Byte.parseByte("2"));
                         familyMapper.updateFamilyInfo(family);
-                        family=familyMapper.findFamilyInfo(family.getSchoolCode(),family.getCardNumber());
+                        family = familyMapper.findFamilyInfo(family.getSchoolCode(), family.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
                         synUserInfoRequest.setName(family.getName());
                         synUserInfoRequest.setSchool_code("1044695883"/*family.getSchoolCode()*/);
@@ -204,7 +203,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         synUserInfoRequest.setIdentity_type(AuthenticationConstant.FAMILY);
                         synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);
                         synUserInfoRequest.setHead_image(family.getImage());
-                        family.setGender(Byte.parseByte(baseUser.getGender()+""));
+                        family.setGender(Byte.parseByte(baseUser.getGender() + ""));
                         synUserInfoRequest.setGender(family.getGender() == 1 ? "男" : "女");
                         if (activationBaseUserDto.getSchoolType() >= Byte.parseByte("4")) {
                             synUserInfoRequest.setCollege(family.getSchoolName());
@@ -224,7 +223,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         JSONObject jsonObject = JSONObject.parseObject(result);
                         if (!jsonObject.get("errcode").equals(0)) {
                             throw new Exception("激活失败,返回的错误码" + jsonObject.get("errcode") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
-                        }else{
+                        } else {
                             return true;
                         }
                     }
@@ -246,33 +245,42 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
 
     /**
      * 查询学校用户的分类数量
+     *
      * @param schoolCode 学校编码
      * @return
      */
     @Override
     public List<BaseEchartsVo> querySchoolUserCategoryCount(String schoolCode) {
         //有schoolCode查各自学校的用户分类数   无schoolCode查大后台用户分类数据
+        //赋初始值
+        List<BaseEchartsVo> baseVos = new ArrayList<>();
+        BaseEchartsVo stu = new BaseEchartsVo();
+        stu.setName(BaseUserTypeEnum.STUDENT.getDesc());
+        baseVos.add(stu);
+        BaseEchartsVo tea = new BaseEchartsVo();
+        tea.setName(BaseUserTypeEnum.TEACHER.getDesc());
+        baseVos.add(tea);
+        BaseEchartsVo fam = new BaseEchartsVo();
+        fam.setName(BaseUserTypeEnum.FAMILY.getDesc());
+        baseVos.add(fam);
         //用户 1学生 2老师 3家长
         List<BaseEchartsVo> baseEchartsVos = baseUserMapper.querySchoolUserCategoryCount(schoolCode, null);
-        if(CollectionUtils.isNotEmpty(baseEchartsVos)){
-            baseEchartsVos.stream().forEach(echarts->{
-                switch (echarts.getName()){
+        if (CollectionUtils.isNotEmpty(baseEchartsVos)) {
+            baseEchartsVos.stream().forEach(echarts -> {
+                switch (echarts.getName()) {
                     case "1":
-                        echarts.setName(BaseUserTypeEnum.STUDENT.getDesc());
+                        stu.setValue(echarts.getValue());
                         break;
                     case "2":
-                        echarts.setName(BaseUserTypeEnum.TEACHER.getDesc());
+                        tea.setValue(echarts.getValue());
                         break;
                     case "3":
-                        echarts.setName(BaseUserTypeEnum.FAMILY.getDesc());
+                        fam.setValue(echarts.getValue());
                         break;
-                        default:
+                    default:
                 }
             });
-
         }
-
-        return baseEchartsVos;
-
+        return baseVos;
     }
 }
