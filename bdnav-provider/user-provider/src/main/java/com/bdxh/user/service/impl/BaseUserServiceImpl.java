@@ -267,17 +267,12 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
         List<BaseEchartsVo> baseEchartsVos = baseUserMapper.querySchoolUserCategoryCount(schoolCode, null);
         if (CollectionUtils.isNotEmpty(baseEchartsVos)) {
             baseEchartsVos.stream().forEach(echarts -> {
-                switch (echarts.getName()) {
-                    case "1":
-                        stu.setValue(echarts.getValue());
-                        break;
-                    case "2":
-                        tea.setValue(echarts.getValue());
-                        break;
-                    case "3":
-                        fam.setValue(echarts.getValue());
-                        break;
-                    default:
+                if("1".equals(echarts.getName())){
+                    stu.setValue(echarts.getValue());
+                }else if("2".equals(echarts.getName())){
+                    tea.setValue(echarts.getValue());
+                }else if("3".equals(echarts.getName())){
+                    fam.setValue(echarts.getValue());
                 }
             });
         }

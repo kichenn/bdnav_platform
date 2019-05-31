@@ -1,5 +1,7 @@
 package com.bdxh.client.controller.report;
 
+import com.bdxh.client.configration.security.utils.SecurityUtils;
+import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -31,23 +33,14 @@ public class SchoolReportWebController {
 
     /**
      * 展示用户分类数量的信息
-     * @param schoolCode 学校编号
+     *
      * @return 学校用户分类数量
      */
     @RequestMapping(value = "/querySchoolUserCategoryCount",method = RequestMethod.GET)
     @ApiOperation(value = "查询总用户分类数量")
-    public Object querySchoolUserCategoryCount(@RequestParam(name = "schoolCode")String schoolCode){
-        return baseUserControllerClient.querySchoolUserCategoryCount(schoolCode);
+    public Object querySchoolUserCategoryCount(){
+        return baseUserControllerClient.querySchoolUserCategoryCount(SecurityUtils.getCurrentUser().getSchoolCode());
     }
-
-
-
-
-
-
-
-
-
 
 
 }
