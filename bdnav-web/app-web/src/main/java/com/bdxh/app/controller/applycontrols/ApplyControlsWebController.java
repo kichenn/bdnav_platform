@@ -17,6 +17,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.feign.BlackUrlControllerClient;
+import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
@@ -60,6 +61,9 @@ public class ApplyControlsWebController {
     @Autowired
     private AppControllerClient appControllerClient;
 
+
+    @Autowired
+    private ControlConfigControllerClient controlConfigControllerClient;
 
 
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
@@ -118,7 +122,6 @@ public class ApplyControlsWebController {
         if (account!=null){
         //查询此账户学生信息
        StudentVo studentVo = studentControllerClient.queryStudentInfo(account.getSchoolCode(), account.getCardNumber()).getResult();
-        //StudentVo studentVo = studentControllerClient.queryStudentInfo("20190426", "20190520010").getResult();
         //删除腾讯云的以前图片
         FileOperationUtils.deleteFile(studentVo.getImageName(), QcloudConstants.APP_BUCKET_NAME);
         Map<String, String> result = null;
@@ -159,7 +162,12 @@ public class ApplyControlsWebController {
     }
 
 
-
+    @ApiOperation(value = "查询应用黑白名单", response = Boolean.class)
+    @RequestMapping(value = "/applyControlsWeb/findAppType", method = RequestMethod.GET)
+    public Object findAppType(@RequestParam(name = "appType") Byte appType) {
+        Wrapper wrapper = controlConfigControllerClient.findAppType(appType);
+        return WrapMapper.ok(wrapper.getResult());
+    }
 
 
 }

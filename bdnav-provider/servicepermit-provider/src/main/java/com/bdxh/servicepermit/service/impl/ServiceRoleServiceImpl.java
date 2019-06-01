@@ -16,11 +16,12 @@ import com.bdxh.servicepermit.persistence.ServiceRoleMapper;
 
 import java.util.List;
 
+
 /**
- * @Description: 业务层实现
- * @Author Kang
- * @Date 2019-06-01 10:47:48
- */
+* @Description: 业务层实现
+* @Author Kang
+* @Date 2019-05-31 11:36:26
+*/
 @Service
 @Slf4j
 public class ServiceRoleServiceImpl extends BaseService<ServiceRole> implements ServiceRoleService {

@@ -17,7 +17,7 @@
 	  id,school_code,card_number,service_user_id,service_role_id,create_date,update_date,remark
 	</sql>
     <select id="getServiceRolePermitAllCount" resultType="Integer">
-	  SELECT 
+	  SELECT
 	   COUNT(1)
 	  FROM t_service_role_permit 
 	</select>
