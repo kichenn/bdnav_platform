@@ -103,7 +103,7 @@ public class WechatNoticeController {
     }
 
     /**
-     * 用户充值JS回调接口
+     * 用户支付JS回调接口
      * @param request
      * @param response
      */
@@ -123,7 +123,7 @@ public class WechatNoticeController {
                 resultMap.remove("sign");
             }
             String responseStr = BeanToMapUtil.mapToString((resultMap));
-            String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.JS.app_key);
+            String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.JS.APP_KEY);
             Preconditions.checkArgument(StringUtils.equalsIgnoreCase(responseSign, resultSign),"微信返回数据验签失败");
             String orderNo=resultMap.get("out_trade_no");
             String resultCode = resultMap.get("result_code");

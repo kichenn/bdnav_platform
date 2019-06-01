@@ -11,6 +11,10 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.user.feign.FamilyStudentControllerClient;
+import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.vo.FamilyStudentVo;
+import com.bdxh.user.vo.StudentVo;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.entity.WeixiaoPermit;
@@ -55,6 +59,10 @@ public class SecurityController {
 
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+
+
+    @Autowired
+    private FamilyStudentControllerClient familyStudentControllerClient;
 
     @RequestMapping(value = "/authenticationWeixiao/findAppKeyBySchoolCode", method = RequestMethod.GET)
     @ApiOperation(value = "schoolCode获取微校appkey信息", response = String.class)
@@ -109,6 +117,14 @@ public class SecurityController {
             userInfo.setWeixiaoStuId(jsonObject.getString("weixiao_stu_id"));
             userInfo.setPhone(jsonObject.getString("telephone"));
             userInfo.setIdentityType(jsonObject.getString("identity_type"));
+
+            //学生卡号查询 学生相关信息以及家长信息
+            FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber()).getResult();
+            Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
+            userInfo.setStudentId(familyStudentVo.getId());
+            userInfo.setFamilyId(familyStudentVo.getFId());
+            userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
+
             //组装用户权限信息
             List<WeixiaoGrantedAuthority> authorities = new ArrayList<>();
             //查询权限列表

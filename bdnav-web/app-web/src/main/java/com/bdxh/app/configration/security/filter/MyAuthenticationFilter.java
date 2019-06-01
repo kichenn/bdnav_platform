@@ -3,7 +3,6 @@ package com.bdxh.app.configration.security.filter;
 import com.alibaba.fastjson.JSON;
 import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.redis.RedisUtil;
-import com.bdxh.app.configration.security.exception.LogoutException;
 import com.bdxh.app.configration.security.exception.MutiLoginException;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
@@ -19,10 +18,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -36,7 +33,6 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @Description: App token效验
@@ -117,17 +113,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 httpServletResponse.setContentType("application/json;charset=utf-8");
                 httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
                 return;
-            } catch (LogoutException e) {
-                Wrapper wrapper = WrapMapper.error("该token已经注销");
-                String str = JSON.toJSONString(wrapper);
-                httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
-                httpServletResponse.setStatus(401);
-                httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
-                httpServletResponse.setCharacterEncoding("utf-8");
-                httpServletResponse.setContentType("application/json;charset=utf-8");
-                httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
-                return;
-            } catch (MutiLoginException e) {
+            }  catch (MutiLoginException e) {
                 Wrapper wrapper = WrapMapper.error("账号已在其他设备登录");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
