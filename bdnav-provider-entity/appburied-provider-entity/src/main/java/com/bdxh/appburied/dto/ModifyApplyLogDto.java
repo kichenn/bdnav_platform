@@ -39,6 +39,9 @@ public class ModifyApplyLogDto {
     @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")
     private ApplyLogModelEnum applyLogModelEnum=ApplyLogModelEnum.SINGLE;
 
+    @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")
+    private Byte operatorStatus;
+
     @ApiModelProperty("学校ID")
     private Long schoolId;
 
@@ -69,7 +72,7 @@ public class ModifyApplyLogDto {
     private String operatorName;
 
     @ApiModelProperty("操作状态 1 待审核 2 审核拒绝 3 审核通过(新增时只能为之待审核) ")
-    private Byte operatorStatus;
+    private ApplyLogOperatorStatusEnum applyLogOperatorStatusEnum;
 
     @ApiModelProperty("开始时间")
     private Date startDate;
