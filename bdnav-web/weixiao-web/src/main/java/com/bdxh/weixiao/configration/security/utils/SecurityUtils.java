@@ -5,6 +5,7 @@ import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
 import com.bdxh.weixiao.configration.security.userdetail.MyUserDetails;
 import com.bdxh.weixiao.configration.security.userdetail.WeixiaoGrantedAuthority;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -40,7 +41,7 @@ public class SecurityUtils {
      *
      * @return
      */
-    public static  List<WeixiaoGrantedAuthority>  getCurrentAuthorized() {
+    public static List<WeixiaoGrantedAuthority> getCurrentAuthorized() {
         List<WeixiaoGrantedAuthority> authorizeds = null;
         try {
             MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -53,12 +54,13 @@ public class SecurityUtils {
 
     /**
      * 获取myUserDetails
+     *
      * @return
      */
-    public static MyUserDetails getMyUserDetails(){
+    public static MyUserDetails getMyUserDetails() {
         MyUserDetails myUserDetails = null;
         try {
-             myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         } catch (Exception e) {
             e.printStackTrace();
         }

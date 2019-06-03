@@ -18,6 +18,6 @@ public class WeixiaoPermit implements Serializable {
     //角色信息（ROLE_FENCE）
     private String role;
 
-    //有此权限的孩子集合
-    private List<String> userIds;
+    //有此权限的孩子卡号的集合
+    private List<String> studentCardNumber;
 }

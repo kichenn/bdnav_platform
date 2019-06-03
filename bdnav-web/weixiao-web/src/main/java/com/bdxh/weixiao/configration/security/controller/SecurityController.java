@@ -11,6 +11,8 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.servicepermit.feign.ServiceRolePermitControllerClient;
+import com.bdxh.servicepermit.vo.ServiceRolePermitInfoVo;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.FamilyStudentVo;
@@ -28,6 +30,7 @@ import io.jsonwebtoken.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +62,9 @@ public class SecurityController {
 
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+
+    @Autowired
+    private ServiceRolePermitControllerClient serviceRolePermitControllerClient;
 
 
     @Autowired
@@ -114,6 +120,8 @@ public class SecurityController {
             jsonObject = JSON.parseObject(userInfoResponseStr);
             String resultCode = jsonObject.getString("errcode");
             Preconditions.checkArgument(StringUtils.equals(resultCode, "0"), "获取用户信息失败");
+
+            log.info("userInfo:" + JSONObject.toJSONString(jsonObject));
             //组装用户信息放入
             UserInfo userInfo = new UserInfo();
             userInfo.setSchoolCode(schoolCode);
@@ -132,10 +140,22 @@ public class SecurityController {
 
             //组装用户权限信息
             List<WeixiaoGrantedAuthority> authorities = new ArrayList<>();
-            //查询权限列表
-            // Wrapper<List<String>> permissionWrapper = permissionControllerClient.permissionMenusByUserId(user.getId());
-            //   List<String> permissions = permissionWrapper.getResult();
-            //  if (permissions != null && !permissions.isEmpty()) {
+
+            HashMap<String, List<String>> weixiaoPermits = new HashMap<>();
+            //查询服务权限列表信息
+            Wrapper<List<ServiceRolePermitInfoVo>> rolePermitsWrapper = serviceRolePermitControllerClient.findServiceRolePermitInfoVo(userInfo.getFamilyCardNumber());
+            List<ServiceRolePermitInfoVo> rolePermits = rolePermitsWrapper.getResult();
+//            if (CollectionUtils.isNotEmpty(rolePermits)) {
+//                rolePermits.forEach(e -> {
+//
+//                });
+//                WeixiaoPermit weixiaoPermit = new WeixiaoPermit();
+//                weixiaoPermit.setRole(e.getRoleName());
+////                    weixiaoPermit.setUserIds(e.get);
+////                    WeixiaoGrantedAuthority weixiaoGrantedAuthority=new WeixiaoGrantedAuthority();
+//
+//            });
+            //  if (permissions != null && !permissions.rolePermitsWrapper()) {
             //权限的菜单 也需要 以 ROLE_开头(我们库中未以ROLE开头 所以在此累加)
             //      permissions.forEach(permission -> authorities.add(new WeixiaoGrantedAuthority(WeixiaoPermit weixiaoPermit)));
             // }
@@ -162,7 +182,8 @@ public class SecurityController {
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json;charset=utf-8");
             response.getOutputStream().write(JSON.toJSONString(wrapper).getBytes("utf-8"));
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             Wrapper<String> wrapper = WrapMapper.error(e.getMessage());
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setStatus(500);
@@ -171,6 +192,7 @@ public class SecurityController {
             response.setContentType("application/json;charset=utf-8");
             response.getOutputStream().write(JSON.toJSONString(wrapper).getBytes("utf-8"));
         }
+
     }
 
 
