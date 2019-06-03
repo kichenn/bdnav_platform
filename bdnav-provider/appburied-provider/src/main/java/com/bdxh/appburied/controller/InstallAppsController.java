@@ -8,7 +8,6 @@ import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.utils.ConvertMultipartUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
