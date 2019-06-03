@@ -6,6 +6,7 @@ import com.bdxh.servicepermit.dto.AddServiceRolePermitDto;
 import com.bdxh.servicepermit.dto.ModifyServiceRoleDto;
 import com.bdxh.servicepermit.dto.ServiceRoleQueryDto;
 import com.bdxh.servicepermit.fallback.ServiceRoleControllerClientFallback;
+import com.bdxh.servicepermit.fallback.ServiceRolePermitControllerClientFallback;
 import com.bdxh.servicepermit.vo.ServiceRolePermitInfoVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ import java.util.List;
  * @Date: 2019/6/3 17:10
  */
 @Service
-@FeignClient(value = "servicepermit-provider-cluster", fallback = ServiceRoleControllerClientFallback.class)
+@FeignClient(value = "servicepermit-provider-cluster", fallback = ServiceRolePermitControllerClientFallback.class)
 public interface ServiceRolePermitControllerClient {
 
 
