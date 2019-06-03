@@ -111,5 +111,5 @@ public class ModifyApplyLogDto {
      * 是否读取：1：已读、2：未读
      */
     @ApiModelProperty("是否读取：1：已读、2：未读")
-    private Byte read ;
+    private Byte isRead ;
 }

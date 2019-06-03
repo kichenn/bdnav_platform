@@ -25,11 +25,11 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="review" jdbcType="VARCHAR" property="review"/>
         <result column="reason" jdbcType="VARCHAR" property="reason"/>
-        <result column="read" jdbcType="TINYINT" property="read"/>
+        <result column="is_read" jdbcType="TINYINT" property="isRead"/>
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark,review,reason,`read`
+	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark,review,reason,is_read
 	</sql>
     <select id="getApplyLogAllCount" resultType="Integer">
 	  SELECT 
@@ -75,11 +75,10 @@
             <if test="applyLog.operatorStatus !=null and applyLog.operatorName!=''">
                 AND operator_status=#{applyLog.operatorStatus,jdbcType = TINYINT}
             </if>
-            <if test="applyLog.read !=null and applyLog.read!=''">
-                AND `read`=#{applyLog.read,jdbcType = TINYINT}
+            <if test="applyLog.isRead !=null and applyLog.isRead!=''">
+                AND is_read=#{applyLog.isRead,jdbcType = TINYINT}
             </if>
         </where>
-
         ORDER BY create_date DESC
     </select>
 
@@ -93,11 +92,10 @@
          start_date = #{startDate},
          end_date = #{endDate},
          update_date = NOW(),
-         `read` =#{read},
-         reason =#{reason}
-         remark = NULL
+         is_read = #{isRead},
+         reason = #{reason},
+         remark = #{remark}
         WHERE
            school_code =#{schoolCode} and card_number = #{cardNumber} and  id = #{id}
     </update>
-
 </mapper>
