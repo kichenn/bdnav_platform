@@ -37,7 +37,10 @@ public class ModifyApplyLogDto {
     private String pushSign;
 
     @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")
-    private ApplyLogModelEnum applyLogModelEnum;
+    private ApplyLogModelEnum applyLogModelEnum=ApplyLogModelEnum.SINGLE;
+
+    @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")
+    private Byte operatorStatus;
 
     @ApiModelProperty("学校ID")
     private Long schoolId;
