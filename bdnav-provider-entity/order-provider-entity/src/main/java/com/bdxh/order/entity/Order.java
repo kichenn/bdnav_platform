@@ -4,6 +4,7 @@ import javax.persistence.*;
 
 import lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
+
 import java.util.Date;
 import java.lang.String;
 import java.math.BigDecimal;
@@ -11,127 +12,180 @@ import java.lang.Integer;
 
 
 /**
-* @Description: 实体类
-* @Date 2019-05-06 11:48:20
-*/
+ * @Description: 实体类
+ * @Date 2019-05-06 11:48:20
+ */
 
 @Data
 @Table(name = "t_order")
 public class Order {
 
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@ApiModelProperty("订单号")
-	private Long OrderNo;
+    /**
+     * 订单号
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long orderNo;
 
-	@Column(name = "third_order_no")
-	@ApiModelProperty("第三方订单号")
-	private String ThirdOrderNo;
+    /**
+     * 第三方订单号
+     */
+    @Column(name = "third_order_no")
+    private String thirdOrderNo;
 
-	@Column(name = "school_id")
-	@ApiModelProperty("学校主键")
-	private Long SchoolId;
+    /**
+     * 学校主键
+     */
+    @Column(name = "school_id")
+    private Long schoolId;
 
-	@Column(name = "school_code")
-	@ApiModelProperty("学校编码")
-	private String SchoolCode;
+    /**
+     * 学校编码
+     */
+    @Column(name = "school_code")
+    private String schoolCode;
 
-	@Column(name = "school_name")
-	@ApiModelProperty("学校名称")
-	private String SchoolName;
+    /**
+     * 学校名称
+     */
+    @Column(name = "school_name")
+    private String schoolName;
 
-	@Column(name = "user_id")
-	@ApiModelProperty("家长主键")
-	private Long UserId;
+    /**
+     * 家长主键
+     */
+    @Column(name = "user_id")
+    private Long userId;
 
-	@Column(name = "card_number")
-	@ApiModelProperty("学号")
-	private String CardNumber;
+    /**
+     * 学号
+     */
+    @Column(name = "card_number")
+    private String cardNumber;
 
-	@Column(name = "user_name")
-	@ApiModelProperty("用户姓名")
-	private String UserName;
+    /**
+     * 用户姓名
+     */
+    @Column(name = "user_name")
+    private String userName;
 
-	@Column(name = "user_type")
-	@ApiModelProperty("用户类型 1 学生 2 老师 3 家长")
-	private Integer UserType;
+    /**
+     * 用户类型 1 学生 2 老师 3 家长
+     */
+    @Column(name = "user_type")
+    private Byte userType;
 
-	@Column(name = "open_id")
-	@ApiModelProperty("用户openid")
-	private String OpenId;
+    /**
+     * 用户openid
+     */
+    @Column(name = "open_id")
+    private String openId;
 
-	@Column(name = "total_money")
-	@ApiModelProperty("订单总金额")
-	private BigDecimal TotalMoney;
+    /**
+     * 产品主键
+     */
+    @Column(name = "product_id")
+    private String productId;
 
-	@Column(name = "order_money")
-	@ApiModelProperty("订单金额")
-	private BigDecimal OrderMoney;
 
-	@Column(name = "pay_money")
-	@ApiModelProperty("支付金额")
-	private BigDecimal PayMoney;
 
-	@Column(name = "trade_status")
-	@ApiModelProperty("交易状态 1 进行中 2 已取消 3 已删除 4 交易成功")
-	private Integer TradeStatus;
+    /**
+     * 订单总金额
+     */
+    @Column(name = "total_money")
+    private BigDecimal totalMoney;
 
-	@Column(name = "pay_status")
-	@ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败")
-	private Integer PayStatus;
+    /**
+     * 订单金额
+     */
+    @Column(name = "order_money")
+    private BigDecimal orderMoney;
 
-	@Column(name = "business_status")
-	@ApiModelProperty("业务状态 1 未处理 2 已处理")
-	private Integer BusinessStatus;
+    /**
+     * 支付金额
+     */
+    @Column(name = "pay_money")
+    private BigDecimal payMoney;
 
-	@Column(name = "business_type")
-	@ApiModelProperty("业务类型 1 校园钱包充值  2管控服务")
-	private Integer BusinessType;
+    /**
+     * 交易状态 1 进行中 2 已取消 3 已删除 4 交易成功
+     */
+    @Column(name = "trade_status")
+    private Byte tradeStatus;
 
-	@Column(name = "pay_type")
-	@ApiModelProperty("支付渠道 1 微信支付")
-	private Integer PayType;
+    /**
+     * 支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败
+     */
+    @Column(name = "pay_status")
+    private Byte payStatus;
 
-	@Column(name = "trade_type")
-	@ApiModelProperty("订单类型  1 JSAPI支付")
-	private Integer TradeType;
+    /**
+     * 业务状态 1 未处理 2 已处理
+     */
+    @Column(name = "business_status")
+    private Byte businessStatus;
 
-	@Column(name = "pay_time")
-	@ApiModelProperty("支付时间")
-	private Date PayTime;
+    /**
+     * 业务类型 1 校园钱包充值  2管控服务
+     */
+    @Column(name = "business_type")
+    private Byte businessType;
 
-	@Column(name = "pay_end_time")
-	@ApiModelProperty("支付结束时间")
-	private Date PayEndTime;
+    /**
+     * 支付渠道 1 微信支付
+     */
+    @Column(name = "pay_type")
+    private Byte payType;
 
-	@Column(name = "product_id")
-	@ApiModelProperty("产品主键")
-	private String ProductId;
+    /**
+     * 订单类型  1 JSAPI支付
+     */
+    @Column(name = "trade_type")
+    private Byte tradeType;
 
-	@Column(name = "create_date")
-	@ApiModelProperty("创建时间")
-	private Date CreateDate;
+    /**
+     * 支付时间
+     */
+    @Column(name = "pay_time")
+    private Date payTime;
 
-	@Column(name = "update_date")
-	@ApiModelProperty("修改时间")
-	private Date UpdateDate;
+    /**
+     * 支付结束时间
+     */
+    @Column(name = "pay_end_time")
+    private Date payEndTime;
 
-	@Column(name = "operator")
-	@ApiModelProperty("操作人")
-	private Long Operator;
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_date")
+    private Date createDate;
 
-	@Column(name = "operator_name")
-	@ApiModelProperty("操作人姓名")
-	private String OperatorName;
+    /**
+     * 修改时间
+     */
+    @Column(name = "update_date")
+    private Date updateDate;
 
-	@Column(name = "remark")
-	@ApiModelProperty("备注")
-	private String Remark;
+    /**
+     * 操作人
+     */
+    @Column(name = "operator")
+    private Long operator;
 
-	@Column(name="count")
-	@ApiModelProperty("购买数量")
-	private Integer count;
+    /**
+     * 操作人姓名
+     */
+    @Column(name = "operator_name")
+    private String operatorName;
+
+    /**
+     * 备注
+     */
+    @Column(name = "remark")
+    private String remark;
+
 
 
 

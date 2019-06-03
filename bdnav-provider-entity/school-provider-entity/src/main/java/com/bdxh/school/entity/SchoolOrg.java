@@ -86,6 +86,23 @@ public class SchoolOrg {
 	private Integer sort;
 
 	/**
+	 * 管理员Id
+	 */
+	@Column(name = "manage_id")
+	private Long manageId;
+
+	/**
+	 * 管理员微校卡号
+	 */
+	@Column(name = "manage_card_number")
+	private String manageCardNumber;
+
+	/**
+	 * 管理员名称
+	 */
+	@Column(name = "manage_name")
+	private String manageName;
+	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_date")

@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -248,33 +249,29 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
      *
      * @param schoolCode 学校编码
      * @return
+     * @author WanMing
      */
     @Override
     public List<BaseEchartsVo> querySchoolUserCategoryCount(String schoolCode) {
         //有schoolCode查各自学校的用户分类数   无schoolCode查大后台用户分类数据
-        //赋初始值
-        List<BaseEchartsVo> baseVos = new ArrayList<>();
-        BaseEchartsVo stu = new BaseEchartsVo();
-        stu.setName(BaseUserTypeEnum.STUDENT.getDesc());
-        baseVos.add(stu);
-        BaseEchartsVo tea = new BaseEchartsVo();
-        tea.setName(BaseUserTypeEnum.TEACHER.getDesc());
-        baseVos.add(tea);
-        BaseEchartsVo fam = new BaseEchartsVo();
-        fam.setName(BaseUserTypeEnum.FAMILY.getDesc());
-        baseVos.add(fam);
-        //用户 1学生 2老师 3家长
         List<BaseEchartsVo> baseEchartsVos = baseUserMapper.querySchoolUserCategoryCount(schoolCode, null);
-        if (CollectionUtils.isNotEmpty(baseEchartsVos)) {
-            baseEchartsVos.stream().forEach(echarts -> {
-                if("1".equals(echarts.getName())){
-                    stu.setValue(echarts.getValue());
-                }else if("2".equals(echarts.getName())){
-                    tea.setValue(echarts.getValue());
-                }else if("3".equals(echarts.getName())){
-                    fam.setValue(echarts.getValue());
-                }
-            });
+        Map<String, BaseEchartsVo> baseEchartsVoMap = baseEchartsVos.stream()
+                .collect(Collectors.toMap(BaseEchartsVo::getName, Function.identity()));
+        //通过用户枚举类型确保返回到前端时,三种类型都有数据
+        BaseUserTypeEnum[] userTypeEnums = BaseUserTypeEnum.values();
+        List<BaseEchartsVo> baseVos = new ArrayList<>(userTypeEnums.length);
+        for (BaseUserTypeEnum userTypeEnum : userTypeEnums) {
+            BaseEchartsVo baseEchartsVo = baseEchartsVoMap.get(userTypeEnum.getCode().toString());
+            if (null == baseEchartsVo) {
+                BaseEchartsVo echartsVo = new BaseEchartsVo();
+                echartsVo.setName(userTypeEnum.getDesc());
+                echartsVo.setValue(0L);
+                baseVos.add(echartsVo);
+            } else {
+                baseEchartsVo.setName(userTypeEnum.getDesc());
+                baseEchartsVo.setValue(baseEchartsVo.getValue());
+                baseVos.add(baseEchartsVo);
+            }
         }
         return baseVos;
     }
