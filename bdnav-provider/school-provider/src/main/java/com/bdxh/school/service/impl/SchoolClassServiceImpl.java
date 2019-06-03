@@ -59,27 +59,6 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
             schoolClass.setParentIds(schoolClassTemp.getParentIds() + "," + schoolClassTemp.getId());
         }
         Boolean result = schoolClassMapper.insertSelective(schoolClass) > 0;
-        //添加判断测试时只推送石齐的数据根据学校ID判断
-        if (schoolClassDto.getSchoolId().equals(Long.parseLong("64"))) {
-            if (result) {
-                //院系新增成功之后，发送异步消息，通知第三方，学校院系组织架构有变动，
-                schoolClass.setCreateDate(new Date());
-                schoolClass.setUpdateDate(new Date());
-                JSONObject jsonObject = new JSONObject();
-                List<SchoolClass> schoolClassList = new ArrayList<>();
-                schoolClassList.add(schoolClass);
-                jsonObject.put("data", schoolClassList);
-                jsonObject.put("tableName", "t_school_class");
-                jsonObject.put("delFlag", 0);
-                Message message = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-                try {
-                    transactionMQProducer.send(message);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    log.error("发送学校院系组织新增消息失败");
-                }
-            }
-        }
         return result;
     }
 
@@ -120,18 +99,6 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
                 jsonObject.put("message", "学校院系组织架构有调整");
                 Message message1 = new Message(RocketMqConstrants.Topic.schoolOrganizationTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 transactionMQProducer.sendMessageInTransaction(message1, null);
-                //添加判断测试时只推送石齐的数据根据学校ID判断
-                if (schoolClassDto.getSchoolId().equals(Long.parseLong("64"))) {
-                    schoolClass.setUpdateDate(new Date());
-                    jsonObject.put("tableName", "t_school_class");
-                    List<SchoolClass> schoolClassList = new ArrayList<>();
-                    schoolClassList.add(schoolClass);
-                    jsonObject.put("data", schoolClassList);
-                    jsonObject.put("delFlag", 0);
-                    Message message2 = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.schoolOrganizationTag_class, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-                    transactionMQProducer.send(message2);
-                }
-
                 log.info("发送院系组织架构通知完成");
             }
             return result;
