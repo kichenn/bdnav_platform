@@ -33,7 +33,7 @@ public class ServiceRolePermitControllerWeb {
     }
 
     @ApiOperation(value = "家长id查询 服务权限许可信息（一个家长有多个孩子）", response = Boolean.class)
-    @RequestMapping(value = "/delServiceRolePermitByServiceUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/findServiceRolePermitInfoVo", method = RequestMethod.GET)
     public Object findServiceRolePermitInfoVo(@RequestParam("familyCardNumber") String familyCardNumber) {
         return WrapMapper.ok(serviceRolePermitControllerClient.findServiceRolePermitInfoVo(familyCardNumber));
     }
