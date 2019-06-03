@@ -65,24 +65,19 @@ public class SecurityController {
     private FamilyStudentControllerClient familyStudentControllerClient;
 
     @RequestMapping(value = "/authenticationWeixiao/toAuth", method = RequestMethod.GET)
-    @ApiOperation(value = "schoolCode进行微校授权", response = String.class)
-    public void toAuth(@RequestParam("schoolCode") String schoolCode, @RequestParam("address") String address) {
+    @ApiOperation(value = "schoolCode进行返回微校授权信息", response = String.class)
+    public Object toAuth(@RequestParam("schoolCode") String schoolCode, @RequestParam("address") String address) {
         School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
         Preconditions.checkArgument(school != null, "schoolCode异常");
-        Map<String, Object> params = new HashMap<>();
-        params.put("school_code", school.getSchoolCode());
-        params.put("app_key", school.getAppKey());
-        params.put("redirect_uri", WeixiaoLoginConstant.REDIRECT_URI_URL + address);
-        try {
-            String result = HttpClientUtils.doGet(WeixiaoLoginConstant.WXCODE_URL, params);
-            log.info(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        Map<String, String> result = new HashMap<>();
-//        result.put("schoolCode", school.getSchoolCode());
-//        result.put("appKey", AESUtils.enCode(school.getAppKey(), AESUtils.AesConstant.WEIXIAO_KEY));
-//        return WrapMapper.ok(result);
+
+        String redirectUri = WeixiaoLoginConstant.REDIRECT_URI_URL.replace("@address@", address);
+
+        String wxCodeUrl = WeixiaoLoginConstant.WXCODE_URL.replace("@schoolCode@", school.getSchoolCode())
+                .replace("@appKey@", school.getAppKey())
+                .replace("@redirectUri@", redirectUri);
+
+        log.info("授权url:" + wxCodeUrl);
+        return WrapMapper.ok(wxCodeUrl);
     }
 
     /**

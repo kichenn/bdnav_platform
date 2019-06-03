@@ -15,73 +15,67 @@ public class ApplicationVersionDto {
     /**
      * 学校id
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("学校id")
     private Long schoolId;
 
     /**
      * 学校编码
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("学校编码")
     private String schoolCode;
 
     /**
      * 平台 1 andriod 2 ios
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("平台 1 andriod 2 ios")
     private Byte platform;
 
     /**
      * 分类id
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("分类id")
     private Long categoryId;
 
     /**
      * 应用名称
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("应用名称")
     private String appName;
 
     /**
      * 应用包名
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("应用包名")
     private String appPackage;
 
     /**
      * 应用图标地址
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("图片图标地址")
     private String iconUrl;
 
     /**
      * 应用图标名称
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("图标名称")
     private String iconName;
-
-    /**
-     * 应用版本
-     */
-    @ApiModelProperty("应用id")
-    private String appVersion;
 
     /**
      * 应用描述
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("应用描述")
     private String appDesc;
 
     /**
      *  状态 1 上架 2 下架
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("状态 1 上架 2 下架")
     private Byte status;
 
     /**
      *  是否预置 1 是 2 否
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("是否预置 1 是 2 否")
     private Byte preset;
 
 
@@ -91,35 +85,6 @@ public class ApplicationVersionDto {
     @ApiModelProperty("应用id")
     private Date createDate;
 
-    /**
-     * 修改时间
-     */
-    @ApiModelProperty("应用id")
-    private Date updateDate;
-
-    /**
-     * 操作人
-     */
-    @ApiModelProperty("应用id")
-    private Long operator;
-
-    /**
-     * 操作姓名
-     */
-    @ApiModelProperty("应用id")
-    private String operatorName;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty("应用id")
-    private String remark;
-
-    /**
-     * 应用id
-     */
-    @Column(name = "app_id")
-    private Long appId;
 
     /**
      * apk文件名称
