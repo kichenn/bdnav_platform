@@ -54,7 +54,7 @@ public class AddApplyLogDto {
      * 是否读取：1：已读、2：未读
      */
     @ApiModelProperty("是否读取：1：已读、2：未读")
-    private Byte read =2;
+    private Byte isRead =2;
 
     @ApiModelProperty("用户姓名")
     private String userName;
