@@ -29,7 +29,7 @@
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark,review,reason,`read`
+	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark,review,reason,is_read
 	</sql>
     <select id="getApplyLogAllCount" resultType="Integer">
 	  SELECT 
