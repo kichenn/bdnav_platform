@@ -35,9 +35,9 @@ public interface ServiceRolePermitControllerClient {
     Wrapper addServiceRolePermitInfo(@Validated @RequestBody AddServiceRolePermitDto addServiceRolePermitDto);
 
     //家长id查询 服务权限许可信息（一个家长有多个孩子）
-    @RequestMapping(value = "/serviceRolePermit/delServiceRolePermitByServiceUserId", method = RequestMethod.GET)
+    @RequestMapping(value = "/serviceRolePermit/findServiceRolePermitInfoVo", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<ServiceRolePermitInfoVo>> delServiceRolePermitByServiceUserId(@RequestParam("familyCardNumber") String familyCardNumber);
+    Wrapper<List<ServiceRolePermitInfoVo>> findServiceRolePermitInfoVo(@RequestParam("familyCardNumber") String familyCardNumber);
 
 
 }

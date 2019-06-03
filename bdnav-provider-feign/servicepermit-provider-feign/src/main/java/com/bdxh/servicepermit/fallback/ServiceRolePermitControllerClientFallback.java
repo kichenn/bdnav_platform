@@ -28,7 +28,7 @@ public class ServiceRolePermitControllerClientFallback implements ServiceRolePer
     }
 
     @Override
-    public Wrapper<List<ServiceRolePermitInfoVo>> delServiceRolePermitByServiceUserId(String familyCardNumber) {
+    public Wrapper<List<ServiceRolePermitInfoVo>> findServiceRolePermitInfoVo(String familyCardNumber) {
         return WrapMapper.error();
     }
 }
