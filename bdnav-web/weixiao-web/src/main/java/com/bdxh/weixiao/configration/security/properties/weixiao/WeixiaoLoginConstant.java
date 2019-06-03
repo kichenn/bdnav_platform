@@ -11,6 +11,12 @@ import lombok.Data;
 public class WeixiaoLoginConstant {
 
     /**
+     * 微信授权后重定向的回调链接地址信息(跳转到微校的地址信息)
+     */
+    public static final String REDIRECT_URI_URL="http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/";
+
+
+    /**
      * 获取微信授权信息
      */
     public static final String WXCODE_URL="https://weixiao.qq.com/apps/school-auth/login";

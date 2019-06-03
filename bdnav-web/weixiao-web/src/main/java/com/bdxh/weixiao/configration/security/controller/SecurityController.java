@@ -66,16 +66,16 @@ public class SecurityController {
 
     @RequestMapping(value = "/authenticationWeixiao/toAuth", method = RequestMethod.GET)
     @ApiOperation(value = "schoolCode进行微校授权", response = String.class)
-    public void toAuth(@RequestParam("schoolCode") String schoolCode) {
+    public void toAuth(@RequestParam("schoolCode") String schoolCode, @RequestParam("address") String address) {
         School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
         Preconditions.checkArgument(school != null, "schoolCode异常");
         Map<String, Object> params = new HashMap<>();
         params.put("school_code", school.getSchoolCode());
         params.put("app_key", school.getAppKey());
-        params.put("redirect_uri", "http://wx-prod.bdxht.com");
+        params.put("redirect_uri", WeixiaoLoginConstant.REDIRECT_URI_URL + address);
         try {
-           String result = HttpClientUtils.doGet(WeixiaoLoginConstant.WXCODE_URL, params);
-           log.info(result);
+            String result = HttpClientUtils.doGet(WeixiaoLoginConstant.WXCODE_URL, params);
+            log.info(result);
         } catch (Exception e) {
             e.printStackTrace();
         }
