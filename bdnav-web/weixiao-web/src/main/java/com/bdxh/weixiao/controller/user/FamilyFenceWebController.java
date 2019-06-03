@@ -6,7 +6,6 @@ import com.bdxh.user.dto.AddFamilyFenceDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.UpdateFamilyFenceDto;
 import com.bdxh.user.feign.FamilyFenceControllerClient;
-import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +14,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  * @description:

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.system.persistence.ControlConfigMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.system.entity.ControlConfig">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="platform" jdbcType="TINYINT" property="platform"/>
+	  <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+	  <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
+	  <result column="app_type" jdbcType="TINYINT" property="appType"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="operator" jdbcType="BIGINT" property="operator"/>
+	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,platform,app_name,app_package,app_type,remark,create_date,update_date,operator,operator_name
+	</sql>
+	<select id="getControlConfigAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM sys_control_config 
+	</select>
+
+	<delete id="delControlConfigInIds" parameterType="Integer">
+	  DELETE
+	   FROM sys_control_config
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+	<select id="findAppType" parameterType="java.util.Map" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM
+		sys_control_config
+		WHERE
+		app_type=#{appType}
+	</select>
+
+	<select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        SELECT
+		<include refid="BaseColumns"/>
+		FROM
+		sys_control_config
+		<where>
+			<if test="appName!=null and appName!=''">app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')</if>
+			<if test="appType!=null">app_type=#{appType}</if>
+		</where>
+	</select>
+
+
+</mapper>

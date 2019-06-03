@@ -44,6 +44,11 @@ public interface SecurityConstant {
      */
     String USER_INFO = "user_info";
 
+    /**
+     * 权限参数头
+     */
+    String AUTHORITIES = "authorities";
+
 
     public static void main(String[] args) {
         System.out.println(SecurityConstant.TOKEN_EXPIRE_TIME * 60);

@@ -1,5 +1,6 @@
 package com.bdxh.appmarket.service;
 
+import com.bdxh.appmarket.dto.ApplicationVersionDto;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
 import com.bdxh.appmarket.entity.AppVersion;
@@ -95,5 +96,8 @@ public interface AppService extends IService<App> {
     List<App> familyFindAppInfo(String schoolCode);
 
     //查询预置应用
-    List<App> thePresetList();
+    List<App> thePresetList(Byte preset);
+
+    //根据学校编号查询全部应用及对应版本编号
+    List<ApplicationVersionDto> findTheApplicationList(@Param("schoolCode")String schoolCode);
 }

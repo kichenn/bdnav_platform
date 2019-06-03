@@ -1,7 +1,7 @@
 package com.bdxh.order.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.order.dto.OrderAddDto;
+import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -51,6 +49,6 @@ public interface OrdersControllerClient {
     Wrapper updateOrder(@RequestBody OrderUpdateDto orderUpdateDto);
 
     @RequestMapping(value = "/order/createOrder",method = RequestMethod.POST)
-    Wrapper createOrder(@RequestBody OrderAddDto orderDto);
+    Wrapper createOrder(@RequestBody AddOrderDto orderDto);
 
 }

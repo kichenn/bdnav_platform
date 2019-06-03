@@ -4,9 +4,13 @@ import com.bdxh.account.entity.Account;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
 import com.bdxh.weixiao.configration.security.userdetail.MyUserDetails;
+import com.bdxh.weixiao.configration.security.userdetail.WeixiaoGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * @Description: 用户信息工具类
@@ -29,6 +33,22 @@ public class SecurityUtils {
             e.printStackTrace();
         }
         return account;
+    }
+
+    /**
+     * 获取当前用户权限信息
+     *
+     * @return
+     */
+    public static  List<WeixiaoGrantedAuthority>  getCurrentAuthorized() {
+        List<WeixiaoGrantedAuthority> authorizeds = null;
+        try {
+            MyUserDetails myUserDetails = (MyUserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            authorizeds = (List<WeixiaoGrantedAuthority>) myUserDetails.getAuthorities();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return authorizeds;
     }
 
     /**

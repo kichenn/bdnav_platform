@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -98,10 +99,9 @@ public class SecurityController {
             //设置用户登录状态
             log.info("authenticated user {}, setting security context", username);
             //将认证信息存入securitycontext，在jwt的过滤器中(MyAuthenticationFilter)一直为null(给security内置过滤器清除了)
-            //此处将认证信息存入session
+            //保存认证信息
             SecurityContext securityContext = SecurityContextHolder.getContext();
             securityContext.setAuthentication(authenticate);
-            request.getSession().setAttribute(SecurityConstant.TOKEN_SESSION + account.getId(), securityContext);
             //写入登录日志
             switch (account.getUserType()) {
                 case 1:
@@ -181,29 +181,29 @@ public class SecurityController {
     }
 
 
-    @ApiOperation(value = "注销token(用户登出)", response = Boolean.class)
-    @RequestMapping(value = "/accountLogout", method = RequestMethod.GET)
-    public void accountLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        try {
-            SecurityUtils.logout(request);
-            Wrapper wrapper = WrapMapper.ok("注销成功");
-            String str = JSON.toJSONString(wrapper);
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setHeader("Content-type", "application/json; charset=UTF-8");
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("application/json;charset=utf-8");
-            response.getOutputStream().write(str.getBytes("utf-8"));
-        } catch (Exception e) {
-            Wrapper wrapper = WrapMapper.error(e.getMessage());
-            String str = JSON.toJSONString(wrapper);
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            response.setStatus(401);
-            response.setHeader("Content-type", "application/json; charset=UTF-8");
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("application/json;charset=utf-8");
-            response.getOutputStream().write(str.getBytes("utf-8"));
-        }
-    }
+//    @ApiOperation(value = "注销token(用户登出)", response = Boolean.class)
+//    @RequestMapping(value = "/accountLogout", method = RequestMethod.GET)
+//    public void accountLogout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+//        try {
+//            SecurityUtils.logout(request);
+//            Wrapper wrapper = WrapMapper.ok("注销成功");
+//            String str = JSON.toJSONString(wrapper);
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setHeader("Content-type", "application/json; charset=UTF-8");
+//            response.setCharacterEncoding("utf-8");
+//            response.setContentType("application/json;charset=utf-8");
+//            response.getOutputStream().write(str.getBytes("utf-8"));
+//        } catch (Exception e) {
+//            Wrapper wrapper = WrapMapper.error(e.getMessage());
+//            String str = JSON.toJSONString(wrapper);
+//            response.setHeader("Access-Control-Allow-Origin", "*");
+//            response.setStatus(401);
+//            response.setHeader("Content-type", "application/json; charset=UTF-8");
+//            response.setCharacterEncoding("utf-8");
+//            response.setContentType("application/json;charset=utf-8");
+//            response.getOutputStream().write(str.getBytes("utf-8"));
+//        }
+//    }
 
     @GetMapping("/getAccountInfoByToken")
     @ApiOperation(value = "token获取用户信息", response = String.class)

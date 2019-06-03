@@ -14,6 +14,9 @@ public class UserInfo implements Serializable {
 
     private static final long serialVersionUID = 8541838882121685433L;
 
+    /*
+    微信返参
+     */
     //学校编码
     private String schoolCode;
 
@@ -23,7 +26,7 @@ public class UserInfo implements Serializable {
     //手机号
     private String phone;
 
-    //学号
+    //学生卡号
     private String cardNumber;
 
     //微校学生id
@@ -31,4 +34,17 @@ public class UserInfo implements Serializable {
 
     // 身份类型，1为其他，2为学生，3为教职工，4为校友
     private String identityType;
+
+
+    /*
+      以下是扩展字段
+     */
+    //学生id
+    private Long studentId;
+
+    //家长id
+    private Long familyId;
+
+    //家长号
+    private String familyCardNumber;
 }

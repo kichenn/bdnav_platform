@@ -11,6 +11,11 @@ import lombok.Data;
 public class WeixiaoLoginConstant {
 
     /**
+     * 获取微信授权信息
+     */
+    public static final String WXCODE_URL="https://weixiao.qq.com/apps/school-auth/login";
+
+    /**
      * 获取微信token信息
      */
     public static final String TOKEN_URL = "https://weixiao.qq.com/apps/school-auth/access-token";

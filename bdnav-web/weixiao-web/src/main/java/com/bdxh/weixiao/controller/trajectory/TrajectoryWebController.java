@@ -2,7 +2,6 @@ package com.bdxh.weixiao.controller.trajectory;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.feign.TrajectoryControllerClient;
-import com.bdxh.weixiao.configration.aspect.WeiXiaoChargeApp;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;

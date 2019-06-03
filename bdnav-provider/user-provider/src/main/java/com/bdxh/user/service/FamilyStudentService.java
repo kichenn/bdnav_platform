@@ -16,23 +16,30 @@ import java.util.List;
  **/
 public interface FamilyStudentService extends IService<FamilyStudent> {
 
-     /**
-      * @Author： binzh
-      * @Description： //删除家长学生关系表数据
-      * @Date： 14:30 2019/3/7
-      * @Param： [schoolCode, cardNumber]
-      * @return： void
-      **/
-     void removeFamilyStudentInfo(String schoolCode,String cardNumber,String id);
+    /**
+     * @Author： binzh
+     * @Description： //删除家长学生关系表数据
+     * @Date： 14:30 2019/3/7
+     * @Param： [schoolCode, cardNumber]
+     * @return： void
+     **/
+    void removeFamilyStudentInfo(String schoolCode, String cardNumber, String id);
 
-     /**
-      * 查询学生家长关系数据
-      * @param familyStudentQueryDto
-      * @Author：bin
-      * @return
-      */
-     PageInfo<FamilyStudentVo> queryAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto);
+    /**
+     * 查询学生家长关系数据
+     *
+     * @param familyStudentQueryDto
+     * @return
+     * @Author：bin
+     */
+    PageInfo<FamilyStudentVo> queryAllFamilyStudent(FamilyStudentQueryDto familyStudentQueryDto);
 
 
+    /**
+     * @Description: 学生卡号 +学校code 查询绑定关系
+     * @Author: Kang
+     * @Date: 2019/6/1 10:13
+     */
+    FamilyStudentVo studentQueryInfo(String schoolCode, String cardNumber);
 
 }

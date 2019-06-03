@@ -2,15 +2,13 @@ package com.bdxh.order.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.order.dto.OrderAddDto;
+import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.feign.OrdersControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
-
-import javax.validation.constraints.NotNull;
 
 
 /**
@@ -37,7 +35,7 @@ public class OrdersControllerClientFallback implements OrdersControllerClient {
     }
 
     @Override
-    public Wrapper createOrder(OrderAddDto orderDto) {
+    public Wrapper createOrder(AddOrderDto orderDto) {
         return WrapMapper.error();
     }
 }

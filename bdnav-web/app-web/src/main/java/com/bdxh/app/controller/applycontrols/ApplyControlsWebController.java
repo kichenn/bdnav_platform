@@ -3,10 +3,12 @@ package com.bdxh.app.controller.applycontrols;
 
 import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.security.utils.SecurityUtils;
+import com.bdxh.appburied.dto.AddApplyLogDto;
 import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.dto.AppStatusQueryDto;
 import com.bdxh.appburied.dto.DelOrFindAppBuriedDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
+import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
 import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.feign.AppControllerClient;
@@ -17,6 +19,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.feign.BlackUrlControllerClient;
+import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
@@ -61,6 +64,13 @@ public class ApplyControlsWebController {
     private AppControllerClient appControllerClient;
 
 
+    @Autowired
+    private ControlConfigControllerClient controlConfigControllerClient;
+
+    @Autowired
+    private ApplyLogControllerClient applyLogControllerClient;
+
+
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/modifyInfo", method = RequestMethod.POST)
     public Object modifyInfo(@Validated @RequestBody UpdateStudentDto updateStudentDto) {
@@ -101,9 +111,9 @@ public class ApplyControlsWebController {
 
 
     @ApiOperation(value = "查询预置应用列表", response = Boolean.class)
-    @RequestMapping(value = "/authenticationApp/thePresetList", method = RequestMethod.POST)
-    public Object thePresetList() {
-        Wrapper wrapper = appControllerClient.thePresetList();
+    @RequestMapping(value = "/authenticationApp/thePresetList", method = RequestMethod.GET)
+    public Object thePresetList(@RequestParam(value = "preset",defaultValue = "1") Byte preset) {
+        Wrapper wrapper = appControllerClient.thePresetList(preset);
         return WrapMapper.ok(wrapper.getResult());
 
     }
@@ -117,7 +127,6 @@ public class ApplyControlsWebController {
         if (account!=null){
         //查询此账户学生信息
        StudentVo studentVo = studentControllerClient.queryStudentInfo(account.getSchoolCode(), account.getCardNumber()).getResult();
-        //StudentVo studentVo = studentControllerClient.queryStudentInfo("20190426", "20190520010").getResult();
         //删除腾讯云的以前图片
         FileOperationUtils.deleteFile(studentVo.getImageName(), QcloudConstants.APP_BUCKET_NAME);
         Map<String, String> result = null;
@@ -149,13 +158,35 @@ public class ApplyControlsWebController {
     }
 
     @ApiOperation(value = "删除上报应用信息", response = Boolean.class)
-    @RequestMapping(value = "/applyControlsWeb/delInstallAppById", method = RequestMethod.POST)
-    public Object delInstallAppById(@RequestBody DelOrFindAppBuriedDto delInstallAppsDto) {
-        Wrapper wrapper = installAppsControllerClient.delInstallAppById(delInstallAppsDto);
+    @RequestMapping(value = "/applyControlsWeb/delByAppPackage", method = RequestMethod.GET)
+    public Object delByAppPackage(@RequestParam("schoolCode") String schoolCode,
+                                    @RequestParam("cardNumber") String cardNumber,
+                                    @RequestParam("appPackage") String appPackage) {
+        Wrapper wrapper = installAppsControllerClient.delByAppPackage(schoolCode,cardNumber,appPackage);
         return WrapMapper.ok(wrapper.getResult());
     }
 
 
+    @ApiOperation(value = "查询应用黑白名单", response = Boolean.class)
+    @RequestMapping(value = "/applyControlsWeb/findAppType", method = RequestMethod.GET)
+    public Object findAppType(@RequestParam(name = "appType") Byte appType) {
+        Wrapper wrapper = controlConfigControllerClient.findAppType(appType);
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
+    @ApiOperation(value = "申请应用解锁", response = Boolean.class)
+    @RequestMapping(value = "/applyControlsWeb/applyUnlockApplication", method = RequestMethod.GET)
+    public Object applyUnlockApplication(@RequestBody AddApplyLogDto addApplyLogDto){
+        Wrapper wrapper = applyLogControllerClient.addApplyLog(addApplyLogDto);
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
+    @ApiOperation(value = "提供学校应用下载APP链接", response = Boolean.class)
+    @RequestMapping(value = "/applyControlsWeb/applicationDownloadLink", method = RequestMethod.GET)
+    public Object applicationDownloadLink(@RequestParam("schoolCode") String schoolCode){
+        Wrapper wrapper=appControllerClient.findTheApplicationList(schoolCode);
+        return WrapMapper.ok(wrapper.getResult());
+    }
 
 
 

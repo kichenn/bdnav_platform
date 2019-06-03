@@ -10,17 +10,18 @@
 	  <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
 	  <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
 	  <result column="status" jdbcType="TINYINT" property="status"/>
+	  <result column="add_days" jdbcType="TINYINT" property="addDays"/>
 	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
 	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
 	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,school_id,school_code,school_name,start_time,end_time,status,remark,create_date,update_date
+	  id,school_id,school_code,school_name,start_time,end_time,status,add_days,remark,create_date,update_date
 	</sql>
 
 	<sql id="Base_Column_List">
-	  id,school_code,school_name,start_time,end_time,status,create_date
+	  id,school_code,school_name,start_time,end_time,status,add_days,create_date
 	</sql>
 
 	<!--获取总记录数-->
@@ -32,28 +33,28 @@
 
 	<!--分页+条件查询-->
     <select id="findSchoolServicePermitInConditionPage" resultMap="BaseResultMap">
-	select
+	SELECT
 	<include refid="Base_Column_List" />
-	from t_school_servicepermit
+		FROM t_school_servicepermit
 	<where>
 		<if test="schoolServicePermit.schoolCode!=null and schoolServicePermit.schoolCode!='' ">
-			and school_code like  CONCAT(CONCAT('%',#{schoolServicePermit.schoolCode,jdbcType=VARCHAR}),'%')
+			AND school_code LIKE  CONCAT(CONCAT('%',#{schoolServicePermit.schoolCode,jdbcType=VARCHAR}),'%')
 		</if>
 		<if test="schoolServicePermit.schoolName!=null and schoolServicePermit.schoolName!='' ">
-			and school_name like  CONCAT(CONCAT('%',#{schoolServicePermit.schoolName,jdbcType=VARCHAR}),'%')
+			AND school_name LIKE  CONCAT(CONCAT('%',#{schoolServicePermit.schoolName,jdbcType=VARCHAR}),'%')
 		</if>
 		<if test="schoolServicePermit.status!=null ">
-			and status = #{schoolServicePermit.status}
+			AND status = #{schoolServicePermit.status}
 		</if>
 	</where>
-		order by create_date desc
+		ORDER BY create_date DESC
     </select>
 
 	<!--根据学校编码查询许可记录-->
-    <select id="querySchoolServicePermitCountBySchoolCode" resultType="java.lang.Integer">
-		select
-		count(1)
-		from  t_school_servicepermit where school_code=#{schoolCode}
+    <select id="querySchoolServicePermitCountBySchoolCode" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"/>
+		FROM  t_school_servicepermit WHERE school_code=#{schoolCode}
 	</select>
 
     <!--批量删除-->

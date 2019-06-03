@@ -25,10 +25,11 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="review" jdbcType="VARCHAR" property="review"/>
         <result column="reason" jdbcType="VARCHAR" property="reason"/>
+        <result column="is_read" jdbcType="TINYINT" property="isRead"/>
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark,review,reason
+	  id,platform,account_id,push_sign,model,school_id,school_code,school_name,card_number,user_name,app_name,app_package,operator_code,operator_name,operator_status,start_date,end_date,create_date,update_date,remark,review,reason,is_read
 	</sql>
     <select id="getApplyLogAllCount" resultType="Integer">
 	  SELECT 
@@ -75,7 +76,6 @@
                 AND operator_status=#{applyLog.operatorStatus,jdbcType = TINYINT}
             </if>
         </where>
-
         ORDER BY create_date DESC
     </select>
 
@@ -89,9 +89,10 @@
          start_date = #{startDate},
          end_date = #{endDate},
          update_date = NOW(),
-         remark = NULL
+         is_read = #{isRead},
+         reason = #{reason},
+         remark = #{remark}
         WHERE
            school_code =#{schoolCode} and card_number = #{cardNumber} and  id = #{id}
     </update>
-
 </mapper>

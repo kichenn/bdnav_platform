@@ -1,7 +1,9 @@
 package com.bdxh.order.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.entity.Order;
+import com.bdxh.order.vo.OrderVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Map;
@@ -30,9 +32,5 @@ public interface OrderService extends IService<Order> {
      *
      */
     boolean deleteOrders(String schoolCodes,String userIds,String ids);
-
-
-
-
 
 }

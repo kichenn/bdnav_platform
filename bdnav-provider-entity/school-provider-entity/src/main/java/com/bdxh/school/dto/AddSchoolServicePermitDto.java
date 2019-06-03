@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -45,6 +46,10 @@ public class AddSchoolServicePermitDto implements Serializable {
     @ApiModelProperty("状态 1 服务有效  2 服务无效")
     @NotNull(message = "状态不能为空")
     private SchoolServicePermitStatusEnum status;
+
+
+    @ApiModelProperty("延期天数")
+    private Byte addDays;
 
 
     @ApiModelProperty("备注")

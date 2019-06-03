@@ -107,5 +107,9 @@ public class ModifyApplyLogDto {
     @ApiModelProperty(value ="客户端Ids",name = "客户端Ids")
     private List<String> clientId;
 
-
+    /**
+     * 是否读取：1：已读、2：未读
+     */
+    @ApiModelProperty("是否读取：1：已读、2：未读")
+    private Byte isRead ;
 }

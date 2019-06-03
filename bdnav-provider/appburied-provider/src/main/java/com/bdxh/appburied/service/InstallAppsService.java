@@ -36,4 +36,19 @@ public interface InstallAppsService extends IService<InstallApps> {
      * @return
      */
     Boolean batchSaveInstallAppsInfo(List<AddInstallAppsDto> appInstallList);
+
+    /**
+     * 根据包名删除信息
+     * @param schoolCode
+     * @param cardNumber
+     * @param appPackage
+     * @return
+     */
+    Boolean delByAppPackage(String schoolCode,String cardNumber,String appPackage);
+
+    //批量删除上报应用
+    Boolean batchDelInstallApps(List<Long> ids);
+
+    List<InstallApps> getAccountApplication(String schoolCode,String cardNumber,Long accountId);
+
 }

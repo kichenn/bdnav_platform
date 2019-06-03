@@ -1,5 +1,6 @@
 package com.bdxh.appmarket.persistence;
 
+import com.bdxh.appmarket.dto.ApplicationVersionDto;
 import com.bdxh.appmarket.entity.App;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -39,6 +40,8 @@ public interface AppMapper extends Mapper<App> {
     List<App> familyFindAppInfo(@Param("schoolCode")String schoolCode);
 
     //查询预置应用
-    List<App> thePresetList();
+    List<App> thePresetList(@Param("preset")Byte preset);
 
+    //根据学校编号查询所有信息
+    List<ApplicationVersionDto> findTheApplicationList(@Param("schoolCode")String schoolCode);
 }

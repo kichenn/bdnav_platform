@@ -1,9 +1,6 @@
 package com.bdxh.appmarket.fallback;
 
-import com.bdxh.appmarket.dto.AddAppDto;
-import com.bdxh.appmarket.dto.AppQueryDto;
-import com.bdxh.appmarket.dto.QueryAppDto;
-import com.bdxh.appmarket.dto.UpdateAppDto;
+import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -78,7 +75,13 @@ public class AppControllerClientFallback implements AppControllerClient {
     }
 
     @Override
-    public Wrapper<List<App>> thePresetList() {
+    public Wrapper<List<App>> thePresetList(Byte preset) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<ApplicationVersionDto>> findTheApplicationList(String schoolCode) {
+        return WrapMapper.error();
+    }
+
 }

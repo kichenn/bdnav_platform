@@ -95,6 +95,12 @@ public class ApplyLog {
 	private String appPackage;
 
 	/**
+	 * 是否读取：1：已读、2：未读
+	 */
+	@Column(name="is_read")
+	private Byte isRead;
+
+	/**
 	 *申请理由
 	 */
 	@Column(name = "reason")

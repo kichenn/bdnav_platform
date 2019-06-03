@@ -53,5 +53,5 @@ public interface SchoolServicePermitService extends IService<SchoolServicePermit
 	 * @Author: WanMing
 	 * @Date: 2019/5/30 10:17
 	 */
-	Integer querySchoolServicePermitCountBySchoolCode(String schoolCode);
+	SchoolServicePermit querySchoolServicePermitCountBySchoolCode(String schoolCode);
 }

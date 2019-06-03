@@ -3,6 +3,9 @@ package com.bdxh.appburied.controller;
 import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.InstallApps;
 import com.bdxh.appburied.service.InstallAppsService;
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
+import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
+import com.bdxh.common.utils.ConvertMultipartUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import io.swagger.annotations.Api;
@@ -12,8 +15,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -37,13 +42,23 @@ public class InstallAppsController {
     @RequestMapping(value = "/addInstallApp", method = RequestMethod.POST)
     @ApiOperation(value = "增加上报APP信息", response = Boolean.class)
     public Object addInstallApp(@Validated @RequestBody AddInstallAppsDto addInstallAppsDto) {
-        InstallApps installApps = new InstallApps();
-        BeanUtils.copyProperties(addInstallAppsDto, installApps);
-        //设置状态值
-        installApps.setPlatform(addInstallAppsDto.getInstallAppsPlatformEnum().getKey());
-        //设置id
-        installApps.setId(snowflakeIdWorker.nextId());
-        return WrapMapper.ok(installAppsService.save(installApps) > 0);
+           InstallApps installApps = new InstallApps();
+           BeanUtils.copyProperties(addInstallAppsDto, installApps);
+           //设置id
+           installApps.setId(snowflakeIdWorker.nextId());
+           //设置状态值
+           installApps.setPlatform(addInstallAppsDto.getInstallAppsPlatformEnum().getKey());
+           MultipartFile multipartFile = ConvertMultipartUtil.base64ToMultipart(addInstallAppsDto.getIconUrl());
+           Map<String, String> result = null;
+           try {
+               result = FileOperationUtils.saveBatchFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
+           } catch (Exception e) {
+               e.printStackTrace();
+           }
+           installApps.setIconUrl(result.get("url"));
+           installApps.setIconName(result.get("name"));
+           return WrapMapper.ok(installAppsService.save(installApps) > 0);
+
     }
 
     @RequestMapping(value = "/modifyInstallApp", method = RequestMethod.POST)
@@ -81,21 +96,26 @@ public class InstallAppsController {
 
     @RequestMapping(value = "/findInstallAppsInConation", method = RequestMethod.POST)
     @ApiOperation(value = "上报App信息查询", response = InstallApps.class)
-    public Object findInstallAppsInConation(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber){
-        return WrapMapper.ok(installAppsService.findInstallAppsInConation(schoolCode,cardNumber));
+    public Object findInstallAppsInConation(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+        return WrapMapper.ok(installAppsService.findInstallAppsInConation(schoolCode, cardNumber));
     }
 
 
     @ApiOperation(value = "批量新增应用上报信息")
     @RequestMapping(value = "/batchSaveInstallAppsInfo", method = RequestMethod.POST)
-    public Object batchSaveInstallAppsInfo(@RequestBody List<AddInstallAppsDto> appInstallList){
+    public Object batchSaveInstallAppsInfo(@RequestBody List<AddInstallAppsDto> appInstallList) {
         try {
             return WrapMapper.ok(installAppsService.batchSaveInstallAppsInfo(appInstallList));
-        }catch (Exception e){
+        } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
     }
 
+    @RequestMapping(value = "/delByAppPackage", method = RequestMethod.GET)
+    @ApiOperation(value = "根据包名删除应用", response = Boolean.class)
+    public Object delByAppPackage(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("appPackage") String appPackage) {
+        return WrapMapper.ok(installAppsService.delByAppPackage(schoolCode, cardNumber, appPackage));
+    }
 
 
 }

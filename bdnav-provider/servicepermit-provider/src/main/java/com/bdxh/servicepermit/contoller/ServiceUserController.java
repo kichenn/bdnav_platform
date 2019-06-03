@@ -44,11 +44,6 @@ public class ServiceUserController {
 	@ApiOperation("带条件分页查询")
 	@RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
 	public Object queryServiceUser(@Valid @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
-		//检验参数
-		if(bindingResult.hasErrors()){
-			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-			return WrapMapper.error(errors);
-		}
 		try {
 			Map<String, Object> param = BeanToMapUtil.objectToMap(queryServiceUsedDto);
 			PageInfo<ServiceUser> qrders = serviceUserService.getServiceByCondition(param, queryServiceUsedDto.getPageNum(),queryServiceUsedDto.getPageSize());
@@ -69,16 +64,11 @@ public class ServiceUserController {
 	@ApiOperation("创建用户服务许可")
 	@RequestMapping(value = "/createService", method = RequestMethod.POST)
 	public Object createService(@Valid @RequestBody AddServiceUserDto addServiceUsedDto, BindingResult bindingResult) {
-		//检验参数
-		if (bindingResult.hasErrors()) {
-			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-			return WrapMapper.error(errors);
-		}
 		try {
-			ServiceUser Su=new ServiceUser();
-			Su.setId(snowflakeIdWorker.nextId());
-			BeanUtils.copyProperties(addServiceUsedDto, Su);
-			Boolean flag =serviceUserService.save(Su)>0;
+			ServiceUser serviceUser=new ServiceUser();
+			serviceUser.setId(snowflakeIdWorker.nextId());
+			BeanUtils.copyProperties(addServiceUsedDto, serviceUser);
+			Boolean flag =serviceUserService.save(serviceUser)>0;
 			return WrapMapper.ok(flag);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -95,15 +85,10 @@ public class ServiceUserController {
 	@ApiOperation("修改用户服务许可")
 	@RequestMapping(value = "/updateService", method = RequestMethod.POST)
 	public Object updateService(@Valid @RequestBody ModifyServiceUserDto modifyServiceUsedDto, BindingResult bindingResult) {
-		//检验参数
-		if (bindingResult.hasErrors()) {
-			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-			return WrapMapper.error(errors);
-		}
 		try {
-			ServiceUser Su=new ServiceUser();
-			BeanUtils.copyProperties(modifyServiceUsedDto, Su);
-			Boolean flag =serviceUserService.update(Su)>0;
+			ServiceUser serviceUser=new ServiceUser();
+			BeanUtils.copyProperties(modifyServiceUsedDto, serviceUser);
+			Boolean flag =serviceUserService.update(serviceUser)>0;
 			return WrapMapper.ok(flag);
 		} catch (Exception e) {
 			e.printStackTrace();
