@@ -75,7 +75,7 @@
             <if test="applyLog.operatorStatus !=null and applyLog.operatorName!=''">
                 AND operator_status=#{applyLog.operatorStatus,jdbcType = TINYINT}
             </if>
-            <if test="applyLog.read !=null and applyLog.read!=''">
+            <if test="applyLog.isRead !=null and applyLog.isRead!=''">
                 AND is_read=#{applyLog.isRead,jdbcType = TINYINT}
             </if>
         </where>
