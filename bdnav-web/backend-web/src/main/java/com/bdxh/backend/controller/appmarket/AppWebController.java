@@ -196,8 +196,8 @@ public class AppWebController {
      * 删除APP应用
      */
     @ApiOperation("删除APP应用")
-    @RequestMapping(value = "/delandroidMarket",method = RequestMethod.GET)
-    public Object delandroidMarket(@RequestParam("fileName") String fileName){
+    @RequestMapping(value = "/delAndroidMarket",method = RequestMethod.GET)
+    public Object delAndroidMarket(@RequestParam("fileName") String fileName){
         FileOperationUtils.deleteFile(fileName, QcloudConstants.APP_BUCKET_NAME);
         return WrapMapper.ok(true);
     }
