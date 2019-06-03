@@ -64,15 +64,25 @@ public class SecurityController {
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
 
-    @RequestMapping(value = "/authenticationWeixiao/findAppKeyBySchoolCode", method = RequestMethod.GET)
-    @ApiOperation(value = "schoolCode获取微校appkey信息", response = String.class)
-    public Object findAppKeyBySchoolCode(@RequestParam("schoolCode") String schoolCode) {
+    @RequestMapping(value = "/authenticationWeixiao/toAuth", method = RequestMethod.GET)
+    @ApiOperation(value = "schoolCode进行微校授权", response = String.class)
+    public void toAuth(@RequestParam("schoolCode") String schoolCode) {
         School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
         Preconditions.checkArgument(school != null, "schoolCode异常");
-        Map<String, String> result = new HashMap<>();
-        result.put("schoolCode", school.getSchoolCode());
-        result.put("appKey", AESUtils.enCode(school.getAppKey(), AESUtils.AesConstant.WEIXIAO_KEY));
-        return WrapMapper.ok(result);
+        Map<String, Object> params = new HashMap<>();
+        params.put("school_code", school.getSchoolCode());
+        params.put("app_key", school.getAppKey());
+        params.put("redirect_uri", "http://wx-prod.bdxht.com");
+        try {
+           String result = HttpClientUtils.doGet(WeixiaoLoginConstant.WXCODE_URL, params);
+           log.info(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+//        Map<String, String> result = new HashMap<>();
+//        result.put("schoolCode", school.getSchoolCode());
+//        result.put("appKey", AESUtils.enCode(school.getAppKey(), AESUtils.AesConstant.WEIXIAO_KEY));
+//        return WrapMapper.ok(result);
     }
 
     /**
@@ -82,7 +92,7 @@ public class SecurityController {
      * @throws IOException
      */
     @RequestMapping(value = "/authenticationWeixiao/login", method = RequestMethod.GET)
-    @ApiOperation(value = "获取token(微校授权登录)", response = String.class)
+    @ApiOperation(value = "获取token(微校授权完登录)", response = String.class)
     public void login(@RequestParam("schoolCode") String schoolCode, @RequestParam("wxcode") String wxcode, HttpServletResponse response) throws IOException {
         try {
             //根据学校编码查询学校信息暂时不查询数据库

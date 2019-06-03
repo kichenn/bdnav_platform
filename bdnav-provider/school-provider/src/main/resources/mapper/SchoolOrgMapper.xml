@@ -13,7 +13,7 @@
 	  <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
 	  <result column="org_type" jdbcType="TINYINT" property="orgType"/>
 	  <result column="level" jdbcType="TINYINT" property="level"/>
-	  <result column="sort" jdbcType="INT" property="sort"/>
+	  <result column="sort" jdbcType="INTEGER" property="sort"/>
 	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
 	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
 	  <result column="operator" jdbcType="BIGINT" property="operator"/>
