@@ -49,7 +49,7 @@
 		FROM
 		sys_control_config
 		<where>
-			<if test="appName!=null">app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')</if>
+			<if test="appName!=null and appName!=''">app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')</if>
 			<if test="appType!=null">app_type=#{appType}</if>
 		</where>
 	</select>

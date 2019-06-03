@@ -1,48 +1,110 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdxh.school.mapper.SchoolOrgMapper">
+<mapper namespace="com.bdxh.school.persistence.SchoolOrgMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolOrg">
-	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
-	  <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
-	  <result column="parent_names" jdbcType="VARCHAR" property="parentNames"/>
-	  <result column="this_url" jdbcType="VARCHAR" property="thisUrl"/>
-	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
-	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-	  <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
-	  <result column="org_type" jdbcType="TINYINT" property="orgType"/>
-	  <result column="level" jdbcType="TINYINT" property="level"/>
-	  <result column="sort" jdbcType="INTEGER" property="sort"/>
-	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-	  <result column="operator" jdbcType="BIGINT" property="operator"/>
-	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
-	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
-	</resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolOrg">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="parent_ids" jdbcType="VARCHAR" property="parentIds"/>
+        <result column="parent_names" jdbcType="VARCHAR" property="parentNames"/>
+        <result column="this_url" jdbcType="VARCHAR" property="thisUrl"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="org_name" jdbcType="VARCHAR" property="orgName"/>
+        <result column="org_type" jdbcType="TINYINT" property="orgType"/>
+        <result column="level" jdbcType="TINYINT" property="level"/>
+        <result column="sort" jdbcType="INTEGER" property="sort"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
 
-	<sql id="BaseColumns">
-	  id,parent_id,parent_ids,parent_names,this_url,school_id,school_code,org_name,org_type,level,sort,create_date,update_date,operator,operator_name,remark
+    <sql id="BaseColumns">
+	  id,parent_id,parent_ids,parent_names,this_url,school_id,school_code,org_name,org_type,level,sort,manage_id,manage_card_number,manage_name,create_date,update_date,operator,operator_name,remark
 	</sql>
 
-	<select id="getSchoolOrgAllCount" resultType="Integer">
+    <select id="getSchoolOrgAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
 	  FROM t_school_org 
 	</select>
 
-	<delete id="delSchoolOrgInIds" parameterType="Integer">
-	  DELETE
-	   FROM t_school_org
-	  WHERE
-	   id IN
-	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	          #{id, jdbcType = BIGINT}
-	     </foreach >
-	</delete>
+    <delete id="delSchoolOrgInIds" parameterType="Integer">
+        DELETE
+        FROM t_school_org
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
 
-	<!--查询所有组织院系信息-->
-	<select id="" resultMap="BaseResultMap">
-		SELECT  <include refid="BaseColumns"/>  FROM  t_school_org
-	</select>
+    <!--根据条件查询所有组织院系信息-->
+    <select id="findAllSchoolOrgInfo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_org
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id!=null and id !=''">
+                id=#{id}
+            </if>
+            <if test="parentId!=null and parentId !=''">
+                parent_id=#{parentId}
+            </if>
+            <if test="schoolCode!=null and schoolCode!=''">
+                school_code=#{schoolCode}
+            </if>
+            <if test="parentNames!=null and parentNames!=''">
+                parent_names=#{parentNames}
+            </if>
+            <if test="parentIds!=null and parentIds!=''">
+                parent_ids=#{parentIds}
+            </if>
+            <if test="thisUrl!=null and thisUrl!=''">
+                this_url=#{thisUrl}
+            </if>
+            <if test="schoolId!=null and schoolId!=''">
+                school_id=#{schoolId}
+            </if>
+            <if test="orgName!=null and orgName!=''">
+                org_name LIKE CONCAT('%',CONCAT(#{orgName},'%'))
+            </if>
+            <if test="manageId!=null and manageId!=''">
+                manage_id=#{manageId}
+            </if>
+            <if test="manageName!=null and manageName!=''">
+                manage_name LIKE CONCAT('%',CONCAT(#{manageName},'%'))
+            </if>
+            <if test="orgType !=null and orgType !=''">
+                org_type =#{orgType}
+            </if>
+        </trim>
+        ORDER BY sort DESC
+    </select>
+
+    <!--根据条件查询单个组织架构的详细信息-->
+    <select id="findSchoolOrgInfo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_org
+        <trim prefix="WHERE" prefixOverrides="AND">
+            <if test="id != null and id !=''">
+                id=#{id}
+            </if>
+        </trim>
+        LIMIT 1
+    </select>
+
+    <!-- 查询属于学生的院系组织架构学生 -->
+    <select id="findClassOrg" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_org
+        <where>
+            AND school_id=#{schoolId}
+            AND org_type IN(1,2,3,4,5)
+        </where>
+    </select>
 </mapper>

@@ -1,7 +1,6 @@
 package com.bdxh.client.controller.report;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
-import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,7 +31,7 @@ public class SchoolReportWebController {
 
     /**
      * 展示用户分类数量的信息
-     *
+     * @Author: WanMing
      * @return 学校用户分类数量
      */
     @RequestMapping(value = "/querySchoolUserCategoryCount",method = RequestMethod.GET)

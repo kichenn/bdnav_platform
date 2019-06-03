@@ -1,5 +1,6 @@
 package com.bdxh.appmarket.service.impl;
 
+import com.bdxh.appmarket.dto.ApplicationVersionDto;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
 import com.bdxh.appmarket.entity.AppVersion;
@@ -145,5 +146,10 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     @Override
     public List<App> thePresetList(Byte preset) {
         return appMapper.thePresetList(preset);
+    }
+
+    @Override
+    public List<ApplicationVersionDto> findTheApplicationList(String schoolCode) {
+        return appMapper.findTheApplicationList(schoolCode);
     }
 }

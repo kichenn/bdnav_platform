@@ -1,9 +1,6 @@
 package com.bdxh.appmarket.feign;
 
-import com.bdxh.appmarket.dto.AddAppDto;
-import com.bdxh.appmarket.dto.AppQueryDto;
-import com.bdxh.appmarket.dto.QueryAppDto;
-import com.bdxh.appmarket.dto.UpdateAppDto;
+import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.fallback.AppControllerClientFallback;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -75,4 +72,11 @@ public interface AppControllerClient {
     @RequestMapping(value = "/app/thePresetList", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<App>> thePresetList(@RequestParam("preset") Byte preset);
+
+
+    @RequestMapping(value = "/app/findTheApplicationList", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<ApplicationVersionDto>> findTheApplicationList(@RequestParam("schoolCode") String schoolCode);
+
+
 }

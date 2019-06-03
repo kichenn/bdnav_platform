@@ -6,11 +6,9 @@ import com.bdxh.appburied.dto.ApplyLogQueryDto;
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.service.ApplyLogService;
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.persistence.ApplyLogMapper;
 
-import java.util.Date;
 import java.util.List;
 
 /**
