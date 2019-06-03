@@ -36,6 +36,9 @@ public class FamilyStudentVo implements Serializable {
     @ApiModelProperty("学生姓名")
     private String sName;
 
+    @ApiModelProperty("家长id")
+    private Long fId;
+
     @ApiModelProperty("家长姓名")
     private String fName;
 

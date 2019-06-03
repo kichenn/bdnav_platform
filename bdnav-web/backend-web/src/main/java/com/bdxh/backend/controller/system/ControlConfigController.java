@@ -1,21 +1,20 @@
 package com.bdxh.backend.controller.system;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.AddControlConfig;
-import com.bdxh.system.dto.DeptDto;
 import com.bdxh.system.dto.ModifyControlConfig;
 import com.bdxh.system.dto.QueryControlConfig;
+import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/appControlConfigWeb")
@@ -36,6 +35,9 @@ public class ControlConfigController {
     @ApiOperation("添加应用管控系统信息")
     public Object addControlConfig(@Validated @RequestBody AddControlConfig addControlConfig) {
         try {
+            User user = SecurityUtils.getCurrentUser();
+            addControlConfig.setOperator(user.getId());
+            addControlConfig.setOperatorName(user.getUserName());
             Wrapper wrapper = controlConfigControllerClient.addControlConfig(addControlConfig);
             return wrapper;
         } catch (Exception e) {
@@ -54,6 +56,9 @@ public class ControlConfigController {
     @ApiOperation("修改应用管控系统信息")
     public Object modifyControlConfig(@Validated @RequestBody ModifyControlConfig modifyControlConfig) {
         try {
+            User user = SecurityUtils.getCurrentUser();
+            modifyControlConfig.setOperator(user.getId());
+            modifyControlConfig.setOperatorName(user.getUserName());
             Wrapper wrapper = controlConfigControllerClient.modifyControlConfig(modifyControlConfig);
             return wrapper;
         } catch (Exception e) {

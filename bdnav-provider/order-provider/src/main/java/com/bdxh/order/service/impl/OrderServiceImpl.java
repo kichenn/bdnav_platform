@@ -2,9 +2,12 @@ package com.bdxh.order.service.impl;
 
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.persistence.OrderMapper;
 import com.bdxh.order.service.OrderService;
+import com.bdxh.order.vo.OrderVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,7 +54,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         String[] userId =userIds.split(",");
         String[] id =ids.split(",");
 
-            List<Map<String,String>>list =new ArrayList<>();
+            List<Map<String,String>> list =new ArrayList<>();
             for (int i = 0; i < schoolCode.length; i++) {
                 Map<String,String> map=new HashMap<>();
                 map.put("schoolCode",schoolCode[i]);
@@ -62,5 +65,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
             return orderMapper.deleteByOrderIds(list) > 0;
 
     }
+
+
 
 }

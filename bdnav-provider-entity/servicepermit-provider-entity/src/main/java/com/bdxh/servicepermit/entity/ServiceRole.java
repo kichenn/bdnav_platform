@@ -10,7 +10,11 @@ import java.lang.Long;
 /**
 * @Description: 实体类
 * @Author Kang
+<<<<<<< HEAD
+* @Date 2019-06-01 10:47:48
+=======
 * @Date 2019-05-31 11:36:26
+>>>>>>> 155daf9faf19898290ead2286b7fbbfb47f88f7a
 */
 @Data
 @Table(name = "t_service_role")

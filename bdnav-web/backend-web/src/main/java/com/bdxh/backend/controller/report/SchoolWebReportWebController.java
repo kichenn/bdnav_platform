@@ -1,20 +1,15 @@
 package com.bdxh.backend.controller.report;
 
-import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.feign.SchoolControllerClient;
-import com.bdxh.system.feign.UserControllerClient;
-import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.feign.BaseUserControllerClient;
-import com.bdxh.user.feign.FamilyControllerClient;
-import com.bdxh.user.feign.StudentControllerClient;
-import com.bdxh.user.feign.TeacherControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 
 /**
@@ -41,6 +36,7 @@ public class SchoolWebReportWebController {
 
     /**
      * 展示用户分类数据量的信息
+     * @Author: WanMing
      * @return 学校用户分类数据量
      */
     @RequestMapping(value = "/querySchoolUserCategoryCount",method = RequestMethod.GET)
@@ -51,6 +47,7 @@ public class SchoolWebReportWebController {
 
     /**
      * 展示不同地区下学校的数量
+     * @Author: WanMing
      * @return 不同地区的学校数量
      */
     @RequestMapping(value = "/querySchoolNumByArea",method = RequestMethod.GET)

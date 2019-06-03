@@ -53,4 +53,14 @@ public class FamilyStudentServiceImpl extends BaseService<FamilyStudent> impleme
     }
 
 
+    /**
+     * @Description: 学生卡号 +学校code 查询绑定关系
+     * @Author: Kang
+     * @Date: 2019/6/1 10:13
+     */
+    @Override
+    public FamilyStudentVo studentQueryInfo(String schoolCode, String cardNumber) {
+        FamilyStudentVo familyStudentVo = familyStudentMapper.studentQueryInfo(schoolCode, cardNumber);
+        return familyStudentVo;
+    }
 }
