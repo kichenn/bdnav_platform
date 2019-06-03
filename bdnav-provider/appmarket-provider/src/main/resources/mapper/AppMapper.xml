@@ -1,112 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.appmarket.persistence.AppMapper">
-  <resultMap id="BaseResultMap" type="com.bdxh.appmarket.entity.App">
-    <id column="id" jdbcType="BIGINT" property="id"/>
-    <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
-    <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-    <result column="platform" jdbcType="TINYINT" property="platform"/>
-    <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
-    <result column="app_name" jdbcType="VARCHAR" property="appName"/>
-    <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
-    <result column="icon_url" jdbcType="VARCHAR" property="iconUrl"/>
-    <result column="icon_name" jdbcType="VARCHAR" property="iconName"/>
-    <result column="app_version" jdbcType="VARCHAR" property="appVersion"/>
-    <result column="app_desc" jdbcType="VARCHAR" property="appDesc"/>
-    <result column="status" jdbcType="TINYINT" property="status"/>
-    <result column="preset" jdbcType="TINYINT" property="preset"/>
-    <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-    <result column="operator" jdbcType="BIGINT" property="operator"/>
-    <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
-    <result column="remark" jdbcType="VARCHAR" property="remark"/>
-  </resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.appmarket.entity.App">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="platform" jdbcType="TINYINT" property="platform"/>
+        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+        <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+        <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
+        <result column="icon_url" jdbcType="VARCHAR" property="iconUrl"/>
+        <result column="icon_name" jdbcType="VARCHAR" property="iconName"/>
+        <result column="app_version" jdbcType="VARCHAR" property="appVersion"/>
+        <result column="app_desc" jdbcType="VARCHAR" property="appDesc"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="preset" jdbcType="TINYINT" property="preset"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
 
-  <sql id="BaseColumns">
+    <resultMap id="BResultMap" type="com.bdxh.appmarket.dto.ApplicationVersionDto">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="platform" jdbcType="TINYINT" property="platform"/>
+        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+        <result column="app_name" jdbcType="VARCHAR" property="appName"/>
+        <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
+        <result column="icon_url" jdbcType="VARCHAR" property="iconUrl"/>
+        <result column="icon_name" jdbcType="VARCHAR" property="iconName"/>
+        <result column="app_version" jdbcType="VARCHAR" property="appVersion"/>
+        <result column="app_desc" jdbcType="VARCHAR" property="appDesc"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="preset" jdbcType="TINYINT" property="preset"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="app_id" jdbcType="BIGINT" property="appId"/>
+        <result column="apk_name" jdbcType="VARCHAR" property="apkName"/>
+        <result column="apk_url" jdbcType="VARCHAR" property="apkUrl"/>
+        <result column="apk_url_name" jdbcType="VARCHAR" property="apkUrlName"/>
+        <result column="apk_size" jdbcType="BIGINT" property="apkSize"/>
+        <result column="apk_desc" jdbcType="VARCHAR" property="apkDesc"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
 	  id,school_id,school_code,platform,category_id,app_name,app_package,icon_url,icon_name,app_version,app_desc,status,preset,create_date,update_date,operator,operator_name,remark
 	</sql>
-  <select id="isCategoryAppExist" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    <select id="isCategoryAppExist" parameterType="java.lang.Long" resultType="java.lang.Integer">
     select 1 from t_app where category_id = #{categoryId} limit 1;
   </select>
 
-  <select id="isAppExist" parameterType="java.lang.String" resultType="java.lang.Integer">
+    <select id="isAppExist" parameterType="java.lang.String" resultType="java.lang.Integer">
     select 1 from t_app where app_package = #{appPackage} limit 1;
   </select>
 
-  <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select <include refid="BaseColumns"/> from t_app
-    <where>
-      <if test="schoolId!=null">
-        school_id=#{schoolId}
-      </if>
-      <if test="platform!=null">
-        and platform = #{platform}
-      </if>
-      <if test="categoryId!=null">
-        and category_id = #{categoryId}
-      </if>
-      <if test="appName!= null and appName!=''">
-        and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
-      </if>
-      <if test="appPackage!=null and appPackage!=''">
-        and app_package LIKE CONCAT(CONCAT('%',#{appPackage}),'%')
-      </if>
-      <if test="status!=null">
-        and status = #{status}
-      </if>
-      <if test="preset!=null">
-        and preset = #{preset}
-      </if>
-    </where>
-    order by create_date desc
-  </select>
+    <select id="getByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_app
+        <where>
+            <if test="schoolId!=null">
+                school_id=#{schoolId}
+            </if>
+            <if test="platform!=null">
+                and platform = #{platform}
+            </if>
+            <if test="categoryId!=null">
+                and category_id = #{categoryId}
+            </if>
+            <if test="appName!= null and appName!=''">
+                and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+            </if>
+            <if test="appPackage!=null and appPackage!=''">
+                and app_package LIKE CONCAT(CONCAT('%',#{appPackage}),'%')
+            </if>
+            <if test="status!=null">
+                and status = #{status}
+            </if>
+            <if test="preset!=null">
+                and preset = #{preset}
+            </if>
+        </where>
+        order by create_date desc
+    </select>
 
-  <select id="getApplicationOfCollection" parameterType="java.util.Map" resultMap="BaseResultMap">
-    select
-    <include refid="BaseColumns"/>
-    from
-    t_app
-    <where>
-      school_id IS NULL
-    <if test="appName!= null and appName!=''">
-      and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
-    </if>
-    <if test="platform!= null">
-      and platform = #{platform}
-    </if>
-    </where>
-    UNION
-    SELECT
-    <include refid="BaseColumns"/>
-    FROM
-    t_app
-    <where>
-      school_id=#{schoolId}
-    <if test="appName!= null and appName!=''">
-      and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
-    </if>
-      <if test="platform!= null">
-        and platform = #{platform}
-      </if>
-    </where>
-  </select>
+    <select id="getApplicationOfCollection" parameterType="java.util.Map" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from
+        t_app
+        <where>
+            school_id IS NULL
+            <if test="appName!= null and appName!=''">
+                and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+            </if>
+            <if test="platform!= null">
+                and platform = #{platform}
+            </if>
+        </where>
+        UNION
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_app
+        <where>
+            school_id=#{schoolId}
+            <if test="appName!= null and appName!=''">
+                and app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')
+            </if>
+            <if test="platform!= null">
+                and platform = #{platform}
+            </if>
+        </where>
+    </select>
 
-  <!-- 家长查询应用市场列表-->
-  <select id="familyFindAppInfo" resultMap="BaseResultMap">
-    select <include refid="BaseColumns"/> from t_app
-    <where>
-    status =1 AND
-    school_code=#{schoolCode} or ISNULL(school_code)
-    </where>
-  </select>
+    <!-- 家长查询应用市场列表-->
+    <select id="familyFindAppInfo" resultMap="BaseResultMap">
+        select
+        <include refid="BaseColumns"/>
+        from t_app
+        <where>
+            status =1 AND
+            school_code=#{schoolCode} or ISNULL(school_code)
+        </where>
+    </select>
 
-  <!-- 查询预置应用app -->
-  <select id="thePresetList" resultMap="BaseResultMap">
-    SELECT
-    <include refid="BaseColumns"/>
-    FROM
-	t_app
-    WHERE
-    preset=#{preset}
-  </select>
+    <!-- 查询预置应用app -->
+    <select id="thePresetList" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_app
+        WHERE
+        preset=#{preset}
+    </select>
+
+    <select id="findTheApplicationList" parameterType="java.util.Map" resultMap="BResultMap">
+        SELECT
+       t_app.*,t_app_version.app_id,t_app_version.apk_name,t_app_version.apk_url,t_app_version.apk_url_name,t_app_version.apk_size,t_app_version.apk_desc
+        FROM
+        t_app
+        INNER JOIN t_app_version ON t_app.id = t_app_version.app_id
+        WHERE
+        t_app.school_code = #{schoolCode}
+    </select>
 </mapper>

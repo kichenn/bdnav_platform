@@ -3,10 +3,12 @@ package com.bdxh.app.controller.applycontrols;
 
 import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.security.utils.SecurityUtils;
+import com.bdxh.appburied.dto.AddApplyLogDto;
 import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.dto.AppStatusQueryDto;
 import com.bdxh.appburied.dto.DelOrFindAppBuriedDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
+import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
 import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.feign.AppControllerClient;
@@ -64,6 +66,9 @@ public class ApplyControlsWebController {
 
     @Autowired
     private ControlConfigControllerClient controlConfigControllerClient;
+
+    @Autowired
+    private ApplyLogControllerClient applyLogControllerClient;
 
 
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
@@ -168,6 +173,21 @@ public class ApplyControlsWebController {
         Wrapper wrapper = controlConfigControllerClient.findAppType(appType);
         return WrapMapper.ok(wrapper.getResult());
     }
+
+    @ApiOperation(value = "申请应用解锁", response = Boolean.class)
+    @RequestMapping(value = "/applyControlsWeb/applyUnlockApplication", method = RequestMethod.GET)
+    public Object applyUnlockApplication(@RequestBody AddApplyLogDto addApplyLogDto){
+        Wrapper wrapper = applyLogControllerClient.addApplyLog(addApplyLogDto);
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
+    @ApiOperation(value = "提供学校应用下载APP链接", response = Boolean.class)
+    @RequestMapping(value = "/applyControlsWeb/applicationDownloadLink", method = RequestMethod.GET)
+    public Object applicationDownloadLink(@RequestParam("schoolCode") String schoolCode){
+        Wrapper wrapper=appControllerClient.findTheApplicationList(schoolCode);
+        return WrapMapper.ok(wrapper.getResult());
+    }
+
 
 
 }

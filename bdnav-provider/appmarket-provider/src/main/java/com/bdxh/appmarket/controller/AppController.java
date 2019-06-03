@@ -69,6 +69,7 @@ public class AppController {
             Preconditions.checkArgument(isAppExist == null, "应用包名已存在");
             App app = BeanMapUtils.map(addAppDto, App.class);
             AppVersion appVersion = BeanMapUtils.map(addAppDto, AppVersion.class);
+            appVersion.setApkUrl(addAppDto.getApkUrl()+"&response-content-disposition=attachment");
             List<AddAppImageDto> addImageDtos = addAppDto.getAddImageDtos();
             List<AppImage> appImages = BeanMapUtils.mapList(addImageDtos, AppImage.class);
             appService.saveApp(app, appImages, appVersion);
@@ -312,6 +313,19 @@ public class AppController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    @ApiOperation("查询当前学校所有应用接口")
+    @RequestMapping(value = "/findTheApplicationList",method = RequestMethod.GET)
+    public Object findTheApplicationList(@RequestParam("schoolCode") String schoolCode) {
+        try {
+            List<ApplicationVersionDto> app = appService.findTheApplicationList(schoolCode);
+            return WrapMapper.ok(app);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 
 }
