@@ -94,8 +94,8 @@
          end_date = #{endDate},
          update_date = NOW(),
          `read` =#{read},
-         reason =#{reason}
-         remark = NULL
+         reason =#{reason},
+         remark = #{remark}
         WHERE
            school_code =#{schoolCode} and card_number = #{cardNumber} and  id = #{id}
     </update>
