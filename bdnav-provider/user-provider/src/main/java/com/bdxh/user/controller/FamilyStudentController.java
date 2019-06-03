@@ -36,33 +36,34 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
 
-@Api(value ="家长学生绑定接口API", tags = "家长学生绑定接口API")
+@Api(value = "家长学生绑定接口API", tags = "家长学生绑定接口API")
 @RestController
 @RequestMapping("/familyStudent")
 @Validated
 @Slf4j
 public class FamilyStudentController {
 
-@Autowired
-private FamilyStudentService familyStudentService;
+    @Autowired
+    private FamilyStudentService familyStudentService;
 
-@Autowired
-private SnowflakeIdWorker snowflakeIdWorker;
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
-@Autowired
-private RedisUtil redisUtil;
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 绑定孩子接口
+     *
      * @param addFamilyStudentDto
      * @param bindingResult
      * @return
      */
-    @ApiOperation(value="绑定孩子接口")
-    @RequestMapping(value = "/bindingStudent",method = RequestMethod.POST)
-    public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult){
+    @ApiOperation(value = "绑定孩子接口")
+    @RequestMapping(value = "/bindingStudent", method = RequestMethod.POST)
+    public Object bindingStudent(@Valid @RequestBody AddFamilyStudentDto addFamilyStudentDto, BindingResult bindingResult) {
         //检验参数
-        if(bindingResult.hasErrors()){
+        if (bindingResult.hasErrors()) {
             String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
             return WrapMapper.error(errors);
         }
@@ -80,20 +81,21 @@ private RedisUtil redisUtil;
 
     /**
      * 删除学生家长绑定关系
+     *
      * @param schoolCode
      * @param cardNumber
      * @param id
      * @return
      */
     @ApiOperation(value = "删除学生家长绑定关系")
-    @RequestMapping(value = "/removeFamilyOrStudent",method = RequestMethod.GET)
-    public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message="学校Code不能为空")String schoolCode,
-                                        @RequestParam(name = "cardNumber") @NotNull(message="微校卡号不能为空")String cardNumber,
-                                        @RequestParam(name = "id") @NotNull(message="id不能为空")String id){
-        try{
-            familyStudentService.removeFamilyStudentInfo(schoolCode, cardNumber,id);
+    @RequestMapping(value = "/removeFamilyOrStudent", method = RequestMethod.GET)
+    public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
+                                        @RequestParam(name = "cardNumber") @NotNull(message = "微校卡号不能为空") String cardNumber,
+                                        @RequestParam(name = "id") @NotNull(message = "id不能为空") String id) {
+        try {
+            familyStudentService.removeFamilyStudentInfo(schoolCode, cardNumber, id);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
@@ -101,11 +103,12 @@ private RedisUtil redisUtil;
 
     /**
      * 查询所有家长与孩子关系
+     *
      * @param familyStudentQueryDto
      * @return
      */
     @ApiOperation(value = "查询所有家长与孩子关系")
-    @RequestMapping(value = "/queryAllFamilyStudent",method =RequestMethod.POST)
+    @RequestMapping(value = "/queryAllFamilyStudent", method = RequestMethod.POST)
     public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
         try {
             PageInfo<FamilyStudentVo> familyStudentVoPageInfo = familyStudentService.queryAllFamilyStudent(familyStudentQueryDto);
@@ -116,15 +119,27 @@ private RedisUtil redisUtil;
         }
     }
 
+    /**
+     * @Description: 学生卡号 +学校code 查询绑定关系
+     * @Author: Kang
+     * @Date: 2019/6/1 10:10
+     */
+    @ApiOperation(value = "学生卡号 +学校code 查询绑定关系", response = FamilyStudentVo.class)
+    @RequestMapping(value = "/studentQueryInfo", method = RequestMethod.GET)
+    public Object studentQueryInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+        FamilyStudentVo familyStudent = familyStudentService.studentQueryInfo(schoolCode, cardNumber);
+        return WrapMapper.ok(familyStudent);
+    }
+
     @ApiOperation(value = "微校平台----手机获取短信验证码")
-    @RequestMapping(value = "/getPhoneCode",method = RequestMethod.POST)
-    public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
+    @RequestMapping(value = "/getPhoneCode", method = RequestMethod.POST)
+    public Object getPhoneCode(@RequestParam(name = "phone") @NotNull(message = "手机号码不能为空") String phone) {
         if (!ValidatorUtil.isMobile(phone)) {
             return WrapMapper.error("请输入正确的手机号");
         }
         //生成随机数
         String code = RandomUtil.createNumberCode(4);
-        redisUtil.setWithExpireTime(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +phone,code,AliyunSmsConstants.CodeConstants.CAPTCHA_TIME);
+        redisUtil.setWithExpireTime(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX + phone, code, AliyunSmsConstants.CodeConstants.CAPTCHA_TIME);
         SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_VERIFICATION, phone, code + ",:绑定孩子");
         return WrapMapper.ok(Boolean.TRUE);
     }

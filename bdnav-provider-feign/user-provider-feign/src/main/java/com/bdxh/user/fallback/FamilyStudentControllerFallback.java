@@ -38,4 +38,9 @@ public class FamilyStudentControllerFallback implements FamilyStudentControllerC
     public Wrapper<Boolean> getPhoneCode(@NotNull(message = "手机号码不能为空") String phone) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<FamilyStudentVo> studentQueryInfo(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
 }
