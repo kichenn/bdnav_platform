@@ -52,6 +52,7 @@
 			<if test="appName!=null and appName!=''">app_name LIKE CONCAT(CONCAT('%',#{appName}),'%')</if>
 			<if test="appType!=null">app_type=#{appType}</if>
 		</where>
+		ORDER BY sys_control_config.create_date DESC
 	</select>
 
 
