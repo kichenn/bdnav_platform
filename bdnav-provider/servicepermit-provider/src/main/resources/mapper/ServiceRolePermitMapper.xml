@@ -48,6 +48,9 @@
         INNER JOIN t_service_user `user` ON permit.service_user_id = `user`.id
         <where>
             `user`.car_number =#{familyCardNumber}
+            AND
+            <!--正常使用的账户-->
+            `user`.status= 1;
         </where>
 
     </select>
