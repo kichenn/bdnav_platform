@@ -18,30 +18,26 @@ public class OrderQueryDto extends Query {
     /**
      * 订单号
      */
-
     @ApiModelProperty("订单号")
-    private Long OrderNo;
+    private Long orderNo;
 
     /**
      * 学校编码
      */
-
     @ApiModelProperty("学校编码")
-    private String SchoolCode;
+    private String schoolCode;
 
     /**
      * 用户id
      */
-
     @ApiModelProperty("用户id")
-    private Long UserId;
+    private Long userId;
 
     /**
      * 学号
      */
     @ApiModelProperty("学号")
-    private String CardNumber;
+    private String cardNumber;
 
-    @ApiModelProperty("购买数量")
-    private Integer count;
+
 }

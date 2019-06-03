@@ -7,8 +7,7 @@ package com.bdxh.order.enums;
  **/
 public enum OrderTradeTypeEnum {
 
-    WECHAT_JSAPI(new Byte("1"),"JSAPI","微信JSAPI支付"),
-    WECHAT_APP(new Byte("2"),"APP","微信APP支付");
+    WECHAT_JSAPI(new Byte("1"),"JSAPI","微信JSAPI支付");
 
     private Byte code;
 

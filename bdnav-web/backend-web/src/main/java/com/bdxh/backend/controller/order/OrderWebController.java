@@ -3,7 +3,7 @@ package com.bdxh.backend.controller.order;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.order.dto.OrderAddDto;
+import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.feign.OrdersControllerClient;
@@ -16,7 +16,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.stream.Collectors;
 
@@ -36,7 +35,7 @@ import java.util.stream.Collectors;
 public class OrderWebController {
 
     @Autowired
-    private OrdersControllerClient oControllerClient;
+    private OrdersControllerClient ordersControllerClient;
 
 
 
@@ -49,7 +48,7 @@ public class OrderWebController {
             return WrapMapper.error(errors);
         }
             try {
-                Wrapper wrapper = oControllerClient.queryUserOrder(orderDto);
+                Wrapper wrapper = ordersControllerClient.queryUserOrder(orderDto);
                 return wrapper;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -66,7 +65,7 @@ public class OrderWebController {
                               @RequestParam(name = "orderNo") @NotNull(message = "订单id不能为空") Long orderNo) {
 
         try {
-            Wrapper wrapper = oControllerClient.deleteOrder(schoolCode, userId, orderNo);
+            Wrapper wrapper = ordersControllerClient.deleteOrder(schoolCode, userId, orderNo);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -74,20 +73,17 @@ public class OrderWebController {
         }
     }
 
-    @ApiOperation("添加订单")
+
     @RequestMapping(value = "/addOrder", method = RequestMethod.POST)
-    public Object addOrder(@Validated @RequestBody OrderAddDto orderDto, BindingResult bindingResult){
-        //检验参数
-        if (bindingResult.hasErrors()) {
-            String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
-            return WrapMapper.error(errors);
-        }
+    @ApiOperation(value = "添加订单",response = Boolean.class)
+    public Object addOrder(@Validated @RequestBody AddOrderDto addOrderDto){
+        User user = SecurityUtils.getCurrentUser();
+        addOrderDto.setOperator(user.getId());
+        addOrderDto.setOperatorName(user.getUserName());
 
         try {
-            User user = SecurityUtils.getCurrentUser();
-            orderDto.setOperator(user.getId());
-            orderDto.setOperatorName(user.getUserName());
-            Wrapper wrapper = oControllerClient.createOrder(orderDto);
+
+            Wrapper wrapper = ordersControllerClient.createOrder(addOrderDto);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -110,7 +106,7 @@ public class OrderWebController {
             User user = SecurityUtils.getCurrentUser();
             orderUpdateDto.setOperator(user.getId());
             orderUpdateDto.setOperatorName(user.getUserName());
-            Wrapper wrapper = oControllerClient.updateOrder(orderUpdateDto);
+            Wrapper wrapper = ordersControllerClient.updateOrder(orderUpdateDto);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
