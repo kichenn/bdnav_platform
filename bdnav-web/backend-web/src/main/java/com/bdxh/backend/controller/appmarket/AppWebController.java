@@ -188,6 +188,19 @@ public class AppWebController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return WrapMapper.ok(result.get("url"));
+        return WrapMapper.ok(result);
     }
+
+
+    /**
+     * 删除APP应用
+     */
+    @ApiOperation("删除APP应用")
+    @RequestMapping(value = "/delandroidMarket")
+    public Object delandroidMarket(@RequestParam("fileName") String fileName){
+        FileOperationUtils.deleteFile(fileName, QcloudConstants.APP_BUCKET_NAME);
+        return WrapMapper.ok(true);
+    }
+
+
 }
