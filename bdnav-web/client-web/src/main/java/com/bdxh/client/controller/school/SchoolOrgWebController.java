@@ -53,7 +53,7 @@ public class SchoolOrgWebController {
     @RequestMapping(value = "/findAllSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件查询所有的学校组织架构信息")
     public Object findAllSchoolOrgInfo(@RequestBody SchoolOrgQueryDto schoolOrgQueryDto) {
-        return WrapMapper.ok(schoolOrgControllerClient.findAllSchoolOrgInfo(schoolOrgQueryDto));
+        return schoolOrgControllerClient.findAllSchoolOrgInfo(schoolOrgQueryDto);
     }
 
     /**
@@ -66,7 +66,7 @@ public class SchoolOrgWebController {
     public Object findSchoolOrgTreeInfo() {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
-        return WrapMapper.ok(schoolOrgControllerClient.findSchoolOrgTreeInfo(user.getSchoolId()));
+        return schoolOrgControllerClient.findSchoolOrgTreeInfo(user.getSchoolId());
     }
 
     /**
