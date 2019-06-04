@@ -29,7 +29,7 @@
         </foreach>
     </delete>
 
-    <select id="queryServiceRole" resultType="com.bdxh.servicepermit.entity.ServiceRole">
+    <select id="queryServiceRole" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
         FROM t_service_role
