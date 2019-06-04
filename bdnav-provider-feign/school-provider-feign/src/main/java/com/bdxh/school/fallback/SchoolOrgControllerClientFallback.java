@@ -52,4 +52,9 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
     public Wrapper<List<SchoolOrg>> findAllOrgInfo() {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<SchoolOrg>> findBySchoolOrgByParentId(Long parentId) {
+        return WrapMapper.error();
+    }
 }

@@ -63,4 +63,11 @@ public interface SchoolOrgMapper extends Mapper<SchoolOrg> {
      * @return
      */
     int updateSchoolOrgInfo(Map<String,Object> map);
+
+    /**
+     * 根据ParentId查询学校组织架构信息
+     * @param parentId
+     * @return
+     */
+    List<SchoolOrg> findBySchoolOrgByParentId(@Param("parentId")Long parentId);
 }

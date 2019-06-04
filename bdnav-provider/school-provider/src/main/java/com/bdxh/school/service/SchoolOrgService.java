@@ -44,4 +44,7 @@ public interface SchoolOrgService extends IService<SchoolOrg> {
 
     //查询所有组织架构信息
     List<SchoolOrg> findAllOrgInfo();
+
+    //根据父ID查询学校组织架构信息
+    List<SchoolOrg> findBySchoolOrgByParentId(Long parentId);
 }
