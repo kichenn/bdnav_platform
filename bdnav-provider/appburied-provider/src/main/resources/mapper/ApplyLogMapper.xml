@@ -43,7 +43,7 @@
         FROM t_apply_log
         <where>
             <if test="applyLog.platform !=null">
-                platform=#{applyLog.platform,jdbcType = TINYINT}
+                AND platform=#{applyLog.platform,jdbcType = TINYINT}
             </if>
             <if test="applyLog.model !=null">
                 AND model=#{applyLog.model,jdbcType = TINYINT}

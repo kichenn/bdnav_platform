@@ -6,7 +6,9 @@ import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
+import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.service.SchoolOrgService;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.persistence.SchoolOrgMapper;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -69,6 +72,32 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
     @Transactional(rollbackFor = Exception.class)
     public Boolean updateSchoolOrgInfo(SchoolOrgUpdateDto schoolOrgUpdateDto) {
         Map<String, Object> param = BeanToMapUtil.objectToMap(schoolOrgUpdateDto);
+        SchoolOrg schoolOrg=BeanMapUtils.map(schoolOrgUpdateDto,SchoolOrg.class);
+
+        if (new Long("-1").equals(schoolOrg.getParentId())) {
+            schoolOrg.setParentNames("");
+            schoolOrg.setThisUrl(schoolOrg.getOrgName());
+            schoolOrg.setParentIds("");
+        } else {
+            //查询父亲节点
+            SchoolOrg schoolOrgTemp = findSchoolOrgInfo(schoolOrg.getParentId());
+            //树状
+            schoolOrg.setParentNames(schoolOrgTemp.getParentNames() + "/" + schoolOrgTemp.getOrgName());
+            schoolOrg.setThisUrl(schoolOrgTemp.getParentNames() + "/" + schoolOrgTemp.getOrgName() + "/" + schoolOrg.getOrgName());
+            schoolOrg.setParentIds(schoolOrgTemp.getParentIds() + "," + schoolOrgTemp.getId());
+        }
+        //查询当前节点的子节点
+        // 修改当前组织，  子部门组织的 url parentnames 要跟着修改
+        SchoolOrgQueryDto schoolOrgQueryDto=new SchoolOrgQueryDto();
+        schoolOrgQueryDto.setParentId(schoolOrg.getId());
+        List<SchoolOrg> orgs = findAllSchoolOrgInfo(schoolOrgQueryDto);
+        if (CollectionUtils.isNotEmpty(orgs)) {
+            orgs.forEach(e -> {
+                e.setParentNames(schoolOrg.getParentNames() + "/" + schoolOrg.getOrgName());
+                e.setThisUrl(schoolOrg.getParentNames() + "/" + schoolOrg.getOrgName() + "/" + e.getOrgName());
+                schoolOrgMapper.updateByPrimaryKeySelective(e);
+            });
+        }
         Boolean result = schoolOrgMapper.updateSchoolOrgInfo(param) > 0;
         return result;
     }
@@ -81,7 +110,19 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
     @Override
     public Boolean insertSchoolOrgInfo(SchoolOrgAddDto schoolOrgAddDto) {
         SchoolOrg schoolOrg=BeanMapUtils.map(schoolOrgAddDto,SchoolOrg.class);
-        Boolean result= schoolOrgMapper.insert(schoolOrg)>0;
+        if (new Long("-1").equals(schoolOrg.getParentId())) {
+            schoolOrg.setParentNames("");
+            schoolOrg.setThisUrl(schoolOrg.getOrgName());
+            schoolOrg.setParentIds("");
+        } else {
+            //查询父亲节点
+            SchoolOrg schoolOrgTemp = findSchoolOrgInfo(schoolOrg.getParentId());
+            //树状
+            schoolOrg.setParentNames(schoolOrgTemp.getParentNames() + "/" + schoolOrgTemp.getOrgName());
+            schoolOrg.setThisUrl(schoolOrgTemp.getParentNames() + "/" + schoolOrgTemp.getOrgName() + "/" + schoolOrgTemp.getOrgName());
+            schoolOrg.setParentIds(schoolOrgTemp.getParentIds() + "," + schoolOrgTemp.getId());
+        }
+        Boolean result = schoolOrgMapper.insertSelective(schoolOrg) > 0;
         return result;
     }
 }

@@ -32,16 +32,10 @@
         <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
         <result column="icon_url" jdbcType="VARCHAR" property="iconUrl"/>
         <result column="icon_name" jdbcType="VARCHAR" property="iconName"/>
-        <result column="app_version" jdbcType="VARCHAR" property="appVersion"/>
         <result column="app_desc" jdbcType="VARCHAR" property="appDesc"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="preset" jdbcType="TINYINT" property="preset"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-        <result column="operator" jdbcType="BIGINT" property="operator"/>
-        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
-        <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="app_id" jdbcType="BIGINT" property="appId"/>
         <result column="apk_name" jdbcType="VARCHAR" property="apkName"/>
         <result column="apk_url" jdbcType="VARCHAR" property="apkUrl"/>
         <result column="apk_url_name" jdbcType="VARCHAR" property="apkUrlName"/>
@@ -143,7 +137,7 @@
 
     <select id="findTheApplicationList" parameterType="java.util.Map" resultMap="BResultMap">
         SELECT
-       t_app.*,t_app_version.app_id,t_app_version.apk_name,t_app_version.apk_url,t_app_version.apk_url_name,t_app_version.apk_size,t_app_version.apk_desc
+       t_app.*,t_app_version.apk_name,t_app_version.apk_url,t_app_version.apk_url_name,t_app_version.apk_size,t_app_version.apk_desc
         FROM
         t_app
         INNER JOIN t_app_version ON t_app.id = t_app_version.app_id

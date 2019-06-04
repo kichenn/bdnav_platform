@@ -67,14 +67,22 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     throw new ExpiredJwtException(null, claims, "登录已失效");
                 }
                 String userStr = (String) claims.get(SecurityConstant.USER_INFO);
+                String authorityListStr = (String) claims.get(SecurityConstant.AUTHORITIES);
+
                 UserInfo userInfo = JSON.parseObject(userStr, UserInfo.class);
                 //设置当前登录用户
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 if (securityContext != null) {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     if (authentication == null) {
+                        //获取权限
+                        List<String> authorityList = JSON.parseObject(authorityListStr, List.class);
+                        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                        if (authorityList != null && !authorityList.isEmpty()) {
+                            authorityList.forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority)));
+                        }
                         MyUserDetails myUserDetails = new MyUserDetails(userInfo.getCardNumber(), userInfo);
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, new ArrayList<>());
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
                         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     }

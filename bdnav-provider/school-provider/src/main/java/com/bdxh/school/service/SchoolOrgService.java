@@ -30,7 +30,7 @@ public interface SchoolOrgService extends IService<SchoolOrg> {
     //根据条件查询单个学校组织架构信息
     SchoolOrg findSchoolOrgInfo(Long id);
 
-    //根据学校Code查询学生组织架构信息
+    //根据学校Id查询学生组织架构信息
     List<SchoolOrg> findClassOrg(Long schoolId);
 
     //根据ID删除组织架构信息

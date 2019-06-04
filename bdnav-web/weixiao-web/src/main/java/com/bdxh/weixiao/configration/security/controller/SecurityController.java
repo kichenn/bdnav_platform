@@ -11,6 +11,8 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.servicepermit.feign.ServiceRolePermitControllerClient;
+import com.bdxh.servicepermit.vo.ServiceRolePermitInfoVo;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.FamilyStudentVo;
@@ -28,6 +30,7 @@ import io.jsonwebtoken.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,29 +63,27 @@ public class SecurityController {
     @Autowired
     private SchoolControllerClient schoolControllerClient;
 
+    @Autowired
+    private ServiceRolePermitControllerClient serviceRolePermitControllerClient;
+
 
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
 
     @RequestMapping(value = "/authenticationWeixiao/toAuth", method = RequestMethod.GET)
-    @ApiOperation(value = "schoolCode进行微校授权", response = String.class)
-    public void toAuth(@RequestParam("schoolCode") String schoolCode) {
+    @ApiOperation(value = "schoolCode进行返回微校授权信息", response = String.class)
+    public Object toAuth(@RequestParam("schoolCode") String schoolCode, @RequestParam("address") String address) {
         School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
         Preconditions.checkArgument(school != null, "schoolCode异常");
-        Map<String, Object> params = new HashMap<>();
-        params.put("school_code", school.getSchoolCode());
-        params.put("app_key", school.getAppKey());
-        params.put("redirect_uri", "http://wx-prod.bdxht.com");
-        try {
-           String result = HttpClientUtils.doGet(WeixiaoLoginConstant.WXCODE_URL, params);
-           log.info(result);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-//        Map<String, String> result = new HashMap<>();
-//        result.put("schoolCode", school.getSchoolCode());
-//        result.put("appKey", AESUtils.enCode(school.getAppKey(), AESUtils.AesConstant.WEIXIAO_KEY));
-//        return WrapMapper.ok(result);
+
+        String redirectUri = WeixiaoLoginConstant.REDIRECT_URI_URL.replace("@address@", address);
+
+        String wxCodeUrl = WeixiaoLoginConstant.WXCODE_URL.replace("@schoolCode@", school.getSchoolCode())
+                .replace("@appKey@", school.getAppKey())
+                .replace("@redirectUri@", redirectUri);
+
+        log.info("授权url:" + wxCodeUrl);
+        return WrapMapper.ok(wxCodeUrl);
     }
 
     /**
@@ -119,39 +120,79 @@ public class SecurityController {
             jsonObject = JSON.parseObject(userInfoResponseStr);
             String resultCode = jsonObject.getString("errcode");
             Preconditions.checkArgument(StringUtils.equals(resultCode, "0"), "获取用户信息失败");
+
+            log.info("userInfo:" + JSONObject.toJSONString(jsonObject));
             //组装用户信息放入
             UserInfo userInfo = new UserInfo();
             userInfo.setSchoolCode(schoolCode);
             userInfo.setName(jsonObject.getString("name"));
-            userInfo.setCardNumber(jsonObject.getString("card_number"));
             userInfo.setWeixiaoStuId(jsonObject.getString("weixiao_stu_id"));
             userInfo.setPhone(jsonObject.getString("telephone"));
             userInfo.setIdentityType(jsonObject.getString("identity_type"));
-
-            //学生卡号查询 学生相关信息以及家长信息
-            FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber()).getResult();
-            Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
-            userInfo.setStudentId(familyStudentVo.getId());
-            userInfo.setFamilyId(familyStudentVo.getFId());
-            userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
-
-            //组装用户权限信息
-            List<WeixiaoGrantedAuthority> authorities = new ArrayList<>();
-            //查询权限列表
-            // Wrapper<List<String>> permissionWrapper = permissionControllerClient.permissionMenusByUserId(user.getId());
-            //   List<String> permissions = permissionWrapper.getResult();
-            //  if (permissions != null && !permissions.isEmpty()) {
-            //权限的菜单 也需要 以 ROLE_开头(我们库中未以ROLE开头 所以在此累加)
-            //      permissions.forEach(permission -> authorities.add(new WeixiaoGrantedAuthority(WeixiaoPermit weixiaoPermit)));
-            // }
-
+            //设置角色和权限信息
             Map<String, Object> claims = new HashMap<>(16);
-            UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
-            claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
-            //claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorityList));
+
+            //家长登录设置权限相关信息
+            if (userInfo.getIdentityType().equals("1")) {
+                //家长卡号查询 自己孩子相关信息以及家长信息
+//                FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber()).getResult();
+//                Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
+//                userInfo.setFamilyId(familyStudentVo.getFId());
+//                userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
+
+                //组装用户权限信息
+                List<WeixiaoPermit> weixiaoPermits = new ArrayList<>();
+                List<String> authorities = new ArrayList<>();
+
+                HashMap<String, List<String>> mapWeixiaoPermits = new HashMap<>();
+                //查询服务权限列表信息
+                Wrapper<List<ServiceRolePermitInfoVo>> rolePermitsWrapper = serviceRolePermitControllerClient.findServiceRolePermitInfoVo(userInfo.getFamilyCardNumber());
+                List<ServiceRolePermitInfoVo> rolePermits = rolePermitsWrapper.getResult();
+                if (CollectionUtils.isNotEmpty(rolePermits)) {
+                    rolePermits.forEach(e -> {
+                        if (mapWeixiaoPermits.containsKey(e.getRoleName())) {
+                            //此角色存在
+                            List<String> mapPermits = mapWeixiaoPermits.get(e.getRoleName());
+                            mapPermits.add(e.getStudentCardNumber());
+                            mapWeixiaoPermits.put(e.getRoleName(), mapPermits);
+                        } else {
+                            //此角色不存在
+                            List<String> tempPermits = new ArrayList<>();
+                            tempPermits.add(e.getStudentCardNumber());
+                            mapWeixiaoPermits.put(e.getRoleName(), tempPermits);
+                        }
+                    });
+                    //添加权限
+                    for (String key : mapWeixiaoPermits.keySet()) {
+                        WeixiaoPermit weixiaoPermit = new WeixiaoPermit();
+                        weixiaoPermit.setRole(key);
+                        weixiaoPermit.setStudentCardNumber(mapWeixiaoPermits.get(key));
+                        authorities.add(weixiaoPermit.getRole());
+                        weixiaoPermits.add(weixiaoPermit);
+                    }
+                }
+                userInfo.setWeixiaoGrantedAuthorities(weixiaoPermits);
+                //设置角色和权限信息
+                UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
+                claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
+                claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorities));
+            } else {
+                //孩子登录
+                List<String> cardNumbers=new ArrayList<>();
+                cardNumbers.add(jsonObject.getString("card_number"));
+                userInfo.setCardNumber(cardNumbers);
+                //学生卡号查询 学生相关信息以及家长信息
+                FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult();
+                Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
+                userInfo.setFamilyId(familyStudentVo.getFId());
+                userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
+
+                //学生登录只设置自己的信息
+                UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
+                claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
+            }
 
             String subject = userInfo.getWeixiaoStuId();
-            String claim = JSONObject.toJSONString(userInfo);
             //生成token
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(subject)
                     .addClaims(claims)
@@ -176,8 +217,8 @@ public class SecurityController {
             response.setContentType("application/json;charset=utf-8");
             response.getOutputStream().write(JSON.toJSONString(wrapper).getBytes("utf-8"));
         }
-    }
 
+    }
 
     @GetMapping("/getWeixiaoUserInfoByToken")
     @ApiOperation(value = "token获取用户信息", response = String.class)

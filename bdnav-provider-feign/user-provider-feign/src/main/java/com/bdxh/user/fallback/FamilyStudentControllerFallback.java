@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @description:
@@ -41,6 +42,11 @@ public class FamilyStudentControllerFallback implements FamilyStudentControllerC
 
     @Override
     public Wrapper<FamilyStudentVo> studentQueryInfo(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<FamilyStudentVo>> queryStudentByFamilyCardNumber(String familyCardNumber) {
         return WrapMapper.error();
     }
 }
