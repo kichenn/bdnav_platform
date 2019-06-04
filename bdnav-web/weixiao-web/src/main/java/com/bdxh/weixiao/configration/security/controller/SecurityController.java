@@ -135,10 +135,10 @@ public class SecurityController {
             //家长登录设置权限相关信息
             if (userInfo.getIdentityType().equals("1")) {
                 //家长卡号查询 自己孩子相关信息以及家长信息
-                FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber()).getResult();
-                Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
-                userInfo.setFamilyId(familyStudentVo.getFId());
-                userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
+//                FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber()).getResult();
+//                Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
+//                userInfo.setFamilyId(familyStudentVo.getFId());
+//                userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
 
                 //组装用户权限信息
                 List<WeixiaoPermit> weixiaoPermits = new ArrayList<>();
