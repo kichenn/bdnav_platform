@@ -143,7 +143,7 @@ public class SecurityController {
                 //组装用户权限信息
                 List<WeixiaoPermit> weixiaoPermits = new ArrayList<>();
                 List<String> authorities = new ArrayList<>();
-
+ 
                 HashMap<String, List<String>> mapWeixiaoPermits = new HashMap<>();
                 //查询服务权限列表信息
                 Wrapper<List<ServiceRolePermitInfoVo>> rolePermitsWrapper = serviceRolePermitControllerClient.findServiceRolePermitInfoVo(userInfo.getFamilyCardNumber());
