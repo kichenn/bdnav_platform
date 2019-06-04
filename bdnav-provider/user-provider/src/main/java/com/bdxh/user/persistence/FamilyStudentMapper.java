@@ -28,6 +28,9 @@ public interface FamilyStudentMapper extends Mapper<FamilyStudent> {
     //学生查询关系表数据
     FamilyStudentVo studentQueryInfo(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
 
+    //家长卡号查询绑定关系信息
+    List<FamilyStudentVo> queryStudentByFamilyCardNumber(@Param("familyCardNumber")String familyCardNumber);
+
     //修改学生名称
     int updateStudentInfo(@Param("familyStudentDto") FamilyStudent FamilyStudentDto);
 

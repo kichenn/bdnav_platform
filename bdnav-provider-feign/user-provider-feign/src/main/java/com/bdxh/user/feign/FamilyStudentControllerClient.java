@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 
 /**
@@ -72,4 +73,14 @@ public interface FamilyStudentControllerClient {
     @ResponseBody
     @RequestMapping(value = "/familyStudent/studentQueryInfo", method = RequestMethod.GET)
     Wrapper<FamilyStudentVo> studentQueryInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber);
+
+    /**
+     * @Description: 家长卡号查询绑定关系
+     * @Author: Kang
+     * @Date: 2019/6/4 11:12
+     */
+    @ResponseBody
+    @RequestMapping(value = "/familyStudent/queryStudentByFamilyCardNumber", method = RequestMethod.GET)
+    Wrapper<List<FamilyStudentVo>> queryStudentByFamilyCardNumber(@RequestParam("familyCardNumber") String familyCardNumber);
+
 }
