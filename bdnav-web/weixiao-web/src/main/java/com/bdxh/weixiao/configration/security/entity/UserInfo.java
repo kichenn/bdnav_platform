@@ -1,8 +1,10 @@
 package com.bdxh.weixiao.configration.security.entity;
 
+import com.bdxh.weixiao.configration.security.userdetail.WeixiaoGrantedAuthority;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @Description: 用户信息
@@ -47,4 +49,7 @@ public class UserInfo implements Serializable {
 
     //家长号
     private String familyCardNumber;
+
+    //权限集合(role --- studentcardNumber 学生卡号)
+    private List<WeixiaoPermit> weixiaoGrantedAuthorities;
 }

@@ -139,34 +139,45 @@ public class SecurityController {
             userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
 
             //组装用户权限信息
-            List<WeixiaoGrantedAuthority> authorities = new ArrayList<>();
+            List<WeixiaoPermit> weixiaoPermits = new ArrayList<>();
+            List<String> authorities = new ArrayList<>();
 
-            HashMap<String, List<String>> weixiaoPermits = new HashMap<>();
+            HashMap<String, List<String>> mapWeixiaoPermits = new HashMap<>();
             //查询服务权限列表信息
             Wrapper<List<ServiceRolePermitInfoVo>> rolePermitsWrapper = serviceRolePermitControllerClient.findServiceRolePermitInfoVo(userInfo.getFamilyCardNumber());
             List<ServiceRolePermitInfoVo> rolePermits = rolePermitsWrapper.getResult();
-//            if (CollectionUtils.isNotEmpty(rolePermits)) {
-//                rolePermits.forEach(e -> {
-//
-//                });
-//                WeixiaoPermit weixiaoPermit = new WeixiaoPermit();
-//                weixiaoPermit.setRole(e.getRoleName());
-////                    weixiaoPermit.setUserIds(e.get);
-////                    WeixiaoGrantedAuthority weixiaoGrantedAuthority=new WeixiaoGrantedAuthority();
-//
-//            });
-            //  if (permissions != null && !permissions.rolePermitsWrapper()) {
-            //权限的菜单 也需要 以 ROLE_开头(我们库中未以ROLE开头 所以在此累加)
-            //      permissions.forEach(permission -> authorities.add(new WeixiaoGrantedAuthority(WeixiaoPermit weixiaoPermit)));
-            // }
+            if (CollectionUtils.isNotEmpty(rolePermits)) {
+                rolePermits.forEach(e -> {
+                    if (mapWeixiaoPermits.containsKey(e.getRoleName())) {
+                        //此角色存在
+                        List<String> mapPermits = mapWeixiaoPermits.get(e.getRoleName());
+                        mapPermits.add(e.getStudentCardNumber());
+                        mapWeixiaoPermits.put(e.getRoleName(), mapPermits);
+                    } else {
+                        //此角色不存在
+                        List<String> tempPermits = new ArrayList<>();
+                        tempPermits.add(e.getStudentCardNumber());
+                        mapWeixiaoPermits.put(e.getRoleName(), tempPermits);
+                    }
+                });
+                //添加权限
+                for (String key : mapWeixiaoPermits.keySet()) {
+                    WeixiaoPermit weixiaoPermit = new WeixiaoPermit();
+                    weixiaoPermit.setRole(key);
+                    weixiaoPermit.setStudentCardNumber(mapWeixiaoPermits.get(key));
+                    authorities.add(weixiaoPermit.getRole());
+                    weixiaoPermits.add(weixiaoPermit);
+                }
+            }
+            userInfo.setWeixiaoGrantedAuthorities(weixiaoPermits);
 
+            //设置角色和权限信息
             Map<String, Object> claims = new HashMap<>(16);
             UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
             claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
-            //claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorityList));
+            claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorities));
 
             String subject = userInfo.getWeixiaoStuId();
-            String claim = JSONObject.toJSONString(userInfo);
             //生成token
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(subject)
                     .addClaims(claims)
@@ -182,8 +193,7 @@ public class SecurityController {
             response.setCharacterEncoding("utf-8");
             response.setContentType("application/json;charset=utf-8");
             response.getOutputStream().write(JSON.toJSONString(wrapper).getBytes("utf-8"));
-        } catch (
-                Exception e) {
+        } catch (Exception e) {
             Wrapper<String> wrapper = WrapMapper.error(e.getMessage());
             response.setHeader("Access-Control-Allow-Origin", "*");
             response.setStatus(500);
@@ -194,7 +204,6 @@ public class SecurityController {
         }
 
     }
-
 
     @GetMapping("/getWeixiaoUserInfoByToken")
     @ApiOperation(value = "token获取用户信息", response = String.class)
