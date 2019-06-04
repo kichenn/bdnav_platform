@@ -6,7 +6,6 @@ import com.bdxh.app.configration.security.utils.SecurityUtils;
 import com.bdxh.appburied.dto.AddApplyLogDto;
 import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.dto.AppStatusQueryDto;
-import com.bdxh.appburied.dto.DelOrFindAppBuriedDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
@@ -167,7 +166,7 @@ public class ApplyControlsWebController {
     }
 
 
-    @ApiOperation(value = "查询应用黑白名单", response = Boolean.class)
+    @ApiOperation(value = "查询应用黑盒|隐藏", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/findAppType", method = RequestMethod.GET)
     public Object findAppType(@RequestParam(name = "appType") Byte appType) {
         Wrapper wrapper = controlConfigControllerClient.findAppType(appType);
@@ -187,7 +186,6 @@ public class ApplyControlsWebController {
         Wrapper wrapper=appControllerClient.findTheApplicationList(schoolCode);
         return WrapMapper.ok(wrapper.getResult());
     }
-
 
 
 }

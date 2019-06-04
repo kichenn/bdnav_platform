@@ -89,31 +89,31 @@ public class ApplicationVersionDto {
     /**
      * apk文件名称
      */
-    @Column(name = "apk_name")
+    @ApiModelProperty("apk文件名称")
     private String apkName;
 
     /**
      * apk文件下载地址
      */
-    @Column(name = "apk_url")
+    @ApiModelProperty("apk文件下载地址")
     private String apkUrl;
 
     /**
      * 文件服务器名称
      */
-    @Column(name = "apk_url_name")
+    @ApiModelProperty("文件服务器名称")
     private String apkUrlName;
 
     /**
      * apk文件大小
      */
-    @Column(name = "apk_size")
+    @ApiModelProperty("apk文件大小")
     private Long apkSize;
 
     /**
      * apk描述
      */
-    @Column(name = "apk_desc")
+    @ApiModelProperty("apk描述")
     private String apkDesc;
 
 

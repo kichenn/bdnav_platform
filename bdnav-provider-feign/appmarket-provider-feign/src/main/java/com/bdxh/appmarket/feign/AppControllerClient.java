@@ -3,6 +3,7 @@ package com.bdxh.appmarket.feign;
 import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.fallback.AppControllerClientFallback;
+import com.bdxh.appmarket.vo.appDownloadlinkVo;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -76,7 +77,7 @@ public interface AppControllerClient {
 
     @RequestMapping(value = "/app/findTheApplicationList", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<ApplicationVersionDto>> findTheApplicationList(@RequestParam("schoolCode") String schoolCode);
+    Wrapper<List<appDownloadlinkVo>> findTheApplicationList(@RequestParam("schoolCode") String schoolCode);
 
 
 }
