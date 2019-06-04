@@ -5,9 +5,6 @@ import com.bdxh.appburied.enums.ApplyLogOperatorStatusEnum;
 import com.bdxh.appburied.enums.InstallAppsPlatformEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.beans.factory.annotation.Value;
-
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -22,13 +19,13 @@ import java.util.Date;
 public class AddApplyLogDto {
 
     @NotNull(message = "应用平台不能为空")
-    @ApiModelProperty("平台 1 android 2 ios")
+    @ApiModelProperty(" *平台 1 android 2 ios")
     private InstallAppsPlatformEnum installAppsPlatformEnum;
 
-    @ApiModelProperty("账户id")
+    @ApiModelProperty("*账户id")
     private Long accountId;
 
-    @ApiModelProperty("推送标识")
+    @ApiModelProperty("*推送标识")
     private String pushSign;
 
     @NotNull(message = "APP应用日志模式不能为空")
@@ -36,18 +33,18 @@ public class AddApplyLogDto {
     private ApplyLogModelEnum applyLogModelEnum;
 
     @NotEmpty(message = "学校ID不能为空")
-    @ApiModelProperty("学校ID")
+    @ApiModelProperty("*学校ID")
     private Long schoolId;
 
     @NotEmpty(message = "学校编码不能为空")
-    @ApiModelProperty("学校编码")
+    @ApiModelProperty("*学校编码")
     private String schoolCode;
 
-    @ApiModelProperty("学校名称")
+    @ApiModelProperty("*学校名称")
     private String schoolName;
 
     @NotEmpty(message = "用户学号不能为空")
-    @ApiModelProperty("用户学号")
+    @ApiModelProperty("*用户学号")
     private String cardNumber;
 
     /**
@@ -56,7 +53,10 @@ public class AddApplyLogDto {
     @ApiModelProperty("是否读取：1：已读、2：未读")
     private Byte isRead =2;
 
-    @ApiModelProperty("用户姓名")
+    @ApiModelProperty("*申请理由")
+    private String reason;
+
+    @ApiModelProperty("*用户姓名")
     private String userName;
 
     @ApiModelProperty("应用名称")

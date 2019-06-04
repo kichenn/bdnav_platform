@@ -3,6 +3,7 @@ package com.bdxh.appmarket.fallback;
 import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.feign.AppControllerClient;
+import com.bdxh.appmarket.vo.appDownloadlinkVo;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
@@ -80,7 +81,7 @@ public class AppControllerClientFallback implements AppControllerClient {
     }
 
     @Override
-    public Wrapper<List<ApplicationVersionDto>> findTheApplicationList(String schoolCode) {
+    public Wrapper<List<appDownloadlinkVo>> findTheApplicationList(String schoolCode) {
         return WrapMapper.error();
     }
 

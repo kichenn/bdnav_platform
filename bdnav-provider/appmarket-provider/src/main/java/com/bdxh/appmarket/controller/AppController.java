@@ -9,6 +9,7 @@ import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.service.AppImageService;
 import com.bdxh.appmarket.service.AppService;
 import com.bdxh.appmarket.service.AppVersionService;
+import com.bdxh.appmarket.vo.appDownloadlinkVo;
 import com.bdxh.common.helper.getui.constant.GeTuiConstant;
 import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
 import com.bdxh.common.helper.getui.request.AppPushRequest;
@@ -20,6 +21,7 @@ import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import jdk.management.resource.internal.inst.FileOutputStreamRMHooks;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -318,8 +320,17 @@ public class AppController {
     @RequestMapping(value = "/findTheApplicationList",method = RequestMethod.GET)
     public Object findTheApplicationList(@RequestParam("schoolCode") String schoolCode) {
         try {
+            List<appDownloadlinkVo> applink=new ArrayList<>();
             List<ApplicationVersionDto> app = appService.findTheApplicationList(schoolCode);
-            return WrapMapper.ok(app);
+            for (int i = 0; i < app.size(); i++) {
+                appDownloadlinkVo adl=new appDownloadlinkVo();
+                adl.setApkUrl(app.get(i).getApkUrl());
+                adl.setAppName(app.get(i).getAppName());
+                adl.setAppPackage(app.get(i).getAppPackage());
+                adl.setIconUrl(app.get(i).getIconUrl());
+                applink.add(adl);
+            }
+            return WrapMapper.ok(applink);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Api(value = "家长学生绑定接口API", tags = "家长学生绑定接口API")
@@ -117,6 +118,19 @@ public class FamilyStudentController {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
+    }
+
+    /**
+     * 家长卡号查询绑定关系
+     *
+     * @param familyCardNumber
+     * @return
+     */
+    @ApiOperation(value = "家长卡号查询绑定关系", response = FamilyStudentVo.class)
+    @RequestMapping(value = "/queryStudentByFamilyCardNumber", method = RequestMethod.GET)
+    public Object queryStudentByFamilyCardNumber(@RequestParam("familyCardNumber") String familyCardNumber) {
+        List<FamilyStudentVo> familyStudent = familyStudentService.queryStudentByFamilyCardNumber(familyCardNumber);
+        return WrapMapper.ok(familyStudent);
     }
 
     /**

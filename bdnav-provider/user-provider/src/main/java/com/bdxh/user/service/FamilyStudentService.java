@@ -42,4 +42,11 @@ public interface FamilyStudentService extends IService<FamilyStudent> {
      */
     FamilyStudentVo studentQueryInfo(String schoolCode, String cardNumber);
 
+    /**
+     * 家长卡号查询绑定关系信息
+     * @param familyCardNumber
+     * @return
+     */
+    List<FamilyStudentVo> queryStudentByFamilyCardNumber(String familyCardNumber);
+
 }

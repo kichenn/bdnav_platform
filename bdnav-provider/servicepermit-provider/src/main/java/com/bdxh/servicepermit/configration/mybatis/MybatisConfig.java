@@ -115,6 +115,15 @@ public class MybatisConfig {
         result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
         return result;
     }
+    @Bean
+    public TableRuleConfiguration getServiceRolePermitTableRuleConfiguration() {
+        TableRuleConfiguration result = new TableRuleConfiguration();
+        result.setLogicTable("t_service_role_permit");
+        result.setActualDataNodes("ds_${0..1}.t_service_role_permit${0..3}");
+        result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
+        result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
+        return result;
+    }
 
     @Bean
     public TableRuleConfiguration getServiceRoleTableRuleConfiguration() {
@@ -124,14 +133,6 @@ public class MybatisConfig {
         return result;
     }
 
-    @Bean
-    public TableRuleConfiguration getServiceRolePermitTableRuleConfiguration() {
-        TableRuleConfiguration result = new TableRuleConfiguration();
-        result.setLogicTable("t_service_role_permit");
-        result.setActualDataNodes("ds_${0..1}.t_service_role_permit{0..3}");
-        result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
-        result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
-        return result;
-    }
+
 
 }

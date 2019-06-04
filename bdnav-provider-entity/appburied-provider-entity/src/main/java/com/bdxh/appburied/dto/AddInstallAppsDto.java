@@ -18,38 +18,37 @@ import java.util.Date;
 public class AddInstallAppsDto {
 
 	@NotNull(message = "平台不能为空")
-	@ApiModelProperty("平台 1 android 2 ios")
+	@ApiModelProperty("*平台 1 android 2 ios")
 	private InstallAppsPlatformEnum installAppsPlatformEnum;
 
-	@ApiModelProperty("账户id")
+	@ApiModelProperty("*账户id")
 	private Long accountId;
 
-	@ApiModelProperty("学校ID")
+	@ApiModelProperty("*学校ID")
 	private Long schoolId;
 
-
-	@ApiModelProperty("学校编码")
+	@ApiModelProperty("*学校编码")
 	private String schoolCode;
 
-	@ApiModelProperty("学校名称")
+	@ApiModelProperty("*学校名称")
 	private String schoolName;
 
-	@ApiModelProperty("用户学号")
+	@ApiModelProperty("*用户学号")
 	private String cardNumber;
 
-	@ApiModelProperty("用户姓名")
+	@ApiModelProperty("*用户姓名")
 	private String userName;
 
-	@ApiModelProperty("应用名称")
+	@ApiModelProperty("*应用名称")
 	private String appName;
 
-	@ApiModelProperty("应用包名")
+	@ApiModelProperty("*应用包名")
 	private String appPackage;
 
-	@ApiModelProperty("应用图标地址")
+	@ApiModelProperty("*应用图标地址")
 	private String iconUrl;
 
-	@ApiModelProperty("应用图标名称")
+	@ApiModelProperty("*应用图标名称")
 	private String iconName;
 
 }

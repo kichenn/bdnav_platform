@@ -32,15 +32,11 @@ public class ServiceRoleController {
     @Autowired
     private ServiceRoleService serviceRoleService;
 
-    @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
-
     @ApiOperation(value = "新增服务许可角色", response = Boolean.class)
     @RequestMapping(value = "/addServiceRole", method = RequestMethod.POST)
     public Object addServiceRole(@Validated @RequestBody AddServiceRoleDto addServiceRole) {
         ServiceRole serviceRole = new ServiceRole();
         BeanUtils.copyProperties(addServiceRole, serviceRole);
-        serviceRole.setId(snowflakeIdWorker.nextId());
         return WrapMapper.ok(serviceRoleService.save(serviceRole) > 0);
     }
 
