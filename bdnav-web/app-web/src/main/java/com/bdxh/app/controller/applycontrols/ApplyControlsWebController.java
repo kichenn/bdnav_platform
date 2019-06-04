@@ -173,7 +173,7 @@ public class ApplyControlsWebController {
         return WrapMapper.ok(wrapper.getResult());
     }
 
-    @ApiOperation(value = "申请应用解锁", response = Boolean.class)
+    @ApiOperation(value = "申请应用畅玩(解锁)", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/applyUnlockApplication", method = RequestMethod.POST)
     public Object applyUnlockApplication(@RequestBody AddApplyLogDto addApplyLogDto){
         Wrapper wrapper = applyLogControllerClient.addApplyLog(addApplyLogDto);

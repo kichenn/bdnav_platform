@@ -45,7 +45,9 @@ public class ApplyLogController {
         applyLog.setOperatorStatus(addApplyLogDto.getApplyLogOperatorStatusEnum().getKey());
         //设置id
         applyLog.setId(snowflakeIdWorker.nextId());
-        return WrapMapper.ok(applyLogService.save(applyLog) > 0);
+        Boolean result=applyLogService.save(applyLog) > 0;
+        System.out.println("12131313131"+result);
+        return WrapMapper.ok(result);
     }
 
     @RequestMapping(value = "/modifyApplyLog", method = RequestMethod.POST)

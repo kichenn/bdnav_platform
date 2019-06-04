@@ -32,7 +32,7 @@ public class AddApplyLogDto {
     @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")
     private ApplyLogModelEnum applyLogModelEnum;
 
-    @NotEmpty(message = "学校ID不能为空")
+
     @ApiModelProperty("*学校ID")
     private Long schoolId;
 
@@ -71,9 +71,9 @@ public class AddApplyLogDto {
     @ApiModelProperty("操作人姓名(审核人)")
     private String operatorName;
 
-    @Null(message = "操作状态必需为空，新增时只能为之待审核")
+
     @ApiModelProperty("操作状态 1 待审核 2 审核拒绝 3 审核通过(新增时只能为之待审核) ")
-    private ApplyLogOperatorStatusEnum applyLogOperatorStatusEnum = ApplyLogOperatorStatusEnum.WAIT;
+    private ApplyLogOperatorStatusEnum applyLogOperatorStatusEnum=ApplyLogOperatorStatusEnum.WAIT;
 
     @ApiModelProperty("开始时间")
     private Date startDate;
