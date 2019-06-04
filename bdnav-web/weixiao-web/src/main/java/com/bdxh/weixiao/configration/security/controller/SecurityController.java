@@ -45,6 +45,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 腾讯微校认证信息
@@ -134,16 +135,20 @@ public class SecurityController {
 
             //家长登录设置权限相关信息
             if (userInfo.getIdentityType().equals("1")) {
+                //家长登录(设置卡号)
+                userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
                 //家长卡号查询 自己孩子相关信息以及家长信息
-//                FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber()).getResult();
-//                Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
-//                userInfo.setFamilyId(familyStudentVo.getFId());
-//                userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
+                List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getFamilyCardNumber()).getResult();
+                Preconditions.checkArgument(CollectionUtils.isNotEmpty(familyStudentVo), "学生卡号，学校code异常");
+                userInfo.setFamilyId(familyStudentVo.get(0).getFId());
+                userInfo.setCardNumber(familyStudentVo.stream().map(e -> {
+                    return e.getSCardNumber();
+                }).collect(Collectors.toList()));
 
                 //组装用户权限信息
                 List<WeixiaoPermit> weixiaoPermits = new ArrayList<>();
                 List<String> authorities = new ArrayList<>();
-
+                //权限map（key：roleName value：list<String> 开通此权限的孩子列表）
                 HashMap<String, List<String>> mapWeixiaoPermits = new HashMap<>();
                 //查询服务权限列表信息
                 Wrapper<List<ServiceRolePermitInfoVo>> rolePermitsWrapper = serviceRolePermitControllerClient.findServiceRolePermitInfoVo(userInfo.getFamilyCardNumber());
@@ -178,7 +183,7 @@ public class SecurityController {
                 claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorities));
             } else {
                 //孩子登录
-                List<String> cardNumbers=new ArrayList<>();
+                List<String> cardNumbers = new ArrayList<>();
                 cardNumbers.add(jsonObject.getString("card_number"));
                 userInfo.setCardNumber(cardNumbers);
                 //学生卡号查询 学生相关信息以及家长信息
