@@ -46,7 +46,6 @@ public class ApplyLogController {
         //设置id
         applyLog.setId(snowflakeIdWorker.nextId());
         Boolean result=applyLogService.save(applyLog) > 0;
-        System.out.println("12131313131"+result);
         return WrapMapper.ok(result);
     }
 
