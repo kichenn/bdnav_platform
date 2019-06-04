@@ -57,6 +57,17 @@
           card_number as fCardNumber,
           relation   from t_family_student where student_number=#{cardNumber} and school_code=#{schoolCode}
     </select>
+    <!--家长卡号查询绑定关系信息-->
+    <select id="queryStudentByFamilyCardNumber" resultType="com.bdxh.user.vo.FamilyStudentVo">
+          select
+          student_id AS id,
+          student_name AS sName,
+          student_number AS sCardNumber,
+          id AS fsId,
+          family_id  AS fId,
+          card_number as fCardNumber,
+          relation   from t_family_student where card_number=#{familyCardNumber}
+    </select>
     <select id="queryaAllFamilyStudent" resultType="com.bdxh.user.vo.FamilyStudentVo">
          select
           student_id AS id,

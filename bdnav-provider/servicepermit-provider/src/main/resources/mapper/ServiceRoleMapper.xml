@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.servicepermit.persistence.ServiceRoleMapper">
 
-<<<<<<< HEAD
     <resultMap id="BaseResultMap" type="com.bdxh.servicepermit.entity.ServiceRole">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
@@ -30,7 +29,7 @@
         </foreach>
     </delete>
 
-    <select id="queryServiceRole" resultType="com.bdxh.servicepermit.entity.ServiceRole">
+    <select id="queryServiceRole" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
         FROM t_service_role
@@ -39,6 +38,8 @@
                 `name` LIKE CONCAT(CONCAT('%',#{serviceRole.name,jdbcType=VARCHAR}),'%')
             </if>
         </where>
+
+         ORDER BY create_date DESC
     </select>
 
 </mapper>

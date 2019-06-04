@@ -67,14 +67,23 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     throw new ExpiredJwtException(null, claims, "登录已失效");
                 }
                 String userStr = (String) claims.get(SecurityConstant.USER_INFO);
+                String authorityListStr = (String) claims.get(SecurityConstant.AUTHORITIES);
+
                 UserInfo userInfo = JSON.parseObject(userStr, UserInfo.class);
                 //设置当前登录用户
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 if (securityContext != null) {
                     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     if (authentication == null) {
-                        MyUserDetails myUserDetails = new MyUserDetails(userInfo.getCardNumber(), userInfo);
-                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, new ArrayList<>());
+                        //获取权限
+                        List<String> authorityList = JSON.parseObject(authorityListStr, List.class);
+                        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
+                        if (authorityList != null && !authorityList.isEmpty()) {
+                            authorityList.forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority)));
+                        }
+                        //默认设置第一个孩子为cardnumber
+                        MyUserDetails myUserDetails = new MyUserDetails(userInfo.getCardNumber().get(0), userInfo);
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
                         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                     }
@@ -103,11 +112,15 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
         } else if (authHeader != null && authHeader.equals("BDXH_TEST")) {
             UserInfo user = new UserInfo();
             user.setWeixiaoStuId("test_1111");
-            user.setCardNumber("22222");
+            //学生卡号列表
+            List<String> cardNumbers = new ArrayList<>();
+            cardNumbers.add("22222");
+            user.setCardNumber(cardNumbers);
             user.setName("ceshi");
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            MyUserDetails myUserDetails = new MyUserDetails(user.getCardNumber(), user);
+            //默认设置第一个孩子为cardnumber
+            MyUserDetails myUserDetails = new MyUserDetails(user.getCardNumber().get(0), user);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
