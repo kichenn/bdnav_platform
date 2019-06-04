@@ -53,7 +53,7 @@ public class MybatisConfig {
         //分库分表策略
         shardingRuleConfig.getTableRuleConfigs().add(getStudentTableRuleConfiguration());
         shardingRuleConfig.getTableRuleConfigs().add(getServiceRoleTableRuleConfiguration());
-        shardingRuleConfig.getTableRuleConfigs().add(getServiceRolePermitTableRuleConfiguration());
+//        shardingRuleConfig.getTableRuleConfigs().add(getServiceRolePermitTableRuleConfiguration());
 
         //级联绑定表，用于优化查询
 //        shardingRuleConfig.getBindingTableGroups().add("t_family,t_family_student");
@@ -115,15 +115,6 @@ public class MybatisConfig {
         result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
         return result;
     }
-
-    @Bean
-    public TableRuleConfiguration getServiceRoleTableRuleConfiguration() {
-        TableRuleConfiguration result = new TableRuleConfiguration();
-        result.setLogicTable("t_service_role");
-        result.setActualDataNodes("ds_${0}.t_service_role");
-        return result;
-    }
-
     @Bean
     public TableRuleConfiguration getServiceRolePermitTableRuleConfiguration() {
         TableRuleConfiguration result = new TableRuleConfiguration();
@@ -133,5 +124,15 @@ public class MybatisConfig {
         result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
         return result;
     }
+
+    @Bean
+    public TableRuleConfiguration getServiceRoleTableRuleConfiguration() {
+        TableRuleConfiguration result = new TableRuleConfiguration();
+        result.setLogicTable("t_service_role");
+        result.setActualDataNodes("ds_${0}.t_service_role");
+        return result;
+    }
+
+
 
 }
