@@ -89,9 +89,9 @@ public class ApplyControlsWebController {
     }
 
     @ApiOperation(value = "学校黑名单", response = Boolean.class)
-    @RequestMapping(value = "/applyControlsWeb/blackList", method = RequestMethod.POST)
-    public Object blackList(@Validated @RequestBody BlackUrlQueryDto blackUrlQueryDto) {
-        return blackUrlControllerClient.findBlackInConditionPaging(blackUrlQueryDto);
+    @RequestMapping(value = "/applyControlsWeb/blackList", method = RequestMethod.GET)
+    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode) {
+        return blackUrlControllerClient.findBlackInList(schoolCode);
     }
 
     @ApiOperation(value = "查询用户被禁名单列表", response = Boolean.class)

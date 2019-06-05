@@ -52,4 +52,9 @@ public class BlackUrlControllerClientFallback implements BlackUrlControllerClien
     public Wrapper<PageInfo<BlackUrlShowVo>>  findBlackInConditionPaging(BlackUrlQueryDto blackUrlQueryDto) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<String>> findBlackInList(String schoolCode) {
+        return WrapMapper.error();
+    }
 }
