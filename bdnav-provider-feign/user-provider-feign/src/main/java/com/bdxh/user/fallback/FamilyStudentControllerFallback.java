@@ -46,7 +46,7 @@ public class FamilyStudentControllerFallback implements FamilyStudentControllerC
     }
 
     @Override
-    public Wrapper<List<FamilyStudentVo>> queryStudentByFamilyCardNumber(String familyCardNumber) {
+    public Wrapper<List<FamilyStudentVo>> queryStudentByFamilyCardNumber(String schoolCode,String familyCardNumber) {
         return WrapMapper.error();
     }
 }

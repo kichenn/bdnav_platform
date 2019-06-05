@@ -81,6 +81,6 @@ public interface FamilyStudentControllerClient {
      */
     @ResponseBody
     @RequestMapping(value = "/familyStudent/queryStudentByFamilyCardNumber", method = RequestMethod.GET)
-    Wrapper<List<FamilyStudentVo>> queryStudentByFamilyCardNumber(@RequestParam("familyCardNumber") String familyCardNumber);
+    Wrapper<List<FamilyStudentVo>> queryStudentByFamilyCardNumber(@RequestParam("schoolCode") String schoolCode, @RequestParam("familyCardNumber") String familyCardNumber);
 
 }

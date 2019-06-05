@@ -1,8 +1,5 @@
 package com.bdxh.school.configration.redis;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +7,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 /**
@@ -39,6 +39,9 @@ public class JedisClusterConfig {
 
     @Value("${spring.redis.lettuce.pool.max-wait}")
     private int maxWait;
+
+    @Value("${spring.redis.password}")
+    private String password;
 
     @Bean
     public JedisCluster getJedisCluster() {
@@ -72,6 +75,6 @@ public class JedisClusterConfig {
         //表示一个对象至少停留在idle状态的最短时间，然后才能被idle object evitor扫描并驱逐；这一项只有在timeBetweenEvictionRunsMillis大于0时才有意义
         config.setMinEvictableIdleTimeMillis(60000);
         //需要密码连接的创建对象方式
-        return new JedisCluster(nodes, commandTimeout, 10000, 3, config);
+        return new JedisCluster(nodes, commandTimeout, 10000, 3, password, config);
     }
 }

@@ -127,7 +127,7 @@ public class SecurityController {
                 //家长登录(设置卡号)
                 userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
                 //家长卡号查询 自己孩子相关信息以及家长信息
-                List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getFamilyCardNumber()).getResult();
+                List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getSchoolCode(),userInfo.getFamilyCardNumber()).getResult();
                 Preconditions.checkArgument(CollectionUtils.isNotEmpty(familyStudentVo), "学生卡号，学校code异常");
                 userInfo.setFamilyId(familyStudentVo.get(0).getFId());
                 userInfo.setCardNumber(familyStudentVo.stream().map(e -> {
@@ -181,7 +181,7 @@ public class SecurityController {
                 claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
             }
 
-            String subject = userInfo.getWeixiaoStuId();
+            String subject = userInfo.getFamilyId().toString();
             //生成token
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(subject)
                     .addClaims(claims)

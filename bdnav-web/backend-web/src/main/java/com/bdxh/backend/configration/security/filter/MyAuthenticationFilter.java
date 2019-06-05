@@ -1,8 +1,10 @@
 package com.bdxh.backend.configration.security.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.bdxh.backend.configration.redis.RedisUtil;
 import com.bdxh.backend.configration.security.userdetail.MyUserDetails;
 import com.bdxh.backend.configration.security.properties.SecurityConstant;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.entity.User;
@@ -42,7 +44,7 @@ import java.util.concurrent.TimeUnit;
 public class MyAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisUtil redisUtil;
 
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
@@ -74,7 +76,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
                 //刷新token 时效2小时 刷新1小时 token最小时长2小时 最大操作间隔1小时 否则需重新登录
-                Date date = (Date) redisTemplate.opsForValue().get(SecurityConstant.TOKEN_IS_REFRESH + username);
+                Date date = DateUtil.format(redisUtil.get(SecurityConstant.TOKEN_IS_REFRESH + username), "yyyy-MM-dd HH:mm:ss");
                 Instant instant = date.toInstant();
                 ZoneId zoneId = ZoneId.systemDefault();
                 //redis中存储的 替换token的时间
@@ -85,7 +87,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     param.put(SecurityConstant.USER, userStr);
                     param.put(SecurityConstant.AUTHORITIES, authorityListStr);
                     long currentTimeMillis = System.currentTimeMillis();
-                    redisTemplate.opsForValue().set(SecurityConstant.TOKEN_IS_REFRESH + username, new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME * 60 * 1000), SecurityConstant.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
+                    redisUtil.setWithExpireTime(SecurityConstant.TOKEN_IS_REFRESH + username, DateUtil.format(new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME), "yyyy-MM-dd HH:mm:ss"), SecurityConstant.TOKEN_EXPIRE_TIME);
                     String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(username)
                             .addClaims(param)
                             .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))

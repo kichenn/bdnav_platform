@@ -2,6 +2,7 @@ package com.bdxh.client.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.client.configration.redis.RedisUtil;
 import com.bdxh.client.configration.security.properties.SecurityConstant;
 import com.bdxh.client.configration.security.userdetail.MyUserDetails;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
@@ -56,7 +57,7 @@ public class SecurityController {
     private SchoolRoleControllerClient schoolRoleControllerClient;
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisUtil redisUtil;
 
 
     @RequestMapping(value = "/schoolAuthentication/schoolLogin", method = RequestMethod.POST)
@@ -81,7 +82,8 @@ public class SecurityController {
             claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorityList));
             //登录成功生成token
             long currentTimeMillis = System.currentTimeMillis();
-            redisTemplate.opsForValue().set(SecurityConstant.TOKEN_IS_REFRESH + username, new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME * 60 * 1000), SecurityConstant.TOKEN_EXPIRE_TIME, TimeUnit.MINUTES);
+            //将token存入redis(单位秒。)
+            redisUtil.setWithExpireTime(SecurityConstant.TOKEN_IS_REFRESH + username, DateUtil.format(new Date(currentTimeMillis + SecurityConstant.TOKEN_REFRESH_TIME * 60 * 1000), "yyyy-MM-dd HH:mm:ss"), SecurityConstant.TOKEN_EXPIRE_TIME * 60);
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(user.getUserName())
                     .addClaims(claims)
                     .setExpiration(new Date(currentTimeMillis + SecurityConstant.TOKEN_EXPIRE_TIME * 60 * 1000))

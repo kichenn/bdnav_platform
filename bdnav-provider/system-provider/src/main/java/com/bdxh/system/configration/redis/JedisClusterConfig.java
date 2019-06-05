@@ -1,4 +1,4 @@
-package com.bdxh.user.configration.redis;
+package com.bdxh.system.configration.redis;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;

@@ -66,7 +66,7 @@
           id AS fsId,
           family_id  AS fId,
           card_number as fCardNumber,
-          relation   from t_family_student where card_number=#{familyCardNumber}
+          relation   from t_family_student where card_number=#{familyCardNumber} and school_code=#{schoolCode}
     </select>
     <select id="queryaAllFamilyStudent" resultType="com.bdxh.user.vo.FamilyStudentVo">
          select

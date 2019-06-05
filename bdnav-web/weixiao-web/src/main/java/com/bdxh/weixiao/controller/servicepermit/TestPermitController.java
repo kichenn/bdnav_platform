@@ -1,6 +1,7 @@
 package com.bdxh.weixiao.controller.servicepermit;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.weixiao.configration.security.exception.PermitException;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,12 +24,20 @@ public class TestPermitController {
     @ApiOperation("test1(测试需要围栏权限)")
     @RequestMapping(value = "/test1", method = RequestMethod.GET)
     public Object addServicePermit(@RequestParam("studentCardNumber") String studentCardNumber) {
-        Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-        //获取孩子列表信息
-        List<String> thisCardNumbers = mapAuthorities.get("ROLE_" + "FANCE_TEST");
-        Boolean isBy = thisCardNumbers.contains(studentCardNumber);
-        if (!isBy) {
-            return WrapMapper.error("抱歉，您该孩子没开通围栏权限");
+        try {
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_" + "FANCE_TEST");
+            Boolean isBy = thisCardNumbers.contains(studentCardNumber);
+            if (!isBy) {
+                throw new PermitException();
+            }
+        } catch (Exception e) {
+            String messge="";
+            if (e instanceof PermitException) {
+                messge="抱歉，您该孩子没开通围栏权限";
+            }
+            return WrapMapper.error(messge);
         }
         return WrapMapper.ok("恭喜您，拥有围栏试用权限");
     }
