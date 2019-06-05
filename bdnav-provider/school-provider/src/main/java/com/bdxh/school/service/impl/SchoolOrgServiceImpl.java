@@ -125,4 +125,9 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
         Boolean result = schoolOrgMapper.insertSelective(schoolOrg) > 0;
         return result;
     }
+
+    @Override
+    public List<SchoolOrg> findBySchoolOrgByParentId(Long parentId) {
+        return schoolOrgMapper.findBySchoolOrgByParentId(parentId);
+    }
 }

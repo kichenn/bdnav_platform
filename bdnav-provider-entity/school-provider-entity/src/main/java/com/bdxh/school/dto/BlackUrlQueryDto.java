@@ -8,15 +8,15 @@ import lombok.Data;
 @Data
 public class BlackUrlQueryDto extends Query {
 
-    @ApiModelProperty("学校id")
+    @ApiModelProperty("*学校id")
     private Long schoolId;
 
-    @ApiModelProperty("学校编码")
+    @ApiModelProperty("*学校编码")
     private String schoolCode;
 
-    @ApiModelProperty("状态")
+    @ApiModelProperty("*状态")
     private BlackStatusEnum blackStatusEnum;
 
-    @ApiModelProperty("网站名称")
+    @ApiModelProperty("*网站名称")
     private String name;
 }

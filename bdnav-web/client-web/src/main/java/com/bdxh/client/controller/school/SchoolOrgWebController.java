@@ -1,18 +1,16 @@
-package com.bdxh.backend.controller.school;
+package com.bdxh.client.controller.school;
 
+import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
-import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolOrg;
+import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolOrgControllerClient;
 import com.bdxh.user.entity.Student;
-import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.entity.TeacherDept;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.feign.TeacherControllerClient;
-import com.bdxh.user.feign.TeacherDeptControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -54,19 +53,20 @@ public class SchoolOrgWebController {
     @RequestMapping(value = "/findAllSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件查询所有的学校组织架构信息")
     public Object findAllSchoolOrgInfo(@RequestBody SchoolOrgQueryDto schoolOrgQueryDto) {
-        return WrapMapper.ok(schoolOrgControllerClient.findAllSchoolOrgInfo(schoolOrgQueryDto));
+        return schoolOrgControllerClient.findAllSchoolOrgInfo(schoolOrgQueryDto);
     }
 
     /**
      * 查询单个学校的组织架构树形数据结构信息
      *
-     * @param schoolId
      * @return
      */
     @RequestMapping(value = "/findSchoolOrgTreeInfoBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "查询单个学校的组织架构树形数据结构信息")
-    public Object findSchoolOrgTreeInfo(@NotNull(message = "学校id不能为空") @RequestParam("schoolId") Long schoolId) {
-        return WrapMapper.ok(schoolOrgControllerClient.findSchoolOrgTreeInfo(schoolId));
+    public Object findSchoolOrgTreeInfo() {
+        //获取当前用户
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        return schoolOrgControllerClient.findSchoolOrgTreeInfo(user.getSchoolId());
     }
 
     /**
@@ -103,6 +103,7 @@ public class SchoolOrgWebController {
      * @param id
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/removeSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "根据ID删除组织架构信息")
     public Object removeSchoolOrgInfo(@NotNull(message = "id不能为空") @RequestParam("id") Long id) {
@@ -131,6 +132,7 @@ public class SchoolOrgWebController {
      * @param schoolOrgUpdateDto
      * @return
      */
+    @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/updateSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改组织架构信息")
     public Object updateSchoolOrgInfo(@Validated @RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto) {

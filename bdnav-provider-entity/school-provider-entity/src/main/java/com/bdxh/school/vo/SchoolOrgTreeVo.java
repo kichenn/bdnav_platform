@@ -24,7 +24,7 @@ public class SchoolOrgTreeVo extends TreeBean {
     private String name;
 
     @ApiModelProperty("类型:1 学院,2 系,3 专业,4 年级,5 班级,6 行政,7 党团,8 教学,9 后勤,10其他")
-    private Byte type;
+    private Byte orgType;
 
     @ApiModelProperty("备注")
     private String remark;

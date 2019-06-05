@@ -30,7 +30,7 @@ public class ControlConfigControllerClientFallback implements ControlConfigContr
     }
 
     @Override
-    public Wrapper<List<ControlConfig>> findAppType(Byte appType) {
+    public Wrapper<List<String>> findAppType(Byte appType) {
         return WrapMapper.error();
     }
 
