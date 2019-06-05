@@ -1,13 +1,11 @@
 package com.bdxh.product.entity;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Table(name = "t_product")
 public class Product implements Serializable {
 
     private static final long serialVersionUID = -3829539719464237070L;

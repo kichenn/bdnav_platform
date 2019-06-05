@@ -49,6 +49,6 @@ public interface OrdersControllerClient {
     Wrapper updateOrder(@RequestBody OrderUpdateDto orderUpdateDto);
 
     @RequestMapping(value = "/order/createOrder",method = RequestMethod.POST)
-    Wrapper createOrder(@RequestBody AddOrderDto orderDto);
+    Wrapper createOrder(@RequestBody AddOrderDto addOrderDto);
 
 }

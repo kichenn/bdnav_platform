@@ -12,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Data
 @ApiModel("增加订单dto")
@@ -122,7 +123,6 @@ public class AddOrderDto {
 
 
 
-
     @ApiModelProperty("操作人")
     private Long operator;
 
@@ -133,5 +133,8 @@ public class AddOrderDto {
 
     @ApiModelProperty("备注")
     private String remark;
+
+
+
 
 }

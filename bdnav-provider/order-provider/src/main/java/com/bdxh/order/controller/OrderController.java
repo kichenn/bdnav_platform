@@ -1,8 +1,5 @@
 package com.bdxh.order.controller;
 
-import com.bdxh.common.base.enums.BaseUserTypeEnum;
-import com.bdxh.common.base.enums.BusinessStatusEnum;
-import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.order.dto.AddOrderDto;
@@ -10,20 +7,15 @@ import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.service.OrderService;
-import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @description: 订单服务控制器
@@ -49,9 +41,9 @@ public class OrderController {
      * @return
      */
     @RequestMapping(value = "/createOrder", method = RequestMethod.POST)
-    @ApiOperation(value = "创建订单",response = Boolean.class)
+    @ApiOperation(value = "创建订单")
     public Object createOrder(@Validated @RequestBody AddOrderDto addOrderDto) {
-        //数据拷贝,
+        //数据拷贝
         Order order=new Order();
         BeanUtils.copyProperties(addOrderDto, order);
         //设置全局订单id,状态类型
@@ -64,27 +56,27 @@ public class OrderController {
         order.setUserType(addOrderDto.getUserType().getCode());
         order.setTradeType(addOrderDto.getTradeType().getCode());
         try {
-            return WrapMapper.ok(orderService.save(order)>0);
+            orderService.save(order);
+            return WrapMapper.ok(order.getOrderNo());
         } catch (Exception e) {
             e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
+            log.error(e.getMessage(), e.getStackTrace());
+            return WrapMapper.error();
         }
     }
 
 
 
     /**
-     * 根据条件分页显示订单记录
-     * @param orderQueryDto
-     * @Date: 2019/6/1 16:56
+     * 根据条件查询订单列表数据
+     * @Author: WanMing
+     * @Date: 2019/6/4 16:22
      */
     @RequestMapping(value = "/queryUserOrder", method = RequestMethod.POST)
-    @ApiOperation(value = "根据条件分页显示订单记录",response = Order.class)
+    @ApiOperation(value = "根据条件查询订单列表数据",response = Order.class)
     public Object queryUserOrder(@Validated @RequestBody OrderQueryDto orderQueryDto) {
         try {
-            Map<String, Object> param = BeanToMapUtil.objectToMap(orderQueryDto);
-            PageInfo<Order> orders = orderService.getOrderByCondition(param, orderQueryDto.getPageNum(),orderQueryDto.getPageSize());
-            return WrapMapper.ok(orders);
+            return WrapMapper.ok(orderService.getOrderByCondition(orderQueryDto));
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

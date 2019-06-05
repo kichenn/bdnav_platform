@@ -22,6 +22,7 @@ public class OrderUpdateDto{
 
 
     @ApiModelProperty("订单号")
+    @NotNull(message = "订单号不能为空")
     private Long orderNo;
 
 

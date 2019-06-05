@@ -8,35 +8,22 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@Table(name = "t_order_item")
-public class OrderItem implements Serializable {
+@Table(name ="t_order_item")
+public class OrderItem   {
 
-    private static final long serialVersionUID = -4996582832745282975L;
 
     /**
      * 主键
      */
     @Id
-    @Column(name = "item_no")
-    private Long itemNo;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     /**
      * 订单号
      */
     @Column(name = "order_no")
     private Long orderNo;
-
-    /**
-     * 学校编码
-     */
-    @Column(name = "school_code")
-    private String schoolCode;
-
-    /**
-     * 用户di
-     */
-    @Column(name = "user_id")
-    private Long userId;
 
     /**
      * 商品id
@@ -87,18 +74,6 @@ public class OrderItem implements Serializable {
     private String productExtra;
 
     /**
-     * 业务状态 1 未处理 2 处理中 3 已处理
-     */
-    @Column(name = "business_status")
-    private Byte businessStatus;
-
-    /**
-     * 业务号
-     */
-    @Column(name = "business_no")
-    private String businessNo;
-
-    /**
      * 创建时间
      */
     @Column(name = "create_date")
@@ -107,8 +82,8 @@ public class OrderItem implements Serializable {
     /**
      * 更新时间
      */
-    @Column(name = "update_time")
-    private Date updateTime;
+    @Column(name = "update_date")
+    private Date updateDate;
 
     /**
      * 备注
