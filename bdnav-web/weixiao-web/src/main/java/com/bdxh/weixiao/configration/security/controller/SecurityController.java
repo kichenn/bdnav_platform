@@ -128,7 +128,7 @@ public class SecurityController {
                 userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
                 //家长卡号查询 自己孩子相关信息以及家长信息
                 List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getSchoolCode(),userInfo.getFamilyCardNumber()).getResult();
-                Preconditions.checkArgument(CollectionUtils.isNotEmpty(familyStudentVo), "学生卡号，学校code异常");
+                Preconditions.checkArgument(CollectionUtils.isNotEmpty(familyStudentVo), "家长卡号，学校code异常");
                 userInfo.setFamilyId(familyStudentVo.get(0).getFId());
                 userInfo.setCardNumber(familyStudentVo.stream().map(e -> {
                     return e.getSCardNumber();

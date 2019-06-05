@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.exception.SwitchSchoolCodeException;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
 import com.bdxh.weixiao.configration.security.userdetail.MyUserDetails;
 import com.google.common.base.Preconditions;
@@ -64,6 +65,15 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 String authorityListStr = (String) claims.get(SecurityConstant.AUTHORITIES);
 
                 UserInfo userInfo = JSON.parseObject(userStr, UserInfo.class);
+
+                //效验schoolCode与token的schoolCode不同时，返回
+                String schoolCode = httpServletRequest.getAttribute("schoolCode").toString();
+                if (StringUtils.isNotEmpty(schoolCode)) {
+                    //传入的schoolCode与 token的shcoolCode不同时抛出异常
+                    if (!StringUtils.equals(schoolCode, userInfo.getSchoolCode())) {
+                        throw new SwitchSchoolCodeException();
+                    }
+                }
                 //设置当前登录用户
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 if (securityContext != null) {
@@ -83,7 +93,17 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (ExpiredJwtException e) {
-                Wrapper wrapper = WrapMapper.wrap(401,"授权已过期");
+                Wrapper wrapper = WrapMapper.wrap(401, "授权已过期");
+                String str = JSON.toJSONString(wrapper);
+                httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+                httpServletResponse.setStatus(401);
+                httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
+                httpServletResponse.setCharacterEncoding("utf-8");
+                httpServletResponse.setContentType("application/json;charset=utf-8");
+                httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
+                return;
+            } catch (SwitchSchoolCodeException e) {
+                Wrapper wrapper = WrapMapper.wrap(401, "schoolCode变化，学校已切换");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);
@@ -93,7 +113,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
                 return;
             } catch (Exception e) {
-                Wrapper wrapper = WrapMapper.wrap(401,"解析token错误");
+                Wrapper wrapper = WrapMapper.wrap(401, "解析token错误");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);
