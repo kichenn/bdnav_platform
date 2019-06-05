@@ -79,4 +79,14 @@ public interface BlackUrlControllerClient {
     @RequestMapping(value = "/blackUrl/findBlackInConditionPaging", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<PageInfo<BlackUrlShowVo>> findBlackInConditionPaging(@Validated @RequestBody BlackUrlQueryDto blackUrlQueryDto);
+
+    /**
+     * 查询当前学校的黑名单
+     * @param schoolCode
+     * @return
+     */
+    @RequestMapping(value = "/blackUrl/findBlackInList", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<String>> findBlackInList(@RequestParam("schoolCode") String schoolCode);
+
 }

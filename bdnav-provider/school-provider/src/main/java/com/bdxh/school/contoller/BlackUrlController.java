@@ -25,6 +25,7 @@ import com.bdxh.school.service.BlackUrlService;
 import redis.clients.jedis.JedisCluster;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -133,5 +134,20 @@ public class BlackUrlController {
     @ApiOperation(value = "分页查询", response = BlackUrlShowVo.class)
     public Object findBlackInConditionPaging(@Validated @RequestBody BlackUrlQueryDto blackUrlQueryDto) {
         return WrapMapper.ok(blackUrlService.findBlackInConditionPaging(blackUrlQueryDto));
+    }
+
+    /**
+     * @Description: 查询当前学校的黑名单列表
+     * @Date: 2019/4/11 10:10
+     */
+    @RequestMapping(value = "/findBlackInList", method = RequestMethod.GET)
+    @ApiOperation(value = " 查询当前学校的黑名单列表", response = BlackUrlShowVo.class)
+    public Object findBlackInList(@RequestParam("schoolCode") String schoolCode) {
+        List<String> urlList=new ArrayList<>();
+       List<BlackUrl> bus= blackUrlService.findBlackInList(schoolCode);
+        for (int i = 0; i < bus.size(); i++) {
+            urlList.add(bus.get(i).getIp());
+        }
+        return WrapMapper.ok(urlList);
     }
 }

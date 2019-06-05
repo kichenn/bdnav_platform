@@ -121,15 +121,15 @@ public class FamilyStudentController {
     }
 
     /**
-     * 家长卡号查询绑定关系
+     * 家长卡号 +学校code  查询绑定关系
      *
      * @param familyCardNumber
      * @return
      */
     @ApiOperation(value = "家长卡号查询绑定关系", response = FamilyStudentVo.class)
     @RequestMapping(value = "/queryStudentByFamilyCardNumber", method = RequestMethod.GET)
-    public Object queryStudentByFamilyCardNumber(@RequestParam("familyCardNumber") String familyCardNumber) {
-        List<FamilyStudentVo> familyStudent = familyStudentService.queryStudentByFamilyCardNumber(familyCardNumber);
+    public Object queryStudentByFamilyCardNumber(@RequestParam("schoolCode") String schoolCode, @RequestParam("familyCardNumber") String familyCardNumber) {
+        List<FamilyStudentVo> familyStudent = familyStudentService.queryStudentByFamilyCardNumber(schoolCode, familyCardNumber);
         return WrapMapper.ok(familyStudent);
     }
 

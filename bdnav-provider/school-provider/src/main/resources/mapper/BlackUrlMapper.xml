@@ -83,4 +83,12 @@
         Order BY url.create_date DESC
     </select>
 
+    <select id="findBlackInList" resultMap="BaseResultMap">
+        SELECT
+         *
+        FROM t_black_url
+        WHERE
+        school_code=#{schoolCode}
+    </select>
+
 </mapper>

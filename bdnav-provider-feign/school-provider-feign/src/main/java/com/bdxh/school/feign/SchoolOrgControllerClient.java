@@ -1,6 +1,8 @@
 package com.bdxh.school.feign;
 
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolOrg;
@@ -10,6 +12,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 
@@ -28,7 +31,7 @@ public interface SchoolOrgControllerClient {
      * @param schoolOrgQueryDto
      * @return
      */
-    @RequestMapping(value = "/findAllSchoolOrgInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/schoolOrg/findAllSchoolOrgInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<List<SchoolOrg>> findAllSchoolOrgInfo(@RequestBody SchoolOrgQueryDto schoolOrgQueryDto);
 
@@ -38,7 +41,7 @@ public interface SchoolOrgControllerClient {
      * @param schoolId
      * @return
      */
-    @RequestMapping(value = "/findSchoolOrgTreeInfoBySchoolId", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolOrg/findSchoolOrgTreeInfoBySchoolId", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<SchoolOrgTreeVo>> findSchoolOrgTreeInfo(@RequestParam("schoolId") Long schoolId);
 
@@ -48,7 +51,7 @@ public interface SchoolOrgControllerClient {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/findSchoolOrgInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolOrg/findSchoolOrgInfo", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<SchoolOrg> findSchoolOrgInfo(@RequestParam("id") Long id);
 
@@ -59,7 +62,7 @@ public interface SchoolOrgControllerClient {
      * @param schoolId
      * @return
      */
-    @RequestMapping(value = "/findClassOrg", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolOrg/findClassOrg", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<SchoolOrg>> findClassOrg(@RequestParam("schoolId") Long schoolId);
 
@@ -70,7 +73,7 @@ public interface SchoolOrgControllerClient {
      * @param id
      * @return
      */
-    @RequestMapping(value = "/removeSchoolOrgInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/schoolOrg/removeSchoolOrgInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper removeSchoolOrgInfo(@RequestParam("id") Long id);
 
@@ -81,7 +84,7 @@ public interface SchoolOrgControllerClient {
      * @param schoolOrgUpdateDto
      * @return
      */
-    @RequestMapping(value = "/updateSchoolOrgInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/schoolOrg/updateSchoolOrgInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper updateSchoolOrgInfo(@RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto);
 
@@ -91,7 +94,27 @@ public interface SchoolOrgControllerClient {
      *
      * @return
      */
-    @RequestMapping(value = "/findAllSchoolOrgInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolOrg/findAllSchoolOrgInfo", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<SchoolOrg>> findAllOrgInfo();
+
+    /**
+     * 根据父ID查询学校组织架构
+     *
+     * @param parentId
+     * @return
+     */
+    @RequestMapping(value = "/schoolOrg/findBySchoolOrgByParentId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolOrg>> findBySchoolOrgByParentId(@RequestParam("parentId") @NotNull(message = "父级ID不能为空") Long parentId);
+
+    /**
+     * 新增组织架构
+     *
+     * @param schoolOrgAddDto
+     * @return
+     */
+    @RequestMapping(value = "/insertSchoolOrgInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto);
 }

@@ -32,4 +32,7 @@ public interface BlackUrlMapper extends Mapper<BlackUrl> {
      * 条件分页查询
      */
     List<BlackUrlShowVo> findBlackInConditionPaging(@Param("blackUrl") BlackUrl blackUrl);
+
+    //查询当前学校的黑名单列表
+    List<BlackUrl> findBlackInList(@Param("schoolCode") String schoolCode);
 }

@@ -64,4 +64,9 @@ public class BlackUrlServiceImpl extends BaseService<BlackUrl> implements BlackU
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }
+
+    @Override
+    public List<BlackUrl> findBlackInList(String schoolCode) {
+        return blackUrlMapper.findBlackInList(schoolCode);
+    }
 }

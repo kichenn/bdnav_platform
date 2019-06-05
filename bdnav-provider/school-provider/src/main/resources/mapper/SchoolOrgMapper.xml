@@ -103,9 +103,18 @@
         <include refid="BaseColumns"/>
         FROM t_school_org
         <where>
-            AND school_id=#{schoolId}
+            school_id=#{schoolId}
             AND org_type IN(1,2,3,4,5)
         </where>
     </select>
 
+    <!-- 根据parentId查询 -->
+    <select id="findBySchoolOrgByParentId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_org
+        <where>
+            parent_id=#{parentId}
+        </where>
+    </select>
 </mapper>

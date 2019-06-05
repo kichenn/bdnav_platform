@@ -7,10 +7,15 @@
         <groupId>com.bdxh</groupId>
         <version>1.0-SNAPSHOT</version>
     </parent>
+    <!--个推-->
+    <repositories>
+        <repository>
+            <id>getui-nexus</id>
+            <url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>common-utils</artifactId>
-
     <dependencies>
         <dependency>
             <groupId>com.bdxh</groupId>
@@ -106,47 +111,18 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-web</artifactId>
         </dependency>
-        <!--个推-->
-        <dependency>
-            <groupId>com.google.protobuf</groupId>
-            <artifactId>protobuf-java</artifactId>
-            <version>2.5.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.gexin.platform</groupId>
-            <artifactId>gexin-rp-sdk-http</artifactId>
-            <version>4.1.0.3</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/resources/lib/gexin-rp-sdk-http-4.1.0.3.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.gexin.platform</groupId>
-            <artifactId>gexin-rp-sdk-template</artifactId>
-            <version>4.0.0.22</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/resources/lib/gexin-rp-sdk-template-4.0.0.22.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>com.gexin.platform</groupId>
-            <artifactId>gexin-rp-sdk-base</artifactId>
-            <version>4.0.0.28</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/resources/lib/gexin-rp-sdk-base-4.0.0.28.jar</systemPath>
-        </dependency>
-
-        <dependency>
-            <groupId>com.gexin.platform</groupId>
-            <artifactId>gexin-rp-fastjson</artifactId>
-            <version>1.0.0.1</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/resources/lib/gexin-rp-fastjson-1.0.0.1.jar</systemPath>
-        </dependency>
 
         <!--拼音4j-->
         <dependency>
             <groupId>com.belerweb</groupId>
             <artifactId>pinyin4j</artifactId>
             <version>2.5.0</version>
+        </dependency>
+        <!--个推-->
+        <dependency>
+            <groupId>com.gexin.platform</groupId>
+            <artifactId>gexin-rp-sdk-http</artifactId>
+            <version>4.1.0.3</version>
         </dependency>
     </dependencies>
 

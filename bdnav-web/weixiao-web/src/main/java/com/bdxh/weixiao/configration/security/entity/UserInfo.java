@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 用户信息
@@ -45,6 +46,6 @@ public class UserInfo implements Serializable {
     //家长号
     private String familyCardNumber;
 
-    //权限集合(role --- studentcardNumber 学生卡号)
-    private List<WeixiaoPermit> weixiaoGrantedAuthorities;
+    //权限集合(key:roleName ---Value:studentcardNumber 学生卡号)
+    private Map<String,List<String>> weixiaoGrantedAuthorities;
 }

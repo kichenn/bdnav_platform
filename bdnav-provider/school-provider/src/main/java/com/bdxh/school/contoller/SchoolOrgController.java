@@ -2,6 +2,7 @@ package com.bdxh.school.contoller;
 
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolOrg;
@@ -61,7 +62,7 @@ public class SchoolOrgController {
         schoolOrgQueryDto.setSchoolId(schoolId);
         List<SchoolOrg> schoolOrgList=schoolOrgService.findAllSchoolOrgInfo(schoolOrgQueryDto);
         if(CollectionUtils.isEmpty(schoolOrgList)){
-          return WrapMapper.error("当前学校不存在组织架构信息");
+          return WrapMapper.ok("当前学校不存在组织架构信息");
         }
         List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
             SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
@@ -85,7 +86,7 @@ public class SchoolOrgController {
     @RequestMapping(value = "/findSchoolOrgInfo", method = RequestMethod.GET)
     @ApiOperation(value = "根据条件查询单个学校组织架构信息")
     public Object findSchoolOrgInfo(@NotNull(message = "id不能为空") @RequestParam("id") Long id) {
-        return schoolOrgService.findSchoolOrgInfo(id);
+        return WrapMapper.ok(schoolOrgService.findSchoolOrgInfo(id));
     }
 
 
@@ -98,7 +99,7 @@ public class SchoolOrgController {
     @RequestMapping(value = "/findClassOrg", method = RequestMethod.GET)
     @ApiOperation(value = "根据学校Id查询学生组织架构信息")
     public Object findClassOrg(@NotBlank(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
-        return schoolOrgService.findClassOrg(schoolId);
+        return WrapMapper.ok(schoolOrgService.findClassOrg(schoolId));
     }
 
 
@@ -111,7 +112,7 @@ public class SchoolOrgController {
     @RequestMapping(value = "/removeSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "根据ID删除组织架构信息")
     public Object removeSchoolOrgInfo(@NotNull(message = "id不能为空") @RequestParam("id") Long id) {
-        return schoolOrgService.removeSchoolOrgInfo(id);
+        return WrapMapper.ok(schoolOrgService.removeSchoolOrgInfo(id));
     }
 
 
@@ -124,7 +125,7 @@ public class SchoolOrgController {
     @RequestMapping(value = "/updateSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改组织架构信息")
     public Object updateSchoolOrgInfo(@Validated @RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto) {
-        return schoolOrgService.updateSchoolOrgInfo(schoolOrgUpdateDto);
+        return WrapMapper.ok(schoolOrgService.updateSchoolOrgInfo(schoolOrgUpdateDto));
     }
 
     /**
@@ -135,6 +136,30 @@ public class SchoolOrgController {
     @RequestMapping(value = "/findAllSchoolOrgInfo", method = RequestMethod.GET)
     @ApiOperation(value = "查询所有组织架构信息")
     public Object findAllOrgInfo() {
-        return schoolOrgService.findAllOrgInfo();
+        return WrapMapper.ok(schoolOrgService.findAllOrgInfo());
+    }
+
+
+
+    /**
+     * 通过父ID查询学校组织架构信息
+     * @param parentId
+     * @return
+     */
+    @RequestMapping(value = "/findBySchoolOrgByParentId",method = RequestMethod.GET)
+    @ApiOperation(value = "通过父ID查询学校组织架构信息")
+    public Object findBySchoolOrgByParentId(@RequestParam("parentId") @NotNull(message = "父级ID不能为空") Long parentId) {
+        return WrapMapper.ok(schoolOrgService.findBySchoolOrgByParentId(parentId));
+    }
+
+    /**
+     * 新增组织架构
+     * @param schoolOrgAddDto
+     * @return
+     */
+    @RequestMapping(value = "/insertSchoolOrgInfo",method = RequestMethod.POST)
+    @ApiOperation(value = "新增组织架构")
+    public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto){
+        return WrapMapper.ok(schoolOrgService.insertSchoolOrgInfo(schoolOrgAddDto));
     }
 }
