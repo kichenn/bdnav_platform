@@ -5,7 +5,6 @@ import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.security.utils.SecurityUtils;
 import com.bdxh.appburied.dto.AddApplyLogDto;
 import com.bdxh.appburied.dto.AddInstallAppsDto;
-import com.bdxh.appburied.dto.AppStatusQueryDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
@@ -16,7 +15,6 @@ import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.user.dto.UpdateStudentDto;
@@ -100,7 +98,7 @@ public class ApplyControlsWebController {
         return appStatusControllerClient.findAppStatusInByAccount(schoolCode,cardNumber);
     }
 
-    @ApiOperation(value = "最新应用版本查询", response = Boolean.class)
+    @ApiOperation(value = "版本更新", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/versionUpdating", method = RequestMethod.GET)
     public Object versionUpdating(@RequestParam("appId") Long appId) {
         Wrapper<AppVersion> wrapper = appVersionControllerClient.findNewAppVersion(appId);
@@ -114,7 +112,6 @@ public class ApplyControlsWebController {
     public Object thePresetList(@RequestParam(value = "preset",defaultValue = "1") Byte preset) {
         Wrapper wrapper = appControllerClient.thePresetList(preset);
         return WrapMapper.ok(wrapper.getResult());
-
     }
 
 
@@ -167,7 +164,7 @@ public class ApplyControlsWebController {
 
 
     @ApiOperation(value = "查询应用黑盒|隐藏", response = Boolean.class)
-    @RequestMapping(value = "/applyControlsWeb/findAppType", method = RequestMethod.GET)
+    @RequestMapping(value = "/authenticationApp/findAppType", method = RequestMethod.GET)
     public Object findAppType(@RequestParam(name = "appType") Byte appType) {
         Wrapper wrapper = controlConfigControllerClient.findAppType(appType);
         return WrapMapper.ok(wrapper.getResult());

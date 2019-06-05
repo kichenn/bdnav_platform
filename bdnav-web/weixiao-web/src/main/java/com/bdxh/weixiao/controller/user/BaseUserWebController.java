@@ -62,7 +62,7 @@ public class BaseUserWebController {
             activationBaseUserDto.setAppKey(school.getAppKey());
             activationBaseUserDto.setAppSecret(school.getAppSecret());
             activationBaseUserDto.setSchoolType(school.getSchoolType());
-            return WrapMapper.ok(baseUserControllerClient.baseUserActivation(activationBaseUserDto).getResult());
+            return baseUserControllerClient.baseUserActivation(activationBaseUserDto).getResult();
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error("false");

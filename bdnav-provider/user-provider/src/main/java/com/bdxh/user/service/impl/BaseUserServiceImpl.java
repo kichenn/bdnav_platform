@@ -117,7 +117,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         studentMapper.updateStudentActivation(student.getSchoolCode(), student.getCardNumber(), student.getActivate());
                         Student studentInfo = studentMapper.findStudentInfo(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-                        synUserInfoRequest.setSchool_code(/*studentInfo.getSchoolCode()*/"1044695883");
+                        synUserInfoRequest.setSchool_code(studentInfo.getSchoolCode());
                         synUserInfoRequest.setCard_number(studentInfo.getCardNumber());
                         synUserInfoRequest.setName(studentInfo.getName());
                         studentInfo.setGender(Byte.parseByte(baseUser.getGender() + ""));
@@ -162,7 +162,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         teacher = teacherMapper.selectTeacherDetails(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         TeacherDept teacherDept = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
-                        synUserInfoRequest.setSchool_code("1044695883"/*teacher.getSchoolCode()*/);
+                        synUserInfoRequest.setSchool_code(teacher.getSchoolCode());
                         synUserInfoRequest.setCard_number(teacher.getCardNumber());
                         synUserInfoRequest.setName(teacher.getName());
                         teacher.setGender(Byte.parseByte(baseUser.getGender() + ""));
@@ -199,7 +199,7 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         family = familyMapper.findFamilyInfo(family.getSchoolCode(), family.getCardNumber());
                         SynUserInfoRequest synUserInfoRequest = new SynUserInfoRequest();
                         synUserInfoRequest.setName(family.getName());
-                        synUserInfoRequest.setSchool_code("1044695883"/*family.getSchoolCode()*/);
+                        synUserInfoRequest.setSchool_code(family.getSchoolCode());
                         synUserInfoRequest.setCard_number(family.getCardNumber());
                         synUserInfoRequest.setIdentity_type(AuthenticationConstant.FAMILY);
                         synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);

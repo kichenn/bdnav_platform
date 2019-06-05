@@ -2,6 +2,7 @@ package com.bdxh.backend.controller.school;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolClass;
@@ -54,7 +55,7 @@ public class SchoolOrgWebController {
     @RequestMapping(value = "/findAllSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件查询所有的学校组织架构信息")
     public Object findAllSchoolOrgInfo(@RequestBody SchoolOrgQueryDto schoolOrgQueryDto) {
-        return WrapMapper.ok(schoolOrgControllerClient.findAllSchoolOrgInfo(schoolOrgQueryDto));
+        return schoolOrgControllerClient.findAllSchoolOrgInfo(schoolOrgQueryDto);
     }
 
     /**
@@ -66,7 +67,7 @@ public class SchoolOrgWebController {
     @RequestMapping(value = "/findSchoolOrgTreeInfoBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "查询单个学校的组织架构树形数据结构信息")
     public Object findSchoolOrgTreeInfo(@NotNull(message = "学校id不能为空") @RequestParam("schoolId") Long schoolId) {
-        return WrapMapper.ok(schoolOrgControllerClient.findSchoolOrgTreeInfo(schoolId));
+        return schoolOrgControllerClient.findSchoolOrgTreeInfo(schoolId);
     }
 
     /**
@@ -158,5 +159,16 @@ public class SchoolOrgWebController {
     @ApiOperation(value = "根据父ID查询学校组织架构")
     public Object findBySchoolOrgByParentId(@RequestParam("parentId") @NotNull(message = "父级ID不能为空") Long parentId) {
         return schoolOrgControllerClient.findBySchoolOrgByParentId(parentId);
+    }
+
+    /**
+     * 新增组织架构
+     * @param schoolOrgAddDto
+     * @return
+     */
+    @RequestMapping(value = "/insertSchoolOrgInfo",method = RequestMethod.POST)
+    @ApiOperation(value = "新增组织架构")
+    public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto){
+        return schoolOrgControllerClient.insertSchoolOrgInfo(schoolOrgAddDto);
     }
 }

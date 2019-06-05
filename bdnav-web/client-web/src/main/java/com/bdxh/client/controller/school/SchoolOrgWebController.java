@@ -2,6 +2,7 @@ package com.bdxh.client.controller.school;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolOrg;
@@ -44,6 +45,7 @@ public class SchoolOrgWebController {
 
     @Autowired
     private TeacherControllerClient teacherControllerClient;
+
     /**
      * 根据条件查询所有的学校组织架构信息
      *
@@ -110,7 +112,7 @@ public class SchoolOrgWebController {
         //删除组织时，查看院系底下是否还存在子组织信息
         List<SchoolOrg> schoolOrgs = schoolOrgControllerClient.findBySchoolOrgByParentId(id).getResult();
         Student student = null;
-        TeacherDept teacher=null;
+        TeacherDept teacher = null;
         //院系底下不存在子院系，查看当前院系是否存在人员
         if (CollectionUtils.isEmpty(schoolOrgs)) {
             SchoolOrg thisSchoolOrg = schoolOrgControllerClient.findSchoolOrgInfo(id).getResult();
@@ -160,5 +162,17 @@ public class SchoolOrgWebController {
     @ApiOperation(value = "根据父ID查询学校组织架构")
     public Object findBySchoolOrgByParentId(@RequestParam("parentId") @NotNull(message = "父级ID不能为空") Long parentId) {
         return schoolOrgControllerClient.findBySchoolOrgByParentId(parentId);
+    }
+
+    /**
+     * 新增组织架构
+     *
+     * @param schoolOrgAddDto
+     * @return
+     */
+    @RequestMapping(value = "/insertSchoolOrgInfo", method = RequestMethod.POST)
+    @ApiOperation(value = "新增组织架构")
+    public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto) {
+        return schoolOrgControllerClient.insertSchoolOrgInfo(schoolOrgAddDto);
     }
 }
