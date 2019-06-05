@@ -61,7 +61,7 @@ public class SchoolOrgController {
         schoolOrgQueryDto.setSchoolId(schoolId);
         List<SchoolOrg> schoolOrgList=schoolOrgService.findAllSchoolOrgInfo(schoolOrgQueryDto);
         if(CollectionUtils.isEmpty(schoolOrgList)){
-          return WrapMapper.error("当前学校不存在组织架构信息");
+          return WrapMapper.ok("当前学校不存在组织架构信息");
         }
         List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
             SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
