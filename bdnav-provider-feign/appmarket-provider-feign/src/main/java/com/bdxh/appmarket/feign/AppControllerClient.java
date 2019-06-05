@@ -72,7 +72,7 @@ public interface AppControllerClient {
 
     @RequestMapping(value = "/app/thePresetList", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<App>> thePresetList(@RequestParam("preset") Byte preset);
+    Wrapper<List<appDownloadlinkVo>> thePresetList(@RequestParam("preset") Byte preset);
 
 
     @RequestMapping(value = "/app/findTheApplicationList", method = RequestMethod.GET)
