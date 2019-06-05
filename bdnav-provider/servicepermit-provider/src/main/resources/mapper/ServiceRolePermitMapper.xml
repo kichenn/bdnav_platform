@@ -41,13 +41,12 @@
         `user`.student_name as studentName,
         `user`.type as type,
         `user`.id as serviceUserId,
-        role.name as roleName
+         permit.service_role_id as roleId
         FROM
-        t_service_role_permit permit
-        INNER JOIN t_service_role role ON permit.service_role_id = role.id
-        INNER JOIN t_service_user `user` ON permit.service_user_id = `user`.id
+        t_service_role_permit AS permit
+        INNER JOIN t_service_user AS `user` ON permit.service_user_id = `user`.id
         <where>
-            `user`.car_number =#{familyCardNumber}
+            `user`.card_number =#{familyCardNumber}
             AND
             <!--正常使用的账户-->
             `user`.status= 1;
