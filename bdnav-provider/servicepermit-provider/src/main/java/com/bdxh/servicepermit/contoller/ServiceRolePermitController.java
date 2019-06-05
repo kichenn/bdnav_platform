@@ -9,15 +9,18 @@ import com.bdxh.servicepermit.dto.ServiceRoleQueryDto;
 import com.bdxh.servicepermit.entity.ServiceRole;
 import com.bdxh.servicepermit.service.ServiceRolePermitService;
 import com.bdxh.servicepermit.service.ServiceRoleService;
+import com.bdxh.servicepermit.vo.ServiceRolePermitInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @Description: 服务许可角色权限关系controller
@@ -30,6 +33,9 @@ import java.util.Date;
 @Validated
 @Api(value = "服务许可角色权限关系", tags = "服务许可角色权限关系交互信息")
 public class ServiceRolePermitController {
+
+    @Autowired
+    private ServiceRoleService serviceRoleService;
 
     @Autowired
     private ServiceRolePermitService serviceRolePermitService;
@@ -50,7 +56,13 @@ public class ServiceRolePermitController {
     @ApiOperation(value = "家长id查询 服务权限许可信息（一个家长有多个孩子）", response = Boolean.class)
     @RequestMapping(value = "/findServiceRolePermitInfoVo", method = RequestMethod.GET)
     public Object findServiceRolePermitInfoVo(@RequestParam("familyCardNumber") String familyCardNumber) {
-        return WrapMapper.ok(serviceRolePermitService.findServiceRolePermitInfoVo(familyCardNumber));
+        List<ServiceRolePermitInfoVo> serviceRolePermitInfoVoList = serviceRolePermitService.findServiceRolePermitInfoVo(familyCardNumber);
+        if (CollectionUtils.isNotEmpty(serviceRolePermitInfoVoList)) {
+            serviceRolePermitInfoVoList.forEach(e -> {
+                e.setRoleName(serviceRoleService.selectByKey(e.getRoleId()).getName());
+            });
+        }
+        return WrapMapper.ok(serviceRolePermitInfoVoList);
     }
 
 }
