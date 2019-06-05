@@ -95,9 +95,9 @@ public class ApplyControlsWebController {
     }
 
     @ApiOperation(value = "查询用户被禁名单列表", response = Boolean.class)
-    @RequestMapping(value = "/applyControlsWeb/disableAppList", method = RequestMethod.POST)
-    public Object disableAppList(@Validated @RequestBody AppStatusQueryDto appStatusQueryDto) {
-        return appStatusControllerClient.findAppStatusInContionPaging(appStatusQueryDto);
+    @RequestMapping(value = "/applyControlsWeb/disableAppList", method = RequestMethod.GET)
+    public Object disableAppList(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam(name = "cardNumber") String cardNumber) {
+        return appStatusControllerClient.findAppStatusInByAccount(schoolCode,cardNumber);
     }
 
     @ApiOperation(value = "最新应用版本查询", response = Boolean.class)

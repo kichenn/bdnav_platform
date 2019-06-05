@@ -20,6 +20,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -49,8 +50,12 @@ public class ControlConfigController {
 	@ApiOperation("查询应用黑白名单")
 	public Object findAppType(@RequestParam(name = "appType") Byte appType) {
 		try {
+		    List<String> all=new ArrayList<>();
 			List<ControlConfig> ccf=controlConfigService.findAppType(appType);
-			return WrapMapper.ok(ccf);
+            for (int i = 0; i < ccf.size(); i++) {
+                all.add(ccf.get(i).getAppPackage());
+            }
+			return WrapMapper.ok(all);
 
 		} catch (Exception e) {
 			e.printStackTrace();

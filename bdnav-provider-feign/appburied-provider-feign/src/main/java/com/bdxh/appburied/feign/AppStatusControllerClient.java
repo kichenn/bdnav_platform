@@ -57,4 +57,11 @@ public interface AppStatusControllerClient {
     @RequestMapping(value = "/appStatus/appStatusLockingAndUnlock",method = RequestMethod.POST)
     @ResponseBody
     Wrapper<Boolean> appStatusLockingAndUnlock(@RequestBody WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto);
+
+
+    @RequestMapping(value = "/appStatus/findAppStatusInByAccount",method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<String>> findAppStatusInByAccount(@RequestParam("schoolCode")String schoolCode,
+                                                   @RequestParam("cardNumber")String cardNumber);
+
 }
