@@ -2,6 +2,7 @@ package com.bdxh.backend.controller.school;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolClass;
@@ -158,5 +159,16 @@ public class SchoolOrgWebController {
     @ApiOperation(value = "根据父ID查询学校组织架构")
     public Object findBySchoolOrgByParentId(@RequestParam("parentId") @NotNull(message = "父级ID不能为空") Long parentId) {
         return schoolOrgControllerClient.findBySchoolOrgByParentId(parentId);
+    }
+
+    /**
+     * 新增组织架构
+     * @param schoolOrgAddDto
+     * @return
+     */
+    @RequestMapping(value = "/insertSchoolOrgInfo",method = RequestMethod.POST)
+    @ApiOperation(value = "新增组织架构")
+    public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto){
+        return schoolOrgControllerClient.insertSchoolOrgInfo(schoolOrgAddDto);
     }
 }
