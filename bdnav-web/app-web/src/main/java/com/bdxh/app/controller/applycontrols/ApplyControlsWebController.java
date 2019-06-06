@@ -11,6 +11,8 @@ import com.bdxh.appburied.feign.InstallAppsControllerClient;
 import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.appmarket.feign.AppVersionControllerClient;
+import com.bdxh.appmarket.feign.SystemAppControllerClient;
+import com.bdxh.appmarket.vo.appVersionVo;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -54,8 +56,6 @@ public class ApplyControlsWebController {
     @Autowired
     private AppStatusControllerClient appStatusControllerClient;
 
-    @Autowired
-    private AppVersionControllerClient appVersionControllerClient;
 
     @Autowired
     private AppControllerClient appControllerClient;
@@ -66,6 +66,9 @@ public class ApplyControlsWebController {
 
     @Autowired
     private ApplyLogControllerClient applyLogControllerClient;
+
+    @Autowired
+    private SystemAppControllerClient systemAppControllerClient;
 
 
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
@@ -100,8 +103,8 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "版本更新", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/versionUpdating", method = RequestMethod.GET)
-    public Object versionUpdating(@RequestParam("appId") Long appId) {
-        Wrapper<AppVersion> wrapper = appVersionControllerClient.findNewAppVersion(appId);
+    public Object versionUpdating() {
+        Wrapper<appVersionVo> wrapper =systemAppControllerClient.versionUpdating();
         return WrapMapper.ok(wrapper.getResult());
 
     }
