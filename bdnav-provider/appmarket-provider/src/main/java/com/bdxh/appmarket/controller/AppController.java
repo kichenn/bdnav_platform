@@ -289,7 +289,7 @@ public class AppController {
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("data",pushAndroidAppInfo);
         System.out.println(jsonObject.toString());
-        appNotificationTemplate.setText(jsonObject.toJSONString());
+        appNotificationTemplate.setTransmissionContent(jsonObject.toJSONString());
         /*appNotificationTemplate.setUrl();*/
         appNotificationTemplate.setLogo(app.getIconName());
         appNotificationTemplate.setLogoUrl(app.getIconUrl());

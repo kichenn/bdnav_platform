@@ -33,7 +33,7 @@ public class GeTuiUtils {
         AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
         appNotificationTemplate.setTitle(title);
         System.out.println(text);
-        appNotificationTemplate.setText(text);
+        appNotificationTemplate.setTransmissionContent(text);
         appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
         Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
         Boolean result = false;

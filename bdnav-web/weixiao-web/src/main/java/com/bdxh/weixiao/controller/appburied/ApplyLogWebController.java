@@ -49,7 +49,7 @@ public class ApplyLogWebController {
     public Object modifyVerifyApplyLog(@RequestBody ModifyApplyLogDto modifyApplyLogDto) {
         List<String> clientId = new ArrayList<>();
         //先给测试默认的clientId
-        clientId.add("59dc219038fde0484eebcbb6d5476f0c");
+        clientId.add("1b53a4daab144cec986d6ccf5a3fd745");
         modifyApplyLogDto.setClientId(clientId);
             return applyLogControllerClient.modifyVerifyApplyLog(modifyApplyLogDto);
     }
