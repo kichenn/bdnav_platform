@@ -1,5 +1,3 @@
 #测试环境
-spring:
-  profiles: test
 apollo:
   cluster: TEST
