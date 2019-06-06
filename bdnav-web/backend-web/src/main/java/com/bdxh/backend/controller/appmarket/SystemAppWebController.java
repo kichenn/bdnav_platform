@@ -3,6 +3,8 @@ package com.bdxh.backend.controller.appmarket;
 import com.bdxh.appmarket.dto.*;
 import com.bdxh.appmarket.feign.SystemAppControllerClient;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
+import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
+import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.entity.User;
@@ -13,8 +15,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -99,5 +103,21 @@ public class SystemAppWebController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 上传APP应用
+     */
+    @ApiOperation("上传APP应用")
+    @RequestMapping(value = "/androidMarket",method = RequestMethod.POST)
+    public Object androidMarket(MultipartFile multipartFile){
+        Map<String, String> result = null;
+        try {
+            result = FileOperationUtils.saveBatchFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return WrapMapper.ok(result);
+    }
+
 
 }

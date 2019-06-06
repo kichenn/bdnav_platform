@@ -12,7 +12,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +64,7 @@ public class SystemAppController {
 		}
 		try {
 			SystemApp systemApp = BeanMapUtils.map(addSystemAppDto, SystemApp.class);
+			systemApp.setSystemApkUrl(addSystemAppDto.getSystemApkUrl()+"&response-content-disposition=attachment");
 			Boolean result=systemAppService.save(systemApp)>0;
 			return WrapMapper.ok(result);
 		}catch (Exception e){
