@@ -16,6 +16,7 @@ import com.bdxh.user.dto.AddFamilyDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.FamilyControllerClient;
@@ -253,10 +254,13 @@ public class FamilyWebController {
             School school=new School();
             List<AddFamilyDto> families =new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
-            List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
+
             SchoolUser user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
             String uName=user.getUserName();
+            BaseUserUnqiue baseUserUnqiue=new BaseUserUnqiue();
+            baseUserUnqiue.setSchoolCode(user.getSchoolCode());
+            List<String> phoneList=baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
             Wrapper wrapper = schoolControllerClient.findSchoolBySchoolCode(user.getSchoolCode());
             Wrapper familyWeapper=familyControllerClient.queryFamilyCardNumberBySchoolCode(user.getSchoolCode());
             school = (School) wrapper.getResult();

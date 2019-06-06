@@ -28,6 +28,7 @@ import com.bdxh.user.dto.StudentExacleQueryDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
@@ -341,7 +342,7 @@ public class StudentWebController {
             List<AddStudentDto> students = new ArrayList<>();
             List<SchoolClass> schoolClassList = new ArrayList<>();
             List<String> cardNumberList = new ArrayList<>();
-            List<String> phoneList = baseUserControllerClient.queryAllUserPhone().getResult();
+            List<String> phoneList = new ArrayList<>();
             School school = new School();
             User user = SecurityUtils.getCurrentUser();
             Long uId = user.getId();
@@ -356,6 +357,9 @@ public class StudentWebController {
                     schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
                     school = (School) schoolWrapper.getResult();
                     cardNumberList = (List<String>) studentWeapper.getResult();
+                    BaseUserUnqiue baseUserUnqiue=new BaseUserUnqiue();
+                    baseUserUnqiue.setSchoolCode(columns[0]);
+                    phoneList= baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
                 }
                 if (null != school) {
                     if (StringUtils.isNotBlank(studentList.get(i)[0])) {

@@ -16,6 +16,7 @@ import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.FamilyQueryDto;
 import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.FamilyFence;
 import com.bdxh.user.feign.BaseUserControllerClient;
@@ -240,7 +241,8 @@ public class FamilyWebController {
             School school=new School();
             List<AddFamilyDto> families =new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
-            List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
+            List<String> phoneList=new ArrayList<>();
+
             User user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
             String uName=user.getUserName();
@@ -250,6 +252,9 @@ public class FamilyWebController {
                      if (!familyList.get(i)[0].equals(i - 1 >= familyList.size() ? familyList.get(familyList.size() - 1)[0] : familyList.get(i - 1)[0])|| i==1) {
                         Wrapper wrapper = schoolControllerClient.findSchoolBySchoolCode(columns[0]);
                         Wrapper familyWeapper=baseUserControllerClient.findSchoolNumberBySchool(columns[0]);
+                         BaseUserUnqiue baseUserUnqiue=new BaseUserUnqiue();
+                         baseUserUnqiue.setSchoolCode(columns[0]);
+                         phoneList= baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
                         school = (School) wrapper.getResult();
                         cardNumberList=(List<String>)familyWeapper.getResult();
                     }

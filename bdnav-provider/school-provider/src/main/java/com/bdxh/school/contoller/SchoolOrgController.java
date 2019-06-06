@@ -62,7 +62,7 @@ public class SchoolOrgController {
         schoolOrgQueryDto.setSchoolId(schoolId);
         List<SchoolOrg> schoolOrgList=schoolOrgService.findAllSchoolOrgInfo(schoolOrgQueryDto);
         if(CollectionUtils.isEmpty(schoolOrgList)){
-          return WrapMapper.ok("当前学校不存在组织架构信息");
+          return WrapMapper.wrap(200,"当前学校不存在组织架构信息");
         }
         List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
             SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
@@ -124,7 +124,8 @@ public class SchoolOrgController {
      */
     @RequestMapping(value = "/updateSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改组织架构信息")
-    public Object updateSchoolOrgInfo(@Validated @RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto) {
+    public Object updateSchoolOrgInfo(@RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto) {
+        log.info("进控制器了");
         return WrapMapper.ok(schoolOrgService.updateSchoolOrgInfo(schoolOrgUpdateDto));
     }
 

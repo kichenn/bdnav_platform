@@ -14,15 +14,15 @@ import java.util.List;
  **/
 @Repository
 public interface BaseUserUnqiueMapper extends Mapper<BaseUserUnqiue> {
-    //查询所有用户手机号
-    List<String> queryAllUserPhone();
+    //条件查询所有用户手机号
+    List<String> queryAllUserPhone(BaseUserUnqiue baseUserUnqiue);
 
     //判断手机号时候存在
-    Integer queryUserPhone(@Param("phone") String phone);
+    Integer queryUserPhone(@Param("phone") String phone,@Param("schoolCode")String schoolCode);
 
-    int updateUserPhoneByUserId(@Param("id")Long id, @Param("phone") String phone);
+    int updateUserPhoneByUserId(@Param("id")Long id, @Param("phone") String phone,@Param("schoolCode")String schoolCode);
 
-    int insertUserPhone(@Param("id")Long id,@Param("phone") String phone);
+    int insertUserPhone(@Param("id")Long id,@Param("phone") String phone,@Param("schoolCode")String schoolCode);
 
     int batchSaveBaseUserPhone(List<BaseUserUnqiue> baseUserUnqiueList);
 }

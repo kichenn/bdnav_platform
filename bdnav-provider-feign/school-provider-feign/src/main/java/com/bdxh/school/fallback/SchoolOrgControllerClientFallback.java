@@ -45,7 +45,7 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
     }
 
     @Override
-    public Wrapper updateSchoolOrgInfo(SchoolOrgUpdateDto schoolOrgUpdateDto) {
+    public Wrapper<Boolean> updateSchoolOrgInfo(SchoolOrgUpdateDto schoolOrgUpdateDto) {
         return WrapMapper.error();
     }
 
@@ -60,7 +60,7 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
     }
 
     @Override
-    public Wrapper insertSchoolOrgInfo(SchoolOrgAddDto schoolOrgAddDto) {
+    public Wrapper<Boolean>  insertSchoolOrgInfo(SchoolOrgAddDto schoolOrgAddDto) {
         return WrapMapper.error();
     }
 }

@@ -25,4 +25,10 @@ public class BaseUserUnqiue {
      */
     @Column(name = "phone")
     private String phone;
+
+    /**
+     * 学校code
+     */
+    @Column(name="school_code")
+    private String schoolCode;
 }

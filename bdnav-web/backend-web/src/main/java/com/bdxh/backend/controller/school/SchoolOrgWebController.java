@@ -1,5 +1,6 @@
 package com.bdxh.backend.controller.school;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.SchoolOrgAddDto;
@@ -7,7 +8,9 @@ import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolOrg;
+import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolOrgControllerClient;
+import com.bdxh.system.entity.User;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.entity.TeacherDept;
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -135,6 +139,10 @@ public class SchoolOrgWebController {
     @RequestMapping(value = "/updateSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改组织架构信息")
     public Object updateSchoolOrgInfo(@Validated @RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto) {
+        User user = SecurityUtils.getCurrentUser();
+        schoolOrgUpdateDto.setOperator(user.getId());
+        schoolOrgUpdateDto.setOperatorName(user.getUserName());
+        schoolOrgUpdateDto.setUpdateDate(new Date());
         return schoolOrgControllerClient.updateSchoolOrgInfo(schoolOrgUpdateDto);
     }
 
@@ -169,6 +177,10 @@ public class SchoolOrgWebController {
     @RequestMapping(value = "/insertSchoolOrgInfo",method = RequestMethod.POST)
     @ApiOperation(value = "新增组织架构")
     public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto){
+        User user = SecurityUtils.getCurrentUser();
+        schoolOrgAddDto.setOperator(user.getId());
+        schoolOrgAddDto.setOperatorName(user.getUserName());
+        schoolOrgAddDto.setUpdateDate(new Date());
         return schoolOrgControllerClient.insertSchoolOrgInfo(schoolOrgAddDto);
     }
 }

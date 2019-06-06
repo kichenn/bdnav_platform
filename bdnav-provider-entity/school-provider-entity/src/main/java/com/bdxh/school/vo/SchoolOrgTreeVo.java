@@ -28,4 +28,7 @@ public class SchoolOrgTreeVo extends TreeBean {
 
     @ApiModelProperty("备注")
     private String remark;
+
+    @ApiModelProperty("是否展开直子节点")
+    private Boolean expand=Boolean.TRUE;
 }

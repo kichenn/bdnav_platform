@@ -86,7 +86,7 @@ public interface SchoolOrgControllerClient {
      */
     @RequestMapping(value = "/schoolOrg/updateSchoolOrgInfo", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper updateSchoolOrgInfo(@RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto);
+    Wrapper<Boolean> updateSchoolOrgInfo(@RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto);
 
 
     /**
@@ -114,7 +114,7 @@ public interface SchoolOrgControllerClient {
      * @param schoolOrgAddDto
      * @return
      */
-    @RequestMapping(value = "/insertSchoolOrgInfo", method = RequestMethod.POST)
+    @RequestMapping(value = "/schoolOrg/insertSchoolOrgInfo", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto);
+    Wrapper<Boolean> insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto);
 }

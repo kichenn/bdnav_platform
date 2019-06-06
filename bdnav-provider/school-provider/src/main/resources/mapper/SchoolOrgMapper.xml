@@ -117,4 +117,28 @@
             parent_id=#{parentId}
         </where>
     </select>
+
+    <!--根据ID删除组织架构信息-->
+    <delete id="removeSchoolOrgInfo">
+        DELETE FROM t_school_org WHERE id=#{id}
+    </delete>
+
+    <update id="updateSchoolOrg">
+        UPDATE  t_school_org
+        SET
+          parent_names  =  #{parentNames} ,
+          this_url  =  #{thisUrl} ,
+          org_name  =  #{orgName} ,
+          level  =  #{level},
+          sort  =  #{sort} ,
+          manage_id  = #{manageId},
+          manage_card_number  = #{manageCardNumber},
+          manage_name  = #{manageName},
+          update_date  =  NOW() ,
+          operator  =  #{operator},
+          operator_name  =  #{operatorName} ,
+          remark  = #{remark}
+        WHERE
+            id  =  #{id};
+    </update>
 </mapper>

@@ -83,39 +83,6 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         teacherMapper.deleteTeacher(schoolCode, cardNumber);
         teacherDeptMapper.deleteTeacherDept(schoolCode, cardNumber, 0);
         baseUserMapper.deleteBaseUserInfo(schoolCode, cardNumber);
-        try {
-            JSONObject mesData = new JSONObject();
-            mesData.put("delFlag",1);
-            mesData.put("tableName", "t_teacher");
-            List<Map<String,String>> data=new ArrayList<>();
-            Map<String,String> map=new HashMap<>();
-            map.put("id",baseUser.getUserId().toString());
-            map.put("cardNumber",cardNumber);
-            data.add(map);
-            mesData.put("data", data);
-            Message studentMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacher, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-            mesData.put("tableName", "t_base_user");
-            //清空格式
-            data.clear();
-            map.clear();
-            map.put("id",baseUser.getId().toString());
-            data.add(map);
-            mesData.put("data",data);
-            Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-            mesData.put("tableName", "t_teacher_dept");
-            //清空格式
-            data.clear();
-            map.clear();
-            map.put("id",teacherDept.getId().toString());
-            data.add(map);
-            mesData.put("data",data);
-            Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
-            defaultMQProducer.send(studentMsg);
-            defaultMQProducer.send(baseUserMsg);
-            defaultMQProducer.send(teacherDeptMsg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
 
@@ -149,7 +116,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         baseUser.setUserId(teacher.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
-            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
+            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone(),baseUser.getSchoolCode());
         }catch (Exception e){
             String message=e.getMessage();
             if (e instanceof DuplicateKeyException) {
@@ -241,7 +208,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             //如果改了手机号码就进行修改
             if(!baseuser.getPhone().equals(updateTeacherDto.getPhone())){
                 try {
-                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseuser.getId(),updateBaseUserDto.getPhone());
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseuser.getId(),updateBaseUserDto.getPhone(),updateBaseUserDto.getSchoolCode());
                 }catch (Exception e){
                     String message=e.getMessage();
                     if (e instanceof DuplicateKeyException) {

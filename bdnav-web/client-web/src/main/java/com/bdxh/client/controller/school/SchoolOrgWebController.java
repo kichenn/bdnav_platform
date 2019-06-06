@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -121,7 +122,7 @@ public class SchoolOrgWebController {
         }
         if (CollectionUtils.isNotEmpty(schoolOrgs)) {
             return WrapMapper.error("该组织底下存在其他组织不能删除");
-        } else if (student != null || teacher != null) {
+        } else if (student == null || teacher == null) {
             return WrapMapper.error("该组织底下存在人员不能删除");
         }
         return schoolOrgControllerClient.removeSchoolOrgInfo(id);
@@ -137,7 +138,13 @@ public class SchoolOrgWebController {
     @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/updateSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "修改组织架构信息")
-    public Object updateSchoolOrgInfo(@Validated @RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto) {
+    public Object updateSchoolOrgInfo(@RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto) {
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        schoolOrgUpdateDto.setOperator(user.getId());
+        schoolOrgUpdateDto.setOperatorName(user.getUserName());
+        schoolOrgUpdateDto.setUpdateDate(new Date());
+        schoolOrgUpdateDto.setSchoolId(user.getSchoolId());
+        schoolOrgUpdateDto.setSchoolCode(user.getSchoolCode());
         return schoolOrgControllerClient.updateSchoolOrgInfo(schoolOrgUpdateDto);
     }
 
@@ -173,6 +180,11 @@ public class SchoolOrgWebController {
     @RequestMapping(value = "/insertSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "新增组织架构")
     public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto) {
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        schoolOrgAddDto.setSchoolCode(user.getSchoolCode());
+        schoolOrgAddDto.setSchoolId(user.getSchoolId());
+        schoolOrgAddDto.setOperator(user.getId());
+        schoolOrgAddDto.setOperatorName(user.getUserName());
         return schoolOrgControllerClient.insertSchoolOrgInfo(schoolOrgAddDto);
     }
 }

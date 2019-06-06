@@ -164,7 +164,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         //如果改了手机号码就进行修改
         if (!baseUser.getPhone().equals(updateStudentDto.getPhone())) {
             try {
-                baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(), updateStudentDto.getPhone());
+                baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(), updateStudentDto.getPhone(),updateStudentDto.getSchoolCode());
             } catch (Exception e) {
                 String message = e.getMessage();
                 if (e instanceof DuplicateKeyException) {
@@ -317,7 +317,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         baseUser.setUpdateDate(new Date());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
-            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(), baseUser.getPhone());
+            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(), baseUser.getPhone(),baseUser.getSchoolCode());
         } catch (Exception e) {
             String message = e.getMessage();
             if (e instanceof DuplicateKeyException) {

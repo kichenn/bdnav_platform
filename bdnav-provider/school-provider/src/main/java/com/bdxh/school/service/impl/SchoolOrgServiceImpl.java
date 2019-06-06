@@ -18,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.persistence.SchoolOrgMapper;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -71,9 +70,7 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean updateSchoolOrgInfo(SchoolOrgUpdateDto schoolOrgUpdateDto) {
-        Map<String, Object> param = BeanToMapUtil.objectToMap(schoolOrgUpdateDto);
         SchoolOrg schoolOrg=BeanMapUtils.map(schoolOrgUpdateDto,SchoolOrg.class);
-
         if (new Long("-1").equals(schoolOrg.getParentId())) {
             schoolOrg.setParentNames("");
             schoolOrg.setThisUrl(schoolOrg.getOrgName());
@@ -98,7 +95,7 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
                 schoolOrgMapper.updateByPrimaryKeySelective(e);
             });
         }
-        Boolean result = schoolOrgMapper.updateSchoolOrgInfo(param) > 0;
+        Boolean result = schoolOrgMapper.updateSchoolOrg(schoolOrg) > 0;
         return result;
     }
 
