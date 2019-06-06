@@ -43,7 +43,7 @@ public class SchoolClassModifyDto {
     @ApiModelProperty("排序")
     private Integer sort;
 
-//    @ApiModelProperty("创建时间")
+//    @ApiModelProperty("创建时间") 
 //    private Date createDate;
 //
     @ApiModelProperty("修改时间")
