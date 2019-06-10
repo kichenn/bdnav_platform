@@ -30,7 +30,7 @@ public class SysPermissionController {
 
 
     @RequestMapping(value="/findPermissionByRoleId",method = RequestMethod.GET)
-    @ApiOperation("角色id查询用户菜单or按钮权限")
+    @ApiOperation(value="角色id查询用户菜单or按钮权限",response = PermissionTreeVo.class)
     public Object findPermissionByRoleId(@RequestParam(name = "roleId")Long roleId,
                                          @RequestParam(name = "type",defaultValue = "1") Byte type){
         try {
@@ -43,7 +43,7 @@ public class SysPermissionController {
     }
 
     @RequestMapping(value="/permissionMenus",method = RequestMethod.POST)
-    @ApiOperation("根据用户id查询权限列表")
+    @ApiOperation(value="根据用户id查询权限列表",response = String.class)
     public Object permissionMenus(@RequestParam(name = "roleId")Long roleId){
         try {
             Wrapper wrapper = permissionControllerClient.permissionMenus(roleId);
@@ -56,7 +56,7 @@ public class SysPermissionController {
 
 
     @RequestMapping(value="/addPermission",method = RequestMethod.POST)
-    @ApiOperation("添加权限菜单")
+    @ApiOperation(value="添加权限菜单",response=Boolean.class)
     public Object addPermission(@Validated @RequestBody AddPermissionDto addPermissionDto){
         try {
             Wrapper wrapper = permissionControllerClient.addPermission(addPermissionDto);
@@ -69,7 +69,7 @@ public class SysPermissionController {
 
 
     @RequestMapping(value="/modifyPermission",method = RequestMethod.POST)
-    @ApiOperation("修改权限菜单")
+    @ApiOperation(value="修改权限菜单",response=Boolean.class)
     public Object modifyPermission(@Validated @RequestBody ModifyPermissionDto modifyPermissionDto){
         try {
             Wrapper wrapper = permissionControllerClient.modifyPermission(modifyPermissionDto);
@@ -82,7 +82,7 @@ public class SysPermissionController {
 
 
     @RequestMapping(value="/theTreeMenu",method = RequestMethod.GET)
-    @ApiOperation("查询特定情况下菜单")
+    @ApiOperation(value="查询特定情况下菜单",response = PermissionTreeVo.class)
     public Object theTreeMenu( @RequestParam(value = "roleId") Long roleId){
         try {
             Wrapper wrapper = permissionControllerClient.theTreeMenu(roleId);
@@ -94,7 +94,7 @@ public class SysPermissionController {
     }
 
     @RequestMapping(value="/thePermissionMenu",method = RequestMethod.GET)
-    @ApiOperation("查询全部菜单权限")
+    @ApiOperation(value="查询全部菜单权限",response = PermissionTreeVo.class)
     public Object thePermissionMenu(){
         try {
             Wrapper wrapper = permissionControllerClient.thePermissionMenu();
@@ -107,7 +107,7 @@ public class SysPermissionController {
 
 
     @RequestMapping(value="/addOrUpdatePermission",method = RequestMethod.POST)
-    @ApiOperation("保存并修改权限")
+    @ApiOperation(value="保存并修改权限",response = Boolean.class)
     public Object addOrUpdatePermission(@Validated @RequestBody BaPermissionsDto baPermissionsDto){
         try {
             Wrapper wrapper = permissionControllerClient.addOrUpdatePermission(baPermissionsDto);
@@ -120,7 +120,7 @@ public class SysPermissionController {
 
 
     @RequestMapping(value="/delPermissionById",method = RequestMethod.GET)
-    @ApiOperation("删除单个菜单权限")
+    @ApiOperation(value="删除单个菜单权限",response = Boolean.class)
     public Object delPermissionById(@RequestParam("id") Long id){
         try {
             Permission permission=permissionControllerClient.findPermissionByParentId(id).getResult();
@@ -136,7 +136,7 @@ public class SysPermissionController {
     }
 
     @RequestMapping(value="/findPermissionById",method = RequestMethod.GET)
-    @ApiOperation("根据id查询菜单详情")
+    @ApiOperation(value="根据id查询菜单详情",response = Permission.class)
     public Object findPermissionById(@RequestParam("id") Long id){
         try {
             Wrapper wrapper = permissionControllerClient.findPermissionById(id);
@@ -149,7 +149,7 @@ public class SysPermissionController {
 
 
     @RequestMapping(value="/userPermissionMenu",method = RequestMethod.GET)
-    @ApiOperation("当前用户所有菜单列表")
+    @ApiOperation(value="当前用户所有菜单列表",response = PermissionTreeVo.class)
     public Object userPermissionMenu(@RequestParam("userId") Long userId){
         try {
             Wrapper<List<PermissionTreeVo>> wrapper = permissionControllerClient.userPermissionMenu(userId);

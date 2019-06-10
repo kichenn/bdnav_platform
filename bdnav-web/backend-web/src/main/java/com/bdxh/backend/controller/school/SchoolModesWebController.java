@@ -7,6 +7,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolModeDto;
 import com.bdxh.school.dto.ModifySchoolModeDto;
 import com.bdxh.school.dto.QuerySchoolMode;
+import com.bdxh.school.entity.SchoolMode;
 import com.bdxh.school.feign.SchoolModeControllerClient;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
@@ -92,21 +93,21 @@ public class SchoolModesWebController {
 
 
     @RequestMapping(value = "/getModesById", method = RequestMethod.GET)
-    @ApiOperation(value = "查询学校模式详情")
+    @ApiOperation(value = "查询学校模式详情",response = SchoolMode.class)
     public Object getModesById(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolModeControllerClient.getModesById(id);
         return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/getModesAll", method = RequestMethod.GET)
-    @ApiOperation(value = "查询学校模式列表")
+    @ApiOperation(value = "查询学校模式列表",response = SchoolMode.class)
     public Object getModesAll() {
         Wrapper wrapper = schoolModeControllerClient.getModesAll();
         return WrapMapper.ok(wrapper.getResult());
     }
 
     @RequestMapping(value = "/getListByPlatform", method = RequestMethod.GET)
-    @ApiOperation(value = "根据平台查询所有模式")
+    @ApiOperation(value = "根据平台查询所有模式",response = SchoolMode.class)
     public Object getListByPlatform(@RequestParam("schoolId") Long schoolId,@RequestParam("platform") String platform) {
         Wrapper wrapper = schoolModeControllerClient.getListByPlatform(schoolId,platform);
         return WrapMapper.ok(wrapper.getResult());

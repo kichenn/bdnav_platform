@@ -6,6 +6,7 @@ import com.bdxh.system.dto.DeptDto;
 import com.bdxh.system.dto.DeptQueryDto;
 import com.bdxh.system.feign.DeptControllerClient;
 import com.bdxh.system.vo.DeptDetailsVo;
+import com.bdxh.system.vo.DeptTreeVo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +40,7 @@ public class SysDeptController {
      * @return
      */
     @RequestMapping(value = "/queryDeptTreeById", method = RequestMethod.GET)
-    @ApiOperation("根据id查询部门树形菜单")
+    @ApiOperation(value="根据id查询部门树形菜单",response = DeptTreeVo.class)
     public Object queryDeptTreeById(@RequestParam(name = "deptId") Long deptId) {
         try {
             Preconditions.checkArgument(deptId != null, "部门id不能为空");
@@ -57,7 +58,7 @@ public class SysDeptController {
      * @return
      */
     @RequestMapping(value = "/queryDeptList", method = RequestMethod.POST)
-    @ApiOperation("带条件的查询部门")
+    @ApiOperation(value="带条件的查询部门",response = DeptTreeVo.class)
     public Object queryDeptList(@RequestBody DeptQueryDto deptQueryDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
@@ -80,7 +81,7 @@ public class SysDeptController {
      * @return
      */
     @RequestMapping(value = "/queryDeptById", method = RequestMethod.GET)
-    @ApiOperation("根据父级id查询部门详情")
+    @ApiOperation(value="根据父级id查询部门详情",response = DeptDetailsVo.class)
     public Object queryDeptById(@RequestParam(name = "deptId") Long deptId, @RequestParam(name = "parentId") Long parentId) {
         try {
             DeptDetailsVo result = deptControllerClient.findDeptByParentId(deptId, parentId).getResult();
@@ -97,7 +98,7 @@ public class SysDeptController {
      * @return
      */
     @RequestMapping(value = "/addDept", method = RequestMethod.POST)
-    @ApiOperation("增加部门")
+    @ApiOperation(value="增加部门",response = Boolean.class)
     public Object addDept(@Validated @RequestBody DeptDto deptDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
@@ -119,7 +120,7 @@ public class SysDeptController {
      * @return
      */
     @RequestMapping(value = "/updateDept", method = RequestMethod.POST)
-    @ApiOperation("修改部门信息")
+    @ApiOperation(value="修改部门信息",response = Boolean.class)
     public Object updateDept(@Validated @RequestBody DeptDto deptDto, BindingResult bindingResult) {
         //检验参数
         if (bindingResult.hasErrors()) {
@@ -141,7 +142,7 @@ public class SysDeptController {
      * @return
      */
     @RequestMapping(value = "/delDept", method = RequestMethod.POST)
-    @ApiOperation("删除部门信息")
+    @ApiOperation(value="删除部门信息",response = Boolean.class)
     public Object delDept(@RequestParam(name = "deptId") Long deptId) {
 
         try {
