@@ -1,6 +1,7 @@
 package com.bdxh.backend.controller.appmarket;
 
 import com.bdxh.appmarket.dto.AddAppVersionDto;
+import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.feign.AppVersionControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import io.swagger.annotations.Api;
@@ -34,7 +35,7 @@ public class AppVersionWebController {
          * @return
          */
         @RequestMapping(value = "/addAppVersion",method = RequestMethod.POST)
-        @ApiOperation("添加app新的版本信息")
+        @ApiOperation(value="添加app新的版本信息",response = Boolean.class)
         public Object addAppVersion(@Valid @RequestBody AddAppVersionDto addAppVersionDto){
             try {
                 appVersionControllerClient.addAppVersion(addAppVersionDto);
@@ -47,7 +48,7 @@ public class AppVersionWebController {
          * 查看APP版本历史
          */
         @RequestMapping(value = "/findAppVersion",method = RequestMethod.GET)
-        @ApiOperation("查看APP版本历史")
+        @ApiOperation(value="查看APP版本历史",response = AppVersion.class)
         public Object findAppVersion(@RequestParam("appId")Long appId){
             try {
                 return appVersionControllerClient.findAppVersion(appId);

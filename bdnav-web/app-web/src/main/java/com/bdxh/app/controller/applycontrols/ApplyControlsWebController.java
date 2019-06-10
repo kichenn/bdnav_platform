@@ -12,6 +12,7 @@ import com.bdxh.appmarket.entity.AppVersion;
 import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.appmarket.feign.AppVersionControllerClient;
 import com.bdxh.appmarket.feign.SystemAppControllerClient;
+import com.bdxh.appmarket.vo.appDownloadlinkVo;
 import com.bdxh.appmarket.vo.appVersionVo;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
@@ -77,7 +78,7 @@ public class ApplyControlsWebController {
         return studentControllerClient.updateStudent(updateStudentDto);
     }
 
-    @ApiOperation(value = "显示学生信息详情", response = Boolean.class)
+    @ApiOperation(value = "显示学生信息详情", response = StudentVo.class)
     @RequestMapping(value = "/applyControlsWeb/infoDetails", method = RequestMethod.GET)
     public Object infoDetails(@Validated @RequestParam(name = "schoolCode") String schoolCode, @RequestParam(name = "cardNumber") String cardNumber) {
         return studentControllerClient.queryStudentInfo(schoolCode, cardNumber);
@@ -89,19 +90,19 @@ public class ApplyControlsWebController {
         return installAppsControllerClient.addInstallApp(addInstallAppsDto);
     }
 
-    @ApiOperation(value = "学校黑名单", response = Boolean.class)
+    @ApiOperation(value = "学校黑名单", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/blackList", method = RequestMethod.GET)
     public Object blackList(@RequestParam(name = "schoolCode") String schoolCode) {
         return blackUrlControllerClient.findBlackInList(schoolCode);
     }
 
-    @ApiOperation(value = "查询用户被禁名单列表", response = Boolean.class)
+    @ApiOperation(value = "查询用户被禁名单列表", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/disableAppList", method = RequestMethod.GET)
     public Object disableAppList(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam(name = "cardNumber") String cardNumber) {
         return appStatusControllerClient.findAppStatusInByAccount(schoolCode,cardNumber);
     }
 
-    @ApiOperation(value = "版本更新", response = Boolean.class)
+    @ApiOperation(value = "版本更新", response = appVersionVo.class)
     @RequestMapping(value = "/applyControlsWeb/versionUpdating", method = RequestMethod.GET)
     public Object versionUpdating() {
         Wrapper<appVersionVo> wrapper =systemAppControllerClient.versionUpdating();
@@ -110,7 +111,7 @@ public class ApplyControlsWebController {
     }
 
 
-    @ApiOperation(value = "查询预置应用列表", response = Boolean.class)
+    @ApiOperation(value = "查询预置应用列表", response = appDownloadlinkVo.class)
     @RequestMapping(value = "/authenticationApp/thePresetList", method = RequestMethod.GET)
     public Object thePresetList(@RequestParam(value = "preset",defaultValue = "1") Byte preset) {
         Wrapper wrapper = appControllerClient.thePresetList(preset);
@@ -166,7 +167,7 @@ public class ApplyControlsWebController {
     }
 
 
-    @ApiOperation(value = "查询应用黑盒|隐藏", response = Boolean.class)
+    @ApiOperation(value = "查询应用黑盒|隐藏", response = String.class)
     @RequestMapping(value = "/authenticationApp/findAppType", method = RequestMethod.GET)
     public Object findAppType(@RequestParam(name = "appType") Byte appType) {
         Wrapper wrapper = controlConfigControllerClient.findAppType(appType);
@@ -180,7 +181,7 @@ public class ApplyControlsWebController {
         return WrapMapper.ok(wrapper.getResult());
     }
 
-    @ApiOperation(value = "提供学校应用下载APP链接", response = Boolean.class)
+    @ApiOperation(value = "提供学校应用下载APP链接", response = appDownloadlinkVo.class)
     @RequestMapping(value = "/applyControlsWeb/applicationDownloadLink", method = RequestMethod.GET)
     public Object applicationDownloadLink(@RequestParam("schoolCode") String schoolCode){
         Wrapper wrapper=appControllerClient.findTheApplicationList(schoolCode);
