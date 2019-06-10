@@ -340,7 +340,6 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                     //将新增的信息推送至rocketMQ
                     JSONObject mesData = new JSONObject();
                     mesData.put("delFlag", 0);
-                    mesData.put("tableName", "t_student");
                     List<Student> studentList = new ArrayList<>();
                     studentList.add(student);
                     mesData.put("data", studentList);

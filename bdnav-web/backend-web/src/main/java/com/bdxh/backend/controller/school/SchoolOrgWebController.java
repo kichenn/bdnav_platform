@@ -18,6 +18,7 @@ import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.feign.TeacherDeptControllerClient;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
@@ -83,8 +84,6 @@ public class SchoolOrgWebController {
     @RequestMapping(value = "/findSchoolOrgInfo", method = RequestMethod.GET)
     @ApiOperation(value = "根据条件查询单个学校组织架构信息")
     public Object findSchoolOrgInfo(@NotNull(message = "id不能为空") @RequestParam("id") Long id) {
-
-        SchoolOrg schoolOrgs = schoolOrgControllerClient.findSchoolOrgInfo(id).getResult();
         return schoolOrgControllerClient.findSchoolOrgInfo(id);
     }
 
@@ -183,4 +182,6 @@ public class SchoolOrgWebController {
         schoolOrgAddDto.setUpdateDate(new Date());
         return schoolOrgControllerClient.insertSchoolOrgInfo(schoolOrgAddDto);
     }
+
+
 }
