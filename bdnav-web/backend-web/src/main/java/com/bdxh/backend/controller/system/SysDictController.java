@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.*;
 import com.bdxh.system.entity.Dict;
+import com.bdxh.system.entity.DictData;
 import com.bdxh.system.feign.DictControllerClient;
 import com.bdxh.system.feign.DictDataControllerClient;
 import com.github.pagehelper.PageInfo;
@@ -32,7 +33,7 @@ public class SysDictController {
 
 
     @RequestMapping(value="/findDictListAll",method = RequestMethod.GET)
-    @ApiOperation("查询字典列表数据")
+    @ApiOperation(value="查询字典列表数据",response = Dict.class)
     public Object findDictListAll(){
         try {
             Wrapper wrapper = dictControllerClient.findDictListAll();
@@ -45,7 +46,7 @@ public class SysDictController {
 
 
     @RequestMapping(value="/queryDictList",method = RequestMethod.POST)
-    @ApiOperation("根据条件查询字典")
+    @ApiOperation(value="根据条件查询字典",response =PageInfo.class )
     public Object queryDictList(@Validated @RequestBody DictQueryDto dictQueryDto){
         try {
             Wrapper<PageInfo<Dict>> wrapper = dictControllerClient.queryDictList(dictQueryDto);
@@ -57,7 +58,7 @@ public class SysDictController {
     }
 
     @RequestMapping(value="/addDict",method = RequestMethod.POST)
-    @ApiOperation("添加字典目录")
+    @ApiOperation(value="添加字典目录",response=Boolean.class)
     public Object addDict(@Validated @RequestBody DictDto dictDto){
         try {
             Wrapper wrapper = dictControllerClient.addDict(dictDto);
@@ -69,7 +70,7 @@ public class SysDictController {
     }
 
     @RequestMapping(value="/updateDict",method = RequestMethod.POST)
-    @ApiOperation("修改字典目录")
+    @ApiOperation(value="修改字典目录",response=Boolean.class)
     public Object updateDict(@Validated @RequestBody UpdateDictDto updateDictDto){
         try {
             Wrapper wrapper = dictControllerClient.updateDict(updateDictDto);
@@ -81,7 +82,7 @@ public class SysDictController {
     }
 
     @RequestMapping(value="/delDict",method = RequestMethod.POST)
-    @ApiOperation("删除字典目录")
+    @ApiOperation(value="删除字典目录",response=Boolean.class)
     public Object delDict(@RequestParam(name = "dictId")Long dictId){
         try {
             Wrapper wrapper = dictControllerClient.delDict(dictId);
@@ -94,7 +95,7 @@ public class SysDictController {
 
 
     @RequestMapping(value="/queryListPage",method = RequestMethod.POST)
-    @ApiOperation("根据条件查询字典数据")
+    @ApiOperation(value="根据条件查询字典数据",response = DictData.class)
     public Object queryListPage(@Validated @RequestBody DictDataQueryDto dictDataQueryDto){
         try {
             Wrapper wrapper = dictDataControllerClient.queryListPage(dictDataQueryDto);
@@ -106,7 +107,7 @@ public class SysDictController {
     }
 
     @RequestMapping(value="/addDictData",method = RequestMethod.POST)
-    @ApiOperation("/添加字典数据")
+    @ApiOperation(value="/添加字典数据",response=Boolean.class)
     public Object addDictData(@Validated @RequestBody DictDataDto dictDataDto){
         try {
             Wrapper wrapper = dictDataControllerClient.addDictData(dictDataDto);
@@ -120,7 +121,7 @@ public class SysDictController {
 
 
     @RequestMapping(value="/updateDictData",method = RequestMethod.POST)
-    @ApiOperation("修改字典数据")
+    @ApiOperation(value="修改字典数据",response=Boolean.class)
     public Object updateDictData(@Validated @RequestBody UpdateDictDataDto updateDictDataDto){
         try {
             Wrapper wrapper = dictDataControllerClient.updateDictData(updateDictDataDto);
@@ -135,7 +136,7 @@ public class SysDictController {
 
 
     @RequestMapping(value="/delDictData",method = RequestMethod.GET)
-    @ApiOperation("删除单个字典数据")
+    @ApiOperation(value="删除单个字典数据",response=Boolean.class)
     public Object delDictData(@RequestParam(name = "id") Long id){
         try {
             Wrapper wrapper = dictDataControllerClient.delDictData(id);
@@ -147,7 +148,7 @@ public class SysDictController {
     }
 
     @RequestMapping(value="/delBatchDictData",method = RequestMethod.POST)
-    @ApiOperation("批量删除字典数据")
+    @ApiOperation(value="批量删除字典数据",response=Boolean.class)
     public Object delBatchDictData(@RequestParam(name = "ids")String ids){
         try {
             Wrapper wrapper = dictDataControllerClient.delBatchDictData(ids);
@@ -160,7 +161,7 @@ public class SysDictController {
 
 
     @RequestMapping(value="/findDictDataPage",method = RequestMethod.GET)
-    @ApiOperation("根据字典数据查询数据列表")
+    @ApiOperation(value="根据字典数据查询数据列表",response = DictData.class)
     public Object findDictDataPage(
             @RequestParam(name ="dictId",required = false)Long dictId,
             @RequestParam(name = "pageNum",defaultValue = "1")Integer pageNum,

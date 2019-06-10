@@ -8,6 +8,7 @@ import com.bdxh.system.dto.ModifyControlConfig;
 import com.bdxh.system.dto.QueryControlConfig;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.ControlConfigControllerClient;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +33,7 @@ public class ControlConfigController {
      * @return
      */
     @RequestMapping(value = "/addControlConfig", method = RequestMethod.POST)
-    @ApiOperation("添加应用管控系统信息")
+    @ApiOperation(value="添加应用管控系统信息",response = Boolean.class)
     public Object addControlConfig(@Validated @RequestBody AddControlConfig addControlConfig) {
         try {
             User user = SecurityUtils.getCurrentUser();
@@ -53,7 +54,7 @@ public class ControlConfigController {
      * @return
      */
     @RequestMapping(value = "/modifyControlConfig", method = RequestMethod.POST)
-    @ApiOperation("修改应用管控系统信息")
+    @ApiOperation(value="修改应用管控系统信息",response = Boolean.class)
     public Object modifyControlConfig(@Validated @RequestBody ModifyControlConfig modifyControlConfig) {
         try {
             User user = SecurityUtils.getCurrentUser();
@@ -74,7 +75,7 @@ public class ControlConfigController {
      * @return
      */
     @RequestMapping(value = "/delControlConfig", method = RequestMethod.GET)
-    @ApiOperation("删除应用管控系统信息")
+    @ApiOperation(value="删除应用管控系统信息",response = Boolean.class)
     public Object delControlConfig(@RequestParam(name = "id") Long id) {
         try {
             Wrapper wrapper = controlConfigControllerClient.delControlConfig(id);
@@ -92,7 +93,7 @@ public class ControlConfigController {
      * @return
      */
     @RequestMapping(value = "/queryListPage", method = RequestMethod.POST)
-    @ApiOperation("分页查询应用管控系统信息")
+    @ApiOperation(value="分页查询应用管控系统信息",response = PageInfo.class)
     public Object queryListPage(@Validated @RequestBody QueryControlConfig queryControlConfig) {
         try {
             Wrapper wrapper = controlConfigControllerClient.queryListPage(queryControlConfig);
