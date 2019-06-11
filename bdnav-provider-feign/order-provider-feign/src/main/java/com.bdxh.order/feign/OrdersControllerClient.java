@@ -6,6 +6,7 @@ import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.fallback.OrdersControllerClientFallback;
+import com.bdxh.order.vo.OrderVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -42,13 +43,13 @@ public interface OrdersControllerClient {
 
 
     @RequestMapping(value = "/order/queryUserOrder",method = RequestMethod.POST)
-    Wrapper<PageInfo<Order>> queryUserOrder(@RequestBody OrderQueryDto orderDto);
+    Wrapper<PageInfo<OrderVo>> queryUserOrder(@RequestBody OrderQueryDto orderDto);
 
 
     @RequestMapping(value = "/order/updateOrder",method = RequestMethod.POST)
     Wrapper updateOrder(@RequestBody OrderUpdateDto orderUpdateDto);
 
     @RequestMapping(value = "/order/createOrder",method = RequestMethod.POST)
-    Wrapper createOrder(@RequestBody AddOrderDto orderDto);
+    Wrapper createOrder(@RequestBody AddOrderDto addOrderDto);
 
 }

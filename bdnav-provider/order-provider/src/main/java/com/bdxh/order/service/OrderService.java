@@ -1,6 +1,7 @@
 package com.bdxh.order.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.vo.OrderVo;
@@ -17,10 +18,10 @@ public interface OrderService extends IService<Order> {
 
     /**
      * 根据条件查询用户订单列表
-     * @param param
+     * @param orderQueryDto
      * @return
      */
-    PageInfo<Order> getOrderByCondition(Map<String,Object> param, Integer pageNum, Integer pageSize);
+    PageInfo<OrderVo> getOrderByCondition(OrderQueryDto orderQueryDto);
 
     /**
      * 根据主键删除商品
@@ -32,5 +33,14 @@ public interface OrderService extends IService<Order> {
      *
      */
     boolean deleteOrders(String schoolCodes,String userIds,String ids);
+
+    /**
+     * 根据订单编号查询订单信息
+     * @Author: WanMing
+     * @Date: 2019/6/5 18:39
+     */
+    OrderVo findOrderByOrderNo(Long orderNo);
+
+
 
 }

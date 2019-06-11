@@ -1,9 +1,10 @@
 package com.bdxh.order.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -17,6 +18,14 @@ import java.util.Date;
 public class OrderVo implements Serializable {
 
     private static final long serialVersionUID = 3244051781774832266L;
+
+
+    /**
+     * 订单编号
+     */
+    @ApiModelProperty("订单编号")
+    @JsonSerialize(using= ToStringSerializer.class)
+    private Long orderNo;
 
     /**
      * 学校编码
@@ -42,12 +51,7 @@ public class OrderVo implements Serializable {
     @ApiModelProperty("学号")
     private String cardNumber;
 
-    /**
-     * 订单号
-     */
-    @ApiModelProperty("订单号")
 
-    private Long orderNo;
 
     /**
      * 订单总金额
@@ -79,6 +83,20 @@ public class OrderVo implements Serializable {
     @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败")
     private Byte payStatus;
 
+
+    /**
+     * 支付时间
+     */
+    @ApiModelProperty("支付时间")
+    private Date payTime;
+
+    /**
+     * 支付结束时间
+     */
+    @ApiModelProperty("支付结束时间")
+    private Date payEndTime;
+
+
     /**
      * 创建时间
      */
@@ -90,6 +108,16 @@ public class OrderVo implements Serializable {
      */
     @ApiModelProperty("用户id")
     private Long userId;
+
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty("备注")
+    private String remark;
+
+
+
 
 
 

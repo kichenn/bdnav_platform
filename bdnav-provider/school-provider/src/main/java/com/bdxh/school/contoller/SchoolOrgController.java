@@ -86,8 +86,7 @@ public class SchoolOrgController {
     @RequestMapping(value = "/findSchoolOrgInfo", method = RequestMethod.GET)
     @ApiOperation(value = "根据条件查询单个学校组织架构信息")
     public Object findSchoolOrgInfo(@NotNull(message = "id不能为空") @RequestParam("id") Long id) {
-        schoolOrgService.findSchoolOrgInfo(id);
-        return WrapMapper.ok();
+        return WrapMapper.ok(schoolOrgService.findSchoolOrgInfo(id));
     }
 
 

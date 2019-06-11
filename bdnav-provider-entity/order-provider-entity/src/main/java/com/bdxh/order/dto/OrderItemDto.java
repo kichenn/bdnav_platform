@@ -1,5 +1,6 @@
 package com.bdxh.order.dto;
 
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
@@ -20,45 +21,53 @@ public class OrderItemDto implements Serializable {
     /**
      * 商品id
      */
+    @ApiModelProperty("商品id")
     @NotNull(message = "商品id不能为空")
     private Long productId;
 
     /**
      * 商品名称
      */
+    @ApiModelProperty("商品名称")
     private String productName;
 
     /**
      * 商品价格
      */
+    @ApiModelProperty("商品价格")
     private BigDecimal productPrice;
 
     /**
      * 商品售价
      */
+    @ApiModelProperty("商品售价")
     private BigDecimal productSellPrice;
 
     /**
      * 商品类型 1 单品 2 套餐
      */
+    @ApiModelProperty("商品类型 1 单品 2 套餐")
     @NotNull(message = "商品类型不能为空")
     private Byte productType;
 
     /**
      * 单品传本身id 套餐传所有id使用逗号分隔
      */
+    @ApiModelProperty("单品传本身id 套餐传所有id使用逗号分隔")
     @NotEmpty(message = "商品条目不能为空")
     private String productItem;
 
     /**
      * 商品数量
      */
+    @ApiModelProperty("商品数量")
     @NotNull(message = "商品数量不能为空")
     private Byte productNum;
 
     /**
      * 商品其他信息
      */
+    @ApiModelProperty("商品其他信息")
     private String productExtra;
 
 }

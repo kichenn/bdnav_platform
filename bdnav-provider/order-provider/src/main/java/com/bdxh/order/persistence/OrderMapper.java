@@ -1,6 +1,5 @@
 package com.bdxh.order.persistence;
 
-import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.entity.Order;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -14,11 +13,11 @@ public interface OrderMapper extends Mapper<Order> {
 
 
     /**
-     * 根据条件查询订单列表 schoolCode userId 必传
-     * @param param
+     * 根据条件查询订单列表
+     * @param order
      * @return
      */
-    List<Order> getOrderByCondition(Map<String,Object> param);
+    List<Order> getOrderByCondition(@Param("order")Order order);
 
     int deleteByOrderId(@Param("SchoolCode")String SchoolCode,@Param("UserId") Long UserId,@Param("OrderNo")Long OrderNo);
 

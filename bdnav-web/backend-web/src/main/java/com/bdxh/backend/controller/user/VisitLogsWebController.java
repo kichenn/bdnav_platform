@@ -66,7 +66,7 @@ public class VisitLogsWebController {
      * @param id
      * @return
      */
-    @ApiOperation("查询单个浏览网站日志接口")
+    @ApiOperation(value = "查询单个浏览网站日志接口",response = VisitLogsVo.class)
     @RequestMapping(value = "/getVisitLogsInfo", method = RequestMethod.POST)
     public Object getVisitLogsInfo(@RequestParam(name = "schoolCode") @NotNull(message = "schoolCode不能为空") String schoolCode,
                                    @RequestParam(name = "cardNumber") @NotNull(message = "cardNumber不能为空") String cardNumber,

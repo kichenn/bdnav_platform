@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.order.persistence.OrderMapper">
     <resultMap id="BaseResultMap" type="com.bdxh.order.entity.Order">
-        <!--
-          WARNING - @mbg.generated
-        -->
         <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
         <result column="third_order_no" jdbcType="VARCHAR" property="thirdOrderNo"/>
         <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
@@ -38,22 +35,22 @@
 	order_no,third_order_no,school_id,school_code,school_name,user_id,card_number,user_name,user_type,open_id,total_money,order_money,pay_money,trade_status,pay_status,business_status,business_type,pay_type,trade_type,pay_time,pay_end_time,product_id,create_date,update_date,operator,operator_name,remark
 	</sql>
 
-    <select id="getOrderByCondition" parameterType="java.util.Map" resultMap="BaseResultMap">
+    <select id="getOrderByCondition"  resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
         FROM t_order
         <where>
-            <if test="OrderNo!=null">
-                AND order_no=#{OrderNo}
+            <if test="order.orderNo!=null">
+                AND order_no=#{order.orderNo}
             </if>
-            <if test="SchoolCode!=null and SchoolCode!=''">
-                AND school_code=#{SchoolCode}
+            <if test="order.schoolCode!=null and order.schoolCode!=''">
+                AND school_code=#{order.schoolCode}
             </if>
-            <if test="UserId!=null">
-                AND user_id=#{UserId}
+            <if test="order.userId!=null">
+                AND user_id=#{order.userId}
             </if>
-            <if test="CardNumber!=null and CardNumber!=''">
-                AND card_number LIKE CONCAT(CONCAT('%',#{CardNumber},'%'))
+            <if test="order.cardNumber!=null and order.cardNumber!=''">
+                AND card_number LIKE CONCAT(CONCAT('%',#{order.cardNumber},'%'))
             </if>
         </where>
         ORDER BY create_date DESC

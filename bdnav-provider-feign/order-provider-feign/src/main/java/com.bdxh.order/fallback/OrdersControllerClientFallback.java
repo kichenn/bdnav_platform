@@ -7,6 +7,7 @@ import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.feign.OrdersControllerClient;
+import com.bdxh.order.vo.OrderVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +26,7 @@ public class OrdersControllerClientFallback implements OrdersControllerClient {
     }
 
     @Override
-    public Wrapper<PageInfo<Order>> queryUserOrder(OrderQueryDto orderDto) {
+    public Wrapper<PageInfo<OrderVo>> queryUserOrder(OrderQueryDto orderDto) {
         return WrapMapper.error();
     }
 
@@ -35,7 +36,7 @@ public class OrdersControllerClientFallback implements OrdersControllerClient {
     }
 
     @Override
-    public Wrapper createOrder(AddOrderDto orderDto) {
+    public Wrapper createOrder(AddOrderDto addOrderDto) {
         return WrapMapper.error();
     }
 }
