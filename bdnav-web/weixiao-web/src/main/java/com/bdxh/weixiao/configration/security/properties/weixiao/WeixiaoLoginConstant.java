@@ -33,12 +33,12 @@ public class WeixiaoLoginConstant {
 
 
     /**
-     * appkey
+     * 服务商：appkey
      */
-    public static final String appKey = "E0FCA7C96E074060";
+    public static final String appKey = "846BE2AE98869229";
 
     /**
-     * appSecret
+     * 服务商：appSecret
      */
-    public static final String appSecret = "5CF3DCB1A9FCC517C1779C0E69DEF337";
+    public static final String appSecret = "DA5FCC9BA655CC5BBAC183989B22B757";
 }

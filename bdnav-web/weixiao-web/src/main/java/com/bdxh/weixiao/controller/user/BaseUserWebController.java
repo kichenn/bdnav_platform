@@ -29,7 +29,7 @@ import javax.validation.constraints.NotNull;
  * @create: 2019-04-26 14:06
  **/
 @Slf4j
-@RequestMapping(value = "/baseUserWeb")
+@RequestMapping(value = "/authenticationWeixiao/baseUserWeb")
 @RestController
 @Api(value = "微校平台----微校学校用户(学生 ， 家长 ， 老师)控制器", tags = "微校平台----微校学校用户(学生 ， 家长 ， 老师)控制器")
 @Validated
@@ -62,7 +62,7 @@ public class BaseUserWebController {
             activationBaseUserDto.setAppKey(school.getAppKey());
             activationBaseUserDto.setAppSecret(school.getAppSecret());
             activationBaseUserDto.setSchoolType(school.getSchoolType());
-            return WrapMapper.ok(baseUserControllerClient.baseUserActivation(activationBaseUserDto).getResult());
+            return baseUserControllerClient.baseUserActivation(activationBaseUserDto).getResult();
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error("false");

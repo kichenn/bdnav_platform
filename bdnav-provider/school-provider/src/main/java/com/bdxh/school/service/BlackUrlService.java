@@ -32,4 +32,7 @@ public interface BlackUrlService extends IService<BlackUrl> {
      */
     PageInfo<BlackUrlShowVo> findBlackInConditionPaging(BlackUrlQueryDto blackQueryDto);
 
+
+    List<BlackUrl> findBlackInList(String schoolCode);
+
 }

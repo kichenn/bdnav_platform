@@ -12,11 +12,13 @@ import java.util.List;
  **/
 public interface BaseUserUnqiueService extends IService<BaseUserUnqiue> {
     //查询所有用户手机号
-    List<String> queryAllUserPhone();
+    List<String> queryAllUserPhone(BaseUserUnqiue baseUserUnqiue);
+
     /**
      * 判断手机号是否存在
+     *
      * @param phone
      * @return
      */
-    Integer queryUserPhone( String phone);
+    Integer queryUserPhone(String phone, String schoolCode);
 }

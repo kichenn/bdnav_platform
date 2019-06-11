@@ -11,6 +11,7 @@ import com.bdxh.user.configration.redis.RedisUtil;
 import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.service.BaseUserService;
 import com.bdxh.user.service.BaseUserUnqiueService;
 import com.bdxh.user.vo.FamilyVo;
@@ -52,9 +53,9 @@ public class BaseUserController {
      */
     @ApiOperation(value="查询所有用户手机号")
     @RequestMapping(value ="/queryAllUserPhone",method = RequestMethod.GET)
-    public Object queryAllUserPhone() {
+    public Object queryAllUserPhone(@RequestBody BaseUserUnqiue baseUserUnqiue) {
         try {
-            List<String> list=baseUserUnqiueService.queryAllUserPhone();
+            List<String> list=baseUserUnqiueService.queryAllUserPhone(baseUserUnqiue);
             return WrapMapper.ok(list) ;
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +70,7 @@ public class BaseUserController {
     @RequestMapping(value ="/queryUserPhoneByPhone",method = RequestMethod.POST)
     public Object queryUserPhoneByPhone(@RequestBody  BaseUserQueryDto baseUserQueryDto) {
         try {
-            Integer phoneCount=baseUserUnqiueService.queryUserPhone(baseUserQueryDto.getPhone());
+            Integer phoneCount=baseUserUnqiueService.queryUserPhone(baseUserQueryDto.getPhone(),baseUserQueryDto.getSchoolCode());
             return WrapMapper.ok(phoneCount) ;
         } catch (Exception e) {
             e.printStackTrace();

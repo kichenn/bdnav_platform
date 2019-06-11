@@ -44,8 +44,8 @@ public class ApplyLog {
 	/**
 	 * 推送标识
 	 */
-	@Column(name = "push_sign")
-	private String pushSign;
+	@Column(name = "client_id")
+	private String clientId;
 
 	/**
 	 * 模式 1 单个应用解锁 2 全部解锁 

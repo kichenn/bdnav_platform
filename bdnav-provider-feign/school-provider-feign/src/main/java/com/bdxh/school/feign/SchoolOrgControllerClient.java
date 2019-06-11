@@ -1,6 +1,8 @@
 package com.bdxh.school.feign;
 
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolOrg;
@@ -84,7 +86,7 @@ public interface SchoolOrgControllerClient {
      */
     @RequestMapping(value = "/schoolOrg/updateSchoolOrgInfo", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper updateSchoolOrgInfo(@RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto);
+    Wrapper<Boolean> updateSchoolOrgInfo(@RequestBody SchoolOrgUpdateDto schoolOrgUpdateDto);
 
 
     /**
@@ -98,10 +100,21 @@ public interface SchoolOrgControllerClient {
 
     /**
      * 根据父ID查询学校组织架构
+     *
      * @param parentId
      * @return
      */
     @RequestMapping(value = "/schoolOrg/findBySchoolOrgByParentId", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<SchoolOrg>> findBySchoolOrgByParentId(@RequestParam("parentId") @NotNull(message = "父级ID不能为空") Long parentId);
+
+    /**
+     * 新增组织架构
+     *
+     * @param schoolOrgAddDto
+     * @return
+     */
+    @RequestMapping(value = "/schoolOrg/insertSchoolOrgInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<Boolean> insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto);
 }

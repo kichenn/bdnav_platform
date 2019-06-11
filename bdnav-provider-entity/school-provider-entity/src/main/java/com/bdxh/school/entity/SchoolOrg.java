@@ -68,7 +68,7 @@ public class SchoolOrg {
 	private String orgName;
 
 	/**
-	 * 类型 1 学院 2 系 3 专业 4 年级 5 班级  6 行政 7 党团 8 其他
+	 * 类型 1 学院 2 系 3 专业 4 年级 5 班级,6 行政,7 党团 8 教学 9 后勤 10其他
 	 */
 	@Column(name = "org_type")
 	private Byte orgType;

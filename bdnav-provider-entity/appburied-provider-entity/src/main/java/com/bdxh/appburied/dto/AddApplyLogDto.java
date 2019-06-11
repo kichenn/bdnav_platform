@@ -26,7 +26,7 @@ public class AddApplyLogDto {
     private Long accountId;
 
     @ApiModelProperty("*推送标识")
-    private String pushSign;
+    private String clientId;
 
     @NotNull(message = "APP应用日志模式不能为空")
     @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")

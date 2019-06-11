@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.fallback.BaseUserControllerFallback;
 import com.bdxh.user.vo.BaseEchartsVo;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +34,7 @@ public interface BaseUserControllerClient {
      */
     @RequestMapping(value = "/baseUser/queryAllUserPhone", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<String>> queryAllUserPhone();
+    Wrapper<List<String>> queryAllUserPhone(@RequestBody  BaseUserUnqiue baseUserUnqiue);
 
 
     /**

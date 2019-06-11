@@ -2,39 +2,52 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.user.persistence.BaseUserUnqiueMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.BaseUserUnqiue">
-	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="phone" jdbcType="VARCHAR" property="phone"/>
-	</resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.user.entity.BaseUserUnqiue">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="phone" jdbcType="VARCHAR" property="phone"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+    </resultMap>
 
-	<sql id="BaseColumns">
-	  id,phone
+    <sql id="BaseColumns">
+	  id,phone,school_code
 	</sql>
 
-	<insert id="batchSaveBaseUserPhone">
-		INSERT INTO t_base_user_unqiue (id, phone) VALUES
-		<foreach collection="list" index="index" separator="," item="baseUserUnqiueList">
-			(#{baseUserUnqiueList.id},#{baseUserUnqiueList.phone})
-		</foreach>
-	</insert>
+    <insert id="batchSaveBaseUserPhone">
+        INSERT INTO t_base_user_unqiue (id, phone) VALUES
+        <foreach collection="list" index="index" separator="," item="baseUserUnqiueList">
+            (#{baseUserUnqiueList.id},#{baseUserUnqiueList.phone},#{baseUserUnqiueList.schoolCode})
+        </foreach>
+    </insert>
 
-	<!--查询全局索引表查phone-->
-	<select id="queryAllUserPhone"  resultType="java.lang.String">
-        select phone from t_base_user_unqiue
+    <!--查询全局索引表查phone-->
+    <select id="queryAllUserPhone" resultType="java.lang.String">
+        SELECT phone FROM t_base_user_unqiue
+        <where>
+            <if test="id != null and id!=''">
+                AND id=#{id}
+            </if>
+            <if test="phone != null and phone !=''">
+                AND phone=#{phone}
+            </if>
+            <if test="schoolCode !=null and schoolCode!=''">
+                AND school_code=#{schoolCode}
+            </if>
+        </where>
     </select>
-	<!--修改用户手机号码时修改手机号码表-->
-	<update id="updateUserPhoneByUserId" >
+
+    <!--修改用户手机号码时修改手机号码表-->
+    <update id="updateUserPhoneByUserId">
         update t_base_user_unqiue
         set   phone=#{phone}
-        where id=#{id}
+        where id=#{id} and school_code=#{schoolCode}
     </update>
 
-	<!--新增用户时新增手机号码表-->
-	<insert id="insertUserPhone">
+    <!--新增用户时新增手机号码表-->
+    <insert id="insertUserPhone">
     INSERT INTO t_base_user_unqiue (id, phone) VALUES (#{id},#{phone});
     </insert>
 
-	<select id="queryUserPhone" resultType="java.lang.Integer">
+    <select id="queryUserPhone" resultType="java.lang.Integer">
 		select count(1) from t_base_user_unqiue where phone =#{phone}
 	</select>
 </mapper>

@@ -289,7 +289,7 @@ public class AppController {
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("data",pushAndroidAppInfo);
         System.out.println(jsonObject.toString());
-        appNotificationTemplate.setText(jsonObject.toJSONString());
+        appNotificationTemplate.setTransmissionContent(jsonObject.toJSONString());
         /*appNotificationTemplate.setUrl();*/
         appNotificationTemplate.setLogo(app.getIconName());
         appNotificationTemplate.setLogoUrl(app.getIconUrl());
@@ -308,8 +308,16 @@ public class AppController {
     @RequestMapping(value = "/thePresetList",method = RequestMethod.GET)
     public Object thePresetList(@RequestParam("preset") Byte preset) {
         try {
+            List<appDownloadlinkVo> applink=new ArrayList<>();
             List<App> app = appService.thePresetList(preset);
-            return WrapMapper.ok(app);
+            for (int i = 0; i < app.size(); i++) {
+                appDownloadlinkVo adl=new appDownloadlinkVo();
+                adl.setAppName(app.get(i).getAppName());
+                adl.setAppPackage(app.get(i).getAppPackage());
+                adl.setIconUrl(app.get(i).getIconUrl());
+                applink.add(adl);
+            }
+            return WrapMapper.ok(applink);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

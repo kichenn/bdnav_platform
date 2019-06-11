@@ -2,6 +2,7 @@ package com.bdxh.school.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolOrg;
@@ -44,7 +45,7 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
     }
 
     @Override
-    public Wrapper updateSchoolOrgInfo(SchoolOrgUpdateDto schoolOrgUpdateDto) {
+    public Wrapper<Boolean> updateSchoolOrgInfo(SchoolOrgUpdateDto schoolOrgUpdateDto) {
         return WrapMapper.error();
     }
 
@@ -55,6 +56,11 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
 
     @Override
     public Wrapper<List<SchoolOrg>> findBySchoolOrgByParentId(Long parentId) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<Boolean>  insertSchoolOrgInfo(SchoolOrgAddDto schoolOrgAddDto) {
         return WrapMapper.error();
     }
 }

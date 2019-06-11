@@ -6,6 +6,7 @@ import com.bdxh.system.dto.AddRoleDto;
 import com.bdxh.system.dto.UpdateRoleDto;
 import com.bdxh.system.feign.PermissionControllerClient;
 import com.bdxh.system.feign.RoleControllerClient;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ public class SysRoleController {
 
 
     @RequestMapping(value="/findPageRoleListAll",method = RequestMethod.GET)
-    @ApiOperation("分页查询全部角色信息")
+    @ApiOperation(value="分页查询全部角色信息",response =PageInfo.class)
     public Object findPageRoleListAll(@RequestParam(name = "pageNum",defaultValue = "1")Integer pageNum,
                                    @RequestParam(name = "pageSize",defaultValue = "10")Integer pageSize){
         try {
@@ -43,7 +44,7 @@ public class SysRoleController {
 
 
     @RequestMapping(value="/addRole",method = RequestMethod.POST)
-    @ApiOperation("增加角色信息")
+    @ApiOperation(value="增加角色信息",response = Boolean.class)
     public Object addRole(@Validated @RequestBody AddRoleDto addRoleDto){
         try {
             Wrapper wrapper = roleControllerClient.addRole(addRoleDto);
@@ -57,7 +58,7 @@ public class SysRoleController {
 
 
     @RequestMapping(value="/updateRole",method = RequestMethod.POST)
-    @ApiOperation("修改角色信息")
+    @ApiOperation(value="修改角色信息",response = Boolean.class)
     public Object updateRole(@Validated @RequestBody UpdateRoleDto updateRoleDto){
         try {
             Wrapper wrapper = roleControllerClient.updateRole(updateRoleDto);
@@ -72,7 +73,7 @@ public class SysRoleController {
 
 
     @RequestMapping(value="/delRole",method = RequestMethod.GET)
-    @ApiOperation("删除角色信息")
+    @ApiOperation(value="删除角色信息",response = Boolean.class)
     public Object delRole(@RequestParam(name = "roleId") Long roleId){
         try {
             Wrapper wrapper = roleControllerClient.delRole(roleId);
@@ -86,7 +87,7 @@ public class SysRoleController {
 
 
     @RequestMapping(value="/delBatchRole",method = RequestMethod.POST)
-    @ApiOperation("批量删除角色")
+    @ApiOperation(value="批量删除角色",response = Boolean.class)
     public Object delBatchRole(@RequestParam(name = "ids") String ids){
         try {
             Wrapper wrapper = roleControllerClient.delBatchRole(ids);

@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.exception.SwitchSchoolCodeException;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
 import com.bdxh.weixiao.configration.security.userdetail.MyUserDetails;
 import com.google.common.base.Preconditions;
@@ -42,12 +43,6 @@ import java.util.List;
 @Slf4j
 public class MyAuthenticationFilter extends OncePerRequestFilter {
 
-    //测试token 可以放在header或者param中
-    //Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAG2RTUvDMBiA_0vOO7S13dqd52XIvApWQtdmM9o1I2l1OgZe1CnCNlCnUJh6EXQq4kFx-nPa6L8wpnPs4CWQ98mT96sNWFQFRaAqup63DNNcgMnHFT884-83UFNUSxFEUTUIciBiiEIc1Ih437YBotQlHrJBUcnZYBvhFnYIZGEEsSeCNtAr5WWib5adRVqCpGWWt0ydrlRwbWOpZAPhuA71YBA1qohKYS6f5IHTQBLMSpLhOgo8aWi_F-p46M8uSI49FIQ43IHi8DOWxmN-O-Cnoywv8X1UzwifdPn9E3-85v0DCZuU1BBjmAT_c9d3GJNIUXnvQcYIrTsB3nXCzFpVFaug6muCMHedEB_OOklfn5P4JTkZpufD9GL01b3jnwM-iUV16fFeGh99X_aT_XHSe5MfT_XpnO25NdmgI1aCWk0xBkUzDEvNG3rnB5LDKyrPAQAA.wQbwJZiEI1z5WQ27UZImxkZO90UD4Aj8vrQrJbz91_4m44I2ain1_XxSN68crfxzw_F5HFwupFdyZsbyVD37tA
-
-    //测试地址
-    //http://localhost:9028/test/userInfo?token=Bearer eyJhbGciOiJIUzUxMiIsInppcCI6IkdaSVAifQ.H4sIAAAAAAAAAG2RTUvDMBiA_0vOO7S13dqd52XIvApWQtdmM9o1I2l1OgZe1CnCNlCnUJh6EXQq4kFx-nPa6L8wpnPs4CWQ98mT96sNWFQFRaAqup63DNNcgMnHFT884-83UFNUSxFEUTUIciBiiEIc1Ih437YBotQlHrJBUcnZYBvhFnYIZGEEsSeCNtAr5WWib5adRVqCpGWWt0ydrlRwbWOpZAPhuA71YBA1qohKYS6f5IHTQBLMSpLhOgo8aWi_F-p46M8uSI49FIQ43IHi8DOWxmN-O-Cnoywv8X1UzwifdPn9E3-85v0DCZuU1BBjmAT_c9d3GJNIUXnvQcYIrTsB3nXCzFpVFaug6muCMHedEB_OOklfn5P4JTkZpufD9GL01b3jnwM-iUV16fFeGh99X_aT_XHSe5MfT_XpnO25NdmgI1aCWk0xBkUzDEvNG3rnB5LDKyrPAQAA.wQbwJZiEI1z5WQ27UZImxkZO90UD4Aj8vrQrJbz91_4m44I2ain1_XxSN68crfxzw_F5HFwupFdyZsbyVD37tA
-
     @Autowired
     private RedisUtil redisUtil;
 
@@ -63,13 +58,22 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = Jwts.parser().setSigningKey(SecurityConstant.TOKEN_SIGN_KEY).parseClaimsJws(auth).getBody();
                 String subject = claims.getSubject();
                 String token = redisUtil.get(SecurityConstant.TOKEN_KEY + subject);
-                if (!StringUtils.equals(token, authHeader)) {
+                if (!StringUtils.equals(token, auth)) {
                     throw new ExpiredJwtException(null, claims, "登录已失效");
                 }
                 String userStr = (String) claims.get(SecurityConstant.USER_INFO);
                 String authorityListStr = (String) claims.get(SecurityConstant.AUTHORITIES);
 
                 UserInfo userInfo = JSON.parseObject(userStr, UserInfo.class);
+
+                //效验schoolCode与token的schoolCode不同时，返回
+                String schoolCode = httpServletRequest.getAttribute("schoolCode").toString();
+                if (StringUtils.isNotEmpty(schoolCode)) {
+                    //传入的schoolCode与 token的shcoolCode不同时抛出异常
+                    if (!StringUtils.equals(schoolCode, userInfo.getSchoolCode())) {
+                        throw new SwitchSchoolCodeException();
+                    }
+                }
                 //设置当前登录用户
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 if (securityContext != null) {
@@ -89,7 +93,17 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                     }
                 }
             } catch (ExpiredJwtException e) {
-                Wrapper wrapper = WrapMapper.error("登录已失效");
+                Wrapper wrapper = WrapMapper.wrap(401, "授权已过期");
+                String str = JSON.toJSONString(wrapper);
+                httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
+                httpServletResponse.setStatus(401);
+                httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
+                httpServletResponse.setCharacterEncoding("utf-8");
+                httpServletResponse.setContentType("application/json;charset=utf-8");
+                httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
+                return;
+            } catch (SwitchSchoolCodeException e) {
+                Wrapper wrapper = WrapMapper.wrap(401, "schoolCode变化，学校已切换");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);
@@ -99,7 +113,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
                 return;
             } catch (Exception e) {
-                Wrapper wrapper = WrapMapper.error("解析token错误");
+                Wrapper wrapper = WrapMapper.wrap(401, "解析token错误");
                 String str = JSON.toJSONString(wrapper);
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(401);

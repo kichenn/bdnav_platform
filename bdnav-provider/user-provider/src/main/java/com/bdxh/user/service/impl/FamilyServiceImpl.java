@@ -25,7 +25,6 @@ import com.bdxh.user.vo.FamilyVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
-import com.google.protobuf.compiler.PluginProtos;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -131,7 +130,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
             //如果改了手机号码就进行修改
             if(!baseUser.getPhone().equals(updateFamilyDto.getPhone())){
                 try {
-                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),updateFamilyDto.getPhone());
+                    baseUserUnqiueMapper.updateUserPhoneByUserId(baseUser.getId(),updateFamilyDto.getPhone(),updateFamilyDto.getSchoolCode());
                 }catch (Exception e){
                     String message=e.getMessage();
                     if (e instanceof DuplicateKeyException) {
@@ -188,7 +187,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
         BaseUser baseUser = BeanMapUtils.map(family, BaseUser.class);
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
-            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone());
+            baseUserUnqiueMapper.insertUserPhone(baseUser.getId(),baseUser.getPhone(),baseUser.getSchoolCode());
         }catch (Exception e){
             String message=e.getMessage();
             if (e instanceof DuplicateKeyException) {

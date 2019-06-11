@@ -29,6 +29,9 @@ public class ServiceRolePermitInfoVo {
     @ApiModelProperty("许可id")
     private Long serviceUserId;
 
+    @ApiModelProperty("角色id")
+    private Long roleId;
+
     @ApiModelProperty("角色类型")
     private String roleName;
 }

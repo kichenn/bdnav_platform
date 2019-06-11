@@ -57,12 +57,6 @@ public interface SchoolOrgMapper extends Mapper<SchoolOrg> {
      */
     int removeSchoolOrgInfo(@Param("id")Long id);
 
-    /**
-     * 修改组织架构信息
-     * @param map
-     * @return
-     */
-    int updateSchoolOrgInfo(Map<String,Object> map);
 
     /**
      * 根据ParentId查询学校组织架构信息
@@ -70,4 +64,12 @@ public interface SchoolOrgMapper extends Mapper<SchoolOrg> {
      * @return
      */
     List<SchoolOrg> findBySchoolOrgByParentId(@Param("parentId")Long parentId);
+
+
+    /**
+     * 修改学校组织信息
+     * @param schoolOrg
+     * @return
+     */
+    int updateSchoolOrg(SchoolOrg schoolOrg);
 }

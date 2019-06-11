@@ -25,6 +25,7 @@ import com.bdxh.user.dto.AddStudentDto;
 import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
@@ -329,10 +330,13 @@ public class StudentWebController {
            long start=System.currentTimeMillis();
            List<String[]> studentList= ExcelImportUtil.readExcelNums(file,0);
            List<AddStudentDto> students=new ArrayList<>();
-           List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
+
            SchoolUser user=SecurityUtils.getCurrentUser();
            Long uId=user.getId();
            String uName=user.getUserName();
+           BaseUserUnqiue baseUserUnqiue=new BaseUserUnqiue();
+           baseUserUnqiue.setSchoolCode(user.getSchoolCode());
+           List<String> phoneList=baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
            //判断得出在同一个班级直接从缓存中拉取数据
            Wrapper  schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(user.getSchoolCode());
            Wrapper  schoolClassWrapper = schoolClassControllerClient.queryClassUrlBySchoolCode(user.getSchoolCode());

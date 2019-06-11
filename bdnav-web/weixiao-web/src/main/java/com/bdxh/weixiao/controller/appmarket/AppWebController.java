@@ -100,7 +100,7 @@ public class AppWebController {
                                    @RequestParam("cardNumber") @NotNull(message = "学生卡号不能为空") String cardNumber) {
         try {
             //先给测试默认的clientId
-           String  clientId="59dc219038fde0484eebcbb6d5476f0c";
+           String  clientId="1b53a4daab144cec986d6ccf5a3fd745";
             return appControllerClient.pushInstallApps(id, userName, cardNumber,clientId);
         } catch (Exception e) {
             return WrapMapper.error();

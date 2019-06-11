@@ -76,7 +76,7 @@ public class AppControllerClientFallback implements AppControllerClient {
     }
 
     @Override
-    public Wrapper<List<App>> thePresetList(Byte preset) {
+    public Wrapper<List<appDownloadlinkVo>> thePresetList(Byte preset) {
         return WrapMapper.error();
     }
 

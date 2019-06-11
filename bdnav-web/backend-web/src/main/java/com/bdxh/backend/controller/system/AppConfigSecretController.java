@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.management.ValueExp;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -33,42 +34,42 @@ public class AppConfigSecretController {
     @Autowired
     private AppConfigSecretControllerClient appConfigSecretControllerClient;
 
-    @ApiOperation("增加应用秘钥")
+    @ApiOperation(value="增加应用秘钥",response = Boolean.class)
     @RequestMapping(value = "/addAppConfigSecret",method = RequestMethod.POST)
     public Object addAppConfigSecret(@Validated @RequestBody AddAppConfigSecretDto addAppConfigSecretDto){
         Wrapper wrapper = appConfigSecretControllerClient.addAppConfigSecret(addAppConfigSecretDto);
         return wrapper;
     }
 
-    @ApiOperation("根据id删除应用秘钥")
+    @ApiOperation(value="根据id删除应用秘钥",response = Boolean.class)
     @RequestMapping(value = "/delAppConfigSecret",method = RequestMethod.GET)
     public Object delAppConfigSecret(@RequestParam(name = "id") @NotNull(message = "应用秘钥id不能为空") Long id){
         Wrapper wrapper = appConfigSecretControllerClient.delAppConfigSecret(id);
         return wrapper;
     }
 
-    @ApiOperation("根据id更新应用")
+    @ApiOperation(value="根据id更新应用",response = Boolean.class)
     @RequestMapping(value = "/updateAppConfigSecret",method = RequestMethod.POST)
     public Object updateAppConfigSecret(@Valid @RequestBody UpdateAppConfigSecretDto updateAppConfigSecretDto){
         Wrapper wrapper = appConfigSecretControllerClient.updateAppConfigSecret(updateAppConfigSecretDto);
         return wrapper;
     }
 
-    @ApiOperation("查询应用秘钥")
+    @ApiOperation(value="查询应用秘钥",response = AppConfigSecret.class)
     @RequestMapping(value = "/queryAppConfigSecret",method = RequestMethod.GET)
     public Object queryAppConfigSecret(@RequestParam(name = "id") @NotNull(message = "应用秘钥id不能为空") Long id){
         Wrapper<AppConfigSecret> appConfigSecret = appConfigSecretControllerClient.queryAppConfigSecret(id);
         return appConfigSecret;
     }
 
-    @ApiOperation("查询应用秘钥列表")
+    @ApiOperation(value="查询应用秘钥列表",response = AppConfigSecret.class)
     @RequestMapping(value = "/queryAppConfigSecretList",method = RequestMethod.POST)
     public Object queryAppConfigSecretList(@Validated @RequestBody AppConfigSecretQueryDto appConfigSecretQueryDto){
         Wrapper<List<AppConfigSecret>> queryAppConfigSecretList = appConfigSecretControllerClient.queryAppConfigSecretList(appConfigSecretQueryDto);
         return queryAppConfigSecretList;
     }
 
-    @ApiOperation("分页查询应用列表")
+    @ApiOperation(value="分页查询应用列表",response = PageInfo.class)
     @RequestMapping(value = "/queryAppConfigSecretListPage",method = RequestMethod.POST)
     public Object queryAppConfigSecretListPage(@Validated @RequestBody AppConfigSecretQueryDto appConfigSecretQueryDto){
         Wrapper<PageInfo<AppConfigSecret>> appConfigSecretListPage = appConfigSecretControllerClient.queryAppConfigSecretListPage(appConfigSecretQueryDto);

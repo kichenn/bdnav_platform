@@ -217,4 +217,5 @@ public class SchoolClassServiceImpl extends BaseService<SchoolClass> implements 
     public List<SchoolClass> queryClassBySchoolCode(String schoolCode) {
         return schoolClassMapper.queryClassBySchoolCode(schoolCode);
     }
+
 }

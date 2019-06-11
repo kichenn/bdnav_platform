@@ -14,6 +14,7 @@ import com.bdxh.user.dto.AddTeacherDto;
 import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.entity.BaseUser;
+import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.TeacherControllerClient;
@@ -238,7 +239,7 @@ public class TeacherWebController {
             School school=new School();
             List<AddTeacherDto> saveTeacherList=new ArrayList<>();
             List<String> cardNumberList=new ArrayList<>();
-            List<String> phoneList=baseUserControllerClient.queryAllUserPhone().getResult();
+            List<String> phoneList = new ArrayList<>();
             User user=SecurityUtils.getCurrentUser();
             Long uId=user.getId();
             String uName=user.getUserName();
@@ -250,6 +251,9 @@ public class TeacherWebController {
                     Wrapper teacherWeapper=baseUserControllerClient.findSchoolNumberBySchool(columns[0]);
                     school=(School)wrapper.getResult();
                     cardNumberList=(List<String>)teacherWeapper.getResult();
+                    BaseUserUnqiue baseUserUnqiue=new BaseUserUnqiue();
+                    baseUserUnqiue.setSchoolCode(columns[0]);
+                    phoneList= baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
                 }
                 if(school!=null){
                 AddTeacherDto tacher=new AddTeacherDto();

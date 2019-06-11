@@ -45,7 +45,7 @@ public interface ControlConfigControllerClient {
      */
     @RequestMapping(value = "/controlConfig/findAppType",method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<ControlConfig>> findAppType(@RequestParam(name = "appType") Byte appType);
+    Wrapper<List<String>> findAppType(@RequestParam(name = "appType") Byte appType);
 
 
     /**

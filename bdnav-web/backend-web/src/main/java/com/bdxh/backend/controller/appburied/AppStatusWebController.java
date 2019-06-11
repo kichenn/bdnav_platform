@@ -8,6 +8,7 @@ import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +43,7 @@ public class AppStatusWebController {
     }
 
     @RequestMapping(value = "/findAppStatusInContionPaging", method = RequestMethod.POST)
-    @ApiOperation(value = "分页上报App状态信息查询", response = AppStatus.class)
+    @ApiOperation(value = "分页上报App状态信息查询", response = PageInfo.class)
     public Object findAppStatusInContionPaging(@Validated @RequestBody AppStatusQueryDto appStatusQueryDto) {
         return appStatusControllerClient.findAppStatusInContionPaging(appStatusQueryDto);
     }

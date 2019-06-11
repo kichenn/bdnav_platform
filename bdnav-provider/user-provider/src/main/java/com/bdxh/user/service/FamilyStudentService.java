@@ -43,10 +43,10 @@ public interface FamilyStudentService extends IService<FamilyStudent> {
     FamilyStudentVo studentQueryInfo(String schoolCode, String cardNumber);
 
     /**
-     * 家长卡号查询绑定关系信息
+     * 家长卡号 +学校code 查询绑定关系信息
      * @param familyCardNumber
      * @return
      */
-    List<FamilyStudentVo> queryStudentByFamilyCardNumber(String familyCardNumber);
+    List<FamilyStudentVo> queryStudentByFamilyCardNumber(String schoolCode,String familyCardNumber);
 
 }
