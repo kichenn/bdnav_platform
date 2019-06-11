@@ -80,7 +80,7 @@ public class OrderWebController {
      * @Author: WanMing
      * @Date: 2019/6/6 12:01
      */
-    @ApiOperation("删除订单")
+    @ApiOperation(value = "删除订单",response = Boolean.class)
     @RequestMapping(value = "/deleteOrder", method = RequestMethod.GET)
     public Object deleteOrder(@RequestParam("schoolCode") @NotNull(message = "schoolCode不能为空") String schoolCode,
                               @RequestParam("userId") @NotNull(message = "userId不能为空") Long userId,
