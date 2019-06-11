@@ -79,12 +79,12 @@ public class AddOrderDto {
     private BigDecimal payMoney;
 
 
-    @ApiModelProperty("交易状态 1 进行中 2 已取消 3 已删除 4 交易成功")
+    @ApiModelProperty("交易状态 1 进行中 2 交易成功 3 已取消 4 已删除")
     @NotNull(message = "交易状态不能为空")
     private OrderTradeStatusEnum tradeStatus;
 
 
-    @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败")
+    @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付失败 4 支付成功")
     @NotNull(message = "支付状态不能为空")
     private OrderPayStatusEnum payStatus;
 

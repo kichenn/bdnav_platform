@@ -119,7 +119,6 @@ public class OrderController {
         Order order=new Order();
         BeanUtils.copyProperties(orderUpdateDto, order);
         //设置状态类型
-        order.setBusinessStatus(orderUpdateDto.getBusinessStatus().getCode());
         order.setPayStatus(orderUpdateDto.getPayStatus().getCode());
         order.setTradeStatus(orderUpdateDto.getTradeStatus().getCode());
         try {
