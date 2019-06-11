@@ -112,8 +112,8 @@ public class SchoolOrgWebController {
     public Object removeSchoolOrgInfo(@NotNull(message = "id不能为空") @RequestParam("id") Long id) {
         //删除组织时，查看院系底下是否还存在子组织信息
         List<SchoolOrg> schoolOrgs = schoolOrgControllerClient.findBySchoolOrgByParentId(id).getResult();
-        Student student = null;
-        TeacherDept teacher = null;
+        Student student = new Student();
+        TeacherDept teacher =  new TeacherDept();
         //院系底下不存在子院系，查看当前院系是否存在人员
         if (CollectionUtils.isEmpty(schoolOrgs)) {
             SchoolOrg thisSchoolOrg = schoolOrgControllerClient.findSchoolOrgInfo(id).getResult();
