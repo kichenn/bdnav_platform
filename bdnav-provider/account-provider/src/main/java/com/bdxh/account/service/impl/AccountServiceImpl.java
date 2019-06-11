@@ -1,10 +1,16 @@
 package com.bdxh.account.service.impl;
 
 import com.bdxh.account.dto.AccountQueryDto;
+import com.bdxh.account.dto.AddAccountDto;
+import com.bdxh.account.dto.UpdateAccountDto;
 import com.bdxh.account.entity.Account;
+import com.bdxh.account.entity.AccountUnqiue;
 import com.bdxh.account.persistence.AccountMapper;
 import com.bdxh.account.service.AccountService;
+import com.bdxh.account.service.AccountUnqiueService;
 import com.bdxh.common.support.BaseService;
+import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.util.StringUtil;
@@ -13,7 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +37,59 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
 
     @Autowired
     private AccountMapper accountMapper;
+
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
+
+    @Autowired
+    private AccountUnqiueService accountUnqiueService;
+
+    /**
+     * 添加账户信息
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean addAccount(AddAccountDto addAccountDto) {
+        long id = snowflakeIdWorker.nextId();
+        //组装全局字典表
+        AccountUnqiue accountUnqiue = new AccountUnqiue();
+        accountUnqiue.setId(id);
+        accountUnqiue.setLoginName(addAccountDto.getLoginName());
+        accountUnqiue.setPhone(addAccountDto.getUserPhone());
+        accountUnqiue.setCardNumber(addAccountDto.getCardNumber());
+        accountUnqiue.setSchoolCode(addAccountDto.getSchoolCode());
+        accountUnqiueService.addAccountUnqiue(accountUnqiue);
+        //增加账户信息
+        Account account = new Account();
+        BeanMapUtils.copy(addAccountDto, account);
+        //密码加密
+        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+        account.setId(id);
+        return accountMapper.insertSelective(account) > 0;
+    }
+
+    /**
+     * 修改账户信息
+     *
+     * @param updateAccountDto
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean updateAccount(UpdateAccountDto updateAccountDto) {
+        //组装全局字典表
+        AccountUnqiue accountUnqiue = new AccountUnqiue();
+        accountUnqiue.setPhone(updateAccountDto.getUserPhone());
+        accountUnqiue.setCardNumber(updateAccountDto.getCardNumber());
+        accountUnqiue.setSchoolCode(updateAccountDto.getSchoolCode());
+        accountUnqiueService.modifyAccountUnqiue(accountUnqiue);
+        //修改账户信息
+        Account account = new Account();
+        BeanUtils.copyProperties(updateAccountDto, account);
+        //密码加密
+        account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
+        return accountMapper.updateAccount(account) > 0;
+    }
 
     @Override
     public Account queryAccount(String schoolCode, String cardNumber) {
@@ -67,11 +128,6 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
         int result = accountMapper.updateLoginName(schoolCode, cardNumber, loginName);
         Preconditions.checkArgument(result == 1, "修改用户名失败");
         return result > 0;
-    }
-
-    @Override
-    public boolean updateAccount(Account account) {
-        return accountMapper.updateAccount(account) > 0;
     }
 
     /**
