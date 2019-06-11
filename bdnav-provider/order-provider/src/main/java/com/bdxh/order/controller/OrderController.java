@@ -7,6 +7,7 @@ import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.service.OrderService;
+import com.bdxh.order.vo.OrderVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -73,7 +74,7 @@ public class OrderController {
      * @Date: 2019/6/4 16:22
      */
     @RequestMapping(value = "/queryUserOrder", method = RequestMethod.POST)
-    @ApiOperation(value = "根据条件查询订单列表数据",response = Order.class)
+    @ApiOperation(value = "根据条件查询订单列表数据",response = OrderVo.class)
     public Object queryUserOrder(@Validated @RequestBody OrderQueryDto orderQueryDto) {
         try {
             return WrapMapper.ok(orderService.getOrderByCondition(orderQueryDto));
@@ -119,11 +120,8 @@ public class OrderController {
         BeanUtils.copyProperties(orderUpdateDto, order);
         //设置状态类型
         order.setBusinessStatus(orderUpdateDto.getBusinessStatus().getCode());
-        order.setBusinessType(orderUpdateDto.getBusinessType().getCode());
         order.setPayStatus(orderUpdateDto.getPayStatus().getCode());
-        order.setPayType(orderUpdateDto.getPayType().getCode());
         order.setTradeStatus(orderUpdateDto.getTradeStatus().getCode());
-        order.setTradeType(orderUpdateDto.getTradeType().getCode());
         try {
             return WrapMapper.ok(orderService.update(order)>0);
         } catch (Exception e) {
@@ -131,5 +129,16 @@ public class OrderController {
             log.error(e.getMessage(), e.getStackTrace());
             return WrapMapper.error(e.getMessage());
         }
+    }
+
+    /**
+     * 根据订单编号查询订单信息
+     * @Author: WanMing
+     * @Date: 2019/6/5 18:50
+     */
+    @RequestMapping(value = "/findOrderByOrderNo", method = RequestMethod.GET)
+    @ApiOperation(value = "根据订单编号查询订单信息",response = OrderVo.class)
+    public Object findOrderByOrderNo(@RequestParam("orderNo") Long orderNo){
+        return WrapMapper.ok(orderService.findOrderByOrderNo(orderNo));
     }
 }

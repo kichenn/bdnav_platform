@@ -2,6 +2,8 @@ package com.bdxh.order.entity;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -26,6 +28,7 @@ public class Order {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long orderNo;
 
     /**

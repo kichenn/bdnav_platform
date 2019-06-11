@@ -1,6 +1,5 @@
 package com.bdxh.order.persistence;
 
-import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.entity.Order;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;

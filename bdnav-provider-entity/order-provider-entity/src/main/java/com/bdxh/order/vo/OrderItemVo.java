@@ -1,5 +1,7 @@
 package com.bdxh.order.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -17,16 +19,18 @@ import java.util.Date;
 @Data
 public class OrderItemVo {
 
-//    /**
-//     * 主键
-//     */
-//    @ApiModelProperty(name = "订单明细主键")
-//    private Long id;
+    /**
+     * 主键
+     */
+    @ApiModelProperty(name = "订单明细主键")
+    @JsonSerialize(using= ToStringSerializer.class)
+    private Long id;
 
     /**
      * 订单号
      */
     @ApiModelProperty(name = "订单编号")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long orderNo;
 
 

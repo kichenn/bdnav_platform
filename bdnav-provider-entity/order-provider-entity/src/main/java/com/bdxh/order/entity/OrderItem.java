@@ -1,5 +1,7 @@
 package com.bdxh.order.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -17,12 +19,14 @@ public class OrderItem   {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
     /**
      * 订单号
      */
     @Column(name = "order_no")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long orderNo;
 
     /**

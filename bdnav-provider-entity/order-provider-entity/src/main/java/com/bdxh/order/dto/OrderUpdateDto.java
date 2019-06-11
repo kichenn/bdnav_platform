@@ -26,14 +26,6 @@ public class OrderUpdateDto{
     private Long orderNo;
 
 
-    @ApiModelProperty("第三方订单号")
-    private String thirdOrderNo;
-
-
-    @ApiModelProperty("学校主键")
-    private Long schoolId;
-
-
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
@@ -52,12 +44,6 @@ public class OrderUpdateDto{
 
     @ApiModelProperty("用户姓名")
     private String userName;
-
-
-
-    @ApiModelProperty("用户类型 1 学生 2 老师 3 家长")
-    @NotNull(message = "用户类型不能为空")
-    private BaseUserTypeEnum userType;
 
 
     @ApiModelProperty("用户openid")
@@ -90,20 +76,6 @@ public class OrderUpdateDto{
     @NotNull(message = "业务状态不能为空")
     private BusinessStatusEnum businessStatus;
 
-
-    @ApiModelProperty("业务类型 1 校园钱包充值  2管控服务")
-    @NotNull(message = "业务类型不能为空")
-    private OrderBusinessTypeEnum businessType;
-
-
-    @ApiModelProperty("支付渠道 1 微信支付")
-    @NotNull(message = "支付渠道不能为空")
-    private OrderPayTypeEnum payType;
-
-
-    @ApiModelProperty("订单类型  1 JSAPI支付")
-    @NotNull(message = "订单类型不能为空")
-    private OrderTradeTypeEnum tradeType;
 
 
     @ApiModelProperty("支付时间")

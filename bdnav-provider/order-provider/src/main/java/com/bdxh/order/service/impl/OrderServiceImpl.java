@@ -29,8 +29,7 @@ import java.util.*;
 @Service
 public class OrderServiceImpl extends BaseService<Order> implements OrderService {
 
-    @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
+
 
     @Autowired
     private OrderMapper orderMapper;
@@ -38,14 +37,24 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
     @Autowired
     private OrderItemMapper orderItemMapper;
 
-
+    /**
+     * 根据条件分页查询
+     * @Author: WanMing
+     * @Date: 2019/6/5 18:42
+     */
     @Override
-    public PageInfo<Order> getOrderByCondition(OrderQueryDto orderQueryDto) {
+    public PageInfo<OrderVo> getOrderByCondition(OrderQueryDto orderQueryDto) {
         PageHelper.startPage(orderQueryDto.getPageNum(), orderQueryDto.getPageSize());
         Order order = new Order();
         BeanUtils.copyProperties(orderQueryDto, order);
         List<Order> orders = orderMapper.getOrderByCondition(order);
-        PageInfo<Order> pageInfo = new PageInfo<>(orders);
+        List<OrderVo> orderVos = new ArrayList<>();
+        orders.stream().forEach(item->{
+            OrderVo orderVo = new OrderVo();
+            BeanUtils.copyProperties(item, orderVo);
+            orderVos.add(orderVo);
+        });
+        PageInfo<OrderVo> pageInfo = new PageInfo<>(orderVos);
         return pageInfo;
     }
 
@@ -76,40 +85,21 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 
     }
 
-//    /**
-//     * 添加订单同时添加订单明细
-//     *
-//     * @param addOrderDto
-//     * @Author: WanMing
-//     * @Date: 2019/6/3 11:49
-//     */
-//    @Override
-//    public Boolean addOrder(AddOrderDto addOrderDto) {
-//        //添加订单
-//        Order order = new Order();
-//        BeanUtils.copyProperties(addOrderDto, order);
-//        //生成全局id
-//        Long orderNo = snowflakeIdWorker.nextId();
-//        order.setOrderNo(orderNo);
-//        order.setBusinessStatus(addOrderDto.getBusinessStatus().getCode());
-//        order.setBusinessType(addOrderDto.getBusinessType().getCode());
-//        order.setPayStatus(addOrderDto.getPayStatus().getCode());
-//        order.setPayType(addOrderDto.getPayType().getCode());
-//        order.setTradeStatus(addOrderDto.getTradeStatus().getCode());
-//        order.setUserType(addOrderDto.getUserType().getCode());
-//        order.setTradeType(addOrderDto.getTradeType().getCode());
-//        //添加订单明细
-//        String productId = addOrderDto.getProductId();
-//        if(productId.contains(",")){
-//            //多个商品
-//            String[] productIds = productId.split(",");
-//            for (String id : productIds) {
-//                OrderItem orderItem = new OrderItem();
-//                //商品的具体信息保存
-//            }
-//        }
-//        return null;
-//    }
+    /**
+     * 根据订单编号查询订单信息
+     *
+     * @param orderNo
+     * @Author: WanMing
+     * @Date: 2019/6/5 18:39
+     */
+    @Override
+    public OrderVo findOrderByOrderNo(Long orderNo) {
+        Order order = orderMapper.selectByPrimaryKey(orderNo);
+        //数据拷贝
+        OrderVo orderVo = new OrderVo();
+        BeanUtils.copyProperties(order, orderVo);
+        return orderVo;
+    }
 
 
 }

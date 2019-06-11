@@ -64,9 +64,7 @@ public class OrderItemServiceImpl extends BaseService<OrderItem> implements Orde
                 orderItemVos.add(orderItemVo);
             });
         }
-        //暂时去重
-        List<OrderItemVo> itemVos = orderItemVos.stream().distinct().collect(Collectors.toList());
-        return itemVos;
+        return orderItemVos;
     }
 
 

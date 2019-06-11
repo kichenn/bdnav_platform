@@ -1,6 +1,8 @@
 package com.bdxh.order.controller;
 
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.AddOrderItemDto;
 import com.bdxh.order.entity.OrderItem;
 import com.bdxh.order.service.OrderItemService;
@@ -27,6 +29,9 @@ public class OrderItemController {
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
 
     /**
@@ -67,6 +72,7 @@ public class OrderItemController {
         BeanUtils.copyProperties(addOrderItemDto, orderItem);
         orderItem.setProductNum(new Byte("1"));
         orderItem.setProductType(new Byte("1"));
+        orderItem.setId(snowflakeIdWorker.nextId());
         orderItem.setProductItem(addOrderItemDto.getProductId().toString());
         try {
             return WrapMapper.ok(orderItemService.save(orderItem));
@@ -75,6 +81,20 @@ public class OrderItemController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    /**
+     * 根据订单明细编号删除订单明细
+     * @Author: WanMing
+     * @Date: 2019/6/5 16:46
+     */
+    @RequestMapping(value = "/delOrderItem",method = RequestMethod.GET)
+    @ApiOperation(value = "删除订单明细",response = Boolean.class)
+    public Object delOrderItem(@Validated @RequestParam("id")Long id){
+        return WrapMapper.ok(orderItemService.deleteByKey(id));
+    }
+
+
+
 
 
 

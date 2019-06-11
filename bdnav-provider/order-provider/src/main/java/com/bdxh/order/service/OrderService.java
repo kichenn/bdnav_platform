@@ -21,7 +21,7 @@ public interface OrderService extends IService<Order> {
      * @param orderQueryDto
      * @return
      */
-    PageInfo<Order> getOrderByCondition(OrderQueryDto orderQueryDto);
+    PageInfo<OrderVo> getOrderByCondition(OrderQueryDto orderQueryDto);
 
     /**
      * 根据主键删除商品
@@ -34,11 +34,13 @@ public interface OrderService extends IService<Order> {
      */
     boolean deleteOrders(String schoolCodes,String userIds,String ids);
 
-//    /**
-//     * 添加订单同时添加订单明细
-//     * @Author: WanMing
-//     * @Date: 2019/6/3 11:49
-//     */
-//    Boolean addOrder(AddOrderDto addOrderDto);
+    /**
+     * 根据订单编号查询订单信息
+     * @Author: WanMing
+     * @Date: 2019/6/5 18:39
+     */
+    OrderVo findOrderByOrderNo(Long orderNo);
+
+
 
 }

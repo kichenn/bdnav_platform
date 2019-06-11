@@ -57,10 +57,10 @@
         from t_product
         <where>
             <if test="productShowName != null and productShowName != ''">
-                product_show_name like CONCAT(CONCAT('%',#{productShowName}),'%')
+                and product_show_name like CONCAT(CONCAT('%',#{productShowName}),'%')
             </if>
             <if test="productName != null and productName != ''">
-                product_name like CONCAT(CONCAT('%',#{productName}),'%')
+                and product_name like CONCAT(CONCAT('%',#{productName}),'%')
             </if>
             <if test="productType !=null and productType!=''">
                 and product_type=#{productType}

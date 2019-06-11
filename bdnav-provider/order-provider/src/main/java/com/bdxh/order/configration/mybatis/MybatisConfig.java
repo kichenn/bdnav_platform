@@ -115,8 +115,8 @@ public class MybatisConfig {
 		TableRuleConfiguration result = new TableRuleConfiguration();
 		result.setLogicTable("t_order_item");
 		result.setActualDataNodes("ds_${0..1}.t_order_item${0..1}");
-		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
-		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("user_id", new TablePreciseShardingAlgorithm(),new TableRangeShardingAlgorithm()));
+		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("order_no", new DatabaseShardingAlgorithm()));
+		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("order_no", new TablePreciseShardingAlgorithm(),new TableRangeShardingAlgorithm()));
 		return result;
 	}
 
