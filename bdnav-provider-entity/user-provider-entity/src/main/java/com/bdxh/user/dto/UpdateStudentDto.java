@@ -19,7 +19,7 @@ public class UpdateStudentDto extends WeiXiaoDto implements Serializable {
     /**
      * 主键
      */
-    @ApiModelProperty(value="学生ID")
+    @ApiModelProperty(value="*学生ID")
     private Long id;
 
     /**
@@ -31,7 +31,7 @@ public class UpdateStudentDto extends WeiXiaoDto implements Serializable {
     /**
      * 学校编码
      */
-    @ApiModelProperty(value="学校编码")
+    @ApiModelProperty(value="*学校编码")
     private String schoolCode;
 
     /**
@@ -121,7 +121,7 @@ public class UpdateStudentDto extends WeiXiaoDto implements Serializable {
     /**
      * 学号
      */
-    @ApiModelProperty(value="学号")
+    @ApiModelProperty(value="*学号")
     private String cardNumber;
 
     /**
