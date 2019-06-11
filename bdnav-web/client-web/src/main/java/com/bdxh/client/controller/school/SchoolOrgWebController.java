@@ -122,7 +122,7 @@ public class SchoolOrgWebController {
         }
         if (CollectionUtils.isNotEmpty(schoolOrgs)) {
             return WrapMapper.error("该组织底下存在其他组织不能删除");
-        } else if (student == null || teacher == null) {
+        } else if (student != null && teacher != null) {
             return WrapMapper.error("该组织底下存在人员不能删除");
         }
         return schoolOrgControllerClient.removeSchoolOrgInfo(id);
