@@ -55,31 +55,13 @@ public class AccountController {
     private AccountUnqiueService accountUnqiueService;
 
     @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
-
-    @Autowired
     private RedisUtil redisUtil;
 
     @ApiOperation(value = "增加账户信息", response = Boolean.class)
     @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
     public Object addAccount(@Validated @RequestBody AddAccountDto addAccountDto) {
         try {
-            long id = snowflakeIdWorker.nextId();
-            //组装全局字典表
-            AccountUnqiue accountUnqiue = new AccountUnqiue();
-            accountUnqiue.setId(id);
-            accountUnqiue.setLoginName(addAccountDto.getLoginName());
-            accountUnqiue.setPhone(addAccountDto.getUserPhone());
-            accountUnqiue.setCardNumber(addAccountDto.getCardNumber());
-            accountUnqiue.setSchoolCode(addAccountDto.getSchoolCode());
-            accountUnqiueService.addAccountUnqiue(accountUnqiue);
-            //增加账户信息
-            Account account = new Account();
-            BeanMapUtils.copy(addAccountDto, account);
-            //密码加密
-            account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
-            account.setId(id);
-            return WrapMapper.ok(accountService.save(account) > 0);
+            return WrapMapper.ok(accountService.addAccount(addAccountDto));
         } catch (Exception e) {
             String message = e.getMessage();
             if (e instanceof DuplicateKeyException) {
@@ -100,18 +82,7 @@ public class AccountController {
     @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
     public Object updateAccount(@Validated @RequestBody UpdateAccountDto updateAccountDto) {
         try {
-            //组装全局字典表
-            AccountUnqiue accountUnqiue = new AccountUnqiue();
-            accountUnqiue.setPhone(updateAccountDto.getUserPhone());
-            accountUnqiue.setCardNumber(updateAccountDto.getCardNumber());
-            accountUnqiue.setSchoolCode(updateAccountDto.getSchoolCode());
-            accountUnqiueService.modifyAccountUnqiue(accountUnqiue);
-            //修改账户信息
-            Account account = new Account();
-            BeanUtils.copyProperties(updateAccountDto, account);
-            //密码加密
-            account.setPassword(new BCryptPasswordEncoder().encode(account.getPassword()));
-            return WrapMapper.ok(accountService.updateAccount(account));
+            return WrapMapper.ok(accountService.updateAccount(updateAccountDto));
         } catch (Exception e) {
             String message = e.getMessage();
             if (e instanceof DuplicateKeyException) {

@@ -1,6 +1,8 @@
 package com.bdxh.account.service;
 
 import com.bdxh.account.dto.AccountQueryDto;
+import com.bdxh.account.dto.AddAccountDto;
+import com.bdxh.account.dto.UpdateAccountDto;
 import com.bdxh.account.entity.Account;
 import com.bdxh.common.support.IService;
 import com.github.pagehelper.PageInfo;
@@ -14,6 +16,18 @@ import java.util.Map;
  * @Date: 2019/5/9 17:04
  */
 public interface AccountService extends IService<Account> {
+
+    /**
+     * 添加账户信息
+     */
+    Boolean addAccount(AddAccountDto addAccountDto);
+
+    /**
+     * 修改账户信息
+     * @param updateAccountDto
+     * @return
+     */
+    Boolean updateAccount(UpdateAccountDto updateAccountDto);
 
     /**
      * 查询账户信息
@@ -55,10 +69,6 @@ public interface AccountService extends IService<Account> {
      */
     boolean updateLoginName(String schoolCode, String cardNumber, String loginName);
 
-    /**
-     * 更新账户信息
-     */
-    boolean updateAccount(Account account);
 
     /**
      * 根据登录名或者手机号修改密码
