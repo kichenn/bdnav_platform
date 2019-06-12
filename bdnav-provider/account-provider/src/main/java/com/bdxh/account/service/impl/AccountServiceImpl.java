@@ -10,6 +10,7 @@ import com.bdxh.account.service.AccountService;
 import com.bdxh.account.service.AccountUnqiueService;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.HypyUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -148,7 +149,8 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
         Account oldAccount=accountMapper.getAccount(account.getSchoolCode(),account.getCardNumber());
        Boolean result;
         if(null==oldAccount){
-
+            String accountHyPy=HypyUtil.cn2py(account.getUserName());
+            account.setLoginName(accountHyPy+account.getUserPhone());
             result=accountMapper.insert(account)>0;
         }else{
             Account newAccount=BeanMapUtils.map(oldAccount,Account.class);
