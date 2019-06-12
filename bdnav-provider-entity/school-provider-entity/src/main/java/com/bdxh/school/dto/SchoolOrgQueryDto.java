@@ -1,5 +1,6 @@
 package com.bdxh.school.dto;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -10,6 +11,9 @@ import lombok.Data;
  **/
 @Data
 public class SchoolOrgQueryDto {
+
+    @ApiModelProperty("id")
+    private Long id;
 
     @ApiModelProperty("父级组织ID")
     private Long parentId;

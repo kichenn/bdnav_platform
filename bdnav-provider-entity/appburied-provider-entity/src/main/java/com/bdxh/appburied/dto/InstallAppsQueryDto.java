@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import java.util.Date;
 
 /**
  * @Description: 上报应用查询
@@ -35,4 +36,7 @@ public class InstallAppsQueryDto extends Query {
 
     @ApiModelProperty("应用名称")
     private String appName;
+
+    @ApiModelProperty("创建时间")
+    private Date createDate;
 }

@@ -76,4 +76,12 @@ public interface AccountService extends IService<Account> {
      * @return
      */
     boolean modifyPwd(String phone, String loginName, String pwd) throws Exception;
+
+
+    /**
+     * 存在就修改不存在就新增
+     * @param account
+     * @return
+     */
+    Boolean updateOrInsertAccount(Account account);
 }

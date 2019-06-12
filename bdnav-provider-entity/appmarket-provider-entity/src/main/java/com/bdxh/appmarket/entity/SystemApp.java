@@ -31,6 +31,13 @@ public class SystemApp {
     @Column(name = "system_package")
     private String systemPackage;
 
+
+    /**
+     * 应用文件名称地址
+     */
+    @Column(name = "system_apk_name")
+    private String systemApkName;
+
     /**
      * 应用下载地址
      */

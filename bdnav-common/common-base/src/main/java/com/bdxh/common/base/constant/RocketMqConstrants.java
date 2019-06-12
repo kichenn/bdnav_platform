@@ -47,6 +47,11 @@ public class RocketMqConstrants {
          * 北斗星航对接麦圈，远景达 topic
          */
         String bdxhTopic="bdxh";
+
+        /**
+         * user服务，学生老师或者信息修改进行其他模块的数据维护 topic
+         */
+        String userOrganizationTopic="userOrganizationTopic";
     }
 
     /**

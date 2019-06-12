@@ -15,8 +15,8 @@ public class ApplicationVersionDto {
     /**
      * 学校id
      */
-    @ApiModelProperty("学校id")
-    private Long schoolId;
+  /*  @ApiModelProperty("学校id")
+    private Long schoolId;*/
 
     /**
      * 学校编码
@@ -27,14 +27,14 @@ public class ApplicationVersionDto {
     /**
      * 平台 1 andriod 2 ios
      */
-    @ApiModelProperty("平台 1 andriod 2 ios")
-    private Byte platform;
+/*    @ApiModelProperty("平台 1 andriod 2 ios")
+    private Byte platform;*/
 
     /**
      * 分类id
      */
-    @ApiModelProperty("分类id")
-    private Long categoryId;
+/*    @ApiModelProperty("分类id")
+    private Long categoryId;*/
 
     /**
      * 应用名称
@@ -63,9 +63,9 @@ public class ApplicationVersionDto {
     /**
      * 应用描述
      */
-    @ApiModelProperty("应用描述")
+  /*  @ApiModelProperty("应用描述")
     private String appDesc;
-
+*/
     /**
      *  状态 1 上架 2 下架
      */
@@ -75,14 +75,14 @@ public class ApplicationVersionDto {
     /**
      *  是否预置 1 是 2 否
      */
-    @ApiModelProperty("是否预置 1 是 2 否")
-    private Byte preset;
+  /*  @ApiModelProperty("是否预置 1 是 2 否")
+    private Byte preset;*/
 
 
     /**
      * 创建时间
      */
-    @ApiModelProperty("应用id")
+    @ApiModelProperty("创建时间")
     private Date createDate;
 
 
@@ -103,18 +103,6 @@ public class ApplicationVersionDto {
      */
     @ApiModelProperty("文件服务器名称")
     private String apkUrlName;
-
-    /**
-     * apk文件大小
-     */
-    @ApiModelProperty("apk文件大小")
-    private Long apkSize;
-
-    /**
-     * apk描述
-     */
-    @ApiModelProperty("apk描述")
-    private String apkDesc;
 
 
 
