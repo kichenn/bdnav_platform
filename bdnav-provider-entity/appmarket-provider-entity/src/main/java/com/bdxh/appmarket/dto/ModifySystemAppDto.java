@@ -25,6 +25,12 @@ public class ModifySystemAppDto {
     private String systemPackage;
 
     /**
+     * 应用文件名称
+     */
+    @ApiModelProperty("应用文件名称")
+    private String systemApkName;
+
+    /**
      * 应用下载地址
      */
     @ApiModelProperty("应用下载地址")

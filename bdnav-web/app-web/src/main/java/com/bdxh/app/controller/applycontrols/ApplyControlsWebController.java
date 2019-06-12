@@ -183,7 +183,7 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "提供学校应用下载APP链接", response = appDownloadlinkVo.class)
     @RequestMapping(value = "/applyControlsWeb/applicationDownloadLink", method = RequestMethod.GET)
-    public Object applicationDownloadLink(@RequestParam("schoolCode") String schoolCode){
+    public Object applicationDownloadLink(@RequestParam(value="schoolCode",required = false) String schoolCode){
         Wrapper wrapper=appControllerClient.findTheApplicationList(schoolCode);
         return WrapMapper.ok(wrapper.getResult());
     }
