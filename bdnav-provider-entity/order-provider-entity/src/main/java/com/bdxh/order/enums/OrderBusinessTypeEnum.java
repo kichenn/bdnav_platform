@@ -7,7 +7,7 @@ package com.bdxh.order.enums;
  **/
 public enum OrderBusinessTypeEnum {
 
-    WEIXIAO_PAID_SERVICE(new Byte("1"),"微校付费服务"),
+    WEIXIAO_PAID_SERVICE(new Byte("1"),"校园钱包充值"),
     CONTROL_SERVICE(new Byte("2"),"管控服务");
 
     private Byte code;

@@ -5,6 +5,7 @@ import com.bdxh.user.dto.AddFenceAlarmDto;
 import com.bdxh.user.dto.FenceAlarmQueryDto;
 import com.bdxh.user.dto.UpdateFenceAlarmDto;
 import com.bdxh.user.feign.FenceAlarmControllerClient;
+import com.bdxh.user.vo.FenceAlarmVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -60,7 +61,7 @@ public class FenceAlarmWebController {
      * @param id
      * @return
      */
-    @ApiOperation("查询单个围栏警报接口")
+    @ApiOperation(value = "查询单个围栏警报接口",response = FenceAlarmVo.class)
     @RequestMapping(value="/getFenceAlarmInfo",method = RequestMethod.POST)
     public Object getFenceAlarmInfo(@RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空") String schoolCode,
                                     @RequestParam(name="cardNumber")@NotNull(message = "cardNumber不能为空")  String cardNumber,

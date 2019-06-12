@@ -62,19 +62,14 @@ public class OrderUpdateDto{
     private BigDecimal payMoney;
 
 
-    @ApiModelProperty("交易状态 1 进行中 2 已取消 3 已删除 4 交易成功")
+    @ApiModelProperty("交易状态 1 进行中 2 交易成功 3 已取消 4 已删除")
     @NotNull(message = "交易状态不能为空")
     private OrderTradeStatusEnum tradeStatus;
 
 
-    @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败")
+    @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付失败 4 支付成功")
     @NotNull(message = "支付状态不能为空")
     private OrderPayStatusEnum payStatus;
-
-
-    @ApiModelProperty("业务状态 1 未处理 2 已处理")
-    private BusinessStatusEnum businessStatus;
-
 
 
     @ApiModelProperty("支付时间")
@@ -84,9 +79,6 @@ public class OrderUpdateDto{
     @ApiModelProperty("支付结束时间")
     private Date payEndTime;
 
-
-    @ApiModelProperty("产品主键")
-    private String productId;
 
 
     @ApiModelProperty("创建时间")
