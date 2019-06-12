@@ -51,34 +51,34 @@
                 id=#{id}
             </if>
             <if test="parentId!=null and parentId !=''">
-                parent_id=#{parentId}
+                AND parent_id=#{parentId}
             </if>
             <if test="schoolCode!=null and schoolCode!=''">
-                school_code=#{schoolCode}
+                AND school_code=#{schoolCode}
             </if>
             <if test="parentNames!=null and parentNames!=''">
-                parent_names=#{parentNames}
+                AND parent_names=#{parentNames}
             </if>
             <if test="parentIds!=null and parentIds!=''">
-                parent_ids=#{parentIds}
+                AND parent_ids=#{parentIds}
             </if>
             <if test="thisUrl!=null and thisUrl!=''">
-                this_url=#{thisUrl}
+                AND this_url=#{thisUrl}
             </if>
             <if test="schoolId!=null and schoolId!=''">
-                school_id=#{schoolId}
+                AND school_id=#{schoolId}
             </if>
             <if test="orgName!=null and orgName!=''">
-                org_name LIKE CONCAT('%',CONCAT(#{orgName},'%'))
+                AND org_name LIKE CONCAT('%',CONCAT(#{orgName},'%'))
             </if>
             <if test="manageId!=null and manageId!=''">
-                manage_id=#{manageId}
+                AND manage_id=#{manageId}
             </if>
             <if test="manageName!=null and manageName!=''">
-                manage_name LIKE CONCAT('%',CONCAT(#{manageName},'%'))
+                AND manage_name LIKE CONCAT('%',CONCAT(#{manageName},'%'))
             </if>
             <if test="orgType !=null and orgType !=''">
-                org_type =#{orgType}
+                AND org_type =#{orgType}
             </if>
         </trim>
         ORDER BY sort DESC

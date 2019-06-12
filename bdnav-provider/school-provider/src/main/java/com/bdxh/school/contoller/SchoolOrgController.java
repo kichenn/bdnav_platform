@@ -98,7 +98,7 @@ public class SchoolOrgController {
      */
     @RequestMapping(value = "/findClassOrg", method = RequestMethod.GET)
     @ApiOperation(value = "根据学校Id查询学生组织架构信息")
-    public Object findClassOrg(@NotBlank(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
+    public Object findClassOrg(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
         List<SchoolOrg> schoolOrgList=schoolOrgService.findClassOrg(schoolId);
         if(CollectionUtils.isEmpty(schoolOrgList)){
             return WrapMapper.wrap(200,"当前学校不存在组织架构信息");
@@ -154,7 +154,11 @@ public class SchoolOrgController {
         return WrapMapper.ok(schoolOrgService.findAllOrgInfo());
     }
 
-
+    @RequestMapping(value = "/findClassOrgList", method = RequestMethod.GET)
+    @ApiOperation(value = "查询院系组织架构信息")
+    public Object findClassOrgList(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId){
+        return WrapMapper.ok(schoolOrgService.findClassOrg(schoolId));
+    }
 
     /**
      * 通过父ID查询学校组织架构信息
