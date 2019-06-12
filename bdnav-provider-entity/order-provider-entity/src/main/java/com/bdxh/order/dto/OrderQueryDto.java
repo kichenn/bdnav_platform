@@ -21,7 +21,6 @@ public class OrderQueryDto extends Query {
      * 订单号
      */
     @ApiModelProperty("订单号")
-    @Min(value = 1,message = "订单号只能是数字")
     private Long orderNo;
 
     /**

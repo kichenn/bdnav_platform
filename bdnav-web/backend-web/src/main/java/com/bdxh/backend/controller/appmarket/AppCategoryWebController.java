@@ -3,6 +3,7 @@ package com.bdxh.backend.controller.appmarket;
 import com.bdxh.appmarket.dto.AddCategoryDto;
 import com.bdxh.appmarket.dto.CategoryQueryDto;
 import com.bdxh.appmarket.dto.UpdateCategoryDto;
+import com.bdxh.appmarket.entity.AppCategory;
 import com.bdxh.appmarket.feign.AppCategoryControllerClient;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -88,7 +89,7 @@ public class AppCategoryWebController {
         }
     }
 
-    @ApiOperation("查询应用分类")
+    @ApiOperation(value = "查询应用分类",response = AppCategory.class)
     @RequestMapping(value = "/queryCategory",method = RequestMethod.GET)
     public Object queryCategory(@RequestParam(name = "id") @NotNull(message = "分类id不能为空") Long id){
         try {
