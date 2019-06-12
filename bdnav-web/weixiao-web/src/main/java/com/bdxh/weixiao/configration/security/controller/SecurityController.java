@@ -64,7 +64,7 @@ public class SecurityController {
         School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
         Preconditions.checkArgument(school != null, "schoolCode异常");
 
-        String redirectUri = WeixiaoLoginConstant.REDIRECT_URI_URL.replace("@address@", address);
+        String redirectUri = WeixiaoLoginConstant.REDIRECT_URI_URL.replace("@address@", address + "?schoolCode=" + schoolCode);
 
         String wxCodeUrl = WeixiaoLoginConstant.WXCODE_URL.replace("@schoolCode@", school.getSchoolCode())
                 .replace("@appKey@", WeixiaoLoginConstant.appKey)
@@ -127,7 +127,7 @@ public class SecurityController {
                 //家长登录(设置卡号)
                 userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
                 //家长卡号查询 自己孩子相关信息以及家长信息
-                List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getSchoolCode(),userInfo.getFamilyCardNumber()).getResult();
+                List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
                 Preconditions.checkArgument(CollectionUtils.isNotEmpty(familyStudentVo), "家长卡号，学校code异常");
                 userInfo.setFamilyId(familyStudentVo.get(0).getFId());
                 userInfo.setCardNumber(familyStudentVo.stream().map(e -> {
