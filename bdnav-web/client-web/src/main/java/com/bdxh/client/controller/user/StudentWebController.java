@@ -13,12 +13,15 @@ import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolClass;
+import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.feign.SchoolOrgControllerClient;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.AddStudentDto;
@@ -63,8 +66,7 @@ public class StudentWebController {
     private SchoolControllerClient schoolControllerClient;
 
     @Autowired
-    private SchoolClassControllerClient schoolClassControllerClient;
-
+    private SchoolOrgControllerClient schoolOrgControllerClient;
     @Autowired
     private SinglePermissionControllerClient singlePermissionControllerClient;
 
@@ -136,26 +138,25 @@ public class StudentWebController {
             if(null!=baseUser){
                 return WrapMapper.error("当前学校已存在相同学生学号");
             }
-            SchoolClass schoolClass=new SchoolClass();
-            String ClassId[]=addStudentDto.getClassIds().split(",");
-            for (int i = 0; i < ClassId.length; i++) {
-                schoolClass.setSchoolCode(user.getSchoolCode());
-                schoolClass.setId(Long.parseLong(ClassId[i]));
-               SchoolClass schoolClass1=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
-               if(null!=schoolClass1) {
-                   if (schoolClass1.getType() == COLLEGE_TYPE) {
-                       addStudentDto.setCollegeName(schoolClass1.getName());
-                   } else if (schoolClass1.getType() == FACULTY_TYPE) {
-                       addStudentDto.setFacultyName(schoolClass1.getName());
-                   } else if (schoolClass1.getType() == PROFESSION_TYPE) {
-                       addStudentDto.setProfessionName(schoolClass1.getName());
-                   } else if (schoolClass1.getType() == GRADE_TYPE) {
-                       addStudentDto.setGradeName(schoolClass1.getName());
-                   } else if (schoolClass1.getType() == CLASS_TYPE) {
-                       addStudentDto.setClassName(schoolClass1.getName());
-                       addStudentDto.setClassId(schoolClass1.getId());
-                   }
-               }else{
+            SchoolOrgQueryDto schoolOrgQueryDto = new SchoolOrgQueryDto();
+            String orgIds[] = addStudentDto.getClassIds().split(",");
+            for (int i = 0; i < orgIds.length; i++) {
+                String orgId = orgIds[i];
+                SchoolOrg schoolOrg =schoolOrgControllerClient.findSchoolOrgInfo(Long.parseLong(orgId)).getResult();
+                if (null != schoolOrg) {
+                    if (schoolOrg.getOrgType() == COLLEGE_TYPE) {
+                        addStudentDto.setCollegeName(schoolOrg.getOrgName());
+                    } else if (schoolOrg.getOrgType() == FACULTY_TYPE) {
+                        addStudentDto.setFacultyName(schoolOrg.getOrgName());
+                    } else if (schoolOrg.getOrgType() == PROFESSION_TYPE) {
+                        addStudentDto.setProfessionName(schoolOrg.getOrgName());
+                    } else if (schoolOrg.getOrgType() == GRADE_TYPE) {
+                        addStudentDto.setGradeName(schoolOrg.getOrgName());
+                    } else if (schoolOrg.getOrgType() == CLASS_TYPE) {
+                        addStudentDto.setClassName(schoolOrg.getOrgName());
+                        addStudentDto.setClassId(schoolOrg.getId());
+                    }
+                } else{
                    return WrapMapper.error();
                }
             }
@@ -269,25 +270,23 @@ public class StudentWebController {
                 }
             }
            }
-            SchoolClass schoolClass=new SchoolClass();
-            String ClassId[]=updateStudentDto.getClassIds().split(",");
-            for (int i = 0; i < ClassId.length; i++) {
-                String s = ClassId[i];
-                schoolClass.setSchoolCode(user.getSchoolCode());
-                schoolClass.setId(Long.parseLong(ClassId[i]));
-                SchoolClass schoolClass1=(SchoolClass)schoolClassControllerClient.findSchoolClassBySchoolClass(schoolClass).getResult();
-                if(null!=schoolClass1) {
-                    if ( schoolClass1.getType() == COLLEGE_TYPE) {
-                        updateStudentDto.setCollegeName(schoolClass1.getName());
-                    } else if (schoolClass1.getType() == FACULTY_TYPE) {
-                        updateStudentDto.setFacultyName(schoolClass1.getName());
-                    } else if (schoolClass1.getType() == PROFESSION_TYPE) {
-                        updateStudentDto.setProfessionName(schoolClass1.getName());
-                    } else if (schoolClass1.getType() == GRADE_TYPE) {
-                        updateStudentDto.setGradeName(schoolClass1.getName());
-                    } else if (schoolClass1.getType() == CLASS_TYPE) {
-                        updateStudentDto.setClassName(schoolClass1.getName());
-                        updateStudentDto.setClassId(schoolClass1.getId());
+            SchoolOrgQueryDto schoolOrgQueryDto = new SchoolOrgQueryDto();
+            String orgIds[] = updateStudentDto.getClassIds().split(",");
+            for (int i = 0; i < orgIds.length; i++) {
+                String orgId = orgIds[i];
+                SchoolOrg schoolOrg =schoolOrgControllerClient.findSchoolOrgInfo(Long.parseLong(orgId)).getResult();
+                if (null != schoolOrg) {
+                    if (schoolOrg.getOrgType() == COLLEGE_TYPE) {
+                        updateStudentDto.setCollegeName(schoolOrg.getOrgName());
+                    } else if (schoolOrg.getOrgType() == FACULTY_TYPE) {
+                        updateStudentDto.setFacultyName(schoolOrg.getOrgName());
+                    } else if (schoolOrg.getOrgType() == PROFESSION_TYPE) {
+                        updateStudentDto.setProfessionName(schoolOrg.getOrgName());
+                    } else if (schoolOrg.getOrgType() == GRADE_TYPE) {
+                        updateStudentDto.setGradeName(schoolOrg.getOrgName());
+                    } else if (schoolOrg.getOrgType() == CLASS_TYPE) {
+                        updateStudentDto.setClassName(schoolOrg.getOrgName());
+                        updateStudentDto.setClassId(schoolOrg.getId());
                     }
                 }else{
                     return WrapMapper.error();
@@ -330,7 +329,6 @@ public class StudentWebController {
            long start=System.currentTimeMillis();
            List<String[]> studentList= ExcelImportUtil.readExcelNums(file,0);
            List<AddStudentDto> students=new ArrayList<>();
-
            SchoolUser user=SecurityUtils.getCurrentUser();
            Long uId=user.getId();
            String uName=user.getUserName();
@@ -339,9 +337,9 @@ public class StudentWebController {
            List<String> phoneList=baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
            //判断得出在同一个班级直接从缓存中拉取数据
            Wrapper  schoolWrapper = schoolControllerClient.findSchoolBySchoolCode(user.getSchoolCode());
-           Wrapper  schoolClassWrapper = schoolClassControllerClient.queryClassUrlBySchoolCode(user.getSchoolCode());
+           Wrapper  schoolOrgWrapper = schoolOrgControllerClient.findClassOrgList(user.getSchoolId());
            Wrapper  studentWeapper =studentControllerClient.queryCardNumberBySchoolCode(user.getSchoolCode());
-           List<SchoolClass> schoolClassList = (List<SchoolClass>) schoolClassWrapper.getResult();
+           List<SchoolOrg> schoolClassList = (List<SchoolOrg>) schoolOrgWrapper.getResult();
            School school = (School) schoolWrapper.getResult();
            List<String>  cardNumberList=(List<String>) studentWeapper.getResult();
            for (int i=1;i<studentList.size();i++) {

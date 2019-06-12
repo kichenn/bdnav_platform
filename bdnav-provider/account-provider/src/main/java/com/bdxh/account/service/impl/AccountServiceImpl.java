@@ -142,4 +142,18 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
         }
         return accountMapper.modifyPwd(phone, loginName, pwd) > 0;
     }
+
+    @Override
+    public Boolean updateOrInsertAccount(Account account) {
+        Account oldAccount=accountMapper.getAccount(account.getSchoolCode(),account.getCardNumber());
+       Boolean result;
+        if(null==oldAccount){
+
+            result=accountMapper.insert(account)>0;
+        }else{
+            Account newAccount=BeanMapUtils.map(oldAccount,Account.class);
+            result=accountMapper.updateAccount(newAccount)>0;
+        }
+        return result;
+    }
 }

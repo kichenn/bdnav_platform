@@ -35,7 +35,7 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
     }
 
     @Override
-    public Wrapper<List<SchoolOrg>> findClassOrg(Long schoolId) {
+    public Wrapper<List<SchoolOrgTreeVo>> findClassOrg(Long schoolId) {
         return WrapMapper.error();
     }
 
@@ -61,6 +61,11 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
 
     @Override
     public Wrapper<Boolean>  insertSchoolOrgInfo(SchoolOrgAddDto schoolOrgAddDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<SchoolOrg>> findClassOrgList(Long schoolId) {
         return WrapMapper.error();
     }
 }
