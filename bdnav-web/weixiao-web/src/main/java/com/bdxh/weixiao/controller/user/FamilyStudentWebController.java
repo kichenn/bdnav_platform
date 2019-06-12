@@ -17,6 +17,8 @@ import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
+import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -135,16 +137,15 @@ public class FamilyStudentWebController {
     /**
      * 子女关系----家长查询孩子列表
      *
-     * @param schoolCode
      * @return
      */
     @ApiOperation(value = "家长子女关系----家长查询孩子列表")
     @RequestMapping(value = "/familyFindStudentList", method = RequestMethod.POST)
-    public Object familyFindStudentList(@RequestParam(name = "schoolCode", required = false)String schoolCode) {
+    public Object familyFindStudentList() {
+        UserInfo userInfo= SecurityUtils.getCurrentUser();
         try {
-            schoolCode="20110329";
-            String cardNumber="20190516002";
-            JSONObject jsonObject=new JSONObject();
+           String schoolCode=userInfo.getSchoolCode();
+            String cardNumber=userInfo.getFamilyCardNumber();
             FamilyVo family=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
             if(CollectionUtils.isNotEmpty(family.getStudents())){
                 for (FamilyStudentVo s : family.getStudents()) {
