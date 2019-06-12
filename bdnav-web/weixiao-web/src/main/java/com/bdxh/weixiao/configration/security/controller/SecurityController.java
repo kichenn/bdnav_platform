@@ -85,8 +85,6 @@ public class SecurityController {
     @ApiOperation(value = "获取token(微校授权完登录)", response = String.class)
     public void login(@RequestParam("schoolCode") String schoolCode, @RequestParam("wxcode") String wxcode, HttpServletResponse response) throws IOException {
         try {
-            School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
-            //根据学校编码查询学校信息暂时不查询数据库
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("app_key", WeixiaoLoginConstant.appKey);
             jsonObject.put("app_secret", WeixiaoLoginConstant.appSecret);
@@ -112,6 +110,9 @@ public class SecurityController {
             Preconditions.checkArgument(StringUtils.equals(resultCode, "0"), "获取用户信息失败");
 
             log.info("userInfo:" + JSONObject.toJSONString(jsonObject));
+
+            School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
+            Preconditions.checkArgument(school != null, "schoolCode异常，不存在");
             //组装用户信息放入
             UserInfo userInfo = new UserInfo();
             userInfo.setSchoolCode(schoolCode);
@@ -119,6 +120,7 @@ public class SecurityController {
             userInfo.setWeixiaoStuId(jsonObject.getString("weixiao_stu_id"));
             userInfo.setPhone(jsonObject.getString("telephone"));
             userInfo.setIdentityType(jsonObject.getString("identity_type"));
+            userInfo.setSchoolId(school.getId());
             //设置角色和权限信息
             Map<String, Object> claims = new HashMap<>(16);
 
