@@ -27,7 +27,7 @@ public class Swagger2Config {
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
                 .title("北斗星航核心业务系统")
-                .description("系统管理模块接口文档")
+                .description("微校业务模块接口文档")
                 .version("1.0")
                 .build();
     }

@@ -56,5 +56,4 @@ public class RocketMqProducerTransactionListener implements TransactionListener 
         return transState;
     }
 
-
 }

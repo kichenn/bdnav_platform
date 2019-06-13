@@ -6,16 +6,13 @@ import com.bdxh.pay.configration.redis.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import java.util.concurrent.TimeUnit;
-
 /**
- * @Description: RocketMq事务回查工具类
- * @Author: Kang
- * @Date: 2019/4/29 11:51
- */
+* @Description:
+* @Author: Kang
+* @Date: 2019/6/13 10:49
+*/
 @Component
 public class RocketMqTransUtil {
 
@@ -23,12 +20,11 @@ public class RocketMqTransUtil {
     private RedisUtil redisUtil;
 
     public void putTransState(String transactionId, RocketMqTransStatusEnum rocketMqTransStatusEnum) {
-        //保存一天
-        redisUtil.setWithExpireTime(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId, rocketMqTransStatusEnum.getCode(), ((int) TimeUnit.DAYS.toMinutes(1)) * 60);
+        redisUtil.setWithExpireTime(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId, rocketMqTransStatusEnum.getCode(), 3600 * 24);
     }
 
     public LocalTransactionState getTransState(String transactionId) {
-        String status = redisUtil.get(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId);
+        String status = (String) redisUtil.getObject(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId);
         if (StringUtils.equals(status, RocketMqTransStatusEnum.COMMIT_MESSAGE.getCode())) {
             return LocalTransactionState.COMMIT_MESSAGE;
         }
