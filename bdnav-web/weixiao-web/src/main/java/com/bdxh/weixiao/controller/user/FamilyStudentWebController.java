@@ -68,25 +68,24 @@ public class FamilyStudentWebController {
                                  @RequestParam("studentCardNumber")String studentCardNumber,
                                  @RequestParam("relation")String relation,
                                  @RequestParam("phone")String phone,
-                                 @RequestParam("schoolCode")String schoolCode,
                                  @RequestParam("code")String code) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
             //判断手机验证码是否正确
             String saveCode=redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +phone);
             if(!code.equals(saveCode)){
                 return WrapMapper.error("手机验证码错误");
             }
-            String cardNumber="20190516002";
-            FamilyVo familyVo=familyControllerClient.queryFamilyInfo(schoolCode, cardNumber).getResult();
+            FamilyVo familyVo=familyControllerClient.queryFamilyInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
             //判断是否存在对呀学号的学生
-            StudentVo studentVo=studentControllerClient.queryStudentInfo(schoolCode,studentCardNumber).getResult();
+            StudentVo studentVo=studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(),studentCardNumber).getResult();
             if(null==studentVo){
                 return WrapMapper.error("不存在该学生");
             }
             //判断当前学生是否已存在绑定关系
             FamilyStudentQueryDto familyStudentQueryDto = new FamilyStudentQueryDto();
             familyStudentQueryDto.setStudentNumber(studentCardNumber);
-            familyStudentQueryDto.setSchoolCode(schoolCode);
+            familyStudentQueryDto.setSchoolCode(userInfo.getSchoolCode());
             Wrapper wrapper = familyStudentControllerClient.queryAllFamilyStudent(familyStudentQueryDto);
             PageInfo pageInfo = (PageInfo) wrapper.getResult();
             if (pageInfo.getTotal() != 0) {
@@ -94,14 +93,14 @@ public class FamilyStudentWebController {
             }
             AddFamilyStudentDto addFamilyStudentDto=new AddFamilyStudentDto();
             addFamilyStudentDto.setSchoolId(Long.parseLong(familyVo.getSchoolId()));
-            addFamilyStudentDto.setSchoolCode(schoolCode);
-            addFamilyStudentDto.setCardNumber(cardNumber);
+            addFamilyStudentDto.setSchoolCode(userInfo.getSchoolCode());
+            addFamilyStudentDto.setCardNumber(userInfo.getFamilyCardNumber());
             addFamilyStudentDto.setFamilyId(Long.parseLong(familyVo.getId()));
             addFamilyStudentDto.setStudentId(studentVo.getSId());
             addFamilyStudentDto.setStudentName(studentName);
             addFamilyStudentDto.setStudentNumber(studentCardNumber);
             addFamilyStudentDto.setRelation(relation);
-            FamilyVo family=familyControllerClient.queryFamilyInfo(schoolCode,cardNumber).getResult();
+            FamilyVo family=familyControllerClient.queryFamilyInfo(userInfo.getSchoolCode(),userInfo.getFamilyCardNumber()).getResult();
             addFamilyStudentDto.setOperator(Long.parseLong(family.getId()));
             addFamilyStudentDto.setOperatorName(family.getName());
             Wrapper wrappers = familyStudentControllerClient.bindingStudent(addFamilyStudentDto);
@@ -115,18 +114,15 @@ public class FamilyStudentWebController {
     /**
      * 子女关系----删除学生家长绑定关系
      *
-     * @param schoolCode
-     * @param cardNumber
      * @param id
      * @return
      */
     @ApiOperation(value = "家长家长子女关系----删除学生家长绑定关系")
     @RequestMapping(value = "/removeFamilyOrStudent", method = RequestMethod.GET)
-    public Object removeFamilyOrStudent(@RequestParam(name = "schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
-                                        @RequestParam(name = "cardNumber") @NotNull(message = "微校卡号不能为空") String cardNumber,
-                                        @RequestParam(name = "id") @NotNull(message = "id不能为空") String id) {
+    public Object removeFamilyOrStudent(@RequestParam(name = "id") @NotNull(message = "id不能为空") String id) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-            Wrapper wrapper = familyStudentControllerClient.removeFamilyOrStudent(schoolCode, cardNumber, id);
+            Wrapper wrapper = familyStudentControllerClient.removeFamilyOrStudent(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), id);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -165,16 +161,14 @@ public class FamilyStudentWebController {
     /**
      * 子女关系----查询家长与孩子关系详细
      *
-     * @param schoolCode
-     * @param cardNumber
      * @return
      */
     @ApiOperation(value = "家长子女关系----查询家长与孩子关系详细")
     @RequestMapping(value = "/queryFamilyStudentDetails", method = RequestMethod.POST)
-    public Object queryFamilyStudentDetails(@RequestParam(name = "schoolCode", required = false)String schoolCode,
-                                            @RequestParam(name = "cardNumber", required = false)String cardNumber) {
+    public Object queryFamilyStudentDetails() {
+        UserInfo userInfo= SecurityUtils.getCurrentUser();
         try {
-            StudentVo studentVo = studentControllerClient.queryStudentInfo(schoolCode, cardNumber).getResult();
+            StudentVo studentVo = studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
             return WrapMapper.ok(studentVo);
         } catch (Exception e) {
             e.printStackTrace();

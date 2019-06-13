@@ -35,9 +35,6 @@ public class FamilyFenceWebController {
     @Autowired
     private FamilyFenceControllerClient familyFenceControllerClient;
 
-    @Autowired
-    private SchoolControllerClient schoolControllerClient;
-
     /**
      * 收费服务
      * 修改围栏表信息
@@ -48,7 +45,12 @@ public class FamilyFenceWebController {
     @ApiOperation(value = "家长电子围栏-----修改围栏信息")
     @RequestMapping(value = "/updateFamilyFenceInfo", method = RequestMethod.POST)
     public Object updateFamilyFenceInfo(@Valid @RequestBody UpdateFamilyFenceDto updateFamilyFenceDto) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
+            updateFamilyFenceDto.setSchoolCode(userInfo.getSchoolCode());
+            updateFamilyFenceDto.setSchoolId(userInfo.getSchoolId());
+            updateFamilyFenceDto.setFamilyId(userInfo.getFamilyId());
+            updateFamilyFenceDto.setCardNumber(userInfo.getFamilyCardNumber());
             Wrapper wrapper = familyFenceControllerClient.updateFamilyFenceInfo(updateFamilyFenceDto);
             return wrapper;
         } catch (Exception e) {
@@ -61,18 +63,15 @@ public class FamilyFenceWebController {
      * 收费服务
      * 删除围栏表信息
      *
-     * @param schoolCode
-     * @param cardNumber
      * @param id
      * @return
      */
     @ApiOperation(value = "家长电子围栏-----删除围栏信息")
     @RequestMapping(value = "/removeFamilyFenceInfo", method = RequestMethod.POST)
-    public Object removeFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
-                                        @RequestParam("cardNumber") String cardNumber,
-                                        @RequestParam("id") String id) {
+    public Object removeFamilyFenceInfo(@RequestParam("id") String id) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-            Wrapper wrapper = familyFenceControllerClient.removeFamilyFenceInfo(schoolCode, cardNumber, id);
+            Wrapper wrapper = familyFenceControllerClient.removeFamilyFenceInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), id);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,20 +83,18 @@ public class FamilyFenceWebController {
      * 收费服务
      * 获取围栏表所有信息
      *
-     * @param schoolCode
      * @param cardNumber
      * @return
      */
     @ApiOperation(value = "家长电子围栏-----获取围栏表所有信息")
     @RequestMapping(value = "/getFamilyFenceInfos", method = RequestMethod.POST)
-    public Object getFamilyFenceInfos(@RequestParam("schoolCode") String schoolCode,
-                                      @RequestParam("cardNumber") String cardNumber) {
+    public Object getFamilyFenceInfos(@RequestParam("cardNumber") String cardNumber) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-            String familyNumber = "20190516002";
             FamilyFenceQueryDto familyFenceQueryDto = new FamilyFenceQueryDto();
             familyFenceQueryDto.setStudentNumber(cardNumber);
-            familyFenceQueryDto.setSchoolCode(schoolCode);
-            familyFenceQueryDto.setCardNumber(familyNumber);
+            familyFenceQueryDto.setSchoolCode(userInfo.getSchoolCode());
+            familyFenceQueryDto.setCardNumber(userInfo.getFamilyCardNumber());
             Wrapper wrapper = familyFenceControllerClient.getFamilyFenceInfos(familyFenceQueryDto);
             return wrapper;
         } catch (Exception e) {
@@ -110,18 +107,15 @@ public class FamilyFenceWebController {
      * 收费服务
      * 获取围栏表单个信息
      *
-     * @param schoolCode
-     * @param cardNumber
      * @param id
      * @return
      */
     @ApiOperation(value = "家长电子围栏-----获取围栏表单个信息")
     @RequestMapping(value = "/getFamilyFenceInfo", method = RequestMethod.POST)
-    public Object getFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
-                                     @RequestParam("cardNumber") String cardNumber,
-                                     @RequestParam("id") String id) {
+    public Object getFamilyFenceInfo(@RequestParam("id") String id) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-            Wrapper wrapper = familyFenceControllerClient.getFamilyFenceInfo(schoolCode, cardNumber, id);
+            Wrapper wrapper = familyFenceControllerClient.getFamilyFenceInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), id);
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();

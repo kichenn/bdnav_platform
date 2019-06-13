@@ -2,6 +2,7 @@ package com.bdxh.pay.configration.rocketmq.util;
 
 import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.base.enums.RocketMqTransStatusEnum;
+import com.bdxh.pay.configration.redis.RedisUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.LocalTransactionState;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +20,15 @@ import java.util.concurrent.TimeUnit;
 public class RocketMqTransUtil {
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisUtil redisUtil;
 
     public void putTransState(String transactionId, RocketMqTransStatusEnum rocketMqTransStatusEnum) {
-        redisTemplate.opsForValue().set(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId, rocketMqTransStatusEnum.getCode(), 1, TimeUnit.DAYS);
+        //保存一天
+        redisUtil.setWithExpireTime(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId, rocketMqTransStatusEnum.getCode(), ((int) TimeUnit.DAYS.toMinutes(1)) * 60);
     }
 
     public LocalTransactionState getTransState(String transactionId) {
-        String status = (String) redisTemplate.opsForValue().get(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId);
+        String status = redisUtil.get(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId);
         if (StringUtils.equals(status, RocketMqTransStatusEnum.COMMIT_MESSAGE.getCode())) {
             return LocalTransactionState.COMMIT_MESSAGE;
         }
@@ -40,7 +42,7 @@ public class RocketMqTransUtil {
     }
 
     public void removeTransState(String transactionId) {
-        redisTemplate.delete(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId);
+        redisUtil.delete(RocketMqConstrants.TRANSACTION_REDIS_PREFIX + transactionId);
     }
 
 }
