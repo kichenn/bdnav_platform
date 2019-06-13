@@ -36,6 +36,7 @@ public class SchoolStrategyController {
 	private SchoolStrategyService schoolStrategyService;
 
 
+
 	/**
 	* @Description: 查询列表信息
 	* @Date 2019-04-18 09:52:43
@@ -113,13 +114,12 @@ public class SchoolStrategyController {
 			return WrapMapper.error(errors);
 		}
 		try{
-			SchoolStrategy strategy=schoolStrategyService.getByPriority(addPolicyDto.getSchoolCode(),addPolicyDto.getPriority());
-			Preconditions.checkArgument(strategy == null, "该策略已有相同优先级值,请更换后重试");
-			SchoolStrategy schoolStrategy=new SchoolStrategy();
-			BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
-			schoolStrategy.setRecursionPermission(addPolicyDto.getRecursionPermission().getKey());
-			Boolean result = schoolStrategyService.addSchoolStrategy(schoolStrategy);
-			return WrapMapper.ok(schoolStrategy.getId());
+				SchoolStrategy schoolStrategy=new SchoolStrategy();
+				BeanUtils.copyProperties(addPolicyDto, schoolStrategy);
+				schoolStrategy.setRecursionPermission(addPolicyDto.getRecursionPermission().getKey());
+				Boolean result = schoolStrategyService.addSchoolStrategy(schoolStrategy);
+				return WrapMapper.ok(schoolStrategy.getId());
+
 		} catch (RuntimeException e) {
 		e.printStackTrace();
 		return WrapMapper.error(e.getMessage());

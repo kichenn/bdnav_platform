@@ -79,10 +79,13 @@ public class AuthenticationUtils {
             List<String> dataAttr=new ArrayList<>();
             dataAttr.add(dataJson.toString());
             String rawData=WxEncryption.Encrypt(dataAttr.toString(),appKey,appSecret.substring(0,16));
+            log.info("-----------raw_data:{}",rawData);
+            log.info("-----------app_key:{}",appKey);
             Map<String,Object> map =new HashMap<>();
             map.put("raw_data",rawData);
             map.put("app_key",appKey);
             String result = HttpClientUtils.doPost(AuthenticationConstant.RECEIVE_STU_INFO,map);
+            log.info("-------------result: {}",result);
             return result;
         }catch (Exception e){
             e.printStackTrace();

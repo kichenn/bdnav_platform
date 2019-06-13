@@ -194,10 +194,10 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
                 Preconditions.checkArgument(false,"当前手机号码已重复请重新填写");
             }
         }
-        baseUserMapper.insert(baseUser);
-        family.setId(snowflakeIdWorker.nextId());
         baseUser.setUserType(3);
         baseUser.setUserId(family.getId());
+        baseUserMapper.insert(baseUser);
+        family.setId(snowflakeIdWorker.nextId());
         family.setActivate(Byte.valueOf("1"));
         familyMapper.insert(family);
     }
