@@ -145,12 +145,24 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Boolean updateOrInsertAccount(Account account) {
         Account oldAccount=accountMapper.getAccount(account.getSchoolCode(),account.getCardNumber());
        Boolean result;
         if(null==oldAccount){
-            String accountHyPy=HypyUtil.cn2py(account.getUserName());
-            account.setLoginName(accountHyPy+account.getUserPhone());
+            AccountUnqiue accountUnqiue=new AccountUnqiue();
+            accountUnqiue.setCardNumber(account.getCardNumber());
+            accountUnqiue.setId(account.getId());
+            accountUnqiue.setLoginName(account.getLoginName());
+            accountUnqiue.setCardNumber(account.getCardNumber());
+            accountUnqiue.setPhone(account.getUserPhone());
+            accountUnqiue.setSchoolCode(account.getSchoolCode());
+            try {
+                accountUnqiueService.addAccountUnqiue(accountUnqiue);
+            }catch (Exception e){
+                log.info("添加失败存在相同的账号信息");
+                return false;
+            }
             result=accountMapper.insert(account)>0;
         }else{
             Account newAccount=BeanMapUtils.map(oldAccount,Account.class);

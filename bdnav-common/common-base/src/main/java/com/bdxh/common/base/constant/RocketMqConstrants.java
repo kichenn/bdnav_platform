@@ -52,6 +52,11 @@ public class RocketMqConstrants {
          * user服务，学生老师或者信息修改进行其他模块的数据维护 topic
          */
         String userOrganizationTopic="userOrganizationTopic";
+
+        /**
+         * 测试
+         */
+        String TestTopic="testTopicUser";
     }
 
     /**
