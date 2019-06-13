@@ -56,7 +56,7 @@ public class BaseUserWebController {
             if(!activationBaseUserDto.getCode().equals(saveCode)){
                 return WrapMapper.error("手机验证码错误");
             }*/
-log.info("入参:{}",activationBaseUserDto.toString());
+            log.info("入参:{}",activationBaseUserDto.toString());
             School school = schoolControllerClient.findSchoolBySchoolCode(activationBaseUserDto.getSchoolCode()).getResult();
             activationBaseUserDto.setAppKey(school.getSchoolKey());
             activationBaseUserDto.setAppSecret(school.getSchoolSecret());
