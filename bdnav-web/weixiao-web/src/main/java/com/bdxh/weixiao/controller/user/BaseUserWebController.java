@@ -51,8 +51,6 @@ public class BaseUserWebController {
     @ApiOperation(value = "微校平台----用户激活接口")
     @RequestMapping(value = "/activationBaseUser", method = RequestMethod.POST)
     public Object activationBaseUser(@RequestBody ActivationBaseUserDto activationBaseUserDto) {
-        //查询出激活用户所需要的第三方参数
-        try {
            //判断手机验证码是否正确
             String saveCode=redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +activationBaseUserDto.getPhone());
             if(!activationBaseUserDto.getCode().equals(saveCode)){
@@ -63,10 +61,6 @@ public class BaseUserWebController {
             activationBaseUserDto.setAppSecret(school.getAppSecret());
             activationBaseUserDto.setSchoolType(school.getSchoolType());
             return baseUserControllerClient.baseUserActivation(activationBaseUserDto).getResult();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error("false");
-        }
     }
 
     /**
