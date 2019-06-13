@@ -10,11 +10,9 @@ import com.bdxh.school.dto.SchoolFenceQueryDto;
 import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.entity.SchoolFence;
+import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.enums.GroupTypeEnum;
-import com.bdxh.school.feign.SchoolClassControllerClient;
-import com.bdxh.school.feign.SchoolControllerClient;
-import com.bdxh.school.feign.SchoolDeptControllerClient;
-import com.bdxh.school.feign.SchoolFenceControllerClient;
+import com.bdxh.school.feign.*;
 import com.bdxh.school.vo.SchoolFenceShowVo;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.UserControllerClient;
@@ -50,11 +48,14 @@ public class SchoolFenceWebController {
     @Autowired
     private SchoolFenceControllerClient schoolFenceControllerClient;
 
-    @Autowired
+ /*   @Autowired
     private SchoolClassControllerClient schoolClassControllerClient;
 
     @Autowired
-    private SchoolDeptControllerClient schoolDeptControllerClient;
+    private SchoolDeptControllerClient schoolDeptControllerClient;*/
+
+    @Autowired
+    private SchoolOrgControllerClient schoolOrgControllerClient;
 
     @Autowired
     private StudentControllerClient studentControllerClient;
@@ -77,14 +78,14 @@ public class SchoolFenceWebController {
         // 查询用户群类型 1 学生 2 老师
         if (new Byte("1").equals(groupTypeEnum.getKey())) {
             //学生院系信息
-            SchoolClass schoolClass = schoolClassControllerClient.findSchoolClassById(groupId).getResult();
+            SchoolOrg schoolClass = schoolOrgControllerClient.findSchoolOrgInfo(groupId).getResult();
             //父ids+当前id
             String classIds = schoolClass.getParentIds() + schoolClass.getId();
             if (schoolClass.getParentIds().contains(",")) {
                 classIds = schoolClass.getParentIds().substring(schoolClass.getParentIds().indexOf(",")) + schoolClass.getId();
             }
             //增加监控对象信息
-            List<Student> students = Optional.ofNullable(studentControllerClient.findStudentInfoByClassOrg(schoolClass.getSchoolCode(), classIds, schoolClass.getType()).getResult()).orElse(new ArrayList<>());//Optional.of().orElse(new ArrayList<>());
+            List<Student> students = Optional.ofNullable(studentControllerClient.findStudentInfoByClassOrg(schoolClass.getSchoolCode(), classIds, schoolClass.getOrgType()).getResult()).orElse(new ArrayList<>());//Optional.of().orElse(new ArrayList<>());
             students.forEach(e -> {
                 FenceEntityDto fenceEntity = new FenceEntityDto();
                 fenceEntity.setId(e.getId());
@@ -105,7 +106,7 @@ public class SchoolFenceWebController {
                 fenceEntitys.add(fenceEntity);
             });
         } else if (new Byte("2").equals(groupTypeEnum.getKey())) {
-            SchoolDept schoolDept = schoolDeptControllerClient.findSchoolDeptById(groupId).getResult();
+            SchoolOrg schoolDept = schoolOrgControllerClient.findSchoolOrgInfo(groupId).getResult();
             //父ids+当前id
             String classIds = schoolDept.getParentIds() + schoolDept.getId();
             if (schoolDept.getParentIds().contains(",")) {

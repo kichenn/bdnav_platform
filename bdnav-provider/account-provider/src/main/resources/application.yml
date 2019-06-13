@@ -18,13 +18,12 @@ spring:
 app:
   id: account-provider-cluster1
 apollo:
-  meta: http://119.23.185.109:30080
+  meta: http://47.107.253.90:8080
   bootstrap:
     enabled: true
     eagerLoad:
       enabled: true
-    namespaces: BASE.public.eureka,BASE.public-hikari-ds,application,BASE.public-redis
-
+    namespaces: BASE.public.eureka,BASE.public-hikari-ds,application,BASE.public-redis,BASE.public-rocketmq
 #日志
 logging:
   config: classpath:logback-spring.xml

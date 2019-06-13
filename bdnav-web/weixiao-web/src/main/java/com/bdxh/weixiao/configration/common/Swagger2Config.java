@@ -42,7 +42,7 @@ public class Swagger2Config {
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
                 .title("北斗星航微校平台")
-                .description("接口文档")
+                .description("微校端")
                 .version("1.0")
                 .build();
     }

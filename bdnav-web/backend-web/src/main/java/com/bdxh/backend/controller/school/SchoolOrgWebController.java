@@ -96,7 +96,7 @@ public class SchoolOrgWebController {
      */
     @RequestMapping(value = "/findClassOrg", method = RequestMethod.GET)
     @ApiOperation(value = "根据学校Id查询学生组织架构信息")
-    public Object findClassOrg(@NotBlank(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
+    public Object findClassOrg(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
         return schoolOrgControllerClient.findClassOrg(schoolId);
     }
 

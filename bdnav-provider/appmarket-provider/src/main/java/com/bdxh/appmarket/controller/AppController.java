@@ -326,7 +326,7 @@ public class AppController {
 
     @ApiOperation("查询当前学校所有应用接口")
     @RequestMapping(value = "/findTheApplicationList",method = RequestMethod.GET)
-    public Object findTheApplicationList(@RequestParam("schoolCode") String schoolCode) {
+    public Object findTheApplicationList(@RequestParam(value="schoolCode",required = false) String schoolCode) {
         try {
             List<appDownloadlinkVo> applink=new ArrayList<>();
             List<ApplicationVersionDto> app = appService.findTheApplicationList(schoolCode);

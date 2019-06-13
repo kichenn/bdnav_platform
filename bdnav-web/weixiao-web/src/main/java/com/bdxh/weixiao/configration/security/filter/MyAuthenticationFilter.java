@@ -58,7 +58,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = Jwts.parser().setSigningKey(SecurityConstant.TOKEN_SIGN_KEY).parseClaimsJws(auth).getBody();
                 String subject = claims.getSubject();
                 String token = redisUtil.get(SecurityConstant.TOKEN_KEY + subject);
-                if (!StringUtils.equals(token, auth)) {
+                if (!StringUtils.equals(token, authHeader)) {
                     throw new ExpiredJwtException(null, claims, "登录已失效");
                 }
                 String userStr = (String) claims.get(SecurityConstant.USER_INFO);
@@ -67,7 +67,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 UserInfo userInfo = JSON.parseObject(userStr, UserInfo.class);
 
                 //效验schoolCode与token的schoolCode不同时，返回
-                String schoolCode = httpServletRequest.getAttribute("schoolCode").toString();
+                String schoolCode = httpServletRequest.getHeader("schoolCode");
                 if (StringUtils.isNotEmpty(schoolCode)) {
                     //传入的schoolCode与 token的shcoolCode不同时抛出异常
                     if (!StringUtils.equals(schoolCode, userInfo.getSchoolCode())) {

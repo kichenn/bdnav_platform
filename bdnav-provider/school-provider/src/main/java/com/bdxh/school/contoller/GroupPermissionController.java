@@ -45,10 +45,7 @@ public class GroupPermissionController {
     private SchoolService schoolService;
 
     @Autowired
-    private SchoolClassService schoolClassService;
-
-    @Autowired
-    private SchoolDeptService schoolDeptService;
+    private SchoolOrgService schoolOrgService;
 
 
     /**
@@ -148,12 +145,12 @@ public class GroupPermissionController {
             groupPermissionInfoVos.setSchoolName(school.getSchoolName());
             if (new Byte("1").equals(groupPermissionInfoVos.getGroupType())) {
                 //学生
-                SchoolClass schoolClass = schoolClassService.selectByKey(groupPermissionInfoVos.getGroupId());
-                groupPermissionInfoVos.setGroupName(schoolClass != null ? schoolClass.getName() : "");
+                SchoolOrg schoolOrg = schoolOrgService.selectByKey(groupPermissionInfoVos.getGroupId());
+                groupPermissionInfoVos.setGroupName(schoolOrg != null ? schoolOrg.getOrgName() : "");
             } else if (new Byte("2").equals(groupPermissionInfoVos.getGroupType())) {
                 //老师
-                SchoolDept schoolDept = schoolDeptService.selectByKey(groupPermissionInfoVos.getGroupId());
-                groupPermissionInfoVos.setGroupName(schoolDept != null ? schoolDept.getName() : "");
+                SchoolOrg schoolOrg = schoolOrgService.selectByKey(groupPermissionInfoVos.getGroupId());
+                groupPermissionInfoVos.setGroupName(schoolOrg != null ? schoolOrg.getOrgName() : "");
             }
         }
         return WrapMapper.ok(groupPermissionInfoVos);

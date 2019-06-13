@@ -64,9 +64,16 @@ public interface SchoolOrgControllerClient {
      */
     @RequestMapping(value = "/schoolOrg/findClassOrg", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolOrg>> findClassOrg(@RequestParam("schoolId") Long schoolId);
+    Wrapper<List<SchoolOrgTreeVo>> findClassOrg(@RequestParam("schoolId") Long schoolId);
 
-
+    /**
+     * 查询学生院系列表
+     * @param schoolId
+     * @return
+     */
+    @RequestMapping(value = "/schoolOrg/findClassOrgList", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolOrg>> findClassOrgList(@RequestParam("schoolId") Long schoolId);
     /**
      * 根据ID删除组织架构信息
      *

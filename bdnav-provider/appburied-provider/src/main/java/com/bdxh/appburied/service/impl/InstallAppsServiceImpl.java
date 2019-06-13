@@ -76,23 +76,19 @@ public class InstallAppsServiceImpl extends BaseService<InstallApps> implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Boolean batchSaveInstallAppsInfo(List<AddInstallAppsDto> appInstallList) {
-        //先删除原有应用在进行增加
+      //先删除原有应用在进行增加
         List<Long> ids=new ArrayList();
-        System.out.println("778899"+appInstallList.get(0).getSchoolCode());
-        System.out.println("665544"+appInstallList.get(0).getCardNumber());
-        System.out.println("112233"+appInstallList.get(0).getAccountId());
         List<InstallApps> iAs=installAppsMapper.getAccountApplication(appInstallList.get(0).getSchoolCode(),appInstallList.get(0).getCardNumber(),appInstallList.get(0).getAccountId());
         for (int i = 0; i < iAs.size(); i++) {
-            System.out.println("4444555"+iAs.get(i).getId());
+
             ids.add(iAs.get(i).getId());
         }
         Boolean falg=installAppsMapper.batchDelInstallApps(ids)>0;
-        System.out.println("110011"+falg);
         List<InstallApps> appslist= BeanMapUtils.mapList(appInstallList, InstallApps.class);
         for (int i = 0; i < appslist.size(); i++) {
             appslist.get(i).setId(snowflakeIdWorker.nextId());
             appslist.get(i).setPlatform(appInstallList.get(0).getInstallAppsPlatformEnum().getKey());
-            MultipartFile multipartFile = ConvertMultipartUtil.base64ToMultipart(appInstallList.get(0).getIconUrl());
+            MultipartFile multipartFile = ConvertMultipartUtil.base64ToMultipart(appInstallList.get(i).getIconUrl());
             Map<String, String> result = null;
             try {
                 result = FileOperationUtils.saveBatchFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);

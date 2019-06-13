@@ -24,23 +24,23 @@
 
     <resultMap id="BResultMap" type="com.bdxh.appmarket.dto.ApplicationVersionDto">
         <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <!--<result column="school_id" jdbcType="BIGINT" property="schoolId"/>-->
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-        <result column="platform" jdbcType="TINYINT" property="platform"/>
-        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>
+     <!--   <result column="platform" jdbcType="TINYINT" property="platform"/>
+        <result column="category_id" jdbcType="BIGINT" property="categoryId"/>-->
         <result column="app_name" jdbcType="VARCHAR" property="appName"/>
         <result column="app_package" jdbcType="VARCHAR" property="appPackage"/>
         <result column="icon_url" jdbcType="VARCHAR" property="iconUrl"/>
         <result column="icon_name" jdbcType="VARCHAR" property="iconName"/>
-        <result column="app_desc" jdbcType="VARCHAR" property="appDesc"/>
+       <!-- <result column="app_desc" jdbcType="VARCHAR" property="appDesc"/>-->
         <result column="status" jdbcType="TINYINT" property="status"/>
-        <result column="preset" jdbcType="TINYINT" property="preset"/>
+        <!--<result column="preset" jdbcType="TINYINT" property="preset"/>-->
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="apk_name" jdbcType="VARCHAR" property="apkName"/>
         <result column="apk_url" jdbcType="VARCHAR" property="apkUrl"/>
         <result column="apk_url_name" jdbcType="VARCHAR" property="apkUrlName"/>
-        <result column="apk_size" jdbcType="BIGINT" property="apkSize"/>
-        <result column="apk_desc" jdbcType="VARCHAR" property="apkDesc"/>
+        <!--<result column="apk_size" jdbcType="BIGINT" property="apkSize"/>
+        <result column="apk_desc" jdbcType="VARCHAR" property="apkDesc"/>-->
     </resultMap>
 
     <sql id="BaseColumns">
@@ -136,12 +136,62 @@
     </select>
 
     <select id="findTheApplicationList" parameterType="java.util.Map" resultMap="BResultMap">
-        SELECT
-       t_app.*,t_app_version.apk_name,t_app_version.apk_url,t_app_version.apk_url_name,t_app_version.apk_size,t_app_version.apk_desc
-        FROM
-        t_app
-        INNER JOIN t_app_version ON t_app.id = t_app_version.app_id
-        WHERE
-        t_app.school_code = #{schoolCode}
+	(
+	SELECT
+		t_app.id,
+		t_app.school_code,
+		t_app.`status`,
+		t_app.app_name,
+		t_app.app_package,
+		t_app.icon_name,
+		t_app.icon_url,
+		t_app.app_version,
+		t_app_version.apk_name,
+		t_app_version.apk_url,
+		t_app_version.apk_url_name,
+		t_app_version.create_date,
+		COUNT(
+			DISTINCT t_app_version.app_id
+		)
+	FROM
+		t_app
+	INNER JOIN t_app_version ON t_app.id = t_app_version.app_id
+	WHERE
+		t_app.school_code IS NULL
+	AND t_app.`status` = 1
+	GROUP BY
+		t_app_version.app_id
+	ORDER BY
+		t_app_version.create_date DESC
+)
+UNION
+	(
+		SELECT
+			t_app.id,
+			t_app.school_code,
+			t_app.`status`,
+			t_app.app_name,
+			t_app.app_package,
+			t_app.icon_name,
+			t_app.icon_url,
+			t_app.app_version,
+			t_app_version.apk_name,
+			t_app_version.apk_url,
+			t_app_version.apk_url_name,
+			t_app_version.create_date,
+			COUNT(
+				DISTINCT t_app_version.app_id
+			)
+		FROM
+			t_app
+		INNER JOIN t_app_version ON t_app.id = t_app_version.app_id
+		WHERE
+			 t_app.school_code = #{schoolCode}
+		AND t_app.`status` = 1
+		GROUP BY
+			t_app_version.app_id
+		ORDER BY
+			t_app_version.create_date DESC
+	)
     </select>
 </mapper>

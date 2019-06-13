@@ -40,6 +40,9 @@ public class UserInfo implements Serializable {
     /*
       以下是扩展字段
      */
+    //学校id
+    private Long schoolId;
+
     //家长id
     private Long familyId;
 
@@ -47,5 +50,5 @@ public class UserInfo implements Serializable {
     private String familyCardNumber;
 
     //权限集合(key:roleName ---Value:studentcardNumber 学生卡号)
-    private Map<String,List<String>> weixiaoGrantedAuthorities;
+    private Map<String, List<String>> weixiaoGrantedAuthorities;
 }

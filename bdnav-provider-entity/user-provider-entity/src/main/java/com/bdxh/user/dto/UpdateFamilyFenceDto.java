@@ -27,27 +27,25 @@ public class UpdateFamilyFenceDto  implements Serializable {
     /**
      * 学校id
      */
-    @ApiModelProperty("学校id")
+    @ApiModelProperty("学校id[不传递，后台自己获取]")
     private Long schoolId;
 
     /**
      * 学校编码
      */
-    @ApiModelProperty("学校编码")
-    @NotNull(message ="学校编码不能为空")
+    @ApiModelProperty("学校编码[不传递，后台自己获取]")
     private String schoolCode;
 
     /**
      * 家长号
      */
-    @ApiModelProperty("家长号")
-    @NotNull(message ="家长号不能为空")
+    @ApiModelProperty("家长号[不传递，后台自己获取]")
     private String cardNumber;
 
     /**
      * 家长id
      */
-    @ApiModelProperty("家长id")
+    @ApiModelProperty("家长id[不传递，后台自己获取]")
     private Long familyId;
 
     /**

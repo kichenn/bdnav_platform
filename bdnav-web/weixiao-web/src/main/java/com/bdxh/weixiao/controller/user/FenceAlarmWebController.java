@@ -2,7 +2,8 @@ package com.bdxh.weixiao.controller.user;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.feign.FenceAlarmControllerClient;
-import com.bdxh.user.vo.FenceAlarmVo;
+import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -28,17 +29,16 @@ public class FenceAlarmWebController {
     /**
      * 收费服务
      * 查询所有
-     * @param schoolCode
      * @param cardNumber 学生学号
      * @return
      */
-    @ApiOperation(value = "家长电子围栏-----查询所有围栏警报接口",response = FenceAlarmVo.class)
+    @ApiOperation("家长电子围栏-----查询所有围栏警报接口")
     @RequestMapping(value = "/getAllFenceAlarmInfos",method = RequestMethod.POST)
-    public Object getAllFenceAlarmInfos(@RequestParam("schoolCode")String schoolCode,
-                                        @RequestParam("cardNumber")String cardNumber,
+    public Object getAllFenceAlarmInfos(@RequestParam("cardNumber")String cardNumber,
                                         @RequestParam("fenceId")String fenceId){
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-            return fenceAlarmControllerClient.getFenceAlarmInfos(schoolCode,cardNumber,fenceId);
+            return fenceAlarmControllerClient.getFenceAlarmInfos(userInfo.getSchoolCode(),cardNumber,fenceId);
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
@@ -54,12 +54,11 @@ public class FenceAlarmWebController {
      */
     @ApiOperation("家长电子围栏-----查询单个围栏警报接口")
     @RequestMapping(value="/getFenceAlarmInfo",method = RequestMethod.POST)
-    public Object getFenceAlarmInfo(
-            @RequestParam(name="schoolCode")@NotNull(message = "schoolCode不能为空")  String schoolCode,
-            @RequestParam(name="cardNumber")@NotNull(message = "学生cardNumber不能为空")  String cardNumber,
+    public Object getFenceAlarmInfo(@RequestParam(name="cardNumber")@NotNull(message = "学生cardNumber不能为空")  String cardNumber,
             @RequestParam(name="id") @NotNull(message = "id不能为空")  String id){
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-            return WrapMapper.ok(fenceAlarmControllerClient.getFenceAlarmInfo(schoolCode,cardNumber,id).getResult());
+            return WrapMapper.ok(fenceAlarmControllerClient.getFenceAlarmInfo(userInfo.getSchoolCode(),cardNumber,id).getResult());
         }catch (Exception e){
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

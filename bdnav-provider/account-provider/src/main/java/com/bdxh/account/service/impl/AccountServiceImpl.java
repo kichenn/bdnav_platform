@@ -10,6 +10,7 @@ import com.bdxh.account.service.AccountService;
 import com.bdxh.account.service.AccountUnqiueService;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.HypyUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -141,5 +142,32 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
             throw new Exception("手机号和登录名不能同时为空，请检查");
         }
         return accountMapper.modifyPwd(phone, loginName, pwd) > 0;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean updateOrInsertAccount(Account account) {
+        Account oldAccount=accountMapper.getAccount(account.getSchoolCode(),account.getCardNumber());
+       Boolean result;
+        if(null==oldAccount){
+            AccountUnqiue accountUnqiue=new AccountUnqiue();
+            accountUnqiue.setCardNumber(account.getCardNumber());
+            accountUnqiue.setId(account.getId());
+            accountUnqiue.setLoginName(account.getLoginName());
+            accountUnqiue.setCardNumber(account.getCardNumber());
+            accountUnqiue.setPhone(account.getUserPhone());
+            accountUnqiue.setSchoolCode(account.getSchoolCode());
+            try {
+                accountUnqiueService.addAccountUnqiue(accountUnqiue);
+            }catch (Exception e){
+                log.info("添加失败存在相同的账号信息");
+                return false;
+            }
+            result=accountMapper.insert(account)>0;
+        }else{
+            Account newAccount=BeanMapUtils.map(oldAccount,Account.class);
+            result=accountMapper.updateAccount(newAccount)>0;
+        }
+        return result;
     }
 }

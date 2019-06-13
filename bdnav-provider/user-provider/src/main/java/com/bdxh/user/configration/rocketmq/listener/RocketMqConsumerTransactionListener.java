@@ -196,8 +196,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
                 msg.getTags();
             }
-        } catch (
-                UnsupportedEncodingException e) {
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return ConsumeConcurrentlyStatus.RECONSUME_LATER;
         }
