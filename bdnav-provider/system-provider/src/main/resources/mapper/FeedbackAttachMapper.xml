@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.system.persistence.FeedbackAttachMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.system.entity.FeedbackAttach">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="feedback_id" jdbcType="BIGINT" property="feedbackId"/>
+	  <result column="img" jdbcType="VARCHAR" property="img"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,feedback_id,img,create_date,update_date,remark
+	</sql>
+	<select id="getFeedbackAttachAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM sys_feedback_attach 
+	</select>
+
+	<!--根据用户反馈主键查询-->
+	<select id="queryFeedbackAttackByFeedId" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		WHERE feedback_id = #{feedId}
+	</select>
+
+	<delete id="delFeedbackAttachInIds" parameterType="Integer">
+	  DELETE
+	   FROM sys_feedback_attach
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>

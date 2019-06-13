@@ -108,7 +108,7 @@ public class FamilyStudentController {
      * @param familyStudentQueryDto
      * @return
      */
-    @ApiOperation(value = "查询所有家长与孩子关系")
+    @ApiOperation(value = "查询所有家长与孩子关系",response = FamilyStudentVo.class)
     @RequestMapping(value = "/queryAllFamilyStudent", method = RequestMethod.POST)
     public Object queryAllFamilyStudent(@RequestBody FamilyStudentQueryDto familyStudentQueryDto) {
         try {

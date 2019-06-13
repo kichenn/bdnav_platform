@@ -2,6 +2,7 @@ package com.bdxh.weixiao.controller.user;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.feign.FenceAlarmControllerClient;
+import com.bdxh.user.vo.FenceAlarmVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class FenceAlarmWebController {
      * @param cardNumber 学生学号
      * @return
      */
-    @ApiOperation("家长电子围栏-----查询所有围栏警报接口")
+    @ApiOperation(value = "家长电子围栏-----查询所有围栏警报接口",response = FenceAlarmVo.class)
     @RequestMapping(value = "/getAllFenceAlarmInfos",method = RequestMethod.POST)
     public Object getAllFenceAlarmInfos(@RequestParam("schoolCode")String schoolCode,
                                         @RequestParam("cardNumber")String cardNumber,

@@ -47,7 +47,7 @@ public class AppStatusWebController {
      * @return
      */
 
-    @ApiOperation(value = "家长应用管控----获取某个孩子的应用列表以及状态")
+    @ApiOperation(value = "家长应用管控----获取某个孩子的应用列表以及状态",response = WeiXiaoInstallAppsVo.class)
     @RequestMapping(value = "/queryAppStatusInfo", method = RequestMethod.POST)
     public Object queryAppStatusInfo(@RequestParam(name = "schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
                                      @RequestParam(name = "cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {

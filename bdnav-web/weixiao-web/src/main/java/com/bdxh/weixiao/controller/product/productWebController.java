@@ -2,6 +2,7 @@ package com.bdxh.weixiao.controller.product;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.product.dto.ProductQueryDto;
+import com.bdxh.product.entity.Product;
 import com.bdxh.product.feign.ProductControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +31,7 @@ public class productWebController {
      * 查询当前正在上架切是微校服务的商品
      * @return
      */
-    @ApiOperation(value = "家长微校商品----查询微校商品列表")
+    @ApiOperation(value = "家长微校商品----查询微校商品列表",response = Product.class)
     @RequestMapping(value = "/findProductInfo",method = RequestMethod.GET)
     public Object findProductInfo(){
         try {

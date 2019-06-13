@@ -1,6 +1,7 @@
 package com.bdxh.weixiao.controller.appburied;
 
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
+import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,7 +35,7 @@ public class ApplyLogWebController {
      * @return
      */
     @RequestMapping(value="/familyFindApplyLogInfo",method = RequestMethod.GET)
-    @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息")
+    @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息",response = ApplyLog.class)
     public Object familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber){
     return applyLogControllerClient.familyFindApplyLogInfo(schoolCode,cardNumber);
     }

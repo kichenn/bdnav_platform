@@ -5,7 +5,9 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyFenceDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.UpdateFamilyFenceDto;
+import com.bdxh.user.entity.FamilyFence;
 import com.bdxh.user.feign.FamilyFenceControllerClient;
+import com.bdxh.user.vo.FamilyFenceVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -75,7 +77,7 @@ public class FamilyFenceWebController {
      * @param cardNumber
      * @return
      */
-    @ApiOperation(value="家长电子围栏-----获取围栏表所有信息")
+    @ApiOperation(value="家长电子围栏-----获取围栏表所有信息",response = FamilyFenceVo.class)
     @RequestMapping(value = "/getFamilyFenceInfos",method = RequestMethod.POST)
     public Object getFamilyFenceInfos(@RequestParam("schoolCode")String schoolCode,
                                       @RequestParam("cardNumber")String cardNumber){
@@ -101,7 +103,7 @@ public class FamilyFenceWebController {
      * @param id
      * @return
      */
-    @ApiOperation(value="家长电子围栏-----获取围栏表单个信息")
+    @ApiOperation(value="家长电子围栏-----获取围栏表单个信息",response = FamilyFence.class)
     @RequestMapping(value = "/getFamilyFenceInfo",method = RequestMethod.POST)
     public Object getFamilyFenceInfo(@RequestParam("schoolCode") String schoolCode,
                                      @RequestParam("cardNumber") String cardNumber,
