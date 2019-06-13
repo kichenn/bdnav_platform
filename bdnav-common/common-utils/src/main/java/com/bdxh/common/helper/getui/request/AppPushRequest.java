@@ -2,6 +2,7 @@ package com.bdxh.common.helper.getui.request;
 
 import com.bdxh.common.helper.getui.entity.AppLinkTemplate;
 import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
+import com.bdxh.common.helper.getui.entity.AppTransmissionTemplate;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -62,4 +63,9 @@ public class AppPushRequest implements Serializable {
      * 穿透模版内容信息
      */
     private AppNotificationTemplate appNotificationTemplate;
+
+    /**
+     * 自定义穿透模板
+     */
+    private AppTransmissionTemplate appTransmissionTemplate;
 }
