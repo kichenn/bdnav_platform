@@ -8,13 +8,10 @@ import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.ModifyFenceRoundRequest;
 import com.bdxh.school.dto.FenceEntityDto;
 import com.bdxh.school.dto.SchoolFenceQueryDto;
-import com.bdxh.school.entity.School;
-import com.bdxh.school.entity.SchoolClass;
-import com.bdxh.school.entity.SchoolDept;
-import com.bdxh.school.persistence.SchoolClassMapper;
-import com.bdxh.school.persistence.SchoolDeptMapper;
-import com.bdxh.school.persistence.SchoolMapper;
+import com.bdxh.school.entity.*;
+import com.bdxh.school.persistence.*;
 import com.bdxh.school.service.SchoolFenceService;
+import com.bdxh.school.service.SchoolOrgService;
 import com.bdxh.school.thread.AddFenceEntityThread;
 import com.bdxh.school.vo.SchoolFenceShowVo;
 import com.github.pagehelper.Page;
@@ -28,8 +25,6 @@ import org.springframework.stereotype.Service;
 import com.bdxh.common.support.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import com.bdxh.school.entity.SchoolFence;
-import com.bdxh.school.persistence.SchoolFenceMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,11 +46,14 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
     @Autowired
     private SchoolMapper schoolMapper;
 
-    @Autowired
+/*    @Autowired
     private SchoolClassMapper schoolClassMapper;
 
     @Autowired
-    private SchoolDeptMapper schoolDeptMapper;
+    private SchoolDeptMapper schoolDeptMapper;*/
+
+    @Autowired
+    private SchoolOrgMapper schoolOrgMapper;
 
     /*
      *查询总条数
@@ -292,11 +290,11 @@ public class SchoolFenceServiceImpl extends BaseService<SchoolFence> implements 
                 temp.setSchoolName(school != null ? school.getSchoolName() : "");
                 // 用户群类型 1 学生 2 老师
                 if (new Byte("1").equals(e.getGroupType())) {
-                    SchoolClass schoolClass = schoolClassMapper.selectByPrimaryKey(e.getGroupId());
-                    temp.setGroupName(schoolClass != null ? schoolClass.getName() : "");
+                    SchoolOrg schoolClass = schoolOrgMapper.selectByPrimaryKey(e.getGroupId());
+                    temp.setGroupName(schoolClass != null ? schoolClass.getOrgName() : "");
                 } else if (new Byte("2").equals(e.getGroupType())) {
-                    SchoolDept schoolDept = schoolDeptMapper.selectByPrimaryKey(e.getGroupId());
-                    temp.setGroupName(schoolDept != null ? schoolDept.getName() : "");
+                    SchoolOrg schoolDept = schoolOrgMapper.selectByPrimaryKey(e.getGroupId());
+                    temp.setGroupName(schoolDept != null ? schoolDept.getOrgName() : "");
                 }
                 resultFenceShow.add(temp);
             });
