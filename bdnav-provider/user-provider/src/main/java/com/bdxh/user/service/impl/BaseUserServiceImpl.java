@@ -103,6 +103,8 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
     @Transactional(rollbackFor = Exception.class)
     public Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
         try {
+            log.info("=================入参："+activationBaseUserDto.toString());
+            log.info("--state:{},---appkey:{},----secret:{}",activationBaseUserDto.getState(),activationBaseUserDto.getAppKey(),activationBaseUserDto.getAppSecret());
             //更具学校Code和cardNumber查出我们本地用户的基本信息
             BaseUser baseUser = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(activationBaseUserDto.getSchoolCode(), activationBaseUserDto.getCardNumber());
             Preconditions.checkArgument(null != baseUser, "不存在当前用户信息");
