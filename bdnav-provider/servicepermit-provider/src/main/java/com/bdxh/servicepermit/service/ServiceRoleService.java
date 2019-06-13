@@ -33,4 +33,9 @@ public interface ServiceRoleService extends IService<ServiceRole> {
      * @return
      */
     PageInfo<ServiceRole> queryServiceRole(ServiceRoleQueryDto serviceRoleQueryDto);
+
+    /**
+     * 角色名称查询角色信息
+     */
+    ServiceRole findServiceRoleByName(String name);
 }

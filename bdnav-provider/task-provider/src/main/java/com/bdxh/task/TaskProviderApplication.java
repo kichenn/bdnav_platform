@@ -19,8 +19,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @EnableApolloConfig
 @ServletComponentScan
-@ComponentScan(basePackages = {"com.bdxh.user","com.bdxh.school","com.bdxh.task"})
-@EnableFeignClients(basePackages = {"com.bdxh.user","com.bdxh.school"})
+@ComponentScan(basePackages = {"com.bdxh"})
+@EnableFeignClients(basePackages = {"com.bdxh"})
 public class TaskProviderApplication {
 
     public static void main(String[] args) {

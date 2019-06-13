@@ -11,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bdxh.servicepermit.service.ServiceRoleService;
@@ -35,9 +36,18 @@ public class ServiceRoleController {
     @ApiOperation(value = "新增服务许可角色", response = Boolean.class)
     @RequestMapping(value = "/addServiceRole", method = RequestMethod.POST)
     public Object addServiceRole(@Validated @RequestBody AddServiceRoleDto addServiceRole) {
-        ServiceRole serviceRole = new ServiceRole();
-        BeanUtils.copyProperties(addServiceRole, serviceRole);
-        return WrapMapper.ok(serviceRoleService.save(serviceRole) > 0);
+        try {
+            ServiceRole serviceRole = new ServiceRole();
+            BeanUtils.copyProperties(addServiceRole, serviceRole);
+            serviceRoleService.save(serviceRole);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //角色名称
+                return WrapMapper.error("该角色名称已存在，无需再添加！");
+            }
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
     }
 
     @ApiOperation(value = "删除服务许可角色", response = Boolean.class)
@@ -49,10 +59,21 @@ public class ServiceRoleController {
     @ApiOperation(value = "修改服务许可角色", response = Boolean.class)
     @RequestMapping(value = "/modifyServiceRoleById", method = RequestMethod.POST)
     public Object modifyServiceRoleById(@Validated @RequestBody ModifyServiceRoleDto modifyServiceRoleDto) {
-        ServiceRole serviceRole = new ServiceRole();
-        BeanUtils.copyProperties(modifyServiceRoleDto, serviceRole);
-        serviceRole.setUpdateDate(new Date());
-        return WrapMapper.ok(serviceRoleService.update(serviceRole) > 0);
+
+
+        try {
+            ServiceRole serviceRole = new ServiceRole();
+            BeanUtils.copyProperties(modifyServiceRoleDto, serviceRole);
+            serviceRole.setUpdateDate(new Date());
+            serviceRoleService.update(serviceRole);
+        } catch (Exception e) {
+            if (e instanceof DuplicateKeyException) {
+                //角色名称
+                return WrapMapper.error("该角色名称已存在，无需再添加！");
+            }
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
     }
 
     @ApiOperation(value = "查询服务许可角色（分页查询信息）", response = ServiceRole.class)
