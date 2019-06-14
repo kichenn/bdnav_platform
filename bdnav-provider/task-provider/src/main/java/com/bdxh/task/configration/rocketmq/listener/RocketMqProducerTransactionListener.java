@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 /**
  * @Description: rocketmqProducer 生产者监听器
  * @Author: Kang
- * @Date: 2019/4/28 14:23
+ * @Date: 2019/6/14 9:43
  */
 @Slf4j
 @Component
