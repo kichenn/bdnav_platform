@@ -83,7 +83,8 @@ public class AuthenticationUtils {
             map.put("raw_data",rawData);
             map.put("app_key",appKey);
             String result = HttpClientUtils.doPost(AuthenticationConstant.RECEIVE_STU_INFO,map);
-            log.info("-------------result: {}",result);
+            JSONObject jsonObject=JSONObject.parseObject(result);
+            log.info("-------------errmsg: {}",jsonObject.get("errmsg"));
             return result;
         }catch (Exception e){
             e.printStackTrace();
