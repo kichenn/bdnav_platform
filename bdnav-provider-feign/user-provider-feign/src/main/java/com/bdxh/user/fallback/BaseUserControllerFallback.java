@@ -46,7 +46,7 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
     }
 
     @Override
-    public Wrapper baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
+    public Wrapper<Boolean> baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
         return WrapMapper.error();
     }
 

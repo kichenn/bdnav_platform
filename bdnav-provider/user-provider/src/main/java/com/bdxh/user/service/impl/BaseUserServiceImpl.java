@@ -98,8 +98,8 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
-        try {
+    public Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto) {
+
             log.info("=================入参："+activationBaseUserDto.toString());
             log.info("--state:{},---appkey:{},----secret:{}",activationBaseUserDto.getState(),activationBaseUserDto.getAppKey(),activationBaseUserDto.getAppSecret());
             //更具学校Code和cardNumber查出我们本地用户的基本信息
@@ -150,7 +150,9 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         if (!jsonObject.get("errcode").equals(0)) {
                             log.info("激活失败,返回的错误信息" + jsonObject.get("errmsg") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
                             Preconditions.checkArgument(false, "激活失败");
+                            return false;
                         }
+                        return true;
                     }
                     case 2: {
                         log.info("卡号为" + baseUser.getCardNumber() + "的老师激活");
@@ -186,7 +188,9 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         if (!jsonObject.get("errcode").equals(0)) {
                             log.info("激活失败,返回的错误信息" + jsonObject.get("errmsg") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
                             Preconditions.checkArgument(false, "激活失败");
+                            return false;
                         }
+                        return true;
                     }
                     case 3: {
                         log.info("卡号为" + baseUser.getCardNumber() + "的家长激活");
@@ -222,16 +226,17 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         if (!jsonObject.get("errcode").equals(0)) {
                            log.info("激活失败" + jsonObject.get("errmsg") + "，同步学生卡号=" + baseUser.getCardNumber() + "学校名称=" + baseUser.getSchoolName());
                            Preconditions.checkArgument(false, "激活失败");
+                            return false;
                         }
+                        return true;
                     }
                     default: {
                         Preconditions.checkArgument(false, "激活失败,不存在当前用户类型");
+                        return false;
                     }
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+            return false;
     }
 
     @Override
