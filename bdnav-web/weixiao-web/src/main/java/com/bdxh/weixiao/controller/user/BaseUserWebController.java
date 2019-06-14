@@ -1,6 +1,7 @@
 package com.bdxh.weixiao.controller.user;
 
 
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.user.dto.*;
@@ -53,7 +54,9 @@ public class BaseUserWebController {
             activationBaseUserDto.setAppSecret(school.getSchoolSecret());
             activationBaseUserDto.setSchoolType(school.getSchoolType());
             log.info("============"+activationBaseUserDto.toString());
-            return baseUserControllerClient.baseUserActivation(activationBaseUserDto);
+               Wrapper wrapper= baseUserControllerClient.baseUserActivation(activationBaseUserDto);
+            log.info("==========返回给前端页面的数据：   {}",wrapper);
+            return wrapper;
     }
 
     /**
