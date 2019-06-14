@@ -76,9 +76,7 @@ public class AuthenticationUtils {
                 }
             }
             dataJson.put("state",state);
-            List<String> dataAttr=new ArrayList<>();
-            dataAttr.add(dataJson.toString());
-            String rawData=WxEncryption.Encrypt(dataAttr.toString(),appKey,appSecret.substring(0,16));
+            String rawData=WxEncryption.Encrypt(dataJson.toString(),appKey,appSecret.substring(0,16));
             log.info("-----------raw_data:{}",rawData);
             log.info("-----------app_key:{}",appKey);
             Map<String,Object> map =new HashMap<>();
