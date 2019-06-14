@@ -57,25 +57,25 @@
         from t_product
         <where>
             <if test="productShowName != null and productShowName != ''">
-                and product_show_name like CONCAT(CONCAT('%',#{productShowName}),'%')
+                AND product_show_name LIKE CONCAT(CONCAT('%',#{productShowName}),'%')
             </if>
             <if test="productName != null and productName != ''">
-                and product_name like CONCAT(CONCAT('%',#{productName}),'%')
+                AND product_name LIKE CONCAT(CONCAT('%',#{productName}),'%')
             </if>
-            <if test="productType !=null and productType!=''">
-                and product_type=#{productType}
+            <if test="productType !=null and productType !=''">
+                AND product_type=#{productType}
             </if>
-            <if test="sellStatus !=null and sellStatus!=''">
-                and sell_status=#{sellStatus}
+            <if test="sellStatus !=null and sellStatus !=''">
+                AND sell_status=#{sellStatus}
             </if>
-            <if test="businessType !=null and businessType!=''">
-                and business_type=#{businessType}
+            <if test="businessType !=null and businessType !=''">
+                AND business_type=#{businessType}
             </if>
-            <if test="startDate !=null">
-                and <![CDATA[date(update_date) >= date(#{startDate,jdbcType=TIMESTAMP})]]>
+            <if test="startDate !=null ">
+                AND <![CDATA[date(update_date) >= date(#{startDate,jdbcType=TIMESTAMP})]]>
             </if>
             <if test="endDate !=null ">
-                and <![CDATA[date(update_date) <= date(#{endDate,jdbcType=TIMESTAMP})]]>
+                AND <![CDATA[date(update_date) <= date(#{endDate,jdbcType=TIMESTAMP})]]>
             </if>
         </where>
         order by update_date desc
