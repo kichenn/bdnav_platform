@@ -409,6 +409,6 @@
     <update id="updateStudentActivation">
       		update t_student
             set activate=#{activate}
-            where school_code=#{schoolCode} and school_name=#{schoolName}
+            where school_code=#{schoolCode} and card_number=#{cardNumber}
     </update>
 </mapper>

@@ -273,8 +273,8 @@ public class StudentWebController {
             //判断是否已激活 已激活需要同步微校未激活修改不需要同步微校
             if (studentVo.getActivate().equals(Byte.parseByte("2"))) {
                 School school = schoolControllerClient.findSchoolBySchoolCode(studentVo.getSchoolCode()).getResult();
-                updateStudentDto.setAppKey(school.getAppKey());
-                updateStudentDto.setAppSecret(school.getAppSecret());
+                updateStudentDto.setAppKey(school.getSchoolKey());
+                updateStudentDto.setAppSecret(school.getSchoolSecret());
                 updateStudentDto.setSchoolType(school.getSchoolType());
                 updateStudentDto.setActivate(studentVo.getActivate());
             }
