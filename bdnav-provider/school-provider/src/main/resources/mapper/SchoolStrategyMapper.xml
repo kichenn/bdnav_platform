@@ -48,7 +48,7 @@
         <result column="operator" jdbcType="BIGINT" property="operator"/>
         <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <result column="name" jdbcType="VARCHAR" property="groupName"/>
+        <result column="org_name" jdbcType="VARCHAR" property="groupName"/>
         <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
         <result column="platform" jdbcType="VARCHAR" property="platform"/>
     </resultMap>
