@@ -52,11 +52,10 @@ public class BaseUserWebController {
     @RequestMapping(value = "/activationBaseUser", method = RequestMethod.POST)
     public Object activationBaseUser(@RequestBody ActivationBaseUserDto activationBaseUserDto) {
            //判断手机验证码是否正确
-/*            String saveCode=redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +activationBaseUserDto.getPhone());
+            String saveCode=redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +activationBaseUserDto.getPhone());
             if(!activationBaseUserDto.getCode().equals(saveCode)){
                 return WrapMapper.error("手机验证码错误");
-            }*/
-            log.info("入参:{}",activationBaseUserDto.toString());
+            }
             School school = schoolControllerClient.findSchoolBySchoolCode(activationBaseUserDto.getSchoolCode()).getResult();
             activationBaseUserDto.setAppKey(school.getSchoolKey());
             activationBaseUserDto.setAppSecret(school.getSchoolSecret());
