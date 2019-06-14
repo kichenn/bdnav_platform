@@ -14,16 +14,6 @@ spring:
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
     time-zone: GMT+8
-  cloud:
-    stream:
-      rocketmq:
-        binder:
-          namesrv-addr: '47.107.253.90:9876;47.107.255.252:9876 '
-rocketmq:
-  producer:
-    defaultName: default-task-provider
-    transEnable: true
-    transName: trans-task-provider
 #apollo配置
 app:
   id: task-provider-cluster1

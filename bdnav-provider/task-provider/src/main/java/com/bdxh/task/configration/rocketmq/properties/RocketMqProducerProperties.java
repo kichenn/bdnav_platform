@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * @Description: rocketmq生产者配置类
  * @Author: Kang
- * @Date: 2019/4/28 12:16
+ * @Date: 2019/6/14 9:43
  */
 @Data
 @ConditionalOnProperty(prefix = "rocketmq.producer", name = {"defaultName", "transName"})

@@ -1,5 +1,6 @@
 package com.bdxh.task.configration.rocketmq.configration;
 
+
 import com.bdxh.task.configration.rocketmq.listener.RocketMqProducerTransactionListener;
 import com.bdxh.task.configration.rocketmq.properties.RocketMqProducerProperties;
 import lombok.extern.slf4j.Slf4j;
@@ -19,9 +20,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * @Description: rocketMQ 生产者配置类
- *  rocketMQ消息发送是
  * @Author: Kang
- * @Date: 2019/4/28 12:06
+ * @Date: 2019/6/14 9:43
  */
 @Configuration
 @Slf4j
@@ -29,6 +29,7 @@ public class RocketMqProducerConfig {
 
     @Autowired
     private RocketMqProducerTransactionListener rocketMqTransactionListener;
+
 
     @Bean(value = "defaultMQProducer", destroyMethod = "shutdown")
     @ConditionalOnBean(RocketMqProducerProperties.class)
@@ -39,7 +40,7 @@ public class RocketMqProducerConfig {
         producer.setVipChannelEnabled(true);
         producer.setSendMsgTimeout(5000);
         //队列接收最大的消息size
-        producer.setMaxMessageSize(1024*1024);
+        producer.setMaxMessageSize(1024 * 1024);
         //发送消息失败，重试次数
         producer.setRetryTimesWhenSendFailed(5);
         //slave节点,将master主节点同步到slave失败，重试次数
