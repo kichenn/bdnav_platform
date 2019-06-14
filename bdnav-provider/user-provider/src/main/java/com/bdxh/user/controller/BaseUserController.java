@@ -125,8 +125,8 @@ public class BaseUserController {
     @RequestMapping(value ="/baseUserActivation",method = RequestMethod.POST)
     public Object  baseUserActivation(@RequestBody ActivationBaseUserDto activationBaseUserDto){
         try {
-
-            return WrapMapper.ok(baseUserService.baseUserActivation(activationBaseUserDto)) ;
+            baseUserService.baseUserActivation(activationBaseUserDto);
+            return WrapMapper.ok() ;
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

@@ -83,7 +83,7 @@ public interface BaseUserService extends IService<BaseUser> {
      * 校方页面认证激活用户并同步信息
      * @param activationBaseUserDto
      */
-    Boolean baseUserActivation(ActivationBaseUserDto activationBaseUserDto);
+    void baseUserActivation(ActivationBaseUserDto activationBaseUserDto);
 
 
     /**

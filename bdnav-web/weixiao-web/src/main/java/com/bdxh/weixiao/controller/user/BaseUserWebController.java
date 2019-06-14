@@ -60,7 +60,7 @@ public class BaseUserWebController {
             activationBaseUserDto.setAppKey(school.getSchoolKey());
             activationBaseUserDto.setAppSecret(school.getSchoolSecret());
             activationBaseUserDto.setSchoolType(school.getSchoolType());
-            return baseUserControllerClient.baseUserActivation(activationBaseUserDto).getResult();
+            return baseUserControllerClient.baseUserActivation(activationBaseUserDto);
     }
 
     /**
