@@ -21,4 +21,10 @@ public class ModifyServiceUserDto {
 
     @ApiModelProperty("修改日期")
     private Date updateDate;
+
+    @ApiModelProperty("操作人卡号")
+    private Long operator;
+
+    @ApiModelProperty("操作人姓名")
+    private String operatorName;
 }

@@ -181,8 +181,8 @@ public class FamilyWebController {
             if(familyVo.getActivate().equals(Byte.parseByte("2"))) {
                 updateFamilyDto.setActivate(familyVo.getActivate());
                 School school = schoolControllerClient.findSchoolBySchoolCode(familyVo.getSchoolCode()).getResult();
-                updateFamilyDto.setAppKey(school.getAppKey());
-                updateFamilyDto.setAppSecret(school.getAppSecret());
+                updateFamilyDto.setAppKey(school.getSchoolKey());
+                updateFamilyDto.setAppSecret(school.getSchoolSecret());
                 updateFamilyDto.setSchoolType(school.getSchoolType());
             }
             Wrapper wrapper=familyControllerClient.updateFamily(updateFamilyDto);

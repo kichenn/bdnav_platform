@@ -42,4 +42,13 @@ public class ServiceUserControllerClientFallback implements ServiceUserControlle
     }
 
 
+    @Override
+    public Wrapper deleteService(String schoolCode, Long cardNumber, Long id) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<PageInfo<ServiceUser>> queryServiceUser(QueryServiceUserDto queryServiceUsedDto) {
+        return WrapMapper.error();
+    }
 }
