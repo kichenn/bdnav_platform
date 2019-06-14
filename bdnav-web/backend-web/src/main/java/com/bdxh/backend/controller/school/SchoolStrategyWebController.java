@@ -71,8 +71,6 @@ public class SchoolStrategyWebController {
                     //群发穿透模版
                     Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
                     System.out.println(resultMap.toString());
-                }else{
-                    return WrapMapper.error("未找到对应设备信息");
                 }
             }
             return wrapper;
@@ -115,8 +113,6 @@ public class SchoolStrategyWebController {
                     //群发穿透模版
                     Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
                     System.out.println(resultMap.toString());
-                }else{
-                   return WrapMapper.error("未找到对应设备信息");
                 }
             return wrapper;
         } catch (Exception e) {
