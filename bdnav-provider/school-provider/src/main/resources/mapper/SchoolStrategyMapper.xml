@@ -51,6 +51,8 @@
         <result column="org_name" jdbcType="VARCHAR" property="groupName"/>
         <result column="model_name" jdbcType="VARCHAR" property="modelName"/>
         <result column="platform" jdbcType="VARCHAR" property="platform"/>
+        <result column="usable_app" jdbcType="VARCHAR" property="usableApp"/>
+        <result column="usable_device" jdbcType="VARCHAR" property="usableDevice"/>
     </resultMap>
 
 
@@ -132,4 +134,11 @@
      WHERE t_school_strategy.id=#{id}
     </select>
 
+    <select id="findSchoolStrategyList" resultMap="BResultMap" parameterType="java.util.Map">
+         SELECT t_school_strategy.*,t_school_mode.*
+        FROM
+        t_school_strategy
+        INNER JOIN  t_school_mode ON t_school_strategy.model_id = t_school_mode.id
+     WHERE t_school_strategy.school_code=#{schoolCode}
+    </select>
 </mapper>

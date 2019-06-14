@@ -99,5 +99,5 @@ public interface AppService extends IService<App> {
     List<App> thePresetList(Byte preset);
 
     //根据学校编号查询全部应用及对应版本编号
-    List<ApplicationVersionDto> findTheApplicationList(@Param("schoolCode")String schoolCode);
+    List<ApplicationVersionDto> findTheApplicationList(String schoolCode);
 }
