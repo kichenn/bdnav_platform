@@ -11,12 +11,14 @@ import com.bdxh.product.persistence.ProductImageMapper;
 import com.bdxh.product.persistence.ProductMapper;
 import com.bdxh.product.service.ProductService;
 import com.bdxh.product.vo.ProductDetailsVo;
+import com.bdxh.product.vo.ProductListVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
 import com.xiaoleilu.hutool.collection.CollUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,10 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 /**
- * @description: 商品service实现
- * @author: xuyuan
- * @create: 2019-01-19 18:25
- **/
+ * @Description: 商品service实现
+ * @Author: Kang
+ * @Date: 2019/6/14 14:50
+ */
 @Service
 public class ProductServiceImpl extends BaseService<Product> implements ProductService {
 
@@ -36,6 +38,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
 
     @Autowired
     private ProductImageMapper productImageMapper;
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -161,11 +164,25 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
 
 
     @Override
-    public PageInfo<Product> findProduct(ProductQueryDto productQueryDto) {
+    public PageInfo<ProductListVo> findProduct(ProductQueryDto productQueryDto) {
         PageHelper.startPage(productQueryDto.getPageNum(), productQueryDto.getPageSize());
         List<Product> productList = productMapper.findProduct(productQueryDto);
-        PageInfo<Product> pageInfoStudent = new PageInfo<>(productList);
-        return pageInfoStudent;
+        PageInfo<Product> productInfo = new PageInfo<>(productList);
+        List<ProductListVo> productListVos = new ArrayList<>();
+        for (Product product : productList) {
+            ProductListVo productVo = new ProductListVo();
+            BeanUtils.copyProperties(product, productVo);
+            productVo.setImgUrl(productImageMapper.findImgUrlByProductId(productVo.getId()));
+            productListVos.add(productVo);
+        }
+        PageInfo<ProductListVo> productVoStudent = new PageInfo<>(productListVos);
+        productVoStudent.setPageNum(productInfo.getPageNum());
+        productVoStudent.setPageSize(productInfo.getPageSize());
+        productVoStudent.setSize(productInfo.getSize());
+        productVoStudent.setPageSize(productInfo.getPageSize());
+        productVoStudent.setTotal(productInfo.getTotal());
+        productVoStudent.setHasNextPage(productInfo.isHasNextPage());
+        return productVoStudent;
     }
 
     @Override

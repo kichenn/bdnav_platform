@@ -39,27 +39,12 @@ public class ProductQueryDto extends Query implements Serializable {
     /**
      * 商品上下架状态 1 下架 2 上架
      */
-    @ApiModelProperty("商品上下架状态 1 下架 2 上架")
-    private Byte sellStatus;
+    @ApiModelProperty("商品上下架状态 1 下架 2 上架(前端不需要传递，后端自己获取)")
+    private Byte sellStatus = 2;
 
     /**
      * 业务类型 1 微校服务
      */
-    @ApiModelProperty("业务类型 1 微校服务")
-    private Byte businessType;
-
-    /**
-     * 开始时间
-     */
-    @ApiModelProperty("开始时间")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date startDate;
-
-    /**
-     * 结束时间
-     */
-    @ApiModelProperty("结束时间")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Date endDate;
-
+    @ApiModelProperty("业务类型 1 微校服务(前端不需要传递，后端自己获取)")
+    private Byte businessType = 1;
 }

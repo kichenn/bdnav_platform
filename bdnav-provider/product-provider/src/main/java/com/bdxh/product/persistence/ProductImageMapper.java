@@ -23,4 +23,11 @@ public interface ProductImageMapper extends Mapper<ProductImage> {
 	 * 根据商品ID删除图片
 	 */
 	int deleteProductImageByProductId(@Param("id")Long id);
+
+	/**
+	* @Description: 商品id查询商品信息
+	* @Author: Kang
+	* @Date: 2019/6/14 14:55
+	*/
+	List<String> findImgUrlByProductId(@Param("productId") Long productId);
 }

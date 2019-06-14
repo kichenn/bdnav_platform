@@ -40,6 +40,7 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <collection property="image" ofType="com.bdxh.product.entity.ProductImage" column="product_id">
             <id column="imageId" jdbcType="BIGINT" property="id"/>
+            <id column="productId" jdbcType="BIGINT" property="productId"/>
             <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl"/>
             <result column="imageName" jdbcType="VARCHAR" property="imageName"/>
             <result column="sort" jdbcType="TINYINT" property="sort"/>
@@ -71,12 +72,6 @@
             <if test="businessType !=null and businessType!=''">
                 and business_type=#{businessType}
             </if>
-            <if test="startDate !=null">
-                and <![CDATA[date(update_date) >= date(#{startDate,jdbcType=TIMESTAMP})]]>
-            </if>
-            <if test="endDate !=null ">
-                and <![CDATA[date(update_date) <= date(#{endDate,jdbcType=TIMESTAMP})]]>
-            </if>
         </where>
         order by update_date desc
     </select>
@@ -102,6 +97,7 @@
         productImage.id AS imageId,
         productImage.sort AS sort,
         productImage.image_url AS imageUrl,
+        productImage.product_id AS productId,
         productImage.image_name AS imageName
     FROM
         t_product AS product

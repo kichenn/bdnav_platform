@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @Description: Quartz学校策略定时任务执行类
+ * @Description: Quartz学校策略定时任务执行类 (此处未用到，增加策略时采用个推推送给android)
  * @Author: Kang
  * @Date: 2019/5/16 10:21
  */

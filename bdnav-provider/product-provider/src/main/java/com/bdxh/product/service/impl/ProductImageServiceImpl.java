@@ -9,19 +9,28 @@ import org.springframework.stereotype.Service;
 import com.bdxh.common.support.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
+
 import java.util.List;
 
 /**
-* @Description: 业务层实现
-* @Author Kang
-* @Date 2019-05-08 19:21:01
-*/
+ * @Description: 业务层实现
+ * @Author Kang
+ * @Date 2019-05-08 19:21:01
+ */
 @Service
 @Slf4j
 public class ProductImageServiceImpl extends BaseService<ProductImage> implements ProductImageService {
 
-	@Autowired
-	private ProductImageMapper productImageMapper;
+    @Autowired
+    private ProductImageMapper productImageMapper;
 
-
+    /**
+     * @Description: 商品id查询商品图片信息
+     * @Author: Kang
+     * @Date: 2019/6/14 14:54
+     */
+    @Override
+    public List<String> findImgUrlByProductId(Long productId) {
+        return productImageMapper.findImgUrlByProductId(productId);
+    }
 }

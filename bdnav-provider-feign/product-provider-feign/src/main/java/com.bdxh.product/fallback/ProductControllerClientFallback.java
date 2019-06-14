@@ -8,6 +8,7 @@ import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.feign.ProductControllerClient;
 import com.bdxh.product.vo.ProductDetailsVo;
+import com.bdxh.product.vo.ProductListVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,7 @@ import java.util.List;
 public class ProductControllerClientFallback implements ProductControllerClient {
 
     @Override
-    public Wrapper<PageInfo<Product>> findProduct(ProductQueryDto productQueryDto) {
+    public Wrapper<PageInfo<ProductListVo>> findProduct(ProductQueryDto productQueryDto) {
         return WrapMapper.error();
     }
 

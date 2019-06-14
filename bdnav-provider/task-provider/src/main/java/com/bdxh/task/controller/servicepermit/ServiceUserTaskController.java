@@ -34,9 +34,9 @@ public class ServiceUserTaskController {
     private static final String WEIXIAO_TOKEN_PREFIX = "weixiao_token:";
 
     /**
-     * 定时任务：商品的服务剩余天数更新，到期后修改信息 （每天零点执行）@Scheduled(cron = "0 0 0 * * ? *")
+     * 定时任务：商品的服务剩余天数更新，到期后修改信息 （每天零点执行）@Scheduled(cron = "0 0 23 * * ?")
      */
-    @Scheduled(cron = "0 0 0 * * ? *")
+    @Scheduled(cron = "0 0 0 * * ?")
     public void servicePermitTask() {
         log.info("----------log---更新商品服务剩余天数-----------");
         //查询所有未过期的账号信息
@@ -46,13 +46,16 @@ public class ServiceUserTaskController {
         for (ServiceUser serviceUser : serviceUserList) {
             ModifyServiceUserDto modifyServiceUserDto = new ModifyServiceUserDto();
             modifyServiceUserDto.setId(serviceUser.getId());
-            modifyServiceUserDto.setDays(serviceUser.getDays() - 1);
+            log.info("当前服务商品剩余天数:" + serviceUser.getDays());
             if (serviceUser.getEndTime().before(thisTime) || serviceUser.getDays().equals(0)) {
+                log.error("服务商品已经到期");
                 //已过期
                 modifyServiceUserDto.setDays(0);
                 modifyServiceUserDto.setStatus(2);
                 //已过期查找redis中的token并注销下线
                 redisUtil.delete(ServiceUserTaskController.WEIXIAO_TOKEN_PREFIX + serviceUser.getFamilyId());
+            } else {
+                modifyServiceUserDto.setDays(serviceUser.getDays() - 1);
             }
             serviceUserControllerClient.updateServiceUser(modifyServiceUserDto);
         }

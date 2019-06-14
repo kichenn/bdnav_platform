@@ -27,7 +27,7 @@ import java.time.DayOfWeek;
 import java.util.*;
 
 /**
- * @Description: Quartz学校定时任务触发controller
+ * @Description: Quartz学校定时任务触发controller(此处未用到，增加策略时采用个推推送给android)
  * @Author: Kang
  * @Date: 2019/5/16 10:24
  */
