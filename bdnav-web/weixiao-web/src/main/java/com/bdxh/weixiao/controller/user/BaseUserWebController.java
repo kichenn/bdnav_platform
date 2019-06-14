@@ -1,6 +1,8 @@
 package com.bdxh.weixiao.controller.user;
 
 
+import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
@@ -44,10 +46,10 @@ public class BaseUserWebController {
     @RequestMapping(value = "/authenticationWeixiao/activationBaseUser", method = RequestMethod.POST)
     public Object activationBaseUser(@RequestBody ActivationBaseUserDto activationBaseUserDto) {
            //判断手机验证码是否正确
-/*            String saveCode=redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +activationBaseUserDto.getPhone());
+            String saveCode=redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX +activationBaseUserDto.getPhone());
             if(!activationBaseUserDto.getCode().equals(saveCode)){
                 return WrapMapper.error("手机验证码错误");
-            }*/
+            }
             log.info("------------"+activationBaseUserDto.toString());
             School school = schoolControllerClient.findSchoolBySchoolCode(activationBaseUserDto.getSchoolCode()).getResult();
             activationBaseUserDto.setAppKey(school.getSchoolKey());

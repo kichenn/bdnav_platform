@@ -75,11 +75,11 @@
 
     <!--带条件的分页查询-->
     <select id="getByCondition" resultMap="BResultMap" parameterType="java.util.Map" >
-        SELECT t_school_strategy.*,t_school_class.*,t_school_mode.*
+        SELECT t_school_strategy.*,t_school_org.*,t_school_mode.*
         FROM
         t_school_strategy
         LEFT JOIN  t_school_mode ON t_school_strategy.model_id = t_school_mode.id
-        LEFT JOIN t_school_class ON t_school_strategy.group_id = t_school_class.id
+        LEFT JOIN t_school_org ON t_school_strategy.group_id = t_school_org.id
         <where>
             <if test="policyName !=null and policyName !=''">
                 AND t_school_strategy.policy_name LIKE CONCAT(CONCAT('%',#{policyName}),'%')
