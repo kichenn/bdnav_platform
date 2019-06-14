@@ -1,18 +1,10 @@
 package com.bdxh.weixiao.controller.user;
 
-import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
-import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
+
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
-import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.user.dto.*;
-import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
-import com.bdxh.user.feign.FamilyControllerClient;
-import com.bdxh.user.feign.StudentControllerClient;
-import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
