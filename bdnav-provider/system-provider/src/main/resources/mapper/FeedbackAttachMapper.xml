@@ -6,13 +6,14 @@
 	  <id column="id" jdbcType="BIGINT" property="id"/>
 	  <result column="feedback_id" jdbcType="BIGINT" property="feedbackId"/>
 	  <result column="img" jdbcType="VARCHAR" property="img"/>
+		<result column="img_name" jdbcType="VARCHAR" property="imgName"/>
 	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
 	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
 	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,feedback_id,img,create_date,update_date,remark
+	  id,feedback_id,img,img_name,create_date,update_date,remark
 	</sql>
 	<select id="getFeedbackAttachAllCount" resultType="Integer">
 	  SELECT 
@@ -24,6 +25,7 @@
 	<select id="queryFeedbackAttackByFeedId" resultMap="BaseResultMap">
 		SELECT
 		<include refid="BaseColumns"/>
+		FROM sys_feedback_attach
 		WHERE feedback_id = #{feedId}
 	</select>
 

@@ -3,6 +3,7 @@ package com.bdxh.system.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -80,6 +81,12 @@ public class ModifyFeedbackDto {
     @ApiModelProperty("反馈内容")
     @NotBlank(message = "反馈的内容不能为空")
     private String content;
+
+    /**
+     * 处理状态 1.已处理 2.未处理
+     */
+    @ApiModelProperty("处理状态 1.已处理 2.未处理")
+    private Byte status;
 
     /**
      * 备注

@@ -1,6 +1,9 @@
 package com.bdxh.system.vo;
 
 import com.bdxh.system.dto.AddFeedbackAttachDto;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import com.sun.xml.internal.ws.developer.Serialization;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import java.util.Date;
@@ -19,6 +22,7 @@ public class FeedbackVo {
      * 主键
      */
     @ApiModelProperty("主键")
+    @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
 
 
@@ -64,6 +68,12 @@ public class FeedbackVo {
      */
     @ApiModelProperty("反馈内容")
     private String content;
+
+    /**
+     * 处理状态 1.已处理 2.未处理
+     */
+    @ApiModelProperty("处理状态 1.已处理 2.未处理")
+    private Byte status;
 
     /**
      * 备注

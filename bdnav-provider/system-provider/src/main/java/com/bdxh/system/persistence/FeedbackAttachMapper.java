@@ -33,4 +33,6 @@ public interface FeedbackAttachMapper extends Mapper<FeedbackAttach> {
 	 * @return
 	 */
 	 List<FeedbackAttach> queryFeedbackAttackByFeedId(@Param("feedId")Long feedId);
+
+
 }

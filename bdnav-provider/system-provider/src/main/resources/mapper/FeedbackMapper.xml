@@ -12,7 +12,8 @@
 	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
 	  <result column="email" jdbcType="VARCHAR" property="email"/>
 	  <result column="phone" jdbcType="VARCHAR" property="phone"/>
-	  <result column="content" jdbcType="TEXT" property="content"/>
+	  <result column="content" jdbcType="VARCHAR" property="content"/>
+		<result column="status" jdbcType="TINYINT" property="status"/>
 	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
 	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
 	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
@@ -21,7 +22,7 @@
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,school_id,school_code,school_name,user_id,card_number,user_name,email,phone,content,create_date,update_date,remark,operator,operator_name
+	  id,school_id,school_code,school_name,user_id,card_number,user_name,email,phone,content,status,create_date,update_date,remark,operator,operator_name
 	</sql>
 	<select id="getFeedbackAllCount" resultType="Integer">
 	  SELECT 
@@ -36,22 +37,22 @@
 	  FROM sys_feedback
 	  <where>
 		  <if test="feedback.schoolCode!=null and feedback.schoolCode!=''">
-			  AND feedback.school_code = #{feedback.schoolCode}
+			  AND school_code = #{feedback.schoolCode}
 		  </if>
 		  <if test="feedback.schoolName!=null and feedback.schoolName!=''">
-			  AND feedback.school_name = #{feedback.schoolName}
+			  AND school_name = #{feedback.schoolName}
 		  </if>
 		  <if test="feedback.userId!=null and feedback.userId!=''">
-			  AND feedback.user_id = #{feedback.userId}
+			  AND user_id = #{feedback.userId}
 		  </if>
 		  <if test="feedback.cardNumber!=null and feedback.cardNumber!=''">
-			  AND feedback.card_number = #{feedback.cardNumber}
+			  AND card_number = #{feedback.cardNumber}
 		  </if>
 		  <if test="feedback.userId!=null and feedback.userId!=''">
-			  AND feedback.user_id = #{feedback.userId}
+			  AND user_id = #{feedback.userId}
 		  </if>
 	  </where>
-	  ORDER BY DESC
+	  ORDER BY create_date DESC
 	</select>
 
 	<delete id="delFeedbackInIds" parameterType="Integer">

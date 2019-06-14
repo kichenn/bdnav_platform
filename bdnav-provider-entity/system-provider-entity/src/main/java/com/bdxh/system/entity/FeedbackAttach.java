@@ -36,6 +36,12 @@ public class FeedbackAttach {
 	private String img;
 
 	/**
+	 * 上传的图片的名称
+	 */
+	@Column(name = "img_name")
+	private String imgName;
+
+	/**
 	 * 创建时间
 	 */
 	@Column(name = "create_date")

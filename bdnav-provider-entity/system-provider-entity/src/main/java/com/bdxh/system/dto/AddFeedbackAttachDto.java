@@ -3,6 +3,7 @@ package com.bdxh.system.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.io.Serializable;
 
 
@@ -20,6 +21,12 @@ public class AddFeedbackAttachDto implements Serializable {
      */
     @ApiModelProperty("上传的图片url")
     private String img;
+
+    /**
+     * 上传的图片的名称
+     */
+    @ApiModelProperty("上传的图片的名称")
+    private String imgName;
 
     /**
      * 备注 排序

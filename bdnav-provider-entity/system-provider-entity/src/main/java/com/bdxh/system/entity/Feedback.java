@@ -1,6 +1,9 @@
 package com.bdxh.system.entity;
 
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
@@ -21,6 +24,7 @@ public class Feedback {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonSerialize(using= ToStringSerializer.class)
 	private Long id;
 
 	/**
@@ -76,6 +80,12 @@ public class Feedback {
 	 */
 	@Column(name = "content")
 	private String content;
+
+	/**
+	 * 处理状态 1.已处理 2.未处理
+	 */
+	@Column(name = "status")
+	private Byte status;
 
 	/**
 	 * 创建时间
