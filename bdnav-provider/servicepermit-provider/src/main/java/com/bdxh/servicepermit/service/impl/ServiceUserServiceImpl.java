@@ -2,12 +2,17 @@ package com.bdxh.servicepermit.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
-import com.bdxh.servicepermit.dto.QueryServiceUserDto;
-import com.bdxh.servicepermit.dto.WeiXiaoAddServiceUserDto;
+import com.bdxh.common.utils.DateUtil;
+import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.servicepermit.dto.*;
+import com.bdxh.servicepermit.entity.ServiceRole;
+import com.bdxh.servicepermit.properties.ServiceUserConstant;
+import com.bdxh.servicepermit.service.ServiceRolePermitService;
 import com.bdxh.servicepermit.service.ServiceUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import com.bdxh.servicepermit.entity.ServiceUser;
 import com.bdxh.servicepermit.persistence.ServiceUserMapper;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +36,15 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
 
     @Autowired
     private ServiceUserMapper serviceUserMapper;
+
+    @Autowired
+    private ServiceRolePermitService serviceRolePermitService;
+
+    @Autowired
+    private ServiceRoleServiceImpl serviceRoleService;
+
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     /*
      *查询总条数
@@ -68,27 +83,53 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
         return serviceUserMapper.getServiceByCondition(param);
     }
 
+
+    /**
+     * @Description: 鉴定是否有试用资格
+     * @Author: Kang
+     * @Date: 2019/6/13 15:12
+     */
     @Override
-    public void addServicePermit(WeiXiaoAddServiceUserDto weiXiaoAddServiceUserDto) {
-        //试用
-        weiXiaoAddServiceUserDto.setType(1);
-        QueryServiceUserDto queryServiceUserDto=BeanMapUtils.map(weiXiaoAddServiceUserDto,QueryServiceUserDto.class);
-        Map<String, Object> param = BeanToMapUtil.objectToMap(queryServiceUserDto);
-        //查询判断是否存在试用记录如果存在直接抛出异常
-        List<ServiceUser> serviceUserList=serviceUserMapper.getServiceByCondition(param);
-        Preconditions.checkArgument(serviceUserList.size()==0,"您已领取过试用机会请勿重复领取");
-        Long nowDate = System.currentTimeMillis();
-        //开通时间
-        weiXiaoAddServiceUserDto.setStartTime(new Date(nowDate));
-        //试用过期时间    240 * 600 * 600 * 7= 7天
-        weiXiaoAddServiceUserDto.setEndTime(new Date(nowDate + (240 * 600 * 600 * 7)));
-        //正常使用
-        weiXiaoAddServiceUserDto.setStatus(1);
-        weiXiaoAddServiceUserDto.setCreateDate(new Date(nowDate));
-        weiXiaoAddServiceUserDto.setUpdateDate(new Date(nowDate));
-        weiXiaoAddServiceUserDto.setOperator(Long.parseLong(weiXiaoAddServiceUserDto.getCardNumber()));
-        weiXiaoAddServiceUserDto.setOperatorName(weiXiaoAddServiceUserDto.getFamilyName());
-        ServiceUser serviceUser= BeanMapUtils.map(weiXiaoAddServiceUserDto,ServiceUser.class);
-        serviceUserMapper.insert(serviceUser);
+    public List<ServiceUser> findServicePermitByCondition(String schoolCode, String studentCardNumber, String familyCardNumber, Integer type, Integer status) {
+        return serviceUserMapper.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, type, status);
     }
+
+    /**
+     * @Description: 领取试用权限
+     * @Author: Kang
+     * @Date: 2019/6/13 16:07
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void createOnTrialService(AddNoTrialServiceUserDto addNoTrialServiceUserDto) {
+        //增加权限记录
+        ServiceUser serviceUser = new ServiceUser();
+        BeanUtils.copyProperties(addNoTrialServiceUserDto, serviceUser);
+        String startTime = DateUtil.now2();
+        String endTime = DateUtil.addDay(startTime, ServiceUserConstant.TEST_DAYS);
+        //可用天数，默认七天
+        serviceUser.setDays(ServiceUserConstant.TEST_DAYS);
+        //开始使用时间
+        serviceUser.setStartTime(DateUtil.format(startTime, "yyyy-MM-dd"));
+        //结束使用时间
+        serviceUser.setEndTime(DateUtil.format(endTime, "yyyy-MM-dd"));
+        serviceUser.setStatus(1);
+        serviceUser.setType(1);
+        serviceUser.setProductId(new Long("1001"));
+        serviceUser.setProductName("测试权限商品（适用所有商品信息）....");
+        serviceUser.setOrderNo(new Long("10001"));
+        serviceUser.setId(snowflakeIdWorker.nextId());
+        serviceUserMapper.insertSelective(serviceUser);
+        //查询试用角色
+        ServiceRole serviceRole = serviceRoleService.findServiceRoleByName(ServiceUserConstant.ROLE_TEST);
+        //绑定试用权限记录和试用角色信息
+        AddServiceRolePermitDto addServiceRolePermitDto = new AddServiceRolePermitDto();
+        addServiceRolePermitDto.setSchoolCode(serviceUser.getSchoolCode());
+        addServiceRolePermitDto.setCardNumber(serviceUser.getCardNumber());
+        addServiceRolePermitDto.setServiceUserId(serviceUser.getId());
+        addServiceRolePermitDto.setServiceRoleId(serviceRole.getId());
+        addServiceRolePermitDto.setRemark("试用角色权限绑定");
+        serviceRolePermitService.addServiceRolePermitInfo(addServiceRolePermitDto);
+    }
+
 }

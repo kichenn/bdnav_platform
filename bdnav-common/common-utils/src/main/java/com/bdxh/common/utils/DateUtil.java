@@ -50,7 +50,14 @@ public class DateUtil {
         return format(new Date(), "yyyy-MM-dd HH:mm:ss");
     }
 
-    ;
+    /**
+     * 获取当前时间的字符串
+     *
+     * @return
+     */
+    public static String now2() {
+        return format(new Date(), "yyyy-MM-dd");
+    }
 
     public static Date now() {
         return new Timestamp(System.currentTimeMillis());
@@ -76,8 +83,8 @@ public class DateUtil {
     /**
      * 获取两个字符串日期相隔天数
      *
-     * @param date1  yyyy-MMd-dd
-     * @param date2  yyyy-MMd-dd
+     * @param date1 yyyy-MMd-dd
+     * @param date2 yyyy-MMd-dd
      * @return
      */
     public static int getDaySpace(String date1, String date2) {

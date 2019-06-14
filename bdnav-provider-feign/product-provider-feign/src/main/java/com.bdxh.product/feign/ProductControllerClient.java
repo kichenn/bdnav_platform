@@ -7,6 +7,7 @@ import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.fallback.ProductControllerClientFallback;
 import com.bdxh.product.vo.ProductDetailsVo;
+import com.bdxh.product.vo.ProductListVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -31,7 +32,7 @@ public interface ProductControllerClient {
      */
     @RequestMapping(value = "/product/findProduct", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<Product>> findProduct(@RequestBody ProductQueryDto productQueryDto);
+    Wrapper<PageInfo<ProductListVo>> findProduct(@RequestBody ProductQueryDto productQueryDto);
 
     /**
      * 查询所有商品

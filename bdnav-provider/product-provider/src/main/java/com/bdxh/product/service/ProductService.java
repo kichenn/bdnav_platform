@@ -6,16 +6,17 @@ import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.vo.ProductDetailsVo;
+import com.bdxh.product.vo.ProductListVo;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * @description: 商品service
- * @author: xuyuan
- * @create: 2019-01-19 18:14
- **/
+* @Description:  商品service
+* @Author: Kang
+* @Date: 2019/6/14 14:50
+*/
 public interface ProductService extends IService<Product> {
 
     /**
@@ -41,7 +42,7 @@ public interface ProductService extends IService<Product> {
      * @param productQueryDto
      * @return
      */
-    PageInfo<Product> findProduct(ProductQueryDto productQueryDto);
+    PageInfo<ProductListVo> findProduct(ProductQueryDto productQueryDto);
 
     /**
      * 查询商品详情

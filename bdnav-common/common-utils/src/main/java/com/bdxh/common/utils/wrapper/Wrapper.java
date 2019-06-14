@@ -16,139 +16,156 @@ import java.io.Serializable;
 @JsonSerialize(include = JsonSerialize.Inclusion.NON_NULL)
 public class Wrapper<T> implements Serializable {
 
-	/**
-	 * 序列化标识
-	 */
-	private static final long serialVersionUID = 4893280118017319089L;
+    /**
+     * 序列化标识
+     */
+    private static final long serialVersionUID = 4893280118017319089L;
 
-	/**
-	 * 成功码.
-	 */
-	public static final int SUCCESS_CODE = 200;
+    /**
+     * 成功码.
+     */
+    public static final int SUCCESS_CODE = 200;
 
-	/**
-	 * 成功信息.
-	 */
-	public static final String SUCCESS_MESSAGE = "操作成功";
+    /**
+     * 成功信息.
+     */
+    public static final String SUCCESS_MESSAGE = "操作成功";
 
-	/**
-	 * 错误码.
-	 */
-	public static final int ERROR_CODE = 500;
+    /**
+     * 错误码.
+     */
+    public static final int ERROR_CODE = 500;
 
-	/**
-	 * 错误信息.
-	 */
-	public static final String ERROR_MESSAGE = "内部异常";
+    /**
+     * 错误信息.
+     */
+    public static final String ERROR_MESSAGE = "内部异常";
 
-	/**
-	 * 错误码：参数非法
-	 */
-	public static final int ILLEGAL_ARGUMENT_CODE_ = 100;
+    /**
+     * 错误码：参数非法
+     */
+    public static final int ILLEGAL_ARGUMENT_CODE_ = 100;
 
-	/**
-	 * 错误信息：参数非法
-	 */
-	public static final String ILLEGAL_ARGUMENT_MESSAGE = "参数非法";
+    /**
+     * 错误信息：参数非法
+     */
+    public static final String ILLEGAL_ARGUMENT_MESSAGE = "参数非法";
 
-	/**
-	 * 编号.
-	 */
-	private int code;
+    /**
+     * 微校商品：没有权限
+     */
+    public static final Integer NOT_NOTRIAL_CODE = 403;
 
-	/**
-	 * 信息.
-	 */
-	private String message;
+    /**
+     * 微校商品： 错误信息：没有权限
+     */
+    public static final String NOT_NOTRIAL_MESSAGE = "没有商品试用资格";
 
-	/**
-	 * 结果数据
-	 */
-	private T result;
+    /**
+     * 微校商品：有商品试用资格
+     */
+    public static final Integer YES_NOTRIAL_CODE = 402;
 
-	/**
-	 * Instantiates a new wrapper. default code=200
-	 */
-	Wrapper() {
-		this(SUCCESS_CODE, SUCCESS_MESSAGE);
-	}
+    /**
+     * 微校商品： 错误信息：商品试用资格
+     */
+    public static final String YES_NOTRIAL_MESSAGE = "商品试用资格";
 
-	/**
-	 * Instantiates a new wrapper.
-	 *
-	 * @param code    the code
-	 * @param message the message
-	 */
-	Wrapper(int code, String message) {
-		this(code, message, null);
-	}
+    /**
+     * 编号.
+     */
+    private int code;
 
-	/**
-	 * Instantiates a new wrapper.
-	 *
-	 * @param code    the code
-	 * @param message the message
-	 * @param result  the result
-	 */
-	Wrapper(int code, String message, T result) {
-		super();
-		this.code(code).message(message).result(result);
-	}
+    /**
+     * 信息.
+     */
+    private String message;
 
-	/**
-	 * Sets the 编号 , 返回自身的引用.
-	 *
-	 * @param code the new 编号
-	 *
-	 * @return the wrapper
-	 */
-	private Wrapper<T> code(int code) {
-		this.setCode(code);
-		return this;
-	}
+    /**
+     * 结果数据
+     */
+    private T result;
 
-	/**
-	 * Sets the 信息 , 返回自身的引用.
-	 *
-	 * @param message the new 信息
-	 *
-	 * @return the wrapper
-	 */
-	private Wrapper<T> message(String message) {
-		this.setMessage(message);
-		return this;
-	}
+    /**
+     * Instantiates a new wrapper. default code=200
+     */
+    Wrapper() {
+        this(SUCCESS_CODE, SUCCESS_MESSAGE);
+    }
 
-	/**
-	 * Sets the 结果数据 , 返回自身的引用.
-	 *
-	 * @param result the new 结果数据
-	 *
-	 * @return the wrapper
-	 */
-	public Wrapper<T> result(T result) {
-		this.setResult(result);
-		return this;
-	}
+    /**
+     * Instantiates a new wrapper.
+     *
+     * @param code    the code
+     * @param message the message
+     */
+    Wrapper(int code, String message) {
+        this(code, message, null);
+    }
 
-	/**
-	 * 判断是否成功： 依据 Wrapper.SUCCESS_CODE == this.code
-	 *
-	 * @return code =200,true;否则 false.
-	 */
-	@JsonIgnore
-	public boolean success() {
-		return Wrapper.SUCCESS_CODE == this.code;
-	}
+    /**
+     * Instantiates a new wrapper.
+     *
+     * @param code    the code
+     * @param message the message
+     * @param result  the result
+     */
+    Wrapper(int code, String message, T result) {
+        super();
+        this.code(code).message(message).result(result);
+    }
 
-	/**
-	 * 判断是否成功： 依据 Wrapper.SUCCESS_CODE != this.code
-	 *
-	 * @return code !=200,true;否则 false.
-	 */
-	@JsonIgnore
-	public boolean error() {
-		return !success();
-	}
+    /**
+     * Sets the 编号 , 返回自身的引用.
+     *
+     * @param code the new 编号
+     * @return the wrapper
+     */
+    private Wrapper<T> code(int code) {
+        this.setCode(code);
+        return this;
+    }
+
+    /**
+     * Sets the 信息 , 返回自身的引用.
+     *
+     * @param message the new 信息
+     * @return the wrapper
+     */
+    private Wrapper<T> message(String message) {
+        this.setMessage(message);
+        return this;
+    }
+
+    /**
+     * Sets the 结果数据 , 返回自身的引用.
+     *
+     * @param result the new 结果数据
+     * @return the wrapper
+     */
+    public Wrapper<T> result(T result) {
+        this.setResult(result);
+        return this;
+    }
+
+    /**
+     * 判断是否成功： 依据 Wrapper.SUCCESS_CODE == this.code
+     *
+     * @return code =200,true;否则 false.
+     */
+    @JsonIgnore
+    public boolean success() {
+        return Wrapper.SUCCESS_CODE == this.code;
+    }
+
+    /**
+     * 判断是否成功： 依据 Wrapper.SUCCESS_CODE != this.code
+     *
+     * @return code !=200,true;否则 false.
+     */
+    @JsonIgnore
+    public boolean error() {
+        return !success();
+    }
 
 }

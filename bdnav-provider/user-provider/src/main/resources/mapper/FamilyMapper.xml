@@ -111,7 +111,7 @@
         <if test="family.name!=null and family.name!=''">
             `name`=#{family.name},
         </if>
-        <if test="family.gender!=0">
+        <if test="family.gender!=null and family.gender!=''">
             `gender`=#{family.gender},
         </if>
         <if test="family.birth!=null and family.birth!=''">

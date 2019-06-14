@@ -29,8 +29,11 @@ public interface ServiceRoleMapper extends Mapper<ServiceRole> {
 
     /**
      * 条件查询列表
+     *
      * @param serviceRole
      * @return
      */
     List<ServiceRole> queryServiceRole(@Param("serviceRole") ServiceRole serviceRole);
+
+    ServiceRole findServiceRoleByName(@Param("name") String name);
 }

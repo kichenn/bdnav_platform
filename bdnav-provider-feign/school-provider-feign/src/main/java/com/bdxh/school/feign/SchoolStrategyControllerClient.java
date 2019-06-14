@@ -82,5 +82,12 @@ public interface SchoolStrategyControllerClient {
     @ResponseBody
     Wrapper<QuerySchoolStrategy> findStrategyById(@RequestParam("id") Long id);
 
+    /**
+     * @Description: 根据id查询策略信息
+     */
+    @RequestMapping(value = "/schoolStrategy/findSchoolStrategyList", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<QuerySchoolStrategy>> findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode);
+
 
 }

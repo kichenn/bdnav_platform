@@ -2,10 +2,7 @@ package com.bdxh.servicepermit.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.servicepermit.dto.AddServiceUserDto;
-import com.bdxh.servicepermit.dto.ModifyServiceUserDto;
-import com.bdxh.servicepermit.dto.QueryServiceUserDto;
-import com.bdxh.servicepermit.dto.WeiXiaoAddServiceUserDto;
+import com.bdxh.servicepermit.dto.*;
 import com.bdxh.servicepermit.entity.ServiceUser;
 import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
 import com.github.pagehelper.PageInfo;
@@ -17,13 +14,25 @@ import java.util.List;
 @Component
 public class ServiceUserControllerClientFallback implements ServiceUserControllerClient {
 
+
     @Override
-    public Wrapper deleteService( String schoolCode,Long cardNumber,Long id) {
+    public Wrapper createServiceUser(AddServiceUserDto addServiceUserDto) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper<PageInfo<ServiceUser>> queryServiceUser(QueryServiceUserDto queryServiceUsedDto) {
+    public Wrapper<List<ServiceUser>> findServicePermitAll() {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper findServicePermitByCondition(String schoolCode, String studentCardNumber, String familyCardNumber) {
+        return WrapMapper.error();
+    }
+
+
+    @Override
+    public Wrapper createOnTrialService(AddNoTrialServiceUserDto addNoTrialServiceUserDto) {
         return WrapMapper.error();
     }
 
@@ -32,20 +41,14 @@ public class ServiceUserControllerClientFallback implements ServiceUserControlle
         return WrapMapper.error();
     }
 
+
     @Override
-    public Wrapper createServiceUser(AddServiceUserDto addServiceUserDto) {
+    public Wrapper deleteService(String schoolCode, Long cardNumber, Long id) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper<List<ServiceUser>> queryAllServiceUser(QueryServiceUserDto queryServiceUsedDto) {
-        return  WrapMapper.error();
+    public Wrapper<PageInfo<ServiceUser>> queryServiceUser(QueryServiceUserDto queryServiceUsedDto) {
+        return WrapMapper.error();
     }
-
-    @Override
-    public Wrapper addServicePermit(WeiXiaoAddServiceUserDto weiXiaoAddServiceUserDto) {
-        return  WrapMapper.error();
-    }
-
-
 }

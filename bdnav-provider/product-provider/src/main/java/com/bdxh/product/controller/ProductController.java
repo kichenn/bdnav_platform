@@ -1,14 +1,14 @@
 package com.bdxh.product.controller;
 
-import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.product.dto.ProductAddDto;
 import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.entity.Product;
+import com.bdxh.product.service.ProductImageService;
 import com.bdxh.product.service.ProductService;
 import com.bdxh.product.vo.ProductDetailsVo;
+import com.bdxh.product.vo.ProductListVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,11 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 /**
- * @description: 商品服务控制器
- * @author: xuyuan
- * @create: 2019-01-21 16:35
- **/
-
+ * @Description: 商品服务控制器
+ * @Author: Kang
+ * @Date: 2019/6/14 11:57
+ */
 @RestController
 @RequestMapping("/product")
 @Validated
@@ -35,6 +34,7 @@ public class ProductController {
     @Autowired
     public ProductService productService;
 
+
     /**
      * 查询微校商品
      *
@@ -42,9 +42,9 @@ public class ProductController {
      * @return
      */
     @RequestMapping(value = "/findProduct", method = RequestMethod.POST)
-    @ApiOperation(value = "查询微校商品")
-    public Object findProduct(@RequestBody ProductQueryDto productQueryDto) {
-        PageInfo<Product> productPageInfo = productService.findProduct(productQueryDto);
+    @ApiOperation(value = "查询微校商品", response = Product.class)
+    public Object findProduct(@Validated @RequestBody ProductQueryDto productQueryDto) {
+        PageInfo<ProductListVo> productPageInfo = productService.findProduct(productQueryDto);
         return WrapMapper.ok(productPageInfo);
     }
 
@@ -69,13 +69,13 @@ public class ProductController {
     @RequestMapping(value = "/deleteProduct", method = RequestMethod.POST)
     @ApiOperation(value = "删除商品信息")
     public Object deleteProduct(@RequestParam("id") Long id) {
-      try {
-        productService.deleteProduct(id);
+        try {
+            productService.deleteProduct(id);
 
-        return WrapMapper.ok();
-      } catch (Exception e) {
-          return WrapMapper.error(e.getMessage());
-      }
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
     }
 
     /**
@@ -87,7 +87,7 @@ public class ProductController {
     @ApiOperation(value = "根据ID查询商品")
     public Object findProductById(@RequestParam("id") Long id) {
         try {
-            return WrapMapper.ok( productService.selectByKey(id));
+            return WrapMapper.ok(productService.selectByKey(id));
         } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
@@ -104,7 +104,7 @@ public class ProductController {
         try {
             productService.addProduct(productDto);
             return WrapMapper.ok();
-        }catch (Exception e){
+        } catch (Exception e) {
             return WrapMapper.error(e.getMessage());
         }
     }
@@ -115,33 +115,24 @@ public class ProductController {
      * @param productUpdateDto
      */
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
-    @ApiOperation(value = "更新商品信息")
+    @ApiOperation(value = "更新商品信息", response = Boolean.class)
     public Object updateProduct(@RequestBody ProductUpdateDto productUpdateDto) {
         productService.updateProduct(productUpdateDto);
         return WrapMapper.ok();
     }
 
     /**
-     * 查询所有商品信息
-     * @param productQueryDto
-     * @return
-     */
-    @RequestMapping(value = "/findAllProduct",method =RequestMethod.GET)
-    @ApiOperation(value = "查询所有商品信息")
-    public Object findAllProduct(@RequestBody ProductQueryDto productQueryDto){
-        return WrapMapper.ok(productService.selectAll());
-    }
-    /**
      * 根据Ids查询商品集合
      *
      * @param productIds
      */
     @RequestMapping(value = "/findProductByIds", method = RequestMethod.GET)
+    @ApiOperation(value = "根据ids查询商品集合信息", response = Product.class)
     @ResponseBody
-    public Object  findProductByIds(@RequestParam("productIds") String productIds){
+    public Object findProductByIds(@RequestParam("productIds") String productIds) {
         try {
             return WrapMapper.ok(productService.selectAll());
-        }catch (Exception e){
+        } catch (Exception e) {
             return WrapMapper.ok(productService.selectAll());
         }
 

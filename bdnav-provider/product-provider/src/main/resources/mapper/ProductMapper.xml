@@ -40,6 +40,7 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <collection property="image" ofType="com.bdxh.product.entity.ProductImage" column="product_id">
             <id column="imageId" jdbcType="BIGINT" property="id"/>
+            <id column="productId" jdbcType="BIGINT" property="productId"/>
             <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl"/>
             <result column="imageName" jdbcType="VARCHAR" property="imageName"/>
             <result column="sort" jdbcType="TINYINT" property="sort"/>
@@ -57,25 +58,19 @@
         from t_product
         <where>
             <if test="productShowName != null and productShowName != ''">
-                and product_show_name like CONCAT(CONCAT('%',#{productShowName}),'%')
+                AND product_show_name LIKE CONCAT(CONCAT('%',#{productShowName}),'%')
             </if>
             <if test="productName != null and productName != ''">
-                and product_name like CONCAT(CONCAT('%',#{productName}),'%')
+                AND product_name LIKE CONCAT(CONCAT('%',#{productName}),'%')
             </if>
-            <if test="productType !=null and productType!=''">
-                and product_type=#{productType}
+            <if test="productType !=null and productType !=''">
+                AND product_type=#{productType}
             </if>
-            <if test="sellStatus !=null and sellStatus!=''">
-                and sell_status=#{sellStatus}
+            <if test="sellStatus !=null and sellStatus !=''">
+                AND sell_status=#{sellStatus}
             </if>
-            <if test="businessType !=null and businessType!=''">
-                and business_type=#{businessType}
-            </if>
-            <if test="startDate !=null">
-                and <![CDATA[date(update_date) >= date(#{startDate,jdbcType=TIMESTAMP})]]>
-            </if>
-            <if test="endDate !=null ">
-                and <![CDATA[date(update_date) <= date(#{endDate,jdbcType=TIMESTAMP})]]>
+            <if test="businessType !=null and businessType !=''">
+                AND business_type=#{businessType}
             </if>
         </where>
         order by update_date desc
@@ -102,6 +97,7 @@
         productImage.id AS imageId,
         productImage.sort AS sort,
         productImage.image_url AS imageUrl,
+        productImage.product_id AS productId,
         productImage.image_name AS imageName
     FROM
         t_product AS product

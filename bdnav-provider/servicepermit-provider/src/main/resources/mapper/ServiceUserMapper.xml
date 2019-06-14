@@ -72,7 +72,31 @@
         </where>
         ORDER BY create_date DESC
     </select>
+
     <delete id="deleteByServiceId" parameterType="java.util.Map">
 		DELETE FROM t_service_user WHERE school_code=#{SchoolCode} AND card_number=#{cardNumber} AND id=#{id}
 	</delete>
+
+    <select id="findServicePermitByCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_service_user
+        <where>
+            <if test="familyCardNumber!=null and familyCardNumber!=''">
+                AND card_number=#{familyCardNumber}
+            </if>
+            <if test="schoolCode!=null and schoolCode!=''">
+                AND school_code=#{schoolCode}
+            </if>
+            <if test="studentCardNumber!=null and studentCardNumber!=''">
+                AND student_number=#{studentCardNumber}
+            </if>
+            <if test="type!=null">
+                AND type=#{type}
+            </if>
+            <if test="status!=null">
+                AND status=#{status}
+            </if>
+        </where>
+    </select>
 </mapper>

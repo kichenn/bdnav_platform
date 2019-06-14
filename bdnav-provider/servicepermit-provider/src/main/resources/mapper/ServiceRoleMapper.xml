@@ -39,7 +39,15 @@
             </if>
         </where>
 
-         ORDER BY create_date DESC
+        ORDER BY create_date DESC
+    </select>
+
+    <select id="findServiceRoleByName" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_service_role
+        where `name` = #{name,jdbcType=VARCHAR}
+        limit 1;
     </select>
 
 </mapper>

@@ -18,10 +18,10 @@ import java.util.List;
 
 
 /**
-* @Description: 业务层实现
-* @Author Kang
-* @Date 2019-05-31 11:36:26
-*/
+ * @Description: 业务层实现
+ * @Author Kang
+ * @Date 2019-05-31 11:36:26
+ */
 @Service
 @Slf4j
 public class ServiceRoleServiceImpl extends BaseService<ServiceRole> implements ServiceRoleService {
@@ -61,5 +61,13 @@ public class ServiceRoleServiceImpl extends BaseService<ServiceRole> implements 
         PageInfo<ServiceRole> pageInfo = new PageInfo<>(serviceRoles);
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
+    }
+
+    /**
+     * 角色名称查询角色信息
+     */
+    @Override
+    public ServiceRole findServiceRoleByName(String name) {
+        return serviceRoleMapper.findServiceRoleByName(name);
     }
 }

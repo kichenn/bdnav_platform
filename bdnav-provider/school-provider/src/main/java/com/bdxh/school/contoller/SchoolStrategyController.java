@@ -242,6 +242,17 @@ public class SchoolStrategyController {
 	}
 
 
+	/**
+	 * @Description: 根据schoolcode查询策略列表信息
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/findSchoolStrategyList", method = RequestMethod.GET)
+	@ApiOperation(value = "根据schoolCode查询策略模式", response = SchoolStrategy.class)
+	public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode) {
+		List<QuerySchoolStrategy> ss = schoolStrategyService.findSchoolStrategyList(schoolCode);
+		return WrapMapper.ok(ss);
+	}
+
 
 
 }
