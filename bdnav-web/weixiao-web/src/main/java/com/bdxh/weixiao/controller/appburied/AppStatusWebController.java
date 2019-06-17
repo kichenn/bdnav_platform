@@ -9,6 +9,8 @@ import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import com.bdxh.weixiao.dto.WeiXiaoAppStatusUnlockOrLokingDto;
 import com.bdxh.weixiao.vo.WeiXiaoInstallAppsVo;
 import io.swagger.annotations.Api;
@@ -47,20 +49,18 @@ public class AppStatusWebController {
     /**
      * 收费服务
      * 家长应用管控----获取某个孩子的应用列表以及状态
-     *
-     * @param schoolCode 学校Code
      * @param cardNumber 学生学号
      * @return
      */
 
     @ApiOperation(value = "家长应用管控----获取某个孩子的应用列表以及状态",response = WeiXiaoInstallAppsVo.class)
     @RequestMapping(value = "/queryAppStatusInfo", method = RequestMethod.POST)
-    public Object queryAppStatusInfo(@RequestParam(name = "schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
-                                     @RequestParam(name = "cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {
+    public Object queryAppStatusInfo(@RequestParam(name = "cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {
         try {
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
             //根据学号查询出学生的应用安装记录
-            List<InstallApps> installAppsList = installAppsControllerClient.findInstallAppsInConation(schoolCode, cardNumber).getResult();
-            List<AppStatus> appStatusList = appStatusControllerClient.findAppStatusInfoBySchoolCodeAndCardNumber(schoolCode, cardNumber).getResult();
+            List<InstallApps> installAppsList = installAppsControllerClient.findInstallAppsInConation(userInfo.getSchoolCode(), cardNumber).getResult();
+            List<AppStatus> appStatusList = appStatusControllerClient.findAppStatusInfoBySchoolCodeAndCardNumber(userInfo.getSchoolCode(), cardNumber).getResult();
             List<WeiXiaoInstallAppsVo> weiXiaoInstallAppsVoList = BeanMapUtils.mapList(installAppsList, WeiXiaoInstallAppsVo.class);
             for (WeiXiaoInstallAppsVo weiXiaoInstallAppsVo : weiXiaoInstallAppsVoList) {
                 for (AppStatus appStatus : appStatusList) {
@@ -87,7 +87,9 @@ public class AppStatusWebController {
     @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
     public Object appStatusLockingAndUnlock(@RequestBody @Validated WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         try {
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
             log.debug("---------------------------------家长锁定解锁应用WEB层");
+            weiXiaoAppStatusUnlockOrLokingDto.setSchoolCode(userInfo.getSchoolCode());
             List<String> clientId = new ArrayList<>();
             //获取clientId
             UserDevice userDevice=userDeviceControllerClient.findUserDeviceByCodeOrCard(weiXiaoAppStatusUnlockOrLokingDto.getSchoolCode(),weiXiaoAppStatusUnlockOrLokingDto.getCardNumber()).getResult();

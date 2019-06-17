@@ -81,7 +81,6 @@ public class FamilyFenceWebController {
     /**
      * 收费服务
      * 获取围栏表所有信息
-     * @param schoolCode
      * @param cardNumber
      * @return
      */
