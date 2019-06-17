@@ -176,4 +176,15 @@ public class FamilyStudentWebController {
         }
     }
 
+    /**
+     * 手机获取短信验证码
+     * @param phone
+     * @return
+     */
+    @ApiOperation(value = "家长子女关系----手机获取短信验证码")
+    @RequestMapping(value = "/getPhoneCode",method = RequestMethod.POST)
+    public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
+        return familyStudentControllerClient.getPhoneCode(phone);
+    }
+
 }

@@ -48,8 +48,17 @@
 		  <if test="feedback.cardNumber!=null and feedback.cardNumber!=''">
 			  AND card_number = #{feedback.cardNumber}
 		  </if>
-		  <if test="feedback.userId!=null and feedback.userId!=''">
-			  AND user_id = #{feedback.userId}
+		  <if test="feedback.userName!=null and feedback.userName!=''">
+			  AND user_name LIKE CONCAT(CONCAT('%',#{feedback.userName},'%'))
+		  </if>
+		  <if test="feedback.status!=null and feedback.status!=''">
+			  AND status = #{feedback.status}
+		  </if>
+		  <if test="feedback.email!=null and feedback.email!=''">
+			  AND email = #{feedback.email}
+		  </if>
+		  <if test="feedback.phone!=null and feedback.phone!=''">
+			  AND phone = #{feedback.phone}
 		  </if>
 	  </where>
 	  ORDER BY create_date DESC

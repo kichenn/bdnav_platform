@@ -14,6 +14,7 @@ public class ProductUpdateDto implements Serializable {
     private static final long serialVersionUID = 1295579643785690138L;
 
     @NotNull(message = "商品主键不能为空")
+    @ApiModelProperty("商品主键")
     private Long id;
 
     /**
