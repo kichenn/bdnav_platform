@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -249,5 +250,11 @@ public class SecurityController {
             }
         }
         return WrapMapper.error();
+    }
+
+    @ApiOperation(value = "微校-手机获取短信验证码")
+    @RequestMapping(value = "/authenticationWeixiao/getPhoneCode",method = RequestMethod.POST)
+    public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
+        return familyStudentControllerClient.getPhoneCode(phone);
     }
 }
