@@ -130,7 +130,7 @@ public class SecurityController {
                 userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
                 //家长卡号查询 自己孩子相关信息以及家长信息
                 List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
-                Preconditions.checkArgument(CollectionUtils.isNotEmpty(familyStudentVo), "家长卡号，学校code异常");
+                Preconditions.checkArgument(CollectionUtils.isNotEmpty(familyStudentVo), "家长卡号:" + userInfo.getFamilyCardNumber() + "，学校code:" + userInfo.getSchoolCode() + ",异常");
                 userInfo.setFamilyId(familyStudentVo.get(0).getFId());
                 userInfo.setCardNumber(familyStudentVo.stream().map(e -> {
                     return e.getSCardNumber();
@@ -174,7 +174,7 @@ public class SecurityController {
                 userInfo.setCardNumber(cardNumbers);
                 //学生卡号查询 学生相关信息以及家长信息
                 FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult();
-                Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
+                Preconditions.checkArgument(familyStudentVo != null, "学生卡号:" + userInfo.getCardNumber().get(0) + "，学校code:" + userInfo.getSchoolCode() + ",异常");
                 userInfo.setFamilyId(familyStudentVo.getFId());
                 userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
 

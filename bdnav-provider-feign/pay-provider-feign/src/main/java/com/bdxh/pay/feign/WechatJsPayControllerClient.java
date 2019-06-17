@@ -11,16 +11,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * @description: 微信JS支付feign客户端
- * @author: xuyuan
- * @create: 2019-01-14 11:20
- **/
+ * @Description: 微信JS支付feign客户端
+ * @Author: Kang
+ * @Date: 2019/6/17 10:26
+ */
 @Service
 @FeignClient(value = "pay-provider-cluster", fallback = WechatJsPayControllerFallback.class)
 public interface WechatJsPayControllerClient {
 
     /**
      * JS统一下单接口
+     *
      * @param wxPayJsOrderDto
      * @return
      * @throws Exception
@@ -31,6 +32,7 @@ public interface WechatJsPayControllerClient {
 
     /**
      * 微信授权接口
+     *
      * @param code
      * @return
      */
