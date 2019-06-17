@@ -104,7 +104,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             JSONObject msgData = new JSONObject();
             msgData.put("delFlag", 1);
             msgData.put("data", baseUser);
-            Message studentMsg = new Message(RocketMqConstrants.Topic.TestTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
+            Message studentMsg = new Message(RocketMqConstrants.Topic.userOrganizationTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
             transactionMQProducer.sendMessageInTransaction(studentMsg, null);
         } catch (Exception e) {
             log.info("推送学生信息失败，错误信息:" + e.getMessage());
@@ -248,7 +248,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 List<BaseUser> baseUserList = new ArrayList<>();
                 baseUserList.add(baseUser);
                 msgData.put("data", baseUserList);
-                Message studentMsg = new Message(RocketMqConstrants.Topic.TestTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
+                Message studentMsg = new Message(RocketMqConstrants.Topic.userOrganizationTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
                 transactionMQProducer.sendMessageInTransaction(studentMsg, null);
             } catch (Exception e) {
                 log.info("推送学生信息失败，错误信息:" + e.getMessage());
@@ -425,7 +425,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             JSONObject msgData=new JSONObject();
             msgData.put("delFlag", 0);
             msgData.put("data", baseUserList);
-            Message studentMsg = new Message(RocketMqConstrants.Topic.TestTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
+            Message studentMsg = new Message(RocketMqConstrants.Topic.userOrganizationTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
             transactionMQProducer.sendMessageInTransaction(studentMsg,null);
         }catch (Exception e) {
             log.info("推送学生信息失败，错误信息:" + e.getMessage());
