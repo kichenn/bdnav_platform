@@ -45,7 +45,6 @@ import java.util.stream.Collectors;
  * @Date: 2019/5/14 14:42
  */
 @RestController
-@RequestMapping
 @Api(value = "微校认证相关", tags = "微校认证交互API")
 @Slf4j
 public class SecurityController {
@@ -61,9 +60,6 @@ public class SecurityController {
 
     @Autowired
     private FamilyControllerClient familyControllerClient;
-
-    @Autowired
-    private StudentControllerClient studentControllerClient;
 
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
@@ -253,8 +249,8 @@ public class SecurityController {
     }
 
     @ApiOperation(value = "微校-手机获取短信验证码")
-    @RequestMapping(value = "/authenticationWeixiao/getPhoneCode",method = RequestMethod.POST)
-    public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
+    @RequestMapping(value = "/authenticationWeixiao/getPhoneCode",method = RequestMethod.GET)
+    public Object getPhoneCode(@RequestParam(name="phone") String phone){
         return familyStudentControllerClient.getPhoneCode(phone);
     }
 }
