@@ -28,14 +28,14 @@ public interface AccountControllerClient {
      */
     @RequestMapping(value = "/account/addAccount", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper addAccount(@Valid @RequestBody AddAccountDto addAccountDto);
+    Wrapper addAccount(@Validated @RequestBody AddAccountDto addAccountDto);
 
     /**
      * 修改账户信息
      */
     @RequestMapping(value = "/account/updateAccount", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto);
+    Wrapper updateAccount(@Validated @RequestBody UpdateAccountDto updateAccountDto);
 
     /**
      * 修改账户登录名
@@ -54,7 +54,7 @@ public interface AccountControllerClient {
      */
     @RequestMapping(value = "/account/modifyPwd", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifyPwd(@RequestBody @Validated ModifyAccountPwdDto modifyAccountPwdDto);
+    Wrapper modifyPwd(@Validated @RequestBody ModifyAccountPwdDto modifyAccountPwdDto);
 
     /**
      * 忘记密码(根据手机号，验证码找回密码)
@@ -64,7 +64,7 @@ public interface AccountControllerClient {
      */
     @RequestMapping(value = "/account/forgetPwd", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper forgetPwd(@RequestBody @Validated ForgetPwd forgetPwd);
+    Wrapper forgetPwd(@Validated @RequestBody ForgetPwd forgetPwd);
 
     /**
      * 查询账户信息
@@ -79,14 +79,14 @@ public interface AccountControllerClient {
      */
     @RequestMapping(value = "/account/queryAccountList", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<List<Account>> queryAccountList(@Valid @RequestBody AccountQueryDto accountQueryDto);
+    Wrapper<List<Account>> queryAccountList(@Validated @RequestBody AccountQueryDto accountQueryDto);
 
     /**
      * 分页查询账户信息列表
      */
     @RequestMapping(value = "/account/queryAccountListPage", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<Account>> queryCategoryListPage(@Valid @RequestBody AccountQueryDto accountQueryDto);
+    Wrapper<PageInfo<Account>> queryCategoryListPage(@Validated @RequestBody AccountQueryDto accountQueryDto);
 
 
     /**
@@ -103,6 +103,7 @@ public interface AccountControllerClient {
 
     /**
      * 获取验证码
+     *
      * @param phone
      * @return
      */
