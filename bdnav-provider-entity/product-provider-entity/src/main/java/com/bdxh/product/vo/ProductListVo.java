@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -38,6 +39,12 @@ public class ProductListVo {
 
     @ApiModelProperty(value = "商品类型 1 单品 2 套餐")
     private Byte productType;
+
+    @ApiModelProperty(value = "商品上下架状态 1 下架 2 上架")
+    private Byte sellStatus;
+
+    @ApiModelProperty(value = "创建时间")
+    private Date createDate;
 
     @ApiModelProperty(value = "图片信息")
     private List<String> imgUrl;

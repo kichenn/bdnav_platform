@@ -6,6 +6,8 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.sun.xml.internal.ws.developer.Serialization;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+
+import javax.persistence.Column;
 import java.util.Date;
 import java.util.List;
 
@@ -24,6 +26,14 @@ public class FeedbackVo {
     @ApiModelProperty("主键")
     @JsonSerialize(using= ToStringSerializer.class)
     private Long id;
+
+
+    /**
+     * 用户主键
+     */
+    @ApiModelProperty("用户主键")
+    private Long userId;
+
 
 
     /**
