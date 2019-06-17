@@ -1,5 +1,8 @@
 package com.bdxh.weixiao.controller.appburied;
 
+import com.bdxh.account.entity.UserDevice;
+import com.bdxh.account.feign.AccountControllerClient;
+import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.entity.InstallApps;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
@@ -11,11 +14,11 @@ import com.bdxh.weixiao.vo.WeiXiaoInstallAppsVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +41,9 @@ public class AppStatusWebController {
     @Autowired
     private InstallAppsControllerClient installAppsControllerClient;
 
+
+    @Autowired
+    private UserDeviceControllerClient userDeviceControllerClient;
     /**
      * 收费服务
      * 家长应用管控----获取某个孩子的应用列表以及状态
@@ -83,8 +89,12 @@ public class AppStatusWebController {
         try {
             log.debug("---------------------------------家长锁定解锁应用WEB层");
             List<String> clientId = new ArrayList<>();
-            //先给测试默认的clientId
-            clientId.add("1b53a4daab144cec986d6ccf5a3fd745");
+            //获取clientId
+            UserDevice userDevice=userDeviceControllerClient.findUserDeviceByCodeOrCard(weiXiaoAppStatusUnlockOrLokingDto.getSchoolCode(),weiXiaoAppStatusUnlockOrLokingDto.getCardNumber()).getResult();
+            if(StringUtils.isEmpty(userDevice.getClientId())){
+                return WrapMapper.error("该子女暂未登录过手机账号");
+            }
+            clientId.add(userDevice.getClientId());
             weiXiaoAppStatusUnlockOrLokingDto.setClientId(clientId);
             return appStatusControllerClient.appStatusLockingAndUnlock(weiXiaoAppStatusUnlockOrLokingDto);
         } catch (Exception e) {

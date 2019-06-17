@@ -1,11 +1,15 @@
 package com.bdxh.weixiao.controller.appburied;
 
+import com.bdxh.account.entity.UserDevice;
+import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +32,8 @@ public class ApplyLogWebController {
     @Autowired
     private ApplyLogControllerClient applyLogControllerClient;
 
+    @Autowired
+    private UserDeviceControllerClient userDeviceControllerClient;
     /**
      * 家长查询自己孩子的App申请信息
      * @param schoolCode
@@ -50,7 +56,11 @@ public class ApplyLogWebController {
     public Object modifyVerifyApplyLog(@RequestBody ModifyApplyLogDto modifyApplyLogDto) {
         List<String> clientId = new ArrayList<>();
         //先给测试默认的clientId
-        clientId.add("1b53a4daab144cec986d6ccf5a3fd745");
+        UserDevice userDevice=userDeviceControllerClient.findUserDeviceByCodeOrCard(modifyApplyLogDto.getSchoolCode(),modifyApplyLogDto.getCardNumber()).getResult();
+        if(StringUtils.isEmpty(userDevice.getClientId())){
+            return WrapMapper.error("该子女暂未登录过手机账号");
+        }
+        clientId.add(userDevice.getClientId());
         modifyApplyLogDto.setClientId(clientId);
             return applyLogControllerClient.modifyVerifyApplyLog(modifyApplyLogDto);
     }
