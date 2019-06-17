@@ -137,7 +137,7 @@ public class SecurityController {
             if (userInfo.getIdentityType().equals("1")) {
                 //家长登录(设置卡号)
                 userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
-                //家长卡号查询 自己孩子相关信息以及家长信息
+                //家长卡号查询 家长信息
                 FamilyVo familyVo = familyControllerClient.queryFamilyInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
                 Preconditions.checkArgument(familyVo != null, "家长卡号:" + userInfo.getFamilyCardNumber() + "，学校code:" + userInfo.getSchoolCode() + ",异常");
                 userInfo.setFamilyId(Long.valueOf(familyVo.getId()));
