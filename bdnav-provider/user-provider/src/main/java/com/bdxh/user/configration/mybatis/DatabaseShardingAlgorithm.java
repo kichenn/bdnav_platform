@@ -20,7 +20,6 @@ public class DatabaseShardingAlgorithm implements PreciseShardingAlgorithm<Strin
 
     public static void main(String[] args) {
         int size = 4;
-
         int i = Math.abs(Objects.hashCode("20190617001")) % size;
         System.out.println(i);
     }

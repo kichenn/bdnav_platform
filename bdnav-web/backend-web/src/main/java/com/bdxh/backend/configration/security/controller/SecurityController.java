@@ -10,6 +10,7 @@ import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.entity.User;
+import com.google.common.base.Objects;
 import com.google.common.base.Preconditions;
 import io.jsonwebtoken.*;
 import io.swagger.annotations.Api;
@@ -128,4 +129,12 @@ public class SecurityController {
         }
         return WrapMapper.error();
     }
+
+    @GetMapping("/getMysqlTableCode")
+    @ApiOperation(value = "计算多库多表，实际落得库 size=表数或者库数量，value计算的值", response = String.class)
+    public Object getMysqlTableCode(@RequestParam(name = "size") Integer size, @RequestParam(name = "value") String value) {
+        int i = Math.abs(Objects.hashCode(value)) % size;
+        return WrapMapper.ok("落入的值:" + i);
+    }
+
 }
