@@ -177,6 +177,11 @@ public class FileOperationUtils {
             buckentNameFinal = buckentName;
         }
         String key = QcloudConstants.RESOURCES_PREFIX + fileName;
+        // 文件后缀
+        String extName = FilenameUtils.getExtension(fileName);
+        if (extName.equals("apk")) {
+            key = QcloudConstants.RESOURCES_PREFIX1 + fileName;
+        }
         try {
             cosClient.deleteObject(buckentNameFinal, key);
         } catch (CosServiceException e) {
