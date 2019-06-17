@@ -16,7 +16,7 @@ public class AddOrderItemDto {
 
     @ApiModelProperty("订单编号")
     @NotNull(message = "订单编号不能为空")
-    private Long OrderNo;
+    private Long orderNo;
 
 
     @ApiModelProperty("商品id")

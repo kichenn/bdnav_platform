@@ -5,8 +5,10 @@ import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.feign.OrdersControllerClient;
+import com.bdxh.order.vo.OrderVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +39,7 @@ public class OrderWebController {
      * @return
      */
     @RequestMapping(value = "/saveOrder",method = RequestMethod.POST)
-    @ApiModelProperty(value = "家长端-----确定购买的商品添加订单")
+    @ApiOperation(value = "家长端-----确定购买的商品添加订单",response = Boolean.class)
     public Object saveOrder(@RequestBody AddOrderDto addOrderDto) {
         return ordersControllerClient.createOrder(addOrderDto);
     }
@@ -48,15 +50,15 @@ public class OrderWebController {
      * @param orderQueryDto
      * @return
      */
-    @RequestMapping(value = "/findOrder",method = RequestMethod.GET)
-    @ApiModelProperty(value = "家长端-----查看订单")
+    @RequestMapping(value = "/findOrder",method = RequestMethod.POST)
+    @ApiOperation(value = "家长端-----查看订单",response = OrderVo.class)
     public Object findOrder(@RequestBody OrderQueryDto orderQueryDto) {
 
         return ordersControllerClient.queryUserOrder(orderQueryDto);
     }
 
-    @RequestMapping(value = "",method = RequestMethod.POST)
-    @ApiModelProperty(value = "家长端-----修改订单")
+    @RequestMapping(value = "/updateOrder",method = RequestMethod.POST)
+    @ApiOperation(value = "家长端-----修改订单",response = Boolean.class)
     public Object updateOrder(@RequestBody OrderUpdateDto orderUpdateDto){
         return ordersControllerClient.updateOrder(orderUpdateDto);
     }

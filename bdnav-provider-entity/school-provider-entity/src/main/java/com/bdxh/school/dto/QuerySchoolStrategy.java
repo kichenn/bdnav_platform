@@ -153,5 +153,17 @@ public class QuerySchoolStrategy extends Query {
     @ApiModelProperty("适用平台 1安卓  2苹果")
     private String platform;
 
+    /**
+     * 可用app
+     */
+    @ApiModelProperty("可用app")
+    private String usableApp;
+
+    /**
+     * 可用设备
+     */
+    @ApiModelProperty("可用设备")
+    private String usableDevice;
+
 
 }

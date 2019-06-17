@@ -195,7 +195,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             FamilyStudentVo familyStudentVo = familyStudentMapper.studentQueryInfo(
                     updateStudentDto.getSchoolCode(),
                     updateStudentDto.getCardNumber());
-            if (null != familyStudentVo && !("").equals(familyStudentVo)) {
+            if (null != familyStudentVo) {
                 if (!updateStudentDto.getName().equals(familyStudentVo.getSName())) {
                     //修改关系表数据
                     FamilyStudent familyStudent = new FamilyStudent();

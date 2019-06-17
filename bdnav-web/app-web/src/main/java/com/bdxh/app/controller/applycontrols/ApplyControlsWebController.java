@@ -8,9 +8,8 @@ import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
-import com.bdxh.appmarket.entity.AppVersion;
+import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.feign.AppControllerClient;
-import com.bdxh.appmarket.feign.AppVersionControllerClient;
 import com.bdxh.appmarket.feign.SystemAppControllerClient;
 import com.bdxh.appmarket.vo.appDownloadlinkVo;
 import com.bdxh.appmarket.vo.appVersionVo;
@@ -18,7 +17,10 @@ import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.feign.BlackUrlControllerClient;
+import com.bdxh.school.feign.SchoolStrategyControllerClient;
+import com.bdxh.school.vo.MobileStrategyVo;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.feign.StudentControllerClient;
@@ -31,6 +33,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -70,6 +73,10 @@ public class ApplyControlsWebController {
 
     @Autowired
     private SystemAppControllerClient systemAppControllerClient;
+
+    @Autowired
+    private SchoolStrategyControllerClient schoolStrategyControllerClient;
+
 
 
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
@@ -187,6 +194,38 @@ public class ApplyControlsWebController {
         Wrapper wrapper=appControllerClient.findTheApplicationList(schoolCode);
         return WrapMapper.ok(wrapper.getResult());
     }
+
+
+    /**
+     * @Description: 根据schoolcode查询学校策略模式
+     * @Date 2019-04-18 09:52:43
+     */
+    @RequestMapping(value="/findSchoolStrategyList",method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前学校策略",response = MobileStrategyVo.class)
+    public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode) {
+        List<MobileStrategyVo> schoolMsv=new ArrayList<>();
+        List<QuerySchoolStrategy> sList=schoolStrategyControllerClient.findSchoolStrategyList(schoolCode).getResult();
+        for (int i = 0; i < sList.size(); i++) {
+            MobileStrategyVo msv=new MobileStrategyVo();
+            msv.setPolicyName(sList.get(i).getPolicyName());
+            msv.setDayMark(sList.get(i).getDayMark());
+            msv.setEndDate(sList.get(i).getEndDate());
+            msv.setExclusionDays(sList.get(i).getExclusionDays());
+            msv.setPriority(sList.get(i).getPriority());
+            msv.setStartDate(sList.get(i).getStartDate());
+            msv.setTimeMark(sList.get(i).getTimeMark());
+            msv.setUsableDevice(sList.get(i).getUsableDevice());
+            List<App> apks=appControllerClient.getAppListByids(sList.get(i).getUsableApp()).getResult();
+            List<String> apkPackages=new ArrayList<>();
+            for (int j = 0; j < apks.size(); j++) {
+                apkPackages.add(apks.get(j).getAppPackage());
+            }
+            msv.setAppPackage(apkPackages);
+            schoolMsv.add(msv);
+        }
+        return WrapMapper.ok(schoolMsv);
+    }
+
 
 
 }

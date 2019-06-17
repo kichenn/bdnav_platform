@@ -60,4 +60,9 @@ public class SchoolStrategyControllerClientFallback implements SchoolStrategyCon
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper<List<QuerySchoolStrategy>> findSchoolStrategyList(String schoolCode) {
+        return WrapMapper.error();
+    }
+
 }

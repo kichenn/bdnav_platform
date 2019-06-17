@@ -117,7 +117,7 @@ public class FamilyStudentWebController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "家长家长子女关系----删除学生家长绑定关系")
+    @ApiOperation(value = "家长家长子女关系----删除学生家长绑定关系",response = FamilyStudentVo.class)
     @RequestMapping(value = "/removeFamilyOrStudent", method = RequestMethod.GET)
     public Object removeFamilyOrStudent(@RequestParam(name = "id") @NotNull(message = "id不能为空") String id) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
@@ -135,7 +135,7 @@ public class FamilyStudentWebController {
      *
      * @return
      */
-    @ApiOperation(value = "家长子女关系----家长查询孩子列表")
+    @ApiOperation(value = "家长子女关系----家长查询孩子列表",response = FamilyVo.class)
     @RequestMapping(value = "/familyFindStudentList", method = RequestMethod.POST)
     public Object familyFindStudentList() {
         UserInfo userInfo= SecurityUtils.getCurrentUser();
@@ -163,7 +163,7 @@ public class FamilyStudentWebController {
      *
      * @return
      */
-    @ApiOperation(value = "家长子女关系----查询家长与孩子关系详细")
+    @ApiOperation(value = "家长子女关系----查询家长与孩子关系详细",response = StudentVo.class)
     @RequestMapping(value = "/queryFamilyStudentDetails", method = RequestMethod.POST)
     public Object queryFamilyStudentDetails() {
         UserInfo userInfo= SecurityUtils.getCurrentUser();

@@ -2,6 +2,8 @@ package com.bdxh.backend.controller.school;
 
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.feign.UserDeviceControllerClient;
+import com.bdxh.appmarket.entity.App;
+import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.helper.getui.constant.GeTuiConstant;
 import com.bdxh.common.helper.getui.entity.AppTransmissionTemplate;
@@ -11,6 +13,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
+import com.bdxh.school.vo.MobileStrategyVo;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -38,6 +41,10 @@ public class SchoolStrategyWebController {
     @Autowired
     private UserDeviceControllerClient userDeviceControllerClient;
 
+    @Autowired
+    private AppControllerClient appControllerClient;
+
+
     @RequestMapping(value = "/addPolicyInCondition", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校模式策略", response = Boolean.class)
     public Object addPolicyInCondition(@Validated @RequestBody AddPolicyDto addPolicyDto) {
@@ -47,9 +54,13 @@ public class SchoolStrategyWebController {
             addPolicyDto.setOperator(user.getId());
             addPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.addPolicyInCondition(addPolicyDto);
-            System.out.println(wrapper.getResult());
             String aap=String.valueOf(wrapper.getResult());
             QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
+            List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
+            List<String> apkPackages=new ArrayList<>();
+            for (int i = 0; i < apks.size(); i++) {
+                apkPackages.add(apks.get(i).getAppPackage());
+            }
             if (ssl!=null){
                 List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
                 if (CollectionUtils.isNotEmpty(userDeviceList)){
@@ -65,8 +76,17 @@ public class SchoolStrategyWebController {
                     appPushRequest.setClientId(clientIds);
                     //穿透模版
                     AppTransmissionTemplate appTransmissionTemplate=new AppTransmissionTemplate();
-                    appTransmissionTemplate.setTransmissionType(2);
-                    appTransmissionTemplate.setTransmissionContent(ssl.toString());
+                    MobileStrategyVo msv=new MobileStrategyVo();
+                    msv.setPolicyName(ssl.getPolicyName());
+                    msv.setDayMark(ssl.getDayMark());
+                    msv.setEndDate(ssl.getEndDate());
+                    msv.setExclusionDays(ssl.getExclusionDays());
+                    msv.setPriority(ssl.getPriority());
+                    msv.setStartDate(ssl.getStartDate());
+                    msv.setTimeMark(ssl.getTimeMark());
+                    msv.setUsableDevice(ssl.getUsableDevice());
+                    msv.setAppPackage(apkPackages);
+                    appTransmissionTemplate.setTransmissionContent(msv.toString());
                     appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
                     //群发穿透模版
                     Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
@@ -93,6 +113,11 @@ public class SchoolStrategyWebController {
             modifyPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.updatePolicyInCondition(modifyPolicyDto);
                 QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
+            List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
+            List<String> apkPackages=new ArrayList<>();
+            for (int i = 0; i < apks.size(); i++) {
+                apkPackages.add(apks.get(i).getAppPackage());
+            }
                 List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
                if (CollectionUtils.isNotEmpty(userDeviceList)){
                     AppPushRequest appPushRequest= new AppPushRequest();
@@ -107,7 +132,16 @@ public class SchoolStrategyWebController {
                     appPushRequest.setClientId(clientIds);
                    //穿透模版
                    AppTransmissionTemplate appTransmissionTemplate=new AppTransmissionTemplate();
-                   appTransmissionTemplate.setTransmissionType(2);
+                   MobileStrategyVo msv=new MobileStrategyVo();
+                   msv.setPolicyName(ssl.getPolicyName());
+                   msv.setDayMark(ssl.getDayMark());
+                   msv.setEndDate(ssl.getEndDate());
+                   msv.setExclusionDays(ssl.getExclusionDays());
+                   msv.setPriority(ssl.getPriority());
+                   msv.setStartDate(ssl.getStartDate());
+                   msv.setTimeMark(ssl.getTimeMark());
+                   msv.setUsableDevice(ssl.getUsableDevice());
+                   msv.setAppPackage(apkPackages);
                    appTransmissionTemplate.setTransmissionContent(ssl.toString());
                    appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
                     //群发穿透模版
@@ -189,6 +223,5 @@ public class SchoolStrategyWebController {
        Wrapper wrapper = schoolStrategyControllerClient.getStrategyList(schoolStrategy);
         return WrapMapper.ok(wrapper.getResult());
     }
-
 
 }
