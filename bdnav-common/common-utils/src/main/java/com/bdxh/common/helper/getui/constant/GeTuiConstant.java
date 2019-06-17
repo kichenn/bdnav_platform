@@ -16,10 +16,22 @@ public class GeTuiConstant {
      * 个推相关请参
      */
     public interface GeTuiParams {
-        String appId = "RHcyuojO3l8unOKXhpvgk5";
+
+
+        String appId = "7vARA2BsxE8xt5iV0aTAa9";
+
+        String appKey = "RYd8R3YUcg82gm4JJVuyZA";
+
+        String MasterSecret = "D70ROS9CFI98zBvaxT8bf7";
+
+
+
+/*        String appId = "RHcyuojO3l8unOKXhpvgk5";
 
         String appKey = "hUnVoqBByZ6ptQutCjbD84";
 
-        String MasterSecret = "sFNspJai4W8aaxxB74WTVA";
+        String MasterSecret = "sFNspJai4W8aaxxB74WTVA";*/
+
+
     }
 }
