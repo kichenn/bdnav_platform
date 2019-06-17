@@ -4,6 +4,7 @@ import com.bdxh.appmarket.dto.ApplicationVersionDto;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.entity.AppImage;
 import com.bdxh.appmarket.entity.AppVersion;
+import com.bdxh.appmarket.vo.appListVo;
 import com.bdxh.common.support.IService;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
@@ -96,7 +97,7 @@ public interface AppService extends IService<App> {
     List<App> familyFindAppInfo(String schoolCode);
 
     //查询预置应用
-    List<App> thePresetList(Byte preset);
+    List<appListVo> thePresetList(Byte preset);
 
     //根据学校编号查询全部应用及对应版本编号
     List<ApplicationVersionDto> findTheApplicationList(String schoolCode);

@@ -8,6 +8,7 @@ import com.bdxh.appmarket.persistence.AppImageMapper;
 import com.bdxh.appmarket.persistence.AppMapper;
 import com.bdxh.appmarket.persistence.AppVersionMapper;
 import com.bdxh.appmarket.service.AppService;
+import com.bdxh.appmarket.vo.appListVo;
 import com.bdxh.common.support.BaseService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -144,7 +145,7 @@ public class AppServiceImpl extends BaseService<App> implements AppService {
     }
 
     @Override
-    public List<App> thePresetList(Byte preset) {
+    public List<appListVo> thePresetList(Byte preset) {
         return appMapper.thePresetList(preset);
     }
 
