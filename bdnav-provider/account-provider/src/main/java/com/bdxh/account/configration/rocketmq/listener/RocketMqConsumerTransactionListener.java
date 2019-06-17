@@ -53,7 +53,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 //是否删除 1删除 2新增、修改
                 String delFlag = json.get("delFlag").toString();
                 switch (topic) {
-                    case RocketMqConstrants.Topic.TestTopic:
+                    case RocketMqConstrants.Topic.userOrganizationTopic:
                         switch (delFlag) {
                             case "0":
                                 //新增修改操作
@@ -66,7 +66,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                     String accountHyPy= HypyUtil.cn2py(account.getUserName());
                                     account.setLoginName(accountHyPy+account.getUserPhone());
                                     account.setPassword(new BCryptPasswordEncoder().encode("123456"));
-                                    account.setUserId(jsonObject.getLong("id"));
+                                    account.setUserId(jsonObject.getLong("userId"));
                                     account.setId(snowflakeIdWorker.nextId());
                                     account.setUserType(Byte.valueOf("1"));
                                     account.setLoginNameUpdate(Byte.valueOf("1"));

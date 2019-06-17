@@ -111,7 +111,7 @@ public class FileOperationUtils {
         objectMetadata.setContentLength(multipartFile.getSize());
         objectMetadata.setCacheControl("no-cache");
         objectMetadata.setHeader("Pragma", "no-cache");
-        objectMetadata.setContentType(getcontentType(extName));
+        objectMetadata.setContentType(getcontentType("."+extName));
         objectMetadata.setContentDisposition("inline;filename=" + key);
         //图片存储到data里，apk存储到files里
         String finalKey = QcloudConstants.RESOURCES_PREFIX + key;

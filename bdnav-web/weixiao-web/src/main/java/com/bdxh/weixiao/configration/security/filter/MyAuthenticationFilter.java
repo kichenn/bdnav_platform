@@ -14,6 +14,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -85,8 +86,8 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                         if (authorityList != null && !authorityList.isEmpty()) {
                             authorityList.forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority)));
                         }
-                        //默认设置第一个孩子为cardnumber
-                        MyUserDetails myUserDetails = new MyUserDetails(userInfo.getCardNumber().get(0), userInfo);
+                        //默认设置第一个孩子为cardnumber(如果没有孩子 则为空)
+                        MyUserDetails myUserDetails = new MyUserDetails(CollectionUtils.isNotEmpty(userInfo.getCardNumber()) ? userInfo.getCardNumber().get(0) : "", userInfo);
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
                         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

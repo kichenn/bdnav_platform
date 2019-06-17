@@ -11,8 +11,12 @@ import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.servicepermit.feign.ServiceRolePermitControllerClient;
 import com.bdxh.servicepermit.vo.ServiceRolePermitInfoVo;
+import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
+import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.FamilyStudentVo;
+import com.bdxh.user.vo.FamilyVo;
+import com.bdxh.user.vo.StudentVo;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
@@ -30,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -40,7 +45,6 @@ import java.util.stream.Collectors;
  * @Date: 2019/5/14 14:42
  */
 @RestController
-@RequestMapping
 @Api(value = "微校认证相关", tags = "微校认证交互API")
 @Slf4j
 public class SecurityController {
@@ -54,6 +58,8 @@ public class SecurityController {
     @Autowired
     private ServiceRolePermitControllerClient serviceRolePermitControllerClient;
 
+    @Autowired
+    private FamilyControllerClient familyControllerClient;
 
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
@@ -128,13 +134,18 @@ public class SecurityController {
             if (userInfo.getIdentityType().equals("1")) {
                 //家长登录(设置卡号)
                 userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
-                //家长卡号查询 自己孩子相关信息以及家长信息
+                //家长卡号查询 家长信息
+                FamilyVo familyVo = familyControllerClient.queryFamilyInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
+                Preconditions.checkArgument(familyVo != null, "家长卡号:" + userInfo.getFamilyCardNumber() + "，学校code:" + userInfo.getSchoolCode() + ",异常");
+                userInfo.setFamilyId(Long.valueOf(familyVo.getId()));
+                //查询家长和孩子的关系
                 List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
-                Preconditions.checkArgument(CollectionUtils.isNotEmpty(familyStudentVo), "家长卡号，学校code异常");
-                userInfo.setFamilyId(familyStudentVo.get(0).getFId());
-                userInfo.setCardNumber(familyStudentVo.stream().map(e -> {
-                    return e.getSCardNumber();
-                }).collect(Collectors.toList()));
+                if (familyStudentVo != null) {
+                    //如果有孩子则绑定
+                    userInfo.setCardNumber(familyStudentVo.stream().map(e -> {
+                        return e.getSCardNumber();
+                    }).collect(Collectors.toList()));
+                }
 
                 //组装用户权限信息
                 List<String> authorities = new ArrayList<>();
@@ -174,9 +185,11 @@ public class SecurityController {
                 userInfo.setCardNumber(cardNumbers);
                 //学生卡号查询 学生相关信息以及家长信息
                 FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult();
-                Preconditions.checkArgument(familyStudentVo != null, "学生卡号，学校code异常");
-                userInfo.setFamilyId(familyStudentVo.getFId());
-                userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
+                if (familyStudentVo != null) {
+                    //绑定信息不为空，说明该孩子存在家长，赋值家长信息
+                    userInfo.setFamilyId(familyStudentVo.getFId());
+                    userInfo.setFamilyCardNumber(familyStudentVo.getFCardNumber());
+                }
 
                 //学生登录只设置自己的信息
                 UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
@@ -233,5 +246,11 @@ public class SecurityController {
             }
         }
         return WrapMapper.error();
+    }
+
+    @ApiOperation(value = "微校-手机获取短信验证码")
+    @RequestMapping(value = "/authenticationWeixiao/getPhoneCode",method = RequestMethod.GET)
+    public Object getPhoneCode(@RequestParam(name="phone") String phone){
+        return familyStudentControllerClient.getPhoneCode(phone);
     }
 }

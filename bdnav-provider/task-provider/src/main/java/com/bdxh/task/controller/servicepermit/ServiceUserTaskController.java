@@ -34,9 +34,9 @@ public class ServiceUserTaskController {
     private static final String WEIXIAO_TOKEN_PREFIX = "weixiao_token:";
 
     /**
-     * 定时任务：商品的服务剩余天数更新，到期后修改信息 （每天零点执行）@Scheduled(cron = "0 0 23 * * ?")
+     * 定时任务：商品的服务剩余天数更新，到期后修改信息 （每天零点执行）
      */
-    @Scheduled(cron = "0 0 0 * * ?")
+    @Scheduled(cron = "0 0 0 * * *")
     public void servicePermitTask() {
         log.info("----------log---更新商品服务剩余天数-----------");
         //查询所有未过期的账号信息

@@ -30,10 +30,10 @@ import java.util.SortedMap;
 import java.util.concurrent.TimeUnit;
 
 /**
- * @description: 微信支付回调控制器
- * @author: xuyuan
- * @create: 2019-01-15 19:12
- **/
+ * @Description: 微信支付回调控制器
+ * @Author: Kang
+ * @Date: 2019/6/17 9:44
+ */
 @Controller
 @RequestMapping("/wechatNotice")
 @Slf4j
