@@ -91,6 +91,7 @@ public class SecurityController {
     @ApiOperation(value = "获取token(微校授权完登录)", response = String.class)
     public void login(@RequestParam("schoolCode") String schoolCode, @RequestParam("wxcode") String wxcode, HttpServletResponse response) throws IOException {
         try {
+            //此处使用服务商appkey appsecret ，后续如有业务需求可使用学校自己的 appkey  appsecret
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("app_key", WeixiaoLoginConstant.appKey);
             jsonObject.put("app_secret", WeixiaoLoginConstant.appSecret);
