@@ -34,13 +34,13 @@ public class AccountWebController {
 
     @ApiOperation(value = "增加账户信息", response = Boolean.class)
     @RequestMapping(value = "/addAccount", method = RequestMethod.POST)
-    public Object addAccount(@Valid @RequestBody AddAccountDto addAccountDto) {
+    public Object addAccount(@Validated @RequestBody AddAccountDto addAccountDto) {
         return accountControllerClient.addAccount(addAccountDto);
     }
 
     @ApiOperation(value = "修改账户信息", response = Boolean.class)
     @RequestMapping(value = "/updateAccount", method = RequestMethod.POST)
-    public Object updateAccount(@Valid @RequestBody UpdateAccountDto updateAccountDto) {
+    public Object updateAccount(@Validated @RequestBody UpdateAccountDto updateAccountDto) {
         return accountControllerClient.updateAccount(updateAccountDto);
     }
 
@@ -61,13 +61,13 @@ public class AccountWebController {
 
     @ApiOperation(value = "查询账户信息列表", response = Account.class)
     @RequestMapping(value = "/queryAccountList", method = RequestMethod.POST)
-    public Object queryAccountList(@Valid @RequestBody AccountQueryDto accountQueryDto) {
+    public Object queryAccountList(@Validated @RequestBody AccountQueryDto accountQueryDto) {
         return accountControllerClient.queryAccountList(accountQueryDto);
     }
 
     @ApiOperation(value = "分页查询账户信息列表", response = Account.class)
     @RequestMapping(value = "/queryAccountListPage", method = RequestMethod.POST)
-    public Object queryCategoryListPage(@Valid @RequestBody AccountQueryDto accountQueryDto) {
+    public Object queryCategoryListPage(@Validated @RequestBody AccountQueryDto accountQueryDto) {
         return accountControllerClient.queryCategoryListPage(accountQueryDto);
     }
 }
