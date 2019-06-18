@@ -3,8 +3,10 @@ package com.bdxh.account.feign;
 import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.fallback.AccountControllerClientFallback;
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -110,4 +112,16 @@ public interface AccountControllerClient {
     @RequestMapping(value = "/account/getCaptcha", method = RequestMethod.GET)
     @ResponseBody
     Wrapper getCaptcha(@RequestParam("phone") String phone);
+
+    /**
+     * 修改手机号码
+     * @Author: WanMing
+     * @Date: 2019/6/18 12:10
+     */
+    @RequestMapping(value = "/account/modifyPhone", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper modifyPhone(@RequestParam("phone") @NotEmpty(message = "手机号不能为空") String phone
+            , @RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode
+            , @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber
+            , @RequestParam("code") @NotEmpty(message = "验证码不能为空") String code);
 }
