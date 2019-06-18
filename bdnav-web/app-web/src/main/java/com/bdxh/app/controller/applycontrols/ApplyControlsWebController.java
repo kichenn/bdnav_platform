@@ -21,7 +21,10 @@ import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.school.vo.MobileStrategyVo;
+import com.bdxh.system.dto.AddFeedbackDto;
+import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.ControlConfigControllerClient;
+import com.bdxh.system.feign.FeedbackControllerClient;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
@@ -76,6 +79,9 @@ public class ApplyControlsWebController {
 
     @Autowired
     private SchoolStrategyControllerClient schoolStrategyControllerClient;
+
+    @Autowired
+    private FeedbackControllerClient feedbackControllerClient;
 
 
 
@@ -224,6 +230,23 @@ public class ApplyControlsWebController {
             schoolMsv.add(msv);
         }
         return WrapMapper.ok(schoolMsv);
+    }
+
+
+    /**
+     * 添加用户反馈信息
+     * @author WanMing
+     * @param addFeedbackDto
+     * @return
+     */
+    @RequestMapping(value = "/addFeedback",method = RequestMethod.POST)
+    @ApiOperation(value = "添加用户反馈信息",response = Boolean.class)
+    public Object addFeedback(@Validated @RequestBody AddFeedbackDto addFeedbackDto){
+        //添加操作人的信息
+        Account account = SecurityUtils.getCurrentUser();
+        addFeedbackDto.setOperator(account.getId());
+        addFeedbackDto.setOperatorName(account.getUserName());
+        return feedbackControllerClient.addFeedback(addFeedbackDto);
     }
 
 

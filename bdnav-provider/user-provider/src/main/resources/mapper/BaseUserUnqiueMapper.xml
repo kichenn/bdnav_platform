@@ -44,7 +44,7 @@
 
     <!--新增用户时新增手机号码表-->
     <insert id="insertUserPhone">
-    INSERT INTO t_base_user_unqiue (id, phone) VALUES (#{id},#{phone});
+    INSERT INTO t_base_user_unqiue (id, phone,school_code) VALUES (#{id},#{phone},#{schoolCode});
     </insert>
 
     <select id="queryUserPhone" resultType="java.lang.Integer">

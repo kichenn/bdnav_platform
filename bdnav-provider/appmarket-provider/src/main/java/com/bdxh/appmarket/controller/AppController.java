@@ -10,6 +10,7 @@ import com.bdxh.appmarket.service.AppImageService;
 import com.bdxh.appmarket.service.AppService;
 import com.bdxh.appmarket.service.AppVersionService;
 import com.bdxh.appmarket.vo.appDownloadlinkVo;
+import com.bdxh.appmarket.vo.appListVo;
 import com.bdxh.common.helper.getui.constant.GeTuiConstant;
 import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
 import com.bdxh.common.helper.getui.request.AppPushRequest;
@@ -309,12 +310,13 @@ public class AppController {
     public Object thePresetList(@RequestParam("preset") Byte preset) {
         try {
             List<appDownloadlinkVo> applink=new ArrayList<>();
-            List<App> app = appService.thePresetList(preset);
+            List<appListVo> app = appService.thePresetList(preset);
             for (int i = 0; i < app.size(); i++) {
                 appDownloadlinkVo adl=new appDownloadlinkVo();
                 adl.setAppName(app.get(i).getAppName());
                 adl.setAppPackage(app.get(i).getAppPackage());
                 adl.setIconUrl(app.get(i).getIconUrl());
+                adl.setApkUrl(app.get(i).getApkUrl());
                 applink.add(adl);
             }
             return WrapMapper.ok(applink);

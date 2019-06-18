@@ -58,8 +58,12 @@ public class SchoolStrategyWebController {
             QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
             List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
             List<String> apkPackages=new ArrayList<>();
-            for (int i = 0; i < apks.size(); i++) {
-                apkPackages.add(apks.get(i).getAppPackage());
+            if(apks.size()!=0&&apks!=null){
+                for (int i = 0; i < apks.size(); i++) {
+                    apkPackages.add(apks.get(i).getAppPackage());
+                }
+            }else{
+                apkPackages.add(null);
             }
             if (ssl!=null){
                 List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
@@ -115,8 +119,12 @@ public class SchoolStrategyWebController {
                 QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
             List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
             List<String> apkPackages=new ArrayList<>();
-            for (int i = 0; i < apks.size(); i++) {
-                apkPackages.add(apks.get(i).getAppPackage());
+            if(apks.size()!=0&&apks!=null){
+                for (int i = 0; i < apks.size(); i++) {
+                    apkPackages.add(apks.get(i).getAppPackage());
+                }
+            }else{
+                apkPackages.add(null);
             }
                 List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
                if (CollectionUtils.isNotEmpty(userDeviceList)){

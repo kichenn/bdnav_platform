@@ -1,22 +1,23 @@
-package com.bdxh.appmarket.dto;
+package com.bdxh.appmarket.vo;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
 import java.util.Date;
 
 @Data
-public class ApplicationVersionDto {
-
-    @ApiModelProperty("应用id")
+public class appListVo {
+    /**
+     * 主键
+     */
+    @ApiModelProperty("主键")
     private Long id;
 
     /**
      * 学校id
      */
-  /*  @ApiModelProperty("学校id")
-    private Long schoolId;*/
+    @ApiModelProperty("学校id")
+    private Long schoolId;
 
     /**
      * 学校编码
@@ -27,14 +28,14 @@ public class ApplicationVersionDto {
     /**
      * 平台 1 andriod 2 ios
      */
-/*    @ApiModelProperty("平台 1 andriod 2 ios")
-    private Byte platform;*/
+    @ApiModelProperty("平台 1 andriod 2 ios")
+    private Byte platform;
 
     /**
      * 分类id
      */
-/*    @ApiModelProperty("分类id")
-    private Long categoryId;*/
+    @ApiModelProperty("分类id")
+    private Long categoryId;
 
     /**
      * 应用名称
@@ -51,21 +52,27 @@ public class ApplicationVersionDto {
     /**
      * 应用图标地址
      */
-    @ApiModelProperty("图片图标地址")
+    @ApiModelProperty("应用图标地址")
     private String iconUrl;
 
     /**
      * 应用图标名称
      */
-    @ApiModelProperty("图标名称")
+    @ApiModelProperty("应用图标名称")
     private String iconName;
+
+    /**
+     * 应用版本
+     */
+    @ApiModelProperty("应用版本")
+    private String appVersion;
 
     /**
      * 应用描述
      */
-  /*  @ApiModelProperty("应用描述")
+    @ApiModelProperty("应用描述")
     private String appDesc;
-*/
+
     /**
      *  状态 1 上架 2 下架
      */
@@ -75,8 +82,8 @@ public class ApplicationVersionDto {
     /**
      *  是否预置 1 是 2 否
      */
-/*    @ApiModelProperty("是否预置 1 是 2 否")
-    private Byte preset;*/
+    @ApiModelProperty("是否预置 1 是 2 否")
+    private Byte preset;
 
 
     /**
@@ -85,25 +92,35 @@ public class ApplicationVersionDto {
     @ApiModelProperty("创建时间")
     private Date createDate;
 
+    /**
+     * 修改时间
+     */
+    @ApiModelProperty("修改时间")
+    private Date updateDate;
 
     /**
-     * apk文件名称
+     * 操作人
      */
-    @ApiModelProperty("apk文件名称")
-    private String apkName;
+    @ApiModelProperty("操作人")
+    private Long operator;
+
+    /**
+     * 操作姓名
+     */
+    @ApiModelProperty("操作姓名")
+    private String operatorName;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty("备注")
+    private String remark;
 
     /**
      * apk文件下载地址
      */
     @ApiModelProperty("apk文件下载地址")
     private String apkUrl;
-
-    /**
-     * 文件服务器名称
-     */
-    @ApiModelProperty("文件服务器名称")
-    private String apkUrlName;
-
 
 
 }
