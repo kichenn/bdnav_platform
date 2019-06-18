@@ -2,6 +2,7 @@ package com.bdxh.school.contoller;
 
 import com.bdxh.common.helper.tree.utils.TreeLoopUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.ClassAdministratorsUpdateDto;
 import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
@@ -180,5 +181,17 @@ public class SchoolOrgController {
     @ApiOperation(value = "新增组织架构")
     public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto){
         return WrapMapper.ok(schoolOrgService.insertSchoolOrgInfo(schoolOrgAddDto));
+    }
+
+    /**
+     * 修改组织架构信息
+     *
+     * @param classAdministratorsUpdateDto
+     * @return
+     */
+    @RequestMapping(value = "/updateSchoolClassInfo", method = RequestMethod.POST)
+    @ApiOperation(value = "修改组织架构信息")
+    public Object updateSchoolClassInfo(@RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
+        return WrapMapper.ok(schoolOrgService.updateSchoolClassInfo(classAdministratorsUpdateDto));
     }
 }

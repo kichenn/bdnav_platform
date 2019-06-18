@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.ClassAdministratorsUpdateDto;
 import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
@@ -47,4 +48,7 @@ public interface SchoolOrgService extends IService<SchoolOrg> {
 
     //根据父ID查询学校组织架构信息
     List<SchoolOrg> findBySchoolOrgByParentId(Long parentId);
+
+    //修改管理员信息
+    Boolean updateSchoolClassInfo(ClassAdministratorsUpdateDto classAdministratorsUpdateDto);
 }
