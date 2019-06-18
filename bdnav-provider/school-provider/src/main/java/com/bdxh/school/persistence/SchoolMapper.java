@@ -4,6 +4,7 @@ import com.bdxh.school.dto.SchoolDto;
 import com.bdxh.school.dto.SchoolQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.vo.BaseEchartsVo;
+import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.common.Mapper;
@@ -27,4 +28,8 @@ public interface SchoolMapper extends Mapper<School> {
 
     //查询不同地区下的学校的数量
     List<BaseEchartsVo> querySchoolNumByArea();
+
+    //修改学校用户数量
+    Integer updateSchoolUserNum(@Param("userType")Integer userType,@Param("updateType")Integer updateType
+            ,@Param("updateNum")Integer updateNum,@Param("schoolId") Integer schoolId );
 }

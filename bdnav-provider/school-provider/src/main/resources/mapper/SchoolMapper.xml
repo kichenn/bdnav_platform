@@ -103,4 +103,24 @@
         FROM t_school GROUP BY SUBSTRING_INDEX(school_area,'/',1);
     </select>
 
+    <!--修改学校用户的数量-->
+    <update id="updateSchoolUserNum">
+        UPDATE t_school SET
+        <choose>
+          <when test="updateType == 1 and userType ==1">
+              student_nums=student_nums+#{updateNum}
+          </when>
+          <when test="updateType == 1 and userType == 2">
+                teacher_nums=teacher_nums+#{updateNum}
+          </when>
+            <when test="updateType == 2 and userType == 1">
+                student_nums=student_nums-#{updateNum}
+            </when>
+            <when test="updateType == 2 and userType == 2">
+                teacher_nums=teacher_nums-#{updateNum}
+            </when>
+        </choose>
+        WHERE id = #{schoolId}
+    </update>
+
 </mapper>

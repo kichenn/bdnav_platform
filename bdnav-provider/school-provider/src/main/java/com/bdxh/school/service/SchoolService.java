@@ -9,6 +9,7 @@ import com.bdxh.school.entity.School;
 import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolShowVo;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.io.OutputStream;
 import java.util.List;
@@ -64,4 +65,7 @@ public interface SchoolService extends IService<School> {
 
     //查询不同地区下学校的数量
     List<BaseEchartsVo> querySchoolNumByArea();
+
+    //修改学校用户数量
+    Boolean updateSchoolUserNum(Integer userType, Integer updateType, Integer updateNum, Integer schoolId);
 }

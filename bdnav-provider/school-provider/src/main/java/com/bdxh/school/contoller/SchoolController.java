@@ -14,8 +14,7 @@ import com.bdxh.school.enums.SchoolTypeEnum;
 import com.bdxh.school.service.SchoolService;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.bdxh.school.vo.SchoolShowVo;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -301,6 +300,23 @@ public class SchoolController {
     public Object querySchoolNumByArea() {
         return WrapMapper.ok(schoolService.querySchoolNumByArea());
 
+    }
+
+    /**
+     * 修改学校用户数量
+     * @param userType 用户类型 1.学生 2.老师
+     * @param updateType 修改类型 1.增加 2.减少
+     * @param updateNum 更新数量
+     * @param schoolId 学校的id
+     * @Author: WanMing
+     * @Date: 2019/6/17 18:58
+     */
+    @RequestMapping(value = "/updateSchoolUserNum", method = RequestMethod.GET)
+    @ApiOperation(value = "修改学校不同用户的数量",response = Boolean.class)
+    @ResponseBody
+    public Object updateSchoolUserNum( @RequestParam("userType")Integer userType,@RequestParam("updateType") Integer updateType
+            , @RequestParam("updateNum")Integer updateNum, @RequestParam("schoolId")Integer schoolId){
+        return WrapMapper.ok(schoolService.updateSchoolUserNum(userType,updateType,updateNum,schoolId));
     }
 
 

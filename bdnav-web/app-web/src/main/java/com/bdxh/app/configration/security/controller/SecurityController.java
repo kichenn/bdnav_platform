@@ -247,4 +247,10 @@ public class SecurityController {
     public Object getCaptcha(@RequestParam("phone") String phone) {
         return accountControllerClient.getCaptcha(phone);
     }
+
+    @GetMapping("/modifyPhone")
+    @ApiOperation(value = "修改手机号码", response = Boolean.class)
+    public Object modifyPhone(@RequestParam("phone") String phone) {
+        return accountControllerClient.getCaptcha(phone);
+    }
 }

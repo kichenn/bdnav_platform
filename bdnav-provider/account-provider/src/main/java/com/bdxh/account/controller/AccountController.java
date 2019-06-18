@@ -221,6 +221,17 @@ public class AccountController {
         return WrapMapper.ok(Boolean.TRUE);
     }
 
+    @ApiOperation(value = "修改手机号码", response = Boolean.class)
+    @RequestMapping(value = "/modifyPhone", method = RequestMethod.GET)
+    public Object modifyPhone(@RequestParam("newPhone") @NotEmpty(message = "学号不能为空") String newPhone
+            ,@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode
+            , @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber){
+        //手机号效验
+        return null;
+
+    }
+
+
 //    @ApiOperation(value = "导入账户数据", response = Boolean.class)
 //    @RequestMapping(value = "/importAcountInfo", method = RequestMethod.POST)
 //    public Object importAcountInfo(@RequestParam("accountFile") MultipartFile file) {
