@@ -7,6 +7,8 @@ import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import com.bdxh.weixiao.vo.WeiXiaoAppVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,14 +43,15 @@ public class AppWebController {
 
     /**
      *
-     * @param schoolCode 学校Code
      * @param cardNumber 学生学号
      * @return
      */
     @ApiOperation(value = "家长应用市场----家长查询学校应用列表",response = WeiXiaoAppVo.class)
     @RequestMapping(value = "/familyFindAppInfo", method = RequestMethod.POST)
-    public Object familyFindAppInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+    public Object familyFindAppInfo(@RequestParam("cardNumber") String cardNumber) {
         try {
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
+            String schoolCode=userInfo.getSchoolCode();
             //查出当前所在学校的应用和平台开放应用
             List<App> appList = appControllerClient.familyFindAppInfo(schoolCode).getResult();
             //根据学号查询出学生的应用安装记录 已安装 ：2，未安装 ：1

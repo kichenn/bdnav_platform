@@ -6,6 +6,8 @@ import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -36,14 +38,14 @@ public class ApplyLogWebController {
     private UserDeviceControllerClient userDeviceControllerClient;
     /**
      * 家长查询自己孩子的App申请信息
-     * @param schoolCode
      * @param cardNumber
      * @return
      */
     @RequestMapping(value="/familyFindApplyLogInfo",method = RequestMethod.GET)
     @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息",response = ApplyLog.class)
-    public Object familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber){
-    return applyLogControllerClient.familyFindApplyLogInfo(schoolCode,cardNumber);
+    public Object familyFindApplyLogInfo(@RequestParam("cardNumber")String cardNumber){
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+    return applyLogControllerClient.familyFindApplyLogInfo(userInfo.getSchoolCode(),cardNumber);
     }
 
     /**
@@ -54,6 +56,8 @@ public class ApplyLogWebController {
     @RequestMapping(value = "/modifyVerifyApplyLog", method = RequestMethod.POST)
     @ApiOperation(value = "审批畅玩----家长审批自己孩子的App申请信息")
     public Object modifyVerifyApplyLog(@RequestBody ModifyApplyLogDto modifyApplyLogDto) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        modifyApplyLogDto.setSchoolCode(userInfo.getSchoolCode());
         List<String> clientId = new ArrayList<>();
         //先给测试默认的clientId
         UserDevice userDevice=userDeviceControllerClient.findUserDeviceByCodeOrCard(modifyApplyLogDto.getSchoolCode(),modifyApplyLogDto.getCardNumber()).getResult();
@@ -67,6 +71,8 @@ public class ApplyLogWebController {
     @RequestMapping(value = "/modifyVerifyApplyLogRead", method = RequestMethod.POST)
     @ApiOperation(value = "审批畅玩----家长查看消息时修改消息状态")
     public Object modifyVerifyApplyLogRead(@RequestBody ModifyApplyLogDto modifyApplyLogDto) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        modifyApplyLogDto.setSchoolCode(userInfo.getSchoolCode());
         return applyLogControllerClient.modifyApplyLog(modifyApplyLogDto);
     }
 }

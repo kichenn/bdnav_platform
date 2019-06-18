@@ -54,8 +54,9 @@ public class SystemAppWebController {
 
     @ApiOperation("根据id删除应用")
     @RequestMapping(value = "/delSystemAppById",method = RequestMethod.GET)
-    public Object delSystemAppById(@RequestParam(name = "id") Long id){
+    public Object delSystemAppById(@RequestParam(name = "id") Long id,@RequestParam(name = "systemApkName") String systemApkName){
         try {
+            FileOperationUtils.deleteFile(systemApkName, QcloudConstants.APP_BUCKET_NAME);
             Wrapper wrapper = systemAppControllerClient.delSystemAppById(id);
             return wrapper;
         }catch (Exception e){
