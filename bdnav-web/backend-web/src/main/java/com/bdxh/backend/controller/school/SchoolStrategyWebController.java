@@ -21,6 +21,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -81,7 +82,7 @@ public class SchoolStrategyWebController {
                     msv.setStartDate(ssl.getStartDate());
                     msv.setTimeMark(ssl.getTimeMark());
                     msv.setUsableDevice(ssl.getUsableDevice());
-                    if (ssl.getUsableApp()!=null){
+                    if (StringUtils.isNotEmpty(ssl.getUsableApp())&&StringUtils.isNotBlank(ssl.getUsableApp())){
                         List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
                         List<String> apkPackages=new ArrayList<>();
                         for (int i = 0; i < apks.size(); i++) {
@@ -141,7 +142,7 @@ public class SchoolStrategyWebController {
                    msv.setStartDate(ssl.getStartDate());
                    msv.setTimeMark(ssl.getTimeMark());
                    msv.setUsableDevice(ssl.getUsableDevice());
-                   if (ssl.getUsableApp()!=null){
+                   if (StringUtils.isNotEmpty(ssl.getUsableApp())&&StringUtils.isNotBlank(ssl.getUsableApp())){
                        List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
                        List<String> apkPackages=new ArrayList<>();
                        for (int i = 0; i < apks.size(); i++) {
