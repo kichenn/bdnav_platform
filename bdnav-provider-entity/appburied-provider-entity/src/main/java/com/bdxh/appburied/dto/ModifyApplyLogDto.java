@@ -22,7 +22,7 @@ import java.util.List;
 @Data
 public class ModifyApplyLogDto {
 
-    @NotNull(message = "id不能为空")
+
     @ApiModelProperty("id")
     private Long id;
 
@@ -42,14 +42,14 @@ public class ModifyApplyLogDto {
     @ApiModelProperty("学校ID")
     private Long schoolId;
 
-    @NotEmpty(message = "学校编码不能为空")
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
     @ApiModelProperty("学校名称")
     private String schoolName;
 
-    @NotEmpty(message = "用户学号不能为空")
+
     @ApiModelProperty("用户学号")
     private String cardNumber;
 
@@ -114,5 +114,5 @@ public class ModifyApplyLogDto {
      * 是否读取：1：已读、2：未读
      */
     @ApiModelProperty("是否读取：1：已读、2：未读")
-    private Byte isRead ;
+    private Byte isRead;
 }

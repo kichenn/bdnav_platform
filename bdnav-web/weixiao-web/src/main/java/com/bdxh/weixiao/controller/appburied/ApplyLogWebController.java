@@ -73,6 +73,7 @@ public class ApplyLogWebController {
     public Object modifyVerifyApplyLogRead(@RequestBody ModifyApplyLogDto modifyApplyLogDto) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         modifyApplyLogDto.setSchoolCode(userInfo.getSchoolCode());
+        modifyApplyLogDto.setIsRead(Byte.valueOf("1"));
         return applyLogControllerClient.modifyApplyLog(modifyApplyLogDto);
     }
 }
