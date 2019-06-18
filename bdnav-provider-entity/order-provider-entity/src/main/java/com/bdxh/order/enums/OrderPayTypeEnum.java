@@ -1,21 +1,21 @@
 package com.bdxh.order.enums;
 
 /**
- * @description: 微信支付状态枚举类
- * @author: xuyuan
- * @create: 2019-01-04 11:02
- **/
+ * @Description: 微信支付状态枚举类
+ * @Author: Kang
+ * @Date: 2019/6/18 14:25
+ */
 public enum OrderPayTypeEnum {
 
-    WECHAT_PAY(new Byte("1"),"微信支付");
+    WECHAT_PAY(new Byte("1"), "微信支付");
 
     private Byte code;
 
     private String desc;
 
-    OrderPayTypeEnum(Byte code, String desc){
-        this.code=code;
-        this.desc=desc;
+    OrderPayTypeEnum(Byte code, String desc) {
+        this.code = code;
+        this.desc = desc;
     }
 
     public Byte getCode() {

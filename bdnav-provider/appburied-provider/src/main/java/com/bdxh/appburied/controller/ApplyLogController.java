@@ -112,4 +112,16 @@ public class ApplyLogController {
         }
     }
 
+
+    @RequestMapping(value = "/checkMymessages", method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前用户的申请消息")
+    public Object checkMymessages(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+        try {
+            return WrapMapper.ok(applyLogService.checkMymessages(schoolCode,cardNumber));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error();
+        }
+    }
+
 }

@@ -1,13 +1,13 @@
 package com.bdxh.order.enums;
 
 /**
- * @description: 微信支付状态枚举类
- * @author: xuyuan
- * @create: 2019-01-04 11:02
- **/
+ * @Description: 微信支付状态枚举类
+ * @Author: Kang
+ * @Date: 2019/6/18 14:25
+ */
 public enum OrderTradeTypeEnum {
 
-    WECHAT_JSAPI(new Byte("1"),"JSAPI","微信JSAPI支付");
+    WECHAT_JSAPI(new Byte("1"), "JSAPI", "微信JSAPI支付");
 
     private Byte code;
 
@@ -15,10 +15,10 @@ public enum OrderTradeTypeEnum {
 
     private String desc;
 
-    OrderTradeTypeEnum(Byte code, String value, String desc){
-        this.code=code;
-        this.value=value;
-        this.desc=desc;
+    OrderTradeTypeEnum(Byte code, String value, String desc) {
+        this.code = code;
+        this.value = value;
+        this.desc = desc;
     }
 
     public Byte getCode() {

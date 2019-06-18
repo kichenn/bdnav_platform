@@ -33,7 +33,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
 
@@ -141,7 +143,7 @@ public class WechatJsPayController {
      * @return
      */
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    @ApiOperation(value = "微信授权接口", response = String.class)
+    @ApiOperation(value = "根据微信code返回授权信息", response = String.class)
     public Object auth(@RequestParam("code") String code) {
         try {
             Preconditions.checkArgument(StringUtils.isNotEmpty(code), "code不能为空");
@@ -150,11 +152,33 @@ public class WechatJsPayController {
             String auth = restTemplate.getForObject(url, String.class);
             Preconditions.checkArgument(StringUtils.isNotEmpty(auth), "拉取授权信息异常");
             JSONObject jsonObject = JSON.parseObject(auth);
+            log.info("授权返回信息:" + jsonObject);
             Preconditions.checkNotNull(jsonObject, "拉取授权信息异常");
             String openid = jsonObject.getString("openid");
             Preconditions.checkArgument(StringUtils.isNotEmpty(openid), "拉取授权信息异常");
             return WrapMapper.ok(openid);
         } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+    /**
+     * @Description: redirectUri回调地址
+     * @Author: Kang
+     * @Date: 2019/6/17 19:12
+     */
+    @RequestMapping(value = "/getWechatUrl", method = RequestMethod.GET)
+    @ApiOperation(value = "返回微信支付授权地址信息", response = String.class)
+    public Object getWechatUrl(@RequestParam("redirectUri") String redirectUri) {
+        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=@appid@&redirect_uri=@redirect_uri@&response_type=code&scope=snsapi_base&state=123#wechat_redirect";
+        try {
+            url = url.replace("@appid@", WxAuthorizedConstants.Letter.appid)
+                    .replace("@redirect_uri@", URLEncoder.encode(redirectUri, "utf-8"));
+            log.info("微信支付授权信息地址:" + url);
+            return WrapMapper.ok(url);
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }

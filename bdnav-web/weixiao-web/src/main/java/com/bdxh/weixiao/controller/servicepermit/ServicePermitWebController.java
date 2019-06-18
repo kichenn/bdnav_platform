@@ -33,11 +33,6 @@ public class ServicePermitWebController {
     @Autowired
     private ServiceUserControllerClient serviceUserControllerClient;
 
-    @Autowired
-    private SchoolControllerClient schoolControllerClient;
-
-    @Autowired
-    private FamilyControllerClient familyControllerClient;
 
     @ApiOperation("微校用户服务许可---------鉴定是否有试用资格")
     @RequestMapping(value = "/findServicePermitByCondition", method = RequestMethod.GET)
@@ -51,18 +46,13 @@ public class ServicePermitWebController {
     public Object createOnTrialService(@Validated @RequestBody AddNoTrialServiceUserDto addNoTrialServiceUserDto) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         //学校id查询学校
-        SchoolInfoVo school = schoolControllerClient.findSchoolById(userInfo.getSchoolId()).getResult();
-        FamilyVo family = familyControllerClient.queryFamilyInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
-        if (school == null || family == null) {
-            return WrapMapper.error("数据异常请检查学校和家长信息");
-        }
         //家长id查询家长
-        addNoTrialServiceUserDto.setCardNumber(family.getCardNumber());
-        addNoTrialServiceUserDto.setFamilyId(Long.valueOf(family.getId()));
-        addNoTrialServiceUserDto.setFamilyName(family.getName());
-        addNoTrialServiceUserDto.setSchoolCode(school.getSchoolCode());
-        addNoTrialServiceUserDto.setSchoolId(school.getId());
-        addNoTrialServiceUserDto.setSchoolName(school.getSchoolName());
+        addNoTrialServiceUserDto.setCardNumber(userInfo.getFamilyCardNumber());
+        addNoTrialServiceUserDto.setFamilyId(userInfo.getFamilyId());
+        addNoTrialServiceUserDto.setFamilyName(userInfo.getFamilyName());
+        addNoTrialServiceUserDto.setSchoolCode(userInfo.getSchoolCode());
+        addNoTrialServiceUserDto.setSchoolId(userInfo.getSchoolId());
+        addNoTrialServiceUserDto.setSchoolName(userInfo.getSchoolName());
         return serviceUserControllerClient.createOnTrialService(addNoTrialServiceUserDto);
     }
 }

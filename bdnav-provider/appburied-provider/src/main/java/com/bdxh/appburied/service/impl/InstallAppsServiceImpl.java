@@ -80,10 +80,11 @@ public class InstallAppsServiceImpl extends BaseService<InstallApps> implements 
         List<Long> ids=new ArrayList();
         List<InstallApps> iAs=installAppsMapper.getAccountApplication(appInstallList.get(0).getSchoolCode(),appInstallList.get(0).getCardNumber(),appInstallList.get(0).getAccountId());
         for (int i = 0; i < iAs.size(); i++) {
-
             ids.add(iAs.get(i).getId());
         }
-        Boolean falg=installAppsMapper.batchDelInstallApps(ids)>0;
+        if (ids!=null&&ids.size()!=0){
+            Boolean falg=installAppsMapper.batchDelInstallApps(ids)>0;
+        }
         List<InstallApps> appslist= BeanMapUtils.mapList(appInstallList, InstallApps.class);
         for (int i = 0; i < appslist.size(); i++) {
             appslist.get(i).setId(snowflakeIdWorker.nextId());

@@ -5,10 +5,7 @@ import com.bdxh.pay.dto.WxPayJsOrderDto;
 import com.bdxh.pay.fallback.WechatJsPayControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @Description: 微信JS支付feign客户端
@@ -31,7 +28,7 @@ public interface WechatJsPayControllerClient {
     Wrapper wechatJsPayOrder(@RequestBody WxPayJsOrderDto wxPayJsOrderDto);
 
     /**
-     * 微信授权接口
+     * 根据微信code返回授权信息
      *
      * @param code
      * @return
@@ -40,4 +37,12 @@ public interface WechatJsPayControllerClient {
     @ResponseBody
     Wrapper auth(@RequestParam("code") String code);
 
+    /**
+     * @Description: 返回微信支付授权地址信息
+     * @Author: Kang
+     * @Date: 2019/6/18 9:42
+     */
+    @RequestMapping(value = "/wechatJsPay/getWechatUrl", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper getWechatUrl(@RequestParam("redirectUri") String redirectUri);
 }

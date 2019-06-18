@@ -231,4 +231,17 @@ public class SchoolServiceImpl extends BaseService<School> implements SchoolServ
     public List<BaseEchartsVo> querySchoolNumByArea() {
         return schoolMapper.querySchoolNumByArea();
     }
+
+    /**
+     * 修改学校用户数量
+     * @param userType 用户类型 1.学生 2.老师
+     * @param updateType 修改类型 1.增加 2.减少
+     * @param updateNum 更新数量
+     * @param schoolId 学校的id
+     * @return
+     */
+    @Override
+    public Boolean updateSchoolUserNum(Integer userType, Integer updateType, Integer updateNum, Integer schoolId) {
+        return schoolMapper.updateSchoolUserNum(userType,updateType,updateNum,schoolId)>0;
+    }
 }

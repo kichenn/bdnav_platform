@@ -78,4 +78,9 @@ public class SchoolControllerClientFallback implements SchoolControllerClient {
     public Wrapper<List<BaseEchartsVo>> querySchoolNumByArea() {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper updateSchoolUserNum(Integer userType, Integer updateType, Integer updateNum, Integer schoolId) {
+        return WrapMapper.error();
+    }
 }
