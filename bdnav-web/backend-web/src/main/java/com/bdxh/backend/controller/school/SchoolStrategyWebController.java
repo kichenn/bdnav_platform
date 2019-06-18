@@ -1,5 +1,6 @@
 package com.bdxh.backend.controller.school;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.appmarket.entity.App;
@@ -56,15 +57,6 @@ public class SchoolStrategyWebController {
             Wrapper wrapper = schoolStrategyControllerClient.addPolicyInCondition(addPolicyDto);
             String aap=String.valueOf(wrapper.getResult());
             QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
-            List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
-            List<String> apkPackages=new ArrayList<>();
-            if(apks.size()!=0&&apks!=null){
-                for (int i = 0; i < apks.size(); i++) {
-                    apkPackages.add(apks.get(i).getAppPackage());
-                }
-            }else{
-                apkPackages.add(null);
-            }
             if (ssl!=null){
                 List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
                 if (CollectionUtils.isNotEmpty(userDeviceList)){
@@ -89,8 +81,19 @@ public class SchoolStrategyWebController {
                     msv.setStartDate(ssl.getStartDate());
                     msv.setTimeMark(ssl.getTimeMark());
                     msv.setUsableDevice(ssl.getUsableDevice());
+                    List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
+                    List<String> apkPackages=new ArrayList<>();
+                    if(apks.size()!=0&&apks!=null){
+                        for (int i = 0; i < apks.size(); i++) {
+                            apkPackages.add(apks.get(i).getAppPackage());
+                        }
+                    }else{
+                        apkPackages.add(null);
+                    }
                     msv.setAppPackage(apkPackages);
-                    appTransmissionTemplate.setTransmissionContent(msv.toString());
+                    JSONObject obj=new JSONObject();
+                    obj.put("data",msv);
+                    appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
                     appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
                     //群发穿透模版
                     Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
@@ -117,15 +120,6 @@ public class SchoolStrategyWebController {
             modifyPolicyDto.setOperatorName(user.getUserName());
             Wrapper wrapper = schoolStrategyControllerClient.updatePolicyInCondition(modifyPolicyDto);
                 QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
-            List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
-            List<String> apkPackages=new ArrayList<>();
-            if(apks.size()!=0&&apks!=null){
-                for (int i = 0; i < apks.size(); i++) {
-                    apkPackages.add(apks.get(i).getAppPackage());
-                }
-            }else{
-                apkPackages.add(null);
-            }
                 List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
                if (CollectionUtils.isNotEmpty(userDeviceList)){
                     AppPushRequest appPushRequest= new AppPushRequest();
@@ -149,8 +143,19 @@ public class SchoolStrategyWebController {
                    msv.setStartDate(ssl.getStartDate());
                    msv.setTimeMark(ssl.getTimeMark());
                    msv.setUsableDevice(ssl.getUsableDevice());
+                   List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
+                   List<String> apkPackages=new ArrayList<>();
+                   if(apks.size()!=0&&apks!=null){
+                       for (int i = 0; i < apks.size(); i++) {
+                           apkPackages.add(apks.get(i).getAppPackage());
+                       }
+                   }else{
+                       apkPackages.add(null);
+                   }
                    msv.setAppPackage(apkPackages);
-                   appTransmissionTemplate.setTransmissionContent(ssl.toString());
+                   JSONObject obj=new JSONObject();
+                   obj.put("data",msv);
+                   appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
                    appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
                     //群发穿透模版
                     Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
