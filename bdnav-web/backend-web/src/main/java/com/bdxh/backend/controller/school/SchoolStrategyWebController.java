@@ -81,16 +81,14 @@ public class SchoolStrategyWebController {
                     msv.setStartDate(ssl.getStartDate());
                     msv.setTimeMark(ssl.getTimeMark());
                     msv.setUsableDevice(ssl.getUsableDevice());
-                    List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
-                    List<String> apkPackages=new ArrayList<>();
-                    if(apks.size()!=0&&apks!=null){
+                    if (ssl.getUsableApp()!=null){
+                        List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
+                        List<String> apkPackages=new ArrayList<>();
                         for (int i = 0; i < apks.size(); i++) {
                             apkPackages.add(apks.get(i).getAppPackage());
                         }
-                    }else{
-                        apkPackages.add(null);
+                        msv.setAppPackage(apkPackages);
                     }
-                    msv.setAppPackage(apkPackages);
                     JSONObject obj=new JSONObject();
                     obj.put("data",msv);
                     appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
@@ -143,16 +141,14 @@ public class SchoolStrategyWebController {
                    msv.setStartDate(ssl.getStartDate());
                    msv.setTimeMark(ssl.getTimeMark());
                    msv.setUsableDevice(ssl.getUsableDevice());
-                   List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
-                   List<String> apkPackages=new ArrayList<>();
-                   if(apks.size()!=0&&apks!=null){
+                   if (ssl.getUsableApp()!=null){
+                       List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
+                       List<String> apkPackages=new ArrayList<>();
                        for (int i = 0; i < apks.size(); i++) {
                            apkPackages.add(apks.get(i).getAppPackage());
                        }
-                   }else{
-                       apkPackages.add(null);
+                       msv.setAppPackage(apkPackages);
                    }
-                   msv.setAppPackage(apkPackages);
                    JSONObject obj=new JSONObject();
                    obj.put("data",msv);
                    appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
