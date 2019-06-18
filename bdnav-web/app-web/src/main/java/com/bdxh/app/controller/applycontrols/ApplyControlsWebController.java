@@ -8,6 +8,7 @@ import com.bdxh.appburied.dto.AddInstallAppsDto;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
+import com.bdxh.appburied.vo.informationVo;
 import com.bdxh.appmarket.entity.App;
 import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.appmarket.feign.SystemAppControllerClient;
@@ -22,7 +23,6 @@ import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.school.vo.MobileStrategyVo;
 import com.bdxh.system.dto.AddFeedbackDto;
-import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.system.feign.FeedbackControllerClient;
 import com.bdxh.user.dto.UpdateStudentDto;
@@ -31,6 +31,7 @@ import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -82,6 +83,7 @@ public class ApplyControlsWebController {
 
     @Autowired
     private FeedbackControllerClient feedbackControllerClient;
+
 
 
 
@@ -221,17 +223,18 @@ public class ApplyControlsWebController {
             msv.setStartDate(sList.get(i).getStartDate());
             msv.setTimeMark(sList.get(i).getTimeMark());
             msv.setUsableDevice(sList.get(i).getUsableDevice());
-            List<App> apks=appControllerClient.getAppListByids(sList.get(i).getUsableApp()).getResult();
-            List<String> apkPackages=new ArrayList<>();
-            for (int j = 0; j < apks.size(); j++) {
-                apkPackages.add(apks.get(j).getAppPackage());
+            if (StringUtils.isNotEmpty(sList.get(i).getUsableDevice())&&StringUtils.isNotBlank(sList.get(i).getUsableDevice())){
+                List<App> apks=appControllerClient.getAppListByids(sList.get(i).getUsableApp()).getResult();
+                List<String> apkPackages=new ArrayList<>();
+                for (int j = 0; j < apks.size(); j++) {
+                    apkPackages.add(apks.get(j).getAppPackage());
+                }
+                msv.setAppPackage(apkPackages);
             }
-            msv.setAppPackage(apkPackages);
             schoolMsv.add(msv);
         }
         return WrapMapper.ok(schoolMsv);
     }
-
 
     /**
      * 添加用户反馈信息
@@ -249,6 +252,15 @@ public class ApplyControlsWebController {
         return feedbackControllerClient.addFeedback(addFeedbackDto);
     }
 
+    /**
+     * 查询当前用户下的申请消息
+     * @return
+     */
+    @RequestMapping(value = "/addFeedback",method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前用户下的申请消息",response = informationVo.class)
+    public Object addFeedback(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber){
+        return applyLogControllerClient.checkMymessages(schoolCode,cardNumber);
+    }
 
 
 }

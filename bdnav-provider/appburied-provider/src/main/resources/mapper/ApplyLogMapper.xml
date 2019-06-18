@@ -95,4 +95,13 @@
         WHERE
            school_code =#{schoolCode} and card_number = #{cardNumber} and  id = #{id}
     </update>
+
+    <select id="checkMymessages" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_apply_log
+        WHERE
+        school_code =#{schoolCode} and card_number = #{cardNumber}
+    </select>
 </mapper>
