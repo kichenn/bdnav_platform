@@ -223,7 +223,7 @@ public class ApplyControlsWebController {
             msv.setStartDate(sList.get(i).getStartDate());
             msv.setTimeMark(sList.get(i).getTimeMark());
             msv.setUsableDevice(sList.get(i).getUsableDevice());
-            if (StringUtils.isNotEmpty(sList.get(i).getUsableDevice())&&StringUtils.isNotBlank(sList.get(i).getUsableDevice())){
+            if (StringUtils.isNotEmpty(sList.get(i).getUsableApp())&&StringUtils.isNotBlank(sList.get(i).getUsableApp())){
                 List<App> apks=appControllerClient.getAppListByids(sList.get(i).getUsableApp()).getResult();
                 List<String> apkPackages=new ArrayList<>();
                 for (int j = 0; j < apks.size(); j++) {
