@@ -7,10 +7,10 @@ import com.bdxh.pay.feign.WechatJsPayControllerClient;
 import org.springframework.stereotype.Component;
 
 /**
- * @description: 微信JS支付hystrix降级服务
- * @author: xuyuan
- * @create: 2019-01-14 17:00
- **/
+ * @Description: 微信JS支付hystrix降级服务
+ * @Author: Kang
+ * @Date: 2019/6/18 9:43
+ */
 @Component
 public class WechatJsPayControllerFallback implements WechatJsPayControllerClient {
 
@@ -21,6 +21,11 @@ public class WechatJsPayControllerFallback implements WechatJsPayControllerClien
 
     @Override
     public Wrapper auth(String code) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper getWechatUrl(String redirectUri) {
         return WrapMapper.error();
     }
 

@@ -1,5 +1,6 @@
 package com.bdxh.weixiao.controller.pay;
 
+import com.bdxh.common.base.constant.WxAuthorizedConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.pay.dto.WxPayJsOrderDto;
 import com.bdxh.pay.feign.WechatJsPayControllerClient;
@@ -9,6 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 
 @RestController
@@ -28,8 +32,19 @@ public class WecharJsPay {
     }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
-    @ApiOperation(value = "微信授权接口", response = String.class)
+    @ApiOperation(value = "根据微信code返回授权信息", response = String.class)
     public Object auth(@RequestParam("code") String code) {
         return WrapMapper.ok(wechatJsPayControllerClient.auth(code).getResult());
+    }
+
+    /**
+     * @Description: redirectUri回调地址
+     * @Author: Kang
+     * @Date: 2019/6/17 19:12
+     */
+    @RequestMapping(value = "/getWechatUrl", method = RequestMethod.GET)
+    @ApiOperation(value = "返回微信支付授权地址信息", response = String.class)
+    public Object getWechatUrl(@RequestParam("redirectUri") String redirectUri) {
+        return WrapMapper.ok(wechatJsPayControllerClient.getWechatUrl(redirectUri).getResult());
     }
 }
