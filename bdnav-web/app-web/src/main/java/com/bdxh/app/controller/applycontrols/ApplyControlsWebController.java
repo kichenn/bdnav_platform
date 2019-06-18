@@ -21,16 +21,19 @@ import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.school.vo.MobileStrategyVo;
+import com.bdxh.system.dto.AddFeedbackAttachDto;
 import com.bdxh.system.dto.AddFeedbackDto;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.system.feign.FeedbackControllerClient;
+import com.bdxh.system.vo.FeedbackAttachVo;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -246,6 +249,25 @@ public class ApplyControlsWebController {
         Account account = SecurityUtils.getCurrentUser();
         addFeedbackDto.setOperator(account.getId());
         addFeedbackDto.setOperatorName(account.getUserName());
+        //后台上传图片
+        List<AddFeedbackAttachDto> feedbackAttachVos = null;
+        try {
+        if(CollectionUtils.isNotEmpty(addFeedbackDto.getMultipartFiles())){
+            feedbackAttachVos = new ArrayList<>();
+            for (MultipartFile multipartFile : addFeedbackDto.getMultipartFiles()) {
+                AddFeedbackAttachDto addFeedbackAttachDto = new AddFeedbackAttachDto();
+                Map<String, String> result = FileOperationUtils.saveFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
+                addFeedbackAttachDto.setImg(result.get("url"));
+                addFeedbackAttachDto.setImg(result.get("name"));
+                feedbackAttachVos.add(addFeedbackAttachDto);
+            }
+        }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        addFeedbackDto.setImage(feedbackAttachVos);
+        //数据清理
+       // addFeedbackDto.setMultipartFiles(null);
         return feedbackControllerClient.addFeedback(addFeedbackDto);
     }
 

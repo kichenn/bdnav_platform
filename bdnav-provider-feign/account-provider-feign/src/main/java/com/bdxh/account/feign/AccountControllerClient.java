@@ -118,10 +118,7 @@ public interface AccountControllerClient {
      * @Author: WanMing
      * @Date: 2019/6/18 12:10
      */
-    @RequestMapping(value = "/account/modifyPhone", method = RequestMethod.GET)
+    @RequestMapping(value = "/account/modifyPhone", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper modifyPhone(@RequestParam("phone") @NotEmpty(message = "手机号不能为空") String phone
-            , @RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode
-            , @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber
-            , @RequestParam("code") @NotEmpty(message = "验证码不能为空") String code);
+    Wrapper modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto);
 }

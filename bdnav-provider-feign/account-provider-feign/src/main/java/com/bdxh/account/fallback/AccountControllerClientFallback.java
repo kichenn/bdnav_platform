@@ -72,7 +72,7 @@ public class AccountControllerClientFallback implements AccountControllerClient 
     }
 
     @Override
-    public Wrapper modifyPhone( String phone,String schoolCode, String cardNumber, String code) {
+    public Wrapper modifyPhone( ModifyAccountPhoneDto modifyAccountPhoneDto) {
         return WrapMapper.error();
     }
 }

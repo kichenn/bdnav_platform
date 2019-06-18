@@ -69,6 +69,11 @@
         </where>
     </update>
 
+    <!--修改手机号码-->
+    <update id="updateAccountPhone">
+        UPDATE  t_account SET user_phone =#{phone} WHERE school_code = #{schoolCode} AND card_number = #{cardNumber}
+    </update>
+
     <select id="getAccount" parameterType="java.util.Map" resultMap="BaseResultMap">
         select
         <include refid="BaseCloumns"/>

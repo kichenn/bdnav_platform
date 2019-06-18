@@ -249,12 +249,9 @@ public class SecurityController {
         return accountControllerClient.getCaptcha(phone);
     }
 
-    @GetMapping("/modifyPhone")
+    @PostMapping("/modifyPhone")
     @ApiOperation(value = "修改手机号码", response = Boolean.class)
-    public Object modifyPhone(@RequestParam("phone") @NotEmpty(message = "手机号不能为空") String phone
-            ,@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode
-            , @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber
-            , @RequestParam("code") @NotEmpty(message = "验证码不能为空") String code) {
-        return accountControllerClient.modifyPhone(phone, schoolCode, cardNumber, code);
+    public Object modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto) {
+        return accountControllerClient.modifyPhone(modifyAccountPhoneDto);
     }
 }

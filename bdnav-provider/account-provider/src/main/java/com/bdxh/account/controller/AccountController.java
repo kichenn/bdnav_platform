@@ -222,27 +222,24 @@ public class AccountController {
     }
 
     @ApiOperation(value = "修改手机号码", response = Boolean.class)
-    @RequestMapping(value = "/modifyPhone", method = RequestMethod.GET)
-    public Object modifyPhone(@RequestParam("phone") @NotEmpty(message = "手机号不能为空") String phone
-            ,@RequestParam("schoolCode") @NotEmpty(message = "学校编码不能为空") String schoolCode
-            , @RequestParam("cardNumber") @NotEmpty(message = "学号不能为空") String cardNumber
-            , @RequestParam("code") @NotEmpty(message = "验证码不能为空") String code){
-        //手机号校验
-        if(!ValidatorUtil.isMobile(phone)){
+    @RequestMapping(value = "/modifyPhone", method = RequestMethod.POST)
+    public Object modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto){
+        //校验手机号
+        if(!ValidatorUtil.isMobile(modifyAccountPhoneDto.getNewPhone())){
             return WrapMapper.error("请输入正确的手机号");
         }
         //校验验证码
-//        String aliCode = redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX+phone);
-//        if(!code.equals(aliCode)){
-//            return WrapMapper.error("验证码错误");
-//        }
+        String aliCode = redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX+modifyAccountPhoneDto.getOldPhone());
+        if(!modifyAccountPhoneDto.getCode().equals(aliCode)){
+            return WrapMapper.error("验证码错误");
+        }
         //查询新手机号是否已存在
-        Account account = accountService.findAccountByLoginNameOrPhone(phone, null);
+        Account account = accountService.findAccountByLoginNameOrPhone(modifyAccountPhoneDto.getNewPhone(), null);
         if(null!=account){
             return WrapMapper.error("此手机号已注册");
         }
-        return WrapMapper.ok(accountService.modifyPhone(phone,schoolCode,cardNumber));
-
+        return WrapMapper.ok(accountService.modifyPhone(modifyAccountPhoneDto.getNewPhone()
+                ,modifyAccountPhoneDto.getSchoolCode(),modifyAccountPhoneDto.getCardNumber()));
     }
 
 
