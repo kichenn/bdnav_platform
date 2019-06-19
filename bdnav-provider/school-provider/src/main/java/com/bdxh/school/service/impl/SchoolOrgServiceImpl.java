@@ -3,10 +3,7 @@ package com.bdxh.school.service.impl;
 
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
-import com.bdxh.school.dto.SchoolOrgAddDto;
-import com.bdxh.school.dto.SchoolOrgQueryDto;
-import com.bdxh.school.dto.SchoolOrgUpdateDto;
-import com.bdxh.school.dto.SchoolQueryDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.service.SchoolOrgService;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -127,4 +124,12 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
     public List<SchoolOrg> findBySchoolOrgByParentId(Long parentId) {
         return schoolOrgMapper.findBySchoolOrgByParentId(parentId);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean updateSchoolClassInfo(ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
+        SchoolOrg schoolOrg=BeanMapUtils.map(classAdministratorsUpdateDto,SchoolOrg.class);
+        return schoolOrgMapper.updateByPrimaryKeySelective(schoolOrg) > 0;
+    }
+
 }

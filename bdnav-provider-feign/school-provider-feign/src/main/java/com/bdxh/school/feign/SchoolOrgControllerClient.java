@@ -2,6 +2,7 @@ package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.ClassAdministratorsUpdateDto;
 import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
@@ -124,4 +125,13 @@ public interface SchoolOrgControllerClient {
     @RequestMapping(value = "/schoolOrg/insertSchoolOrgInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<Boolean> insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto);
+
+    /**
+     * 修改班级管理员信息
+     * @param classAdministratorsUpdateDto
+     * @return
+     */
+    @RequestMapping(value = "/schoolOrg/updateSchoolClassInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<Boolean> updateSchoolClassInfo(ClassAdministratorsUpdateDto classAdministratorsUpdateDto);
 }
