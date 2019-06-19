@@ -8,7 +8,8 @@ package com.bdxh.common.helper.ali.sms.enums;
 public enum SmsTempletEnum {
 
     TEMPLATE_VERIFICATION("SMS_6390432", "身份验证", "code,product"),
-    VERIFICATION_CODE("SMS_152461236", "博学派", "code");
+    VERIFICATION_CODE("SMS_152461236", "博学派", "code"),
+    TEMPLATE_CHANGE_PHONE("SMS_168311311", "更换手机号", "code");
 
     //阿里短信模版code
     private String templetCode;

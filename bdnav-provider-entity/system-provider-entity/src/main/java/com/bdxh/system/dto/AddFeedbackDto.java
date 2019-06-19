@@ -2,6 +2,7 @@ package com.bdxh.system.dto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
@@ -101,5 +102,11 @@ public class AddFeedbackDto {
      */
     @ApiModelProperty("可存放多个图片的url")
     private List<AddFeedbackAttachDto> image;
+
+//    /**
+//     * 多个图片文件集合
+//     */
+//    @ApiModelProperty("用户图片文件集合")
+//    private List<MultipartFile> multipartFiles;
 
 }

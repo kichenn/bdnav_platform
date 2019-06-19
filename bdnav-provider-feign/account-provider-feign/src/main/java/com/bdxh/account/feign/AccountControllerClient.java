@@ -3,8 +3,10 @@ package com.bdxh.account.feign;
 import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.fallback.AccountControllerClientFallback;
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -110,4 +112,13 @@ public interface AccountControllerClient {
     @RequestMapping(value = "/account/getCaptcha", method = RequestMethod.GET)
     @ResponseBody
     Wrapper getCaptcha(@RequestParam("phone") String phone);
+
+    /**
+     * 修改手机号码
+     * @Author: WanMing
+     * @Date: 2019/6/18 12:10
+     */
+    @RequestMapping(value = "/account/modifyPhone", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto);
 }
