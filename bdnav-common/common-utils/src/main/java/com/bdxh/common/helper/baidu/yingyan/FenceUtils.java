@@ -249,13 +249,16 @@ public class FenceUtils {
      * 测试创建围栏
      */
     public static void main(String[] args) {
-
- /*        String result=getLatestPoint("2011032919040314");
+        String result=deleteNewEntity("1011347968190617");
+        JSONObject jsonObject=JSONObject.parseObject(result);
+        System.out.println(jsonObject);
+/*         String result=getLatestPoint("2011032919040314");
         JSONObject jsonObject=JSONObject.parseObject(result);
         System.out.println(jsonObject);
         if(jsonObject.get("status").equals(0)){
             System.out.println(jsonObject.getString("latest_point"));
         }*/
+/*
 
 try {
     Map<String, Object> map = new HashMap<>();
@@ -274,6 +277,7 @@ try {
 catch (Exception e){
 
 }
+*/
 
 /*
        String monitoredPerson="2011032920190516001";
