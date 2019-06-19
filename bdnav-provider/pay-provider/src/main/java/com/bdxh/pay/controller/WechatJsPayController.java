@@ -121,7 +121,7 @@ public class WechatJsPayController {
                     }
                     log.info("返参:" + JSONObject.toJSONString(jsOrderResponse));
                     //返回下单结果
-                    return WrapMapper.ok(jsOrderResponse.getPrepay_id());
+                    return WrapMapper.ok(JSONObject.toJSONString(jsOrderResponse));
                 } else {
                     throw new ResultOrderException();
                 }

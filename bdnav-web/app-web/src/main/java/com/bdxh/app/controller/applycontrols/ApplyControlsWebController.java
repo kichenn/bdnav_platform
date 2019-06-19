@@ -26,15 +26,14 @@ import com.bdxh.system.dto.AddFeedbackAttachDto;
 import com.bdxh.system.dto.AddFeedbackDto;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.system.feign.FeedbackControllerClient;
-import com.bdxh.system.vo.FeedbackAttachVo;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -213,9 +212,9 @@ public class ApplyControlsWebController {
      */
     @RequestMapping(value="/findSchoolStrategyList",method = RequestMethod.GET)
     @ApiOperation(value = "查询当前学校策略",response = MobileStrategyVo.class)
-    public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode) {
+    public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") String groupId) {
         List<MobileStrategyVo> schoolMsv=new ArrayList<>();
-        List<QuerySchoolStrategy> sList=schoolStrategyControllerClient.findSchoolStrategyList(schoolCode).getResult();
+        List<QuerySchoolStrategy> sList=schoolStrategyControllerClient.findSchoolStrategyList(schoolCode,groupId).getResult();
         for (int i = 0; i < sList.size(); i++) {
             MobileStrategyVo msv=new MobileStrategyVo();
             msv.setPolicyName(sList.get(i).getPolicyName());
@@ -247,7 +246,7 @@ public class ApplyControlsWebController {
      */
     @RequestMapping(value = "/addFeedback",method = RequestMethod.POST)
     @ApiOperation(value = "添加用户反馈信息",response = Boolean.class)
-    public Object addFeedback(@Validated  AddFeedbackDto addFeedbackDto,@RequestParam(name ="multipartFiles" ,required = false) List<MultipartFile> multipartFiles){
+    public Object addFeedback(@Validated @RequestBody AddFeedbackDto addFeedbackDto,@RequestParam(name ="multipartFiles" ,required = false) List<MultipartFile> multipartFiles){
         //添加操作人的信息
         Account account = SecurityUtils.getCurrentUser();
         addFeedbackDto.setOperator(account.getId());
@@ -274,12 +273,13 @@ public class ApplyControlsWebController {
 
     /**
      * 查询当前用户下的申请消息
+     *
      * @return
      */
-    @RequestMapping(value = "/addFeedback",method = RequestMethod.GET)
-    @ApiOperation(value = "查询当前用户下的申请消息",response = informationVo.class)
-    public Object addFeedback(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber){
-        return applyLogControllerClient.checkMymessages(schoolCode,cardNumber);
+    @RequestMapping(value = "/addFeedback", method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前用户下的申请消息", response = informationVo.class)
+    public Object addFeedback(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+        return applyLogControllerClient.checkMymessages(schoolCode, cardNumber);
     }
 
 

@@ -1,10 +1,16 @@
 package com.bdxh.weixiao.controller.pay;
 
-import com.bdxh.common.base.constant.WxAuthorizedConstants;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
+import com.bdxh.common.utils.BeanToMapUtil;
+import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.common.wechatpay.js.domain.JsOrderPayResponse;
+import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.AddOrderItemDto;
 import com.bdxh.order.dto.AddPayOrderDto;
@@ -16,11 +22,7 @@ import com.bdxh.pay.feign.WechatJsPayControllerClient;
 import com.bdxh.product.enums.ProductTypeEnum;
 import com.bdxh.product.feign.ProductControllerClient;
 import com.bdxh.product.vo.ProductDetailsVo;
-import com.bdxh.school.feign.SchoolControllerClient;
-import com.bdxh.school.vo.SchoolInfoVo;
-import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
-import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
@@ -28,16 +30,14 @@ import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Date;
+import java.util.SortedMap;
 
 
 @RestController
@@ -160,9 +160,31 @@ public class WecharJsPay {
         wxPayJsOrderDto.setIp(request.getRemoteAddr());
         //openid
         wxPayJsOrderDto.setOpenid(addPayOrderDto.getOpenId());
-        //返回预订单id
-        String prepayId = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto).getResult().toString();
-        return WrapMapper.ok(prepayId);
+
+        Wrapper jsOrderWrapper = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto);
+
+        //返回预下单信息
+        JSONObject jsonObject = JSONObject.parseObject(jsOrderWrapper.getResult().toString());
+
+        //封装前端 微信 H5吊起支付对象
+        JsOrderPayResponse jsOrderPayResponse = new JsOrderPayResponse();
+        jsOrderPayResponse.setAppId(jsonObject.getString("appid"));
+        jsOrderPayResponse.setTimeStamp(System.currentTimeMillis() / 1000L + "");
+        jsOrderPayResponse.setNonceStr(jsonObject.getString("nonce_str"));
+        jsOrderPayResponse.setPackages("prepay_id=" + jsonObject.getString("prepay_id"));
+        SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(jsOrderPayResponse);
+        if (paramMap.containsKey("packages")) {
+            paramMap.put("package", paramMap.get("packages"));
+            paramMap.remove("packages");
+        }
+        if (paramMap.containsKey("paySign")) {
+            paramMap.remove("paySign");
+        }
+        String paramStr = BeanToMapUtil.mapToString(paramMap);
+        String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.JS.APP_KEY);
+        jsOrderPayResponse.setPaySign(sign);
+        //返回预订单信息
+        return WrapMapper.ok(jsOrderPayResponse);
     }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
@@ -179,6 +201,7 @@ public class WecharJsPay {
     @RequestMapping(value = "/getWechatUrl", method = RequestMethod.GET)
     @ApiOperation(value = "返回微信支付授权地址信息", response = String.class)
     public Object getWechatUrl(@RequestParam("redirectUri") String redirectUri) {
+
         return WrapMapper.ok(wechatJsPayControllerClient.getWechatUrl(redirectUri).getResult());
     }
 }

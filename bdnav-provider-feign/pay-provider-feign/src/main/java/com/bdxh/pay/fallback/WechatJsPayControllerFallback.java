@@ -2,6 +2,7 @@ package com.bdxh.pay.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.pay.dto.WxPayJsOrderDto;
 import com.bdxh.pay.feign.WechatJsPayControllerClient;
 import org.springframework.stereotype.Component;

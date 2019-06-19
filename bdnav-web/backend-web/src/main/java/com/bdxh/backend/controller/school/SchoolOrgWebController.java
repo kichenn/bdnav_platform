@@ -185,13 +185,12 @@ public class SchoolOrgWebController {
     }
 
     /**
-     * 修改组织架构信息
-     *
+     * 修改班级管理员信息
      * @param classAdministratorsUpdateDto
      * @return
      */
     @RequestMapping(value = "/updateSchoolClassInfo", method = RequestMethod.POST)
-    @ApiOperation(value = "修改管理员信息")
+    @ApiOperation(value = "修改班级管理员信息")
     public Object updateSchoolClassInfo(@Validated @RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
         User user = SecurityUtils.getCurrentUser();
         classAdministratorsUpdateDto.setOperator(user.getId());

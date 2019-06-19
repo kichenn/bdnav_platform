@@ -28,10 +28,6 @@ public class AddPayOrderDto {
     @NotBlank(message = "用户姓名不能为空")
     private String userName;
 
-    @ApiModelProperty("用户类型 1 学生 2 老师 3 家长")
-    @NotNull(message = "用户类型不能为空")
-    private BaseUserTypeEnum userType;
-
     @ApiModelProperty("商品描述")
     private String body;
 

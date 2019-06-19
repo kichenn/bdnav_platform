@@ -139,6 +139,6 @@
         FROM
         t_school_strategy
         INNER JOIN  t_school_mode ON t_school_strategy.model_id = t_school_mode.id
-     WHERE t_school_strategy.school_code=#{schoolCode}
+     WHERE t_school_strategy.school_code=#{schoolCode} AND t_school_strategy.group_id=#{groupId}
     </select>
 </mapper>

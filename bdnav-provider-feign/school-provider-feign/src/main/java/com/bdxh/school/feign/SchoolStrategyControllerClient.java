@@ -87,7 +87,7 @@ public interface SchoolStrategyControllerClient {
      */
     @RequestMapping(value = "/schoolStrategy/findSchoolStrategyList", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<QuerySchoolStrategy>> findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode);
+    Wrapper<List<QuerySchoolStrategy>> findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") String groupId);
 
 
 }

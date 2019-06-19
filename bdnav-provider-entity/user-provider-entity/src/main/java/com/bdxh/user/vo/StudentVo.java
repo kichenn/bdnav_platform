@@ -25,6 +25,9 @@ public class StudentVo implements Serializable {
     private String sName;
 
     @ApiModelProperty("学生学号")
+    private String sCardNumber;
+
+    @ApiModelProperty("家长卡号")
     private String cardNumber;
 
     @ApiModelProperty("性别")

@@ -1,25 +1,39 @@
 package com.bdxh.client.controller.school;
 
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.account.entity.UserDevice;
+import com.bdxh.account.feign.UserDeviceControllerClient;
+import com.bdxh.appmarket.entity.App;
+import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
+import com.bdxh.common.helper.getui.constant.GeTuiConstant;
+import com.bdxh.common.helper.getui.entity.AppTransmissionTemplate;
+import com.bdxh.common.helper.getui.request.AppPushRequest;
+import com.bdxh.common.helper.getui.utils.GeTuiUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddPolicyDto;
 import com.bdxh.school.dto.ModifyPolicyDto;
 import com.bdxh.school.dto.QuerySchoolStrategy;
-import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
+import com.bdxh.school.vo.MobileStrategyVo;
 import com.bdxh.school.vo.SchoolInfoVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 控制器
@@ -38,6 +52,12 @@ public class SchoolStrategyWebController {
     @Autowired
     private SchoolControllerClient schoolControllerClient;
 
+    @Autowired
+    private UserDeviceControllerClient userDeviceControllerClient;
+
+    @Autowired
+    private AppControllerClient appControllerClient;
+
     @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/addPolicyInCondition", method = RequestMethod.POST)
     @ApiOperation(value = "增加学校模式", response = Boolean.class)
@@ -52,6 +72,49 @@ public class SchoolStrategyWebController {
             SchoolInfoVo school=schoolControllerClient.findSchoolById(user.getSchoolId()).getResult();
             addPolicyDto.setSchoolName(school.getSchoolName());
             Wrapper wrapper = schoolStrategyControllerClient.addPolicyInCondition(addPolicyDto);
+            String aap=String.valueOf(wrapper.getResult());
+            QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
+            if (ssl!=null){
+                List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+                if (CollectionUtils.isNotEmpty(userDeviceList)){
+                    AppPushRequest appPushRequest= new AppPushRequest();
+                    appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+                    appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+                    appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+                    List<String> clientIds = new ArrayList<>();
+                    //添加用户设备号
+                    for(UserDevice attribute : userDeviceList) {
+                        clientIds.add(attribute.getClientId());
+                    }
+                    appPushRequest.setClientId(clientIds);
+                    //穿透模版
+                    AppTransmissionTemplate appTransmissionTemplate=new AppTransmissionTemplate();
+                    MobileStrategyVo msv=new MobileStrategyVo();
+                    msv.setPolicyName(ssl.getPolicyName());
+                    msv.setDayMark(ssl.getDayMark());
+                    msv.setEndDate(ssl.getEndDate());
+                    msv.setExclusionDays(ssl.getExclusionDays());
+                    msv.setPriority(ssl.getPriority());
+                    msv.setStartDate(ssl.getStartDate());
+                    msv.setTimeMark(ssl.getTimeMark());
+                    msv.setUsableDevice(ssl.getUsableDevice());
+                    if (StringUtils.isNotEmpty(ssl.getUsableApp())&&StringUtils.isNotBlank(ssl.getUsableApp())){
+                        List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
+                        List<String> apkPackages=new ArrayList<>();
+                        for (int i = 0; i < apks.size(); i++) {
+                            apkPackages.add(apks.get(i).getAppPackage());
+                        }
+                        msv.setAppPackage(apkPackages);
+                    }
+                    JSONObject obj=new JSONObject();
+                    obj.put("data",msv);
+                    appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
+                    appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
+                    //群发穿透模版
+                    Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
+                    System.out.println(resultMap.toString());
+                }
+            }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -73,6 +136,46 @@ public class SchoolStrategyWebController {
             modifyPolicyDto.setSchoolCode(user.getSchoolCode());
             modifyPolicyDto.setSchoolId(user.getSchoolId());
             Wrapper wrapper = schoolStrategyControllerClient.updatePolicyInCondition(modifyPolicyDto);
+            QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
+            List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+            if (CollectionUtils.isNotEmpty(userDeviceList)){
+                AppPushRequest appPushRequest= new AppPushRequest();
+                appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+                appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+                appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+                List<String> clientIds = new ArrayList<>();
+                //添加用户设备号
+                for(UserDevice attribute : userDeviceList) {
+                    clientIds.add(attribute.getClientId());
+                }
+                appPushRequest.setClientId(clientIds);
+                //穿透模版
+                AppTransmissionTemplate appTransmissionTemplate=new AppTransmissionTemplate();
+                MobileStrategyVo msv=new MobileStrategyVo();
+                msv.setPolicyName(ssl.getPolicyName());
+                msv.setDayMark(ssl.getDayMark());
+                msv.setEndDate(ssl.getEndDate());
+                msv.setExclusionDays(ssl.getExclusionDays());
+                msv.setPriority(ssl.getPriority());
+                msv.setStartDate(ssl.getStartDate());
+                msv.setTimeMark(ssl.getTimeMark());
+                msv.setUsableDevice(ssl.getUsableDevice());
+                if (StringUtils.isNotEmpty(ssl.getUsableApp())&&StringUtils.isNotBlank(ssl.getUsableApp())){
+                    List<App> apks=appControllerClient.getAppListByids(ssl.getUsableApp()).getResult();
+                    List<String> apkPackages=new ArrayList<>();
+                    for (int i = 0; i < apks.size(); i++) {
+                        apkPackages.add(apks.get(i).getAppPackage());
+                    }
+                    msv.setAppPackage(apkPackages);
+                }
+                JSONObject obj=new JSONObject();
+                obj.put("data",msv);
+                appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
+                appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
+                //群发穿透模版
+                Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
+                System.out.println(resultMap.toString());
+            }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();

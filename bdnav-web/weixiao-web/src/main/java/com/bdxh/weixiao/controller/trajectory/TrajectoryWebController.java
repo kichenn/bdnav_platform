@@ -1,5 +1,7 @@
 package com.bdxh.weixiao.controller.trajectory;
 
+import com.bdxh.account.entity.Account;
+import com.bdxh.account.feign.AccountControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.feign.TrajectoryControllerClient;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
@@ -31,6 +33,8 @@ public class TrajectoryWebController {
     @Autowired
     private TrajectoryControllerClient trajectoryControllerClient;
 
+    @Autowired
+    private AccountControllerClient accountControllerClient;
     /**
      * 家长端鹰眼轨迹------查询单个孩子的轨迹信息
      *
@@ -46,7 +50,8 @@ public class TrajectoryWebController {
                                      @RequestParam("cardNumber") @NotNull(message = "学生卡号不能为空") String cardNumber) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-            return trajectoryControllerClient.findTrajectoryInfo(startTime, endTime, userInfo.getSchoolCode(), cardNumber);
+            Account account=accountControllerClient.queryAccount(userInfo.getSchoolCode() , cardNumber).getResult();
+            return trajectoryControllerClient.findTrajectoryInfo(startTime, endTime,String.valueOf(account.getId()));
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error();
@@ -65,7 +70,8 @@ public class TrajectoryWebController {
     public Object findLatestPoint(@RequestParam("cardNumber") @NotNull(message = "学生卡号不能为空") String cardNumber) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-            return trajectoryControllerClient.findLatestPoint(userInfo.getSchoolCode(), cardNumber);
+            Account account=accountControllerClient.queryAccount(userInfo.getSchoolCode() , cardNumber).getResult();
+            return trajectoryControllerClient.findLatestPoint(String.valueOf(account.getId()));
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error();

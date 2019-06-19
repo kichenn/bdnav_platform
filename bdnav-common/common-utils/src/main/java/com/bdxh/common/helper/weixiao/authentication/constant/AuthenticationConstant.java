@@ -36,4 +36,12 @@ public class AuthenticationConstant {
 
     //用户激活时的用户认证接口
     public static final String RECEIVE_STU_INFO="https://uni.weixiao.qq.com/identity/receive-stu-info";
+
+    //通过学校的发卡公众号向指定的用户（可批量）发送模板消息通知
+    //请求方式POST
+    public static final String NOTICE_SEND_URL="https://uni.weixiao.qq.com/open/notice/send";
+
+    //在发送通知前，获取该学校的公众号（一般为发卡公众号）是否具有模板消息通知能力。
+    //请求方式POST
+    public static final String NOTICE_ABILITY_URL="https://uni.weixiao.qq.com/open/notice/ability";
 }
