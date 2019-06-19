@@ -1,5 +1,6 @@
 package com.bdxh.user.dto;
 
+import com.bdxh.user.vo.FenceParamVo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -14,7 +15,7 @@ import java.util.Date;
  * @create: 2019-04-11 09:58
  **/
 @Data
-public class AddFamilyFenceDto implements Serializable {
+public class AddFamilyFenceDto extends FenceParamVo implements Serializable {
     private static final long serialVersionUID = 4976770253585672636L;
     /**
      * 主键

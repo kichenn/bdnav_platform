@@ -1,5 +1,7 @@
 package com.bdxh.weixiao.controller.user;
 
+import com.bdxh.account.entity.Account;
+import com.bdxh.account.feign.AccountControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
@@ -35,6 +37,8 @@ public class FamilyFenceWebController {
     @Autowired
     private FamilyFenceControllerClient familyFenceControllerClient;
 
+    @Autowired
+    private AccountControllerClient accountControllerClient;
     /**
      * 收费服务
      * 修改围栏表信息
@@ -132,10 +136,12 @@ public class FamilyFenceWebController {
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
+           Account account= accountControllerClient.queryAccount(userInfo.getSchoolCode(),addFamilyFenceDto.getStudentNumber()).getResult();
             addFamilyFenceDto.setSchoolCode(userInfo.getSchoolCode());
             addFamilyFenceDto.setSchoolId(userInfo.getSchoolId());
             addFamilyFenceDto.setFamilyId(userInfo.getFamilyId());
             addFamilyFenceDto.setCardNumber(userInfo.getFamilyCardNumber());
+            addFamilyFenceDto.setAccoountId(String.valueOf(account.getId()));
             Wrapper wrapper = familyFenceControllerClient.addFamilyFenceInfo(addFamilyFenceDto);
             return wrapper;
         } catch (Exception e) {
