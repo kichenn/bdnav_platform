@@ -20,11 +20,11 @@ public class JsOrderPayResponse {
     @ApiModelProperty("随机字符串")
     private String nonceStr;
 
-    @ApiModelProperty("wx预订单")
-    private String prepayId;
+    @ApiModelProperty("订单详情扩展字符串")
+    private String packages;
 
     @ApiModelProperty("签名方式")
-    private String signType="MD5";
+    private String signType = "MD5";
 
     @ApiModelProperty("签名")
     private String paySign;

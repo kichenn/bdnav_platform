@@ -171,8 +171,12 @@ public class WecharJsPay {
         jsOrderPayResponse.setAppId(jsonObject.getString("appid"));
         jsOrderPayResponse.setTimeStamp(System.currentTimeMillis() / 1000L + "");
         jsOrderPayResponse.setNonceStr(jsonObject.getString("nonce_str"));
-        jsOrderPayResponse.setPrepayId(jsonObject.getString("prepay_id"));
+        jsOrderPayResponse.setPackages("prepay_id=" + jsonObject.getString("prepay_id"));
         SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(jsOrderPayResponse);
+        if (paramMap.containsKey("packages")) {
+            paramMap.put("package", paramMap.get("packages"));
+            paramMap.remove("packages");
+        }
         if (paramMap.containsKey("paySign")) {
             paramMap.remove("paySign");
         }
