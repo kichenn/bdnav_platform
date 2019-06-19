@@ -3,6 +3,7 @@ package com.bdxh.backend.controller.school;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.ClassAdministratorsUpdateDto;
 import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
@@ -183,5 +184,20 @@ public class SchoolOrgWebController {
         return schoolOrgControllerClient.insertSchoolOrgInfo(schoolOrgAddDto);
     }
 
+    /**
+     * 修改组织架构信息
+     *
+     * @param classAdministratorsUpdateDto
+     * @return
+     */
+    @RequestMapping(value = "/updateSchoolClassInfo", method = RequestMethod.POST)
+    @ApiOperation(value = "修改管理员信息")
+    public Object updateSchoolClassInfo(@Validated @RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
+        User user = SecurityUtils.getCurrentUser();
+        classAdministratorsUpdateDto.setOperator(user.getId());
+        classAdministratorsUpdateDto.setOperatorName(user.getUserName());
+        classAdministratorsUpdateDto.setUpdateDate(new Date());
+        return schoolOrgControllerClient.updateSchoolClassInfo(classAdministratorsUpdateDto);
+    }
 
 }

@@ -27,7 +27,7 @@ public class AddFeedbackDto {
     /**
      * 学校编码
      */
-    @ApiModelProperty("学校编码")
+    @ApiModelProperty("*学校编码")
     private String schoolCode;
 
     /**
@@ -45,7 +45,7 @@ public class AddFeedbackDto {
     /**
      * 学号
      */
-    @ApiModelProperty("学号")
+    @ApiModelProperty("*学号")
     private String cardNumber;
 
     /**
@@ -57,19 +57,19 @@ public class AddFeedbackDto {
     /**
      * 邮件
      */
-    @ApiModelProperty("邮件")
+    @ApiModelProperty("*邮件")
     private String email;
 
     /**
      * 联系电话
      */
-    @ApiModelProperty("联系电话")
+    @ApiModelProperty("*联系电话")
     private String phone;
 
     /**
      * 反馈内容
      */
-    @ApiModelProperty("反馈内容")
+    @ApiModelProperty("*反馈内容")
     @NotBlank(message = "反馈的内容不能为空")
     private String content;
 

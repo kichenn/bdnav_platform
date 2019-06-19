@@ -128,6 +128,7 @@ public class SecurityController {
             userInfo.setPhone(jsonObject.getString("telephone"));
             userInfo.setIdentityType(jsonObject.getString("identity_type"));
             userInfo.setSchoolId(school.getId());
+            userInfo.setSchoolName(school.getSchoolName());
             //设置角色和权限信息
             Map<String, Object> claims = new HashMap<>(16);
 
@@ -139,6 +140,7 @@ public class SecurityController {
                 FamilyVo familyVo = familyControllerClient.queryFamilyInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
                 Preconditions.checkArgument(familyVo != null, "家长卡号:" + userInfo.getFamilyCardNumber() + "，学校code:" + userInfo.getSchoolCode() + ",异常");
                 userInfo.setFamilyId(Long.valueOf(familyVo.getId()));
+                userInfo.setFamilyName(familyVo.getName());
                 //查询家长和孩子的关系
                 List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
                 if (familyStudentVo != null) {
@@ -250,8 +252,8 @@ public class SecurityController {
     }
 
     @ApiOperation(value = "微校-手机获取短信验证码")
-    @RequestMapping(value = "/authenticationWeixiao/getPhoneCode",method = RequestMethod.GET)
-    public Object getPhoneCode(@RequestParam(name="phone") String phone){
+    @RequestMapping(value = "/authenticationWeixiao/getPhoneCode", method = RequestMethod.GET)
+    public Object getPhoneCode(@RequestParam(name = "phone") String phone) {
         return familyStudentControllerClient.getPhoneCode(phone);
     }
 }

@@ -3,7 +3,7 @@ package com.bdxh.appburied.persistence;
 import java.util.List;
 
 import com.bdxh.appburied.entity.ApplyLog;
-import com.github.pagehelper.PageInfo;
+import com.bdxh.appburied.vo.informationVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -28,4 +28,7 @@ public interface ApplyLogMapper extends Mapper<ApplyLog> {
     List<ApplyLog> findApplyLogInConationPaging(@Param("applyLog") ApplyLog applyLog);
 
     int modifyVerifyApplyLog(ApplyLog applyLog);
+
+    //查询当前用户的申请消息
+    List<informationVo> checkMymessages(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
 }

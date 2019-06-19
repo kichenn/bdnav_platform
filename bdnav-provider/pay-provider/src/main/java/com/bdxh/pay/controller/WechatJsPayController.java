@@ -152,6 +152,7 @@ public class WechatJsPayController {
             String auth = restTemplate.getForObject(url, String.class);
             Preconditions.checkArgument(StringUtils.isNotEmpty(auth), "拉取授权信息异常");
             JSONObject jsonObject = JSON.parseObject(auth);
+            log.info("授权返回信息:" + jsonObject);
             Preconditions.checkNotNull(jsonObject, "拉取授权信息异常");
             String openid = jsonObject.getString("openid");
             Preconditions.checkArgument(StringUtils.isNotEmpty(openid), "拉取授权信息异常");

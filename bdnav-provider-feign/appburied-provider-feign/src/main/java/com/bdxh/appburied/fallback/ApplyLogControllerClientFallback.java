@@ -4,9 +4,9 @@ import com.bdxh.appburied.dto.AddApplyLogDto;
 import com.bdxh.appburied.dto.ApplyLogQueryDto;
 import com.bdxh.appburied.dto.DelOrFindAppBuriedDto;
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
-import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
+import com.bdxh.appburied.vo.informationVo;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
@@ -54,6 +54,11 @@ public class ApplyLogControllerClientFallback implements ApplyLogControllerClien
 
     @Override
     public Wrapper modifyVerifyApplyLog(ModifyApplyLogDto modifyApplyLogDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<informationVo>> checkMymessages(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
 }

@@ -43,11 +43,16 @@ public class UserInfo implements Serializable {
     //学校id
     private Long schoolId;
 
+    private String schoolName;
+
     //家长id
     private Long familyId;
 
     //家长号
     private String familyCardNumber;
+
+    //家长姓名
+    private String familyName;
 
     //权限集合(key:roleName ---Value:studentcardNumber 学生卡号)
     private Map<String, List<String>> weixiaoGrantedAuthorities;

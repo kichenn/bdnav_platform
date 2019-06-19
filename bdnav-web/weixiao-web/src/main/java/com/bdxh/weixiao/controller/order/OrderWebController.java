@@ -32,17 +32,17 @@ public class OrderWebController {
     @Autowired
     private OrdersControllerClient ordersControllerClient;
 
-    /**
-     * 确定购买的商品添加订单
-     *
-     * @param addOrderDto
-     * @return
-     */
-    @RequestMapping(value = "/saveOrder",method = RequestMethod.POST)
-    @ApiOperation(value = "家长端-----确定购买的商品添加订单",response = Boolean.class)
-    public Object saveOrder(@RequestBody AddOrderDto addOrderDto) {
-        return ordersControllerClient.createOrder(addOrderDto);
-    }
+//    /**
+//     * 确定购买的商品添加订单
+//     *
+//     * @param addOrderDto
+//     * @return
+//     */
+//    @RequestMapping(value = "/saveOrder",method = RequestMethod.POST)
+//    @ApiOperation(value = "家长端-----确定购买的商品添加订单",response = Boolean.class)
+//    public Object saveOrder(@RequestBody AddOrderDto addOrderDto) {
+//        return ordersControllerClient.createOrder(addOrderDto);
+//    }
 
     /**
      * 家长端-----查看订单

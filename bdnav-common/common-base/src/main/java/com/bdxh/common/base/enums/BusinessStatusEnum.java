@@ -1,22 +1,22 @@
 package com.bdxh.common.base.enums;
 
 /**
- * @description: 微信支付状态枚举类
- * @author: xuyuan
- * @create: 2019-01-04 11:02
- **/
+ * @Description: 微信支付状态枚举类
+ * @Author: Kang
+ * @Date: 2019/6/18 14:21
+ */
 public enum BusinessStatusEnum {
 
-    NO_PROCESS(new Byte("1"),"未处理"),
-    HASE_PROCESS(new Byte("3"),"已处理");
+    NO_PROCESS(new Byte("1"), "未处理"),
+    HASE_PROCESS(new Byte("２"), "已处理");
 
     private Byte code;
 
     private String desc;
 
-    BusinessStatusEnum(Byte code, String desc){
-        this.code=code;
-        this.desc=desc;
+    BusinessStatusEnum(Byte code, String desc) {
+        this.code = code;
+        this.desc = desc;
     }
 
     public Byte getCode() {

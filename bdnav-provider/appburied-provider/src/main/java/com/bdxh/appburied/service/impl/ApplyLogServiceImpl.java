@@ -5,6 +5,7 @@ import com.bdxh.appburied.configration.utils.GeTuiUtils;
 import com.bdxh.appburied.dto.ApplyLogQueryDto;
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.service.ApplyLogService;
+import com.bdxh.appburied.vo.informationVo;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -92,5 +93,10 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
                 Preconditions.checkArgument(pushResult, "推送至安卓端失败");
             }
         }
+    }
+
+    @Override
+    public List<informationVo> checkMymessages(String schoolCode, String cardNumber) {
+        return applyLogMapper.checkMymessages(schoolCode,cardNumber);
     }
 }
