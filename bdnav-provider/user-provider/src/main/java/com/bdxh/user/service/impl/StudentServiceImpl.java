@@ -298,6 +298,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             if (null != fNumber && !("").equals(fNumber)) {
                 FamilyVo familyVo = familyMapper.selectByCodeAndCard(schoolCode, fNumber);
                 studentVo.setFName(familyVo.getName());
+                studentVo.setSCardNumber(studentVo.getCardNumber());
                 studentVo.setCardNumber(fNumber);
                 studentVo.setFPhone(familyVo.getPhone());
             }

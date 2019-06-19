@@ -14,6 +14,11 @@ public class ClassAdministratorsUpdateDto {
     private Long id;
 
     /**
+     * 创建时间
+     */
+    @ApiModelProperty(value = "创建时间")
+    private Date creatDate;
+    /**
      * 类型 1 学院 2 系 3 专业 4 年级 5 班级,6 行政,7 党团 8 教学 9 后勤 10其他
      */
     @ApiModelProperty(value = "类型 1 学院 2 系 3 专业 4 年级 5 班级,6 行政,7 党团 8 教学 9 后勤 10其他")
@@ -54,4 +59,10 @@ public class ClassAdministratorsUpdateDto {
      */
     @ApiModelProperty(value = "操作人")
     private String operatorName;
+
+    /**
+     * 备注
+     */
+    @ApiModelProperty(value = "备注")
+    private String remark;
 }
