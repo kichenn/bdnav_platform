@@ -46,6 +46,6 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 	Boolean addSchoolStrategy(SchoolStrategy schoolStrategy);
 
 	//根据schoolcode查询当前学校的策略 模式
-	List<QuerySchoolStrategy> findSchoolStrategyList(String schoolCode);
+	List<QuerySchoolStrategy> findSchoolStrategyList(String schoolCode,String groupId);
 
 }

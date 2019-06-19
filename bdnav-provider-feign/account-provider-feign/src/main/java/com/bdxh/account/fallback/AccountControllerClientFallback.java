@@ -9,6 +9,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
 
@@ -67,6 +68,11 @@ public class AccountControllerClientFallback implements AccountControllerClient 
 
     @Override
     public Wrapper getCaptcha(String phone) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper modifyPhone( ModifyAccountPhoneDto modifyAccountPhoneDto) {
         return WrapMapper.error();
     }
 }

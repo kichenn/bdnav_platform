@@ -71,4 +71,6 @@ public class BaseUserWebController {
     public Object getPhoneCode(@RequestParam(name="phone")@NotNull(message = "手机号码不能为空") String phone){
         return baseUserControllerClient.getPhoneCode(phone);
     }
+
+
 }

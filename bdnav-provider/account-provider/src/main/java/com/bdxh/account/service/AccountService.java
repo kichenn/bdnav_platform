@@ -84,4 +84,13 @@ public interface AccountService extends IService<Account> {
      * @return
      */
     Boolean updateOrInsertAccount(Account account);
+
+    /**
+     * 修改手机号
+     * @param phone
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    Boolean modifyPhone(String phone, String schoolCode, String cardNumber);
 }

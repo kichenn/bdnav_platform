@@ -11,8 +11,12 @@ import com.bdxh.app.configration.redis.RedisUtil;
 import com.bdxh.app.configration.security.properties.SecurityConstant;
 import com.bdxh.app.configration.security.userdetail.MyUserDetails;
 import com.bdxh.app.configration.security.utils.SecurityUtils;
+import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
+import com.bdxh.common.helper.ali.sms.enums.SmsTempletEnum;
+import com.bdxh.common.helper.ali.sms.utils.SmsUtil;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.DateUtil;
+import com.bdxh.common.utils.RandomUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.entity.Student;
@@ -38,6 +42,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.constraints.NotEmpty;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
@@ -248,9 +253,20 @@ public class SecurityController {
         return accountControllerClient.getCaptcha(phone);
     }
 
-    @GetMapping("/modifyPhone")
+    @GetMapping("/authenticationApp/getCodeByOldPhoneNum")
+    @ApiOperation(value = "根据原手机号获取验证码", response = Boolean.class)
+    public Object getCodeByOldPhoneNum(@RequestParam("phone") String phone) {
+        //生成随机数
+        String code = RandomUtil.createNumberCode(4);
+        redisUtil.setWithExpireTime(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX + phone, code, AliyunSmsConstants.CodeConstants.CAPTCHA_TIME);
+        Boolean result = SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_CHANGE_PHONE, phone, code);
+        log.info(" code {}, phone {}", code,phone);
+        return WrapMapper.ok(result);
+    }
+
+    @PostMapping("/modifyPhone")
     @ApiOperation(value = "修改手机号码", response = Boolean.class)
-    public Object modifyPhone(@RequestParam("phone") String phone) {
-        return accountControllerClient.getCaptcha(phone);
+    public Object modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto) {
+        return accountControllerClient.modifyPhone(modifyAccountPhoneDto);
     }
 }

@@ -1,6 +1,7 @@
 package com.bdxh.system.service.impl;
 
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
+import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.support.BaseService;
 
 import com.bdxh.common.utils.SnowflakeIdWorker;
@@ -104,7 +105,7 @@ public class FeedbackServiceImpl extends BaseService<Feedback> implements Feedba
 			feedbackAttachs.forEach(item->{
 				feedbackAttachMapper.deleteByPrimaryKey(item.getId());
 			//删除云端图片
-			//FileOperationUtils.deleteFile(item.getImgName(),null);
+			FileOperationUtils.deleteFile(item.getImgName(), QcloudConstants.APP_BUCKET_NAME);
 			});
 		}
 		//删除用户反馈信息
@@ -133,7 +134,7 @@ public class FeedbackServiceImpl extends BaseService<Feedback> implements Feedba
 			feedbackAttachs.forEach(item->{
 				feedbackAttachMapper.deleteByPrimaryKey(item.getId());
 				//删除云端图片
-				//FileOperationUtils.deleteFile(item.getImgName(),null);
+				FileOperationUtils.deleteFile(item.getImgName(), QcloudConstants.APP_BUCKET_NAME);
 			});
 		}
 		//添加新的附件

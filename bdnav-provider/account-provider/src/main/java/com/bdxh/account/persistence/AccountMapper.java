@@ -59,4 +59,13 @@ public interface AccountMapper extends Mapper<Account> {
      * @return
      */
     int modifyPwd(@Param("phone") String phone,@Param("loginName") String loginName,@Param("pwd") String pwd);
+
+    /**
+     * 修改手机号码
+     * @param phone
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    int updateAccountPhone(@Param("phone")String phone, @Param("schoolCode")String schoolCode,@Param("cardNumber") String cardNumber);
 }

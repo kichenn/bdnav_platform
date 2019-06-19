@@ -3,6 +3,7 @@ package com.bdxh.appburied.dto;
 import com.bdxh.appburied.enums.ApplyLogModelEnum;
 import com.bdxh.appburied.enums.ApplyLogOperatorStatusEnum;
 import com.bdxh.appburied.enums.InstallAppsPlatformEnum;
+import com.bdxh.user.dto.WeiXiaoDto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.validation.constraints.NotEmpty;
@@ -16,7 +17,7 @@ import java.util.Date;
  * @Date: 2019/4/12 15:38
  */
 @Data
-public class AddApplyLogDto {
+public class AddApplyLogDto  extends WeiXiaoDto {
 
     @NotNull(message = "应用平台不能为空")
     @ApiModelProperty(" *平台 1 android 2 ios")

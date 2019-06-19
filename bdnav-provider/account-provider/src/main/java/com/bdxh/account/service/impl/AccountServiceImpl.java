@@ -170,4 +170,17 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
         }
         return result;
     }
+
+    /**
+     * 修改手机号
+     *
+     * @param phone
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    @Override
+    public Boolean modifyPhone(String phone, String schoolCode, String cardNumber) {
+        return accountMapper.updateAccountPhone(phone, schoolCode, cardNumber)>0;
+    }
 }
