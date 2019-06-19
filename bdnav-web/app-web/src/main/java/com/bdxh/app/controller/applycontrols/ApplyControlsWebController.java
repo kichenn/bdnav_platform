@@ -22,6 +22,7 @@ import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.school.vo.MobileStrategyVo;
+import com.bdxh.system.dto.AddFeedbackAttachDto;
 import com.bdxh.system.dto.AddFeedbackDto;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.system.feign.FeedbackControllerClient;
@@ -31,6 +32,7 @@ import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -244,7 +246,7 @@ public class ApplyControlsWebController {
      */
     @RequestMapping(value = "/addFeedback",method = RequestMethod.POST)
     @ApiOperation(value = "添加用户反馈信息",response = Boolean.class)
-    public Object addFeedback(@Validated @RequestBody AddFeedbackDto addFeedbackDto){
+    public Object addFeedback(@Validated @RequestBody AddFeedbackDto addFeedbackDto,@RequestParam(name ="multipartFiles" ,required = false) List<MultipartFile> multipartFiles){
         //添加操作人的信息
         Account account = SecurityUtils.getCurrentUser();
         addFeedbackDto.setOperator(account.getId());
