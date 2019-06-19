@@ -71,7 +71,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
     @Transactional(rollbackFor = Exception.class)
     public void removeFamilyFenceInfo(String schoolCode, String cardNumber, String id) {
         FamilyFence familyFence = familyFenceMapper.getFamilyFenceInfo(schoolCode, cardNumber, id);
-        //删除监控对象
+ /*       //删除监控对象
         String monitoredPerson=familyFence.getSchoolCode()+familyFence.getStudentNumber();
         List<Integer> fenceIdlist=familyFenceMapper.findOneStudentFenceId(schoolCode,cardNumber,familyFence.getStudentNumber());
        //如果还存在其他围栏就不删除这个实体
@@ -81,7 +81,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
             if (entityResultJson.getInteger("status") != 0) {
                 throw new RuntimeException("删除围栏中监控对象失败,状态码" + entityResultJson.getInteger("status") + "，原因:" + entityResultJson.getString("message"));
             }
-        }
+        }*/
         //删除围栏
         String delResult = FenceUtils.deleteRoundFence(familyFence.getFenceId());
         JSONObject delResultJson = JSONObject.parseObject(delResult);
@@ -108,13 +108,13 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addFamilyFenceInfo(AddFamilyFenceDto addFamilyFenceDto) {
-        String  monitoredPerson=addFamilyFenceDto.getSchoolCode()+addFamilyFenceDto.getStudentNumber();
+        String  monitoredPerson=addFamilyFenceDto.getAccoountId();
         //创建家长监控对象
         addFamilyFenceDto.setId(snowflakeIdWorker.nextId());
         //默认使用百度的坐标类型
         addFamilyFenceDto.setCoordType("bd09ll");
         //家长查询出给当前孩子设置的所有围栏
-        List<Integer> fenceIds=familyFenceMapper.findOneStudentFenceId(addFamilyFenceDto.getSchoolCode(),addFamilyFenceDto.getCardNumber(),addFamilyFenceDto.getStudentNumber());
+/*        List<Integer> fenceIds=familyFenceMapper.findOneStudentFenceId(addFamilyFenceDto.getSchoolCode(),addFamilyFenceDto.getCardNumber(),addFamilyFenceDto.getStudentNumber());
        //请求百度查询是否有相同的实体信息 不存在: true 、 存在：false
         Boolean isExistenceEntity=true;
         father:for (Integer fenceId : fenceIds) {
@@ -126,9 +126,9 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
                     break father;
                 }
             }
-        }
+        }*/
         //如果不存在就向百度新增一条实体数据
-        if(isExistenceEntity){
+/*        if(isExistenceEntity){
             CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
             entityRequest.setAk(FenceConstant.AK);
             entityRequest.setService_id(FenceConstant.SERVICE_ID);
@@ -140,7 +140,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
                 throw new RuntimeException("增加监控终端实体失败,名称：" + addFamilyFenceDto.getStudentName() + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
             }
             //实体内容等于当前孩子的  学校Code+cardNumber
-        }
+        }*/
         //创建围栏
         CreateFenceRoundRequest fenceRoundRequest = new CreateFenceRoundRequest();
         fenceRoundRequest.setAk(FenceConstant.AK);

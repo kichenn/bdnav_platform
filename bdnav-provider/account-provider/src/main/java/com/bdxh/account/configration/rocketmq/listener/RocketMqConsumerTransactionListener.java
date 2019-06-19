@@ -5,6 +5,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.service.AccountService;
 import com.bdxh.common.base.constant.RocketMqConstrants;
+import com.bdxh.common.helper.baidu.yingyan.FenceUtils;
+import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
+import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.HypyUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
@@ -74,6 +77,17 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                     Boolean result=accountService.updateOrInsertAccount(account);
                                 if(result){
                                     log.info("===========同步account成功==========");
+                                    //添加百度地图监控对象实体 对象标识格式  accountId:xxxxxx
+                                    CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
+                                    entityRequest.setAk(FenceConstant.AK);
+                                    entityRequest.setService_id(FenceConstant.SERVICE_ID);
+                                    entityRequest.setEntity_desc("创建单个学生监控对象");
+                                    entityRequest.setEntity_name("accountId:"+account.getId());
+                                    String entityResult = FenceUtils.createNewEntity(entityRequest);
+                                    JSONObject entityJson = JSONObject.parseObject(entityResult);
+                                    if (entityJson.getInteger("status") != 0) {
+                                        throw new RuntimeException("增加监控终端实体失败,名称：" + account.getUserName() + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
+                                    }
                                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                                 }else{
                                     log.info("===========同步account失败==========");
@@ -87,7 +101,13 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 JSONObject accountObject = json.getJSONObject("data");
                                 account.setCardNumber(accountObject.get("cardNumber").toString());
                                 account.setSchoolCode(accountObject.getString("schoolCode"));
+                                Account account1=accountService.queryAccount(account.getSchoolCode(),account.getCardNumber());
                                 accountService.delete(account);
+                                String entityResult = FenceUtils.deleteNewEntity("accountId:"+account1.getId());
+                                JSONObject entityResultJson = JSONObject.parseObject(entityResult);
+                                if (entityResultJson.getInteger("status") != 0) {
+                                    throw new RuntimeException("删除围栏中监控对象失败,状态码" + entityResultJson.getInteger("status") + "，原因:" + entityResultJson.getString("message"));
+                                }
                         }
                 }
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);

@@ -1,5 +1,6 @@
 package com.bdxh.user.dto;
 
+import com.bdxh.user.vo.FenceParamVo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
