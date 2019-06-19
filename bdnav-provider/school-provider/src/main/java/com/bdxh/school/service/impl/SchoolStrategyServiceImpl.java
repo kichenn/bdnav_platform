@@ -84,8 +84,8 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
     }
 
     @Override
-    public List<QuerySchoolStrategy> findSchoolStrategyList(String schoolCode) {
-        return schoolStrategyMapper.findSchoolStrategyList(schoolCode);
+    public List<QuerySchoolStrategy> findSchoolStrategyList(String schoolCode,String groupId) {
+        return schoolStrategyMapper.findSchoolStrategyList(schoolCode,groupId);
     }
 
 }

@@ -8,11 +8,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 /**
- * @description: JS微信支付统一下单响应类
- * @create: 2019-01-02 19:26
- **/
+ * @Description: JS微信支付统一下单响应类
+ * @Author: Kang
+ * @Date: 2019/6/19 15:37
+ */
 @Data
-@XmlRootElement(name="xml")
+@XmlRootElement(name = "xml")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class JsOrderResponse implements Serializable {
 

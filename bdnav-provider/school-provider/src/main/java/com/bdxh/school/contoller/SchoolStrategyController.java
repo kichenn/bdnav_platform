@@ -248,8 +248,8 @@ public class SchoolStrategyController {
 	 */
 	@RequestMapping(value = "/findSchoolStrategyList", method = RequestMethod.GET)
 	@ApiOperation(value = "根据schoolCode查询策略模式", response = SchoolStrategy.class)
-	public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode) {
-		List<QuerySchoolStrategy> ss = schoolStrategyService.findSchoolStrategyList(schoolCode);
+	public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") String groupId) {
+		List<QuerySchoolStrategy> ss = schoolStrategyService.findSchoolStrategyList(schoolCode,groupId);
 		return WrapMapper.ok(ss);
 	}
 

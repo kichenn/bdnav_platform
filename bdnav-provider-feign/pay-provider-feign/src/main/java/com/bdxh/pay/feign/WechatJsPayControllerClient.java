@@ -1,6 +1,7 @@
 package com.bdxh.pay.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.pay.dto.WxPayJsOrderDto;
 import com.bdxh.pay.fallback.WechatJsPayControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -25,7 +26,7 @@ public interface WechatJsPayControllerClient {
      */
     @RequestMapping("/wechatJsPay/order")
     @ResponseBody
-    Wrapper wechatJsPayOrder(@RequestBody WxPayJsOrderDto wxPayJsOrderDto);
+    Wrapper<String> wechatJsPayOrder(@RequestBody WxPayJsOrderDto wxPayJsOrderDto);
 
     /**
      * 根据微信code返回授权信息

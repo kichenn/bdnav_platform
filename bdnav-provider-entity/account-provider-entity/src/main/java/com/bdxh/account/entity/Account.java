@@ -107,6 +107,28 @@ public class Account implements Serializable {
     @Column(name = "update_date")
     private Date updateDate;
 
+    //扩展字段
+    //组织id：如果登陆者为学生则为：班级id
+    private String groupId;
+
+    /**
+     * 获取组织id
+     *
+     * @return groupId - 主键
+     */
+    public String getGroupId() {
+        return groupId;
+    }
+
+    /**
+     * 设置组织id
+     *
+     * @param groupId 主键
+     */
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+
     /**
      * 获取主键
      *
