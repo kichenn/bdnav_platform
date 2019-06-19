@@ -1,5 +1,6 @@
 package com.bdxh.weixiao.controller.user;
 
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
@@ -36,6 +37,10 @@ public class StudentWebController {
     @ApiOperation(value = "根据卡号获取学生信息",response = StudentVo.class)
     public Object getStudentInfoByCardNumber(@RequestParam("cardNumber")@NotNull(message = "学生卡号不能为空")String cardNumber){
         UserInfo userInfo = SecurityUtils.getCurrentUser();
-        return studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(),cardNumber);
+        try {
+            return WrapMapper.ok(studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(),cardNumber));
+        }catch (Exception e){
+            return WrapMapper.error();
+        }
     }
 }
