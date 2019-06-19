@@ -37,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Date;
 
 
 @RestController
@@ -108,9 +109,9 @@ public class WecharJsPay {
         //订单类型，JSAPI
         addOrderDto.setTradeType(OrderTradeTypeEnum.WECHAT_JSAPI);
         //支付时间
-        addOrderDto.setPayTime(addPayOrderDto.getPayTime());
+        addOrderDto.setPayTime(new Date());
         //支付结束时间，此处默认成支付时间，支付结束后设置时间
-        addOrderDto.setPayEndTime(addPayOrderDto.getPayTime());
+        addOrderDto.setPayEndTime(new Date());
         //商品id
         addOrderDto.setProductId(addPayOrderDto.getProductId());
         //操作人
@@ -125,6 +126,7 @@ public class WecharJsPay {
         if (null == wrapper.getResult()) {
             return WrapMapper.error("订单添加失败");
         }
+        //我方订单号
         Long orderNo = Long.valueOf(wrapper.getResult().toString());
         //查询商品信息详情
         ProductDetailsVo detailsVo = productControllerClient.findProductDetails(Long.valueOf(addOrderDto.getProductId())).getResult();
@@ -148,7 +150,7 @@ public class WecharJsPay {
         }
         //内部订单下单成功，到微信端下单预订单
         WxPayJsOrderDto wxPayJsOrderDto = new WxPayJsOrderDto();
-        //订单号
+        //我方订单号
         wxPayJsOrderDto.setOrderNo(orderNo.toString());
         //商品金额
         wxPayJsOrderDto.setMoney(addPayOrderDto.getPayMoney());
