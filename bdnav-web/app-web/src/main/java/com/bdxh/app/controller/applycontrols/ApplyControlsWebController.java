@@ -244,7 +244,7 @@ public class ApplyControlsWebController {
      */
     @RequestMapping(value = "/addFeedback",method = RequestMethod.POST)
     @ApiOperation(value = "添加用户反馈信息",response = Boolean.class)
-    public Object addFeedback(@Validated @RequestBody AddFeedbackDto addFeedbackDto){
+    public Object addFeedback(@Validated  AddFeedbackDto addFeedbackDto,@RequestParam(name ="multipartFiles" ,required = false) List<MultipartFile> multipartFiles){
         //添加操作人的信息
         Account account = SecurityUtils.getCurrentUser();
         addFeedbackDto.setOperator(account.getId());
@@ -252,13 +252,13 @@ public class ApplyControlsWebController {
         //后台上传图片
         List<AddFeedbackAttachDto> feedbackAttachVos = null;
         try {
-        if(CollectionUtils.isNotEmpty(addFeedbackDto.getMultipartFiles())){
+        if(CollectionUtils.isNotEmpty(multipartFiles)){
             feedbackAttachVos = new ArrayList<>();
-            for (MultipartFile multipartFile : addFeedbackDto.getMultipartFiles()) {
+            for (MultipartFile multipartFile : multipartFiles) {
                 AddFeedbackAttachDto addFeedbackAttachDto = new AddFeedbackAttachDto();
                 Map<String, String> result = FileOperationUtils.saveFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
                 addFeedbackAttachDto.setImg(result.get("url"));
-                addFeedbackAttachDto.setImg(result.get("name"));
+                addFeedbackAttachDto.setImgName(result.get("name"));
                 feedbackAttachVos.add(addFeedbackAttachDto);
             }
         }
@@ -266,8 +266,6 @@ public class ApplyControlsWebController {
             e.printStackTrace();
         }
         addFeedbackDto.setImage(feedbackAttachVos);
-        //数据清理
-       // addFeedbackDto.setMultipartFiles(null);
         return feedbackControllerClient.addFeedback(addFeedbackDto);
     }
 
