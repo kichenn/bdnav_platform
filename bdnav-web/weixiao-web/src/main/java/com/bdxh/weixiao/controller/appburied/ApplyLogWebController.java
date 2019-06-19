@@ -66,8 +66,9 @@ public class ApplyLogWebController {
         }
         clientId.add(userDevice.getClientId());
         modifyApplyLogDto.setClientId(clientId);
-            return applyLogControllerClient.modifyVerifyApplyLog(modifyApplyLogDto);
+        return applyLogControllerClient.modifyVerifyApplyLog(modifyApplyLogDto);
     }
+
     @RequestMapping(value = "/modifyVerifyApplyLogRead", method = RequestMethod.POST)
     @ApiOperation(value = "审批畅玩----家长查看消息时修改消息状态")
     public Object modifyVerifyApplyLogRead(@RequestBody ModifyApplyLogDto modifyApplyLogDto) {

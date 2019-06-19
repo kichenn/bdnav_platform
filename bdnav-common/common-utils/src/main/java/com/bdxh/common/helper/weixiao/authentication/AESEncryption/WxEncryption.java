@@ -4,14 +4,19 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
+import java.util.*;
+
 /**
- * 微校数据加密
+ * 微校数据加密以及ASCII排序
  * @author 
  *
  */
 @Component
+@Slf4j
 public class WxEncryption {
 	
 	public static String Encrypt(String sSrc, String sKey, String sIv) throws Exception {
@@ -81,5 +86,44 @@ public class WxEncryption {
 		}
 
 		return hs.toUpperCase();
+	}
+
+
+	/**
+	 * Map集合按照ASCII码从小到大（字典序）排序生成签名
+	 * @param map
+	 * @return
+	 */
+	public static String getSign(Map<String, Object> map,String secret) {
+		String result = "";
+		try {
+			List<Map.Entry<String, Object>> infoIds = new ArrayList<Map.Entry<String, Object>>(map.entrySet());
+			// 对所有传入参数按照字段名的 ASCII 码从小到大排序（字典序）
+			Collections.sort(infoIds, new Comparator<Map.Entry<String, Object>>() {
+				public int compare(Map.Entry<String, Object> o1, Map.Entry<String, Object> o2) {
+					return (o1.getKey()).toString().compareTo(o2.getKey());
+				}
+			});
+			// 构造签名键值对的格式
+			StringBuilder sb = new StringBuilder();
+			for (Map.Entry<String, Object> item : infoIds) {
+				if (item.getKey() != null || item.getKey() != "") {
+					String key = item.getKey();
+					String val = item.getValue().toString();
+					if (!(val == "" || val == null)) {
+						sb.append(key + "=" + val + "&");
+					}
+				}
+
+			}
+			sb.append("key="+secret);
+			log.info("数据签名之前：{}",sb.toString());
+			result = sb.toString();
+			//进行MD5加密
+			result = DigestUtils.md5Hex(result).toUpperCase();
+		} catch (Exception e) {
+			return null;
+		}
+		return result;
 	}
 }

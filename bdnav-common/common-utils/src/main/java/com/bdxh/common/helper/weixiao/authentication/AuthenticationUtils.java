@@ -1,20 +1,15 @@
 package com.bdxh.common.helper.weixiao.authentication;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.helper.weixiao.authentication.AESEncryption.WxEncryption;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.HttpClientUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @description: 微校认证工具类
@@ -91,6 +86,7 @@ public class AuthenticationUtils {
             return e.getMessage();
         }
     }
+
 
 
 
