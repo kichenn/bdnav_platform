@@ -79,5 +79,10 @@ public class JsOrderResponse implements Serializable {
      */
     private String prepay_id;
 
+    /**
+     * 时间戳
+     */
+    private String time_stamp;
+
 }
 
