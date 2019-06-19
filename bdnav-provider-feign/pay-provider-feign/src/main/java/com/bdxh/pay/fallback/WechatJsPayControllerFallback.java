@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class WechatJsPayControllerFallback implements WechatJsPayControllerClient {
 
     @Override
-    public Wrapper<JsOrderResponse> wechatJsPayOrder(WxPayJsOrderDto wxPayJsOrderDto) {
+    public Wrapper<String> wechatJsPayOrder(WxPayJsOrderDto wxPayJsOrderDto) {
         return WrapMapper.error();
     }
 
