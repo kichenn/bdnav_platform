@@ -1,6 +1,5 @@
 package com.bdxh.weixiao.controller.pay;
 
-import com.bdxh.common.base.constant.WxAuthorizedConstants;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -16,11 +15,7 @@ import com.bdxh.pay.feign.WechatJsPayControllerClient;
 import com.bdxh.product.enums.ProductTypeEnum;
 import com.bdxh.product.feign.ProductControllerClient;
 import com.bdxh.product.vo.ProductDetailsVo;
-import com.bdxh.school.feign.SchoolControllerClient;
-import com.bdxh.school.vo.SchoolInfoVo;
-import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
-import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
@@ -28,15 +23,12 @@ import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Date;
 
 
@@ -179,6 +171,7 @@ public class WecharJsPay {
     @RequestMapping(value = "/getWechatUrl", method = RequestMethod.GET)
     @ApiOperation(value = "返回微信支付授权地址信息", response = String.class)
     public Object getWechatUrl(@RequestParam("redirectUri") String redirectUri) {
+
         return WrapMapper.ok(wechatJsPayControllerClient.getWechatUrl(redirectUri).getResult());
     }
 }
