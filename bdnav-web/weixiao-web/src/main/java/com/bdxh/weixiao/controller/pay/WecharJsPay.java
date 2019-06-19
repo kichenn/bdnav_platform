@@ -154,8 +154,7 @@ public class WecharJsPay {
         //openid
         wxPayJsOrderDto.setOpenid(addPayOrderDto.getOpenId());
         //返回预订单信息
-        String jsOrderResponse = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto).getResult();
-        return WrapMapper.ok(jsOrderResponse);
+        return WrapMapper.ok(wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto).getResult());
     }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)

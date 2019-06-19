@@ -26,7 +26,7 @@ public interface WechatJsPayControllerClient {
      */
     @RequestMapping("/wechatJsPay/order")
     @ResponseBody
-    Wrapper<String> wechatJsPayOrder(@RequestBody WxPayJsOrderDto wxPayJsOrderDto);
+    Wrapper wechatJsPayOrder(@RequestBody WxPayJsOrderDto wxPayJsOrderDto);
 
     /**
      * 根据微信code返回授权信息
