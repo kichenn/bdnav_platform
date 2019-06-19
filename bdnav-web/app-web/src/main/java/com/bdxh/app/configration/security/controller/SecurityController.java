@@ -267,6 +267,11 @@ public class SecurityController {
     @PostMapping("/modifyPhone")
     @ApiOperation(value = "修改手机号码", response = Boolean.class)
     public Object modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto) {
-        return accountControllerClient.modifyPhone(modifyAccountPhoneDto);
+        Wrapper wrapper = accountControllerClient.modifyPhone(modifyAccountPhoneDto);
+        if(Wrapper.SUCCESS_CODE==wrapper.getCode()){
+            //修改成功 同时修改 基础用户表 索引表 学生表 数据
+
+        }
+        return null;
     }
 }

@@ -262,6 +262,22 @@ public class StudentController {
         return WrapMapper.ok(studentService.findStudentInfo(studentQueryDto));
     }
 
+    /**
+     *
+     * @Author: WanMing
+     * @Date: 2019/6/19 12:22
+     */
+    @RequestMapping(value = "/modifyStudentPhone",method = RequestMethod.GET)
+    @ApiOperation(value = "修改学生的手机号",response = Boolean.class)
+    public Object modifyStudentPhone(@RequestParam("schoolCode") String schoolCode,
+                                     @RequestParam("parentIds") String cardNumber,
+                                     @RequestParam("Phone") String Phone){
+//        WrapMapper.ok(studentService.modifyStudentPhone(schoolCode,cardNumber,Phone)>0)
+        return null;
+
+
+    }
+
 
 
 
