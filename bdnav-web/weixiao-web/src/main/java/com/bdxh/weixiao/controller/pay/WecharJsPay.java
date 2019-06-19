@@ -2,10 +2,14 @@ package com.bdxh.weixiao.controller.pay;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
+import com.bdxh.common.utils.BeanToMapUtil;
+import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.common.wechatpay.js.domain.JsOrderPayResponse;
 import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.AddOrderItemDto;
@@ -33,6 +37,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.SortedMap;
 
 
 @RestController
@@ -157,11 +162,29 @@ public class WecharJsPay {
         wxPayJsOrderDto.setOpenid(addPayOrderDto.getOpenId());
 
         Wrapper jsOrderWrapper = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto);
+
+        //返回预下单信息
         JSONObject jsonObject = JSONObject.parseObject(jsOrderWrapper.getResult().toString());
-        //设置当前时间戳
-        jsonObject.put("time_stamp", System.currentTimeMillis() / 1000L + "");
+
+        //封装前端 微信 H5吊起支付对象
+        JsOrderPayResponse jsOrderPayResponse = new JsOrderPayResponse();
+        jsOrderPayResponse.setAppId(jsonObject.getString("appid"));
+        jsOrderPayResponse.setTimeStamp(System.currentTimeMillis() / 1000L + "");
+        jsOrderPayResponse.setNonceStr(jsonObject.getString("nonce_str"));
+        jsOrderPayResponse.setPackages("prepay_id=" + jsonObject.getString("prepay_id"));
+        SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(jsOrderPayResponse);
+        if (paramMap.containsKey("packages")) {
+            paramMap.put("package", paramMap.get("packages"));
+            paramMap.remove("packages");
+        }
+        if (paramMap.containsKey("paySign")) {
+            paramMap.remove("paySign");
+        }
+        String paramStr = BeanToMapUtil.mapToString(paramMap);
+        String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.JS.APP_KEY);
+        jsOrderPayResponse.setPaySign(sign);
         //返回预订单信息
-        return WrapMapper.ok(JSON.toJSONString(jsonObject));
+        return WrapMapper.ok(jsOrderPayResponse);
     }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
