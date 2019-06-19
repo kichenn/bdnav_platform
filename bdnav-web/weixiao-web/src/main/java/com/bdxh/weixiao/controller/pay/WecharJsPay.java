@@ -4,6 +4,7 @@ import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.AddOrderItemDto;
 import com.bdxh.order.dto.AddPayOrderDto;
@@ -152,9 +153,9 @@ public class WecharJsPay {
         wxPayJsOrderDto.setIp(request.getRemoteAddr());
         //openid
         wxPayJsOrderDto.setOpenid(addPayOrderDto.getOpenId());
-        //返回预订单id
-        String prepayId = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto).getResult().toString();
-        return WrapMapper.ok(prepayId);
+        //返回预订单信息
+        JsOrderResponse jsOrderResponse = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto).getResult();
+        return WrapMapper.ok(jsOrderResponse);
     }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
