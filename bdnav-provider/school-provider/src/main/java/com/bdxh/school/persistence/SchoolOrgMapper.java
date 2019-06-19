@@ -72,4 +72,11 @@ public interface SchoolOrgMapper extends Mapper<SchoolOrg> {
      * @return
      */
     int updateSchoolOrg(SchoolOrg schoolOrg);
+
+    /**
+     * 修改班级管理员信息
+     * @param schoolOrg
+     * @return
+     */
+    int updateSchoolClassInfo(SchoolOrg schoolOrg);
 }

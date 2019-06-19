@@ -133,5 +133,5 @@ public interface SchoolOrgControllerClient {
      */
     @RequestMapping(value = "/schoolOrg/updateSchoolClassInfo", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<Boolean> updateSchoolClassInfo(ClassAdministratorsUpdateDto classAdministratorsUpdateDto);
+    Wrapper<Boolean> updateSchoolClassInfo(@RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto);
 }
