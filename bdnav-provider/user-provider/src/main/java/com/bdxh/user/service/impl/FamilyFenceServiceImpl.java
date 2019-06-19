@@ -108,7 +108,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addFamilyFenceInfo(AddFamilyFenceDto addFamilyFenceDto) {
-        String  monitoredPerson=addFamilyFenceDto.getAccoountId();
+        String  monitoredPerson="accountId_"+addFamilyFenceDto.getAccoountId();
         //创建家长监控对象
         addFamilyFenceDto.setId(snowflakeIdWorker.nextId());
         //默认使用百度的坐标类型
