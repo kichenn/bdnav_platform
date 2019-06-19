@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.constraints.NotNull;
 
 
 /**
@@ -23,16 +24,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @FeignClient(value = "user-provider-cluster", fallback = TrajectoryControllerFallback.class)
 public interface TrajectoryControllerClient {
 
-    @RequestMapping(value = "/trajectory/findTrajectoryInfo",method = RequestMethod.GET)
+    @RequestMapping(value = "/trajectory/findTrajectoryInfo", method = RequestMethod.GET)
     @ResponseBody
     Wrapper findTrajectoryInfo(@RequestParam("startTime") String startTime,
-                                       @RequestParam("endTime") String endTime,
-                                       @RequestParam("schoolCode")  String schoolCode,
-                                       @RequestParam("cardNumber")  String cardNumber);
+                               @RequestParam("endTime") String endTime,
+                               @RequestParam("accountId") String accountId);
 
-    @RequestMapping(value = "/trajectory/findLatestPoint",method = RequestMethod.GET)
+    @RequestMapping(value = "/trajectory/findLatestPoint", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper findLatestPoint (@RequestParam("schoolCode")  String schoolCode,
-                                     @RequestParam("cardNumber") String cardNumber);
+    Wrapper findLatestPoint(@RequestParam("accountId") String accountId);
 }
 

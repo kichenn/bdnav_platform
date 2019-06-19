@@ -249,15 +249,24 @@ public class FenceUtils {
      * 测试创建围栏
      */
     public static void main(String[] args) {
-        String result=deleteNewEntity("1011347968190617");
+/*        String result=deleteNewEntity("1011347968190617");
         JSONObject jsonObject=JSONObject.parseObject(result);
-        System.out.println(jsonObject);
+        System.out.println(jsonObject);*/
 /*         String result=getLatestPoint("2011032919040314");
         JSONObject jsonObject=JSONObject.parseObject(result);
         System.out.println(jsonObject);
         if(jsonObject.get("status").equals(0)){
             System.out.println(jsonObject.getString("latest_point"));
         }*/
+        CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
+        entityRequest.setAk(FenceConstant.AK);
+        entityRequest.setService_id(FenceConstant.SERVICE_ID);
+        entityRequest.setEntity_desc("创建单个学生监控对象");
+        entityRequest.setEntity_name("accountId:590153493470642176");
+        String entityResult = FenceUtils.createNewEntity(entityRequest);
+        JSONObject entityJson = JSONObject.parseObject(entityResult);
+
+
 /*
 
 try {
