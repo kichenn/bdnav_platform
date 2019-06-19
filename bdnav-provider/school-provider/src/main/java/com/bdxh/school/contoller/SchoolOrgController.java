@@ -184,13 +184,12 @@ public class SchoolOrgController {
     }
 
     /**
-     * 修改组织架构信息
-     *
+     * 修改班级管理员信息
      * @param classAdministratorsUpdateDto
      * @return
      */
     @RequestMapping(value = "/updateSchoolClassInfo", method = RequestMethod.POST)
-    @ApiOperation(value = "修改组织架构信息")
+    @ApiOperation(value = "修改班级管理员信息")
     public Object updateSchoolClassInfo(@RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
         return WrapMapper.ok(schoolOrgService.updateSchoolClassInfo(classAdministratorsUpdateDto));
     }
