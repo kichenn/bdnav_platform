@@ -411,4 +411,12 @@
             set activate=#{activate}
             where school_code=#{schoolCode} and card_number=#{cardNumber}
     </update>
+
+    <!--修改手机号码-->
+    <update id="modifyStudentPhone">
+        UPDATE t_student
+        SET phone = #{phone}
+        WHERE card_number = #{cardNumber} AND school_code = #{schoolCode}
+    </update>
+
 </mapper>

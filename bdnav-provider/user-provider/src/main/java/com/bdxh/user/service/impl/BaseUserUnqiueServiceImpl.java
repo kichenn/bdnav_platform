@@ -33,4 +33,18 @@ public class BaseUserUnqiueServiceImpl extends BaseService<BaseUserUnqiue> imple
     public Integer queryUserPhone(String phone, String schoolCode) {
         return baseUserUnqiueMapper.queryUserPhone(phone, schoolCode);
     }
+
+    /**
+     * 修改手机号码
+     *
+     * @param schoolCode
+     * @param oldPhone
+     * @param newPhone
+     * @Author: WanMing
+     * @Date: 2019/6/19 15:08
+     */
+    @Override
+    public void modifyPhone(String schoolCode, String oldPhone, String newPhone) {
+        baseUserUnqiueMapper.modifyPhone(schoolCode, oldPhone, newPhone);
+    }
 }

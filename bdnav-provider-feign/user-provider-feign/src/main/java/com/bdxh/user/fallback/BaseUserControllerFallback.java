@@ -65,4 +65,9 @@ public class BaseUserControllerFallback implements BaseUserControllerClient {
     public Wrapper<List<BaseEchartsVo>> querySchoolUserCategoryCount(String schoolCode) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper modifyUserPhone(String schoolCode, String cardNumber, String newPhone, String oldPhone) {
+        return WrapMapper.error();
+    }
 }

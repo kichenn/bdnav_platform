@@ -134,5 +134,10 @@ public interface StudentService extends IService<Student> {
     List<Student> findStudentInfo(StudentQueryDto studentQueryDto);
 
 
-
+    /**
+     * 修改手机号码
+     * @Author: WanMing
+     * @Date: 2019/6/19 14:37
+     */
+    Boolean modifyStudentPhone(String schoolCode, String cardNumber, String phone);
 }

@@ -166,4 +166,16 @@ public class BaseUserController {
     public Object querySchoolUserCategoryCount(@RequestParam(value = "schoolCode", required = false) String schoolCode) {
         return WrapMapper.ok(baseUserService.querySchoolUserCategoryCount(schoolCode));
     }
+
+    /**
+     * 修改用户的手机号
+     * @Author: WanMing
+     * @Date: 2019/6/19 14:57
+     */
+    @RequestMapping(value = "/modifyUserPhone",method = RequestMethod.GET)
+    @ApiOperation(value = "修改用户的手机号",response = Boolean.class)
+    public Object modifyUserPhone(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber,
+                                  @RequestParam("newPhone") String newPhone,@RequestParam("oldPhone") String oldPhone){
+        return baseUserService.modifyUserPhone(schoolCode, cardNumber, newPhone,oldPhone);
+    }
 }

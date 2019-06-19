@@ -181,6 +181,12 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
      */
     @Override
     public Boolean modifyPhone(String phone, String schoolCode, String cardNumber) {
+        //组装字典
+        AccountUnqiue accountUnqiue = new AccountUnqiue();
+        accountUnqiue.setCardNumber(cardNumber);
+        accountUnqiue.setSchoolCode(schoolCode);
+        accountUnqiue.setPhone(phone);
+        accountUnqiueService.modifyAccountUnqiue(accountUnqiue);
         return accountMapper.updateAccountPhone(phone, schoolCode, cardNumber)>0;
     }
 }

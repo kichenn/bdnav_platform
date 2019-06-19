@@ -48,6 +48,9 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
     @Autowired
     private TeacherDeptMapper teacherDeptMapper;
 
+    @Autowired
+    private BaseUserUnqiueMapper baseUserUnqiueMapper;
+
     @Override
     public List<BaseUser> queryBaseUserInfo(BaseUserQueryDto baseUserQueryDto) {
         return baseUserMapper.queryBaseUserInfo(baseUserQueryDto);
@@ -274,5 +277,24 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
             }
         }
         return baseVos;
+    }
+
+    /**
+     * 修改用户手机号
+     *
+     * @param schoolCode
+     * @param cardNumber
+     * @param newPhone
+     * @Author: WanMing
+     * @Date: 2019/6/19 14:59
+     */
+    @Override
+    public Boolean modifyUserPhone(String schoolCode, String cardNumber, String newPhone,String oldPhone) {
+        int result = baseUserMapper.modifyUserPhone(schoolCode, cardNumber, newPhone);
+        if(result>0){
+            baseUserUnqiueMapper.modifyPhone(schoolCode, oldPhone, newPhone);
+            return studentMapper.modifyStudentPhone(schoolCode, cardNumber, newPhone)>0;
+        }
+       return Boolean.FALSE;
     }
 }
