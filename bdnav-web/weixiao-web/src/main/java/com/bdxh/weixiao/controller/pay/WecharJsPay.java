@@ -1,5 +1,7 @@
 package com.bdxh.weixiao.controller.pay;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -153,8 +155,13 @@ public class WecharJsPay {
         wxPayJsOrderDto.setIp(request.getRemoteAddr());
         //openid
         wxPayJsOrderDto.setOpenid(addPayOrderDto.getOpenId());
+
+        Wrapper jsOrderWrapper = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto);
+        JSONObject jsonObject = JSONObject.parseObject(jsOrderWrapper.getResult().toString());
+        //设置当前时间戳
+        jsonObject.put("time_stamp", System.currentTimeMillis() / 1000L + "");
         //返回预订单信息
-        return WrapMapper.ok(wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto).getResult());
+        return WrapMapper.ok(JSON.toJSONString(jsonObject));
     }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)

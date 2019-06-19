@@ -107,8 +107,6 @@ public class WechatJsPayController {
             String responseEntityStr = responseEntity.getBody();
             if (StringUtils.isNotEmpty(responseEntityStr)) {
                 JsOrderResponse jsOrderResponse = XmlUtils.fromXML(responseEntityStr, JsOrderResponse.class);
-                //设置当前时间戳
-                jsOrderResponse.setTime_stamp(System.currentTimeMillis() / 1000L + "");
                 //下单成功
                 if (StringUtils.equals("SUCCESS", jsOrderResponse.getReturn_code()) && StringUtils.equals("SUCCESS", jsOrderResponse.getResult_code())) {
                     //验签
