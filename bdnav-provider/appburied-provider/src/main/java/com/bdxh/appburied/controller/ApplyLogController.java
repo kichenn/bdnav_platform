@@ -164,13 +164,5 @@ public class ApplyLogController {
         }
     }
 
-    public static void main(String[] args) {
-        String[] a = {"123132"};
-        ArrayList<String> list = new ArrayList<>();
-        list.add("1231200");
-        JSONArray jsonArray = new JSONArray();
-        jsonArray.add("1231200");
-        log.info(jsonArray.toString());
-    }
 
 }

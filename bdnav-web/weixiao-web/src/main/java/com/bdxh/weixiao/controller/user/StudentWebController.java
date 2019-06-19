@@ -33,14 +33,10 @@ public class StudentWebController {
     @Autowired
     private StudentControllerClient studentControllerClient;
 
-    @RequestMapping(value = "/getStudentInfoByCardNumber",method = RequestMethod.GET)
-    @ApiOperation(value = "根据卡号获取学生信息",response = StudentVo.class)
-    public Object getStudentInfoByCardNumber(@RequestParam("cardNumber")@NotNull(message = "学生卡号不能为空")String cardNumber){
+    @RequestMapping(value = "/getStudentInfoByCardNumber", method = RequestMethod.GET)
+    @ApiOperation(value = "根据卡号获取学生信息", response = StudentVo.class)
+    public Object getStudentInfoByCardNumber(@RequestParam("cardNumber") @NotNull(message = "学生卡号不能为空") String cardNumber) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
-        try {
-            return WrapMapper.ok(studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(),cardNumber));
-        }catch (Exception e){
-            return WrapMapper.error();
-        }
+        return studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(), cardNumber);
     }
 }

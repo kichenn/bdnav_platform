@@ -13,6 +13,7 @@ import com.bdxh.appmarket.vo.appDownloadlinkVo;
 import com.bdxh.appmarket.vo.appListVo;
 import com.bdxh.common.helper.getui.constant.GeTuiConstant;
 import com.bdxh.common.helper.getui.entity.AppNotificationTemplate;
+import com.bdxh.common.helper.getui.entity.AppTransmissionTemplate;
 import com.bdxh.common.helper.getui.request.AppPushRequest;
 import com.bdxh.common.helper.getui.utils.GeTuiUtil;
 import com.bdxh.common.utils.BeanMapUtils;
@@ -285,17 +286,12 @@ public class AppController {
         clientIds.add(clientId);
         appPushRequest.setClientId(clientIds);
         //穿透模版:发送后不会在系统通知栏展现，SDK将消息传给第三方应用后需要开发者写展现代码才能看到。
-        AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
-        appNotificationTemplate.setTitle("安装应用");
+        AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("data",pushAndroidAppInfo);
         System.out.println(jsonObject.toString());
-        appNotificationTemplate.setTransmissionContent(jsonObject.toJSONString());
-        /*appNotificationTemplate.setUrl();*/
-        appNotificationTemplate.setLogo(app.getIconName());
-        appNotificationTemplate.setLogoUrl(app.getIconUrl());
-        appPushRequest.setAppNotificationTemplate(appNotificationTemplate);
-        Map<String, Object> resultMap = GeTuiUtil.appBatchPush(appPushRequest);
+        appTransmissionTemplate.setTransmissionContent(jsonObject.toJSONString());
+        Map<String, Object> resultMap = GeTuiUtil.appCustomPush(appPushRequest);
         Boolean result = false;
         //如果推送成功就个推会返回 {result=ok, contentId=OSL-0520_2vlMMg1urX5H7l3cxFuwS3}
         if (resultMap.get("result").equals("ok")) {
