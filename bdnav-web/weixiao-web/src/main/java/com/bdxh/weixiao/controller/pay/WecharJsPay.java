@@ -11,9 +11,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.common.wechatpay.js.domain.JsOrderPayResponse;
 import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
-import com.bdxh.order.dto.AddOrderDto;
-import com.bdxh.order.dto.AddOrderItemDto;
-import com.bdxh.order.dto.AddPayOrderDto;
+import com.bdxh.order.dto.*;
 import com.bdxh.order.enums.*;
 import com.bdxh.order.feign.OrderItemControllerClient;
 import com.bdxh.order.feign.OrdersControllerClient;
@@ -90,11 +88,11 @@ public class WecharJsPay {
         addOrderDto.setUserType(BaseUserTypeEnum.FAMILY);
         //微信openid
         addOrderDto.setOpenId(addPayOrderDto.getOpenId());
-        //订单总金额
+        //订单总金额(根据商品id查询并非前端传递)
         addOrderDto.setTotalMoney(addPayOrderDto.getTotalMoney());
-        //订单金额
+        //订单金额(根据商品id查询并非前端传递)
         addOrderDto.setOrderMoney(addPayOrderDto.getOrderMoney());
-        //支付金额
+        //支付金额(根据商品id查询并非前端传递)
         addOrderDto.setPayMoney(addPayOrderDto.getPayMoney());
         //交易状态，默认为进行中
         addOrderDto.setTradeStatus(OrderTradeStatusEnum.TRADING);
@@ -166,7 +164,7 @@ public class WecharJsPay {
         //返回预下单信息
         JSONObject jsonObject = JSONObject.parseObject(jsOrderWrapper.getResult().toString());
 
-        //封装前端 微信 H5吊起支付对象
+        //封装前端 微信 H5吊起支付对象,返回预订单信息
         JsOrderPayResponse jsOrderPayResponse = new JsOrderPayResponse();
         jsOrderPayResponse.setAppId(jsonObject.getString("appid"));
         jsOrderPayResponse.setTimeStamp(System.currentTimeMillis() / 1000L + "");
@@ -183,7 +181,13 @@ public class WecharJsPay {
         String paramStr = BeanToMapUtil.mapToString(paramMap);
         String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.JS.APP_KEY);
         jsOrderPayResponse.setPaySign(sign);
-        //返回预订单信息
+
+        //我方订单号绑定微信第三方订单号信息
+        ModifyPayOrderDto modifyPayOrderDto = new ModifyPayOrderDto();
+        modifyPayOrderDto.setOrderNo(orderNo);
+        modifyPayOrderDto.setThirdOrderNo(jsonObject.getString("prepay_id"));
+        ordersControllerClient.modifyBindOrder(modifyPayOrderDto);
+
         return WrapMapper.ok(jsOrderPayResponse);
     }
 
