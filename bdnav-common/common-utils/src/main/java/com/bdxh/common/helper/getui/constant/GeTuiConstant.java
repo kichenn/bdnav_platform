@@ -12,6 +12,15 @@ public class GeTuiConstant {
      */
     public static final String HOST = "http://sdk.open.api.igexin.com/apiex.htm";
 
+    //单个应用管控解锁推送标识
+    public static final String SINGLE_APP_CONTROLL="singleAppControll";
+
+    //审批畅玩推送标识
+    public static final String ALL_APP_CONTROLL="allAppControll";
+
+    //应用安装推送
+    public static final String INSTALLATION_APP="installationApp";
+
     /**
      * 个推相关请参
      */

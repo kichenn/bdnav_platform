@@ -3,6 +3,7 @@ package com.bdxh.order.fallback;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.AddOrderDto;
+import com.bdxh.order.dto.ModifyPayOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
@@ -21,7 +22,7 @@ import org.springframework.stereotype.Component;
 public class OrdersControllerClientFallback implements OrdersControllerClient {
 
     @Override
-    public Wrapper deleteOrder(String schoolCode,Long userId,Long orderNo) {
+    public Wrapper deleteOrder(String schoolCode, Long userId, Long orderNo) {
         return WrapMapper.error();
     }
 
@@ -37,6 +38,11 @@ public class OrdersControllerClientFallback implements OrdersControllerClient {
 
     @Override
     public Wrapper createOrder(AddOrderDto addOrderDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper modifyBindOrder(ModifyPayOrderDto modifyPayOrderDto) {
         return WrapMapper.error();
     }
 }

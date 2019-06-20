@@ -36,7 +36,7 @@ public class TrajectoryController {
         FindTrackRequest findTrackRequest=new FindTrackRequest();
         findTrackRequest.setAk(FenceConstant.AK);
         findTrackRequest.setService_id(FenceConstant.SERVICE_ID);
-        findTrackRequest.setEntity_name("accountId:"+accountId);
+        findTrackRequest.setEntity_name("accountId_"+accountId);
         findTrackRequest.setStart_time(startTime);
         findTrackRequest.setEnd_time(endTime);
         //打开轨迹纠偏，返回纠偏后轨迹
@@ -65,7 +65,7 @@ public class TrajectoryController {
     @RequestMapping(value = "/findLatestPoint", method = RequestMethod.GET)
     @ApiOperation(value = "家长端鹰眼轨迹------查询单个孩子的实时位置信息")
     public Object findLatestPoint (@RequestParam("accountId") @NotNull(message = "监控对象实体不能为null") String accountId) {
-        String result=FenceUtils.getLatestPoint("account:"+accountId);
+        String result=FenceUtils.getLatestPoint("accountId_"+accountId);
            System.out.println(result);
            JSONObject jsonObject=JSONObject.parseObject(result);
            if(jsonObject.get("status").equals(0)){
