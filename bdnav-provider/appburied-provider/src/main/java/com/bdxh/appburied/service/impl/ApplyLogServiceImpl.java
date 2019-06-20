@@ -6,6 +6,7 @@ import com.bdxh.appburied.dto.ApplyLogQueryDto;
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.service.ApplyLogService;
 import com.bdxh.appburied.vo.informationVo;
+import com.bdxh.common.helper.getui.constant.GeTuiConstant;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -87,6 +88,7 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
        Boolean result= applyLogMapper.modifyVerifyApplyLog(applyLog)>0;
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("data",applyLog);
+        jsonObject.put("key", GeTuiConstant.ALL_APP_CONTROLL);
         log.info("---------------家长审批畅玩推送数据格式{}",jsonObject.toJSONString());
         if(result){
             Boolean  pushResult= GeTuiUtils.pushMove(modifyApplyLogDto.getClientId(),"家长审批",jsonObject.toString());
