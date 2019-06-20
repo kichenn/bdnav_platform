@@ -1,7 +1,7 @@
 package com.bdxh.system.controller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.system.SysBlackUrlQueryDto;
+import com.bdxh.system.dto.SysBlackUrlQueryDto;
 import com.bdxh.system.dto.AddSysBlackUrlDto;
 import com.bdxh.system.vo.SysBlackUrlVo;
 import com.github.pagehelper.PageInfo;
@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bdxh.system.entity.SysBlackUrl;

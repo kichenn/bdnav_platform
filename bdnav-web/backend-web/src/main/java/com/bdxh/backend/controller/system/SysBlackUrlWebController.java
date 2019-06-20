@@ -1,8 +1,7 @@
 package com.bdxh.backend.controller.system;
 
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
-import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.system.SysBlackUrlQueryDto;
+import com.bdxh.system.dto.SysBlackUrlQueryDto;
 import com.bdxh.system.dto.AddSysBlackUrlDto;
 import com.bdxh.system.entity.User;
 import com.bdxh.system.feign.SysBlackUrlControllerClient;

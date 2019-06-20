@@ -1,6 +1,6 @@
 package com.bdxh.system.service.impl;
 
-import com.bdxh.system.SysBlackUrlQueryDto;
+import com.bdxh.system.dto.SysBlackUrlQueryDto;
 import com.bdxh.system.service.SysBlackUrlService;
 import com.bdxh.system.vo.SysBlackUrlVo;
 import com.github.pagehelper.PageHelper;

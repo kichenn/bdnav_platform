@@ -2,7 +2,7 @@ package com.bdxh.system.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.system.SysBlackUrlQueryDto;
+import com.bdxh.system.dto.SysBlackUrlQueryDto;
 import com.bdxh.system.dto.AddSysBlackUrlDto;
 import com.bdxh.system.feign.SysBlackUrlControllerClient;
 import com.github.pagehelper.PageInfo;

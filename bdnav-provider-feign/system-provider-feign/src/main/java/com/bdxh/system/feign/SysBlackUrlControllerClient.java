@@ -1,10 +1,9 @@
 package com.bdxh.system.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.system.SysBlackUrlQueryDto;
+import com.bdxh.system.dto.SysBlackUrlQueryDto;
 import com.bdxh.system.dto.AddSysBlackUrlDto;
 import com.bdxh.system.fallback.SysBlackUrlControllerClientFallback;
-import com.bdxh.system.vo.SysBlackUrlVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
