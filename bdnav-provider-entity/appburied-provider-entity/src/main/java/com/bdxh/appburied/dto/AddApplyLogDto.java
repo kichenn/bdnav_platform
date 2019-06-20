@@ -31,7 +31,7 @@ public class AddApplyLogDto  extends WeiXiaoDto {
 
     @NotNull(message = "APP应用日志模式不能为空")
     @ApiModelProperty("模式 1 单个应用解锁 2 全部解锁 ")
-    private ApplyLogModelEnum applyLogModelEnum;
+    private ApplyLogModelEnum applyLogModelEnum=ApplyLogModelEnum.ALL;
 
 
     @ApiModelProperty("*学校ID")
