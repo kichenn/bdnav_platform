@@ -88,4 +88,9 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
         return schoolStrategyMapper.findSchoolStrategyList(schoolCode,groupId);
     }
 
+    @Override
+    public SchoolStrategy validateTheschoolModel(String schoolCode, Long modelId) {
+        return schoolStrategyMapper.validateTheschoolModel(schoolCode,modelId);
+    }
+
 }

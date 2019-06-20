@@ -51,6 +51,7 @@ public class BlackUrlWebController {
         addBlackUrlDto.setOperatorName(user.getUserName());
         addBlackUrlDto.setSchoolId(user.getSchoolId());
         addBlackUrlDto.setSchoolCode(user.getSchoolCode());
+        addBlackUrlDto.setUrlType(Long.valueOf(1));
         Wrapper wrapMapper = blackUrlControllerClient.addBlack(addBlackUrlDto);
         return wrapMapper;
     }
@@ -67,7 +68,6 @@ public class BlackUrlWebController {
         SchoolUser user = SecurityUtils.getCurrentUser();
         modifyBlackUrlDto.setOperator(user.getId());
         modifyBlackUrlDto.setOperatorName(user.getUserName());
-        modifyBlackUrlDto.setUpdateDate(new Date());
         modifyBlackUrlDto.setSchoolId(user.getSchoolId());
         modifyBlackUrlDto.setSchoolCode(user.getSchoolCode());
         Wrapper wrapMapper = blackUrlControllerClient.modifyBlack(modifyBlackUrlDto);

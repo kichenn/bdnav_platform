@@ -8,7 +8,9 @@ import com.bdxh.school.dto.AddSchoolModeDto;
 import com.bdxh.school.dto.ModifySchoolModeDto;
 import com.bdxh.school.dto.QuerySchoolMode;
 import com.bdxh.school.entity.SchoolMode;
+import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.feign.SchoolModeControllerClient;
+import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.system.entity.User;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -27,6 +29,9 @@ public class SchoolModesWebController {
 
     @Autowired
     private SchoolModeControllerClient schoolModeControllerClient;
+
+    @Autowired
+    private SchoolStrategyControllerClient schoolStrategyControllerClient;
 
 
     @RequestMapping(value = "/addModesInCondition", method = RequestMethod.POST)
@@ -80,14 +85,14 @@ public class SchoolModesWebController {
      */
     @RequestMapping(value = "/delModesById", method = RequestMethod.GET)
     @ApiOperation(value = "删除模式信息", response = Boolean.class)
-    public Object delModesById(@RequestParam("id")Long id) {
-        try {
-            Wrapper wrapper=schoolModeControllerClient.delSchoolModesById(id);
-            return wrapper;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
-        }
+    public Object delModesById(@RequestParam("id")Long id,@RequestParam("schoolCode")String schoolCode) {
+
+            SchoolStrategy ss= schoolStrategyControllerClient.validateTheschoolModel(schoolCode,id).getResult();
+            if (ss!=null){
+                 return WrapMapper.error("该模式正在使用中不能删除");
+              }else{
+                 return WrapMapper.ok(schoolModeControllerClient.delSchoolModesById(id).getResult());
+             }
 
     }
 
