@@ -2,6 +2,7 @@ package com.bdxh.order.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.AddOrderDto;
+import com.bdxh.order.dto.ModifyPayOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
@@ -52,4 +53,11 @@ public interface OrdersControllerClient {
     @RequestMapping(value = "/order/createOrder",method = RequestMethod.POST)
     Wrapper createOrder(@RequestBody AddOrderDto addOrderDto);
 
+    /**
+     * @Description: 我方订单号绑定微信第三方订单号信息
+     * @Author: Kang
+     * @Date: 2019/6/19 18:30
+     */
+    @RequestMapping(value = "/order/modifyBindOrder",method = RequestMethod.POST)
+    Wrapper modifyBindOrder(@RequestBody ModifyPayOrderDto modifyPayOrderDto);
 }
