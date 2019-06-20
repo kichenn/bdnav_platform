@@ -109,4 +109,14 @@ public interface BaseUserControllerClient {
     @RequestMapping(value = "/baseUser/querySchoolUserCategoryCount", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<BaseEchartsVo>> querySchoolUserCategoryCount(@RequestParam(value = "schoolCode", required = false) String schoolCode);
+
+    /**
+     * 修改用户的手机号
+     * @Author: WanMing
+     * @Date: 2019/6/19 14:57
+     */
+    @RequestMapping(value = "/baseUser/modifyUserPhone",method = RequestMethod.GET)
+    @ResponseBody
+     Wrapper modifyUserPhone(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber,
+                                  @RequestParam("newPhone") String newPhone,@RequestParam("oldPhone") String oldPhone);
 }

@@ -42,6 +42,15 @@
         where id=#{id} and school_code=#{schoolCode}
     </update>
 
+    <!--修改手机号-->
+    <update id="modifyPhone">
+        UPDATE t_base_user_unqiue
+        SET phone = #{newPhone}
+        WHERE
+	    phone = #{oldPhone}
+	    AND school_code = #{schoolCode}
+    </update>
+
     <!--新增用户时新增手机号码表-->
     <insert id="insertUserPhone">
     INSERT INTO t_base_user_unqiue (id, phone,school_code) VALUES (#{id},#{phone},#{schoolCode});

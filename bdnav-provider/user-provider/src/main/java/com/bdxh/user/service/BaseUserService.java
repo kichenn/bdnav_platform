@@ -99,4 +99,11 @@ public interface BaseUserService extends IService<BaseUser> {
      * @return
      */
     List<BaseEchartsVo> querySchoolUserCategoryCount(String schoolCode);
+
+    /**
+     * 修改用户手机号
+     * @Author: WanMing
+     * @Date: 2019/6/19 14:59
+     */
+    Boolean modifyUserPhone(String schoolCode, String cardNumber, String newPhone,String oldPhone);
 }

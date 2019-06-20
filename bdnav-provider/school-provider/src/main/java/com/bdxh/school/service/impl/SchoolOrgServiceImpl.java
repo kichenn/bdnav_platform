@@ -129,7 +129,7 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
     @Transactional(rollbackFor = Exception.class)
     public Boolean updateSchoolClassInfo(ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
         SchoolOrg schoolOrg=BeanMapUtils.map(classAdministratorsUpdateDto,SchoolOrg.class);
-        return schoolOrgMapper.updateByPrimaryKeySelective(schoolOrg) > 0;
+        return schoolOrgMapper.updateSchoolClassInfo(schoolOrg) > 0;
     }
 
 }

@@ -25,4 +25,7 @@ public interface BaseUserUnqiueMapper extends Mapper<BaseUserUnqiue> {
     int insertUserPhone(@Param("id")Long id,@Param("phone") String phone,@Param("schoolCode")String schoolCode);
 
     int batchSaveBaseUserPhone(List<BaseUserUnqiue> baseUserUnqiueList);
+
+    //修改手机号
+    int modifyPhone(String schoolCode, String oldPhone, String newPhone);
 }

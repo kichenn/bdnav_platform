@@ -515,5 +515,19 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
         return studentMapper.selectAllStudentInfo(studentQueryDto);
     }
 
+    /**
+     * 修改手机号码
+     *
+     * @param schoolCode
+     * @param cardNumber
+     * @param phone
+     * @Author: WanMing
+     * @Date: 2019/6/19 14:37
+     */
+    @Override
+    public Boolean modifyStudentPhone(String schoolCode, String cardNumber, String phone) {
+        return studentMapper.modifyStudentPhone( schoolCode,  cardNumber,  phone)>0;
+    }
+
 
 }

@@ -21,4 +21,11 @@ public interface BaseUserUnqiueService extends IService<BaseUserUnqiue> {
      * @return
      */
     Integer queryUserPhone(String phone, String schoolCode);
+
+    /**
+     * 修改手机号码
+     * @Author: WanMing
+     * @Date: 2019/6/19 15:08
+     */
+    void modifyPhone(String schoolCode, String oldPhone, String newPhone);
 }

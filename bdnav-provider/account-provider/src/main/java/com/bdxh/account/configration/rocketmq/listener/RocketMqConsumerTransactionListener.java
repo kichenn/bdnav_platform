@@ -82,7 +82,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                     entityRequest.setAk(FenceConstant.AK);
                                     entityRequest.setService_id(FenceConstant.SERVICE_ID);
                                     entityRequest.setEntity_desc("创建单个学生监控对象");
-                                    entityRequest.setEntity_name("accountId:"+account.getId());
+                                    entityRequest.setEntity_name("accountId_"+account.getId());
                                     String entityResult = FenceUtils.createNewEntity(entityRequest);
                                     JSONObject entityJson = JSONObject.parseObject(entityResult);
                                     if (entityJson.getInteger("status") != 0) {
@@ -103,7 +103,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 account.setSchoolCode(accountObject.getString("schoolCode"));
                                 Account account1=accountService.queryAccount(account.getSchoolCode(),account.getCardNumber());
                                 accountService.delete(account);
-                                String entityResult = FenceUtils.deleteNewEntity("accountId:"+account1.getId());
+                                String entityResult = FenceUtils.deleteNewEntity("accountId_"+account1.getId());
                                 JSONObject entityResultJson = JSONObject.parseObject(entityResult);
                                 if (entityResultJson.getInteger("status") != 0) {
                                     throw new RuntimeException("删除围栏中监控对象失败,状态码" + entityResultJson.getInteger("status") + "，原因:" + entityResultJson.getString("message"));

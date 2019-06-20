@@ -16,12 +16,12 @@ import javax.validation.constraints.NotNull;
 public class TrajectoryControllerFallback implements TrajectoryControllerClient {
 
     @Override
-    public Wrapper findTrajectoryInfo(String startTime, String endTime, String schoolCode, String cardNumber) {
+    public Wrapper findTrajectoryInfo(String startTime, String endTime, String accountId) {
         return WrapMapper.error();
     }
 
     @Override
-    public Wrapper findLatestPoint(String schoolCode, String cardNumber) {
+    public Wrapper findLatestPoint(String accountId) {
         return WrapMapper.error();
     }
 }

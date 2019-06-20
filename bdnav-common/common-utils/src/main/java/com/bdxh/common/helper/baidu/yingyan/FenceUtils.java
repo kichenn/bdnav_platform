@@ -7,6 +7,7 @@ import com.bdxh.common.helper.baidu.yingyan.request.CreateNewEntityRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.FindTrackRequest;
 import com.bdxh.common.helper.baidu.yingyan.request.ModifyFenceRoundRequest;
 import com.bdxh.common.utils.HttpClientUtils;
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BeanMap;
 
@@ -249,15 +250,46 @@ public class FenceUtils {
      * 测试创建围栏
      */
     public static void main(String[] args) {
-        String result=deleteNewEntity("1011347968190617");
+/*        String result=deleteNewEntity("1011347968190617");
         JSONObject jsonObject=JSONObject.parseObject(result);
-        System.out.println(jsonObject);
+        System.out.println(jsonObject);*/
 /*         String result=getLatestPoint("2011032919040314");
         JSONObject jsonObject=JSONObject.parseObject(result);
         System.out.println(jsonObject);
         if(jsonObject.get("status").equals(0)){
             System.out.println(jsonObject.getString("latest_point"));
         }*/
+        CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
+        entityRequest.setAk(FenceConstant.AK);
+        entityRequest.setService_id(FenceConstant.SERVICE_ID);
+        entityRequest.setEntity_desc("创建单个学生监控对象");
+        entityRequest.setEntity_name("accountId_590153493470642176");
+        String entityResult = FenceUtils.createNewEntity(entityRequest);
+        JSONObject entityJson = JSONObject.parseObject(entityResult);
+        System.out.println("----------------"+entityJson);
+
+        FindTrackRequest findTrackRequest=new FindTrackRequest();
+        findTrackRequest.setAk(FenceConstant.AK);
+        findTrackRequest.setService_id(FenceConstant.SERVICE_ID);
+        findTrackRequest.setEntity_name("accountId_590153493470642176");
+        findTrackRequest.setStart_time( System.currentTimeMillis() / 1000L + "");
+        findTrackRequest.setEnd_time( System.currentTimeMillis()+60*60*5 / 1000L + "");
+        //打开轨迹纠偏，返回纠偏后轨迹
+        findTrackRequest.setIs_processed(1);
+        //使用最短步行路线距离补充
+        findTrackRequest.setSupplement_mode("walking");
+        findTrackRequest.setSort_type("desc");
+        findTrackRequest.setPage_index(1);
+        findTrackRequest.setPage_size(5000);
+        String result=FenceUtils.getTrack(findTrackRequest);
+        JSONObject jsonObject=JSONObject.parseObject(result);
+        if(jsonObject.get("status").equals(0)){
+            log.info(jsonObject.getString("points"));
+        }else{
+            /*,状态码" + jsonObject.getInteger("status") + "*/
+            log.info("查询轨迹失败，原因:" + jsonObject.getString("message"));
+        }
+
 /*
 
 try {

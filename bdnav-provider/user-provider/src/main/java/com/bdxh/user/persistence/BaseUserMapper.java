@@ -60,4 +60,7 @@ public interface BaseUserMapper extends Mapper<BaseUser> {
 
     //统计用户分类的数量
     List<BaseEchartsVo> querySchoolUserCategoryCount(@Param("schoolCode")String schoolCode, @Param("userType")Integer userType);
+
+    //修改用户手机号
+    int modifyUserPhone(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber, @Param("newPhone")String newPhone);
 }

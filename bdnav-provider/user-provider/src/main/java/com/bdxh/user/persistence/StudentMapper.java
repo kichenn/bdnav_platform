@@ -55,5 +55,6 @@ public interface StudentMapper extends Mapper<Student> {
     //学生激活
     int updateStudentActivation(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("activate")Byte activate);
 
-
+    //修改手机号码
+    int modifyStudentPhone(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber,@Param("phone") String phone);
 }

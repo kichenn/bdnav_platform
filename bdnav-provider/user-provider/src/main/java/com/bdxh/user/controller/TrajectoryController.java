@@ -32,11 +32,11 @@ public class TrajectoryController {
     @ApiOperation(value = "家长端鹰眼轨迹------查询单个孩子的轨迹信息")
     public Object findTrajectoryInfo(@RequestParam("startTime")@NotNull(message = "开始时间不能为空")String startTime,
                                      @RequestParam("endTime")@NotNull(message = "结束时间不能为空")String endTime,
-                                     @RequestParam("schoolCode")@NotNull(message = "学校Code不能为空")String schoolCode,
-                                     @RequestParam("cardNumber")@NotNull(message = "学生卡号不能为空")String cardNumber){ FindTrackRequest findTrackRequest=new FindTrackRequest();
+                                     @RequestParam("accountId") @NotNull(message = "监控对象实体不能为null") String accountId){
+        FindTrackRequest findTrackRequest=new FindTrackRequest();
         findTrackRequest.setAk(FenceConstant.AK);
         findTrackRequest.setService_id(FenceConstant.SERVICE_ID);
-        findTrackRequest.setEntity_name(schoolCode+cardNumber);
+        findTrackRequest.setEntity_name("accountId_"+accountId);
         findTrackRequest.setStart_time(startTime);
         findTrackRequest.setEnd_time(endTime);
         //打开轨迹纠偏，返回纠偏后轨迹
@@ -59,15 +59,13 @@ public class TrajectoryController {
 
     /**
      * 家长端鹰眼轨迹------查询单个孩子的实时位置信息
-     * @param schoolCode 学校Code     用来拼接ENTITY 查询entity的轨迹点
-     * @param cardNumber 学生卡号
+     * @param accountId 监控对象实体名称
      * @return
      */
     @RequestMapping(value = "/findLatestPoint", method = RequestMethod.GET)
     @ApiOperation(value = "家长端鹰眼轨迹------查询单个孩子的实时位置信息")
-    public Object findLatestPoint (@RequestParam("schoolCode") @NotNull(message = "学校Code不能为空") String schoolCode,
-                                   @RequestParam("cardNumber") @NotNull(message = "学生卡号不能为空") String cardNumber) {
-        String result=FenceUtils.getLatestPoint(schoolCode+cardNumber);
+    public Object findLatestPoint (@RequestParam("accountId") @NotNull(message = "监控对象实体不能为null") String accountId) {
+        String result=FenceUtils.getLatestPoint("accountId_"+accountId);
            System.out.println(result);
            JSONObject jsonObject=JSONObject.parseObject(result);
            if(jsonObject.get("status").equals(0)){

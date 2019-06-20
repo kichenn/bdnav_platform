@@ -20,6 +20,7 @@ import com.bdxh.common.utils.RandomUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import com.google.common.base.Preconditions;
@@ -75,6 +76,9 @@ public class SecurityController {
 
     @Autowired
     private UserDeviceControllerClient userDeviceControllerClient;
+
+    @Autowired
+    private BaseUserControllerClient baseUserControllerClient;
 
     @ApiOperation(value = "获取token(用户登录)", response = Boolean.class)
     @RequestMapping(value = "/authenticationApp/login", method = RequestMethod.GET)
@@ -259,14 +263,21 @@ public class SecurityController {
         //生成随机数
         String code = RandomUtil.createNumberCode(4);
         redisUtil.setWithExpireTime(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX + phone, code, AliyunSmsConstants.CodeConstants.CAPTCHA_TIME);
-        Boolean result = SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_CHANGE_PHONE, phone, code);
+//        SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_CHANGE_PHONE, phone, code+",:修改手机号的");
+        SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_VERIFICATION, phone, code + ",:修改手机号的");
         log.info(" code {}, phone {}", code,phone);
-        return WrapMapper.ok(result);
+        return WrapMapper.ok(Boolean.TRUE);
     }
 
     @PostMapping("/modifyPhone")
     @ApiOperation(value = "修改手机号码", response = Boolean.class)
     public Object modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto) {
-        return accountControllerClient.modifyPhone(modifyAccountPhoneDto);
+        Wrapper wrapper = accountControllerClient.modifyPhone(modifyAccountPhoneDto);
+        if(Wrapper.SUCCESS_CODE==wrapper.getCode()){
+            //修改成功 同时修改 基础用户表 索引表 学生表 数据
+            baseUserControllerClient.modifyUserPhone(modifyAccountPhoneDto.getSchoolCode(), modifyAccountPhoneDto.getCardNumber()
+                    , modifyAccountPhoneDto.getNewPhone(), modifyAccountPhoneDto.getOldPhone());
+        }
+        return wrapper;
     }
 }
