@@ -230,8 +230,11 @@ public class AccountController {
         }
         //校验验证码
         String aliCode = redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX+modifyAccountPhoneDto.getOldPhone());
+        if(null==aliCode){
+            return WrapMapper.error("验证码已过期,请重新发送");
+        }
         if(!modifyAccountPhoneDto.getCode().equals(aliCode)){
-            return WrapMapper.error("验证码错误");
+            return WrapMapper.error("验证码错误,请查看短信确认");
         }
         //查询新手机号是否已存在
         Account account = accountService.findAccountByLoginNameOrPhone(modifyAccountPhoneDto.getNewPhone(), null);

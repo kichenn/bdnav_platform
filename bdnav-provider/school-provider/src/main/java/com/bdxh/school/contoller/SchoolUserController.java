@@ -7,15 +7,9 @@ import com.bdxh.school.dto.AddSchoolUserDto;
 import com.bdxh.school.dto.ModifySchoolUserDto;
 import com.bdxh.school.dto.SchoolUserQueryDto;
 import com.bdxh.school.dto.ShowSchoolUserModifyPrefixDto;
-import com.bdxh.school.entity.School;
-import com.bdxh.school.entity.SchoolDept;
-import com.bdxh.school.entity.SchoolRole;
-import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.entity.*;
 import com.bdxh.school.enums.SchoolUserStatusEnum;
-import com.bdxh.school.service.SchoolDeptService;
-import com.bdxh.school.service.SchoolRoleService;
-import com.bdxh.school.service.SchoolService;
-import com.bdxh.school.service.SchoolUserService;
+import com.bdxh.school.service.*;
 import com.bdxh.school.vo.SchoolUserShowVo;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -48,9 +42,12 @@ public class SchoolUserController {
 
     @Autowired
     private SchoolService schoolService;
+/*
+    @Autowired
+    private SchoolDeptService schoolDeptService;*/
 
     @Autowired
-    private SchoolDeptService schoolDeptService;
+    private SchoolOrgService schoolOrgService;
 
     @Autowired
     private SchoolRoleService schoolRoleService;
@@ -143,9 +140,9 @@ public class SchoolUserController {
         ShowSchoolUserModifyPrefixDto ssumpd = new ShowSchoolUserModifyPrefixDto();
         BeanUtils.copyProperties(user, ssumpd);
         School school = schoolService.findSchoolById(ssumpd.getSchoolId()).orElse(new School());
-        SchoolDept schoolDept = schoolDeptService.selectByKey(ssumpd.getDeptId());
+        SchoolOrg schoolDept = schoolOrgService.findSchoolOrgInfo(ssumpd.getDeptId());
         ssumpd.setSchoolName(school.getSchoolName());
-        ssumpd.setDeptName(schoolDept != null ? schoolDept.getName() : "");
+        ssumpd.setDeptName(schoolDept != null ? schoolDept.getOrgName() : "");
         List<Map<Long, String>> maps = schoolRoleService.findRoleByUserIdResultMap(ssumpd.getId());
         if (CollectionUtils.isNotEmpty(maps)) {
             ssumpd.setRoles(JSONArray.toJSONString(maps));
@@ -195,15 +192,15 @@ public class SchoolUserController {
 
     /**
      * 根据学校ID和username查找用户信息
+     *
      * @param schoolId
      * @param userName
      * @return
      */
     @RequestMapping(value = "/findSchoolUserByUserNameAndSchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "根据学校ID和username查找用户信息", response = Boolean.class)
-    public Object findSchoolUserByUserNameAndSchoolId(@RequestParam(name = "schoolId")Long schoolId,@RequestParam(name = "userName")String userName)
-    {
-        SchoolUser schoolUser=new SchoolUser();
+    public Object findSchoolUserByUserNameAndSchoolId(@RequestParam(name = "schoolId") Long schoolId, @RequestParam(name = "userName") String userName) {
+        SchoolUser schoolUser = new SchoolUser();
         schoolUser.setSchoolId(schoolId);
         schoolUser.setUserName(userName);
         return WrapMapper.ok(schoolUserService.select(schoolUser));
