@@ -77,17 +77,6 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                     Boolean result=accountService.updateOrInsertAccount(account);
                                 if(result){
                                     log.info("===========同步account成功==========");
-                                    //添加百度地图监控对象实体 对象标识格式  accountId:xxxxxx
-                                    CreateNewEntityRequest entityRequest = new CreateNewEntityRequest();
-                                    entityRequest.setAk(FenceConstant.AK);
-                                    entityRequest.setService_id(FenceConstant.SERVICE_ID);
-                                    entityRequest.setEntity_desc("创建单个学生监控对象");
-                                    entityRequest.setEntity_name("accountId_"+account.getId());
-                                    String entityResult = FenceUtils.createNewEntity(entityRequest);
-                                    JSONObject entityJson = JSONObject.parseObject(entityResult);
-                                    if (entityJson.getInteger("status") != 0) {
-                                        throw new RuntimeException("增加监控终端实体失败,名称：" + account.getUserName() + "，失败,状态码" + entityJson.getInteger("status") + "，原因:" + entityJson.getString("message"));
-                                    }
                                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
                                 }else{
                                     log.info("===========同步account失败==========");

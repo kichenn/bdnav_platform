@@ -11,7 +11,11 @@ public class FenceConstant {
     public static final String AK = "hS2ggfP9IIGxKFDeff87I7rqEdar07bf";
 
     //学校端围栏service的唯一标识
-    public static final int SERVICE_ID = 212229;
+    public static final int SERVICE_ID = 200853;
+
+    //百度地图安全码
+    public static final String MCODE = "21:D7:5B:22:7C:D2:E0:09:B0:DD:6E:1A:E3:C9:82:4C:BB:61:E0:C9;com.bdxht.plumeui";
+
 
     /**
      * 单位：米。每个轨迹点都有一个定位误差半径radius，
@@ -64,25 +68,25 @@ public class FenceConstant {
     /**
      * 查询围栏底下所有entity URL get请求
      */
-    public static final String SEL_ROUND_IN_ENTITY_URL="http://yingyan.baidu.com/api/v3/entity/list";
+    public static final String SEL_ROUND_IN_ENTITY_URL = "http://yingyan.baidu.com/api/v3/entity/list";
 
     /**
      * 查询所有围栏信息 GET请求
      */
-    public static final String SEL_ROUND_IN_FENCE_URL="http://yingyan.baidu.com/api/v3/fence/list";
+    public static final String SEL_ROUND_IN_FENCE_URL = "http://yingyan.baidu.com/api/v3/fence/list";
 
     /**
      * 查询单个实体的鹰眼轨迹 GET请求
      */
-    public static final String SEL_YINYAN_TRACK_URL ="http://yingyan.baidu.com/api/v3/track/gettrack";
+    public static final String SEL_YINYAN_TRACK_URL = "http://yingyan.baidu.com/api/v3/track/gettrack";
 
     /**
      * 查询某service下的某一个围栏下的所有entity，方便开发者管理查询entity GET请求
      */
-    public static final String SEL_ENTITY_IN_FENCE_URL="http://yingyan.baidu.com/api/v3/fence/listmonitoredperson";
+    public static final String SEL_ENTITY_IN_FENCE_URL = "http://yingyan.baidu.com/api/v3/fence/listmonitoredperson";
 
     /**
      * 查找entity最近一个轨迹点，支持实时纠偏。 GET请求
      */
-    public static final String SEL_YINYAN_LATESTPOINT_URL="http://yingyan.baidu.com/api/v3/track/getlatestpoint";
+    public static final String SEL_YINYAN_LATESTPOINT_URL = "http://yingyan.baidu.com/api/v3/track/getlatestpoint";
 }
