@@ -100,6 +100,7 @@ public class AppStatusServiceImpl extends BaseService<AppStatus> implements AppS
                 //判断状态选择推送模板
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("data", appStatus);
+                log.info("-------------------家长应用管控推送数据格式{}",jsonObject.toJSONString());
                 if (appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
                     log.debug("---------------------------------家长锁定锁定应用");
                     pushResult = GeTuiUtils.pushMove(weiXiaoAppStatusUnlockOrLokingDto.getClientId(), "锁定应用", jsonObject.toString());

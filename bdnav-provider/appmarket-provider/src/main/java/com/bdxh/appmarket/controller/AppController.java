@@ -289,7 +289,7 @@ public class AppController {
         AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
         JSONObject jsonObject=new JSONObject();
         jsonObject.put("data",pushAndroidAppInfo);
-        System.out.println(jsonObject.toString());
+        log.info("------------------家长安装推送推送数据格式{}",jsonObject.toJSONString());
         appTransmissionTemplate.setTransmissionContent(jsonObject.toJSONString());
         Map<String, Object> resultMap = GeTuiUtil.appCustomPush(appPushRequest);
         Boolean result = false;
