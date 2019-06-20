@@ -1,6 +1,7 @@
 package com.bdxh.app.controller.applycontrols;
 
 
+import com.alibaba.fastjson.JSONObject;
 import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.security.utils.SecurityUtils;
 import com.bdxh.appburied.dto.AddApplyLogDto;
@@ -276,10 +277,13 @@ public class ApplyControlsWebController {
      *
      * @return
      */
-    @RequestMapping(value = "/addFeedback", method = RequestMethod.GET)
+    @RequestMapping(value = "/checkMymessages", method = RequestMethod.GET)
     @ApiOperation(value = "查询当前用户下的申请消息", response = informationVo.class)
-    public Object addFeedback(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
-        return applyLogControllerClient.checkMymessages(schoolCode, cardNumber);
+    public Object checkMymessages(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+        JSONObject obj=new JSONObject();
+        List<informationVo> list=applyLogControllerClient.checkMymessages(schoolCode, cardNumber).getResult();
+        obj.put("data",list);
+        return WrapMapper.ok(obj);
     }
 
 
