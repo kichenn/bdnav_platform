@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.system.persistence.SysBlackUrlMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.system.entity.SysBlackUrl">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="name" jdbcType="VARCHAR" property="name"/>
+	  <result column="ip" jdbcType="VARCHAR" property="ip"/>
+	  <result column="origin" jdbcType="TINYINT" property="origin"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="operator" jdbcType="BIGINT" property="operator"/>
+	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,`name`,ip,origin,create_date,update_date,operator,operator_name,remark
+	</sql>
+	<select id="getSysBlackUrlAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM sys_black_url 
+	</select>
+
+	<!--根据条件分页查询-->
+	<select id="findSysBlackUrlByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM sys_black_url
+		<where>
+			<if test="sysBlackUrl.name!=null and sysBlackUrl.name!=''">
+				AND `name` LIKE CONCAT("%",#{sysBlackUrl.name},"%")
+			</if>
+			<if test="sysBlackUrl.ip!=null and sysBlackUrl.ip!=''">
+				AND ip LIKE CONCAT("%",#{sysBlackUrl.ip},"%")
+			</if>
+			<if test="sysBlackUrl.origin!=null and sysBlackUrl.origin!=''">
+				AND origin = #{sysBlackUrl.origin}
+			</if>
+		</where>
+		ORDER BY create_date DESC
+	</select>
+
+	<!--查询单个url是否存在-->
+	<select id="querySysBlackUrlByUrl" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM  sys_black_url WHERE ip = #{url}
+	</select>
+
+	<delete id="delSysBlackUrlInIds" parameterType="Integer">
+	  DELETE
+	   FROM sys_black_url
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>
