@@ -258,15 +258,14 @@ public class SecurityController {
         return accountControllerClient.getCaptcha(phone);
     }
 
-    @GetMapping("/authenticationApp/getCodeByOldPhoneNum")
-    @ApiOperation(value = "根据原手机号获取验证码", response = Boolean.class)
+    @GetMapping("/getCodeByNewPhoneNum")
+    @ApiOperation(value = "根据新手机号获取验证码", response = Boolean.class)
     public Object getCodeByOldPhoneNum(@RequestParam("phone") String phone) {
         //生成随机数
         String code = RandomUtil.createNumberCode(4);
         redisUtil.setWithExpireTime(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX + phone, code, AliyunSmsConstants.CodeConstants.CAPTCHA_TIME);
 //        SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_CHANGE_PHONE, phone, code+",:修改手机号的");
         SmsUtil.sendMsgHelper(SmsTempletEnum.TEMPLATE_VERIFICATION, phone, code + ",:修改手机号的");
-        log.info(" code {}, phone {}", code,phone);
         return WrapMapper.ok(Boolean.TRUE);
     }
 
@@ -281,7 +280,6 @@ public class SecurityController {
         }
         return wrapper;
     }
-
 
     /**
      * 验证用户的密码
