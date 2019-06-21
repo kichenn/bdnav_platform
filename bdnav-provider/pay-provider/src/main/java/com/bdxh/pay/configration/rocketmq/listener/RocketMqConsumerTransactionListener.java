@@ -84,20 +84,20 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 //微信支付后 异步通知处理
                 JSONObject jsonObject = JSONObject.parseObject(msgBody);
                 //获取wx预订单
-                String orderNo = jsonObject.getString("orderNo");
+                String wxOrderNo = jsonObject.getString("orderNo");
+                //预支付订单查询我方订单号
+                OrderVo orderVo = ordersControllerClient.findThirdOrderByOrderNo(wxOrderNo).getResult();
+                if (orderVo == null) {
+                    log.error("预支付订单查询我方订单失败,预订单:{}", wxOrderNo);
+                    continue;
+                }
                 //根据订单号查询订单信息
                 try {
-                    Wrapper wrapper = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(orderNo);
+                    Wrapper wrapper = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(String.valueOf(orderVo.getOrderNo()));
                     if (wrapper.getCode() == Wrapper.SUCCESS_CODE) {
                         //查询成功
                         WechatOrderQueryVo wechatOrderQueryVo = (WechatOrderQueryVo) wrapper.getResult();
                         log.info("查询订单成功:{}", JSONObject.toJSONString(wechatOrderQueryVo));
-                        //预支付订单查询我方订单号
-                        OrderVo orderVo = ordersControllerClient.findThirdOrderByOrderNo(orderNo).getResult();
-                        if (orderVo == null) {
-                            log.error("预支付订单查询我方订单失败,预订单:{}", orderNo);
-                            continue;
-                        }
                         //订单与订单子项
                         List<OrderItemVo> orderItems = orderItemControllerClient.findOrderItemByOrderNo(orderVo.getOrderNo()).getResult();
                         //修改订单信息，并且增加相应商品权限，并重新授权

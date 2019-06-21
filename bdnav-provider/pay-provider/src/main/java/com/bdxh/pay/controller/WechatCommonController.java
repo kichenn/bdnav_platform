@@ -56,7 +56,7 @@ public class WechatCommonController {
         //发送微信下单请求
         String requestStr = XmlUtils.toXML(orderQueryRequest);
         //输出微信请求串
-        log.info(requestStr);
+        log.info("微信入参:{}",requestStr);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Charset", "utf-8");
@@ -68,7 +68,7 @@ public class WechatCommonController {
         }
         String responseEntityStr = responseEntity.getBody();
         //输出微信返回结果
-        log.info(responseEntityStr);
+        log.info("微信返参:{}",responseEntityStr);
         if (StringUtils.isNotEmpty(responseEntityStr)) {
             SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(responseEntityStr);
             if (StringUtils.equals("SUCCESS", resultMap.get("return_code")) && StringUtils.equals("SUCCESS", resultMap.get("result_code"))) {

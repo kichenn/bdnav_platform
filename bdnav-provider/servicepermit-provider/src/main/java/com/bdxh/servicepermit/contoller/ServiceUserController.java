@@ -3,6 +3,8 @@ package com.bdxh.servicepermit.contoller;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.servicepermit.dto.*;
+import com.bdxh.servicepermit.enums.ServiceStatusEnum;
+import com.bdxh.servicepermit.enums.ServiceTypeEnum;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -77,7 +79,7 @@ public class ServiceUserController {
     @RequestMapping(value = "/findServicePermitByCondition", method = RequestMethod.GET)
     public Object findServicePermitByCondition(@RequestParam("schoolCode") String schoolCode, @RequestParam("studentCardNumber") String studentCardNumber, @RequestParam("familyCardNumber") String familyCardNumber) {
         //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
-        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, 1, null);
+        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, Integer.valueOf(ServiceTypeEnum.ON_TRIAL.getKey()), null);
         if (CollectionUtils.isNotEmpty(serviceUsers)) {
             ServiceUser serviceUser = serviceUsers.get(0);
             if (serviceUser.getStatus().equals(1) && serviceUser.getEndTime().after(new Date())) {
@@ -85,7 +87,7 @@ public class ServiceUserController {
                 return WrapMapper.ok();
             }
             //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
-            List<ServiceUser> serviceUserTos = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, 2, 1);
+            List<ServiceUser> serviceUserTos = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, Integer.valueOf(ServiceTypeEnum.FORMAL.getKey()), Integer.valueOf(ServiceStatusEnum.NORMAL_USE.getValue()));
             if (CollectionUtils.isNotEmpty(serviceUserTos)) {
                 ServiceUser serviceUserTo = serviceUserTos.get(0);
                 if (serviceUserTo.getEndTime().after(new Date())) {
@@ -110,7 +112,7 @@ public class ServiceUserController {
     public Object createOnTrialService(@Validated @RequestBody AddNoTrialServiceUserDto addNoTrialServiceUserDto) {
         //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
         //商品类型为试用，试用代表的是试用所有的商品
-        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(addNoTrialServiceUserDto.getSchoolCode(), addNoTrialServiceUserDto.getStudentNumber(), addNoTrialServiceUserDto.getCardNumber(), null, 1, null);
+        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(addNoTrialServiceUserDto.getSchoolCode(), addNoTrialServiceUserDto.getStudentNumber(), addNoTrialServiceUserDto.getCardNumber(), null,  Integer.valueOf(ServiceTypeEnum.ON_TRIAL.getKey()), null);
         if (CollectionUtils.isNotEmpty(serviceUsers)) {
             //该孩子没有试用资格
             return WrapMapper.notNoTrial("该孩子没有试用资格");
