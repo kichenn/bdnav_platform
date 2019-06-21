@@ -19,6 +19,7 @@ import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.RandomUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.enums.SchoolUserTypeEnum;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
@@ -274,10 +275,22 @@ public class SecurityController {
     public Object modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto) {
         Wrapper wrapper = accountControllerClient.modifyPhone(modifyAccountPhoneDto);
         if(Wrapper.SUCCESS_CODE==wrapper.getCode()){
-            //修改成功 同时修改 基础用户表 索引表 学生表 数据
+            //修改成功 同时修改 账户 账户索引表 基础用户表 基础用户索引表 学生表 数据
             baseUserControllerClient.modifyUserPhone(modifyAccountPhoneDto.getSchoolCode(), modifyAccountPhoneDto.getCardNumber()
                     , modifyAccountPhoneDto.getNewPhone(), modifyAccountPhoneDto.getOldPhone());
         }
         return wrapper;
+    }
+
+
+    /**
+     * 验证用户的密码
+     * @Author: WanMing
+     * @Date: 2019/6/21 12:07
+     */
+    @PostMapping("/verifyPassword")
+    @ApiOperation(value = "验证密码", response = Boolean.class)
+    public Object verifyPassword(String password){
+        return accountControllerClient.verifyPassword(password,SecurityUtils.getLoginName());
     }
 }

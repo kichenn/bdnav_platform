@@ -68,4 +68,6 @@ public interface AccountMapper extends Mapper<Account> {
      * @return
      */
     int updateAccountPhone(@Param("phone")String phone, @Param("schoolCode")String schoolCode,@Param("cardNumber") String cardNumber);
+
+
 }

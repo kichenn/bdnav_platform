@@ -223,27 +223,50 @@ public class AccountController {
 
     @ApiOperation(value = "修改手机号码", response = Boolean.class)
     @RequestMapping(value = "/modifyPhone", method = RequestMethod.POST)
-    public Object modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto){
+    public Object modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto) {
         //校验手机号
-        if(!ValidatorUtil.isMobile(modifyAccountPhoneDto.getNewPhone())){
+        if (!ValidatorUtil.isMobile(modifyAccountPhoneDto.getNewPhone())) {
             return WrapMapper.error("请输入正确的手机号");
         }
         //校验验证码
-        String aliCode = redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX+modifyAccountPhoneDto.getOldPhone());
-        if(null==aliCode){
+        String aliCode = redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PREFIX + modifyAccountPhoneDto.getNewPhone());
+        if (null == aliCode) {
             return WrapMapper.error("验证码已过期,请重新发送");
         }
-        if(!modifyAccountPhoneDto.getCode().equals(aliCode)){
+        if (!modifyAccountPhoneDto.getCode().equals(aliCode)) {
             return WrapMapper.error("验证码错误,请查看短信确认");
         }
         //查询新手机号是否已存在
         Account account = accountService.findAccountByLoginNameOrPhone(modifyAccountPhoneDto.getNewPhone(), null);
-        if(null!=account){
+        if (null != account) {
             return WrapMapper.error("此手机号已注册");
         }
         return WrapMapper.ok(accountService.modifyPhone(modifyAccountPhoneDto.getNewPhone()
-                ,modifyAccountPhoneDto.getSchoolCode(),modifyAccountPhoneDto.getCardNumber()));
+                , modifyAccountPhoneDto.getSchoolCode(), modifyAccountPhoneDto.getCardNumber()));
 
+    }
+
+    /**
+     * 验证密码
+     *
+     * @Author: WanMing
+     * @Date: 2019/6/21 11:19
+     */
+    @ApiOperation(value = "验证密码", response = Boolean.class)
+    @RequestMapping(value = "/verifyPassword", method = RequestMethod.GET)
+    public Object verifyPassword(@RequestParam("password") String password, @RequestParam("loginName") String loginName) {
+        Account account = accountService.findAccountByLoginNameOrPhone("", loginName);
+        //密码校验
+        try {
+            if (null == account) {
+                throw new Exception("账户异常");
+            }else if(!new BCryptPasswordEncoder().matches(password,account.getPassword())){
+                throw new Exception("密码错误,请重新输入");
+            }
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
     }
 
 
