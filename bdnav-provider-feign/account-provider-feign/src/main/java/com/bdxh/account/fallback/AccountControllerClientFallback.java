@@ -2,6 +2,7 @@ package com.bdxh.account.fallback;
 
 import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
+import com.bdxh.account.entity.AccountUnqiue;
 import com.bdxh.account.feign.AccountControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -78,6 +79,11 @@ public class AccountControllerClientFallback implements AccountControllerClient 
 
     @Override
     public Wrapper verifyPassword(String password, String loginName) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<AccountUnqiue> findAccountInfo(Long id) {
         return WrapMapper.error();
     }
 }
