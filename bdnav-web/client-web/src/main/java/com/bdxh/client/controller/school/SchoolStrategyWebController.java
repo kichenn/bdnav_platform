@@ -201,10 +201,36 @@ public class SchoolStrategyWebController {
      */
     @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/delSchoolStrategyById", method = RequestMethod.GET)
-    @ApiOperation(value = "删除模式信息", response = Boolean.class)
-    public Object delSchoolStrategyById(@RequestParam("id")Long id) {
+    @ApiOperation(value = "删除策略信息", response = Boolean.class)
+    public Object delSchoolStrategyById(@RequestParam("id")Long id,@RequestParam("groupId")Long groupId) {
         try {
+            SchoolUser user = SecurityUtils.getCurrentUser();
             Wrapper wrapper=schoolStrategyControllerClient.delSchoolStrategyById(id);
+            if (wrapper.getResult()==Boolean.TRUE) {
+                List<UserDevice> userDeviceList = userDeviceControllerClient.getUserDeviceAll(user.getSchoolCode(), groupId).getResult();
+                if (CollectionUtils.isNotEmpty(userDeviceList)) {
+                    AppPushRequest appPushRequest = new AppPushRequest();
+                    appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+                    appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+                    appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+                    List<String> clientIds = new ArrayList<>();
+                    //添加用户设备号
+                    for (UserDevice attribute : userDeviceList) {
+                        clientIds.add(attribute.getClientId());
+                    }
+                    appPushRequest.setClientId(clientIds);
+                    //穿透模版
+                    AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
+                    JSONObject obj = new JSONObject();
+                    obj.put("key", "strategyToPush");
+                    obj.put("data", "成功删除该策略");
+                    appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
+                    appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
+                    //群发穿透模版
+                    Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
+                    System.out.println(resultMap.toString());
+                }
+            }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
