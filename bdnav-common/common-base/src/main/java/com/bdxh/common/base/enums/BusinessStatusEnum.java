@@ -8,7 +8,8 @@ package com.bdxh.common.base.enums;
 public enum BusinessStatusEnum {
 
     NO_PROCESS(new Byte("1"), "未处理"),
-    HASE_PROCESS(new Byte("２"), "已处理");
+    HASE_PROCESS(new Byte("２"), " 处理中"),
+    YES_PROCESS(new Byte("3"),"已处理");
 
     private Byte code;
 

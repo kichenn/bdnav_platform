@@ -111,7 +111,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 DateUtil.format(wechatOrderQueryVo.getTimeEnd(), "yyyy-MM-dd HH:mm:ss") : null;
                         modifyPayOrderDto.setPayEndTime(payEndTime);
                         //业务状态
-                        modifyPayOrderDto.setBusinessStatus(BusinessStatusEnum.HASE_PROCESS);
+                        modifyPayOrderDto.setBusinessStatus(BusinessStatusEnum.YES_PROCESS);
                         switch (wechatOrderQueryVo.getPayResult()) {
                             case "SUCCESS":
                                 //支付成功
