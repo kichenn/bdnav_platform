@@ -75,4 +75,9 @@ public class AccountControllerClientFallback implements AccountControllerClient 
     public Wrapper modifyPhone( ModifyAccountPhoneDto modifyAccountPhoneDto) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper verifyPassword(String password, String loginName) {
+        return WrapMapper.error();
+    }
 }

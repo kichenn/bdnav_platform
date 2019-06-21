@@ -81,6 +81,12 @@ public class SysBlackUrlServiceImpl extends BaseService<SysBlackUrl> implements 
 	 */
 	@Override
 	public Boolean querySysBlackUrlByUrl(String url) {
-		return sysBlackUrlMapper.querySysBlackUrlByUrl(url)==null?Boolean.FALSE:Boolean.TRUE;
+		Boolean flag = sysBlackUrlMapper.querySysBlackUrlByUrl(url) != null ? Boolean.TRUE : Boolean.FALSE;
+		if(!flag){
+			//不存在,查金山病毒库
+
+			//如果金山病毒库判断是有害网站,写到病毒库,否则直接返回
+		}
+		return flag;
 	}
 }

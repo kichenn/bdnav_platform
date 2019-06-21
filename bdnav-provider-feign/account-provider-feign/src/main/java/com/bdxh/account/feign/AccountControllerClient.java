@@ -121,4 +121,13 @@ public interface AccountControllerClient {
     @RequestMapping(value = "/account/modifyPhone", method = RequestMethod.POST)
     @ResponseBody
     Wrapper modifyPhone(@Validated @RequestBody ModifyAccountPhoneDto modifyAccountPhoneDto);
+
+    /**
+     * 验证密码
+     * @Author: WanMing
+     * @Date: 2019/6/21 11:19
+     */
+    @RequestMapping(value = "/account/verifyPassword", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper  verifyPassword(@RequestParam("password") String password,@RequestParam("loginName") String loginName);
 }
