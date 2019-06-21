@@ -6,12 +6,14 @@ import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.servicepermit.dto.*;
 import com.bdxh.servicepermit.entity.ServiceRole;
+import com.bdxh.servicepermit.enums.ServiceTypeEnum;
 import com.bdxh.servicepermit.properties.ServiceUserConstant;
 import com.bdxh.servicepermit.service.ServiceRolePermitService;
 import com.bdxh.servicepermit.service.ServiceUserService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -141,8 +143,9 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
     public void createPayService(AddPayServiceUserDto addPayServiceUserDto) {
         //查询此家长的这个孩子的商品权限有没有过期，如果过期则修改商品权限信息为重新生效
         //查询正式使用的商品权限（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，只存在一条数据）
-        ServiceUser serviceUser = findServicePermitByCondition(addPayServiceUserDto.getSchoolCode(), addPayServiceUserDto.getStudentNumber(), addPayServiceUserDto.getCardNumber(), addPayServiceUserDto.getProductId(), 2, null).get(0);
-        if (serviceUser != null) {
+        List<ServiceUser> serviceUsers = findServicePermitByCondition(addPayServiceUserDto.getSchoolCode(), addPayServiceUserDto.getStudentNumber(), addPayServiceUserDto.getCardNumber(), addPayServiceUserDto.getProductId(), Integer.valueOf(ServiceTypeEnum.FORMAL.getKey()), null);
+        if (CollectionUtils.isNotEmpty(serviceUsers)) {
+            ServiceUser serviceUser=serviceUsers.get(0);
             //修改，延长次家长的此孩子的商品权限 (如果该家长以前买过则，此时只要重新续费即可，角色关联信息已经存在，无需修改和添加)
             //可用天数
             serviceUser.setDays(serviceUser.getDays() + addPayServiceUserDto.getDays());
@@ -167,7 +170,7 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
             String startTime = DateUtil.now2();
             String endTime = DateUtil.addDay(startTime, addPayServiceUserDto.getDays());
             //可用天数，默认七天
-            serviceUser1.setDays(serviceUser.getDays());
+            serviceUser1.setDays(ServiceUserConstant.PAY_DAYS);
             //开始使用时间
             serviceUser1.setStartTime(DateUtil.format(startTime, "yyyy-MM-dd"));
             //结束使用时间

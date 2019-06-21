@@ -161,7 +161,11 @@ public class OrderController {
     @RequestMapping(value = "/findOrderByOrderNo1", method = RequestMethod.GET)
     @ApiOperation(value = "根据订单编号查询订单信息1(此方法不在swagger展示，给支付成功后我方订单查询部分信息)", response = OrderVo1.class)
     public Object findOrderByOrderNo1(@RequestParam("orderNo") Long orderNo) {
-        return WrapMapper.ok(orderService.findOrderByOrderNo1(orderNo));
+        OrderVo1 orderVo1 = orderService.findOrderByOrderNo1(orderNo);
+        if (orderVo1 == null) {
+            orderVo1 = new OrderVo1();
+        }
+        return WrapMapper.ok(orderVo1);
     }
 
     /**
