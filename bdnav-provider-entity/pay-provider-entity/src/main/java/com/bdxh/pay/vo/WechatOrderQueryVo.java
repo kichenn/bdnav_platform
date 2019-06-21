@@ -29,4 +29,8 @@ public class WechatOrderQueryVo implements Serializable {
      */
     private String payResult;
 
+    /**
+     * 支付结束时间
+     */
+    private String timeEnd;
 }

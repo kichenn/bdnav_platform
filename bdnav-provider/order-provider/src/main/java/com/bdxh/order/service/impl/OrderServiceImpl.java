@@ -30,7 +30,6 @@ import java.util.*;
 public class OrderServiceImpl extends BaseService<Order> implements OrderService {
 
 
-
     @Autowired
     private OrderMapper orderMapper;
 
@@ -39,6 +38,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 
     /**
      * 根据条件分页查询
+     *
      * @Author: WanMing
      * @Date: 2019/6/5 18:42
      */
@@ -49,7 +49,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         BeanUtils.copyProperties(orderQueryDto, order);
         List<Order> orders = orderMapper.getOrderByCondition(order);
         List<OrderVo> orderVos = new ArrayList<>();
-        orders.stream().forEach(item->{
+        orders.stream().forEach(item -> {
             OrderVo orderVo = new OrderVo();
             BeanUtils.copyProperties(item, orderVo);
             orderVos.add(orderVo);
@@ -101,5 +101,20 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         return orderVo;
     }
 
+    /**
+     * @Description: 第三方订单查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/20 16:22
+     */
+    @Override
+    public OrderVo findThirdOrderByOrderNo(String thirdOrderNo) {
+        Order order = new Order();
+        order.setThirdOrderNo(thirdOrderNo);
+        order = orderMapper.selectOne(order);
+        //数据拷贝
+        OrderVo orderVo = new OrderVo();
+        BeanUtils.copyProperties(order, orderVo);
+        return orderVo;
+    }
 
 }

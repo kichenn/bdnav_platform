@@ -27,7 +27,7 @@ import javax.validation.constraints.NotNull;
 
 
 @Service
-@FeignClient(value ="order-provider-cluster",fallback = OrdersControllerClientFallback.class)
+@FeignClient(value = "order-provider-cluster", fallback = OrdersControllerClientFallback.class)
 public interface OrdersControllerClient {
 
 
@@ -42,22 +42,30 @@ public interface OrdersControllerClient {
                         @RequestParam(name = "orderNo") @NotNull(message = "订单id不能为空") Long orderNo);
 
 
-
-    @RequestMapping(value = "/order/queryUserOrder",method = RequestMethod.POST)
+    @RequestMapping(value = "/order/queryUserOrder", method = RequestMethod.POST)
     Wrapper<PageInfo<OrderVo>> queryUserOrder(@RequestBody OrderQueryDto orderDto);
 
 
-    @RequestMapping(value = "/order/updateOrder",method = RequestMethod.POST)
+    @RequestMapping(value = "/order/updateOrder", method = RequestMethod.POST)
     Wrapper updateOrder(@RequestBody OrderUpdateDto orderUpdateDto);
 
-    @RequestMapping(value = "/order/createOrder",method = RequestMethod.POST)
+    @RequestMapping(value = "/order/createOrder", method = RequestMethod.POST)
     Wrapper createOrder(@RequestBody AddOrderDto addOrderDto);
+
+    /**
+     * @Description: 第三方订单查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/20 16:22
+     */
+    @RequestMapping(value = "/order/findThirdOrderByOrderNo", method = RequestMethod.GET)
+    Wrapper<OrderVo> findThirdOrderByOrderNo(@RequestParam("thirdOrderNo") String thirdOrderNo);
 
     /**
      * @Description: 我方订单号绑定微信第三方订单号信息
      * @Author: Kang
      * @Date: 2019/6/19 18:30
      */
-    @RequestMapping(value = "/order/modifyBindOrder",method = RequestMethod.POST)
-    Wrapper modifyBindOrder(@RequestBody ModifyPayOrderDto modifyPayOrderDto);
+    @RequestMapping(value = "/order/modifyBindOrder", method = RequestMethod.POST)
+    Wrapper<Boolean> modifyBindOrder(@RequestBody ModifyPayOrderDto modifyPayOrderDto);
+
 }

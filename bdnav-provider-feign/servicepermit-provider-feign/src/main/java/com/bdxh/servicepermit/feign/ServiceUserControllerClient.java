@@ -24,6 +24,7 @@ public interface ServiceUserControllerClient {
 
     @RequestMapping(value = "/serviceUser/findServicePermitAll", method = RequestMethod.GET)
     Wrapper<List<ServiceUser>> findServicePermitAll();
+
     /**
      * @Description: 鉴定是否有试用资格
      * @Author: Kang
@@ -43,6 +44,15 @@ public interface ServiceUserControllerClient {
     Wrapper createOnTrialService(@RequestBody AddNoTrialServiceUserDto addNoTrialServiceUserDto);
 
     /**
+     * @Description: 购买服务许可资格
+     * @Author: Kang
+     * @Date: 2019/6/21 9:32
+     */
+    @RequestMapping(value = "/serviceUser/createPayService", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper createPayService(@RequestBody AddPayServiceUserDto addPayServiceUserDto);
+
+    /**
      * @Description: 领取试用服务许可资格
      * @Author: Kang
      * @Date: 2019/6/13 16:50
@@ -57,7 +67,7 @@ public interface ServiceUserControllerClient {
                           @RequestParam(name = "id") Long id);
 
 
-    @RequestMapping(value = "/serviceUser/queryServiceUser",method = RequestMethod.POST)
+    @RequestMapping(value = "/serviceUser/queryServiceUser", method = RequestMethod.POST)
     Wrapper<PageInfo<ServiceUser>> queryServiceUser(@RequestBody QueryServiceUserDto queryServiceUsedDto);
 
 }

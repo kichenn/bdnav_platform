@@ -63,7 +63,7 @@ public class ServiceUserController {
     @ApiOperation(value = "查询所有未过期账号信息", response = Boolean.class)
     @RequestMapping(value = "/findServicePermitAll", method = RequestMethod.GET)
     public Object findServicePermitAll() {
-        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(null, null, null, null, 1);
+        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(null, null, null, null, null, 1);
         return WrapMapper.ok(serviceUsers);
     }
 
@@ -76,15 +76,16 @@ public class ServiceUserController {
     @ApiOperation(value = "鉴定试用资格", response = Boolean.class)
     @RequestMapping(value = "/findServicePermitByCondition", method = RequestMethod.GET)
     public Object findServicePermitByCondition(@RequestParam("schoolCode") String schoolCode, @RequestParam("studentCardNumber") String studentCardNumber, @RequestParam("familyCardNumber") String familyCardNumber) {
-        //家长购买权限的集合信息(试用的集合信息)
-        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, 1, null);
+        //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
+        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, 1, null);
         if (CollectionUtils.isNotEmpty(serviceUsers)) {
             ServiceUser serviceUser = serviceUsers.get(0);
             if (serviceUser.getStatus().equals(1) && serviceUser.getEndTime().after(new Date())) {
                 //正在试用中
                 return WrapMapper.ok();
             }
-            List<ServiceUser> serviceUserTos = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, 2, 1);
+            //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
+            List<ServiceUser> serviceUserTos = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, 2, 1);
             if (CollectionUtils.isNotEmpty(serviceUserTos)) {
                 ServiceUser serviceUserTo = serviceUserTos.get(0);
                 if (serviceUserTo.getEndTime().after(new Date())) {
@@ -107,13 +108,27 @@ public class ServiceUserController {
     @ApiOperation(value = "领取试用服务许可资格", response = Boolean.class)
     @RequestMapping(value = "/createOnTrialService", method = RequestMethod.POST)
     public Object createOnTrialService(@Validated @RequestBody AddNoTrialServiceUserDto addNoTrialServiceUserDto) {
-        //家长购买权限的集合信息(试用的集合信息)
-        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(addNoTrialServiceUserDto.getSchoolCode(), addNoTrialServiceUserDto.getStudentNumber(), addNoTrialServiceUserDto.getCardNumber(), 1, null);
-        if (CollectionUtils.isNotEmpty(serviceUsers)) {
+        //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
+        //商品类型为试用，试用代表的是试用所有的商品
+        ServiceUser serviceUser = serviceUserService.findServicePermitByCondition(addNoTrialServiceUserDto.getSchoolCode(), addNoTrialServiceUserDto.getStudentNumber(), addNoTrialServiceUserDto.getCardNumber(), null, 1, null).get(0);
+        if (serviceUser != null) {
             //该孩子没有试用资格
             return WrapMapper.notNoTrial("该孩子没有试用资格");
         }
         serviceUserService.createOnTrialService(addNoTrialServiceUserDto);
+        return WrapMapper.ok();
+    }
+
+    /**
+     * 购买服务许可资格 [swagger忽略不展示，此方法只在微信支付成功之后调用]
+     *
+     * @return
+     */
+    @ApiIgnore
+    @ApiOperation(value = "购买服务许可资格", response = Boolean.class)
+    @RequestMapping(value = "/createPayService", method = RequestMethod.POST)
+    public Object createPayService(@Validated @RequestBody AddPayServiceUserDto addPayServiceUserDto) {
+        serviceUserService.createPayService(addPayServiceUserDto);
         return WrapMapper.ok();
     }
 

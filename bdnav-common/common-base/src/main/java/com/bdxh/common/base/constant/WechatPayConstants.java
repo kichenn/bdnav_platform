@@ -27,7 +27,7 @@ public class WechatPayConstants {
         /**
          * 订单回调地址
          */
-        String NOTICE_URL = "http://af418fe0.ngrok.io/wechatNotice/walletJsRecharge";//"http://zuulproxy.bdxht.com/pay/wechatNotice/walletJsRecharge";
+        String NOTICE_URL = "http://120.78.120.221:9017/wechatNotice/walletJsRecharge";
 
         /**
          * 支付类型

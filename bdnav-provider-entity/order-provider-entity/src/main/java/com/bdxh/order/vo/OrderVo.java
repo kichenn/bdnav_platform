@@ -27,6 +27,10 @@ public class OrderVo implements Serializable {
     @JsonSerialize(using= ToStringSerializer.class)
     private Long orderNo;
 
+
+    @ApiModelProperty("学校id")
+    private Long schoolId;
+
     /**
      * 学校编码
      */

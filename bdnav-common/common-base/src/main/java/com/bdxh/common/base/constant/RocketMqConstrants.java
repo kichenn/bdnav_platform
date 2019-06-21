@@ -1,10 +1,10 @@
 package com.bdxh.common.base.constant;
 
 /**
- * @description: rocketmq常量
- * @author: xuyuan
- * @create: 2019-01-15 11:05
- **/
+ * @Description: rocketmq常量
+ * @Author: Kang
+ * @Date: 2019/6/20 14:55
+ */
 public class RocketMqConstrants {
 
     /**
@@ -18,7 +18,7 @@ public class RocketMqConstrants {
     public interface Topic {
 
         /**
-         * 钱包充值微信回调topic
+         * 微信回调topic
          */
         String wechatPayWalletNotice = "wechatPayWalletNotice";
 
@@ -46,17 +46,17 @@ public class RocketMqConstrants {
         /**
          * 北斗星航对接麦圈，远景达 topic
          */
-        String bdxhTopic="bdxh";
+        String bdxhTopic = "bdxh";
 
         /**
          * user服务，学生老师或者信息修改进行其他模块的数据维护 topic
          */
-        String userOrganizationTopic="userOrganizationTopic";
+        String userOrganizationTopic = "userOrganizationTopic";
 
         /**
          * 测试
          */
-        String TestTopic="testTopicUser";
+        String TestTopic = "testTopicUser";
     }
 
     /**
@@ -107,42 +107,42 @@ public class RocketMqConstrants {
         /**
          * school服务，学校更新 tag
          */
-        String schoolOrganizationTag_school="schoolOrganizationTag_school";
+        String schoolOrganizationTag_school = "schoolOrganizationTag_school";
 
         /**
          * school服务，系统用户信息更新 tag
          */
-        String schoolUserInfoTag_schoolUser="schoolOrganizationTag_schoolUser";
+        String schoolUserInfoTag_schoolUser = "schoolOrganizationTag_schoolUser";
 
         /**
          * school服务，系统用户信息角色关系 tag
          */
-        String schoolUserInfoTag_schoolUserRole="schoolUserInfoTag_schoolUserRole";
+        String schoolUserInfoTag_schoolUserRole = "schoolUserInfoTag_schoolUserRole";
 
         /**
          * school服务，系统角色信息 tag
          */
-        String schoolUserInfoTag_schoolRole="schoolUserInfoTag_schoolRole";
+        String schoolUserInfoTag_schoolRole = "schoolUserInfoTag_schoolRole";
 
         /**
          * user服务，学生信息更新同步 tag
          */
-        String userInfoTag_student="userInfoTag_student";
+        String userInfoTag_student = "userInfoTag_student";
 
         /**
          * user服务，基础用户信息更新同步 tag
          */
-        String userInfoTag_baseUser="userInfoTag_baseUser";
+        String userInfoTag_baseUser = "userInfoTag_baseUser";
 
         /**
          * user服务，老师信息更新同步 tag
          */
-        String userInfoTag_teacher="userInfoTag_teacher";
+        String userInfoTag_teacher = "userInfoTag_teacher";
 
         /**
          * user服务，老师部门关系信息更新同步 tag
          */
-        String userInfoTag_teacherDept="userInfoTag_teacherDept";
+        String userInfoTag_teacherDept = "userInfoTag_teacherDept";
 
     }
 

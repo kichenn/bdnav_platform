@@ -2,13 +2,18 @@ package com.bdxh.weixiao.controller.pay;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.constant.RedisClusterConstrants;
+import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.MD5;
+import com.bdxh.common.utils.WXPayUtil;
+import com.bdxh.common.utils.XmlUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.common.wechatpay.js.domain.JSNoticeReturn;
 import com.bdxh.common.wechatpay.js.domain.JsOrderPayResponse;
 import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.order.dto.*;
@@ -20,6 +25,8 @@ import com.bdxh.pay.feign.WechatJsPayControllerClient;
 import com.bdxh.product.enums.ProductTypeEnum;
 import com.bdxh.product.feign.ProductControllerClient;
 import com.bdxh.product.vo.ProductDetailsVo;
+import com.bdxh.user.entity.Family;
+import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
@@ -28,12 +35,18 @@ import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.SortedMap;
 
@@ -60,6 +73,9 @@ public class WecharJsPay {
     @Autowired
     private StudentControllerClient studentControllerClient;
 
+    @Autowired
+    private FamilyControllerClient familyControllerClient;
+
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     @ApiOperation(value = "JS统一下单购买的商品", response = String.class)
@@ -68,6 +84,13 @@ public class WecharJsPay {
         //查询学生信息
         StudentVo studentVo = studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(), addPayOrderDto.getCardNumber()).getResult();
         Preconditions.checkArgument(studentVo != null, "查询学生信息失败");
+        //查询家长信息
+        Family family = familyControllerClient.queryFamilyInfoById(userInfo.getFamilyId()).getResult();
+        Preconditions.checkArgument(family != null, "查询家长信息失败");
+        //查询商品信息
+        ProductDetailsVo productDetailsVo = productControllerClient.findProductDetails(Long.valueOf(addPayOrderDto.getProductId())).getResult();
+        Preconditions.checkArgument(productDetailsVo != null, "查询商品信息失败");
+
         //生成我方订单号信息
         AddOrderDto addOrderDto = new AddOrderDto();
         //预生成第三方订单
@@ -79,19 +102,23 @@ public class WecharJsPay {
         //学校名称
         addOrderDto.setSchoolName(userInfo.getSchoolName());
         //家长id
-        addOrderDto.setUserId(userInfo.getFamilyId());
+        addOrderDto.setUserId(family.getId());
         //家长姓名
-        addOrderDto.setUserName(userInfo.getFamilyName());
+        addOrderDto.setUserName(family.getName());
         //学生卡号
         addOrderDto.setCardNumber(addPayOrderDto.getCardNumber());
         //用户类型(默认为家长，此处购买服务的用户只会是为家长不需要做判决)
         addOrderDto.setUserType(BaseUserTypeEnum.FAMILY);
         //微信openid
         addOrderDto.setOpenId(addPayOrderDto.getOpenId());
-        //订单总金额(根据商品id查询并非前端传递)
-        addOrderDto.setTotalMoney(addPayOrderDto.getTotalMoney());
-        //订单金额(根据商品id查询并非前端传递)
-        addOrderDto.setOrderMoney(addPayOrderDto.getOrderMoney());
+        //如果商品支付金额 与售价不相等 ，说明金额异常
+        if (!productDetailsVo.getProductSellPrice().equals(addPayOrderDto.getPayMoney())) {
+            return WrapMapper.error("商品支付金额与售价不相等 ，金额异常");
+        }
+        //订单总金额 (商品定价)
+        addOrderDto.setTotalMoney(productDetailsVo.getProductPrice());
+        //订单金额（商品售价）
+        addOrderDto.setOrderMoney(productDetailsVo.getProductSellPrice());
         //支付金额(根据商品id查询并非前端传递)
         addOrderDto.setPayMoney(addPayOrderDto.getPayMoney());
         //交易状态，默认为进行中
@@ -191,6 +218,7 @@ public class WecharJsPay {
         return WrapMapper.ok(jsOrderPayResponse);
     }
 
+
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     @ApiOperation(value = "根据微信code返回授权信息", response = String.class)
     public Object auth(@RequestParam("code") String code) {
@@ -198,14 +226,13 @@ public class WecharJsPay {
     }
 
     /**
-     * @Description: redirectUri回调地址
+     * @Description: 前端redirectUri回调地址
      * @Author: Kang
      * @Date: 2019/6/17 19:12
      */
     @RequestMapping(value = "/getWechatUrl", method = RequestMethod.GET)
     @ApiOperation(value = "返回微信支付授权地址信息", response = String.class)
     public Object getWechatUrl(@RequestParam("redirectUri") String redirectUri) {
-
         return WrapMapper.ok(wechatJsPayControllerClient.getWechatUrl(redirectUri).getResult());
     }
 }

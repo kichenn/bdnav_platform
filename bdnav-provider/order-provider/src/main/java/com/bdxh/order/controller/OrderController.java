@@ -145,6 +145,16 @@ public class OrderController {
         return WrapMapper.ok(orderService.findOrderByOrderNo(orderNo));
     }
 
+    /**
+     * @Description: 第三方订单查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/20 16:22
+     */
+    @RequestMapping(value = "/findThirdOrderByOrderNo", method = RequestMethod.GET)
+    @ApiOperation(value = "第三方订单查询订单信息", response = OrderVo.class)
+    public Object findThirdOrderByOrderNo(@RequestParam("thirdOrderNo") String thirdOrderNo) {
+        return WrapMapper.ok(orderService.findThirdOrderByOrderNo(thirdOrderNo));
+    }
 
     /**
      * @Description: 我方订单号绑定微信第三方订单号信息
@@ -157,6 +167,18 @@ public class OrderController {
         //数据拷贝
         Order order = new Order();
         BeanUtils.copyProperties(modifyPayOrderDto, order);
+        if (modifyPayOrderDto.getTradeStatus() != null) {
+            //交易状态不为空
+            order.setTradeStatus(modifyPayOrderDto.getTradeStatus().getCode());
+        }
+        if (modifyPayOrderDto.getPayStatus() != null) {
+            //支付状态不为空
+            order.setPayStatus(modifyPayOrderDto.getPayStatus().getCode());
+        }
+        if (modifyPayOrderDto.getBusinessStatus() != null) {
+            //业务状态不为空
+            order.setBusinessStatus(modifyPayOrderDto.getBusinessStatus().getCode());
+        }
         return WrapMapper.ok(orderService.update(order) > 0);
     }
 }

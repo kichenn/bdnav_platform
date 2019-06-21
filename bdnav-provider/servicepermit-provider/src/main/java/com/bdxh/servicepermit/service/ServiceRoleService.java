@@ -38,4 +38,9 @@ public interface ServiceRoleService extends IService<ServiceRole> {
      * 角色名称查询角色信息
      */
     ServiceRole findServiceRoleByName(String name);
+
+    /**
+     * 商品id查询角色信息
+     */
+    ServiceRole findServiceRoleByProductId(Long productId);
 }

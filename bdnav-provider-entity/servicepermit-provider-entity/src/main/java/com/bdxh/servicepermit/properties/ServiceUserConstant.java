@@ -12,7 +12,12 @@ public class ServiceUserConstant {
     public static final Integer TEST_DAYS = 7;
 
     /**
+     * 购买默认天数
+     */
+    public static final Integer PAY_DAYS = 30;
+
+    /**
      * 试用默认角色
      */
-    public static final String ROLE_TEST="ROLE_TEST";
+    public static final String ROLE_TEST = "ROLE_TEST";
 }

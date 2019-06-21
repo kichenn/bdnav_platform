@@ -15,11 +15,13 @@ import com.google.common.base.Preconditions;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
+import org.apache.rocketmq.client.producer.TransactionMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
@@ -43,7 +45,7 @@ public class WechatNoticeController {
     private RedisUtil redisUtil;
 
     @Autowired
-    private DefaultMQProducer defaultMQProducer;
+    private TransactionMQProducer transactionMQProducer;
 
     /**
      * 微信APP支付回调接口
@@ -82,7 +84,7 @@ public class WechatNoticeController {
                 jsonObject.put("resultCode", resultCode);
                 jsonObject.put("thirdOrderNo", thirdOrderNo);
                 Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice, RocketMqConstrants.Tags.wechatPayWalletNotice_app, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-                defaultMQProducer.send(message);
+                transactionMQProducer.send(message);
             }
             //返回微信结果
             AppNoticeReturn appNoticeReturn = new AppNoticeReturn();
@@ -111,6 +113,7 @@ public class WechatNoticeController {
      * @param request
      * @param response
      */
+    @ApiIgnore
     @RequestMapping("/walletJsRecharge")
     public void wechatJsPayNotice(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -141,8 +144,9 @@ public class WechatNoticeController {
                 jsonObject.put("orderNo", orderNo);
                 jsonObject.put("resultCode", resultCode);
                 jsonObject.put("thirdOrderNo", thirdOrderNo);
+                //发送事务消息
                 Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice, RocketMqConstrants.Tags.wechatPayWalletNotice_js, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
-                defaultMQProducer.send(message);
+                transactionMQProducer.sendMessageInTransaction(message, null);
             }
             //返回微信结果
             JSNoticeReturn jsNoticeReturn = new JSNoticeReturn();

@@ -55,11 +55,11 @@ public interface ServiceUserService extends IService<ServiceUser> {
     List<ServiceUser> queryAllServiceUser(QueryServiceUserDto queryServiceUsedDto);
 
     /**
-     * @Description: 鉴定是否有试用资格
+     * @Description: 是否有购买或者试用（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
      * @Author: Kang
      * @Date: 2019/6/13 15:12
      */
-    List<ServiceUser> findServicePermitByCondition(String schoolCode, String studentCardNumber, String familyCardNumber, Integer type, Integer status);
+    List<ServiceUser> findServicePermitByCondition(String schoolCode, String studentCardNumber, String familyCardNumber, Long productId, Integer type, Integer status);
 
     /**
      * @Description: 领取试用权限
@@ -67,4 +67,11 @@ public interface ServiceUserService extends IService<ServiceUser> {
      * @Date: 2019/6/13 16:07
      */
     void createOnTrialService(AddNoTrialServiceUserDto addNoTrialServiceUserDto);
+
+    /**
+     * @Description: 购买商品权限
+     * @Author: Kang
+     * @Date: 2019/6/20 17:38
+     */
+    void createPayService(AddPayServiceUserDto AddPayServiceUserDto);
 }

@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -21,6 +22,10 @@ public class AddServiceRoleDto {
 	@NotEmpty(message = "权限名称不能为空")
 	@ApiModelProperty("权限名称")
 	private String name;
+
+	@NotNull(message = "商品id不能为空")
+	@ApiModelProperty("此权限对应的商品id")
+	private Long productId;
 
 	/**
 	 * 备注

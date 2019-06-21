@@ -70,4 +70,14 @@ public class ServiceRoleServiceImpl extends BaseService<ServiceRole> implements 
     public ServiceRole findServiceRoleByName(String name) {
         return serviceRoleMapper.findServiceRoleByName(name);
     }
+
+    /**
+     * 商品id查询角色信息
+     */
+    @Override
+    public ServiceRole findServiceRoleByProductId(Long productId) {
+        ServiceRole serviceRole = new ServiceRole();
+        serviceRole.setProductId(productId);
+        return serviceRoleMapper.selectOne(serviceRole);
+    }
 }

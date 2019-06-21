@@ -21,10 +21,10 @@ import javax.validation.constraints.NotEmpty;
 import java.util.SortedMap;
 
 /**
- * @description: 微信支付公共控制器
- * @author: xuyuan
- * @create: 2019-01-14 14:47
- **/
+* @Description:   微信支付公共控制器
+* @Author: Kang
+* @Date: 2019/6/20 16:18
+*/
 @Controller
 @RequestMapping("/wechatCommonPay")
 @Slf4j
@@ -77,6 +77,7 @@ public class WechatCommonController {
                 wechatOrderQueryVo.setOrderNo(orderNo);
                 wechatOrderQueryVo.setThirdOrderNo(resultMap.get("transaction_id"));
                 wechatOrderQueryVo.setPayResult(resultMap.get("trade_state"));
+                wechatOrderQueryVo.setTimeEnd(resultMap.get("time_end"));
                 return WrapMapper.ok(wechatOrderQueryVo);
             } else {
                 return WrapMapper.error("微信订单查询接口返回失败");

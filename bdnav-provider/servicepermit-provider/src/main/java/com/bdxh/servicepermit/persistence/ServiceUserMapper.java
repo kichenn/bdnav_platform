@@ -41,9 +41,9 @@ public interface ServiceUserMapper extends Mapper<ServiceUser> {
 
 
     /**
-     * @Description: 鉴定是否有试用资格
+     * @Description: 鉴定是否有购买或者试用（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
      * @Author: Kang
      * @Date: 2019/6/13 15:12
      */
-    List<ServiceUser> findServicePermitByCondition(@Param("schoolCode") String schoolCode, @Param("studentCardNumber") String studentCardNumber, @Param("familyCardNumber") String familyCardNumber,@Param("type") Integer type,@Param("status") Integer status);
+    List<ServiceUser> findServicePermitByCondition(@Param("schoolCode") String schoolCode, @Param("studentCardNumber") String studentCardNumber, @Param("familyCardNumber") String familyCardNumber, @Param("productId") Long productId, @Param("type") Integer type, @Param("status") Integer status);
 }

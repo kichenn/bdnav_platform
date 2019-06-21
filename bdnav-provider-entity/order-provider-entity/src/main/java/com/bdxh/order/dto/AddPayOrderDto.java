@@ -35,14 +35,6 @@ public class AddPayOrderDto {
     @NotBlank(message = "用户的openid不能为空")
     private String openId;
 
-    @ApiModelProperty("订单总金额")
-    @NotNull(message = "订单总金额不能为空")
-    private BigDecimal totalMoney;
-
-    @ApiModelProperty("订单金额")
-    @NotNull(message = "订单金额不能为空")
-    private BigDecimal orderMoney;
-
     @ApiModelProperty("支付金额")
     @NotNull(message = "支付金额不能为空")
     private BigDecimal payMoney;
