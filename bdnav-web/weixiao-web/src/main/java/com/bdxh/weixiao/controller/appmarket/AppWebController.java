@@ -112,7 +112,7 @@ public class AppWebController {
             //先给测试默认的clientId
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             UserDevice userDevice=userDeviceControllerClient.findUserDeviceByCodeOrCard(userInfo.getSchoolCode(),cardNumber).getResult();
-            if(StringUtils.isEmpty(userDevice.getClientId())){
+            if(null==userDevice){
                 return WrapMapper.error("该子女暂未登录过手机账号");
             }
            String  clientId=userDevice.getClientId();
