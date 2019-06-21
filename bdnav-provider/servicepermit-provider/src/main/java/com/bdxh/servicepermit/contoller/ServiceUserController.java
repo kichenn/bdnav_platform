@@ -110,8 +110,8 @@ public class ServiceUserController {
     public Object createOnTrialService(@Validated @RequestBody AddNoTrialServiceUserDto addNoTrialServiceUserDto) {
         //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
         //商品类型为试用，试用代表的是试用所有的商品
-        ServiceUser serviceUser = serviceUserService.findServicePermitByCondition(addNoTrialServiceUserDto.getSchoolCode(), addNoTrialServiceUserDto.getStudentNumber(), addNoTrialServiceUserDto.getCardNumber(), null, 1, null).get(0);
-        if (serviceUser != null) {
+        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(addNoTrialServiceUserDto.getSchoolCode(), addNoTrialServiceUserDto.getStudentNumber(), addNoTrialServiceUserDto.getCardNumber(), null, 1, null);
+        if (CollectionUtils.isNotEmpty(serviceUsers)) {
             //该孩子没有试用资格
             return WrapMapper.notNoTrial("该孩子没有试用资格");
         }
