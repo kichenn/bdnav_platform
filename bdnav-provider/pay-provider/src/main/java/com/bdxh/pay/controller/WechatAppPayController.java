@@ -32,10 +32,10 @@ import java.util.SortedMap;
 import java.util.stream.Collectors;
 
 /**
- * @description: 微信APP支付控制器
- * @author: xuyuan
- * @create: 2019-01-14 11:19
- **/
+ * @Description: 微信APP支付控制器
+ * @Author: Kang
+ * @Date: 2019/6/20 16:17
+ */
 @Controller
 @RequestMapping("/wechatAppPay")
 @Slf4j

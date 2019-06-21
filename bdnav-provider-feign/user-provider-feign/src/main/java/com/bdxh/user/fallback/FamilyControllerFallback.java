@@ -45,6 +45,11 @@ public class FamilyControllerFallback implements FamilyControllerClient {
     }
 
     @Override
+    public Wrapper<Family> queryFamilyInfoById(Long familyId) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper queryFamilyListPage(FamilyQueryDto familyQueryDto) {
         return WrapMapper.error();
     }

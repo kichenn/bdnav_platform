@@ -21,10 +21,10 @@ import javax.validation.constraints.NotEmpty;
 import java.util.SortedMap;
 
 /**
- * @description: 微信支付公共控制器
- * @author: xuyuan
- * @create: 2019-01-14 14:47
- **/
+* @Description:   微信支付公共控制器
+* @Author: Kang
+* @Date: 2019/6/20 16:18
+*/
 @Controller
 @RequestMapping("/wechatCommonPay")
 @Slf4j
@@ -45,6 +45,7 @@ public class WechatCommonController {
         orderQueryRequest.setMch_id(WechatPayConstants.APP.mch_id);
         orderQueryRequest.setNonce_str(ObjectUtil.getUuid());
         orderQueryRequest.setOut_trade_no(orderNo);
+//        orderQueryRequest.setTransaction_id(orderNo);
         //生成签名
         SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(orderQueryRequest);
         if (paramMap.containsKey("sign")) {
@@ -56,7 +57,7 @@ public class WechatCommonController {
         //发送微信下单请求
         String requestStr = XmlUtils.toXML(orderQueryRequest);
         //输出微信请求串
-        log.info(requestStr);
+        log.info("微信入参:{}",requestStr);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Charset", "utf-8");
@@ -68,7 +69,7 @@ public class WechatCommonController {
         }
         String responseEntityStr = responseEntity.getBody();
         //输出微信返回结果
-        log.info(responseEntityStr);
+        log.info("微信返参:{}",responseEntityStr);
         if (StringUtils.isNotEmpty(responseEntityStr)) {
             SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(responseEntityStr);
             if (StringUtils.equals("SUCCESS", resultMap.get("return_code")) && StringUtils.equals("SUCCESS", resultMap.get("result_code"))) {
@@ -77,6 +78,7 @@ public class WechatCommonController {
                 wechatOrderQueryVo.setOrderNo(orderNo);
                 wechatOrderQueryVo.setThirdOrderNo(resultMap.get("transaction_id"));
                 wechatOrderQueryVo.setPayResult(resultMap.get("trade_state"));
+                wechatOrderQueryVo.setTimeEnd(resultMap.get("time_end"));
                 return WrapMapper.ok(wechatOrderQueryVo);
             } else {
                 return WrapMapper.error("微信订单查询接口返回失败");

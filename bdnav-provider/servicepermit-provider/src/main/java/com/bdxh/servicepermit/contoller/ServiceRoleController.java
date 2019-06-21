@@ -59,8 +59,6 @@ public class ServiceRoleController {
     @ApiOperation(value = "修改服务许可角色", response = Boolean.class)
     @RequestMapping(value = "/modifyServiceRoleById", method = RequestMethod.POST)
     public Object modifyServiceRoleById(@Validated @RequestBody ModifyServiceRoleDto modifyServiceRoleDto) {
-
-
         try {
             ServiceRole serviceRole = new ServiceRole();
             BeanUtils.copyProperties(modifyServiceRoleDto, serviceRole);

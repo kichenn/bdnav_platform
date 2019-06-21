@@ -10,6 +10,7 @@ import com.bdxh.order.persistence.OrderItemMapper;
 import com.bdxh.order.persistence.OrderMapper;
 import com.bdxh.order.service.OrderService;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderVo1;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -30,7 +31,6 @@ import java.util.*;
 public class OrderServiceImpl extends BaseService<Order> implements OrderService {
 
 
-
     @Autowired
     private OrderMapper orderMapper;
 
@@ -39,6 +39,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
 
     /**
      * 根据条件分页查询
+     *
      * @Author: WanMing
      * @Date: 2019/6/5 18:42
      */
@@ -49,7 +50,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         BeanUtils.copyProperties(orderQueryDto, order);
         List<Order> orders = orderMapper.getOrderByCondition(order);
         List<OrderVo> orderVos = new ArrayList<>();
-        orders.stream().forEach(item->{
+        orders.stream().forEach(item -> {
             OrderVo orderVo = new OrderVo();
             BeanUtils.copyProperties(item, orderVo);
             orderVos.add(orderVo);
@@ -101,5 +102,34 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         return orderVo;
     }
 
+    /**
+     * @Description: 根据订单编号查询订单信息，支付成功后订单编号，查询订单部分信息
+     * @Author: Kang
+     * @Date: 2019/6/21 12:24
+     */
+    @Override
+    public OrderVo1 findOrderByOrderNo1(Long orderNo) {
+        Order order = orderMapper.selectByPrimaryKey(orderNo);
+        //数据拷贝
+        OrderVo1 orderVo1 = new OrderVo1();
+        BeanUtils.copyProperties(order, orderVo1);
+        return orderVo1;
+    }
+
+    /**
+     * @Description: 第三方订单查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/20 16:22
+     */
+    @Override
+    public OrderVo findThirdOrderByOrderNo(String thirdOrderNo) {
+        Order order = new Order();
+        order.setThirdOrderNo(thirdOrderNo);
+        order = orderMapper.selectOne(order);
+        //数据拷贝
+        OrderVo orderVo = new OrderVo();
+        BeanUtils.copyProperties(order, orderVo);
+        return orderVo;
+    }
 
 }

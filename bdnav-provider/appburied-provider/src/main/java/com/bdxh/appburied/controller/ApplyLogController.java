@@ -58,10 +58,12 @@ public class ApplyLogController {
         map.put("school_code", addApplyLogDto.getSchoolCode());
         map.put("timestamp", System.currentTimeMillis() / 1000L);
         try {
+            log.info("--------------------判断当前学校公众号有没有微信通知能力");
             String result = MessageUtils.ability(map, addApplyLogDto.getAppSecret());
             JSONObject jsonObject = JSONObject.parseObject(result);
             //如果该学校公众号有通知能力就进行微校通知
             if (jsonObject.get("code").equals(0)) {
+                log.info("--------------------设置消息模板通知");
                 //设置消息模板通知
                 HashMap<String, Object> messageMap = new HashMap<>();
                 messageMap.put("school_code", addApplyLogDto.getSchoolCode());
@@ -80,6 +82,11 @@ public class ApplyLogController {
                 messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/appControl/#/message?schoolCode=" + addApplyLogDto.getSchoolCode() + "&cardNumber=" + addApplyLogDto.getCardNumber());
                 messageMap.put("customs", messageJson);
                 String messageResult = MessageUtils.notice(messageMap, addApplyLogDto.getAppSecret());
+                JSONObject jsonObject1=JSONObject.parseObject(messageResult);
+                if(!jsonObject1.get("code").equals(0)){
+                    log.info("--------------------设置消息模板通知失败 错误原因---------------------");
+                }
+                log.info("--------------------设置消息模板通知已经完成了---------------------");
             }
         } catch (Exception e) {
             return WrapMapper.error(e.getMessage());

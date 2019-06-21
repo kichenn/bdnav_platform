@@ -25,63 +25,79 @@ import java.util.List;
 public interface FamilyControllerClient {
     /**
      * 新增家长
+     *
      * @param addFamilyDto
      * @return
      */
-    @RequestMapping(value = "/family/addFamily",method = RequestMethod.POST)
+    @RequestMapping(value = "/family/addFamily", method = RequestMethod.POST)
     @ResponseBody
     Wrapper addFamily(@RequestBody AddFamilyDto addFamilyDto);
 
     /**
      * 删除家长
+     *
      * @param schoolCode
      * @param cardNumber
      * @return
      */
-    @RequestMapping(value = "/family/removeFamily",method = RequestMethod.POST)
+    @RequestMapping(value = "/family/removeFamily", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper removeFamily(@RequestParam(name = "schoolCode")String schoolCode,@RequestParam(name = "cardNumber") String cardNumber);
+    Wrapper removeFamily(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam(name = "cardNumber") String cardNumber);
 
     /**
      * 批量删除家长
+     *
      * @param schoolCodes
      * @param cardNumbers
      * @return
      */
-    @RequestMapping(value = "/family/removeFamilys",method = RequestMethod.POST)
+    @RequestMapping(value = "/family/removeFamilys", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper removeFamilys(@RequestParam(name = "schoolCodes")String schoolCodes,@RequestParam(name = "cardNumbers") String cardNumbers);
+    Wrapper removeFamilys(@RequestParam(name = "schoolCodes") String schoolCodes, @RequestParam(name = "cardNumbers") String cardNumbers);
 
     /**
      * 修改家长
+     *
      * @param updateFamilyDto
      * @return
      */
-    @RequestMapping(value = "/family/updateFamily",method = RequestMethod.POST)
+    @RequestMapping(value = "/family/updateFamily", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper updateFamily( @RequestBody UpdateFamilyDto updateFamilyDto);
+    Wrapper updateFamily(@RequestBody UpdateFamilyDto updateFamilyDto);
 
     /**
      * 查询家长
+     *
      * @param schoolCode
      * @param cardNumber
      * @return
      */
-    @RequestMapping(value ="/family/queryFamilyInfo",method = RequestMethod.GET)
+    @RequestMapping(value = "/family/queryFamilyInfo", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<FamilyVo> queryFamilyInfo(@RequestParam(name = "schoolCode")String schoolCode, @RequestParam(name = "cardNumber")String cardNumber);
+    Wrapper<FamilyVo> queryFamilyInfo(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam(name = "cardNumber") String cardNumber);
+
+    /**
+     * 根据id查询家长
+     *
+     * @return
+     */
+    @RequestMapping(value = "/family/queryFamilyInfoById", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<Family> queryFamilyInfoById(@RequestParam(name = "familyId") Long familyId);
 
     /**
      * 分页查询家长
+     *
      * @param familyQueryDto
      * @return
      */
-    @RequestMapping(value = "/family/queryFamilyListPage",method = RequestMethod.POST)
+    @RequestMapping(value = "/family/queryFamilyListPage", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper queryFamilyListPage(@RequestBody  FamilyQueryDto familyQueryDto);
+    Wrapper queryFamilyListPage(@RequestBody FamilyQueryDto familyQueryDto);
 
     /**
      * 批量新增家长信息
+     *
      * @param familyList
      * @return
      */
@@ -91,6 +107,7 @@ public interface FamilyControllerClient {
 
     /**
      * 根据学校Code查询所有家长卡号
+     *
      * @param schoolCode
      * @return
      */

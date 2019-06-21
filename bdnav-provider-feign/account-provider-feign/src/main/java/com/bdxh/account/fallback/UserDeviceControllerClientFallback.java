@@ -9,6 +9,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Component
 public class UserDeviceControllerClientFallback implements UserDeviceControllerClient {
@@ -36,6 +37,11 @@ public class UserDeviceControllerClientFallback implements UserDeviceControllerC
 
     @Override
     public Wrapper<UserDevice> findUserDeviceByCodeOrCard(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<UserDevice>> findUserDeviceList(String schoolCode) {
         return WrapMapper.error();
     }
 }

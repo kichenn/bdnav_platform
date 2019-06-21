@@ -85,13 +85,13 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
 
 
     /**
-     * @Description: 鉴定是否有试用资格
+     * @Description: 鉴定是否有购买或者试用（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
      * @Author: Kang
      * @Date: 2019/6/13 15:12
      */
     @Override
-    public List<ServiceUser> findServicePermitByCondition(String schoolCode, String studentCardNumber, String familyCardNumber, Integer type, Integer status) {
-        return serviceUserMapper.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, type, status);
+    public List<ServiceUser> findServicePermitByCondition(String schoolCode, String studentCardNumber, String familyCardNumber, Long productId, Integer type, Integer status) {
+        return serviceUserMapper.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, productId, type, status);
     }
 
     /**
@@ -117,7 +117,6 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
         serviceUser.setType(1);
         serviceUser.setProductId(new Long("1001"));
         serviceUser.setProductName("测试权限商品（适用所有商品信息）....");
-        serviceUser.setOrderNo(new Long("10001"));
         serviceUser.setId(snowflakeIdWorker.nextId());
         serviceUserMapper.insertSelective(serviceUser);
         //查询试用角色
@@ -130,6 +129,76 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
         addServiceRolePermitDto.setServiceRoleId(serviceRole.getId());
         addServiceRolePermitDto.setRemark("试用角色权限绑定");
         serviceRolePermitService.addServiceRolePermitInfo(addServiceRolePermitDto);
+    }
+
+    /**
+     * @Description: 购买商品权限
+     * @Author: Kang
+     * @Date: 2019/6/20 17:38
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void createPayService(AddPayServiceUserDto addPayServiceUserDto) {
+        //查询此家长的这个孩子的商品权限有没有过期，如果过期则修改商品权限信息为重新生效
+        //查询正式使用的商品权限（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，只存在一条数据）
+        ServiceUser serviceUser = findServicePermitByCondition(addPayServiceUserDto.getSchoolCode(), addPayServiceUserDto.getStudentNumber(), addPayServiceUserDto.getCardNumber(), addPayServiceUserDto.getProductId(), 2, null).get(0);
+        if (serviceUser != null) {
+            //修改，延长次家长的此孩子的商品权限 (如果该家长以前买过则，此时只要重新续费即可，角色关联信息已经存在，无需修改和添加)
+            //可用天数
+            serviceUser.setDays(addPayServiceUserDto.getDays());
+            String startTime = DateUtil.now2();
+            String endTime = DateUtil.addDay(startTime, serviceUser.getDays());
+            //开始使用时间
+            serviceUser.setStartTime(DateUtil.format(startTime, "yyyy-MM-dd"));
+            //结束使用时间
+            serviceUser.setEndTime(DateUtil.format(endTime, "yyyy-MM-dd"));
+            //状态:正常
+            serviceUser.setStatus(1);
+            //类型为：正式使用
+            serviceUser.setType(2);
+            serviceUser.setUpdateDate(new Date());
+            serviceUserMapper.updateByPrimaryKeySelective(serviceUser);
+        } else {
+            //此家长首次购买
+            //增加权限记录
+            ServiceUser serviceUser1 = new ServiceUser();
+            String startTime = DateUtil.now2();
+            String endTime = DateUtil.addDay(startTime, addPayServiceUserDto.getDays());
+            //可用天数，默认七天
+            serviceUser1.setDays(serviceUser.getDays());
+            //开始使用时间
+            serviceUser1.setStartTime(DateUtil.format(startTime, "yyyy-MM-dd"));
+            //结束使用时间
+            serviceUser1.setEndTime(DateUtil.format(endTime, "yyyy-MM-dd"));
+            //状态
+            serviceUser1.setStatus(1);
+            serviceUser1.setType(1);
+            //商品信息
+            serviceUser1.setProductId(addPayServiceUserDto.getProductId());
+            serviceUser1.setProductName(addPayServiceUserDto.getProductName());
+            //学校信息
+            serviceUser1.setSchoolId(addPayServiceUserDto.getSchoolId());
+            serviceUser1.setSchoolCode(addPayServiceUserDto.getSchoolCode());
+            serviceUser1.setSchoolName(addPayServiceUserDto.getSchoolName());
+            //家长信息
+            serviceUser1.setFamilyId(addPayServiceUserDto.getFamilyId());
+            serviceUser1.setFamilyName(addPayServiceUserDto.getFamilyName());
+            //学生信息
+            serviceUser1.setStudentName(addPayServiceUserDto.getStudentName());
+            serviceUser1.setStudentNumber(addPayServiceUserDto.getStudentNumber());
+            serviceUser1.setId(snowflakeIdWorker.nextId());
+            serviceUserMapper.insertSelective(serviceUser1);
+            //查询试用角色
+            ServiceRole serviceRole = serviceRoleService.findServiceRoleByProductId(addPayServiceUserDto.getProductId());
+            //绑定试用权限记录和试用角色信息
+            AddServiceRolePermitDto addServiceRolePermitDto = new AddServiceRolePermitDto();
+            addServiceRolePermitDto.setSchoolCode(serviceUser1.getSchoolCode());
+            addServiceRolePermitDto.setCardNumber(serviceUser1.getCardNumber());
+            addServiceRolePermitDto.setServiceUserId(serviceUser1.getId());
+            addServiceRolePermitDto.setServiceRoleId(serviceRole.getId());
+            addServiceRolePermitDto.setRemark("正式角色权限绑定");
+            serviceRolePermitService.addServiceRolePermitInfo(addServiceRolePermitDto);
+        }
     }
 
 }

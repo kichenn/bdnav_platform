@@ -23,9 +23,6 @@ public class ServiceUser {
     private Long id;
 
 
-    @Column(name = "order_no")
-    private Long orderNo;
-
     @Column(name = "product_id")
     private Long productId;
 

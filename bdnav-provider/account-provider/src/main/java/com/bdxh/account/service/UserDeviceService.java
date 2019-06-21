@@ -35,4 +35,7 @@ public interface UserDeviceService extends IService<UserDevice> {
 	 * 根据code或者cardNumber查询用户设备信息
 	 */
 	UserDevice findUserDeviceByCodeOrCard(String schoolCode,String cardNumber);
+
+	//根据school查询学校下所有设备
+	List<UserDevice> findUserDeviceList(String schoolCode);
 }

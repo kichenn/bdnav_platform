@@ -56,4 +56,20 @@ public class MqTestController {
         log.info("发送成功");
     }
 
+    /**
+     * @Description: 测试发送（模拟微信支付成功后的mq消息操作）
+     * @Author: Kang
+     * @Date: 2019/6/21 12:02
+     */
+    @GetMapping("/test2")
+    public void test2() throws MQClientException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("orderNo", "591596604251963392");
+        jsonObject.put("thirdOrderNo", "4200000290201906218060960165");
+        jsonObject.put("resultCode", "SUCCESS");
+        Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice, RocketMqConstrants.Tags.wechatPayWalletNotice_js, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+        log.info("开始执行事务的------");
+        transactionMQProducer.sendMessageInTransaction(message, null);
+        log.info("结束执行事务的------");
+    }
 }

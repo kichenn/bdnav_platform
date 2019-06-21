@@ -11,9 +11,6 @@ public class AddServiceUserDto {
     @ApiModelProperty("服务id")
     private Long id;
 
-    @ApiModelProperty("订单主键")
-    private Long orderNo;
-
     @ApiModelProperty("产品主键")
     private Long productId;
 

@@ -37,6 +37,11 @@ public class ServiceUserControllerClientFallback implements ServiceUserControlle
     }
 
     @Override
+    public Wrapper createPayService(AddPayServiceUserDto addPayServiceUserDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper updateServiceUser(ModifyServiceUserDto modifyServiceUserDto) {
         return WrapMapper.error();
     }

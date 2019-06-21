@@ -89,5 +89,13 @@ public interface SchoolStrategyControllerClient {
     @ResponseBody
     Wrapper<List<QuerySchoolStrategy>> findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") String groupId);
 
+    /**
+     * @Description: 查询策略中是否有正在使用的模式
+     */
+    @RequestMapping(value = "/schoolStrategy/validateTheschoolModel", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<SchoolStrategy> validateTheschoolModel(@RequestParam("schoolCode") String schoolCode,@RequestParam("modelId") Long modelId);
+
+
 
 }

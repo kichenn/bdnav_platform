@@ -5,6 +5,7 @@ import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderVo1;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Map;
@@ -18,6 +19,7 @@ public interface OrderService extends IService<Order> {
 
     /**
      * 根据条件查询用户订单列表
+     *
      * @param orderQueryDto
      * @return
      */
@@ -26,21 +28,32 @@ public interface OrderService extends IService<Order> {
     /**
      * 根据主键删除商品
      */
-    boolean deleteOrder(String SchoolCode,Long UserId,Long OrderNo);
+    boolean deleteOrder(String SchoolCode, Long UserId, Long OrderNo);
 
     /**
      * 批量删除商品
-     *
      */
-    boolean deleteOrders(String schoolCodes,String userIds,String ids);
+    boolean deleteOrders(String schoolCodes, String userIds, String ids);
 
     /**
      * 根据订单编号查询订单信息
+     *
      * @Author: WanMing
      * @Date: 2019/6/5 18:39
      */
     OrderVo findOrderByOrderNo(Long orderNo);
 
+    /**
+    * @Description: 根据订单编号查询订单信息，支付成功后订单编号，查询订单部分信息
+    * @Author: Kang
+    * @Date: 2019/6/21 12:24
+    */
+    OrderVo1 findOrderByOrderNo1(Long orderNo);
 
-
+    /**
+     * @Description: 第三方订单查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/20 16:22
+     */
+    OrderVo findThirdOrderByOrderNo(String thirdOrderNo);
 }

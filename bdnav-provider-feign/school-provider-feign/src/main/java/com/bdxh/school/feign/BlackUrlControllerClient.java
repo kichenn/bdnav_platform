@@ -89,4 +89,13 @@ public interface BlackUrlControllerClient {
     @ResponseBody
     Wrapper<List<String>> findBlackInList(@RequestParam("schoolCode") String schoolCode);
 
+
+    /**
+     * @Description: 根据id查询黑名单信息
+     */
+    @RequestMapping(value = "/blackUrl/findBlackUrlById", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<BlackUrl> findBlackUrlById(@RequestParam("id") Long id);
+
+
 }

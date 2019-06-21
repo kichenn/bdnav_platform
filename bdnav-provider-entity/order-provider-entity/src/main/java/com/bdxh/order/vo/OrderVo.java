@@ -10,10 +10,10 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 /**
- * @description: 生成订单返回类
- * @author: xuyuan
- * @create: 2019-01-09 15:44
- **/
+ * @Description: 生成订单返回类
+ * @Author: Kang
+ * @Date: 2019/6/21 12:21
+ */
 @Data
 public class OrderVo implements Serializable {
 
@@ -24,8 +24,12 @@ public class OrderVo implements Serializable {
      * 订单编号
      */
     @ApiModelProperty("订单编号")
-    @JsonSerialize(using= ToStringSerializer.class)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long orderNo;
+
+
+    @ApiModelProperty("学校id")
+    private Long schoolId;
 
     /**
      * 学校编码
@@ -50,7 +54,6 @@ public class OrderVo implements Serializable {
      */
     @ApiModelProperty("学号")
     private String cardNumber;
-
 
 
     /**
@@ -115,10 +118,6 @@ public class OrderVo implements Serializable {
      */
     @ApiModelProperty("备注")
     private String remark;
-
-
-
-
 
 
 }

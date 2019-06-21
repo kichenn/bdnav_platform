@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 /**
@@ -19,6 +20,9 @@ public class ModifyServiceRoleDto {
 
     @ApiModelProperty("权限名称")
     private String name;
+
+    @ApiModelProperty("此权限对应的商品id")
+    private Long productId;
 
     @ApiModelProperty("备注")
     private String remark;

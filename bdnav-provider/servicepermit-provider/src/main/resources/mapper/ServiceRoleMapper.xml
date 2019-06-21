@@ -5,13 +5,14 @@
     <resultMap id="BaseResultMap" type="com.bdxh.servicepermit.entity.ServiceRole">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="product_id" jdbcType="BIGINT" property="productId"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,`name`,remark,create_date,update_date
+	  id,`name`,product_id,remark,create_date,update_date
 	</sql>
     <select id="getServiceRoleAllCount" resultType="Integer">
 	  SELECT
