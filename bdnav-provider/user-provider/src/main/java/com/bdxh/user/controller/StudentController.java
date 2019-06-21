@@ -21,11 +21,13 @@ import com.bdxh.user.entity.Student;
 import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.service.StudentService;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.StudentVo1;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -156,6 +158,28 @@ public class StudentController {
     }
 
     /**
+     * 查询单个学生信息1
+     *
+     * @param schoolCode cardNumber
+     * @return family
+     */
+    @ApiOperation(value = "查询单个学生信息1", response = StudentVo1.class)
+    @RequestMapping(value = "/queryStudentInfo1", method = RequestMethod.GET)
+    public Object queryStudentInfo1(@RequestParam(name = "schoolCode") @NotNull(message = "学生学校Code不能为空") String schoolCode,
+                                    @RequestParam(name = "cardNumber") @NotNull(message = "学生微校卡号不能为空") String cardNumber) {
+        try {
+            StudentVo studentVo = studentService.selectStudentVo(schoolCode, cardNumber);
+
+            StudentVo1 studentVo1 = new StudentVo1();
+            BeanUtils.copyProperties(studentVo, studentVo1);
+            return WrapMapper.ok(studentVo1);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
      * 根据条件分页查找
      *
      * @param studentQueryDto
@@ -204,6 +228,7 @@ public class StudentController {
 
     /**
      * 根据学校Code查询所有学生学号
+     *
      * @param schoolCode
      * @return
      */
@@ -219,6 +244,7 @@ public class StudentController {
 
     /**
      * 根据学校CODE和组织架构查询学生
+     *
      * @param schoolCode
      * @param parentIds
      * @param type
@@ -238,6 +264,7 @@ public class StudentController {
 
     /**
      * 查询所有学生
+     *
      * @return
      */
     @ApiOperation(value = "查询所有学生")
@@ -253,18 +280,15 @@ public class StudentController {
 
     /**
      * 根据条件查询学生
+     *
      * @param studentQueryDto
      * @return
      */
     @ApiOperation(value = "根据条件查询学生")
     @RequestMapping(value = "/findStudentInfo", method = RequestMethod.POST)
-    public Object findStudentInfo(@RequestBody StudentQueryDto studentQueryDto){
+    public Object findStudentInfo(@RequestBody StudentQueryDto studentQueryDto) {
         return WrapMapper.ok(studentService.findStudentInfo(studentQueryDto));
     }
-
-
-
-
 
 
 }

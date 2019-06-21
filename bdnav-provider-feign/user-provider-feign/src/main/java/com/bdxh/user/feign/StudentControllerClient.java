@@ -15,6 +15,7 @@ import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.fallback.StudentControllerFallback;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.StudentVo1;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,17 @@ public interface StudentControllerClient {
     @RequestMapping(value = "/student/queryStudentInfo",method = RequestMethod.GET)
     @ResponseBody
     Wrapper<StudentVo> queryStudentInfo(@RequestParam(name = "schoolCode")String schoolCode, @RequestParam(name = "cardNumber")String cardNumber);
+
+    /**
+     * 查询单个学生信息1
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    @RequestMapping(value = "/student/queryStudentInfo1",method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<StudentVo1> queryStudentInfo1(@RequestParam(name = "schoolCode")String schoolCode, @RequestParam(name = "cardNumber")String cardNumber);
+
 
     /**
      * 新增学生

@@ -8,6 +8,7 @@ import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.fallback.FamilyControllerFallback;
 import com.bdxh.user.vo.FamilyVo;
+import com.bdxh.user.vo.FamilyVo1;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -84,6 +85,15 @@ public interface FamilyControllerClient {
     @RequestMapping(value = "/family/queryFamilyInfoById", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<Family> queryFamilyInfoById(@RequestParam(name = "familyId") Long familyId);
+
+    /**
+     * 根据id查询家长1
+     *
+     * @return
+     */
+    @RequestMapping(value = "/family/queryFamilyInfoById1", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<FamilyVo1> queryFamilyInfoById1(@RequestParam(name = "familyId") Long familyId);
 
     /**
      * 分页查询家长

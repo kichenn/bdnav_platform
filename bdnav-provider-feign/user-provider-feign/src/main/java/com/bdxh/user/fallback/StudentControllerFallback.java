@@ -16,6 +16,7 @@ import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.StudentVo1;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -47,6 +48,11 @@ public class StudentControllerFallback implements StudentControllerClient {
 
     @Override
     public Wrapper<StudentVo> queryStudentInfo(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<StudentVo1> queryStudentInfo1(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
 

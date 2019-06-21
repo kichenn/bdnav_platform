@@ -19,7 +19,10 @@ import com.bdxh.servicepermit.properties.ServiceUserConstant;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.vo.FamilyVo;
+import com.bdxh.user.vo.FamilyVo1;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.StudentVo1;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -141,9 +144,9 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                         Boolean result = ordersControllerClient.modifyBindOrder(modifyPayOrderDto).getResult();
                         if (result) {
                             //查询家长信息 (此处一定有值，新增订单已效验过)
-                            Family family = familyControllerClient.queryFamilyInfoById(orderVo.getUserId()).getResult();
+                            FamilyVo1 family = familyControllerClient.queryFamilyInfoById1(orderVo.getUserId()).getResult();
                             //查询学生信息(此处一定有值，新增订单已效验过)
-                            StudentVo studentVo = studentControllerClient.queryStudentInfo(orderVo.getSchoolCode(), orderVo.getCardNumber()).getResult();
+                            StudentVo1 studentVo = studentControllerClient.queryStudentInfo1(orderVo.getSchoolCode(), orderVo.getCardNumber()).getResult();
                             //添加各个不同商品的权限
                             for (OrderItemVo1 orderItem : orderItems) {
                                 //增加商品权限

@@ -8,6 +8,7 @@ import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.vo.FamilyVo;
+import com.bdxh.user.vo.FamilyVo1;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -46,6 +47,11 @@ public class FamilyControllerFallback implements FamilyControllerClient {
 
     @Override
     public Wrapper<Family> queryFamilyInfoById(Long familyId) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<FamilyVo1> queryFamilyInfoById1(Long familyId) {
         return WrapMapper.error();
     }
 
