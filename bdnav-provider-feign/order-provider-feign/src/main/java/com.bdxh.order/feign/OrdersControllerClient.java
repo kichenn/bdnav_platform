@@ -83,6 +83,6 @@ public interface OrdersControllerClient {
      * @Date: 2019/6/19 18:30
      */
     @RequestMapping(value = "/order/modifyBindOrder", method = RequestMethod.POST)
-    Wrapper<Boolean> modifyBindOrder(@RequestBody ModifyPayOrderDto modifyPayOrderDto);
+    Wrapper modifyBindOrder(@RequestBody ModifyPayOrderDto modifyPayOrderDto);
 
 }

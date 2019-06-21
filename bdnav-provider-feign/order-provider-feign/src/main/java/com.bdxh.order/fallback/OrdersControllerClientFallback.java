@@ -58,7 +58,7 @@ public class OrdersControllerClientFallback implements OrdersControllerClient {
     }
 
     @Override
-    public Wrapper<Boolean> modifyBindOrder(ModifyPayOrderDto modifyPayOrderDto) {
+    public Wrapper modifyBindOrder(ModifyPayOrderDto modifyPayOrderDto) {
         return WrapMapper.error();
     }
 }
