@@ -164,7 +164,7 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
                 return false;
             }
             log.info("添加学生账号");
-            result = accountMapper.insert(account) > 0;
+            result = accountMapper.insertSelective(account) > 0;
             log.info("添加学生账号完成");
         } else {
             log.info("修改学生账号");
