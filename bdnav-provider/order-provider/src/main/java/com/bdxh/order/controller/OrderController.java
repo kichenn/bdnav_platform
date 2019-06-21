@@ -8,6 +8,7 @@ import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.service.OrderService;
+import com.bdxh.order.vo.OrderBindResultVo;
 import com.bdxh.order.vo.OrderVo;
 import com.bdxh.order.vo.OrderVo1;
 import io.swagger.annotations.Api;
@@ -148,10 +149,10 @@ public class OrderController {
     }
 
     /**
-    * @Description:   根据订单编号查询订单信息
-    * @Author: Kang
-    * @Date: 2019/6/21 12:19
-    */
+     * @Description: 根据订单编号查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/21 12:19
+     */
     @ApiIgnore
     @RequestMapping(value = "/findOrderByOrderNo1", method = RequestMethod.GET)
     @ApiOperation(value = "根据订单编号查询订单信息1(此方法不在swagger展示，给支付成功后我方订单查询部分信息)", response = OrderVo1.class)
@@ -193,6 +194,9 @@ public class OrderController {
             //业务状态不为空
             order.setBusinessStatus(modifyPayOrderDto.getBusinessStatus().getCode());
         }
-        return WrapMapper.ok(orderService.update(order) > 0);
+        //返参包装成对象，在mq消费者中，返参获取不到故修改
+        OrderBindResultVo orderBindResultVo = new OrderBindResultVo();
+        orderBindResultVo.setResult(Long.valueOf(orderService.update(order)));
+        return WrapMapper.ok(orderBindResultVo);
     }
 }

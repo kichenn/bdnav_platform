@@ -148,7 +148,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 break;
                         }
                         //修改订单状态
-                        Boolean result = (Boolean) ordersControllerClient.modifyBindOrder(modifyPayOrderDto).getResult();
+                        Boolean result = ordersControllerClient.modifyBindOrder(modifyPayOrderDto).getResult().getResult() > 0;
                         if (result) {
                             //查询家长信息 (此处一定有值，新增订单已效验过)
                             Family family = familyControllerClient.queryFamilyInfoById(orderVo.getUserId()).getResult();
