@@ -1,21 +1,14 @@
 package com.bdxh.weixiao.controller.pay;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.bdxh.common.base.constant.RedisClusterConstrants;
-import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.MD5;
-import com.bdxh.common.utils.WXPayUtil;
-import com.bdxh.common.utils.XmlUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.common.wechatpay.js.domain.JSNoticeReturn;
 import com.bdxh.common.wechatpay.js.domain.JsOrderPayResponse;
-import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
 import com.bdxh.order.dto.*;
 import com.bdxh.order.enums.*;
 import com.bdxh.order.feign.OrderItemControllerClient;
@@ -35,22 +28,21 @@ import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.SortedMap;
 
 
+/**
+* @Description:  微校购买商品 支付
+* @Author: Kang
+* @Date: 2019/6/21 14:32
+*/
 @RestController
 @RequestMapping("/wechatJsPayWeiXiaoWeb")
 @Api(value = "JSAPI微校支付", tags = "JSAPI微校支付交互API")
