@@ -107,6 +107,7 @@ public class SchoolStrategyWebController {
                         msv.setAppPackage(apkPackages);
                     }
                     JSONObject obj=new JSONObject();
+                    obj.put("key","strategyToPush");
                     obj.put("data",msv);
                     appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
                     appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
@@ -169,6 +170,7 @@ public class SchoolStrategyWebController {
                     msv.setAppPackage(apkPackages);
                 }
                 JSONObject obj=new JSONObject();
+                obj.put("key","strategyToPush");
                 obj.put("data",msv);
                 appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
                 appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
