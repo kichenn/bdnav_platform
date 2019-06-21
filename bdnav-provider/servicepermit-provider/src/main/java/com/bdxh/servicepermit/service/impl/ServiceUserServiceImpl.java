@@ -145,11 +145,13 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
         if (serviceUser != null) {
             //修改，延长次家长的此孩子的商品权限 (如果该家长以前买过则，此时只要重新续费即可，角色关联信息已经存在，无需修改和添加)
             //可用天数
-            serviceUser.setDays(addPayServiceUserDto.getDays());
+            serviceUser.setDays(serviceUser.getDays() + addPayServiceUserDto.getDays());
             String startTime = DateUtil.now2();
             String endTime = DateUtil.addDay(startTime, serviceUser.getDays());
             //开始使用时间
-            serviceUser.setStartTime(DateUtil.format(startTime, "yyyy-MM-dd"));
+            if (serviceUser.getDays() == 0) {
+                serviceUser.setStartTime(DateUtil.format(startTime, "yyyy-MM-dd"));
+            }
             //结束使用时间
             serviceUser.setEndTime(DateUtil.format(endTime, "yyyy-MM-dd"));
             //状态:正常
