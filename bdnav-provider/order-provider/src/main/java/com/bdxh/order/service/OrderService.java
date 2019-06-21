@@ -5,6 +5,7 @@ import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderVo1;
 import com.github.pagehelper.PageInfo;
 
 import java.util.Map;
@@ -41,6 +42,13 @@ public interface OrderService extends IService<Order> {
      * @Date: 2019/6/5 18:39
      */
     OrderVo findOrderByOrderNo(Long orderNo);
+
+    /**
+    * @Description: 根据订单编号查询订单信息，支付成功后订单编号，查询订单部分信息
+    * @Author: Kang
+    * @Date: 2019/6/21 12:24
+    */
+    OrderVo1 findOrderByOrderNo1(Long orderNo);
 
     /**
      * @Description: 第三方订单查询订单信息

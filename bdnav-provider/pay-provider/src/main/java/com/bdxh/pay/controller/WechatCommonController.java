@@ -45,6 +45,7 @@ public class WechatCommonController {
         orderQueryRequest.setMch_id(WechatPayConstants.APP.mch_id);
         orderQueryRequest.setNonce_str(ObjectUtil.getUuid());
         orderQueryRequest.setOut_trade_no(orderNo);
+//        orderQueryRequest.setTransaction_id(orderNo);
         //生成签名
         SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(orderQueryRequest);
         if (paramMap.containsKey("sign")) {

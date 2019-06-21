@@ -132,8 +132,10 @@ public class WechatNoticeController {
             String responseStr = BeanToMapUtil.mapToString((resultMap));
             String responseSign = MD5.md5(responseStr + "&key=" + WechatPayConstants.JS.APP_KEY);
             Preconditions.checkArgument(StringUtils.equalsIgnoreCase(responseSign, resultSign), "微信返回数据验签失败");
+            //我方订单号
             String orderNo = resultMap.get("out_trade_no");
             String resultCode = resultMap.get("result_code");
+            //微信方订单号
             String thirdOrderNo = resultMap.get("transaction_id");
             Preconditions.checkArgument(StringUtils.equalsIgnoreCase(resultCode, "SUCCESS") || StringUtils.equalsIgnoreCase(resultCode, "FAIL"), "微信返回结果不正确");
             //做幂等性处理,多次通知不再处理

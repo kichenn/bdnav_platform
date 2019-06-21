@@ -9,6 +9,7 @@ import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.service.OrderService;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderVo1;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotNull;
 
@@ -143,6 +145,18 @@ public class OrderController {
     @ApiOperation(value = "根据订单编号查询订单信息", response = OrderVo.class)
     public Object findOrderByOrderNo(@RequestParam("orderNo") Long orderNo) {
         return WrapMapper.ok(orderService.findOrderByOrderNo(orderNo));
+    }
+
+    /**
+    * @Description:   根据订单编号查询订单信息
+    * @Author: Kang
+    * @Date: 2019/6/21 12:19
+    */
+    @ApiIgnore
+    @RequestMapping(value = "/findOrderByOrderNo1", method = RequestMethod.GET)
+    @ApiOperation(value = "根据订单编号查询订单信息1(此方法不在swagger展示，给支付成功后我方订单查询部分信息)", response = OrderVo1.class)
+    public Object findOrderByOrderNo1(@RequestParam("orderNo") Long orderNo) {
+        return WrapMapper.ok(orderService.findOrderByOrderNo1(orderNo));
     }
 
     /**

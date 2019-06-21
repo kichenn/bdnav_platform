@@ -10,6 +10,7 @@ import com.bdxh.order.persistence.OrderItemMapper;
 import com.bdxh.order.persistence.OrderMapper;
 import com.bdxh.order.service.OrderService;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderVo1;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -99,6 +100,20 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         OrderVo orderVo = new OrderVo();
         BeanUtils.copyProperties(order, orderVo);
         return orderVo;
+    }
+
+    /**
+     * @Description: 根据订单编号查询订单信息，支付成功后订单编号，查询订单部分信息
+     * @Author: Kang
+     * @Date: 2019/6/21 12:24
+     */
+    @Override
+    public OrderVo1 findOrderByOrderNo1(Long orderNo) {
+        Order order = orderMapper.selectByPrimaryKey(orderNo);
+        //数据拷贝
+        OrderVo1 orderVo1 = new OrderVo1();
+        BeanUtils.copyProperties(order, orderVo1);
+        return orderVo1;
     }
 
     /**

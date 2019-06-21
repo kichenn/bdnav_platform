@@ -8,6 +8,7 @@ import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.fallback.OrdersControllerClientFallback;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderVo1;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -67,6 +68,14 @@ public interface OrdersControllerClient {
      */
     @RequestMapping(value = "/order/findOrderByOrderNo", method = RequestMethod.GET)
     Wrapper<OrderVo> findOrderByOrderNo(@RequestParam("orderNo") Long orderNo);
+
+    /**
+     * @Description:   根据订单编号查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/21 12:19
+     */
+    @RequestMapping(value = "/order/findOrderByOrderNo1", method = RequestMethod.GET)
+    Wrapper<OrderVo1> findOrderByOrderNo1(@RequestParam("orderNo") Long orderNo);
 
     /**
      * @Description: 我方订单号绑定微信第三方订单号信息

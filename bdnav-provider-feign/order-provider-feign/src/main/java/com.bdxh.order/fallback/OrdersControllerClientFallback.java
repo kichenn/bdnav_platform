@@ -9,6 +9,7 @@ import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.feign.OrdersControllerClient;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderVo1;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -48,6 +49,11 @@ public class OrdersControllerClientFallback implements OrdersControllerClient {
 
     @Override
     public Wrapper<OrderVo> findOrderByOrderNo(Long orderNo) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<OrderVo1> findOrderByOrderNo1(Long orderNo) {
         return WrapMapper.error();
     }
 

@@ -13,6 +13,7 @@ import com.bdxh.order.feign.OrderItemControllerClient;
 import com.bdxh.order.feign.OrdersControllerClient;
 import com.bdxh.order.vo.OrderItemVo;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderVo1;
 import com.bdxh.pay.configration.redis.RedisUtil;
 import com.bdxh.pay.controller.WechatCommonController;
 import com.bdxh.pay.vo.WechatOrderQueryVo;
@@ -85,10 +86,13 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 JSONObject jsonObject = JSONObject.parseObject(msgBody);
                 //获取我方订单
                 String orderNo = jsonObject.getString("orderNo");
+                //微信方订单号
+                String thirdOrderNo=jsonObject.getString("thirdOrderNo");
                 //根据订单号查询订单信息
-                OrderVo orderVo = ordersControllerClient.findOrderByOrderNo(Long.valueOf(orderNo)).getResult();
+                OrderVo1 orderVo = ordersControllerClient.findOrderByOrderNo1(Long.valueOf(orderNo)).getResult();
                 try {
                     Wrapper wrapper = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(orderNo);
+                    log.info("查询微信订单详情信息:{}",JSONObject.toJSONString(wrapper));
                     if (wrapper.getCode() == Wrapper.SUCCESS_CODE) {
                         //查询成功
                         WechatOrderQueryVo wechatOrderQueryVo = (WechatOrderQueryVo) wrapper.getResult();
@@ -165,6 +169,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 addPayServiceUserDto.setRemark("微信购买");
                                 serviceUserControllerClient.createPayService(addPayServiceUserDto);
                                 //服务权限添加完成，重新登录授权
+                                log.info("服务权限添加完成，重新登录授权------------");
                                 redisUtil.delete("weixiao_token:" + addPayServiceUserDto.getFamilyId());
                             }
                         }
