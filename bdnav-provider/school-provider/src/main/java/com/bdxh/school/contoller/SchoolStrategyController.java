@@ -253,6 +253,15 @@ public class SchoolStrategyController {
 		return WrapMapper.ok(ss);
 	}
 
-
+	/**
+	 * @Description: 验证学校策略下是否用到模式
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/validateTheschoolModel", method = RequestMethod.GET)
+	@ApiOperation(value = "验证学校策略下是否用到模式", response = SchoolStrategy.class)
+	public Object validateTheschoolModel(@RequestParam("schoolCode") String schoolCode,@RequestParam("modelId") Long modelId) {
+		SchoolStrategy ss = schoolStrategyService.validateTheschoolModel(schoolCode,modelId);
+		return WrapMapper.ok(ss);
+	}
 
 }

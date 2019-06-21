@@ -1,6 +1,11 @@
 package com.bdxh.weixiao.controller.user;
 
+import com.bdxh.account.entity.Account;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.school.dto.AddBlackUrlDto;
+import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.user.feign.VisitLogsControllerClient;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
@@ -10,10 +15,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
 
@@ -31,6 +33,9 @@ public class VisitLogsWebController {
     @Autowired
     private VisitLogsControllerClient visitLogsControllerClient;
 
+    @Autowired
+    private BlackUrlControllerClient blackUrlControllerClient;
+
     /**
      * 收费服务
      * @param cardNumber
@@ -47,4 +52,15 @@ public class VisitLogsWebController {
             return WrapMapper.error();
         }
     }
+
+
+    @RequestMapping(value = "/addBlacklist", method = RequestMethod.POST)
+    @ApiOperation(value = "家长添加url黑名单", response = Boolean.class)
+    public Object addBlacklist(@Validated @RequestBody AddBlackUrlDto addBlackUrlDto) {
+        addBlackUrlDto.setUrlType(Long.valueOf(2));//标识为家长添加的黑名单
+        Wrapper wrapMapper = blackUrlControllerClient.addBlack(addBlackUrlDto);
+        return wrapMapper;
+    }
+
+
 }

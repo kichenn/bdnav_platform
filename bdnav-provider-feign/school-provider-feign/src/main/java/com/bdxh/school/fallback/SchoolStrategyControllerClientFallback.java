@@ -65,4 +65,9 @@ public class SchoolStrategyControllerClientFallback implements SchoolStrategyCon
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper<SchoolStrategy> validateTheschoolModel(String schoolCode, Long modelId) {
+        return WrapMapper.error();
+    }
+
 }

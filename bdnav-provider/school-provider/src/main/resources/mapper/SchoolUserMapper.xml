@@ -76,7 +76,7 @@
           <include refid="BaseColumns1"/>
         FROM t_school_user school_user
         INNER JOIN t_school school  ON  school_user.school_id =school.id
-        LEFT JOIN t_school_dept dept ON school_user.dept_id = dept.id
+        LEFT JOIN t_school_org dept ON school_user.dept_id = dept.id
         <where>
             <if test="schoolUser.schoolId !=null">
                 school_user.school_id= #{schoolUser.schoolId,jdbcType=BIGINT}

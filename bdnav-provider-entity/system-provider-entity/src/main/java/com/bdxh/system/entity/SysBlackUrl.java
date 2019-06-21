@@ -1,4 +1,4 @@
-package com.bdxh.school.entity;
+package com.bdxh.system.entity;
 
 import javax.persistence.Table;
 import lombok.Data;
@@ -10,12 +10,12 @@ import java.lang.Byte;
 
 /**
 * @Description: 实体类
-* @Author Kang
-* @Date 2019-04-11 09:56:14
+* @Author wanMing
+* @Date 2019-06-20 11:32:50
 */
 @Data
-@Table(name = "t_black_url")
-public class BlackUrl {
+@Table(name = "sys_black_url")
+public class SysBlackUrl {
 
 	/**
 	 * 主键
@@ -25,48 +25,22 @@ public class BlackUrl {
 	private Long id;
 
 	/**
-	 * 学校id
-	 */
-	@Column(name = "school_id")
-	private Long schoolId;
-
-	/**
-	 * 学校编码
-	 */
-	@Column(name = "school_code")
-	private String schoolCode;
-
-	/**
-	 * 学生卡号
-	 */
-	@Column(name = "card_number")
-	private String cardNumber;
-
-	/**
 	 * 网站名称
 	 */
 	@Column(name = "name")
 	private String name;
 
 	/**
-	 * 填写域名或者ip
+	 * 网站域名或者ip
 	 */
 	@Column(name = "ip")
 	private String ip;
 
-
 	/**
-	 * 类型 1 学校 2 家长
+	 * 网站来源 1 北斗 2 金山 3 360 4 百度
 	 */
-	@Column(name = "url_type")
-	private Long urlType;
-
-
-	/**
-	 * 状态 1 启用 2 禁用
-	 */
-	@Column(name = "status")
-	private Byte status;
+	@Column(name = "origin")
+	private Byte origin;
 
 	/**
 	 * 创建时间

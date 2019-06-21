@@ -20,7 +20,9 @@ import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.QuerySchoolStrategy;
+import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.BlackUrlControllerClient;
+import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
 import com.bdxh.school.vo.MobileStrategyVo;
 import com.bdxh.system.dto.AddFeedbackAttachDto;
@@ -28,7 +30,9 @@ import com.bdxh.system.dto.AddFeedbackDto;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.system.feign.FeedbackControllerClient;
 import com.bdxh.user.dto.UpdateStudentDto;
+import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -87,8 +91,11 @@ public class ApplyControlsWebController {
     @Autowired
     private FeedbackControllerClient feedbackControllerClient;
 
+    @Autowired
+    private FamilyStudentControllerClient familyStudentControllerClient;
 
-
+    @Autowired
+    private SchoolControllerClient schoolControllerClient;
 
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/modifyInfo", method = RequestMethod.POST)
@@ -194,9 +201,17 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "申请应用畅玩(解锁)", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/applyUnlockApplication", method = RequestMethod.POST)
-    public Object applyUnlockApplication(@RequestBody AddApplyLogDto addApplyLogDto){
-        Wrapper wrapper = applyLogControllerClient.addApplyLog(addApplyLogDto);
-        return WrapMapper.ok(wrapper.getResult());
+    public Object applyUnlockApplication(@RequestBody AddApplyLogDto addApplyLogDto) {
+        FamilyStudentVo familyStudent = familyStudentControllerClient.studentQueryInfo(addApplyLogDto.getSchoolCode(), addApplyLogDto.getCardNumber()).getResult();
+        School school=schoolControllerClient.findSchoolBySchoolCode(addApplyLogDto.getSchoolCode()).getResult();
+        if (null != familyStudent) {
+            addApplyLogDto.setOperatorCode(familyStudent.getFCardNumber());
+            addApplyLogDto.setAppKey(school.getSchoolKey());
+            addApplyLogDto.setAppSecret(school.getSchoolSecret());
+            Wrapper wrapper = applyLogControllerClient.addApplyLog(addApplyLogDto);
+            return WrapMapper.ok(wrapper.getResult());
+        }
+        return WrapMapper.ok("您还没有绑定家长，请先绑定一个家长");
     }
 
     @ApiOperation(value = "提供学校应用下载APP链接", response = appDownloadlinkVo.class)

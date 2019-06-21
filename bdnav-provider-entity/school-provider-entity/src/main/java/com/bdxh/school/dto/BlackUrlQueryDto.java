@@ -14,6 +14,9 @@ public class BlackUrlQueryDto extends Query {
     @ApiModelProperty("*学校编码")
     private String schoolCode;
 
+    @ApiModelProperty("类型 1学校 2 家长")
+    private Long urlType;
+
     @ApiModelProperty("*状态")
     private BlackStatusEnum blackStatusEnum;
 

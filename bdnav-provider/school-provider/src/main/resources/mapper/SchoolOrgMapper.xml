@@ -14,7 +14,7 @@
         <result column="org_type" jdbcType="TINYINT" property="orgType"/>
         <result column="level" jdbcType="TINYINT" property="level"/>
         <result column="sort" jdbcType="INTEGER" property="sort"/>
-        <result column="creafindSchoolOrgInfote_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
         <result column="manage_id" jdbcType="BIGINT" property="manageId"/>
         <result column="manage_card_number" jdbcType="VARCHAR" property="manageCardNumber"/>

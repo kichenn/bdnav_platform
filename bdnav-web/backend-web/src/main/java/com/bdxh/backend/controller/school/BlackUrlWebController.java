@@ -13,11 +13,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,6 +46,7 @@ public class BlackUrlWebController {
         User user = SecurityUtils.getCurrentUser();
         addBlackUrlDto.setOperator(user.getId());
         addBlackUrlDto.setOperatorName(user.getUserName());
+        addBlackUrlDto.setUrlType(Long.valueOf(1));
         Wrapper wrapMapper = blackUrlControllerClient.addBlack(addBlackUrlDto);
         return wrapMapper;
     }
@@ -63,7 +62,6 @@ public class BlackUrlWebController {
         User user = SecurityUtils.getCurrentUser();
         modifyBlackUrlDto.setOperator(user.getId());
         modifyBlackUrlDto.setOperatorName(user.getUserName());
-        modifyBlackUrlDto.setUpdateDate(new Date());
         Wrapper wrapMapper = blackUrlControllerClient.modifyBlack(modifyBlackUrlDto);
         return wrapMapper;
     }
