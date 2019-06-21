@@ -294,6 +294,7 @@ public class AppController {
         appTransmissionTemplate.setTransmissionContent(jsonObject.toJSONString());
         Map<String, Object> resultMap = GeTuiUtil.appCustomPush(appPushRequest);
         Boolean result = false;
+        log.info("====================result:         {}",resultMap.get("result"));
         //如果推送成功就个推会返回 {result=ok, contentId=OSL-0520_2vlMMg1urX5H7l3cxFuwS3}
         if (resultMap.get("result").equals("ok")) {
             result = true;
