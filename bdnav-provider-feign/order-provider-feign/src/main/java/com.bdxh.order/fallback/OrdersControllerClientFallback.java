@@ -47,6 +47,11 @@ public class OrdersControllerClientFallback implements OrdersControllerClient {
     }
 
     @Override
+    public Wrapper<OrderVo> findOrderByOrderNo(Long orderNo) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper<Boolean> modifyBindOrder(ModifyPayOrderDto modifyPayOrderDto) {
         return WrapMapper.error();
     }

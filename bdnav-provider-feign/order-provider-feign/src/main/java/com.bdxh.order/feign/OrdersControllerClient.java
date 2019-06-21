@@ -61,6 +61,14 @@ public interface OrdersControllerClient {
     Wrapper<OrderVo> findThirdOrderByOrderNo(@RequestParam("thirdOrderNo") String thirdOrderNo);
 
     /**
+     * @Description: 我方订单查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/20 16:22
+     */
+    @RequestMapping(value = "/order/findOrderByOrderNo", method = RequestMethod.GET)
+    Wrapper<OrderVo> findOrderByOrderNo(@RequestParam("orderNo") Long orderNo);
+
+    /**
      * @Description: 我方订单号绑定微信第三方订单号信息
      * @Author: Kang
      * @Date: 2019/6/19 18:30
