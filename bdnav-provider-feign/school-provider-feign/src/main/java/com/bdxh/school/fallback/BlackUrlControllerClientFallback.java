@@ -57,4 +57,9 @@ public class BlackUrlControllerClientFallback implements BlackUrlControllerClien
     public Wrapper<List<String>> findBlackInList(String schoolCode) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<BlackUrl> findBlackUrlById(Long id) {
+        return WrapMapper.error();
+    }
 }

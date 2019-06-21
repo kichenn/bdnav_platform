@@ -137,6 +137,23 @@ public class UserDeviceController {
 
 	}
 
+	/**
+	 * @Description: 根据schoolcode查询所属学校下的设备信息
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/findUserDeviceList", method = RequestMethod.GET)
+	@ApiOperation(value = "查询所属学校下的设备信息", response = Boolean.class)
+	public Object findUserDeviceList(@RequestParam("schoolCode")String schoolCode) {
+		try{
+			List<UserDevice> ud=userDeviceService.findUserDeviceList(schoolCode);
+			return WrapMapper.ok(ud);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
+
+	}
+
 
 
 

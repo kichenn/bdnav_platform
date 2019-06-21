@@ -3,6 +3,7 @@ package com.bdxh.school.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.bdxh.school.dto.AddBlackUrlDto;
 import com.bdxh.school.vo.BlackUrlShowVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -35,4 +36,7 @@ public interface BlackUrlMapper extends Mapper<BlackUrl> {
 
     //查询当前学校的黑名单列表
     List<BlackUrl> findBlackInList(@Param("schoolCode") String schoolCode);
+
+    //添加黑名单列表
+    Integer addBlackUrl(BlackUrl blackUrl);
 }

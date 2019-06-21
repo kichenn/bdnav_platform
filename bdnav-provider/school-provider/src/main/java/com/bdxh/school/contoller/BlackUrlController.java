@@ -55,7 +55,7 @@ public class BlackUrlController {
         BeanUtils.copyProperties(addBlackUrlDto, blackUrl);
         blackUrl.setStatus(addBlackUrlDto.getBlackStatusEnum().getKey());
         try {
-            blackUrlService.save(blackUrl);
+             blackUrlService.addBlackUrl(blackUrl);
         } catch (Exception e) {
             if (e instanceof DuplicateKeyException) {
                 //学校id，黑名单ip
@@ -63,7 +63,7 @@ public class BlackUrlController {
             }
             e.printStackTrace();
         }
-        return WrapMapper.ok();
+        return WrapMapper.ok(blackUrl.getId());
     }
 
     /**
@@ -150,4 +150,17 @@ public class BlackUrlController {
         }
         return WrapMapper.ok(urlList);
     }
+
+
+    /**
+     * @Description: 根据id查询黑名单信息
+     * @Date 2019-04-18 09:52:43
+     */
+    @RequestMapping(value = "/findBlackUrlById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据id查询黑名单信息", response = BlackUrl.class)
+    public Object findBlackUrlById(@RequestParam("id") Long id) {
+        BlackUrl ss = blackUrlService.selectByKey(id);
+        return WrapMapper.ok(ss);
+    }
+
 }

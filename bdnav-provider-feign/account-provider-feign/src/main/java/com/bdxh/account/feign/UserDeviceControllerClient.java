@@ -56,5 +56,13 @@ public interface UserDeviceControllerClient {
     @ResponseBody
     Wrapper<UserDevice> findUserDeviceByCodeOrCard(@RequestParam("schoolCode")String schoolCode,@RequestParam("cardNumber")String cardNumber);
 
+    /**
+     * 根据schoolcode查询所属学校写下设备列表
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "/userDevice/findUserDeviceList", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<UserDevice>> findUserDeviceList(@RequestParam("schoolCode")String schoolCode);
 
 }

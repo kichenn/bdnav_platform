@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.AddBlackUrlDto;
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.entity.BlackUrl;
 import com.bdxh.school.vo.BlackUrlShowVo;
@@ -34,5 +35,8 @@ public interface BlackUrlService extends IService<BlackUrl> {
 
 
     List<BlackUrl> findBlackInList(String schoolCode);
+
+    //添加黑名单列表
+    Boolean addBlackUrl(BlackUrl blackUrl);
 
 }
