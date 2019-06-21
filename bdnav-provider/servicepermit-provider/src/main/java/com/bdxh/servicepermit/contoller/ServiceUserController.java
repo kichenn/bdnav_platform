@@ -91,7 +91,7 @@ public class ServiceUserController {
                 return WrapMapper.ok();
             }
             //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
-            List<ServiceUser> serviceUserTos = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, Integer.valueOf(ServiceTypeEnum.FORMAL.getKey()), Integer.valueOf(ServiceStatusEnum.NORMAL_USE.getValue()));
+            List<ServiceUser> serviceUserTos = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, Integer.valueOf(ServiceTypeEnum.FORMAL.getKey()), Integer.valueOf(ServiceStatusEnum.NORMAL_USE.getKey()));
             if (CollectionUtils.isNotEmpty(serviceUserTos)) {
                 //一个服务许可正式使用时，一个家长对于一个孩子只会存在一条数据，故此处get（0）
                 ServiceUser serviceUserTo = serviceUserTos.get(0);
