@@ -71,7 +71,7 @@ public class WecharJsPay {
 
     @RequestMapping(value = "/order", method = RequestMethod.POST)
     @ApiOperation(value = "JS统一下单购买的商品", response = String.class)
-    public Object wechatJsPayOrder(@Validated @RequestBody AddPayOrderDto addPayOrderDto, HttpServletRequest request) {
+    public Object wechatJsPayOrder(@Validated @RequestBody AddPayOrderDto addPayOrderDto) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         //查询学生信息
         StudentVo studentVo = studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(), addPayOrderDto.getCardNumber()).getResult();
@@ -174,7 +174,7 @@ public class WecharJsPay {
         //商品描述
         wxPayJsOrderDto.setBody(addPayOrderDto.getBody());
         //ip地址
-        wxPayJsOrderDto.setIp(request.getRemoteAddr());
+        wxPayJsOrderDto.setIp(addPayOrderDto.getIp());
         //openid
         wxPayJsOrderDto.setOpenid(addPayOrderDto.getOpenId());
 

@@ -46,7 +46,7 @@ public class WechatPayConstants {
         /**
          * 商户号
          */
-        String mch_id = "1515043731";
+        String mch_id = "1406768102";
 
         /**
          * 秘钥
@@ -56,7 +56,7 @@ public class WechatPayConstants {
         /**
          * 应用id
          */
-        String app_id = "wxe99d4bf57f4ce53f";
+        String app_id = "wxb5d9031684f864e4";
 
         /**
          * 回调地址

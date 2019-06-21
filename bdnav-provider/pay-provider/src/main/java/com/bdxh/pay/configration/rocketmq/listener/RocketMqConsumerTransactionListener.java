@@ -91,7 +91,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 //根据订单号查询订单信息
                 OrderVo1 orderVo = ordersControllerClient.findOrderByOrderNo1(Long.valueOf(orderNo)).getResult();
                 try {
-                    Wrapper wrapper = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(orderNo);
+                    Wrapper wrapper = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(thirdOrderNo);
                     log.info("查询微信订单详情信息:{}",JSONObject.toJSONString(wrapper));
                     if (wrapper.getCode() == Wrapper.SUCCESS_CODE) {
                         //查询成功

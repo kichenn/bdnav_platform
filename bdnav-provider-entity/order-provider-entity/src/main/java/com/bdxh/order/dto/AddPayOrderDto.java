@@ -46,11 +46,15 @@ public class AddPayOrderDto {
     @NotBlank(message = "产品主键不能为空")
     private String productId;
 
+    @ApiModelProperty("ip")
+    private String ip;
+
     @ApiModelProperty("操作人")
     private Long operator;
 
     @ApiModelProperty("操作人姓名")
     private String operatorName;
+
 
     @ApiModelProperty("备注")
     private String remark;
