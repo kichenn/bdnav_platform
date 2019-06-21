@@ -1,10 +1,16 @@
 package com.bdxh.weixiao.controller.user;
 
-import com.bdxh.account.entity.Account;
+import com.alibaba.fastjson.JSONObject;
+import com.bdxh.account.entity.UserDevice;
+import com.bdxh.account.feign.UserDeviceControllerClient;
+import com.bdxh.common.helper.getui.constant.GeTuiConstant;
+import com.bdxh.common.helper.getui.entity.AppTransmissionTemplate;
+import com.bdxh.common.helper.getui.request.AppPushRequest;
+import com.bdxh.common.helper.getui.utils.GeTuiUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddBlackUrlDto;
-import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.entity.BlackUrl;
 import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.user.feign.VisitLogsControllerClient;
 import com.bdxh.user.vo.VisitLogsVo;
@@ -18,6 +24,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -35,6 +44,9 @@ public class VisitLogsWebController {
 
     @Autowired
     private BlackUrlControllerClient blackUrlControllerClient;
+
+    @Autowired
+    private UserDeviceControllerClient userDeviceControllerClient;
 
     /**
      * 收费服务
@@ -59,6 +71,30 @@ public class VisitLogsWebController {
     public Object addBlacklist(@Validated @RequestBody AddBlackUrlDto addBlackUrlDto) {
         addBlackUrlDto.setUrlType(Long.valueOf(2));//标识为家长添加的黑名单
         Wrapper wrapMapper = blackUrlControllerClient.addBlack(addBlackUrlDto);
+        String aap=String.valueOf(wrapMapper.getResult());
+        BlackUrl bu=blackUrlControllerClient.findBlackUrlById(Long.valueOf(aap)).getResult();
+        if (bu!=null) {
+           UserDevice userDevices = userDeviceControllerClient.findUserDeviceByCodeOrCard(bu.getSchoolCode(),bu.getCardNumber()).getResult();
+            if (userDevices!=null) {
+                AppPushRequest appPushRequest = new AppPushRequest();
+                appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+                appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+                appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+                List<String> clientIds = new ArrayList<>();
+                clientIds.add(userDevices.getClientId());
+                appPushRequest.setClientId(clientIds);
+                //穿透模版
+                AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
+                JSONObject obj = new JSONObject();
+                obj.put("key", "blackUrlToPush");
+                obj.put("data",bu);
+                appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
+                appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
+                //群发穿透模版
+                Map<String, Object> resultMap = GeTuiUtil.appCustomPush(appPushRequest);
+                System.out.println(resultMap.toString());
+            }
+        }
         return wrapMapper;
     }
 
