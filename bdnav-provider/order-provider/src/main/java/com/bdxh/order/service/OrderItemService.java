@@ -3,6 +3,7 @@ package com.bdxh.order.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.order.entity.OrderItem;
 import com.bdxh.order.vo.OrderItemVo;
+import com.bdxh.order.vo.OrderItemVo1;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
@@ -35,8 +36,12 @@ public interface OrderItemService extends IService<OrderItem> {
 
 
 
-
-
+    /**
+    * @Description:   根据订单编号查询订单详情信息
+    * @Author: Kang
+    * @Date: 2019/6/21 16:20
+    */
+    List<OrderItemVo1> findOrderItemByOrderNo1(Long orderNo);
 
 
 }

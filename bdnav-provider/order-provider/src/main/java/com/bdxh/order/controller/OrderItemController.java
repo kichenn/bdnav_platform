@@ -7,6 +7,8 @@ import com.bdxh.order.dto.AddOrderItemDto;
 import com.bdxh.order.entity.OrderItem;
 import com.bdxh.order.service.OrderItemService;
 import com.bdxh.order.vo.OrderItemVo;
+import com.bdxh.order.vo.OrderItemVo1;
+import com.bdxh.order.vo.OrderVo1;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 /**
  * @description:
@@ -36,13 +39,26 @@ public class OrderItemController {
 
     /**
      * 根据订单编号查询订单明细
+     *
      * @Author: WanMing
      * @Date: 2019/6/3 15:44
      */
-    @RequestMapping(value = "/findOrderItemByOrderNo",method = RequestMethod.GET)
-    @ApiOperation(value = "根据订单编号查询订单明细",response = OrderItemVo.class)
-    public Object findOrderItemByOrderNo(@Validated @RequestParam("orderNo") Long orderNo){
+    @RequestMapping(value = "/findOrderItemByOrderNo", method = RequestMethod.GET)
+    @ApiOperation(value = "根据订单编号查询订单明细", response = OrderItemVo.class)
+    public Object findOrderItemByOrderNo(@Validated @RequestParam("orderNo") Long orderNo) {
         return WrapMapper.ok(orderItemService.findOrderItemByOrderNo(orderNo));
+    }
+
+    /**
+     * @Description: 根据订单编号查询订单详情信息
+     * @Author: Kang
+     * @Date: 2019/6/21 16:19
+     */
+    @ApiIgnore
+    @RequestMapping(value = "/findOrderItemByOrderNo1", method = RequestMethod.GET)
+    @ApiOperation(value = "根据订单编号查询订单详情信息1(此方法不在swagger展示，给支付成功后我方订单查询部分信息)", response = OrderItemVo1.class)
+    public Object findOrderItemByOrderNo1(@RequestParam("orderNo") Long orderNo) {
+        return WrapMapper.ok(orderItemService.findOrderItemByOrderNo1(orderNo));
     }
 
 //    /**
@@ -61,12 +77,13 @@ public class OrderItemController {
 
     /**
      * 添加订单明细
+     *
      * @Author: WanMing
      * @Date: 2019/6/4 9:33
      */
-    @RequestMapping(value = "/addOrderItem",method = RequestMethod.POST)
-    @ApiOperation(value = "添加订单明细",response = String.class)
-    public Object addOrderItem(@Validated @RequestBody AddOrderItemDto addOrderItemDto){
+    @RequestMapping(value = "/addOrderItem", method = RequestMethod.POST)
+    @ApiOperation(value = "添加订单明细", response = String.class)
+    public Object addOrderItem(@Validated @RequestBody AddOrderItemDto addOrderItemDto) {
         //数据拷贝
         OrderItem orderItem = new OrderItem();
         BeanUtils.copyProperties(addOrderItemDto, orderItem);
@@ -84,27 +101,15 @@ public class OrderItemController {
 
     /**
      * 根据订单明细编号删除订单明细
+     *
      * @Author: WanMing
      * @Date: 2019/6/5 16:46
      */
-    @RequestMapping(value = "/delOrderItem",method = RequestMethod.GET)
-    @ApiOperation(value = "删除订单明细",response = Boolean.class)
-    public Object delOrderItem(@Validated @RequestParam("id")Long id){
+    @RequestMapping(value = "/delOrderItem", method = RequestMethod.GET)
+    @ApiOperation(value = "删除订单明细", response = Boolean.class)
+    public Object delOrderItem(@Validated @RequestParam("id") Long id) {
         return WrapMapper.ok(orderItemService.deleteByKey(id));
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

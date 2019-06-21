@@ -41,6 +41,16 @@ public class SecurityUtils {
     }
 
     /**
+     * 获取当前试用权限信息
+     *
+     * @return
+     */
+    public static Map<String, Boolean> getCurrentAuthOnTrial() {
+        UserInfo userInfo = getCurrentUser();
+        return userInfo.getWeixiaoIsAuthOnTrial();
+    }
+
+    /**
      * 获取myUserDetails
      *
      * @return

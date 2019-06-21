@@ -64,8 +64,8 @@ public class MqTestController {
     @GetMapping("/test2")
     public void test2() throws MQClientException {
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("orderNo", "591642320785637376");
-        jsonObject.put("thirdOrderNo", "4200000308201906218356866327");
+        jsonObject.put("orderNo", "591658105520259072");
+        jsonObject.put("thirdOrderNo", "4200000290201906211395857216");
         jsonObject.put("resultCode", "SUCCESS");
         Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice, RocketMqConstrants.Tags.wechatPayWalletNotice_js, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
         log.info("开始执行事务的------");

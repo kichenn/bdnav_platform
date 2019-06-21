@@ -17,14 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
+
 import javax.validation.constraints.NotEmpty;
 import java.util.SortedMap;
 
 /**
-* @Description:   微信支付公共控制器
-* @Author: Kang
-* @Date: 2019/6/20 16:18
-*/
+ * @Description: 微信支付公共控制器
+ * @Author: Kang
+ * @Date: 2019/6/20 16:18
+ */
 @Controller
 @RequestMapping("/wechatCommonPay")
 @Slf4j
@@ -32,13 +33,13 @@ import java.util.SortedMap;
 public class WechatCommonController {
 
     /**
-     * 微信APP支付订单查询接口
+     * 微信JS支付订单查询接口
      *
      * @param orderNo
      */
     @RequestMapping("/query")
     @ResponseBody
-    public Object wechatAppPayOrderQuery(@RequestParam(name = "orderNo") @NotEmpty(message = "订单号不能为空") String orderNo) throws Exception{
+    public Object wechatAppPayOrderQuery(@RequestParam(name = "orderNo") @NotEmpty(message = "订单号不能为空") String orderNo) throws Exception {
         //准备参数
         OrderQueryRequest orderQueryRequest = new OrderQueryRequest();
         orderQueryRequest.setAppid(WechatPayConstants.APP.app_id);
@@ -54,12 +55,12 @@ public class WechatCommonController {
             paramMap.remove("sign");
         }
         String paramStr = BeanToMapUtil.mapToString(paramMap);
-        String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.APP.app_key);
+        String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.JS.APP_KEY);
         orderQueryRequest.setSign(sign);
         //发送微信下单请求
         String requestStr = XmlUtils.toXML(orderQueryRequest);
         //输出微信请求串
-        log.info("微信入参:{}",requestStr);
+        log.info("微信入参:{}", requestStr);
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Accept-Charset", "utf-8");
@@ -70,8 +71,8 @@ public class WechatCommonController {
             return WrapMapper.error("微信订单查询接口调用失败");
         }
         String responseEntityStr = responseEntity.getBody();
-        //输出微信返回结果
-        log.info("微信返参:{}",responseEntityStr);
+        //输出微信返回结果 requestStr.getBytes("utf-8"), headers
+        log.info("微信返参:{}", new String(responseEntityStr.getBytes("iso-8859-1"), "utf-8"));
         if (StringUtils.isNotEmpty(responseEntityStr)) {
             SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(responseEntityStr);
             if (StringUtils.equals("SUCCESS", resultMap.get("return_code")) && StringUtils.equals("SUCCESS", resultMap.get("result_code"))) {

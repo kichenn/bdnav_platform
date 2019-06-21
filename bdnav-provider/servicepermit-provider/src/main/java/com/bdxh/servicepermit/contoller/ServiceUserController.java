@@ -2,6 +2,7 @@ package com.bdxh.servicepermit.contoller;
 
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.servicepermit.configration.redis.RedisUtil;
 import com.bdxh.servicepermit.dto.*;
 import com.bdxh.servicepermit.enums.ServiceStatusEnum;
 import com.bdxh.servicepermit.enums.ServiceTypeEnum;
@@ -38,6 +39,9 @@ public class ServiceUserController {
 
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
 
     /**
@@ -113,12 +117,15 @@ public class ServiceUserController {
     public Object createOnTrialService(@Validated @RequestBody AddNoTrialServiceUserDto addNoTrialServiceUserDto) {
         //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
         //商品类型为试用，试用代表的是试用所有的商品
-        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(addNoTrialServiceUserDto.getSchoolCode(), addNoTrialServiceUserDto.getStudentNumber(), addNoTrialServiceUserDto.getCardNumber(), null,  Integer.valueOf(ServiceTypeEnum.ON_TRIAL.getKey()), null);
+        List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(addNoTrialServiceUserDto.getSchoolCode(), addNoTrialServiceUserDto.getStudentNumber(), addNoTrialServiceUserDto.getCardNumber(), null, Integer.valueOf(ServiceTypeEnum.ON_TRIAL.getKey()), null);
         if (CollectionUtils.isNotEmpty(serviceUsers)) {
             //该孩子没有试用资格
             return WrapMapper.notNoTrial("该孩子没有试用资格");
         }
         serviceUserService.createOnTrialService(addNoTrialServiceUserDto);
+        //领取服务权限成功，重新登录授权
+        log.info("领取服务权限成功，重新登录授权------------");
+        redisUtil.delete("weixiao_token:" + addNoTrialServiceUserDto.getFamilyId());
         return WrapMapper.ok();
     }
 

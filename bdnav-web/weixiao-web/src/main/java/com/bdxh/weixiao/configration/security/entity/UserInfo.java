@@ -54,6 +54,10 @@ public class UserInfo implements Serializable {
     //家长姓名
     private String familyName;
 
+    //试用标识 key孩子卡号， value（试用 为 true，无试用 为false）
+    private Map<String, Boolean> weixiaoIsAuthOnTrial;
+
+
     //权限集合(key:roleName ---Value:studentcardNumber 学生卡号)
     private Map<String, List<String>> weixiaoGrantedAuthorities;
 }
