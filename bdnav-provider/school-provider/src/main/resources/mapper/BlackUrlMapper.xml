@@ -98,4 +98,9 @@
         school_code=#{schoolCode}
     </select>
 
+    <insert id="addBlackUrl" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_black_url(school_id,school_code,card_number,`name`,ip,url_type,status,remark)
+        VALUES (#{schoolId},#{schoolCode},#{cardNumber},#{name},#{ip},#{urlType},#{status},#{remark})
+    </insert>
+    
 </mapper>

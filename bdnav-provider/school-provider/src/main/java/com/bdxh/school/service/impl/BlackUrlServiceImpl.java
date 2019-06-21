@@ -1,5 +1,6 @@
 package com.bdxh.school.service.impl;
 
+import com.bdxh.school.dto.AddBlackUrlDto;
 import com.bdxh.school.dto.BlackUrlQueryDto;
 import com.bdxh.school.service.BlackUrlService;
 import com.bdxh.school.vo.BlackUrlShowVo;
@@ -68,5 +69,10 @@ public class BlackUrlServiceImpl extends BaseService<BlackUrl> implements BlackU
     @Override
     public List<BlackUrl> findBlackInList(String schoolCode) {
         return blackUrlMapper.findBlackInList(schoolCode);
+    }
+
+    @Override
+    public Boolean addBlackUrl(BlackUrl blackUrl) {
+        return blackUrlMapper.addBlackUrl(blackUrl)>0;
     }
 }
