@@ -29,9 +29,11 @@ import com.bdxh.system.dto.AddFeedbackAttachDto;
 import com.bdxh.system.dto.AddFeedbackDto;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.system.feign.FeedbackControllerClient;
+import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.feign.VisitLogsControllerClient;
 import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.StudentVo;
 import io.swagger.annotations.Api;
@@ -39,6 +41,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -96,6 +99,9 @@ public class ApplyControlsWebController {
 
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+
+    @Autowired
+    private VisitLogsControllerClient visitLogsControllerClient;
 
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/modifyInfo", method = RequestMethod.POST)
@@ -299,6 +305,18 @@ public class ApplyControlsWebController {
         List<informationVo> list=applyLogControllerClient.checkMymessages(schoolCode, cardNumber).getResult();
         obj.put("data",list);
         return WrapMapper.ok(obj);
+    }
+
+
+    /**
+     * 添加浏览网站日志信息
+     * @return
+     */
+    @RequestMapping(value = "/insertVisitLogsInfo", method = RequestMethod.POST)
+    @ApiOperation(value = "添加浏览网站日志信息", response = Boolean.class)
+    public Object insertVisitLogsInfo(@Validated @RequestBody AddVisitLogsDto addVisitLogsDto) {
+        Wrapper wrapper=visitLogsControllerClient.insertVisitLogsInfo(addVisitLogsDto);
+        return WrapMapper.ok(wrapper.getResult());
     }
 
 
