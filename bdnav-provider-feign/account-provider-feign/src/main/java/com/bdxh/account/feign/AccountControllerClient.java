@@ -2,6 +2,7 @@ package com.bdxh.account.feign;
 
 import com.bdxh.account.dto.*;
 import com.bdxh.account.entity.Account;
+import com.bdxh.account.entity.AccountUnqiue;
 import com.bdxh.account.fallback.AccountControllerClientFallback;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -130,4 +131,13 @@ public interface AccountControllerClient {
     @RequestMapping(value = "/account/verifyPassword", method = RequestMethod.GET)
     @ResponseBody
     Wrapper  verifyPassword(@RequestParam("password") String password,@RequestParam("loginName") String loginName);
+
+    /**
+     * 根据accountId查询 用户信息
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "/account/findAccountInfo",method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<AccountUnqiue> findAccountInfo(@RequestParam("id")Long id);
 }

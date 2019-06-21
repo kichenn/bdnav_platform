@@ -16,6 +16,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -195,6 +196,8 @@ public class FenceAlarmMongoMapper{
      * @param fenceAlarmMongo
      */
     public void insertFenceAlarmInfo(FenceAlarmMongo fenceAlarmMongo) {
+        fenceAlarmMongo.setCreateDate(new Date());
+        fenceAlarmMongo.setUpdateDate(new Date());
         mongoTemplate.save(fenceAlarmMongo);
     }
 

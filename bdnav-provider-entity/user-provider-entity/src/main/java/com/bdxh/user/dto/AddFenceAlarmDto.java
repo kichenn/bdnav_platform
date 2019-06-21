@@ -82,7 +82,6 @@ public class AddFenceAlarmDto implements Serializable {
      * 学生ID
      */
     @ApiModelProperty("学生ID")
-    @NotNull(message = "学生ID不能为空")
     private Long studentId;
     /**
      * 学生卡号
