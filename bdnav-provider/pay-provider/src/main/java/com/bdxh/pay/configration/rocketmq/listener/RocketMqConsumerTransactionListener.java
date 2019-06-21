@@ -84,26 +84,20 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 //微信支付后 异步通知处理
                 JSONObject jsonObject = JSONObject.parseObject(msgBody);
                 //获取wx预订单
-                String wxOrderNo = jsonObject.getString("orderNo");
-                //预支付订单查询我方订单号
-                OrderVo orderVo = ordersControllerClient.findThirdOrderByOrderNo(wxOrderNo).getResult();
-                if (orderVo == null) {
-                    log.error("预支付订单查询我方订单失败,预订单:{}", wxOrderNo);
-                    continue;
-                }
+                String orderNo = jsonObject.getString("orderNo");
                 //根据订单号查询订单信息
                 try {
-                    Wrapper wrapper = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(String.valueOf(orderVo.getOrderNo()));
+                    Wrapper wrapper = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(orderNo);
                     if (wrapper.getCode() == Wrapper.SUCCESS_CODE) {
                         //查询成功
                         WechatOrderQueryVo wechatOrderQueryVo = (WechatOrderQueryVo) wrapper.getResult();
                         log.info("查询订单成功:{}", JSONObject.toJSONString(wechatOrderQueryVo));
                         //订单与订单子项
-                        List<OrderItemVo> orderItems = orderItemControllerClient.findOrderItemByOrderNo(orderVo.getOrderNo()).getResult();
+                        List<OrderItemVo> orderItems = orderItemControllerClient.findOrderItemByOrderNo(Long.valueOf(orderNo)).getResult();
                         //修改订单信息，并且增加相应商品权限，并重新授权
                         ModifyPayOrderDto modifyPayOrderDto = new ModifyPayOrderDto();
                         //我方订单
-                        modifyPayOrderDto.setOrderNo(orderVo.getOrderNo());
+                        modifyPayOrderDto.setOrderNo(Long.valueOf(orderNo));
                         //将微信预订单修改为微信实际订单信息
                         modifyPayOrderDto.setThirdOrderNo(wechatOrderQueryVo.getThirdOrderNo());
                         //支付结束时间
