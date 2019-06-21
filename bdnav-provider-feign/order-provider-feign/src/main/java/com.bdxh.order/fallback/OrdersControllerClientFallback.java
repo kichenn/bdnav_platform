@@ -6,9 +6,7 @@ import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.ModifyPayOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
-import com.bdxh.order.entity.Order;
 import com.bdxh.order.feign.OrdersControllerClient;
-import com.bdxh.order.vo.OrderBindResultVo;
 import com.bdxh.order.vo.OrderVo;
 import com.bdxh.order.vo.OrderVo1;
 import com.github.pagehelper.PageInfo;
@@ -59,7 +57,7 @@ public class OrdersControllerClientFallback implements OrdersControllerClient {
     }
 
     @Override
-    public Wrapper<OrderBindResultVo> modifyBindOrder(ModifyPayOrderDto modifyPayOrderDto) {
+    public Wrapper<Boolean> modifyBindOrder(ModifyPayOrderDto modifyPayOrderDto) {
         return WrapMapper.error();
     }
 }

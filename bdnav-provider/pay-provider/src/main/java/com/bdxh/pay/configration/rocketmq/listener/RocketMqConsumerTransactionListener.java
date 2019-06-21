@@ -1,30 +1,22 @@
 package com.bdxh.pay.configration.rocketmq.listener;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
-import com.bdxh.common.helper.excel.utils.DateUtils;
-import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.ModifyPayOrderDto;
-import com.bdxh.order.entity.OrderItem;
 import com.bdxh.order.enums.OrderPayStatusEnum;
 import com.bdxh.order.enums.OrderTradeStatusEnum;
 import com.bdxh.order.feign.OrderItemControllerClient;
 import com.bdxh.order.feign.OrdersControllerClient;
-import com.bdxh.order.vo.OrderItemVo;
 import com.bdxh.order.vo.OrderItemVo1;
-import com.bdxh.order.vo.OrderVo;
 import com.bdxh.order.vo.OrderVo1;
 import com.bdxh.pay.configration.redis.RedisUtil;
 import com.bdxh.pay.controller.WechatCommonController;
 import com.bdxh.pay.vo.WechatOrderQueryVo;
-import com.bdxh.servicepermit.dto.AddNoTrialServiceUserDto;
 import com.bdxh.servicepermit.dto.AddPayServiceUserDto;
 import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
 import com.bdxh.servicepermit.properties.ServiceUserConstant;
 import com.bdxh.user.entity.Family;
-import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
@@ -110,9 +102,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                         modifyPayOrderDto.setThirdOrderNo(wechatOrderQueryVo.getThirdOrderNo());
                         //支付结束时间
                         String payEndTime = wechatOrderQueryVo.getTimeEnd();
-                        SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmss");
-                        Date payEndTimeDate = sdf1.parse(payEndTime);
-                        modifyPayOrderDto.setPayEndTime(DateUtil.format(DateUtil.format(payEndTimeDate, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss"));
+                        modifyPayOrderDto.setPayEndTime(payEndTime);
                         //业务状态
                         modifyPayOrderDto.setBusinessStatus(BusinessStatusEnum.YES_PROCESS);
                         switch (wechatOrderQueryVo.getPayResult()) {
@@ -148,7 +138,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 break;
                         }
                         //修改订单状态
-                        Boolean result = ordersControllerClient.modifyBindOrder(modifyPayOrderDto).getResult().getResult() > 0;
+                        Boolean result = ordersControllerClient.modifyBindOrder(modifyPayOrderDto).getResult();
                         if (result) {
                             //查询家长信息 (此处一定有值，新增订单已效验过)
                             Family family = familyControllerClient.queryFamilyInfoById(orderVo.getUserId()).getResult();

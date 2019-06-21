@@ -5,9 +5,7 @@ import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.ModifyPayOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
-import com.bdxh.order.entity.Order;
 import com.bdxh.order.fallback.OrdersControllerClientFallback;
-import com.bdxh.order.vo.OrderBindResultVo;
 import com.bdxh.order.vo.OrderVo;
 import com.bdxh.order.vo.OrderVo1;
 import com.github.pagehelper.PageInfo;
@@ -84,6 +82,6 @@ public interface OrdersControllerClient {
      * @Date: 2019/6/19 18:30
      */
     @RequestMapping(value = "/order/modifyBindOrder", method = RequestMethod.POST)
-    Wrapper<OrderBindResultVo> modifyBindOrder(@RequestBody ModifyPayOrderDto modifyPayOrderDto);
+    Wrapper<Boolean> modifyBindOrder(@RequestBody ModifyPayOrderDto modifyPayOrderDto);
 
 }

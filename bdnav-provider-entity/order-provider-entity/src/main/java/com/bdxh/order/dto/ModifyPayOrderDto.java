@@ -28,7 +28,7 @@ public class ModifyPayOrderDto {
     private String thirdOrderNo;
 
     @ApiModelProperty("支付结束时间")
-    private Date payEndTime;
+    private String payEndTime;
 
     @ApiModelProperty("交易状态 1 进行中 2 交易成功 3 已取消 4 已删除")
     private OrderTradeStatusEnum tradeStatus;

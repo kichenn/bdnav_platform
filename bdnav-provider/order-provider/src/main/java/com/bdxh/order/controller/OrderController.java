@@ -1,5 +1,6 @@
 package com.bdxh.order.controller;
 
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.order.dto.AddOrderDto;
@@ -8,9 +9,9 @@ import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.entity.Order;
 import com.bdxh.order.service.OrderService;
-import com.bdxh.order.vo.OrderBindResultVo;
 import com.bdxh.order.vo.OrderVo;
 import com.bdxh.order.vo.OrderVo1;
+import com.github.pagehelper.util.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotNull;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @description: 订单服务控制器
@@ -194,9 +198,18 @@ public class OrderController {
             //业务状态不为空
             order.setBusinessStatus(modifyPayOrderDto.getBusinessStatus().getCode());
         }
-        //返参包装成对象，在mq消费者中，返参获取不到故修改
-        OrderBindResultVo orderBindResultVo = new OrderBindResultVo();
-        orderBindResultVo.setResult(Long.valueOf(orderService.update(order)));
-        return WrapMapper.ok(orderBindResultVo);
+        if (StringUtil.isNotEmpty(modifyPayOrderDto.getPayEndTime())) {
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date payEndTimeDate = null;
+            try {
+                payEndTimeDate = sdf1.parse(modifyPayOrderDto.getPayEndTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date date = DateUtil.format(DateUtil.format(payEndTimeDate, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
+            order.setPayTime(date);
+
+        }
+        return WrapMapper.ok(orderService.update(order) > 0);
     }
 }
