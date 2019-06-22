@@ -68,7 +68,9 @@ public class FamilyFenceWebController {
                     throw new PermitException();
                 }
             }
+
             UserInfo userInfo = SecurityUtils.getCurrentUser();
+            Account account = accountControllerClient.queryAccount(userInfo.getSchoolCode(), updateFamilyFenceDto.getStudentNumber()).getResult();
             updateFamilyFenceDto.setSchoolCode(userInfo.getSchoolCode());
             updateFamilyFenceDto.setSchoolId(userInfo.getSchoolId());
             updateFamilyFenceDto.setFamilyId(userInfo.getFamilyId());
