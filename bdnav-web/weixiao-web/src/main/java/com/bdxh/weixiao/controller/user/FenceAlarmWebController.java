@@ -154,7 +154,7 @@ public class FenceAlarmWebController {
                     log.info("-----------百度围栏：已启动");
                     log.info("--------------------百度围栏请求的参数：{}    ", jsonObject.toJSONString());
                     Byte type = jsonObject.getByte("type");
-                    if (type.equals("1")) {
+                    if (type.equals(Byte.valueOf("1"))) {
                         log.info("---------------------百度围栏警报第一次效验不进行任何操作,type：{}", type);
                     } else {
                         log.info("---------------------开始处理百度围栏逻辑");
