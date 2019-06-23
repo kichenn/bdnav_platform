@@ -158,7 +158,7 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
         if (createRoundJson.getInteger("status") != 0) {
             Integer status=createRoundJson.getInteger("status");
             if( status==4005 || status== 3003|| status==5102){
-                throw new RuntimeException("查询轨迹失败，您的孩子暂未使用博学派");
+                throw new RuntimeException("生成围栏失败，您的孩子暂未使用博学派");
             }
             throw new RuntimeException("生成围栏失败,状态码" + createRoundJson.getInteger("status") + "，原因:" + createRoundJson.getString("message"));
         }
