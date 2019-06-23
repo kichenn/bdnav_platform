@@ -95,12 +95,21 @@
          *
         FROM t_black_url
         WHERE
-        school_code=#{schoolCode}
+        school_code=#{schoolCode} AND url_type=#{urlType}
     </select>
 
     <insert id="addBlackUrl" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO t_black_url(school_id,school_code,card_number,`name`,ip,url_type,status,remark)
         VALUES (#{schoolId},#{schoolCode},#{cardNumber},#{name},#{ip},#{urlType},#{status},#{remark})
     </insert>
-    
+
+
+    <select id="findBlackInListByCard" resultMap="BaseResultMap">
+        SELECT
+         *
+        FROM t_black_url
+        WHERE
+        card_number=#{cardNumber} AND url_type=#{urlType}
+    </select>
+
 </mapper>

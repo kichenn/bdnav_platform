@@ -123,9 +123,16 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "学校黑名单", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/blackList", method = RequestMethod.GET)
-    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode) {
-        return blackUrlControllerClient.findBlackInList(schoolCode);
+    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode,@RequestParam(name = "urlType",value = "1") Long urlType) {
+        return blackUrlControllerClient.findBlackInList(schoolCode,urlType);
     }
+
+    @ApiOperation(value = "学生黑名单", response = String.class)
+    @RequestMapping(value = "/applyControlsWeb/studentBlackList", method = RequestMethod.GET)
+    public Object studentBlackList(@RequestParam("cardNumber") String cardNumber,@RequestParam(name = "urlType",value = "2") Long urlType) {
+        return blackUrlControllerClient.findBlackInListByCard(cardNumber,urlType);
+    }
+
 
     @ApiOperation(value = "查询用户被禁名单列表", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/disableAppList", method = RequestMethod.GET)
