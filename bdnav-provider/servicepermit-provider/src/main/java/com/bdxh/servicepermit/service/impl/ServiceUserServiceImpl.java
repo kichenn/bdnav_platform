@@ -177,7 +177,7 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
             serviceUser1.setEndTime(DateUtil.format(endTime, "yyyy-MM-dd"));
             //状态
             serviceUser1.setStatus(1);
-            serviceUser1.setType(1);
+            serviceUser1.setType(2);
             //商品信息
             serviceUser1.setProductId(addPayServiceUserDto.getProductId());
             serviceUser1.setProductName(addPayServiceUserDto.getProductName());
