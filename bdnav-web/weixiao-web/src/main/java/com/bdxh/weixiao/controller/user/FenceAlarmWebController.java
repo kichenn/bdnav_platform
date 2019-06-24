@@ -177,7 +177,7 @@ public class FenceAlarmWebController {
                         String entity = monitoredPerson.replaceAll("accountId_", "");
                         log.info("-----------------我获取到的实体对象ID：      {}", entity);
                         //查询账号索引表查询出卡号和学校code
-                        AccountUnqiue accountUnqiue = accountControllerClient.findAccountInfo(Long.valueOf(entity)).getResult();
+                        AccountUnqiue accountUnqiue = accountControllerClient.findAccountInfo(Long.valueOf(entity.trim())).getResult();
                         //设置微校查询通知参数
                         School school = schoolControllerClient.findSchoolBySchoolCode(accountUnqiue.getSchoolCode()).getResult();
                         //学生获取家长关系信息
