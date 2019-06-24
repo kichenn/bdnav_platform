@@ -85,12 +85,12 @@ public class VisitLogsWebController {
         }
     }
 
-    @RolesAllowed({"TEST", "NET"})
+  @RolesAllowed({"TEST", "NET"})
     @RequestMapping(value = "/addBlacklist", method = RequestMethod.POST)
     @ApiOperation(value = "家长添加url黑名单", response = Boolean.class)
     public Object addBlacklist(@Validated @RequestBody AddBlackUrlDto addBlackUrlDto) {
         try {
-            //获取试用列表
+           //获取试用列表
             Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
             if (!mapNoTrial.get(addBlackUrlDto.getCardNumber())) {
                 //没有在试用，查看是否开通正式权限
@@ -102,6 +102,8 @@ public class VisitLogsWebController {
                     throw new PermitException();
                 }
             }
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
+            addBlackUrlDto.setSchoolCode(userInfo.getSchoolCode());
             addBlackUrlDto.setUrlType(Long.valueOf(2));//标识为家长添加的黑名单
             Wrapper wrapMapper = blackUrlControllerClient.addBlack(addBlackUrlDto);
             String aap = String.valueOf(wrapMapper.getResult());
