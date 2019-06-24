@@ -9,10 +9,13 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.user.dto.AddFenceAlarmDto;
+import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.FenceAlarmControllerClient;
+import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.FamilyStudentVo;
+import com.bdxh.user.vo.StudentVo;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.exception.PermitException;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
@@ -55,6 +58,9 @@ public class FenceAlarmWebController {
 
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
+
+    @Autowired
+    private StudentControllerClient studentControllerClient;
 
     /**
      * 收费服务
@@ -180,6 +186,8 @@ public class FenceAlarmWebController {
                         School school = schoolControllerClient.findSchoolBySchoolCode(accountUnqiue.getSchoolCode()).getResult();
                         //学生获取家长关系信息
                         FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(accountUnqiue.getSchoolCode(), accountUnqiue.getCardNumber()).getResult();
+                        //获取学生信息
+                        StudentVo student=studentControllerClient.queryStudentInfo(accountUnqiue.getSchoolCode(),accountUnqiue.getSchoolCode()).getResult();
                         if (null != familyStudentVo) {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("app_key", school.getSchoolKey());
@@ -214,8 +222,8 @@ public class FenceAlarmWebController {
                                     messageMap.put("nonce", RandomStringUtils.randomAlphanumeric(32).toLowerCase().toUpperCase());
                                     //添加自定义参数，分别为提示文案和通知跳转链接，如不传则公众号模版消息会默认显示'你有一条通知待查看'，并跳转到微校通知详情页
                                     JSONArray messageJson = new JSONArray();
-                                    messageJson.add("您的孩子给你发送了一条消息");
-                                    messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/appControl/#/message?schoolCode=" + accountUnqiue.getSchoolCode() + "&cardNumber=" + accountUnqiue.getCardNumber());
+                                    messageJson.add("点击详情前往查看孩子当前位置");
+                                    messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/fence/#/locus?schoolCode=" + accountUnqiue.getSchoolCode() + "&scardNumber=" + accountUnqiue.getCardNumber()+"&sname="+student.getSName());
                                     messageMap.put("customs", messageJson);
                                     String messageResult = MessageUtils.notice(messageMap, school.getSchoolSecret());
                                     JSONObject jsonObject1 = JSONObject.parseObject(messageResult);
@@ -234,6 +242,7 @@ public class FenceAlarmWebController {
                                     addFenceAlarmDto.setMonitoredPerson(monitoredPerson);
                                     addFenceAlarmDto.setType(Byte.valueOf("2"));
                                     addFenceAlarmDto.setSchoolName(school.getSchoolName());
+                                    addFenceAlarmDto.setStudentName(student.getSName());
                                     fenceAlarmControllerClient.insertFenceAlarmInfo(addFenceAlarmDto);
                                     log.info("-----------添加数据库已经结束");
                                 }
