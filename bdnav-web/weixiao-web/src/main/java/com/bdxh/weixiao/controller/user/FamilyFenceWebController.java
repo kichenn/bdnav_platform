@@ -56,17 +56,16 @@ public class FamilyFenceWebController {
     @RequestMapping(value = "/updateFamilyFenceInfo", method = RequestMethod.POST)
     public Object updateFamilyFenceInfo(@Valid @RequestBody UpdateFamilyFenceDto updateFamilyFenceDto) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(updateFamilyFenceDto.getStudentNumber())) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(updateFamilyFenceDto.getStudentNumber());
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(updateFamilyFenceDto.getStudentNumber());
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(updateFamilyFenceDto.getStudentNumber());
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
 
             UserInfo userInfo = SecurityUtils.getCurrentUser();
@@ -99,17 +98,16 @@ public class FamilyFenceWebController {
     @RequestMapping(value = "/removeFamilyFenceInfo", method = RequestMethod.POST)
     public Object removeFamilyFenceInfo(@RequestParam("id") String id, @RequestParam("cardNumber") String cardNumber) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(cardNumber)) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(cardNumber);
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             Wrapper wrapper = familyFenceControllerClient.removeFamilyFenceInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), id);
@@ -137,17 +135,16 @@ public class FamilyFenceWebController {
     public Object getFamilyFenceInfos(@RequestParam("cardNumber") String cardNumber) {
 
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(cardNumber)) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(cardNumber);
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             FamilyFenceQueryDto familyFenceQueryDto = new FamilyFenceQueryDto();
@@ -178,17 +175,16 @@ public class FamilyFenceWebController {
     @RequestMapping(value = "/getFamilyFenceInfo", method = RequestMethod.POST)
     public Object getFamilyFenceInfo(@RequestParam("id") String id, @RequestParam("cardNumber") String cardNumber) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(cardNumber)) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(cardNumber);
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             Wrapper wrapper = familyFenceControllerClient.getFamilyFenceInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), id);
@@ -214,20 +210,18 @@ public class FamilyFenceWebController {
     @RequestMapping(value = "/addFamilyFenceInfo", method = RequestMethod.POST)
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto) {
         try {
-            //获取试用列表
-            UserInfo userInfo = SecurityUtils.getCurrentUser();
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(addFamilyFenceDto.getStudentNumber())) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(addFamilyFenceDto.getStudentNumber());
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(addFamilyFenceDto.getStudentNumber());
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(addFamilyFenceDto.getStudentNumber());
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
-
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
             Account account = accountControllerClient.queryAccount(userInfo.getSchoolCode(), addFamilyFenceDto.getStudentNumber()).getResult();
             addFamilyFenceDto.setSchoolCode(userInfo.getSchoolCode());
             addFamilyFenceDto.setSchoolId(userInfo.getSchoolId());

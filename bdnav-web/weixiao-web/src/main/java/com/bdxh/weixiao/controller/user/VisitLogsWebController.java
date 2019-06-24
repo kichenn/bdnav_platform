@@ -61,17 +61,16 @@ public class VisitLogsWebController {
     @RequestMapping(value = "/queryVisitLogByCardNumber", method = RequestMethod.POST)
     public Object queryVisitLogByCardNumber(@RequestParam(name = "cardNumber") @NotNull(message = "cardNumber不能为空") String cardNumber) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(cardNumber)) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
-                Boolean isBy = thisCardNumbers.contains(cardNumber);
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             return visitLogsControllerClient.queryVisitLogByCardNumber(userInfo.getSchoolCode(), cardNumber);
@@ -90,17 +89,16 @@ public class VisitLogsWebController {
     @ApiOperation(value = "家长添加url黑名单", response = Boolean.class)
     public Object addBlacklist(@Validated @RequestBody AddBlackUrlDto addBlackUrlDto) {
         try {
-           //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(addBlackUrlDto.getCardNumber())) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
-                Boolean isBy = thisCardNumbers.contains(addBlackUrlDto.getCardNumber());
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(addBlackUrlDto.getCardNumber());
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
+            Boolean isBy = thisCardNumbers.contains(addBlackUrlDto.getCardNumber());
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             addBlackUrlDto.setSchoolCode(userInfo.getSchoolCode());

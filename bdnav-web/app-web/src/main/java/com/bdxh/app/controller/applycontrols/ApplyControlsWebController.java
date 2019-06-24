@@ -123,27 +123,27 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "学校黑名单", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/blackList", method = RequestMethod.GET)
-    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode,@RequestParam(name = "urlType",value = "1") Long urlType) {
-        return blackUrlControllerClient.findBlackInList(schoolCode,urlType);
+    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam(required = false, name = "urlType", defaultValue = "1") Long urlType) {
+        return blackUrlControllerClient.findBlackInList(schoolCode, urlType);
     }
 
     @ApiOperation(value = "学生黑名单", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/studentBlackList", method = RequestMethod.GET)
-    public Object studentBlackList(@RequestParam("cardNumber") String cardNumber,@RequestParam(name = "urlType",value = "2") Long urlType) {
-        return blackUrlControllerClient.findBlackInListByCard(cardNumber,urlType);
+    public Object studentBlackList(@RequestParam("cardNumber") String cardNumber, @RequestParam(required = false, name = "urlType", defaultValue = "2") Long urlType) {
+        return blackUrlControllerClient.findBlackInListByCard(cardNumber, urlType);
     }
 
 
     @ApiOperation(value = "查询用户被禁名单列表", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/disableAppList", method = RequestMethod.GET)
     public Object disableAppList(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam(name = "cardNumber") String cardNumber) {
-        return appStatusControllerClient.findAppStatusInByAccount(schoolCode,cardNumber);
+        return appStatusControllerClient.findAppStatusInByAccount(schoolCode, cardNumber);
     }
 
     @ApiOperation(value = "版本更新", response = appVersionVo.class)
     @RequestMapping(value = "/applyControlsWeb/versionUpdating", method = RequestMethod.GET)
     public Object versionUpdating() {
-        Wrapper<appVersionVo> wrapper =systemAppControllerClient.versionUpdating();
+        Wrapper<appVersionVo> wrapper = systemAppControllerClient.versionUpdating();
         return WrapMapper.ok(wrapper.getResult());
 
     }
@@ -151,7 +151,7 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "查询预置应用列表", response = appDownloadlinkVo.class)
     @RequestMapping(value = "/authenticationApp/thePresetList", method = RequestMethod.GET)
-    public Object thePresetList(@RequestParam(value = "preset",defaultValue = "1") Byte preset) {
+    public Object thePresetList(@RequestParam(value = "preset", defaultValue = "1") Byte preset) {
         Wrapper wrapper = appControllerClient.thePresetList(preset);
         return WrapMapper.ok(wrapper.getResult());
     }
@@ -162,27 +162,27 @@ public class ApplyControlsWebController {
     public Object modifyInfoPhoto(MultipartFile multipartFile) {
         //获取账户信息
         Account account = SecurityUtils.getCurrentUser();
-        if (account!=null){
-        //查询此账户学生信息
-       StudentVo studentVo = studentControllerClient.queryStudentInfo(account.getSchoolCode(), account.getCardNumber()).getResult();
-        //删除腾讯云的以前图片
-        FileOperationUtils.deleteFile(studentVo.getImageName(), QcloudConstants.APP_BUCKET_NAME);
-        Map<String, String> result = null;
-        try {
-            result = FileOperationUtils.saveBatchFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        UpdateStudentDto updateStudentDto=new UpdateStudentDto();
-        updateStudentDto.setSchoolCode(account.getSchoolCode());
-        updateStudentDto.setCardNumber(account.getCardNumber());
-        updateStudentDto.setImage(result.get("url"));
-        updateStudentDto.setImageName(result.get("name"));
-        studentControllerClient.updateStudent(updateStudentDto);
+        if (account != null) {
+            //查询此账户学生信息
+            StudentVo studentVo = studentControllerClient.queryStudentInfo(account.getSchoolCode(), account.getCardNumber()).getResult();
+            //删除腾讯云的以前图片
+            FileOperationUtils.deleteFile(studentVo.getImageName(), QcloudConstants.APP_BUCKET_NAME);
+            Map<String, String> result = null;
+            try {
+                result = FileOperationUtils.saveBatchFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            UpdateStudentDto updateStudentDto = new UpdateStudentDto();
+            updateStudentDto.setSchoolCode(account.getSchoolCode());
+            updateStudentDto.setCardNumber(account.getCardNumber());
+            updateStudentDto.setImage(result.get("url"));
+            updateStudentDto.setImageName(result.get("name"));
+            studentControllerClient.updateStudent(updateStudentDto);
 
-        return WrapMapper.ok(updateStudentDto.getImage());
+            return WrapMapper.ok(updateStudentDto.getImage());
 
-    }else{
+        } else {
             return WrapMapper.error("获取token信息失败");
         }
 
@@ -198,9 +198,9 @@ public class ApplyControlsWebController {
     @ApiOperation(value = "删除上报应用信息", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/delByAppPackage", method = RequestMethod.GET)
     public Object delByAppPackage(@RequestParam("schoolCode") String schoolCode,
-                                    @RequestParam("cardNumber") String cardNumber,
-                                    @RequestParam("appPackage") String appPackage) {
-        Wrapper wrapper = installAppsControllerClient.delByAppPackage(schoolCode,cardNumber,appPackage);
+                                  @RequestParam("cardNumber") String cardNumber,
+                                  @RequestParam("appPackage") String appPackage) {
+        Wrapper wrapper = installAppsControllerClient.delByAppPackage(schoolCode, cardNumber, appPackage);
         return WrapMapper.ok(wrapper.getResult());
     }
 
@@ -216,7 +216,7 @@ public class ApplyControlsWebController {
     @RequestMapping(value = "/applyControlsWeb/applyUnlockApplication", method = RequestMethod.POST)
     public Object applyUnlockApplication(@RequestBody AddApplyLogDto addApplyLogDto) {
         FamilyStudentVo familyStudent = familyStudentControllerClient.studentQueryInfo(addApplyLogDto.getSchoolCode(), addApplyLogDto.getCardNumber()).getResult();
-        School school=schoolControllerClient.findSchoolBySchoolCode(addApplyLogDto.getSchoolCode()).getResult();
+        School school = schoolControllerClient.findSchoolBySchoolCode(addApplyLogDto.getSchoolCode()).getResult();
         if (null != familyStudent) {
             addApplyLogDto.setOperatorCode(familyStudent.getFCardNumber());
             addApplyLogDto.setAppKey(school.getSchoolKey());
@@ -229,8 +229,8 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "提供学校应用下载APP链接", response = appDownloadlinkVo.class)
     @RequestMapping(value = "/applyControlsWeb/applicationDownloadLink", method = RequestMethod.GET)
-    public Object applicationDownloadLink(@RequestParam(value="schoolCode",required = false) String schoolCode){
-        Wrapper wrapper=appControllerClient.findTheApplicationList(schoolCode);
+    public Object applicationDownloadLink(@RequestParam(value = "schoolCode", required = false) String schoolCode) {
+        Wrapper wrapper = appControllerClient.findTheApplicationList(schoolCode);
         return WrapMapper.ok(wrapper.getResult());
     }
 
@@ -239,13 +239,13 @@ public class ApplyControlsWebController {
      * @Description: 根据schoolcode查询学校策略模式
      * @Date 2019-04-18 09:52:43
      */
-    @RequestMapping(value="/findSchoolStrategyList",method = RequestMethod.GET)
-    @ApiOperation(value = "查询当前学校策略",response = MobileStrategyVo.class)
-    public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode,@RequestParam("groupId") String groupId) {
-        List<MobileStrategyVo> schoolMsv=new ArrayList<>();
-        List<QuerySchoolStrategy> sList=schoolStrategyControllerClient.findSchoolStrategyList(schoolCode,groupId).getResult();
+    @RequestMapping(value = "/findSchoolStrategyList", method = RequestMethod.GET)
+    @ApiOperation(value = "查询当前学校策略", response = MobileStrategyVo.class)
+    public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode, @RequestParam("groupId") String groupId) {
+        List<MobileStrategyVo> schoolMsv = new ArrayList<>();
+        List<QuerySchoolStrategy> sList = schoolStrategyControllerClient.findSchoolStrategyList(schoolCode, groupId).getResult();
         for (int i = 0; i < sList.size(); i++) {
-            MobileStrategyVo msv=new MobileStrategyVo();
+            MobileStrategyVo msv = new MobileStrategyVo();
             msv.setPolicyName(sList.get(i).getPolicyName());
             msv.setDayMark(sList.get(i).getDayMark());
             msv.setEndDate(sList.get(i).getEndDate());
@@ -254,9 +254,9 @@ public class ApplyControlsWebController {
             msv.setStartDate(sList.get(i).getStartDate());
             msv.setTimeMark(sList.get(i).getTimeMark());
             msv.setUsableDevice(sList.get(i).getUsableDevice());
-            if (StringUtils.isNotEmpty(sList.get(i).getUsableApp())&&StringUtils.isNotBlank(sList.get(i).getUsableApp())){
-                List<App> apks=appControllerClient.getAppListByids(sList.get(i).getUsableApp()).getResult();
-                List<String> apkPackages=new ArrayList<>();
+            if (StringUtils.isNotEmpty(sList.get(i).getUsableApp()) && StringUtils.isNotBlank(sList.get(i).getUsableApp())) {
+                List<App> apks = appControllerClient.getAppListByids(sList.get(i).getUsableApp()).getResult();
+                List<String> apkPackages = new ArrayList<>();
                 for (int j = 0; j < apks.size(); j++) {
                     apkPackages.add(apks.get(j).getAppPackage());
                 }
@@ -269,13 +269,14 @@ public class ApplyControlsWebController {
 
     /**
      * 添加用户反馈信息
-     * @author WanMing
+     *
      * @param addFeedbackDto
      * @return
+     * @author WanMing
      */
-    @RequestMapping(value = "/addFeedback",method = RequestMethod.POST)
-    @ApiOperation(value = "添加用户反馈信息",response = Boolean.class)
-    public Object addFeedback(@Validated @RequestBody AddFeedbackDto addFeedbackDto,@RequestParam(name ="multipartFiles" ,required = false) List<MultipartFile> multipartFiles){
+    @RequestMapping(value = "/addFeedback", method = RequestMethod.POST)
+    @ApiOperation(value = "添加用户反馈信息", response = Boolean.class)
+    public Object addFeedback(@Validated @RequestBody AddFeedbackDto addFeedbackDto, @RequestParam(name = "multipartFiles", required = false) List<MultipartFile> multipartFiles) {
         //添加操作人的信息
         Account account = SecurityUtils.getCurrentUser();
         addFeedbackDto.setOperator(account.getId());
@@ -283,16 +284,16 @@ public class ApplyControlsWebController {
         //后台上传图片
         List<AddFeedbackAttachDto> feedbackAttachVos = null;
         try {
-        if(CollectionUtils.isNotEmpty(multipartFiles)){
-            feedbackAttachVos = new ArrayList<>();
-            for (MultipartFile multipartFile : multipartFiles) {
-                AddFeedbackAttachDto addFeedbackAttachDto = new AddFeedbackAttachDto();
-                Map<String, String> result = FileOperationUtils.saveFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
-                addFeedbackAttachDto.setImg(result.get("url"));
-                addFeedbackAttachDto.setImgName(result.get("name"));
-                feedbackAttachVos.add(addFeedbackAttachDto);
+            if (CollectionUtils.isNotEmpty(multipartFiles)) {
+                feedbackAttachVos = new ArrayList<>();
+                for (MultipartFile multipartFile : multipartFiles) {
+                    AddFeedbackAttachDto addFeedbackAttachDto = new AddFeedbackAttachDto();
+                    Map<String, String> result = FileOperationUtils.saveFile(multipartFile, QcloudConstants.APP_BUCKET_NAME);
+                    addFeedbackAttachDto.setImg(result.get("url"));
+                    addFeedbackAttachDto.setImgName(result.get("name"));
+                    feedbackAttachVos.add(addFeedbackAttachDto);
+                }
             }
-        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -308,21 +309,22 @@ public class ApplyControlsWebController {
     @RequestMapping(value = "/checkMymessages", method = RequestMethod.GET)
     @ApiOperation(value = "查询当前用户下的申请消息", response = informationVo.class)
     public Object checkMymessages(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
-        JSONObject obj=new JSONObject();
-        List<informationVo> list=applyLogControllerClient.checkMymessages(schoolCode, cardNumber).getResult();
-        obj.put("data",list);
+        JSONObject obj = new JSONObject();
+        List<informationVo> list = applyLogControllerClient.checkMymessages(schoolCode, cardNumber).getResult();
+        obj.put("data", list);
         return WrapMapper.ok(obj);
     }
 
 
     /**
      * 添加浏览网站日志信息
+     *
      * @return
      */
     @RequestMapping(value = "/insertVisitLogsInfo", method = RequestMethod.POST)
     @ApiOperation(value = "添加浏览网站日志信息", response = Boolean.class)
     public Object insertVisitLogsInfo(@Validated @RequestBody AddVisitLogsDto addVisitLogsDto) {
-        Wrapper wrapper=visitLogsControllerClient.insertVisitLogsInfo(addVisitLogsDto);
+        Wrapper wrapper = visitLogsControllerClient.insertVisitLogsInfo(addVisitLogsDto);
         return WrapMapper.ok(wrapper.getResult());
     }
 
