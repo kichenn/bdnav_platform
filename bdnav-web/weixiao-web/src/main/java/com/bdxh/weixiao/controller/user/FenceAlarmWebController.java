@@ -192,7 +192,7 @@ public class FenceAlarmWebController {
                         //学生获取家长关系信息
                         FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(accountUnqiue.getSchoolCode(), accountUnqiue.getCardNumber()).getResult();
                         //获取学生信息
-                        StudentVo student=studentControllerClient.queryStudentInfo(accountUnqiue.getSchoolCode(),accountUnqiue.getSchoolCode()).getResult();
+                        StudentVo student=studentControllerClient.queryStudentInfo(accountUnqiue.getSchoolCode(),accountUnqiue.getCardNumber()).getResult();
                         if (null != familyStudentVo) {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("app_key", school.getSchoolKey());
