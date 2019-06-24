@@ -33,7 +33,6 @@ public class SysBlackUrlController {
 	@Autowired
 	private SysBlackUrlService sysBlackUrlService;
 
-
 	/**
 	 * 添加系统的黑名单
 	 * @Author: WanMing
@@ -49,7 +48,7 @@ public class SysBlackUrlController {
 			return WrapMapper.ok(sysBlackUrlService.save(sysBlackUrl)>0);
 		} catch (Exception e) {
 			if(e instanceof DuplicateKeyException){
-				return WrapMapper.error("此网址已存在");
+				return WrapMapper.error("此url已存在");
 			}
 			e.printStackTrace();
 		}
@@ -91,15 +90,29 @@ public class SysBlackUrlController {
 		return WrapMapper.ok(pageInfo);
 	}
 
+
 	/**
-	 * 判断url是否在黑名单库 true存在 false不存在
+	 * 查询所有本地病毒库数据
 	 * @Author: WanMing
-	 * @Date: 2019/6/20 15:54
+	 * @Date: 2019/6/24 15:02
 	 */
-	@RequestMapping(value = "/querySysBlackUrlByUrl",method = RequestMethod.GET)
-	@ApiOperation(value = "判断url是否在黑名单库",response = Boolean.class)
-	public Object querySysBlackUrlByUrl(@RequestParam("url") String url){
-		return WrapMapper.ok(sysBlackUrlService.querySysBlackUrlByUrl(url));
+	@RequestMapping(value = "/queryAllSysBlackUrl",method = RequestMethod.GET)
+	@ApiOperation(value = "查询所有本地病毒库数据",response = SysBlackUrlVo.class)
+	public Object queryAllSysBlackUrl(){
+	    return WrapMapper.ok(sysBlackUrlService.selectAll());
+    }
+
+
+    /**
+     * 批量判断url的安全性
+     * @Author: WanMing
+     * @Date: 2019/6/24 16:19
+     */
+	@RequestMapping(value = "/batchCheckSysBlackUrl",method = RequestMethod.POST)
+	@ApiOperation(value = "批量判断url的安全性")
+    public Object batchCheckSysBlackUrl(@RequestParam("urls") List<String> urls){
+		sysBlackUrlService.batchCheckSysBlackUrl(urls);
+		return WrapMapper.ok();
 	}
 
 

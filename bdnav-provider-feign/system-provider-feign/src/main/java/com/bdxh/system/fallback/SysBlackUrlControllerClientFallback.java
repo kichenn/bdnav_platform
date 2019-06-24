@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.SysBlackUrlQueryDto;
 import com.bdxh.system.dto.AddSysBlackUrlDto;
 import com.bdxh.system.feign.SysBlackUrlControllerClient;
+import com.bdxh.system.vo.SysBlackUrlVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -37,7 +38,12 @@ public class SysBlackUrlControllerClientFallback implements SysBlackUrlControlle
     }
 
     @Override
-    public Wrapper querySysBlackUrlByUrl(String url) {
+    public Wrapper<List<SysBlackUrlVo>> queryAllSysBlackUrl() {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper batchCheckSysBlackUrl(List<String> urls) {
         return WrapMapper.error();
     }
 }

@@ -1,6 +1,9 @@
 package com.bdxh.backend.controller.system;
 
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
+import com.bdxh.common.utils.ValidatorUtil;
+import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.SysBlackUrlQueryDto;
 import com.bdxh.system.dto.AddSysBlackUrlDto;
 import com.bdxh.system.entity.User;
@@ -79,14 +82,5 @@ public class SysBlackUrlWebController {
         return sysBlackUrlControllerClient.findSysBlackUrlByCondition(sysBlackUrlQueryDto);
     }
 
-    /**
-     * 判断url是否在黑名单库 true存在 false不存在
-     * @Author: WanMing
-     * @Date: 2019/6/20 15:54
-     */
-    @RequestMapping(value = "/querySysBlackUrlByUrl",method = RequestMethod.GET)
-    @ApiOperation(value = "判断url是否在黑名单库",response = Boolean.class)
-    public Object querySysBlackUrlByUrl(@RequestParam("url") String url){
-        return sysBlackUrlControllerClient.querySysBlackUrlByUrl(url);
-    }
+
 }

@@ -1,5 +1,7 @@
 package com.bdxh.servicepermit.contoller;
 
+import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.servicepermit.dto.*;
@@ -21,6 +23,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 控制器
@@ -148,5 +151,12 @@ public class ServiceUserController {
         serviceUser.setUpdateDate(new Date());
         serviceUserService.update(serviceUser);
         return WrapMapper.ok();
+    }
+
+    @ApiOperation(value = "根据条件查询订单", response = ServiceUser.class)
+    @RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
+    public Object queryServiceUser(@Validated @RequestBody QueryServiceUserDto queryServiceUserDto){
+        Map<String, Object> param = BeanToMapUtil.objectToMap(queryServiceUserDto);
+        return WrapMapper.ok(serviceUserService.getServiceByCondition(param,queryServiceUserDto.getPageNum(),queryServiceUserDto.getPageSize()));
     }
 }

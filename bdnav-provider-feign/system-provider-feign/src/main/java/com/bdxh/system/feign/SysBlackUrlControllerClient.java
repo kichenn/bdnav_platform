@@ -4,14 +4,16 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.system.dto.SysBlackUrlQueryDto;
 import com.bdxh.system.dto.AddSysBlackUrlDto;
 import com.bdxh.system.fallback.SysBlackUrlControllerClientFallback;
+import com.bdxh.system.vo.SysBlackUrlVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
+/** 系统黑名单+病毒库的feign
  * @author WanMing
  * @date 2019/6/20 16:06
  */
@@ -56,14 +58,26 @@ public interface SysBlackUrlControllerClient {
     @ResponseBody
     Wrapper<PageInfo> findSysBlackUrlByCondition(@RequestBody SysBlackUrlQueryDto sysBlackUrlQueryDto);
 
+
+
     /**
-     * 判断url是否在黑名单库 true存在 false不存在
+     * 查询所有本地病毒库数据
      * @Author: WanMing
-     * @Date: 2019/6/20 15:54
+     * @Date: 2019/6/24 15:02
      */
-    @RequestMapping(value = "/sysBlackUrl/querySysBlackUrlByUrl",method = RequestMethod.GET)
+    @RequestMapping(value = "/sysBlackUrl/queryAllSysBlackUrl",method = RequestMethod.GET)
     @ResponseBody
-    Wrapper querySysBlackUrlByUrl(@RequestParam("url")String url);
+    Wrapper<List<SysBlackUrlVo>> queryAllSysBlackUrl();
+
+
+    /**
+     * 批量判断url的安全性
+     * @Author: WanMing
+     * @Date: 2019/6/24 16:19
+     */
+    @RequestMapping(value = "/sysBlackUrl/batchCheckSysBlackUrl",method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper batchCheckSysBlackUrl(@RequestParam("urls") List<String> urls);
 
 
 
