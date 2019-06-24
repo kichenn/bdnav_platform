@@ -245,10 +245,11 @@ public class AccountController {
                 , modifyAccountPhoneDto.getSchoolCode(), modifyAccountPhoneDto.getCardNumber()));
 
     }
-    @RequestMapping(value = "/account/findAccountInfo",method = RequestMethod.GET)
+
+    @RequestMapping(value = "/findAccountInfo", method = RequestMethod.GET)
     @ResponseBody
-    public Object findAccountInfo(@RequestParam("id")Long id){
-        return WrapMapper.ok(accountUnqiueService.selectByKey(id));
+    public Object findAccountInfo(@RequestParam("id") Long id) {
+        return WrapMapper.ok(accountUnqiueService.findAccountUnqiueInfoById(id));
     }
 
 

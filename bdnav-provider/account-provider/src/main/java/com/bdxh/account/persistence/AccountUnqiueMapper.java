@@ -44,4 +44,11 @@ public interface AccountUnqiueMapper extends Mapper<AccountUnqiue> {
      */
     int modifyAccountUnqiue(@Param("accountUnqiue") AccountUnqiue accountUnqiue);
 
+    /**
+     * 根据accountId查询数据
+     * @param id
+     * @return
+     */
+    AccountUnqiue findAccountUnqiueInfoById(@Param("id") Long id);
+
 }
