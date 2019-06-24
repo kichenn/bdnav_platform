@@ -188,6 +188,7 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
             //家长信息
             serviceUser1.setFamilyId(addPayServiceUserDto.getFamilyId());
             serviceUser1.setFamilyName(addPayServiceUserDto.getFamilyName());
+            serviceUser1.setCardNumber(addPayServiceUserDto.getCardNumber());
             //学生信息
             serviceUser1.setStudentName(addPayServiceUserDto.getStudentName());
             serviceUser1.setStudentNumber(addPayServiceUserDto.getStudentNumber());
