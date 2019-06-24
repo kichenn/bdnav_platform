@@ -1,7 +1,11 @@
 package com.bdxh.weixiao.configration.security.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.account.entity.AccountUnqiue;
+import com.bdxh.account.feign.AccountControllerClient;
+import com.bdxh.common.helper.weixiao.authentication.MessageUtils;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.HttpClientUtils;
@@ -9,10 +13,15 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.servicepermit.entity.ServiceUser;
+import com.bdxh.servicepermit.enums.ServiceTypeEnum;
 import com.bdxh.servicepermit.feign.ServiceRolePermitControllerClient;
+import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
 import com.bdxh.servicepermit.vo.ServiceRolePermitInfoVo;
+import com.bdxh.user.dto.AddFenceAlarmDto;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
+import com.bdxh.user.feign.FenceAlarmControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
@@ -23,16 +32,21 @@ import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
 import com.bdxh.weixiao.configration.security.properties.weixiao.WeixiaoLoginConstant;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import com.google.common.base.Preconditions;
+import com.xiaoleilu.hutool.http.HttpRequest;
+import feign.Param;
 import io.jsonwebtoken.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
@@ -63,6 +77,10 @@ public class SecurityController {
 
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
+
+    @Autowired
+    private ServiceUserControllerClient serviceUserControllerClient;
+
 
     @RequestMapping(value = "/authenticationWeixiao/toAuth", method = RequestMethod.GET)
     @ApiOperation(value = "schoolCode进行返回微校授权信息", response = String.class)
@@ -256,4 +274,6 @@ public class SecurityController {
     public Object getPhoneCode(@RequestParam(name = "phone") String phone) {
         return familyStudentControllerClient.getPhoneCode(phone);
     }
+
+
 }

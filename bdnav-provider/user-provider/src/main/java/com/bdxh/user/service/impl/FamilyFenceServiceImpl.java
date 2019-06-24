@@ -10,6 +10,7 @@ import com.bdxh.common.helper.baidu.yingyan.request.ModifyFenceRoundRequest;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddFamilyFenceDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.UpdateFamilyFenceDto;
@@ -155,6 +156,10 @@ public class FamilyFenceServiceImpl extends BaseService<FamilyFence> implements 
         String createRoundResult = FenceUtils.createRoundFence(fenceRoundRequest);
         JSONObject createRoundJson = JSONObject.parseObject(createRoundResult);
         if (createRoundJson.getInteger("status") != 0) {
+            Integer status=createRoundJson.getInteger("status");
+            if( status==4005 || status== 3003|| status==5102){
+                throw new RuntimeException("生成围栏失败，您的孩子暂未使用博学派");
+            }
             throw new RuntimeException("生成围栏失败,状态码" + createRoundJson.getInteger("status") + "，原因:" + createRoundJson.getString("message"));
         }
         addFamilyFenceDto.setFenceId(createRoundJson.getInteger("fence_id"));

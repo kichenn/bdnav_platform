@@ -292,8 +292,10 @@ public class AppController {
         jsonObject.put("key", GeTuiConstant.INSTALLATION_APP);
         log.info("------------------家长安装推送推送数据格式{}",jsonObject.toJSONString());
         appTransmissionTemplate.setTransmissionContent(jsonObject.toJSONString());
+        appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
         Map<String, Object> resultMap = GeTuiUtil.appCustomPush(appPushRequest);
         Boolean result = false;
+        log.info("====================result:         {}",resultMap.get("result"));
         //如果推送成功就个推会返回 {result=ok, contentId=OSL-0520_2vlMMg1urX5H7l3cxFuwS3}
         if (resultMap.get("result").equals("ok")) {
             result = true;

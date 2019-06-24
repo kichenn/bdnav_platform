@@ -5,6 +5,7 @@ import com.bdxh.order.entity.OrderItem;
 import com.bdxh.order.persistence.OrderItemMapper;
 import com.bdxh.order.service.OrderItemService;
 import com.bdxh.order.vo.OrderItemVo;
+import com.bdxh.order.vo.OrderItemVo1;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -34,7 +35,7 @@ public class OrderItemServiceImpl extends BaseService<OrderItem> implements Orde
      *查询总条数
      */
     @Override
-    public Integer getOrderItemAllCount(){
+    public Integer getOrderItemAllCount() {
         return orderItemMapper.getOrderItemAllCount();
     }
 
@@ -43,12 +44,13 @@ public class OrderItemServiceImpl extends BaseService<OrderItem> implements Orde
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Boolean batchDelOrderItemInIds(List<Long> ids){
+    public Boolean batchDelOrderItemInIds(List<Long> ids) {
         return orderItemMapper.delOrderItemInIds(ids) > 0;
     }
 
     /**
      * 根据订单编号查询订单明细
+     *
      * @param orderNo 订单编号
      * @Author: WanMing
      * @Date: 2019/6/3 14:10
@@ -57,8 +59,8 @@ public class OrderItemServiceImpl extends BaseService<OrderItem> implements Orde
     public List<OrderItemVo> findOrderItemByOrderNo(Long orderNo) {
         List<OrderItem> orderItems = orderItemMapper.findOrderItemByOrderNo(orderNo);
         List<OrderItemVo> orderItemVos = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(orderItems)){
-            orderItems.stream().forEach(item->{
+        if (CollectionUtils.isNotEmpty(orderItems)) {
+            orderItems.stream().forEach(item -> {
                 OrderItemVo orderItemVo = new OrderItemVo();
                 BeanUtils.copyProperties(item, orderItemVo);
                 orderItemVos.add(orderItemVo);
@@ -68,7 +70,24 @@ public class OrderItemServiceImpl extends BaseService<OrderItem> implements Orde
     }
 
 
-
+    /**
+     * @Description:   根据订单编号查询订单详情信息
+     * @Author: Kang
+     * @Date: 2019/6/21 16:20
+     */
+    @Override
+    public List<OrderItemVo1> findOrderItemByOrderNo1(Long orderNo) {
+        List<OrderItem> orderItems = orderItemMapper.findOrderItemByOrderNo(orderNo);
+        List<OrderItemVo1> orderItemVos = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(orderItems)) {
+            orderItems.stream().forEach(item -> {
+                OrderItemVo1 orderItemVo = new OrderItemVo1();
+                BeanUtils.copyProperties(item, orderItemVo);
+                orderItemVos.add(orderItemVo);
+            });
+        }
+        return orderItemVos;
+    }
 
 
 }

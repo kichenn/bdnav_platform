@@ -11,6 +11,7 @@ import com.bdxh.user.dto.FamilyFenceQueryDto;
 import com.bdxh.user.dto.UpdateFamilyFenceDto;
 import com.bdxh.user.feign.FamilyFenceControllerClient;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.exception.PermitException;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
@@ -21,7 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -39,6 +44,7 @@ public class FamilyFenceWebController {
 
     @Autowired
     private AccountControllerClient accountControllerClient;
+
     /**
      * 收费服务
      * 修改围栏表信息
@@ -46,11 +52,25 @@ public class FamilyFenceWebController {
      * @param updateFamilyFenceDto
      * @return
      */
+    @RolesAllowed({"TEST", "FENCE"})
     @ApiOperation(value = "家长电子围栏-----修改围栏信息")
     @RequestMapping(value = "/updateFamilyFenceInfo", method = RequestMethod.POST)
     public Object updateFamilyFenceInfo(@Valid @RequestBody UpdateFamilyFenceDto updateFamilyFenceDto) {
-        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(updateFamilyFenceDto.getStudentNumber());
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(updateFamilyFenceDto.getStudentNumber());
+            if (!(isBy || isOnTrial)) {
+                throw new PermitException();
+            }
+
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
+            Account account = accountControllerClient.queryAccount(userInfo.getSchoolCode(), updateFamilyFenceDto.getStudentNumber()).getResult();
             updateFamilyFenceDto.setSchoolCode(userInfo.getSchoolCode());
             updateFamilyFenceDto.setSchoolId(userInfo.getSchoolId());
             updateFamilyFenceDto.setFamilyId(userInfo.getFamilyId());
@@ -58,10 +78,15 @@ public class FamilyFenceWebController {
             Wrapper wrapper = familyFenceControllerClient.updateFamilyFenceInfo(updateFamilyFenceDto);
             return wrapper;
         } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
+            String messge = "";
+            if (e instanceof PermitException) {
+                messge = "抱歉，您该孩子没开通围栏权限";
+                return WrapMapper.notNoTrial(messge);
+            }
+            return WrapMapper.error(messge);
         }
     }
+
     /**
      * 收费服务
      * 删除围栏表信息
@@ -69,30 +94,62 @@ public class FamilyFenceWebController {
      * @param id
      * @return
      */
+    @RolesAllowed({"TEST", "FENCE"})
     @ApiOperation(value = "家长电子围栏-----删除围栏信息")
     @RequestMapping(value = "/removeFamilyFenceInfo", method = RequestMethod.POST)
-    public Object removeFamilyFenceInfo(@RequestParam("id") String id) {
-        UserInfo userInfo = SecurityUtils.getCurrentUser();
+    public Object removeFamilyFenceInfo(@RequestParam("id") String id, @RequestParam("cardNumber") String cardNumber) {
         try {
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy || isOnTrial)) {
+                throw new PermitException();
+            }
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
             Wrapper wrapper = familyFenceControllerClient.removeFamilyFenceInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), id);
             return wrapper;
         } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
+            String messge = "";
+            if (e instanceof PermitException) {
+                messge = "抱歉，您该孩子没开通围栏权限";
+                return WrapMapper.notNoTrial(messge);
+            }
+            return WrapMapper.error(messge);
         }
     }
 
     /**
      * 收费服务
      * 获取围栏表所有信息
+     *
      * @param cardNumber
      * @return
      */
+    @RolesAllowed({"TEST", "FENCE"})
     @ApiOperation(value = "家长电子围栏-----获取围栏表所有信息")
     @RequestMapping(value = "/getFamilyFenceInfos", method = RequestMethod.POST)
     public Object getFamilyFenceInfos(@RequestParam("cardNumber") String cardNumber) {
-        UserInfo userInfo = SecurityUtils.getCurrentUser();
+
         try {
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy || isOnTrial)) {
+                throw new PermitException();
+            }
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
             FamilyFenceQueryDto familyFenceQueryDto = new FamilyFenceQueryDto();
             familyFenceQueryDto.setStudentNumber(cardNumber);
             familyFenceQueryDto.setSchoolCode(userInfo.getSchoolCode());
@@ -100,8 +157,12 @@ public class FamilyFenceWebController {
             Wrapper wrapper = familyFenceControllerClient.getFamilyFenceInfos(familyFenceQueryDto);
             return wrapper;
         } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
+            String messge = "";
+            if (e instanceof PermitException) {
+                messge = "抱歉，您该孩子没开通围栏权限";
+                return WrapMapper.notNoTrial(messge);
+            }
+            return WrapMapper.error(messge);
         }
     }
 
@@ -112,16 +173,34 @@ public class FamilyFenceWebController {
      * @param id
      * @return
      */
+    @RolesAllowed({"TEST", "FENCE"})
     @ApiOperation(value = "家长电子围栏-----获取围栏表单个信息")
     @RequestMapping(value = "/getFamilyFenceInfo", method = RequestMethod.POST)
-    public Object getFamilyFenceInfo(@RequestParam("id") String id) {
-        UserInfo userInfo = SecurityUtils.getCurrentUser();
+    public Object getFamilyFenceInfo(@RequestParam("id") String id, @RequestParam("cardNumber") String cardNumber) {
         try {
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy || isOnTrial)) {
+                throw new PermitException();
+            }
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
             Wrapper wrapper = familyFenceControllerClient.getFamilyFenceInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), id);
             return wrapper;
         } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
+            String messge = "";
+            if (e instanceof PermitException) {
+                messge = "抱歉，您该孩子没开通围栏权限";
+                return WrapMapper.notNoTrial(messge);
+            }
+            return WrapMapper.error(messge);
         }
     }
 
@@ -131,12 +210,26 @@ public class FamilyFenceWebController {
      *
      * @param addFamilyFenceDto
      */
+    @RolesAllowed({"TEST", "FENCE"})
     @ApiOperation(value = "家长电子围栏-----新增围栏设置")
     @RequestMapping(value = "/addFamilyFenceInfo", method = RequestMethod.POST)
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto) {
-        UserInfo userInfo = SecurityUtils.getCurrentUser();
         try {
-           Account account= accountControllerClient.queryAccount(userInfo.getSchoolCode(),addFamilyFenceDto.getStudentNumber()).getResult();
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            Boolean isOnTrial = caseCardNumber.contains(addFamilyFenceDto.getStudentNumber());
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            Boolean isBy = thisCardNumbers.contains(addFamilyFenceDto.getStudentNumber());
+            if (!(isBy || isOnTrial)) {
+                throw new PermitException();
+            }
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
+            Account account = accountControllerClient.queryAccount(userInfo.getSchoolCode(), addFamilyFenceDto.getStudentNumber()).getResult();
             addFamilyFenceDto.setSchoolCode(userInfo.getSchoolCode());
             addFamilyFenceDto.setSchoolId(userInfo.getSchoolId());
             addFamilyFenceDto.setFamilyId(userInfo.getFamilyId());
@@ -145,8 +238,12 @@ public class FamilyFenceWebController {
             Wrapper wrapper = familyFenceControllerClient.addFamilyFenceInfo(addFamilyFenceDto);
             return wrapper;
         } catch (Exception e) {
-            e.printStackTrace();
-            return WrapMapper.error(e.getMessage());
+            String messge = "";
+            if (e instanceof PermitException) {
+                messge = "抱歉，您该孩子没开通围栏权限";
+                return WrapMapper.notNoTrial(messge);
+            }
+            return WrapMapper.error(messge);
         }
     }
 }

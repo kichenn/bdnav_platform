@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.AddOrderItemDto;
 import com.bdxh.order.feign.OrderItemControllerClient;
 import com.bdxh.order.vo.OrderItemVo;
+import com.bdxh.order.vo.OrderItemVo1;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -22,6 +23,11 @@ public class OrderItemControllerClientFallback implements OrderItemControllerCli
 
     @Override
     public Wrapper<List<OrderItemVo>> findOrderItemByOrderNo(Long orderNo) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<OrderItemVo1>> findOrderItemByOrderNo1(Long orderNo) {
         return WrapMapper.error();
     }
 }

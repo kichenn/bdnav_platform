@@ -78,7 +78,7 @@ public class ApplyLogController {
                 messageMap.put("nonce", RandomStringUtils.randomAlphanumeric(32).toLowerCase().toUpperCase());
                 //添加自定义参数，分别为提示文案和通知跳转链接，如不传则公众号模版消息会默认显示'你有一条通知待查看'，并跳转到微校通知详情页
                 JSONArray messageJson = new JSONArray();
-                messageJson.add("您的孩子给你发送了一条消息");
+                messageJson.add("点击详情前往审批页面");
                 messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/appControl/#/message?schoolCode=" + addApplyLogDto.getSchoolCode() + "&cardNumber=" + addApplyLogDto.getCardNumber());
                 messageMap.put("customs", messageJson);
                 String messageResult = MessageUtils.notice(messageMap, addApplyLogDto.getAppSecret());

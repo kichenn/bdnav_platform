@@ -23,10 +23,12 @@ import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.service.BaseUserService;
 import com.bdxh.user.service.FamilyService;
 import com.bdxh.user.vo.FamilyVo;
+import com.bdxh.user.vo.FamilyVo1;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -166,6 +168,20 @@ public class FamilyController {
     public Object queryFamilyInfoById(@RequestParam(name = "familyId") Long familyId) {
         Family family = familyService.selectByKey(familyId);
         return WrapMapper.ok(family);
+    }
+
+    /**
+     * 根据id查询家长
+     *
+     * @return
+     */
+    @ApiOperation(value = "根据id查询家长11", response = FamilyVo1.class)
+    @RequestMapping(value = "/queryFamilyInfoById1", method = RequestMethod.GET)
+    public Object queryFamilyInfoById1(@RequestParam(name = "familyId") Long familyId) {
+        Family family = familyService.selectByKey(familyId);
+        FamilyVo1 familyVo1=new FamilyVo1();
+        BeanUtils.copyProperties(family,familyVo1);
+        return WrapMapper.ok(familyVo1);
     }
 
     /**

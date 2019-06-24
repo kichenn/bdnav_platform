@@ -41,5 +41,12 @@ public interface AccountUnqiueService extends IService<AccountUnqiue> {
     boolean modifyAccountUnqiue(AccountUnqiue accountUnqiue);
 
 
+    /**
+     * 根据id查询account数据
+     * 索引表ID是account的Id
+     * @param id
+     * @return
+     */
+    AccountUnqiue findAccountUnqiueInfoById(Long id);
 
 }

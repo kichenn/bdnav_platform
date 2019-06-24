@@ -1,5 +1,6 @@
 package com.bdxh.order.controller;
 
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.order.dto.AddOrderDto;
@@ -10,6 +11,7 @@ import com.bdxh.order.entity.Order;
 import com.bdxh.order.service.OrderService;
 import com.bdxh.order.vo.OrderVo;
 import com.bdxh.order.vo.OrderVo1;
+import com.github.pagehelper.util.StringUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.validation.constraints.NotNull;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @description: 订单服务控制器
@@ -148,15 +153,19 @@ public class OrderController {
     }
 
     /**
-    * @Description:   根据订单编号查询订单信息
-    * @Author: Kang
-    * @Date: 2019/6/21 12:19
-    */
+     * @Description: 根据订单编号查询订单信息
+     * @Author: Kang
+     * @Date: 2019/6/21 12:19
+     */
     @ApiIgnore
     @RequestMapping(value = "/findOrderByOrderNo1", method = RequestMethod.GET)
     @ApiOperation(value = "根据订单编号查询订单信息1(此方法不在swagger展示，给支付成功后我方订单查询部分信息)", response = OrderVo1.class)
     public Object findOrderByOrderNo1(@RequestParam("orderNo") Long orderNo) {
-        return WrapMapper.ok(orderService.findOrderByOrderNo1(orderNo));
+        OrderVo1 orderVo1 = orderService.findOrderByOrderNo1(orderNo);
+        if (orderVo1 == null) {
+            orderVo1 = new OrderVo1();
+        }
+        return WrapMapper.ok(orderVo1);
     }
 
     /**
@@ -192,6 +201,18 @@ public class OrderController {
         if (modifyPayOrderDto.getBusinessStatus() != null) {
             //业务状态不为空
             order.setBusinessStatus(modifyPayOrderDto.getBusinessStatus().getCode());
+        }
+        if (StringUtil.isNotEmpty(modifyPayOrderDto.getPayEndTime())) {
+            SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMddHHmmss");
+            Date payEndTimeDate = null;
+            try {
+                payEndTimeDate = sdf1.parse(modifyPayOrderDto.getPayEndTime());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date date = DateUtil.format(DateUtil.format(payEndTimeDate, "yyyy-MM-dd HH:mm:ss"), "yyyy-MM-dd HH:mm:ss");
+            order.setPayTime(date);
+
         }
         return WrapMapper.ok(orderService.update(order) > 0);
     }

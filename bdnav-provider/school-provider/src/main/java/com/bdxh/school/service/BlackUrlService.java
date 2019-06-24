@@ -34,9 +34,13 @@ public interface BlackUrlService extends IService<BlackUrl> {
     PageInfo<BlackUrlShowVo> findBlackInConditionPaging(BlackUrlQueryDto blackQueryDto);
 
 
-    List<BlackUrl> findBlackInList(String schoolCode);
+    List<BlackUrl> findBlackInList(String schoolCode,Long urlType);
 
     //添加黑名单列表
     Boolean addBlackUrl(BlackUrl blackUrl);
+
+
+    List<BlackUrl> findBlackInListByCard(String cardNumber,Long urlType);
+
 
 }

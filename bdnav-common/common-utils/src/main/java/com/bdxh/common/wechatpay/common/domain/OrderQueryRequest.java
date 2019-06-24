@@ -24,7 +24,7 @@ public class OrderQueryRequest implements Serializable {
     /**
      * 应用ID
      */
-    //  @XmlJavaTypeAdapter(CDATASectionAdapter.class)
+//    @XmlJavaTypeAdapter(CDATASectionAdapter.class)
     private String appid;
 
     /**
@@ -48,13 +48,13 @@ public class OrderQueryRequest implements Serializable {
     /**
      * 随机字符串
      */
-    //   @XmlJavaTypeAdapter(CDATASectionAdapter.class)
+    //    @XmlJavaTypeAdapter(CDATASectionAdapter.class)
     private String nonce_str;
 
     /**
      * 签名
      */
-    // @XmlJavaTypeAdapter(CDATASectionAdapter.class)
+    //  @XmlJavaTypeAdapter(CDATASectionAdapter.class)
     private String sign;
 
 }

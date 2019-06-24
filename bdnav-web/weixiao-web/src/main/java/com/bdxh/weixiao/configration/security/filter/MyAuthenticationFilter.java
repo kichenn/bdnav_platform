@@ -37,8 +37,8 @@ import java.util.List;
 
 /**
  * @description:
- * @author: xuyuan
- * @create: 2019-02-28 14:21
+ * @author: LiKang
+ * @create: 2019-04-28 14:21
  **/
 @Component
 @Slf4j
@@ -87,7 +87,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                             authorityList.forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority)));
                         }
                         //默认设置第一个孩子为cardnumber(如果没有孩子 则为空)
-                        MyUserDetails myUserDetails = new MyUserDetails(CollectionUtils.isNotEmpty(userInfo.getCardNumber()) ? userInfo.getCardNumber().get(0) : "", userInfo);
+                        MyUserDetails myUserDetails = new MyUserDetails(CollectionUtils.isNotEmpty(userInfo.getCardNumber()) ? userInfo.getCardNumber().get(0) : "", authorities, userInfo);
                         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
                         usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
@@ -135,7 +135,7 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
             List<SimpleGrantedAuthority> authorities = new ArrayList<>();
             authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
             //默认设置第一个孩子为cardnumber
-            MyUserDetails myUserDetails = new MyUserDetails(user.getCardNumber().get(0), user);
+            MyUserDetails myUserDetails = new MyUserDetails(user.getCardNumber().get(0), null, user);
             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(myUserDetails, null, authorities);
             usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);

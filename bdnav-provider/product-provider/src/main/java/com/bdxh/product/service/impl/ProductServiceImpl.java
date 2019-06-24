@@ -77,6 +77,8 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     @Transactional(rollbackFor = Exception.class)
     public void updateProduct(ProductUpdateDto productUpdateDto) {
         Product product = BeanMapUtils.map(productUpdateDto, Product.class);
+        Integer count = productMapper.findProductByName(product.getProductName());
+        Preconditions.checkArgument(count == 0, "已有重复的商品名称");
         //如果是修改普通的单品
         if (product.getProductType().equals(ProductTypeEnum.SINGLE.getCode())) {
             Product findProduct = new Product();
@@ -207,5 +209,17 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     public List<Product> findProductByIds(String productIds) {
 
         return productMapper.findProductByIds(productIds);
+    }
+
+    /**
+     * @Description: 商品名称查询商品信息
+     * @Author: Kang
+     * @Date: 2019/6/24 10:59
+     */
+    @Override
+    public Product findProductByName(String productName){
+        Product product=new Product();
+        product.setProductName(productName);
+        return productMapper.selectOne(product);
     }
 }

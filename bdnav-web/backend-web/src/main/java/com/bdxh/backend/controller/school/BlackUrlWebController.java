@@ -85,7 +85,7 @@ public class BlackUrlWebController {
                 //穿透模版
                 AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
                 JSONObject obj = new JSONObject();
-                obj.put("key", "blackUrlToPush");
+                obj.put("key", "schoolBlackUrlToPush");
                 obj.put("data",bu);
                 appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
                 appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
@@ -126,7 +126,7 @@ public class BlackUrlWebController {
                 //穿透模版
                 AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
                 JSONObject obj = new JSONObject();
-                obj.put("key", "blackUrlToPush");
+                obj.put("key", "schoolBlackUrlToPush");
                 obj.put("data",bu);
                 appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
                 appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
@@ -163,7 +163,7 @@ public class BlackUrlWebController {
                 //穿透模版
                 AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
                 JSONObject obj = new JSONObject();
-                obj.put("key", "blackUrlToPush");
+                obj.put("key", "schoolBlackUrlToPush");
                 obj.put("data", "成功删除该黑名单");
                 appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
                 appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);

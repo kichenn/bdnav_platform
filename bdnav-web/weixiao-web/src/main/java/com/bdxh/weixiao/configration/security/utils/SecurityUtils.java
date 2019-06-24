@@ -40,6 +40,7 @@ public class SecurityUtils {
         return userInfo.getWeixiaoGrantedAuthorities();
     }
 
+
     /**
      * 获取myUserDetails
      *

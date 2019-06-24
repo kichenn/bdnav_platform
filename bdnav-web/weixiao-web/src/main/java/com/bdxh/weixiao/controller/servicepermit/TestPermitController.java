@@ -25,17 +25,21 @@ public class TestPermitController {
     @RequestMapping(value = "/test1", method = RequestMethod.GET)
     public Object addServicePermit(@RequestParam("studentCardNumber") String studentCardNumber) {
         try {
+            //查看此孩子是否开通权限
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-            //获取孩子列表信息
-            List<String> thisCardNumbers = mapAuthorities.get("ROLE_" + "FANCE_TEST");
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(studentCardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
             Boolean isBy = thisCardNumbers.contains(studentCardNumber);
-            if (!isBy) {
+            if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
         } catch (Exception e) {
-            String messge="";
+            String messge = "";
             if (e instanceof PermitException) {
-                messge="抱歉，您该孩子没开通围栏权限";
+                messge = "抱歉，您该孩子没开通围栏权限";
             }
             return WrapMapper.error(messge);
         }

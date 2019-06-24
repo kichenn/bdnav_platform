@@ -74,7 +74,9 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                     account.setUserType(Byte.valueOf("1"));
                                     account.setLoginNameUpdate(Byte.valueOf("1"));
                                     account.setUserPhone(jsonObject.getString("phone"));
+                                    log.info("开始进行入库操作");
                                     Boolean result=accountService.updateOrInsertAccount(account);
+                                    log.info("修改和成功返回给我的值：  {}",result);
                                 if(result){
                                     log.info("===========同步account成功==========");
                                     return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;

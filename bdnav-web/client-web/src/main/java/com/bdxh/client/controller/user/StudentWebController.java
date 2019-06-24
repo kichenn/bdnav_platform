@@ -9,6 +9,8 @@
 package com.bdxh.client.controller.user;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
+import com.bdxh.common.base.enums.BaseUserNumberStatusEnum;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -16,10 +18,8 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.School;
-import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.entity.SchoolUser;
-import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SchoolOrgControllerClient;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
@@ -29,7 +29,6 @@ import com.bdxh.user.dto.StudentQueryDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.BaseUserUnqiue;
-import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
@@ -161,6 +160,9 @@ public class StudentWebController {
                }
             }
             Wrapper wrapper=studentControllerClient.addStudent(addStudentDto);
+            if(wrapper.getCode()==200){
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.STUDENT.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), 1, Integer.valueOf(addStudentDto.getSchoolId()));
+            }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,9 +191,12 @@ public class StudentWebController {
             singlePermissionQueryDto.setSchoolCode(user.getSchoolCode());
             PageInfo pageInfo= singlePermissionControllerClient.findSinglePermissionInConditionPage(singlePermissionQueryDto).getResult();
             if(pageInfo.getTotal()>0){
-                return WrapMapper.error("请先删除卡号为\"+cardNumber+\"的学生门禁单信息");
+                return WrapMapper.error("请先删除卡号为"+cardNumber+"的学生门禁单信息");
             }
             Wrapper wrapper=studentControllerClient.removeStudent(user.getSchoolCode(),cardNumber);
+            if (wrapper.getCode() == 200){
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.STUDENT.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.REMOVE.getCode()), 1,singlePermissionQueryDto.getSchoolId().intValue());
+            }
             return wrapper;
         }catch (Exception e){
             e.printStackTrace();

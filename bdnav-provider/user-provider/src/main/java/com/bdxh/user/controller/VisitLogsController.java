@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.stream.Collectors;
 
 /**
@@ -131,6 +132,7 @@ public class VisitLogsController {
                 String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
                 return WrapMapper.error(errors);
             }
+            updateVisitLogsDto.setUpdateDate(new Date());
             visitLogsService.updateVisitLogsInfo(updateVisitLogsDto);
             return WrapMapper.ok();
         } catch (Exception e) {
@@ -153,6 +155,8 @@ public class VisitLogsController {
                 String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
                 return WrapMapper.error(errors);
             }
+            addVisitLogsDto.setCreateDate(new Date());
+            addVisitLogsDto.setUpdateDate(new Date());
             visitLogsService.insertVisitLogsInfo(addVisitLogsDto);
             return WrapMapper.ok();
         } catch (Exception e) {

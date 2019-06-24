@@ -1,31 +1,28 @@
 package com.bdxh.pay.configration.rocketmq.listener;
 
 import com.alibaba.fastjson.JSONObject;
-import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
-import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.ModifyPayOrderDto;
-import com.bdxh.order.entity.OrderItem;
 import com.bdxh.order.enums.OrderPayStatusEnum;
 import com.bdxh.order.enums.OrderTradeStatusEnum;
 import com.bdxh.order.feign.OrderItemControllerClient;
 import com.bdxh.order.feign.OrdersControllerClient;
-import com.bdxh.order.vo.OrderItemVo;
-import com.bdxh.order.vo.OrderVo;
+import com.bdxh.order.vo.OrderItemVo1;
 import com.bdxh.order.vo.OrderVo1;
 import com.bdxh.pay.configration.redis.RedisUtil;
 import com.bdxh.pay.controller.WechatCommonController;
 import com.bdxh.pay.vo.WechatOrderQueryVo;
-import com.bdxh.servicepermit.dto.AddNoTrialServiceUserDto;
 import com.bdxh.servicepermit.dto.AddPayServiceUserDto;
 import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
 import com.bdxh.servicepermit.properties.ServiceUserConstant;
 import com.bdxh.user.entity.Family;
-import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.vo.FamilyVo;
+import com.bdxh.user.vo.FamilyVo1;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.StudentVo1;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -35,6 +32,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -87,18 +85,18 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 //获取我方订单
                 String orderNo = jsonObject.getString("orderNo");
                 //微信方订单号
-                String thirdOrderNo=jsonObject.getString("thirdOrderNo");
+                String thirdOrderNo = jsonObject.getString("thirdOrderNo");
                 //根据订单号查询订单信息
                 OrderVo1 orderVo = ordersControllerClient.findOrderByOrderNo1(Long.valueOf(orderNo)).getResult();
                 try {
                     Wrapper wrapper = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(orderNo);
-                    log.info("查询微信订单详情信息:{}",JSONObject.toJSONString(wrapper));
+                    log.info("查询微信订单详情信息:{}", JSONObject.toJSONString(wrapper));
                     if (wrapper.getCode() == Wrapper.SUCCESS_CODE) {
                         //查询成功
                         WechatOrderQueryVo wechatOrderQueryVo = (WechatOrderQueryVo) wrapper.getResult();
                         log.info("查询订单成功:{}", JSONObject.toJSONString(wechatOrderQueryVo));
                         //订单与订单子项
-                        List<OrderItemVo> orderItems = orderItemControllerClient.findOrderItemByOrderNo(orderVo.getOrderNo()).getResult();
+                        List<OrderItemVo1> orderItems = orderItemControllerClient.findOrderItemByOrderNo1(orderVo.getOrderNo()).getResult();
                         //修改订单信息，并且增加相应商品权限，并重新授权
                         ModifyPayOrderDto modifyPayOrderDto = new ModifyPayOrderDto();
                         //我方订单
@@ -106,8 +104,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                         //将微信预订单修改为微信实际订单信息
                         modifyPayOrderDto.setThirdOrderNo(wechatOrderQueryVo.getThirdOrderNo());
                         //支付结束时间
-                        Date payEndTime = wechatOrderQueryVo.getTimeEnd() != null ?
-                                DateUtil.format(wechatOrderQueryVo.getTimeEnd(), "yyyy-MM-dd HH:mm:ss") : null;
+                        String payEndTime = wechatOrderQueryVo.getTimeEnd();
                         modifyPayOrderDto.setPayEndTime(payEndTime);
                         //业务状态
                         modifyPayOrderDto.setBusinessStatus(BusinessStatusEnum.YES_PROCESS);
@@ -147,11 +144,11 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                         Boolean result = ordersControllerClient.modifyBindOrder(modifyPayOrderDto).getResult();
                         if (result) {
                             //查询家长信息 (此处一定有值，新增订单已效验过)
-                            Family family = familyControllerClient.queryFamilyInfoById(orderVo.getUserId()).getResult();
+                            FamilyVo1 family = familyControllerClient.queryFamilyInfoById1(orderVo.getUserId()).getResult();
                             //查询学生信息(此处一定有值，新增订单已效验过)
-                            StudentVo studentVo = studentControllerClient.queryStudentInfo(orderVo.getSchoolCode(), orderVo.getCardNumber()).getResult();
+                            StudentVo1 studentVo = studentControllerClient.queryStudentInfo1(orderVo.getSchoolCode(), orderVo.getCardNumber()).getResult();
                             //添加各个不同商品的权限
-                            for (OrderItemVo orderItem : orderItems) {
+                            for (OrderItemVo1 orderItem : orderItems) {
                                 //增加商品权限
                                 AddPayServiceUserDto addPayServiceUserDto = new AddPayServiceUserDto();
                                 addPayServiceUserDto.setSchoolId(orderVo.getSchoolId());
@@ -163,15 +160,16 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 addPayServiceUserDto.setStudentNumber(orderVo.getCardNumber());
                                 addPayServiceUserDto.setStudentName(studentVo.getSName());
                                 addPayServiceUserDto.setDays(ServiceUserConstant.PAY_DAYS);
-                                addPayServiceUserDto.setProductId(orderItem.getId());
+                                addPayServiceUserDto.setProductId(orderItem.getProductId());
                                 addPayServiceUserDto.setProductName(orderItem.getProductName());
                                 addPayServiceUserDto.setOrderNo(orderItem.getOrderNo());
                                 addPayServiceUserDto.setRemark("微信购买");
                                 serviceUserControllerClient.createPayService(addPayServiceUserDto);
                                 //服务权限添加完成，重新登录授权
                                 log.info("服务权限添加完成，重新登录授权------------");
-                                redisUtil.delete("weixiao_token:" + addPayServiceUserDto.getFamilyId());
                             }
+                            log.info("购买后,移除token:{}",family.getId());
+                            redisUtil.delete("weixiao_token:" + family.getId());
                         }
                     } else {
                         log.error("查询此订单异常:{}", wrapper.getMessage());

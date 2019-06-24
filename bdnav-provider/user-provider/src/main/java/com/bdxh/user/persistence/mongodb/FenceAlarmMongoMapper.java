@@ -7,6 +7,7 @@ import com.bdxh.user.dto.*;
 import com.bdxh.user.mongo.FenceAlarmMongo;
 import com.bdxh.user.vo.FenceAlarmVo;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -16,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -96,7 +98,8 @@ public class FenceAlarmMongoMapper{
     public  List<FenceAlarmVo> getFenceAlarmInfos(String schoolCode, String cardNumber, String fenceId) {
         Query query=new Query(Criteria.where("school_code").is(schoolCode)
                 .and("card_number").is(cardNumber)
-                .and("fence_id").is(Long.parseLong(fenceId)));
+                .and("fence_id").is(Long.parseLong(fenceId)))
+                .with(new Sort(Sort.Direction.DESC,"create_date"));
         List<FenceAlarmMongo> fenceAlarmMongo=mongoTemplate.find(query,FenceAlarmMongo.class);
         if(null==fenceAlarmMongo){
             return null;
@@ -195,6 +198,8 @@ public class FenceAlarmMongoMapper{
      * @param fenceAlarmMongo
      */
     public void insertFenceAlarmInfo(FenceAlarmMongo fenceAlarmMongo) {
+        fenceAlarmMongo.setCreateDate(new Date());
+        fenceAlarmMongo.setUpdateDate(new Date());
         mongoTemplate.save(fenceAlarmMongo);
     }
 
