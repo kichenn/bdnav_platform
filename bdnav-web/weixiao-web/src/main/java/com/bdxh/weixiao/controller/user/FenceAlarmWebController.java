@@ -83,7 +83,7 @@ public class FenceAlarmWebController {
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
             Boolean isBy = thisCardNumbers.contains(cardNumber);
-            if (!(isBy && isOnTrial)) {
+            if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
@@ -121,7 +121,7 @@ public class FenceAlarmWebController {
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
             Boolean isBy = thisCardNumbers.contains(cardNumber);
-            if (!(isBy && isOnTrial)) {
+            if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
