@@ -221,7 +221,7 @@ public class FenceAlarmWebController {
                                         messageContent="离开";
                                     }
                                     messageMap.put("content", "您的孩子"+student.getSName()+"刚才"+messageContent+"围栏："+fenceName);
-                                    messageMap.put("sender", student.getSName());
+                                    messageMap.put("sender", "北斗星航");
                                     messageMap.put("app_key", school.getSchoolKey());
                                     messageMap.put("timestamp", System.currentTimeMillis() / 1000L + "");
                                     messageMap.put("nonce", RandomStringUtils.randomAlphanumeric(32).toLowerCase().toUpperCase());
