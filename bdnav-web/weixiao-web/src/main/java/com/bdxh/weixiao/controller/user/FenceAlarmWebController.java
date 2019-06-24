@@ -223,6 +223,7 @@ public class FenceAlarmWebController {
                                     //添加自定义参数，分别为提示文案和通知跳转链接，如不传则公众号模版消息会默认显示'你有一条通知待查看'，并跳转到微校通知详情页
                                     JSONArray messageJson = new JSONArray();
                                     messageJson.add("点击详情前往查看孩子当前位置");
+                                    log.info("学校Code：{}     , 学生卡号 ：{}       ，学生姓名：{}           ",accountUnqiue.getSchoolCode(),accountUnqiue.getCardNumber(),student.getSName());
                                     messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/fence/#/locus?schoolCode=" + accountUnqiue.getSchoolCode() + "&scardNumber=" + accountUnqiue.getCardNumber()+"&sname="+student.getSName());
                                     messageMap.put("customs", messageJson);
                                     String messageResult = MessageUtils.notice(messageMap, school.getSchoolSecret());
