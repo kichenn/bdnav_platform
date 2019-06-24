@@ -172,7 +172,7 @@ public class FenceAlarmWebController {
                             monitoredPerson= jsonObject.getString("monitored_person");
                             break;
                         }
-                        String entity = monitoredPerson.replaceAll("account:", "");
+                        String entity = monitoredPerson.replaceAll("account_", "");
                         log.info("-----------------我获取到的实体对象ID：      {}", entity);
                         //查询账号索引表查询出卡号和学校code
                         AccountUnqiue accountUnqiue = accountControllerClient.findAccountInfo(Long.valueOf(entity)).getResult();

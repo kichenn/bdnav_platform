@@ -17,11 +17,10 @@ import java.util.Date;
 @Data
 public class AddBlackUrlDto {
 
-    @NotNull(message = "学校id不能为空")
+
     @ApiModelProperty("学校id")
     private Long schoolId;
 
-    @NotEmpty(message = "学校编码不能为空")
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
