@@ -69,7 +69,7 @@ public class VisitLogsWebController {
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
             Boolean isBy = thisCardNumbers.contains(cardNumber);
-            if (!(isBy && isOnTrial)) {
+            if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
@@ -97,7 +97,7 @@ public class VisitLogsWebController {
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
             Boolean isBy = thisCardNumbers.contains(addBlackUrlDto.getCardNumber());
-            if (!(isBy && isOnTrial)) {
+            if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();

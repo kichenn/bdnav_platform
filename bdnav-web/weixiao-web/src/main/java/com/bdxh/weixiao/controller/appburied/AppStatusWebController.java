@@ -70,7 +70,7 @@ public class AppStatusWebController {
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
             Boolean isBy = thisCardNumbers.contains(cardNumber);
-            if (!(isBy && isOnTrial)) {
+            if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
@@ -117,7 +117,7 @@ public class AppStatusWebController {
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
             Boolean isBy = thisCardNumbers.contains(weiXiaoAppStatusUnlockOrLokingDto.getCardNumber());
-            if (!(isBy && isOnTrial)) {
+            if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();

@@ -33,7 +33,7 @@ public class TestPermitController {
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
             Boolean isBy = thisCardNumbers.contains(studentCardNumber);
-            if (!(isBy && isOnTrial)) {
+            if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
         } catch (Exception e) {
