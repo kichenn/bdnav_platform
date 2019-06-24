@@ -41,8 +41,8 @@ public class Swagger2Config {
 
     private ApiInfo buildApiInfo() {
         return new ApiInfoBuilder()
-                .title("北斗星航App业务系统")
-                .description("app移动端")
+                .title("北斗星航核心业务系统")
+                .description("北斗星航App客户端")
                 .version("1.0")
                 .build();
     }
