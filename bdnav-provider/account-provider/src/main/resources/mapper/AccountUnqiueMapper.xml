@@ -38,5 +38,11 @@
         WHERE id=#{id}
     </delete>
 
+    <select id="findAccountUnqiueInfoById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_account_unqiue
+        WHERE id=#{id}
+    </select>
 
 </mapper>
