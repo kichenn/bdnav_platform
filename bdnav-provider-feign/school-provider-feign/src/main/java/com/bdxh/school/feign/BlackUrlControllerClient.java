@@ -87,7 +87,7 @@ public interface BlackUrlControllerClient {
      */
     @RequestMapping(value = "/blackUrl/findBlackInList", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<String>> findBlackInList(@RequestParam("schoolCode") String schoolCode);
+    Wrapper<List<String>> findBlackInList(@RequestParam("schoolCode") String schoolCode,@RequestParam("urlType") Long urlType);
 
 
     /**
@@ -97,5 +97,14 @@ public interface BlackUrlControllerClient {
     @ResponseBody
     Wrapper<BlackUrl> findBlackUrlById(@RequestParam("id") Long id);
 
+
+    /**
+     * 查询当前孩子的黑名单
+     * @param cardNumber
+     * @return
+     */
+    @RequestMapping(value = "/blackUrl/findBlackInListByCard", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<String>> findBlackInListByCard(@RequestParam("cardNumber") String cardNumber,@RequestParam("urlType") Long urlType);
 
 }

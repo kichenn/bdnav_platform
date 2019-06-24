@@ -167,8 +167,9 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 serviceUserControllerClient.createPayService(addPayServiceUserDto);
                                 //服务权限添加完成，重新登录授权
                                 log.info("服务权限添加完成，重新登录授权------------");
-                                redisUtil.delete("weixiao_token:" + addPayServiceUserDto.getFamilyId());
                             }
+                            log.info("购买后,移除token:{}",family.getId());
+                            redisUtil.delete("weixiao_token:" + family.getId());
                         }
                     } else {
                         log.error("查询此订单异常:{}", wrapper.getMessage());

@@ -9,6 +9,8 @@
 package com.bdxh.backend.controller.user;
 
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
+import com.bdxh.common.base.enums.BaseUserNumberStatusEnum;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.excel.ExcelExportUtils;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.excel.bean.StudentExcelReportBean;
@@ -19,9 +21,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.School;
-import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolOrg;
-import com.bdxh.school.feign.SchoolClassControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SchoolOrgControllerClient;
 import com.bdxh.school.feign.SinglePermissionControllerClient;
@@ -57,7 +57,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -167,7 +168,9 @@ public class StudentWebController {
                 }
             }
             Wrapper wrapper = studentControllerClient.addStudent(addStudentDto);
-
+            if (wrapper.getCode() == 200){
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), 1, Integer.valueOf(addStudentDto.getSchoolId()));
+            }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,6 +205,9 @@ public class StudentWebController {
                 return WrapMapper.error("请先删除卡号为" + cardNumber + "的学生门禁单信息");
             }
             Wrapper wrapper = studentControllerClient.removeStudent(schoolCode, cardNumber);
+            if (wrapper.getCode() == 200){
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.STUDENT.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.REMOVE.getCode()), 1, singlePermissionQueryDto.getSchoolId().intValue());
+            }
             return wrapper;
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,7 +288,7 @@ public class StudentWebController {
             String orgIds[] = updateStudentDto.getClassIds().split(",");
             for (int i = 0; i < orgIds.length; i++) {
                 String orgId = orgIds[i];
-                SchoolOrg schoolOrg =schoolOrgControllerClient.findSchoolOrgInfo(Long.parseLong(orgId)).getResult();
+                SchoolOrg schoolOrg = schoolOrgControllerClient.findSchoolOrgInfo(Long.parseLong(orgId)).getResult();
                 if (null != schoolOrg) {
                     if (schoolOrg.getOrgType() == COLLEGE_TYPE) {
                         updateStudentDto.setCollegeName(schoolOrg.getOrgName());
@@ -356,11 +362,24 @@ public class StudentWebController {
                     Wrapper studentWeapper = baseUserControllerClient.findSchoolNumberBySchool(columns[0]);
                     schoolClassList = (List<SchoolOrg>) schoolOrgWrapper.getResult();
                     cardNumberList = (List<String>) studentWeapper.getResult();
-                    BaseUserUnqiue baseUserUnqiue=new BaseUserUnqiue();
+                    BaseUserUnqiue baseUserUnqiue = new BaseUserUnqiue();
                     baseUserUnqiue.setSchoolCode(columns[0]);
-                    phoneList= baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
+                    phoneList = baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
+                    Integer lastExaclLowNumber =0;
+                /*    //如果是第一条不会进入判断
+                    if (i != 1) {
+                        //判断是否是最后一条,
+                        if(i+1>=studentList.size()){
+
+                        }
+                        Integer addStudentNumber = 0;
+                        schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.STUDENT.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), i, Integer.valueOf(String.valueOf(school.getId())));
+                         lastExaclLowNumber =i;
+                    }*/
+
                 }
-                if (null != school) {
+
+                    if (null != school) {
                     if (StringUtils.isNotBlank(studentList.get(i)[0])) {
                         //判断当前学校是否有重复学号
                         if (null != cardNumberList) {
@@ -447,6 +466,7 @@ public class StudentWebController {
             studentControllerClient.batchSaveStudentInfo(students);
             long end = System.currentTimeMillis();
             log.info("总计用时：" + (end - start) + "毫秒");
+
             return WrapMapper.ok("导入完成");
         } catch (Exception e) {
             log.error(e.getMessage());

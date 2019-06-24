@@ -2,6 +2,7 @@ package com.bdxh.client.controller.school;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.dto.ClassAdministratorsUpdateDto;
 import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
@@ -21,7 +22,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.List;
@@ -186,5 +186,20 @@ public class SchoolOrgWebController {
         schoolOrgAddDto.setOperator(user.getId());
         schoolOrgAddDto.setOperatorName(user.getUserName());
         return schoolOrgControllerClient.insertSchoolOrgInfo(schoolOrgAddDto);
+    }
+
+    /**
+     * 修改班级管理员信息
+     * @param classAdministratorsUpdateDto
+     * @return
+     */
+    @RequestMapping(value = "/updateSchoolClassInfo", method = RequestMethod.POST)
+    @ApiOperation(value = "修改班级管理员信息")
+    public Object updateSchoolClassInfo(@Validated @RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        classAdministratorsUpdateDto.setOperator(user.getId());
+        classAdministratorsUpdateDto.setOperatorName(user.getUserName());
+        classAdministratorsUpdateDto.setUpdateDate(new Date());
+        return schoolOrgControllerClient.updateSchoolClassInfo(classAdministratorsUpdateDto);
     }
 }

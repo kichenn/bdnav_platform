@@ -1,6 +1,8 @@
 package com.bdxh.client.controller.user;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
+import com.bdxh.common.base.enums.BaseUserNumberStatusEnum;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -16,7 +18,6 @@ import com.bdxh.user.dto.TeacherQueryDto;
 import com.bdxh.user.dto.UpdateTeacherDto;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.BaseUserUnqiue;
-import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.TeacherVo;
@@ -86,6 +87,9 @@ public class TeacherWebController {
             addTeacherDto.setSchoolId(school.getId());
             addTeacherDto.setSchoolName(school.getSchoolName());
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
+            if (wrapper.getCode() == 200){
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), 1, addTeacherDto.getSchoolId().intValue());
+            }
             return wrapper;
         }catch (Exception e) {
             e.printStackTrace();
@@ -119,6 +123,9 @@ public class TeacherWebController {
                 return WrapMapper.error("请先删除卡号为\"+cardNumber+\"的老师门禁单信息");
             }
             Wrapper wrapper=teacherControllerClient.removeTeacher(user.getSchoolCode(), cardNumber);
+            if (wrapper.getCode() == 200){
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.REMOVE.getCode()), 1,singlePermissionQueryDto.getSchoolId().intValue());
+            }
             return wrapper;
         }catch (Exception e){
             e.printStackTrace();
@@ -154,6 +161,7 @@ public class TeacherWebController {
                 }
 
             }
+
             Wrapper wrapper= teacherControllerClient.removeTeachers(schoolCodes, cardNumbers);
             return wrapper;
         }catch (Exception e){

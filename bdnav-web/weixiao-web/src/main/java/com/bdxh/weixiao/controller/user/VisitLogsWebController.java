@@ -118,7 +118,7 @@ public class VisitLogsWebController {
                     //穿透模版
                     AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
                     JSONObject obj = new JSONObject();
-                    obj.put("key", "blackUrlToPush");
+                    obj.put("key", "studentBlackUrlToPush");
                     obj.put("data", bu);
                     appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
                     appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
