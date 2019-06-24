@@ -332,15 +332,14 @@ public class ApplyControlsWebController {
             long start = System.currentTimeMillis();
             List<String[]> urlStr = ExcelImportUtil.readExcelNums(file, 0);
             if (CollectionUtils.isNotEmpty(urlStr)) {
-                //获取所有的url集合
-                List<String> urls = urlStr.stream().map(item -> item[0]).collect(Collectors.toList());
-                //去重
-                List<String> distinctUrls = urls.stream().distinct().collect(Collectors.toList());
-                sysBlackUrlControllerClient.batchCheckSysBlackUrl(distinctUrls);
+                //获取所有的url集合并且去重
+                List<String> urls = urlStr.stream().map(item -> item[0]).distinct()
+                        .collect(Collectors.toList());
+                sysBlackUrlControllerClient.batchCheckSysBlackUrl(urls);
             }
             long end = System.currentTimeMillis();
             log.info("总计用时：" + (end - start) + "毫秒");
-            return WrapMapper.ok("导入完成");
+            return WrapMapper.ok("检查完成");
         } catch (IOException e) {
             log.error(e.getMessage());
             return WrapMapper.error(e.getMessage());
@@ -358,6 +357,5 @@ public class ApplyControlsWebController {
     public Object queryAllSysBlackUrl() {
         return sysBlackUrlControllerClient.queryAllSysBlackUrl();
     }
-
 
 }
