@@ -220,8 +220,8 @@ public class FenceAlarmWebController {
                                     }else{
                                         messageContent="离开";
                                     }
-                                    messageMap.put("content", "您的孩子刚才"+messageContent+"围栏："+fenceName);
-                                    messageMap.put("sender", familyStudentVo.getSName());
+                                    messageMap.put("content", "您的孩子"+student.getSName()+"刚才"+messageContent+"围栏："+fenceName);
+                                    messageMap.put("sender", student.getSName());
                                     messageMap.put("app_key", school.getSchoolKey());
                                     messageMap.put("timestamp", System.currentTimeMillis() / 1000L + "");
                                     messageMap.put("nonce", RandomStringUtils.randomAlphanumeric(32).toLowerCase().toUpperCase());
@@ -229,7 +229,7 @@ public class FenceAlarmWebController {
                                     JSONArray messageJson = new JSONArray();
                                     messageJson.add("点击详情前往查看孩子当前位置");
                                     log.info("学校Code：{}     , 学生卡号 ：{}       ，学生姓名：{}           ",accountUnqiue.getSchoolCode(),accountUnqiue.getCardNumber(),student.getSName());
-                                    messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/fence/#/locus?schoolCode=" + accountUnqiue.getSchoolCode() + "&scardNumber=" + accountUnqiue.getCardNumber()+"&sname="+student.getSName());
+                                    messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/fance/#/locus?schoolCode=" + accountUnqiue.getSchoolCode() + "&scardNumber=" + accountUnqiue.getCardNumber()+"&sname="+student.getSName());
                                     messageMap.put("customs", messageJson);
                                     String messageResult = MessageUtils.notice(messageMap, school.getSchoolSecret());
                                     JSONObject jsonObject1 = JSONObject.parseObject(messageResult);
