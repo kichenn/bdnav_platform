@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,9 +80,11 @@ public class FenceAlarmWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -117,9 +120,11 @@ public class FenceAlarmWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
