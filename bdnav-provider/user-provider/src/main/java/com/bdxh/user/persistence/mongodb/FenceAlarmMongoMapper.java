@@ -7,6 +7,7 @@ import com.bdxh.user.dto.*;
 import com.bdxh.user.mongo.FenceAlarmMongo;
 import com.bdxh.user.vo.FenceAlarmVo;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -98,7 +99,8 @@ public class FenceAlarmMongoMapper{
         Query query=new Query(Criteria.where("school_code").is(schoolCode)
                 .and("card_number").is(cardNumber)
                 .and("fence_id").is(Long.parseLong(fenceId)));
-        List<FenceAlarmMongo> fenceAlarmMongo=mongoTemplate.find(query,FenceAlarmMongo.class);
+        Sort sort=new Sort(Sort.Direction.DESC,"create_date");
+        List<FenceAlarmMongo> fenceAlarmMongo=mongoTemplate.find(query.with(sort),FenceAlarmMongo.class);
         if(null==fenceAlarmMongo){
             return null;
         }
