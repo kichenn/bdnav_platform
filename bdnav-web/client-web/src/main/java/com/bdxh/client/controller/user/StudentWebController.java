@@ -191,7 +191,7 @@ public class StudentWebController {
             singlePermissionQueryDto.setSchoolCode(user.getSchoolCode());
             PageInfo pageInfo= singlePermissionControllerClient.findSinglePermissionInConditionPage(singlePermissionQueryDto).getResult();
             if(pageInfo.getTotal()>0){
-                return WrapMapper.error("请先删除卡号为\"+cardNumber+\"的学生门禁单信息");
+                return WrapMapper.error("请先删除卡号为"+cardNumber+"的学生门禁单信息");
             }
             Wrapper wrapper=studentControllerClient.removeStudent(user.getSchoolCode(),cardNumber);
             if (wrapper.getCode() == 200){
