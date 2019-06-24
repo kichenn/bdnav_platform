@@ -68,7 +68,8 @@ public class ApplyLogWebController {
         } catch (Exception e) {
             String messge = "";
             if (e instanceof PermitException) {
-                messge = "抱歉，您该孩子没开通围栏权限";
+                messge = "抱歉，您该孩子没开通管控权限";
+                return WrapMapper.notNoTrial(messge);
             }
             return WrapMapper.error(messge);
         }
@@ -111,7 +112,8 @@ public class ApplyLogWebController {
         } catch (Exception e) {
             String messge = "";
             if (e instanceof PermitException) {
-                messge = "抱歉，您该孩子没开通围栏权限";
+                messge = "抱歉，您该孩子没开通管控权限";
+                return WrapMapper.notNoTrial(messge);
             }
             return WrapMapper.error(messge);
         }
@@ -141,7 +143,8 @@ public class ApplyLogWebController {
         } catch (Exception e) {
             String messge = "";
             if (e instanceof PermitException) {
-                messge = "抱歉，您该孩子没开通围栏权限";
+                messge = "抱歉，您该孩子没开通管控权限";
+                return WrapMapper.notNoTrial(messge);
             }
             return WrapMapper.error(messge);
         }

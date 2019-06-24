@@ -36,10 +36,11 @@ public interface ProductControllerClient {
 
     /**
      * 查询所有商品
+     *
      * @param productQueryDto
      * @return
      */
-    @RequestMapping(value = "/product/findAllProduct",method =RequestMethod.GET)
+    @RequestMapping(value = "/product/findAllProduct", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<Product>> findAllProduct(@RequestBody ProductQueryDto productQueryDto);
 
@@ -98,4 +99,11 @@ public interface ProductControllerClient {
     @RequestMapping(value = "/product/findProductByIds", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<Product>> findProductByIds(@RequestParam("productIds") String productIds);
+
+    /**
+     * 商品名称查询商品
+     */
+    @RequestMapping(value = "/product/findProductByName", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<Product> findProductByName(@RequestParam("productName") String productName);
 }

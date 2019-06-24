@@ -87,6 +87,7 @@ public class FenceAlarmWebController {
             String messge = "";
             if (e instanceof PermitException) {
                 messge = "抱歉，您该孩子没开通围栏权限";
+                return WrapMapper.notNoTrial(messge);
             }
             return WrapMapper.error(messge);
         }
@@ -126,6 +127,7 @@ public class FenceAlarmWebController {
             String messge = "";
             if (e instanceof PermitException) {
                 messge = "抱歉，您该孩子没开通围栏权限";
+                return WrapMapper.notNoTrial(messge);
             }
             return WrapMapper.error(messge);
         }

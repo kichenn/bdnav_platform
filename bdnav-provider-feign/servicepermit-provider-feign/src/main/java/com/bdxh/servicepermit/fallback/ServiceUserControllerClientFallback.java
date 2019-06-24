@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.servicepermit.dto.*;
 import com.bdxh.servicepermit.entity.ServiceUser;
+import com.bdxh.servicepermit.enums.ServiceProductEnum;
 import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class ServiceUserControllerClientFallback implements ServiceUserControlle
     }
 
     @Override
-    public Wrapper findServicePermitByCondition(String schoolCode, String studentCardNumber, String familyCardNumber) {
+    public Wrapper findServicePermitByCondition(String schoolCode, String studentCardNumber, String familyCardNumber, Long productId) {
         return WrapMapper.error();
     }
 

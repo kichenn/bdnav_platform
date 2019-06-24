@@ -67,7 +67,7 @@ public class VisitLogsWebController {
                 //没有在试用，查看是否开通正式权限
                 Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
                 //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_ROLE_NET");
+                List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
                 Boolean isBy = thisCardNumbers.contains(cardNumber);
                 if (!isBy) {
                     throw new PermitException();
@@ -78,7 +78,8 @@ public class VisitLogsWebController {
         } catch (Exception e) {
             String messge = "";
             if (e instanceof PermitException) {
-                messge = "抱歉，您该孩子没开通围栏权限";
+                messge = "抱歉，您该孩子没开通上网行为权限";
+                return WrapMapper.notNoTrial(messge);
             }
             return WrapMapper.error(messge);
         }
@@ -95,7 +96,7 @@ public class VisitLogsWebController {
                 //没有在试用，查看是否开通正式权限
                 Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
                 //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_ROLE_NET");
+                List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
                 Boolean isBy = thisCardNumbers.contains(addBlackUrlDto.getCardNumber());
                 if (!isBy) {
                     throw new PermitException();
@@ -131,7 +132,8 @@ public class VisitLogsWebController {
         } catch (Exception e) {
             String messge = "";
             if (e instanceof PermitException) {
-                messge = "抱歉，您该孩子没开通围栏权限";
+                messge = "抱歉，您该孩子没开通上网行为权限";
+                return WrapMapper.notNoTrial(messge);
             }
             return WrapMapper.error(messge);
         }

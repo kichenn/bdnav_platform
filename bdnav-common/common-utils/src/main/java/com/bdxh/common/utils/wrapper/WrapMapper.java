@@ -94,6 +94,16 @@ public class WrapMapper {
     }
 
     /**
+     * Wrap SUCCESS. code=200
+     *
+     * @param <E> the element type
+     * @return the wrapper
+     */
+    public static <E> Wrapper<E> ok() {
+        return new Wrapper<>();
+    }
+
+    /**
      * Error wrapper.
      *
      * @param <E>     the type parameter
@@ -102,16 +112,6 @@ public class WrapMapper {
      */
     public static <E> Wrapper<E> error(String message) {
         return wrap(Wrapper.ERROR_CODE, StringUtils.isBlank(message) ? Wrapper.ERROR_MESSAGE : message);
-    }
-
-    /**
-     * Wrap SUCCESS. code=200
-     *
-     * @param <E> the element type
-     * @return the wrapper
-     */
-    public static <E> Wrapper<E> ok() {
-        return new Wrapper<>();
     }
 
     /**

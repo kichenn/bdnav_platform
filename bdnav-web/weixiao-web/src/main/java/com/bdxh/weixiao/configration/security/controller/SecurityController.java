@@ -170,7 +170,7 @@ public class SecurityController {
                     }).collect(Collectors.toList()));
                     //循环孩子列表查询此孩子是否在试用中
                     for (String cardNumber : userInfo.getCardNumber()) {
-                        Wrapper wrapper = serviceUserControllerClient.findServicePermitByCondition(userInfo.getSchoolCode(), cardNumber, userInfo.getFamilyCardNumber());
+                        Wrapper wrapper = serviceUserControllerClient.findServicePermitByCondition(userInfo.getSchoolCode(), cardNumber, userInfo.getFamilyCardNumber(),null);
                         if (wrapper.getCode() == Wrapper.SUCCESS_CODE) {
                             //试用中
                             weixiaoIsAuthOnTrial.put(cardNumber, Boolean.TRUE);

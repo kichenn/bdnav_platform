@@ -58,4 +58,10 @@ public interface ProductService extends IService<Product> {
      */
     List<Product> findProductByIds(String productIds);
 
+    /**
+    * @Description: 商品名称查询商品信息
+    * @Author: Kang
+    * @Date: 2019/6/24 10:59
+    */
+    Product findProductByName(String productName);
 }

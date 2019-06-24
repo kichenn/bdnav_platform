@@ -138,4 +138,22 @@ public class ProductController {
 
     }
 
+
+    /**
+     * @Description: 商品名称查询商品
+     * @Author: Kang
+     * @Date: 2019/6/24 10:56
+     */
+    @RequestMapping(value = "/findProductByName", method = RequestMethod.GET)
+    @ApiOperation(value = "商品名称查询商品", response = Product.class)
+    @ResponseBody
+    public Object findProductByName(@RequestParam("productName") String productName) {
+        try {
+            return WrapMapper.ok(productService.findProductByName(productName));
+        } catch (Exception e) {
+            return WrapMapper.ok(productService.selectAll());
+        }
+
+    }
+
 }

@@ -1,6 +1,7 @@
 package com.bdxh.servicepermit.feign;
 
 import com.bdxh.servicepermit.dto.*;
+import com.bdxh.servicepermit.enums.ServiceProductEnum;
 import com.bdxh.servicepermit.fallback.ServiceUserControllerClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
@@ -32,7 +33,7 @@ public interface ServiceUserControllerClient {
      */
     @RequestMapping(value = "/serviceUser/findServicePermitByCondition", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper findServicePermitByCondition(@RequestParam("schoolCode") String schoolCode, @RequestParam("studentCardNumber") String studentCardNumber, @RequestParam("familyCardNumber") String familyCardNumber);
+    Wrapper findServicePermitByCondition(@RequestParam("schoolCode") String schoolCode, @RequestParam("studentCardNumber") String studentCardNumber, @RequestParam("familyCardNumber") String familyCardNumber,@RequestParam("productId") Long productId);
 
     /**
      * @Description: 领取试用服务许可资格

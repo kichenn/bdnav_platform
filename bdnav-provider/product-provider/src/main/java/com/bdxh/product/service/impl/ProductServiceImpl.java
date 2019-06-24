@@ -208,4 +208,16 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
 
         return productMapper.findProductByIds(productIds);
     }
+
+    /**
+     * @Description: 商品名称查询商品信息
+     * @Author: Kang
+     * @Date: 2019/6/24 10:59
+     */
+    @Override
+    public Product findProductByName(String productName){
+        Product product=new Product();
+        product.setProductName(productName);
+        return productMapper.selectOne(product);
+    }
 }
