@@ -1,4 +1,4 @@
-package com.bdxh.backend.configration.common;
+package com.bdxh.app.configration.common;
 
 
 import org.springframework.context.annotation.Bean;
