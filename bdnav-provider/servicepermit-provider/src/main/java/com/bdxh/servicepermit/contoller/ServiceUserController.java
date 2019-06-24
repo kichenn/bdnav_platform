@@ -4,7 +4,6 @@ import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.servicepermit.configration.redis.RedisUtil;
 import com.bdxh.servicepermit.dto.*;
-import com.bdxh.servicepermit.enums.ServiceProductEnum;
 import com.bdxh.servicepermit.enums.ServiceStatusEnum;
 import com.bdxh.servicepermit.enums.ServiceTypeEnum;
 import io.swagger.annotations.Api;
