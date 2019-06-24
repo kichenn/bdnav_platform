@@ -98,9 +98,9 @@ public class FenceAlarmMongoMapper{
     public  List<FenceAlarmVo> getFenceAlarmInfos(String schoolCode, String cardNumber, String fenceId) {
         Query query=new Query(Criteria.where("school_code").is(schoolCode)
                 .and("card_number").is(cardNumber)
-                .and("fence_id").is(Long.parseLong(fenceId)));
-        Sort sort=new Sort(Sort.Direction.DESC,"create_date");
-        List<FenceAlarmMongo> fenceAlarmMongo=mongoTemplate.find(query.with(sort),FenceAlarmMongo.class);
+                .and("fence_id").is(Long.parseLong(fenceId)))
+                .with(new Sort(Sort.Direction.DESC,"create_date"));
+        List<FenceAlarmMongo> fenceAlarmMongo=mongoTemplate.find(query,FenceAlarmMongo.class);
         if(null==fenceAlarmMongo){
             return null;
         }
