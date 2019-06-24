@@ -22,9 +22,11 @@ public class MyUserDetails implements UserDetails {
 
     private Collection<? extends GrantedAuthority> authorities;
 
-    public MyUserDetails(String cardNumber, UserInfo userInfo) {
+
+    public MyUserDetails(String cardNumber, Collection<? extends GrantedAuthority> authorities, UserInfo userInfo) {
         this.cardNumber = cardNumber;
         this.password = "";
+        this.authorities = authorities;
         this.userInfo = userInfo;
     }
 
@@ -62,6 +64,7 @@ public class MyUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
+
 
     public UserInfo getUserInfo() {
         return userInfo;

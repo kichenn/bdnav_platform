@@ -25,17 +25,16 @@ public class TestPermitController {
     @RequestMapping(value = "/test1", method = RequestMethod.GET)
     public Object addServicePermit(@RequestParam("studentCardNumber") String studentCardNumber) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(studentCardNumber)) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_" + "FANCE_TEST");
-                Boolean isBy = thisCardNumbers.contains(studentCardNumber);
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(studentCardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
+            Boolean isBy = thisCardNumbers.contains(studentCardNumber);
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
         } catch (Exception e) {
             String messge = "";

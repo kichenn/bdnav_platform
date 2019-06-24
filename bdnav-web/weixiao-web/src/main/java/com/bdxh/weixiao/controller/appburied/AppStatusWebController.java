@@ -62,17 +62,16 @@ public class AppStatusWebController {
     @RequestMapping(value = "/queryAppStatusInfo", method = RequestMethod.POST)
     public Object queryAppStatusInfo(@RequestParam(name = "cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(cardNumber)) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
-                Boolean isBy = thisCardNumbers.contains(cardNumber);
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             //根据学号查询出学生的应用安装记录
@@ -110,17 +109,16 @@ public class AppStatusWebController {
     @RequestMapping(value = "/appStatusLockingAndUnlock", method = RequestMethod.POST)
     public Object appStatusLockingAndUnlock(@RequestBody @Validated WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(weiXiaoAppStatusUnlockOrLokingDto.getCardNumber())) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
-                Boolean isBy = thisCardNumbers.contains(weiXiaoAppStatusUnlockOrLokingDto.getCardNumber());
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(weiXiaoAppStatusUnlockOrLokingDto.getCardNumber());
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
+            Boolean isBy = thisCardNumbers.contains(weiXiaoAppStatusUnlockOrLokingDto.getCardNumber());
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             log.debug("---------------------------------家长锁定解锁应用WEB层");

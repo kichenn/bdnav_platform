@@ -161,25 +161,11 @@ public class SecurityController {
                 userInfo.setFamilyName(familyVo.getName());
                 //查询家长和孩子的关系
                 List<FamilyStudentVo> familyStudentVo = familyStudentControllerClient.queryStudentByFamilyCardNumber(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
-                //查询该家长该孩子是否在试用中信息
-                Map<String, Boolean> weixiaoIsAuthOnTrial = new HashMap<>();
                 if (familyStudentVo != null) {
                     //如果有孩子则绑定
                     userInfo.setCardNumber(familyStudentVo.stream().map(e -> {
                         return e.getSCardNumber();
                     }).collect(Collectors.toList()));
-                    //循环孩子列表查询此孩子是否在试用中
-                    for (String cardNumber : userInfo.getCardNumber()) {
-                        Wrapper wrapper = serviceUserControllerClient.findServicePermitByCondition(userInfo.getSchoolCode(), cardNumber, userInfo.getFamilyCardNumber(),null);
-                        if (wrapper.getCode() == Wrapper.SUCCESS_CODE) {
-                            //试用中
-                            weixiaoIsAuthOnTrial.put(cardNumber, Boolean.TRUE);
-                        } else {
-                            //没有试用了
-                            weixiaoIsAuthOnTrial.put(cardNumber, Boolean.FALSE);
-                        }
-                    }
-                    userInfo.setWeixiaoIsAuthOnTrial(weixiaoIsAuthOnTrial);
                 }
 
                 //组装用户权限信息

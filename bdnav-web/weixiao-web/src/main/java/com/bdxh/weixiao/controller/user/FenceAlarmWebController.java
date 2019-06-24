@@ -69,17 +69,16 @@ public class FenceAlarmWebController {
     public Object getAllFenceAlarmInfos(@RequestParam("cardNumber") String cardNumber,
                                         @RequestParam("fenceId") String fenceId) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(cardNumber)) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(cardNumber);
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             return fenceAlarmControllerClient.getFenceAlarmInfos(userInfo.getSchoolCode(), cardNumber, fenceId);
@@ -108,17 +107,16 @@ public class FenceAlarmWebController {
     public Object getFenceAlarmInfo(@RequestParam(name = "cardNumber") @NotNull(message = "学生cardNumber不能为空") String cardNumber,
                                     @RequestParam(name = "id") @NotNull(message = "id不能为空") String id) {
         try {
-            //获取试用列表
-            Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(cardNumber)) {
-                //没有在试用，查看是否开通正式权限
-                Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-                //获取孩子列表信息
-                List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(cardNumber);
-                if (!isBy) {
-                    throw new PermitException();
-                }
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            if (!(isBy && isOnTrial)) {
+                throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             return WrapMapper.ok(fenceAlarmControllerClient.getFenceAlarmInfo(userInfo.getSchoolCode(), cardNumber, id).getResult());
