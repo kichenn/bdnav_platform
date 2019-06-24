@@ -28,6 +28,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,28 +132,47 @@ public class FenceAlarmWebController {
     }
 
     @ApiOperation(value = "百度围栏回调地址接口")
-    @RequestMapping(value = "/authenticationWeixiao/baiduFenceRequest", method = RequestMethod.POST)
-    public Object baiduFenceRequest(String data, HttpServletRequest request, HttpServletResponse response) {
+    @RequestMapping(value = "/authenticationWeixiao/baiduFenceNotice", method = RequestMethod.POST)
+    public Object baiduFenceRequest(HttpServletRequest request, HttpServletResponse response)throws Exception {
         Map<String, Object> result = new HashMap<>();
         if (request.getHeader("SignId").equals("baidu_yingyan")) {
-            log.info("允许请求，http请求头中带的参数是：   {}", request.getHeader("SingId"));
+            log.info("允许请求");
+            //获取回调入参
+            StringBuilder sb = new StringBuilder();
+            byte[] b = new byte[4096];
+            InputStream is = null;
+            is = request.getInputStream();
+            for (int n; (n = is.read(b)) != -1;) {
+                sb.append(new String(b, 0, n));
+            }
+            JSONObject jsonObject = (JSONObject) JSONObject.parse(sb.toString());
+            log.info("------------百度回调内容：  {} " ,sb.toString());
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Thread.currentThread().setName("围栏线程");
                     //逻辑处理
-                    log.info("-----------百度围栏：{}    已启动", Thread.currentThread().getName());
-                    JSONObject jsonObject = JSONObject.parseObject(data);
+                    log.info("-----------百度围栏：已启动");
                     log.info("--------------------百度围栏请求的参数：{}    ", jsonObject.toJSONString());
                     Byte type = jsonObject.getByte("type");
-                    if (type.equals("1")) {
+                    if (type.equals(Byte.valueOf("1"))) {
                         log.info("---------------------百度围栏警报第一次效验不进行任何操作,type：{}", type);
                     } else {
                         log.info("---------------------开始处理百度围栏逻辑");
                         log.info("---------------------开始发送微校消息通知");
-                        JSONObject requestDate = jsonObject.getJSONObject("content");
-                        String entity = requestDate.getString("monitored_person");
-                        entity = entity.replaceAll("account:", "");
+                        JSONArray requestDate = jsonObject.getJSONArray("content");
+                        String action=null;
+                        Integer fenceId=null;
+                        String fenceName=null;
+                        String monitoredPerson=null;
+                        for (Object o : requestDate) {
+                            JSONObject jsonObject = (JSONObject) o;
+                            action = jsonObject.getString("action");
+                            fenceId = jsonObject.getInteger("fence_id");
+                            fenceName= jsonObject.getString("fence_name");
+                            monitoredPerson= jsonObject.getString("monitored_person");
+                            break;
+                        }
+                        String entity = monitoredPerson.replaceAll("account:", "");
                         log.info("-----------------我获取到的实体对象ID：      {}", entity);
                         //查询账号索引表查询出卡号和学校code
                         AccountUnqiue accountUnqiue = accountControllerClient.findAccountInfo(Long.valueOf(entity)).getResult();
@@ -174,13 +194,20 @@ public class FenceAlarmWebController {
                                 if (message.get("code").equals(0)) {
                                     log.info("--------------------设置消息模板通知");
                                     //设置消息模板通知
+
                                     HashMap<String, Object> messageMap = new HashMap<>();
                                     messageMap.put("school_code", school.getSchoolCode());
                                     JSONArray jsonArray = new JSONArray();
                                     jsonArray.add(familyStudentVo.getFCardNumber());
                                     messageMap.put("cards", jsonArray.toString());
                                     messageMap.put("title", "围栏警报");
-                                    messageMap.put("content", "你的孩子现在的位置有异常");
+                                    String messageContent=null;
+                                    if(action.equals("enter")){
+                                        messageContent="进入";
+                                    }else{
+                                        messageContent="离开";
+                                    }
+                                    messageMap.put("content", "您的孩子刚才"+messageContent+"围栏："+fenceName);
                                     messageMap.put("sender", familyStudentVo.getSName());
                                     messageMap.put("app_key", school.getSchoolKey());
                                     messageMap.put("timestamp", System.currentTimeMillis() / 1000L + "");
@@ -199,14 +226,12 @@ public class FenceAlarmWebController {
                                     //对数据库进行记录
                                     AddFenceAlarmDto addFenceAlarmDto = new AddFenceAlarmDto();
                                     addFenceAlarmDto.setSchoolId(school.getId());
-                                    addFenceAlarmDto.setAction(requestDate.getString("action"));
+                                    addFenceAlarmDto.setAction(action);
                                     addFenceAlarmDto.setCardNumber(accountUnqiue.getCardNumber());
-                                    addFenceAlarmDto.setFenceId(requestDate.getInteger("fence_id"));
-                                    addFenceAlarmDto.setPrePoint(requestDate.getString("pre_point"));
-                                    addFenceAlarmDto.setAlarmPoint(requestDate.getString("alarm_point"));
+                                    addFenceAlarmDto.setFenceId(fenceId);
                                     addFenceAlarmDto.setSchoolCode(school.getSchoolCode());
-                                    addFenceAlarmDto.setFenceName(requestDate.getString("fence_name"));
-                                    addFenceAlarmDto.setMonitoredPerson(requestDate.getString("monitored_person"));
+                                    addFenceAlarmDto.setFenceName(fenceName);
+                                    addFenceAlarmDto.setMonitoredPerson(monitoredPerson);
                                     addFenceAlarmDto.setType(Byte.valueOf("2"));
                                     addFenceAlarmDto.setSchoolName(school.getSchoolName());
                                     fenceAlarmControllerClient.insertFenceAlarmInfo(addFenceAlarmDto);
@@ -217,7 +242,7 @@ public class FenceAlarmWebController {
                             }
                         }
                     }
-                    log.info("-----------百度围栏：{}    已结束", Thread.currentThread().getName());
+                    log.info("-----------百度围栏已结束");
                 }
             }).start();
             response.setHeader("SignId", "baidu_yingyan");

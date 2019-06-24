@@ -58,17 +58,19 @@ public class FamilyFenceWebController {
         try {
             //获取试用列表
             Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(updateFamilyFenceDto.getCardNumber())) {
+            if (!mapNoTrial.get(updateFamilyFenceDto.getStudentNumber())) {
                 //没有在试用，查看是否开通正式权限
                 Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
                 //获取孩子列表信息
                 List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(updateFamilyFenceDto.getCardNumber());
+                Boolean isBy = thisCardNumbers.contains(updateFamilyFenceDto.getStudentNumber());
                 if (!isBy) {
                     throw new PermitException();
                 }
             }
+
             UserInfo userInfo = SecurityUtils.getCurrentUser();
+            Account account = accountControllerClient.queryAccount(userInfo.getSchoolCode(), updateFamilyFenceDto.getStudentNumber()).getResult();
             updateFamilyFenceDto.setSchoolCode(userInfo.getSchoolCode());
             updateFamilyFenceDto.setSchoolId(userInfo.getSchoolId());
             updateFamilyFenceDto.setFamilyId(userInfo.getFamilyId());
@@ -207,21 +209,21 @@ public class FamilyFenceWebController {
     @ApiOperation(value = "家长电子围栏-----新增围栏设置")
     @RequestMapping(value = "/addFamilyFenceInfo", method = RequestMethod.POST)
     public Object addFamilyFenceInfo(@Valid @RequestBody AddFamilyFenceDto addFamilyFenceDto) {
-
         try {
             //获取试用列表
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
             Map<String, Boolean> mapNoTrial = SecurityUtils.getCurrentAuthOnTrial();
-            if (!mapNoTrial.get(addFamilyFenceDto.getCardNumber())) {
+            if (!mapNoTrial.get(addFamilyFenceDto.getStudentNumber())) {
                 //没有在试用，查看是否开通正式权限
                 Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
                 //获取孩子列表信息
                 List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-                Boolean isBy = thisCardNumbers.contains(addFamilyFenceDto.getCardNumber());
+                Boolean isBy = thisCardNumbers.contains(addFamilyFenceDto.getStudentNumber());
                 if (!isBy) {
                     throw new PermitException();
                 }
             }
-            UserInfo userInfo = SecurityUtils.getCurrentUser();
+
             Account account = accountControllerClient.queryAccount(userInfo.getSchoolCode(), addFamilyFenceDto.getStudentNumber()).getResult();
             addFamilyFenceDto.setSchoolCode(userInfo.getSchoolCode());
             addFamilyFenceDto.setSchoolId(userInfo.getSchoolId());

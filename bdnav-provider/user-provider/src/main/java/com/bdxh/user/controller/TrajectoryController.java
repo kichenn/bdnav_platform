@@ -52,6 +52,10 @@ public class TrajectoryController {
         return WrapMapper.ok(jsonObject.getString("points"));
         }else{
             /*,状态码" + jsonObject.getInteger("status") + "*/
+            Integer status=jsonObject.getInteger("status");
+            if( status==4005 || status== 3003|| status==5102){
+                return WrapMapper.error("查询轨迹失败，您的孩子暂未使用博学派");
+            }
             return WrapMapper.error("查询轨迹失败，原因:" + jsonObject.getString("message"));
         }
     }
@@ -71,6 +75,10 @@ public class TrajectoryController {
            if(jsonObject.get("status").equals(0)){
                return WrapMapper.ok(jsonObject.get("latest_point"));
            }else{
+               Integer status=jsonObject.getInteger("status");
+               if( status==4005 || status== 3003|| status==5102){
+                   return WrapMapper.error("查询轨迹失败，您的孩子暂未使用博学派");
+               }
                return WrapMapper.error("查询实时位置失败，原因:" + jsonObject.getString("message"));
            }
     }
