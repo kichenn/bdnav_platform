@@ -71,6 +71,7 @@ public class MybatisConfig {
 		shardingRuleConfig.getTableRuleConfigs().add(getBaseUserTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getFamilyFenceTableRuleConfiguration());
 		shardingRuleConfig.getTableRuleConfigs().add(getBaseUserNuqiueTableRuleConfiguration());
+		shardingRuleConfig.getTableRuleConfigs().add(getFamilyBlackUrlTableRuleConfiguration());
 		//级联绑定表，用于优化查询
 		shardingRuleConfig.getBindingTableGroups().add("t_family,t_family_student");
 		shardingRuleConfig.getBindingTableGroups().add("t_family,t_family_fence");
@@ -190,6 +191,16 @@ public class MybatisConfig {
 		TableRuleConfiguration result = new TableRuleConfiguration();
 		result.setLogicTable("t_family_fence");
 		result.setActualDataNodes("ds_${0..3}.t_family_fence${0..3}");
+		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
+		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
+		return result;
+	}
+
+	@Bean
+	public TableRuleConfiguration getFamilyBlackUrlTableRuleConfiguration() {
+		TableRuleConfiguration result = new TableRuleConfiguration();
+		result.setLogicTable("t_family_black_url");
+		result.setActualDataNodes("ds_${0..3}.t_family_black_url${0..3}");
 		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
 		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
 		return result;

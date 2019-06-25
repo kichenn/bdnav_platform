@@ -171,6 +171,11 @@ public class ServiceUserController {
         return WrapMapper.ok();
     }
 
+    /**
+     * 根据条件查询订单
+     * @Author: WanMing
+     * @Date: 2019/6/25 9:40
+     */
     @ApiOperation(value = "根据条件查询订单", response = ServiceUser.class)
     @RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
     public Object queryServiceUser(@Validated @RequestBody QueryServiceUserDto queryServiceUserDto){
