@@ -5,8 +5,6 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddFamilyBlackUrlDto;
 import com.bdxh.user.dto.FamilyBlackUrlQueryDto;
 import com.bdxh.user.dto.ModifyFamilyBlackUrlDto;
-import com.bdxh.user.entity.FamilyBlackUrl;
-import com.bdxh.user.service.FamilyBlackUrlService;
 import com.bdxh.user.vo.FamilyBlackUrlVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,8 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.bdxh.user.entity.FamilyBlackUrl;
+import com.bdxh.user.service.FamilyBlackUrlService;
+import org.stringtemplate.v4.ST;
+
+import javax.validation.constraints.NotNull;
 
 /**
 * @Description: 家长端黑名单控制器
@@ -41,7 +45,7 @@ public class FamilyBlackUrlController {
 	 * @Author: WanMing
 	 * @Date: 2019/6/25 10:44
 	 */
-	@ApiOperation(value = "添加家长端的黑名单",response = Boolean.class)
+	@ApiOperation(value = "添加家长端的黑名单",response = String.class)
 	@RequestMapping(value = "/addFamilyBlackUrl",method = RequestMethod.POST)
 	public Object addFamilyBlackUrl(@Validated @RequestBody AddFamilyBlackUrlDto addFamilyBlackUrlDto){
 		//数据拷贝
@@ -51,7 +55,7 @@ public class FamilyBlackUrlController {
 		familyBlackUrl.setStatus(addFamilyBlackUrlDto.getStatus().getKey());
 		//添加
 		try {
-			return WrapMapper.ok(familyBlackUrlService.addFamilyBlackUrl(familyBlackUrl));
+			familyBlackUrlService.addFamilyBlackUrl(familyBlackUrl);
 		} catch (Exception e) {
 			if (e instanceof DuplicateKeyException) {
 				//数据库设置唯一索引 黑名单ip,家长id,学生id
@@ -82,7 +86,7 @@ public class FamilyBlackUrlController {
 	 * @Author: WanMing
 	 * @Date: 2019/6/25 10:44
 	 */
-	@ApiOperation(value = "修改家长端的黑名单",response = Boolean.class)
+	@ApiOperation(value = "修改家长端的黑名单",response = String.class)
 	@RequestMapping(value = "/modifyFamilyBlackUrl",method = RequestMethod.POST)
 	public Object modifyFamilyBlackUrl(@Validated @RequestBody ModifyFamilyBlackUrlDto modifyFamilyBlackUrlDto ){
 		//数据拷贝
@@ -91,7 +95,7 @@ public class FamilyBlackUrlController {
 		familyBlackUrl.setStatus(modifyFamilyBlackUrlDto.getStatus()==null?null:modifyFamilyBlackUrlDto.getStatus().getKey());
 		//修改
 		try {
-			return WrapMapper.ok(familyBlackUrlService.modifyFamilyBlackUrl(familyBlackUrl));
+			familyBlackUrlService.modifyFamilyBlackUrl(familyBlackUrl);
 		} catch (Exception e) {
 			if (e instanceof DuplicateKeyException) {
 				//数据库设置唯一索引 黑名单ip,家长id,学生id
@@ -113,7 +117,6 @@ public class FamilyBlackUrlController {
 	public Object findFamilyBlackUrlByCondition(@RequestBody FamilyBlackUrlQueryDto familyBlackUrlQueryDto ){
 		return WrapMapper.ok(familyBlackUrlService.findFamilyBlackUrlByCondition(familyBlackUrlQueryDto));
 	}
-
 
 	/**
 	 * 查询家长对应孩子的黑名单

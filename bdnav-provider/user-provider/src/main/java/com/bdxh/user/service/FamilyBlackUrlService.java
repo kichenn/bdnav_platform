@@ -62,4 +62,12 @@ public interface FamilyBlackUrlService extends IService<FamilyBlackUrl> {
 	 * @Date: 2019/6/25 14:37
 	 */
     List<FamilyBlackUrlVo> findFamilyBlackUrlByStudent(String schoolCode, String cardNumber, String studentNumber);
+
+	/**
+	 * 根据学生卡号查询黑名单列表
+	 * @param schoolCode
+	 * @param studentNumber
+	 * @return
+	 */
+	List<FamilyBlackUrlVo> findBlackInList(String schoolCode,String studentNumber);
 }

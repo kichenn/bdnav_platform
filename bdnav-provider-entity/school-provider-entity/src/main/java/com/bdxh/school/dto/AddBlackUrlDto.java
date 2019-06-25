@@ -24,14 +24,10 @@ public class AddBlackUrlDto {
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
-    @ApiModelProperty("学校卡号")
-    private String cardNumber;
 
     @ApiModelProperty("网站名称")
     private String name;
 
-    @ApiModelProperty("类型 1学校 2 家长")
-    private Long urlType;
 
     @ApiModelProperty("填写域名或者ip")
     private String ip;
