@@ -20,6 +20,8 @@ import com.bdxh.user.service.FamilyBlackUrlService;
 import org.stringtemplate.v4.ST;
 
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
 * @Description: 家长端黑名单控制器
@@ -131,6 +133,18 @@ public class FamilyBlackUrlController {
 		return WrapMapper.ok(familyBlackUrlService.findFamilyBlackUrlByStudent(schoolCode,cardNumber,studentNumber));
 	}
 
+
+	@ApiOperation(value = "查询孩子的黑名单",response = FamilyBlackUrlVo.class)
+	@RequestMapping(value = "/findBlackInList",method = RequestMethod.GET)
+	public Object findBlackInList(@RequestParam("schoolCode" )String schoolCode,
+											  @RequestParam("studentNumber")String studentNumber){
+		List<String> urlList=new ArrayList<>();
+		List<FamilyBlackUrlVo> bus= familyBlackUrlService.findBlackInList(schoolCode,studentNumber);
+		for (int i = 0; i < bus.size(); i++) {
+			urlList.add(bus.get(i).getIp());
+		}
+		return WrapMapper.ok(urlList);
+	}
 
 
 }
