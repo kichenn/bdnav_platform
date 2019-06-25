@@ -24,6 +24,7 @@ public interface ServiceUserControllerClient {
 
 
     @RequestMapping(value = "/serviceUser/findServicePermitAll", method = RequestMethod.GET)
+    @ResponseBody
     Wrapper<List<ServiceUser>> findServicePermitAll();
 
     /**
@@ -63,12 +64,14 @@ public interface ServiceUserControllerClient {
     Wrapper updateServiceUser(@RequestBody ModifyServiceUserDto modifyServiceUserDto);
 
     @RequestMapping(value = "/serviceUser/deleteService", method = RequestMethod.GET)
+    @ResponseBody
     Wrapper deleteService(@RequestParam(name = "schoolCode") String schoolCode,
                           @RequestParam(name = "cardNumber") Long cardNumber,
                           @RequestParam(name = "id") Long id);
 
 
     @RequestMapping(value = "/serviceUser/queryServiceUser", method = RequestMethod.POST)
+    @ResponseBody
     Wrapper<PageInfo<ServiceUser>> queryServiceUser(@RequestBody QueryServiceUserDto queryServiceUsedDto);
 
 }

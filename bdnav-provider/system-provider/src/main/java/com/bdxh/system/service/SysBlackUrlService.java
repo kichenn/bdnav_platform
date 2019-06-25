@@ -24,7 +24,7 @@ public interface SysBlackUrlService extends IService<SysBlackUrl> {
 	/**
 	 *批量删除方法
 	 */
- 	Boolean batchDelSysBlackUrlInIds(List<Long> id);
+ 	Boolean batchDelSysBlackUrlInIds(List<Long> ids);
 
  	/**
  	 * 分页+添加查询系统黑名单即病毒库
@@ -33,10 +33,11 @@ public interface SysBlackUrlService extends IService<SysBlackUrl> {
  	 */
 	PageInfo<SysBlackUrlVo> findSysBlackUrlByCondition(SysBlackUrlQueryDto sysBlackUrlQueryDto);
 
+
 	/**
-	 * 判断url是否在黑名单库
+	 * 批量处理url的安全性检查
 	 * @Author: WanMing
-	 * @Date: 2019/6/20 15:46
+	 * @Date: 2019/6/24 16:25
 	 */
-	Boolean querySysBlackUrlByUrl(String url);
+	void batchCheckSysBlackUrl(List<String> urls);
 }

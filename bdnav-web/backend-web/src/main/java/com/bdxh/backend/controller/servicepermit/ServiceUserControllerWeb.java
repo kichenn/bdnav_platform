@@ -31,7 +31,7 @@ public class ServiceUserControllerWeb {
 
     @ApiOperation("根据条件查询订单")
     @RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
-    public Object queryServiceUser(@Validated @RequestBody QueryServiceUserDto queryServiceUsedDto, BindingResult bindingResult) {
+    public Object queryServiceUser(@Validated @RequestBody QueryServiceUserDto queryServiceUsedDto) {
         Wrapper wrapper = serviceUserControllerClient.queryServiceUser(queryServiceUsedDto);
         return wrapper;
 

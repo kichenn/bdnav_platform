@@ -15,6 +15,7 @@ import com.bdxh.appmarket.feign.AppControllerClient;
 import com.bdxh.appmarket.feign.SystemAppControllerClient;
 import com.bdxh.appmarket.vo.appDownloadlinkVo;
 import com.bdxh.appmarket.vo.appVersionVo;
+import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -29,6 +30,8 @@ import com.bdxh.system.dto.AddFeedbackAttachDto;
 import com.bdxh.system.dto.AddFeedbackDto;
 import com.bdxh.system.feign.ControlConfigControllerClient;
 import com.bdxh.system.feign.FeedbackControllerClient;
+import com.bdxh.system.feign.SysBlackUrlControllerClient;
+import com.bdxh.system.vo.SysBlackUrlVo;
 import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateStudentDto;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
@@ -41,15 +44,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.omg.CORBA.PRIVATE_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -99,6 +102,9 @@ public class ApplyControlsWebController {
 
     @Autowired
     private SchoolControllerClient schoolControllerClient;
+
+    @Autowired
+    private SysBlackUrlControllerClient sysBlackUrlControllerClient;
 
     @Autowired
     private VisitLogsControllerClient visitLogsControllerClient;
@@ -269,10 +275,9 @@ public class ApplyControlsWebController {
 
     /**
      * 添加用户反馈信息
-     *
+     * @author WanMing
      * @param addFeedbackDto
      * @return
-     * @author WanMing
      */
     @RequestMapping(value = "/addFeedback", method = RequestMethod.POST)
     @ApiOperation(value = "添加用户反馈信息", response = Boolean.class)
@@ -328,5 +333,48 @@ public class ApplyControlsWebController {
         return WrapMapper.ok(wrapper.getResult());
     }
 
+
+    /**
+     *  批量导入病毒库数据
+     *
+     * @Author: WanMing
+     * @Date: 2019/6/24 12:54
+     */
+    @RequestMapping(value = "/importSysBlackUrl", method = RequestMethod.POST)
+    @ApiOperation(value = "导入url列表检测安全性", response = String.class)
+    public Object importSysBlackUrl(@RequestParam("file") MultipartFile file) {
+        try {
+            if (file.isEmpty()) {
+                return WrapMapper.error("文件为空,请检查文件内容");
+            }
+            //计时
+            long start = System.currentTimeMillis();
+            List<String[]> urlStr = ExcelImportUtil.readExcelNums(file, 0);
+            if (CollectionUtils.isNotEmpty(urlStr)) {
+                //获取所有的url集合并且去重
+                List<String> urls = urlStr.stream().map(item -> item[0]).distinct()
+                        .collect(Collectors.toList());
+                sysBlackUrlControllerClient.batchCheckSysBlackUrl(urls);
+            }
+            long end = System.currentTimeMillis();
+            log.info("总计用时：" + (end - start) + "毫秒");
+            return WrapMapper.ok("检查完成");
+        } catch (IOException e) {
+            log.error(e.getMessage());
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    /**
+     * 查询本地病毒库所有数据
+     *
+     * @Author: WanMing
+     * @Date: 2019/6/24 15:02
+     */
+    @RequestMapping(value = "/queryAllSysBlackUrl", method = RequestMethod.GET)
+    @ApiOperation(value = "查询本地病毒库所有数据", response = SysBlackUrlVo.class)
+    public Object queryAllSysBlackUrl() {
+        return sysBlackUrlControllerClient.queryAllSysBlackUrl();
+    }
 
 }
