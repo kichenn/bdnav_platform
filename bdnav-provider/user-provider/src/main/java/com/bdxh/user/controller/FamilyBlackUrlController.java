@@ -5,6 +5,8 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddFamilyBlackUrlDto;
 import com.bdxh.user.dto.FamilyBlackUrlQueryDto;
 import com.bdxh.user.dto.ModifyFamilyBlackUrlDto;
+import com.bdxh.user.entity.FamilyBlackUrl;
+import com.bdxh.user.service.FamilyBlackUrlService;
 import com.bdxh.user.vo.FamilyBlackUrlVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -12,14 +14,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.bdxh.user.entity.FamilyBlackUrl;
-import com.bdxh.user.service.FamilyBlackUrlService;
-import org.stringtemplate.v4.ST;
-
-import javax.validation.constraints.NotNull;
 
 /**
 * @Description: 家长端黑名单控制器
@@ -55,7 +51,7 @@ public class FamilyBlackUrlController {
 		familyBlackUrl.setStatus(addFamilyBlackUrlDto.getStatus().getKey());
 		//添加
 		try {
-			familyBlackUrlService.addFamilyBlackUrl(familyBlackUrl);
+			return WrapMapper.ok(familyBlackUrlService.addFamilyBlackUrl(familyBlackUrl));
 		} catch (Exception e) {
 			if (e instanceof DuplicateKeyException) {
 				//数据库设置唯一索引 黑名单ip,家长id,学生id
@@ -95,7 +91,7 @@ public class FamilyBlackUrlController {
 		familyBlackUrl.setStatus(modifyFamilyBlackUrlDto.getStatus()==null?null:modifyFamilyBlackUrlDto.getStatus().getKey());
 		//修改
 		try {
-			familyBlackUrlService.modifyFamilyBlackUrl(familyBlackUrl);
+			return WrapMapper.ok(familyBlackUrlService.modifyFamilyBlackUrl(familyBlackUrl));
 		} catch (Exception e) {
 			if (e instanceof DuplicateKeyException) {
 				//数据库设置唯一索引 黑名单ip,家长id,学生id
@@ -117,6 +113,7 @@ public class FamilyBlackUrlController {
 	public Object findFamilyBlackUrlByCondition(@RequestBody FamilyBlackUrlQueryDto familyBlackUrlQueryDto ){
 		return WrapMapper.ok(familyBlackUrlService.findFamilyBlackUrlByCondition(familyBlackUrlQueryDto));
 	}
+
 
 	/**
 	 * 查询家长对应孩子的黑名单
