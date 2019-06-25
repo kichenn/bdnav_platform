@@ -111,6 +111,17 @@
         </where>
     </select>
 
+    <!-- 查询老师部门组织架构信息 -->
+    <select id="findTeacherDeptInfo" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_school_org
+        <where>
+            school_id=#{schoolId}
+            AND org_type !=5
+        </where>
+    </select>
+
     <!-- 根据parentId查询 -->
     <select id="findBySchoolOrgByParentId" resultMap="BaseResultMap">
         SELECT

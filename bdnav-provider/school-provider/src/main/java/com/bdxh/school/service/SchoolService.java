@@ -67,5 +67,5 @@ public interface SchoolService extends IService<School> {
     List<BaseEchartsVo> querySchoolNumByArea();
 
     //修改学校用户数量
-    Boolean updateSchoolUserNum(Integer userType, Integer updateType, Integer updateNum, Integer schoolId);
+    Boolean updateSchoolUserNum(Integer userType, Integer updateType, Integer updateNum, String schoolCode);
 }

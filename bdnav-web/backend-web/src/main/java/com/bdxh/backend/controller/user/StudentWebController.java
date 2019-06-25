@@ -169,7 +169,7 @@ public class StudentWebController {
             }
             Wrapper wrapper = studentControllerClient.addStudent(addStudentDto);
             if (wrapper.getCode() == 200){
-                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), 1, Integer.valueOf(addStudentDto.getSchoolId()));
+                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()), Integer.parseInt(BaseUserNumberStatusEnum.ADD.getCode().toString()), 1, addStudentDto.getSchoolCode());
             }
             return wrapper;
         } catch (Exception e) {
@@ -206,7 +206,7 @@ public class StudentWebController {
             }
             Wrapper wrapper = studentControllerClient.removeStudent(schoolCode, cardNumber);
             if (wrapper.getCode() == 200){
-                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.STUDENT.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.REMOVE.getCode()), 1, singlePermissionQueryDto.getSchoolId().intValue());
+                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()), Integer.parseInt(BaseUserNumberStatusEnum.REMOVE.getCode().toString()), 1, schoolCode);
             }
             return wrapper;
         } catch (Exception e) {

@@ -307,7 +307,7 @@ public class SchoolController {
      * @param userType 用户类型 1.学生 2.老师
      * @param updateType 修改类型 1.增加 2.减少
      * @param updateNum 更新数量
-     * @param schoolId 学校的id
+     * @param schoolCode 学校的schoolCode
      * @Author: WanMing
      * @Date: 2019/6/17 18:58
      */
@@ -315,8 +315,8 @@ public class SchoolController {
     @ApiOperation(value = "修改学校不同用户的数量",response = Boolean.class)
     @ResponseBody
     public Object updateSchoolUserNum( @RequestParam("userType")Integer userType,@RequestParam("updateType") Integer updateType
-            , @RequestParam("updateNum")Integer updateNum, @RequestParam("schoolId")Integer schoolId){
-        return WrapMapper.ok(schoolService.updateSchoolUserNum(userType,updateType,updateNum,schoolId));
+            , @RequestParam("updateNum")Integer updateNum, @RequestParam("schoolCode")String schoolCode){
+        return WrapMapper.ok(schoolService.updateSchoolUserNum(userType,updateType,updateNum,schoolCode));
     }
 
 
