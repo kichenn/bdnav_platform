@@ -81,7 +81,7 @@ public class TeacherWebController {
             addTeacherDto.setOperatorName(user.getUserName());
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
             if(wrapper.getCode()==200) {
-                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), 1, addTeacherDto.getSchoolId().intValue());
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), 1, addTeacherDto.getSchoolCode());
             }
             return wrapper;
         }catch (Exception e) {
@@ -115,6 +115,9 @@ public class TeacherWebController {
                 return WrapMapper.error("请先删除卡号为"+cardNumber+"的老师门禁单信息");
             }
             Wrapper wrapper=teacherControllerClient.removeTeacher(schoolCode, cardNumber);
+            if(wrapper.getCode()==200){
+                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.TEACHER.getCode().toString()), Integer.parseInt(BaseUserNumberStatusEnum.REMOVE.getCode().toString()), 1, schoolCode);
+            }
             return wrapper;
         }catch (Exception e){
             e.printStackTrace();

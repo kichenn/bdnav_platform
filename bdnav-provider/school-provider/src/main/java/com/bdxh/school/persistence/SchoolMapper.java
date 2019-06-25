@@ -31,5 +31,5 @@ public interface SchoolMapper extends Mapper<School> {
 
     //修改学校用户数量
     Integer updateSchoolUserNum(@Param("userType")Integer userType,@Param("updateType")Integer updateType
-            ,@Param("updateNum")Integer updateNum,@Param("schoolId") Integer schoolId );
+            ,@Param("updateNum")Integer updateNum,@Param("schoolCode") String schoolCode );
 }

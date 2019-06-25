@@ -15,6 +15,7 @@ import com.bdxh.user.dto.UpdateFamilyDto;
 import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.Family;
+import com.bdxh.user.enums.SchoolTypeEnum;
 import com.bdxh.user.persistence.BaseUserMapper;
 import com.bdxh.user.persistence.BaseUserUnqiueMapper;
 import com.bdxh.user.persistence.FamilyMapper;
@@ -156,7 +157,8 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
                 synUserInfoRequest.setIdentity_title(AuthenticationConstant.FAMILY);
                 synUserInfoRequest.setHead_image(updateFamilyDto.getImage());
                 synUserInfoRequest.setGender(updateFamilyDto.getGender() == 1 ? "男" : "女");
-                if (updateFamilyDto.getSchoolType() >= Byte.parseByte("4")) {
+                //判断是否是k12学校
+                if (updateFamilyDto.getSchoolType() >= SchoolTypeEnum.SECONDARYSPECIALIZEDSCHOOL.getKey()) {
                     synUserInfoRequest.setCollege(updateFamilyDto.getSchoolName());
                 }
                 synUserInfoRequest.setOrganization(updateFamilyDto.getSchoolName());

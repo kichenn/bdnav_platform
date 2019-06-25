@@ -79,4 +79,7 @@ public interface SchoolOrgMapper extends Mapper<SchoolOrg> {
      * @return
      */
     int updateSchoolClassInfo(SchoolOrg schoolOrg);
+
+    //查询老师部门组织架构信息
+    List<SchoolOrg> findTeacherDeptInfo(Long schoolId);
 }

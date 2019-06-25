@@ -193,4 +193,29 @@ public class SchoolOrgController {
     public Object updateSchoolClassInfo(@RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
         return WrapMapper.ok(schoolOrgService.updateSchoolClassInfo(classAdministratorsUpdateDto));
     }
+    /**
+     * 查询出老师的树形结构数据
+     * @param schoolId
+     * @return
+     */
+    @RequestMapping(value = "/findTeacherDeptInfo", method = RequestMethod.GET)
+    @ApiOperation(value = "查询出老师的树形结构数据")
+    public Object findTeacherDeptInfo(@RequestBody Long schoolId) {
+        List<SchoolOrg> schoolOrgList=schoolOrgService.findTeacherDeptInfo(schoolId);
+        if(CollectionUtils.isEmpty(schoolOrgList)){
+            return WrapMapper.wrap(200,"当前学校不存在组织架构信息");
+        }
+        List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
+            SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
+            BeanUtils.copyProperties(e, treeVo);
+            treeVo.setTitle(e.getOrgName());
+            treeVo.setCreateDate(e.getCreateDate());
+            return treeVo;
+        }).collect(Collectors.toList());
+        //树状
+        TreeLoopUtils<SchoolOrgTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+        List<SchoolOrgTreeVo> result = treeLoopUtils.getTree(schoolOrgTreeVo);
+        return WrapMapper.ok(result);
+    }
+
 }

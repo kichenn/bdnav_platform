@@ -133,13 +133,13 @@ public interface SchoolControllerClient {
      * @param userType 用户类型 1.学生 2.老师
      * @param updateType 修改类型 1.增加 2.减少
      * @param updateNum 更新数量
-     * @param schoolId 学校的id
+     * @param schoolCode 学校的code
      * @Author: WanMing
      * @Date: 2019/6/17 18:58
      */
     @RequestMapping(value = "/school/updateSchoolUserNum", method = RequestMethod.GET)
     @ResponseBody
     Wrapper updateSchoolUserNum( @RequestParam("userType")Integer userType,@RequestParam("updateType") Integer updateType
-            , @RequestParam("updateNum")Integer updateNum, @RequestParam("schoolId")Integer schoolId);
+            , @RequestParam("updateNum")Integer updateNum, @RequestParam("schoolCode")String schoolCode);
 
 }

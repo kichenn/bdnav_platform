@@ -12,6 +12,7 @@ import com.bdxh.user.dto.ActivationBaseUserDto;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.UpdateBaseUserDto;
 import com.bdxh.user.entity.*;
+import com.bdxh.user.enums.SchoolTypeEnum;
 import com.bdxh.user.persistence.*;
 import com.bdxh.user.service.BaseUserService;
 import com.bdxh.user.vo.BaseEchartsVo;
@@ -124,7 +125,8 @@ public class BaseUserServiceImpl extends BaseService<BaseUser> implements BaseUs
                         synUserInfoRequest.setName(studentInfo.getName());
                         studentInfo.setGender(Byte.parseByte(baseUser.getGender() + ""));
                         synUserInfoRequest.setGender(studentInfo.getGender() == 1 ? "男" : "女");
-                        if (activationBaseUserDto.getSchoolType() >= Byte.parseByte("4")) {
+                        //判断是否是k12学校
+                        if (activationBaseUserDto.getSchoolType() >= SchoolTypeEnum.SECONDARYSPECIALIZEDSCHOOL.getKey()) {
                             synUserInfoRequest.setClass_name(studentInfo.getClassName());
                             synUserInfoRequest.setGrade(studentInfo.getGradeName());
                             synUserInfoRequest.setCollege(studentInfo.getCollegeName());

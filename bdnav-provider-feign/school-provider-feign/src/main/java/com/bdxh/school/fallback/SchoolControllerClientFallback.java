@@ -80,7 +80,7 @@ public class SchoolControllerClientFallback implements SchoolControllerClient {
     }
 
     @Override
-    public Wrapper updateSchoolUserNum(Integer userType, Integer updateType, Integer updateNum, Integer schoolId) {
+    public Wrapper updateSchoolUserNum(Integer userType, Integer updateType, Integer updateNum, String schoolCode) {
         return WrapMapper.error();
     }
 }
