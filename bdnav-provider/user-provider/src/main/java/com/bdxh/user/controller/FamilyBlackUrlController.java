@@ -41,7 +41,7 @@ public class FamilyBlackUrlController {
 	 * @Author: WanMing
 	 * @Date: 2019/6/25 10:44
 	 */
-	@ApiOperation(value = "添加家长端的黑名单",response = String.class)
+	@ApiOperation(value = "添加家长端的黑名单",response = Boolean.class)
 	@RequestMapping(value = "/addFamilyBlackUrl",method = RequestMethod.POST)
 	public Object addFamilyBlackUrl(@Validated @RequestBody AddFamilyBlackUrlDto addFamilyBlackUrlDto){
 		//数据拷贝
@@ -82,7 +82,7 @@ public class FamilyBlackUrlController {
 	 * @Author: WanMing
 	 * @Date: 2019/6/25 10:44
 	 */
-	@ApiOperation(value = "修改家长端的黑名单",response = String.class)
+	@ApiOperation(value = "修改家长端的黑名单",response = Boolean.class)
 	@RequestMapping(value = "/modifyFamilyBlackUrl",method = RequestMethod.POST)
 	public Object modifyFamilyBlackUrl(@Validated @RequestBody ModifyFamilyBlackUrlDto modifyFamilyBlackUrlDto ){
 		//数据拷贝
