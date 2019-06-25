@@ -1,15 +1,14 @@
 package com.bdxh.user.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.support.BaseService;
-import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.*;
 import com.bdxh.user.enums.SchoolTypeEnum;
@@ -23,10 +22,7 @@ import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
-import com.netflix.discovery.converters.Auto;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -113,7 +109,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         teacher.setId(snowflakeIdWorker.nextId());
         teacher.setActivate(Byte.valueOf("1"));
         BaseUser baseUser = BeanMapUtils.map(teacher, BaseUser.class);
-        baseUser.setUserType(2);
+        baseUser.setUserType(Integer.parseInt(BaseUserTypeEnum.TEACHER.getCode().toString()));
         baseUser.setUserId(teacher.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
@@ -334,7 +330,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             saveTeacherList.get(i).setId(snowflakeIdWorker.nextId());
             saveTeacherList.get(i).setCreateDate(new Date());
             saveTeacherList.get(i).setUpdateDate(new Date());
-            baseUserList.get(i).setUserType(2);
+            baseUserList.get(i).setUserType(Integer.parseInt(BaseUserTypeEnum.TEACHER.getCode().toString()));
             baseUserList.get(i).setUserId(saveTeacherList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setCreateDate(new Date());

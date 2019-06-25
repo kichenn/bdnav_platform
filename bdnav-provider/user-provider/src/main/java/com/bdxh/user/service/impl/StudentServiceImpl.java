@@ -3,6 +3,7 @@ package com.bdxh.user.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
@@ -351,7 +352,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             }
         }
         student.setId(snowflakeIdWorker.nextId());
-        baseUser.setUserType(1);
+        baseUser.setUserType(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()));
         baseUser.setUserId(student.getId());
         student.setActivate(Byte.valueOf("1"));
         student.getClassNames().trim();
@@ -413,7 +414,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             studentList.get(i).setId(snowflakeIdWorker.nextId());
             studentList.get(i).setCreateDate(new Date());
             studentList.get(i).setUpdateDate(new Date());
-            baseUserList.get(i).setUserType(1);
+            baseUserList.get(i).setUserType(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()));
             baseUserList.get(i).setUserId(studentList.get(i).getId());
             baseUserList.get(i).setCreateDate(new Date());
             baseUserList.get(i).setUpdateDate(new Date());

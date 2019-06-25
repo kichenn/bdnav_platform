@@ -1,6 +1,7 @@
 package com.bdxh.user.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
@@ -198,7 +199,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
         }
         family.setId(snowflakeIdWorker.nextId());
         family.setActivate(Byte.valueOf("1"));
-        baseUser.setUserType(3);
+        baseUser.setUserType(Integer.parseInt(BaseUserTypeEnum.FAMILY.getCode().toString()));
         baseUser.setUserId(family.getId());
         baseUserMapper.insert(baseUser);
         familyMapper.insert(family);
@@ -211,7 +212,7 @@ public class FamilyServiceImpl extends BaseService<Family> implements FamilyServ
         List<BaseUser> baseUserList = BeanMapUtils.mapList(familyList, BaseUser.class);
         for (int i = 0; i < baseUserList.size(); i++) {
             familyList.get(i).setId(snowflakeIdWorker.nextId());
-            baseUserList.get(i).setUserType(3);
+            baseUserList.get(i).setUserType(Integer.parseInt(BaseUserTypeEnum.FAMILY.getCode().toString()));
             baseUserList.get(i).setUserId(familyList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
         }
