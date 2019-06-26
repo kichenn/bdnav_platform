@@ -31,10 +31,22 @@ public class FamilyBlackUrlVo {
     private String schoolCode;
 
     /**
+     * 学校名称
+     */
+    @ApiModelProperty("学校名称")
+    private String schoolName;
+
+    /**
      * 家长号
      */
     @ApiModelProperty("家长号")
     private String cardNumber;
+
+    /**
+     * 家长名称
+     */
+    @ApiModelProperty("家长名称")
+    private String familyName;
 
 
     /**

@@ -28,6 +28,13 @@ public class AddFamilyBlackUrlDto {
     private String schoolCode;
 
     /**
+     * 学校名称
+     */
+    @ApiModelProperty("学校名称")
+    private String schoolName;
+
+
+    /**
      * 家长号
      */
     @ApiModelProperty("家长号")
@@ -39,6 +46,12 @@ public class AddFamilyBlackUrlDto {
      */
     @ApiModelProperty("家长主键")
     private Long familyId;
+
+    /**
+     * 家长名称
+     */
+    @ApiModelProperty("家长名称")
+    private String familyName;
 
     /**
      * 学生主键
