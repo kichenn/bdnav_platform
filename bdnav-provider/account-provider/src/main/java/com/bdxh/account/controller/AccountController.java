@@ -88,6 +88,10 @@ public class AccountController {
             if (e instanceof DuplicateKeyException) {
                 if (e.getMessage().contains("unqiue_login_name")) {
                     message = "该用户名已被人使用";
+                } else if (e.getMessage().contains("unqiue_phone")) {
+                    message = "该手机号已有账户";
+                } else if (e.getMessage().contains("unqiue_schoolCode_cardNumber")) {
+                    message = "该账户已存在";
                 }
             }
             e.printStackTrace();
