@@ -276,15 +276,6 @@ public class Product implements Serializable {
     }
 
     /**
-     * 设置视频地址
-     *
-     * @param videoUrl 视频地址
-     */
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl == null ? null : videoUrl.trim();
-    }
-
-    /**
      * 获取业务类型 1 微校服务
      *
      * @return business_type - 业务类型 1 微校服务
