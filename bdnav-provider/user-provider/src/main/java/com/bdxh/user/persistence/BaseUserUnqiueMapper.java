@@ -18,7 +18,7 @@ public interface BaseUserUnqiueMapper extends Mapper<BaseUserUnqiue> {
     List<String> queryAllUserPhone(BaseUserUnqiue baseUserUnqiue);
 
     //判断手机号时候存在
-    Integer queryUserPhone(@Param("phone") String phone,@Param("schoolCode")String schoolCode);
+    Integer queryUserPhone(@Param("phone") String phone,@Param("schoolCode")String schoolCode,@Param("userId")String userId);
 
     int updateUserPhoneByUserId(@Param("id")Long id, @Param("phone") String phone,@Param("schoolCode")String schoolCode);
 

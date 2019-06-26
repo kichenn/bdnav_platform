@@ -57,6 +57,9 @@
     </insert>
 
     <select id="queryUserPhone" resultType="java.lang.Integer">
-		select count(1) from t_base_user_unqiue where phone =#{phone}
-	</select>
+        select count(1) from t_base_user_unqiue where phone =#{phone} and school_code=#{schoolCode}
+        <if test="userId!=null and userId!=''">
+            and id !=#{userId}
+        </if>
+    </select>
 </mapper>

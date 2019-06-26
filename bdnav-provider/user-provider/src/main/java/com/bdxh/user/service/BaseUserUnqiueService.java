@@ -20,7 +20,7 @@ public interface BaseUserUnqiueService extends IService<BaseUserUnqiue> {
      * @param phone
      * @return
      */
-    Integer queryUserPhone(String phone, String schoolCode);
+    Integer queryUserPhone(String phone, String schoolCode,String userId);
 
     /**
      * 修改手机号码
