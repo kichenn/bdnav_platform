@@ -276,15 +276,6 @@ public class Product implements Serializable {
     }
 
     /**
-     * 获取视频地址
-     *
-     * @return video_url - 视频地址
-     */
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    /**
      * 设置视频地址
      *
      * @param videoUrl 视频地址

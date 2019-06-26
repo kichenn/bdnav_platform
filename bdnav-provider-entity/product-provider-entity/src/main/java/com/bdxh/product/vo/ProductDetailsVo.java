@@ -73,12 +73,6 @@ public class ProductDetailsVo implements Serializable {
     private String imgUrl;
 
     /**
-     * 视频地址
-     */
-    @ApiModelProperty("视频地址")
-    private String videoUrl;
-
-    /**
      * 业务类型 1 微校服务
      */
     @ApiModelProperty("业务类型 1 微校服务'")
