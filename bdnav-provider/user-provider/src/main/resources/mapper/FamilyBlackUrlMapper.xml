@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.user.persistence.FamilyBlackUrlMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.user.entity.FamilyBlackUrl">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+	  <result column="family_id" jdbcType="BIGINT" property="familyId"/>
+	  <result column="student_id" jdbcType="BIGINT" property="studentId"/>
+	  <result column="student_name" jdbcType="VARCHAR" property="studentName"/>
+	  <result column="student_number" jdbcType="VARCHAR" property="studentNumber"/>
+	  <result column="site_name" jdbcType="VARCHAR" property="siteName"/>
+	  <result column="ip" jdbcType="VARCHAR" property="ip"/>
+	  <result column="status" jdbcType="TINYINT" property="status"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,school_id,school_code,card_number,family_id,student_id,student_name,student_number,site_name,ip,status,create_date,update_date,remark
+	</sql>
+	<select id="getFamilyBlackUrlAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_family_black_url 
+	</select>
+
+	<!--条件+分页查询家长黑名单列表-->
+	<select id="findFamilyBlackUrlByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM t_family_black_url
+		<where>
+			<if test="familyBlackUrl.schoolCode!=null and familyBlackUrl.schoolCode!='' ">
+				AND school_code = #{familyBlackUrl.schoolCode}
+			</if>
+			<if test="familyBlackUrl.cardNumber!=null and familyBlackUrl.cardNumber!='' ">
+				AND card_number = #{familyBlackUrl.cardNumber}
+			</if>
+			<if test="familyBlackUrl.studentNumber!=null and familyBlackUrl.studentNumber!='' ">
+				AND student_number = #{familyBlackUrl.studentNumber}
+			</if>
+			<if test="familyBlackUrl.siteName!=null and familyBlackUrl.siteName!='' ">
+				AND site_name = #{familyBlackUrl.siteName}
+			</if>
+			<if test="familyBlackUrl.status!=null and familyBlackUrl.status!='' ">
+				AND status = #{familyBlackUrl.status}
+			</if>
+		</where>
+		ORDER by create_date DESC
+	</select>
+
+	<!--查询家长指定孩子的黑名单列表-->
+    <select id="findFamilyBlackUrlByStudent" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM t_family_black_url
+		WHERE school_code = #{schoolCode} AND card_number = #{cardNumber} AND student_number = #{studentNumber}
+		ORDER BY create_date DESC
+	</select>
+
+    <delete id="delFamilyBlackUrlInIds" parameterType="Integer">
+	  DELETE
+	   FROM t_family_black_url
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+	<!--删除单个记录-->
+	<delete id="delFamilyBlackUrl">
+		DELETE
+		FROM t_family_black_url
+		WHERE school_code = #{schoolCode} AND card_number = #{cardNumber} AND id = #{id}
+	</delete>
+
+
+
+	<!--查询学生卡号指定孩子的黑名单列表-->
+	<select id="findBlackInList" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM t_family_black_url
+		WHERE school_code = #{schoolCode} AND student_number = #{studentNumber}
+	</select>
+
+</mapper>

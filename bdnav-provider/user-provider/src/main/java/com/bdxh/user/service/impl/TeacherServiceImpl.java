@@ -1,17 +1,17 @@
 package com.bdxh.user.service.impl;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.support.BaseService;
-import com.bdxh.user.configration.rocketmq.properties.RocketMqProducerProperties;
 import com.bdxh.user.dto.*;
 import com.bdxh.user.entity.*;
+import com.bdxh.user.enums.SchoolTypeEnum;
 import com.bdxh.user.persistence.BaseUserMapper;
 import com.bdxh.user.persistence.BaseUserUnqiueMapper;
 import com.bdxh.user.persistence.TeacherDeptMapper;
@@ -22,10 +22,7 @@ import com.bdxh.user.vo.TeacherVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
-import com.netflix.discovery.converters.Auto;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.rocketmq.client.producer.DefaultMQProducer;
 import org.apache.rocketmq.common.message.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,7 +109,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
         teacher.setId(snowflakeIdWorker.nextId());
         teacher.setActivate(Byte.valueOf("1"));
         BaseUser baseUser = BeanMapUtils.map(teacher, BaseUser.class);
-        baseUser.setUserType(2);
+        baseUser.setUserType(Integer.parseInt(BaseUserTypeEnum.TEACHER.getCode().toString()));
         baseUser.setUserId(teacher.getId());
         baseUser.setId(snowflakeIdWorker.nextId());
         try {
@@ -142,7 +139,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                             teacherDept.setDeptNames(teacherDto.getTeacherDeptDtoList().get(i).getDeptNames().trim());
                             Boolean terDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
                             //添加判断测试时只推送石齐的数据
-                            if(teacherDto.getSchoolId().equals(Long.parseLong("64"))) {
+                            /*if(teacherDto.getSchoolId().equals(Long.parseLong("64"))) {
                                 if (terDeptResult) {
                                     try {
                                         TeacherDept teacherDept1 = teacherDeptMapper.findTeacherBySchoolCodeAndCardNumber(teacher.getSchoolCode(), teacher.getCardNumber());
@@ -159,12 +156,12 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                                         e.printStackTrace();
                                     }
                                 }
-                            }
+                            }*/
                         });
             }
             //将修改的信息推送至rocketMQ
             //添加判断测试时只推送石齐的数据
-            if(teacherDto.getSchoolId().equals(Long.parseLong("64"))) {
+      /*      if(teacherDto.getSchoolId().equals(Long.parseLong("64"))) {
                 if (teaResult && baseUserResult) {
                     Teacher teacher1 = teacherMapper.selectTeacherDetails(teacher.getSchoolCode(), teacher.getCardNumber());
                     BaseUser baseUser1 = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(teacher.getSchoolCode(), teacher.getCardNumber());
@@ -183,7 +180,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                     Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                     defaultMQProducer.send(baseUserMsg);
                 }
-            }
+            }*/
         } catch (Exception e) {
             log.info("推送教职工信息失败，错误信息:" + e.getMessage());
             e.printStackTrace();
@@ -244,7 +241,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 Boolean teaDeptResult = teacherDeptMapper.insert(teacherDept) > 0;
                 //推送消息至MQ
                 //添加判断测试时只推送石齐的数据
-                if(updateTeacherDto.getSchoolId().equals(Long.parseLong("64"))) {
+            /*    if(updateTeacherDto.getSchoolId().equals(Long.parseLong("64"))) {
                     if (teaDeptResult) {
                         JSONObject mesData = new JSONObject();
                         mesData.put("del_flag", 0);
@@ -257,7 +254,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                         Message teacherDeptMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_teacherDept, String.valueOf(System.currentTimeMillis()), mesData.toJSONString().getBytes());
                         defaultMQProducer.send(teacherDeptMsg);
                     }
-                }
+                }*/
             }
             //修改时判断用户是否已经激活
             if (updateTeacherDto.getActivate().equals(Byte.parseByte("2"))) {
@@ -269,7 +266,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                 String names[] = updateTeacherDto.getTeacherDeptDtoList().get(0).getDeptNames().split("\\/");
                 //判断是K12 还是中高职
                 if(names.length>0){
-                    if (updateTeacherDto.getSchoolType() >= Byte.parseByte("4")) {
+                    if (updateTeacherDto.getSchoolType() >= SchoolTypeEnum.SECONDARYSPECIALIZEDSCHOOL.getKey()) {
                         synUserInfoRequest.setCollege(names[names.length - 1]);
                     }
                 }
@@ -297,7 +294,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
 
             //将修改的信息推送至rocketMQ
             //添加判断测试时只推送石齐的数据根据学校ID判断
-            if(updateTeacherDto.getSchoolId().equals(Long.parseLong("64"))) {
+       /*     if(updateTeacherDto.getSchoolId().equals(Long.parseLong("64"))) {
                 if (teaResult && baseUserResult) {
                     Teacher teacher1 = teacherMapper.selectTeacherDetails(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
                     BaseUser baseUser1 = baseUserMapper.queryBaseUserBySchoolCodeAndCardNumber(updateTeacherDto.getSchoolCode(), updateTeacherDto.getCardNumber());
@@ -316,7 +313,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
                     Message baseUserMsg = new Message(RocketMqConstrants.Topic.bdxhTopic, RocketMqConstrants.Tags.userInfoTag_baseUser, mesData.toJSONString().getBytes());
                     defaultMQProducer.send(baseUserMsg);
                 }
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
             log.info("更新教职工信息失败，错误信息:" + e.getMessage());
@@ -333,7 +330,7 @@ public class TeacherServiceImpl extends BaseService<Teacher> implements TeacherS
             saveTeacherList.get(i).setId(snowflakeIdWorker.nextId());
             saveTeacherList.get(i).setCreateDate(new Date());
             saveTeacherList.get(i).setUpdateDate(new Date());
-            baseUserList.get(i).setUserType(2);
+            baseUserList.get(i).setUserType(Integer.parseInt(BaseUserTypeEnum.TEACHER.getCode().toString()));
             baseUserList.get(i).setUserId(saveTeacherList.get(i).getId());
             baseUserList.get(i).setId(snowflakeIdWorker.nextId());
             baseUserList.get(i).setCreateDate(new Date());

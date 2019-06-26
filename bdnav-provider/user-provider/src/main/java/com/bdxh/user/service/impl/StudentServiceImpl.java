@@ -3,6 +3,7 @@ package com.bdxh.user.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.constant.RocketMqConstrants;
+import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.constant.AuthenticationConstant;
 import com.bdxh.common.helper.weixiao.authentication.request.SynUserInfoRequest;
@@ -15,6 +16,7 @@ import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.entity.BaseUserUnqiue;
 import com.bdxh.user.entity.FamilyStudent;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.enums.SchoolTypeEnum;
 import com.bdxh.user.persistence.*;
 import com.bdxh.user.service.StudentService;
 import com.bdxh.user.vo.FamilyStudentVo;
@@ -105,7 +107,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             msgData.put("delFlag", 1);
             msgData.put("data", baseUser);
             Message studentMsg = new Message(RocketMqConstrants.Topic.userOrganizationTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
-            transactionMQProducer.sendMessageInTransaction(studentMsg, null);
+            defaultMQProducer.send(studentMsg);
         } catch (Exception e) {
             log.info("推送学生信息失败，错误信息:" + e.getMessage());
         }
@@ -212,7 +214,8 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 synUserInfoRequest.setCard_number(updateStudentDto.getCardNumber());
                 synUserInfoRequest.setName(updateStudentDto.getName());
                 synUserInfoRequest.setGender(updateStudentDto.getGender() == 1 ? "男" : "女");
-                if (updateStudentDto.getSchoolType() >= Byte.parseByte("4")) {
+                //判断是否是k12学校
+                if (updateStudentDto.getSchoolType() >= SchoolTypeEnum.SECONDARYSPECIALIZEDSCHOOL.getKey()) {
                     synUserInfoRequest.setClass_name(updateStudentDto.getClassName());
                     synUserInfoRequest.setGrade(updateStudentDto.getGradeName());
                     synUserInfoRequest.setCollege(updateStudentDto.getCollegeName());
@@ -246,10 +249,10 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                 JSONObject msgData = new JSONObject();
                 msgData.put("delFlag", 0);
                 List<BaseUser> baseUserList = new ArrayList<>();
-                baseUserList.add(baseUser);
+                baseUserList.add(updateBaseUserDto);
                 msgData.put("data", baseUserList);
                 Message studentMsg = new Message(RocketMqConstrants.Topic.userOrganizationTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
-                transactionMQProducer.sendMessageInTransaction(studentMsg, null);
+                defaultMQProducer.send(studentMsg);
             } catch (Exception e) {
                 log.info("推送学生信息失败，错误信息:" + e.getMessage());
             }
@@ -349,7 +352,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             }
         }
         student.setId(snowflakeIdWorker.nextId());
-        baseUser.setUserType(1);
+        baseUser.setUserType(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()));
         baseUser.setUserId(student.getId());
         student.setActivate(Byte.valueOf("1"));
         student.getClassNames().trim();
@@ -365,7 +368,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             baseUserList.add(baseUser);
             msgData.put("data", baseUserList);
             Message studentMsg = new Message(RocketMqConstrants.Topic.userOrganizationTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
-            transactionMQProducer.sendMessageInTransaction(studentMsg, null);
+            defaultMQProducer.send(studentMsg);
         } catch (Exception e) {
             log.info("推送学生信息失败，错误信息:" + e.getMessage());
         }
@@ -411,7 +414,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             studentList.get(i).setId(snowflakeIdWorker.nextId());
             studentList.get(i).setCreateDate(new Date());
             studentList.get(i).setUpdateDate(new Date());
-            baseUserList.get(i).setUserType(1);
+            baseUserList.get(i).setUserType(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()));
             baseUserList.get(i).setUserId(studentList.get(i).getId());
             baseUserList.get(i).setCreateDate(new Date());
             baseUserList.get(i).setUpdateDate(new Date());
@@ -427,7 +430,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
             msgData.put("delFlag", 0);
             msgData.put("data", baseUserList);
             Message studentMsg = new Message(RocketMqConstrants.Topic.userOrganizationTopic, RocketMqConstrants.Tags.userInfoTag_student, String.valueOf(System.currentTimeMillis()), msgData.toJSONString().getBytes());
-            transactionMQProducer.sendMessageInTransaction(studentMsg,null);
+            defaultMQProducer.send(studentMsg);
         }catch (Exception e) {
             log.info("推送学生信息失败，错误信息:" + e.getMessage());
         }

@@ -132,4 +132,8 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
         return schoolOrgMapper.updateSchoolClassInfo(schoolOrg) > 0;
     }
 
+    @Override
+    public List<SchoolOrg> findTeacherDeptInfo(Long schoolId) {
+        return schoolOrgMapper.findTeacherDeptInfo(schoolId);
+    }
 }

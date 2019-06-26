@@ -142,25 +142,9 @@ public class BlackUrlController {
      */
     @RequestMapping(value = "/findBlackInList", method = RequestMethod.GET)
     @ApiOperation(value = " 查询当前学校的黑名单列表", response = BlackUrlShowVo.class)
-    public Object findBlackInList(@RequestParam("schoolCode") String schoolCode,@RequestParam("urlType") Long urlType) {
+    public Object findBlackInList(@RequestParam("schoolCode") String schoolCode) {
         List<String> urlList=new ArrayList<>();
-       List<BlackUrl> bus= blackUrlService.findBlackInList(schoolCode,urlType);
-        for (int i = 0; i < bus.size(); i++) {
-            urlList.add(bus.get(i).getIp());
-        }
-        return WrapMapper.ok(urlList);
-    }
-
-
-    /**
-     * @Description: 查询当前孩子的黑名单列表
-     * @Date: 2019/4/11 10:10
-     */
-    @RequestMapping(value = "/findBlackInListByCard", method = RequestMethod.GET)
-    @ApiOperation(value = " 查询当前孩子的黑名单列表", response = BlackUrlShowVo.class)
-    public Object findBlackInListByCard(@RequestParam("cardNumber") String cardNumber,@RequestParam("urlType") Long urlType) {
-        List<String> urlList=new ArrayList<>();
-        List<BlackUrl> bus= blackUrlService.findBlackInListByCard(cardNumber,urlType);
+       List<BlackUrl> bus= blackUrlService.findBlackInList(schoolCode);
         for (int i = 0; i < bus.size(); i++) {
             urlList.add(bus.get(i).getIp());
         }

@@ -35,7 +35,7 @@ public interface BlackUrlMapper extends Mapper<BlackUrl> {
     List<BlackUrlShowVo> findBlackInConditionPaging(@Param("blackUrl") BlackUrl blackUrl);
 
     //查询当前学校的黑名单列表
-    List<BlackUrl> findBlackInList(@Param("schoolCode") String schoolCode,@Param("urlType")Long urlType);
+    List<BlackUrl> findBlackInList(@Param("schoolCode") String schoolCode);
 
     //添加黑名单列表
     Integer addBlackUrl(BlackUrl blackUrl);

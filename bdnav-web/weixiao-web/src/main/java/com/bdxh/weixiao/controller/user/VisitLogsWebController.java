@@ -65,9 +65,11 @@ public class VisitLogsWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -93,9 +95,11 @@ public class VisitLogsWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(addBlackUrlDto.getCardNumber());
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(addBlackUrlDto.getCardNumber());
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();

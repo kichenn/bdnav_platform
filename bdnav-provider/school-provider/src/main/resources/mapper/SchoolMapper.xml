@@ -120,7 +120,7 @@
                 teacher_nums=teacher_nums-#{updateNum}
             </when>
         </choose>
-        WHERE id = #{schoolId}
+        WHERE school_code = #{schoolCode}
     </update>
 
 </mapper>

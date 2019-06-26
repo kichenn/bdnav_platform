@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -60,9 +61,11 @@ public class FamilyFenceWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(updateFamilyFenceDto.getStudentNumber());
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(updateFamilyFenceDto.getStudentNumber());
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -102,9 +105,11 @@ public class FamilyFenceWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -139,9 +144,11 @@ public class FamilyFenceWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -179,9 +186,11 @@ public class FamilyFenceWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -214,9 +223,11 @@ public class FamilyFenceWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(addFamilyFenceDto.getStudentNumber());
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(addFamilyFenceDto.getStudentNumber());
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();

@@ -79,10 +79,9 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                     log.info("修改和成功返回给我的值：  {}",result);
                                 if(result){
                                     log.info("===========同步account成功==========");
-                                    return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
+
                                 }else{
                                     log.info("===========同步account失败==========");
-                                    return ConsumeConcurrentlyStatus.RECONSUME_LATER;
                                 }
 
                                 }

@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.constraints.NotNull;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,9 +80,11 @@ public class FenceAlarmWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -117,9 +120,11 @@ public class FenceAlarmWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
+            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -187,7 +192,7 @@ public class FenceAlarmWebController {
                         //学生获取家长关系信息
                         FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(accountUnqiue.getSchoolCode(), accountUnqiue.getCardNumber()).getResult();
                         //获取学生信息
-                        StudentVo student=studentControllerClient.queryStudentInfo(accountUnqiue.getSchoolCode(),accountUnqiue.getSchoolCode()).getResult();
+                        StudentVo student=studentControllerClient.queryStudentInfo(accountUnqiue.getSchoolCode(),accountUnqiue.getCardNumber()).getResult();
                         if (null != familyStudentVo) {
                             HashMap<String, Object> map = new HashMap<>();
                             map.put("app_key", school.getSchoolKey());
@@ -215,15 +220,17 @@ public class FenceAlarmWebController {
                                     }else{
                                         messageContent="离开";
                                     }
-                                    messageMap.put("content", "您的孩子刚才"+messageContent+"围栏："+fenceName);
-                                    messageMap.put("sender", familyStudentVo.getSName());
+                                    messageMap.put("content", "您的孩子"+student.getSName()+"刚才"+messageContent+"围栏："+fenceName);
+                                    messageMap.put("sender", "北斗星航");
                                     messageMap.put("app_key", school.getSchoolKey());
                                     messageMap.put("timestamp", System.currentTimeMillis() / 1000L + "");
                                     messageMap.put("nonce", RandomStringUtils.randomAlphanumeric(32).toLowerCase().toUpperCase());
                                     //添加自定义参数，分别为提示文案和通知跳转链接，如不传则公众号模版消息会默认显示'你有一条通知待查看'，并跳转到微校通知详情页
                                     JSONArray messageJson = new JSONArray();
+
                                     messageJson.add("点击详情前往查看孩子当前位置");
-                                    messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/fence/#/locus?schoolCode=" + accountUnqiue.getSchoolCode() + "&scardNumber=" + accountUnqiue.getCardNumber()+"&sname="+student.getSName());
+                                    log.info("学校Code：{}     , 学生卡号 ：{}       ，学生姓名：{}           ",accountUnqiue.getSchoolCode(),accountUnqiue.getCardNumber(),student.getSName());
+                                    messageJson.add("http://wx-front-prod.bdxht.com/bdnav-school-micro/dist/fance/#/locus?schoolCode=" + accountUnqiue.getSchoolCode() + "&scardNumber=" + accountUnqiue.getCardNumber()+"&sname="+student.getSName());
                                     messageMap.put("customs", messageJson);
                                     String messageResult = MessageUtils.notice(messageMap, school.getSchoolSecret());
                                     JSONObject jsonObject1 = JSONObject.parseObject(messageResult);
@@ -232,6 +239,7 @@ public class FenceAlarmWebController {
                                     }
                                     log.info("--------------------设置消息模板通知已经完成了---------------------");
                                     //对数据库进行记录
+                                    log.info("-------初始化addFenceAlarmDto-----------");
                                     AddFenceAlarmDto addFenceAlarmDto = new AddFenceAlarmDto();
                                     addFenceAlarmDto.setSchoolId(school.getId());
                                     addFenceAlarmDto.setAction(action);

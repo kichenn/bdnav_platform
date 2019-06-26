@@ -51,4 +51,7 @@ public interface SchoolOrgService extends IService<SchoolOrg> {
 
     //修改班级管理员信息
     Boolean updateSchoolClassInfo(ClassAdministratorsUpdateDto classAdministratorsUpdateDto);
+
+    //查询出老师的树形结构数据
+    List<SchoolOrg> findTeacherDeptInfo(Long schoolId);
 }
