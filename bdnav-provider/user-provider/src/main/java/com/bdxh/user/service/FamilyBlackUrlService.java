@@ -76,4 +76,22 @@ public interface FamilyBlackUrlService extends IService<FamilyBlackUrl> {
 	 * @return
 	 */
 	List<FamilyBlackUrlVo> findBlackInList(String schoolCode,String studentNumber);
+
+	/**
+	 *  添加学生浏览黑名单
+	 * @param familyBlackUrl
+	 * @return
+	 */
+	Boolean addBlackUrlByFamily(FamilyBlackUrl familyBlackUrl);
+
+
+    /**
+     * 根据id查询用户详情
+     * @param schoolCode
+     * @param id
+     * @return
+     */
+    FamilyBlackUrl findBlackUrlById(String schoolCode,String cardNumber,Long id);
+
+
 }

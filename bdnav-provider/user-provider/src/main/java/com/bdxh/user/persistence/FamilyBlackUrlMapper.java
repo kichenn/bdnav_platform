@@ -52,4 +52,11 @@ public interface FamilyBlackUrlMapper extends Mapper<FamilyBlackUrl> {
 
 	//查询当前孩子的的黑名单列表
 	List<FamilyBlackUrl> findBlackInList(@Param("schoolCode") String schoolCode,@Param("studentNumber")String studentNumber);
+
+	//家长添加黑名单
+	Integer addBlackUrlByFamily(FamilyBlackUrl familyBlackUrl);
+
+	//根据id查询黑名单信息
+	FamilyBlackUrl findBlackUrlById(@Param("schoolCode") String schoolCode,@Param("cardNumber")String cardNumber,@Param("id") Long id);
+
 }

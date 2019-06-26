@@ -24,7 +24,6 @@ public class FamilyBlackUrl {
 	 * 主键
 	 */
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 

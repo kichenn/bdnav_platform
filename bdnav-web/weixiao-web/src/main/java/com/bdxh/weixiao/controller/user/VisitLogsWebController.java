@@ -9,9 +9,9 @@ import com.bdxh.common.helper.getui.request.AppPushRequest;
 import com.bdxh.common.helper.getui.utils.GeTuiUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.AddBlackUrlDto;
-import com.bdxh.school.entity.BlackUrl;
-import com.bdxh.school.feign.BlackUrlControllerClient;
+import com.bdxh.user.dto.AddFamilyBlackUrlDto;
+import com.bdxh.user.entity.FamilyBlackUrl;
+import com.bdxh.user.feign.FamilyBlackUrlControllerClient;
 import com.bdxh.user.feign.VisitLogsControllerClient;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
@@ -45,7 +45,7 @@ public class VisitLogsWebController {
     private VisitLogsControllerClient visitLogsControllerClient;
 
     @Autowired
-    private BlackUrlControllerClient blackUrlControllerClient;
+    private FamilyBlackUrlControllerClient familyBlackUrlControllerClient;
 
     @Autowired
     private UserDeviceControllerClient userDeviceControllerClient;
@@ -86,30 +86,33 @@ public class VisitLogsWebController {
         }
     }
 
-  @RolesAllowed({"TEST", "NET"})
+    @RolesAllowed({"TEST", "NET"})
     @RequestMapping(value = "/addBlacklist", method = RequestMethod.POST)
     @ApiOperation(value = "家长添加url黑名单", response = Boolean.class)
-    public Object addBlacklist(@Validated @RequestBody AddBlackUrlDto addBlackUrlDto) {
+    public Object addBlacklist(@Validated @RequestBody AddFamilyBlackUrlDto addFamilyBlackUrlDto) {
         try {
             //查看此孩子是否开通权限
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
             caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
-            Boolean isOnTrial = caseCardNumber.contains(addBlackUrlDto.getCardNumber());
+            Boolean isOnTrial = caseCardNumber.contains(addFamilyBlackUrlDto.getStudentNumber());
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_NET");
             thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
-            Boolean isBy = thisCardNumbers.contains(addBlackUrlDto.getCardNumber());
+            Boolean isBy = thisCardNumbers.contains(addFamilyBlackUrlDto.getStudentNumber());
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
-            addBlackUrlDto.setSchoolCode(userInfo.getSchoolCode());
-            addBlackUrlDto.setUrlType(Long.valueOf(2));//标识为家长添加的黑名单
-            Wrapper wrapMapper = blackUrlControllerClient.addBlack(addBlackUrlDto);
+            addFamilyBlackUrlDto.setSchoolCode(userInfo.getSchoolCode());
+     /*       addFamilyBlackUrlDto.setSchoolCode("1011347968");
+            addFamilyBlackUrlDto.setCardNumber("20190617005");*/
+            Wrapper wrapMapper = familyBlackUrlControllerClient.addFamilyBlackUrl(addFamilyBlackUrlDto);
             String aap = String.valueOf(wrapMapper.getResult());
-            BlackUrl bu = blackUrlControllerClient.findBlackUrlById(Long.valueOf(aap)).getResult();
+
+           FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById(userInfo.getSchoolCode(),userInfo.getFamilyCardNumber(),Long.valueOf(aap)).getResult();
+          /*  FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById("1011347968","20190617005",Long.valueOf(aap)).getResult();*/
             if (bu != null) {
                 UserDevice userDevices = userDeviceControllerClient.findUserDeviceByCodeOrCard(bu.getSchoolCode(), bu.getCardNumber()).getResult();
                 if (userDevices != null) {
