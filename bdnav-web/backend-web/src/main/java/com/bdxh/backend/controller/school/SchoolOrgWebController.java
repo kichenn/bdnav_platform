@@ -199,4 +199,15 @@ public class SchoolOrgWebController {
         return schoolOrgControllerClient.updateSchoolClassInfo(classAdministratorsUpdateDto);
     }
 
+    /**
+     * 查询出老师的树形结构数据
+     * @param schoolId
+     * @return
+     */
+    @RequestMapping(value = "/findTeacherDeptInfo", method = RequestMethod.GET)
+    @ApiOperation(value = "查询出老师的树形结构数据")
+    public Object findTeacherDeptInfo(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
+        return schoolOrgControllerClient.findTeacherDeptInfo(schoolId);
+    }
+
 }

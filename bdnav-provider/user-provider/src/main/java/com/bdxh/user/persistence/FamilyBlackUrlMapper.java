@@ -48,4 +48,8 @@ public interface FamilyBlackUrlMapper extends Mapper<FamilyBlackUrl> {
 	 * @Date: 2019/6/25 14:39
 	 */
     List<FamilyBlackUrl> findFamilyBlackUrlByStudent(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber, @Param("studentNumber")String studentNumber);
+
+
+	//查询当前孩子的的黑名单列表
+	List<FamilyBlackUrl> findBlackInList(@Param("schoolCode") String schoolCode,@Param("studentNumber")String studentNumber);
 }

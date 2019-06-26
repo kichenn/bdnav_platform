@@ -131,4 +131,19 @@ public class FamilyBlackUrlServiceImpl extends BaseService<FamilyBlackUrl> imple
 		}
 		return familyBlackUrlVos;
 	}
+
+	@Override
+	public List<FamilyBlackUrlVo> findBlackInList(String schoolCode, String studentNumber) {
+		List<FamilyBlackUrl> familyBlackUrls = familyBlackUrlMapper.findBlackInList(schoolCode,studentNumber);
+		//数据转换
+		List<FamilyBlackUrlVo> familyBlackUrlVos  = new ArrayList<>();
+		if(CollectionUtils.isNotEmpty(familyBlackUrls)){
+			familyBlackUrls.forEach(blackUrl->{
+				FamilyBlackUrlVo familyBlackUrlVo = new FamilyBlackUrlVo();
+				BeanUtils.copyProperties(blackUrl, familyBlackUrlVo);
+				familyBlackUrlVos.add(familyBlackUrlVo);
+			});
+		}
+		return familyBlackUrlVos;
+	}
 }

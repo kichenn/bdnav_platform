@@ -37,12 +37,6 @@ public class BlackUrl {
 	private String schoolCode;
 
 	/**
-	 * 学生卡号
-	 */
-	@Column(name = "card_number")
-	private String cardNumber;
-
-	/**
 	 * 网站名称
 	 */
 	@Column(name = "name")
@@ -53,13 +47,6 @@ public class BlackUrl {
 	 */
 	@Column(name = "ip")
 	private String ip;
-
-
-	/**
-	 * 类型 1 学校 2 家长
-	 */
-	@Column(name = "url_type")
-	private Long urlType;
 
 
 	/**

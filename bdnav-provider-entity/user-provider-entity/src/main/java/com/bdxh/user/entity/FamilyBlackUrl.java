@@ -41,6 +41,12 @@ public class FamilyBlackUrl {
 	private String schoolCode;
 
 	/**
+	 * 学校名称
+	 */
+	@Column(name = "school_name")
+	private String schoolName;
+
+	/**
 	 * 家长号
 	 */
 	@Column(name = "card_number")
@@ -51,6 +57,12 @@ public class FamilyBlackUrl {
 	 */
 	@Column(name = "family_id")
 	private Long familyId;
+
+	/**
+	 * 家长名称
+	 */
+	@Column(name = "family_name")
+	private String familyName;
 
 	/**
 	 * 学生主键

@@ -74,4 +74,17 @@ public interface FamilyBlackUrlControllerClient {
                                                                 @RequestParam("cardNumber")String cardNumber,
                                                                 @RequestParam("studentNumber")String studentNumber);
 
+
+    /**
+     * 查询当前孩子的黑名单
+     * @param schoolCode
+     * @return
+     */
+    @RequestMapping(value = "/familyBlackUrl/findBlackInList", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<String>> findBlackInList(@RequestParam("schoolCode" )String schoolCode,
+                                          @RequestParam("studentNumber")String studentNumber);
+
+
+
 }

@@ -3,10 +3,6 @@ package com.bdxh.product.vo;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +41,9 @@ public class ProductListVo {
 
     @ApiModelProperty(value = "创建时间")
     private Date createDate;
+
+    @ApiModelProperty(value = "视频地址")
+    private String videoUrl;
 
     @ApiModelProperty(value = "图片信息")
     private List<String> imgUrl;

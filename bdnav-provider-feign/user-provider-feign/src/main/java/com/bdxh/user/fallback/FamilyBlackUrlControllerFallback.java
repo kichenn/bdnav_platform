@@ -43,4 +43,9 @@ public class FamilyBlackUrlControllerFallback implements FamilyBlackUrlControlle
     public Wrapper<List<FamilyBlackUrlVo>> findFamilyBlackUrlByStudent(String schoolCode, String cardNumber, String studentNumber) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<String>> findBlackInList(String schoolCode, String studentNumber) {
+        return WrapMapper.error();
+    }
 }
