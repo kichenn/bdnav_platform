@@ -42,6 +42,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
     private AccountUnqiueService accountUnqiueService;
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
+
     /**
      * @Description: 消息监听
      * @Author: Kang
@@ -65,12 +66,12 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 //新增修改操作
                                 JSONArray accountsArray = json.getJSONArray("data");
                                 for (Object o : accountsArray) {
-                                    JSONObject jsonObject=JSONObject.parseObject(o.toString());
+                                    JSONObject jsonObject = JSONObject.parseObject(o.toString());
                                     Account account = BeanMapUtils.map(o, Account.class);
                                     account.setUserPhone(jsonObject.getString("phone"));
                                     account.setUserName(jsonObject.getString("name"));
-                                    String accountHyPy= HypyUtil.cn2py(account.getUserName());
-                                    account.setLoginName(accountHyPy+account.getUserPhone());
+                                    String accountHyPy = HypyUtil.cn2py(account.getUserName());
+                                    account.setLoginName(accountHyPy + account.getUserPhone());
                                     account.setPassword(new BCryptPasswordEncoder().encode("123456"));
                                     account.setUserId(jsonObject.getLong("userId"));
                                     account.setId(snowflakeIdWorker.nextId());
@@ -78,37 +79,39 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                     account.setLoginNameUpdate(Byte.valueOf("1"));
                                     account.setUserPhone(jsonObject.getString("phone"));
                                     log.info("开始进行入库操作");
-                                    Boolean result=accountService.updateOrInsertAccount(account);
-                                    log.info("修改和成功返回给我的值：  {}",result);
-                                if(result){
-                                    log.info("===========同步account成功==========");
+                                    Boolean result = accountService.updateOrInsertAccount(account);
+                                    log.info("修改和成功返回给我的值：  {}", result);
+                                    if (result) {
+                                        log.info("===========同步account成功==========");
 
-                                }else{
-                                    log.info("===========同步account失败==========");
-                                }
+                                    } else {
+                                        log.info("===========同步account失败==========");
+                                    }
 
                                 }
+                                break;
                             case "1":
                                 //删除操作
                                 Account account = new Account();
                                 JSONObject accountObject = json.getJSONObject("data");
                                 account.setCardNumber(accountObject.get("cardNumber").toString());
                                 account.setSchoolCode(accountObject.getString("schoolCode"));
-                                Account account1=accountService.queryAccount(account.getSchoolCode(),account.getCardNumber());
+                                Account account1 = accountService.queryAccount(account.getSchoolCode(), account.getCardNumber());
                                 accountService.delete(account1);
                                 accountUnqiueService.delAccountUnqiue(account1.getId().toString());
-                                String entityResult = FenceUtils.deleteNewEntity("accountId_"+account1.getId());
+                                String entityResult = FenceUtils.deleteNewEntity("accountId_" + account1.getId());
                                 JSONObject entityResultJson = JSONObject.parseObject(entityResult);
                                 if (entityResultJson.getInteger("status") != 0) {
                                     throw new RuntimeException("删除围栏中监控对象失败,状态码" + entityResultJson.getInteger("status") + "，原因:" + entityResultJson.getString("message"));
                                 }
+                                break;
                         }
                 }
                 log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
-            return  ConsumeConcurrentlyStatus.RECONSUME_LATER;
+            return ConsumeConcurrentlyStatus.RECONSUME_LATER;
         }
         return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
     }
