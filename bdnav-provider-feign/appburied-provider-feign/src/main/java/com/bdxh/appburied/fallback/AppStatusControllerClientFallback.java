@@ -63,4 +63,9 @@ public class AppStatusControllerClientFallback implements AppStatusControllerCli
     public Wrapper<List<String>> findAppStatusInByAccount(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<AppStatus>> findAppStatusByAccountId(String schoolCode, String cardNumber, String accountId, Byte appStatus) {
+        return WrapMapper.error();
+    }
 }

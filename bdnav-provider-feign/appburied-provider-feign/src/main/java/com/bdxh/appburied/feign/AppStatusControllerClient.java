@@ -64,4 +64,14 @@ public interface AppStatusControllerClient {
     Wrapper<List<String>> findAppStatusInByAccount(@RequestParam("schoolCode")String schoolCode,
                                                    @RequestParam("cardNumber")String cardNumber);
 
+
+    @RequestMapping(value = "/appStatus/findAppStatusByAccountId",method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<AppStatus>> findAppStatusByAccountId(@RequestParam("schoolCode") String schoolCode,
+                                                   @RequestParam("cardNumber") String cardNumber,
+                                                   @RequestParam("accountId") String accountId,
+                                                   @RequestParam("appStatus") Byte appStatus);
+
+
+
 }
