@@ -70,7 +70,7 @@ public class BaseUserController {
     @RequestMapping(value ="/queryUserPhoneByPhone",method = RequestMethod.POST)
     public Object queryUserPhoneByPhone(@RequestBody  BaseUserQueryDto baseUserQueryDto) {
         try {
-            Integer phoneCount=baseUserUnqiueService.queryUserPhone(baseUserQueryDto.getPhone(),baseUserQueryDto.getSchoolCode(),baseUserQueryDto.getUserId().toString());
+            Integer phoneCount=baseUserUnqiueService.queryUserPhone(baseUserQueryDto.getPhone(),baseUserQueryDto.getSchoolCode(),null==baseUserQueryDto.getUserId()?null:baseUserQueryDto.getUserId().toString());
             return WrapMapper.ok(phoneCount) ;
         } catch (Exception e) {
             e.printStackTrace();
