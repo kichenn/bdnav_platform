@@ -63,7 +63,7 @@ public class BlackUrlWebController {
         addBlackUrlDto.setOperatorName(user.getUserName());
         addBlackUrlDto.setSchoolId(user.getSchoolId());
         addBlackUrlDto.setSchoolCode(user.getSchoolCode());
-        addBlackUrlDto.setUrlType(Long.valueOf(1));
+        //addBlackUrlDto.setUrlType(Long.valueOf(1));
         Wrapper wrapMapper = blackUrlControllerClient.addBlack(addBlackUrlDto);
         String aap=String.valueOf(wrapMapper.getResult());
         BlackUrl bu=blackUrlControllerClient.findBlackUrlById(Long.valueOf(aap)).getResult();
