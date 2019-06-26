@@ -90,12 +90,6 @@ public class Product implements Serializable {
     private String operatorName;
 
     /**
-     * 视频地址
-     */
-    @Column(name = "video_url")
-    private String videoUrl;
-
-    /**
      * 创建时间
      */
     @Column(name = "create_date")
