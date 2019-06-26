@@ -134,4 +134,13 @@ public interface SchoolOrgControllerClient {
     @RequestMapping(value = "/schoolOrg/updateSchoolClassInfo", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<Boolean> updateSchoolClassInfo(@RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto);
+
+    /**
+     * 查询出老师的树形结构数据
+     * @param schoolId
+     * @return
+     */
+    @RequestMapping(value = "/schoolOrg/findTeacherDeptInfo", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolOrgTreeVo>> findTeacherDeptInfo(@RequestParam("schoolId") Long schoolId);
 }

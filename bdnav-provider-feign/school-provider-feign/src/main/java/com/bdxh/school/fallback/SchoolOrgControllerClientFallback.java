@@ -71,6 +71,11 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
     }
 
     @Override
+    public Wrapper<List<SchoolOrgTreeVo>> findTeacherDeptInfo(Long schoolId) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper<List<SchoolOrg>> findClassOrgList(Long schoolId) {
         return WrapMapper.error();
     }

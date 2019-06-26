@@ -3,13 +3,12 @@ package com.bdxh.product.vo;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.entity.ProductImage;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-
-import lombok.Data;
 
 /**
  * @description:
@@ -72,6 +71,12 @@ public class ProductDetailsVo implements Serializable {
      */
     @ApiModelProperty("商品图片地址")
     private String imgUrl;
+
+    /**
+     * 视频地址
+     */
+    @ApiModelProperty("视频地址")
+    private String videoUrl;
 
     /**
      * 业务类型 1 微校服务

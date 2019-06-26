@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.service.AccountService;
+import com.bdxh.account.service.AccountUnqiueService;
 import com.bdxh.common.base.constant.RocketMqConstrants;
 import com.bdxh.common.helper.baidu.yingyan.FenceUtils;
 import com.bdxh.common.helper.baidu.yingyan.constant.FenceConstant;
@@ -37,6 +38,8 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
     @Autowired
     private AccountService accountService;
 
+    @Autowired
+    private AccountUnqiueService accountUnqiueService;
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
     /**
@@ -92,7 +95,8 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 account.setCardNumber(accountObject.get("cardNumber").toString());
                                 account.setSchoolCode(accountObject.getString("schoolCode"));
                                 Account account1=accountService.queryAccount(account.getSchoolCode(),account.getCardNumber());
-                                accountService.delete(account);
+                                accountService.delete(account1);
+                                accountUnqiueService.delAccountUnqiue(account1.getId().toString());
                                 String entityResult = FenceUtils.deleteNewEntity("accountId_"+account1.getId());
                                 JSONObject entityResultJson = JSONObject.parseObject(entityResult);
                                 if (entityResultJson.getInteger("status") != 0) {

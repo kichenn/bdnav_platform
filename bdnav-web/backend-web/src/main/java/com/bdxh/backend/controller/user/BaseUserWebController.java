@@ -1,19 +1,24 @@
 package com.bdxh.backend.controller.user;
 
+import com.bdxh.common.helper.tree.utils.LongUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.BaseUserQueryDto;
 import com.bdxh.user.dto.FamilyFenceQueryDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.security.PrivateKey;
 
 
 /**
@@ -37,6 +42,10 @@ public class BaseUserWebController {
     @RequestMapping(value = "/queryUserPhoneByPhone",method = RequestMethod.POST)
     public Object queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto){
         try {
+            if(StringUtils.isNotEmpty(baseUserQueryDto.getCardNumber())) {
+                BaseUser baseUser = baseUserControllerClient.queryBaseUserBySchoolCodeAndCardNumber(baseUserQueryDto.getSchoolCode(),baseUserQueryDto.getCardNumber()).getResult();
+                baseUserQueryDto.setUserId(baseUser.getId());
+            }
             Integer count=(Integer) baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
             if(count>0){
                 return WrapMapper.ok(false);

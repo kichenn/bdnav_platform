@@ -2,10 +2,12 @@ package com.bdxh.client.controller.user;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.BaseUserQueryDto;
+import com.bdxh.user.entity.BaseUser;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,6 +36,10 @@ public class BaseUserWebController {
     @RequestMapping(value = "/queryUserPhoneByPhone",method = RequestMethod.POST)
     public Object queryUserPhoneByPhone(@RequestBody BaseUserQueryDto baseUserQueryDto){
         try {
+            if(StringUtils.isNotEmpty(baseUserQueryDto.getCardNumber())) {
+                BaseUser baseUser = baseUserControllerClient.queryBaseUserBySchoolCodeAndCardNumber(baseUserQueryDto.getSchoolCode(),baseUserQueryDto.getCardNumber()).getResult();
+                baseUserQueryDto.setUserId(baseUser.getId());
+            }
             Integer count=(Integer) baseUserControllerClient.queryUserPhoneByPhone(baseUserQueryDto).getResult();
             if(count>0){
                 return WrapMapper.ok(false);

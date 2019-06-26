@@ -30,8 +30,8 @@ public class BaseUserUnqiueServiceImpl extends BaseService<BaseUserUnqiue> imple
     }
 
     @Override
-    public Integer queryUserPhone(String phone, String schoolCode) {
-        return baseUserUnqiueMapper.queryUserPhone(phone, schoolCode);
+    public Integer queryUserPhone(String phone, String schoolCode,String userId) {
+        return baseUserUnqiueMapper.queryUserPhone(phone, schoolCode,userId);
     }
 
     /**
