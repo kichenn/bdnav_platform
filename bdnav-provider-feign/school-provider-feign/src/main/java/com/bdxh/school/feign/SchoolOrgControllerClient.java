@@ -142,5 +142,5 @@ public interface SchoolOrgControllerClient {
      */
     @RequestMapping(value = "/schoolOrg/findTeacherDeptInfo", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolOrg>> findTeacherDeptInfo(@RequestParam("schoolId") Long schoolId);
+    Wrapper<List<SchoolOrgTreeVo>> findTeacherDeptInfo(@RequestParam("schoolId") Long schoolId);
 }
