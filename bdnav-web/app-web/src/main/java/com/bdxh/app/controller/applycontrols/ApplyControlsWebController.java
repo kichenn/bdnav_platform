@@ -385,12 +385,12 @@ public class ApplyControlsWebController {
 
 
     /**
-     * 查询当前用户下的申请消息
+     * 查询该账户下锁定的应用
      *
      * @return
      */
     @RequestMapping(value = "/findAppStatusByAccountId", method = RequestMethod.GET)
-    @ApiOperation(value = "查询当前用户下的申请消息", response = informationVo.class)
+    @ApiOperation(value = "查询该账户下锁定的应用", response = informationVo.class)
     public Object findAppStatusByAccountId(@RequestParam("schoolCode") String schoolCode,
                                   @RequestParam("cardNumber") String cardNumber,
                                   @RequestParam("accountId") String accountId,
