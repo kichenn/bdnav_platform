@@ -51,18 +51,19 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
     @Override
     public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
         try {
-            log.info("进来了");
             for (MessageExt msg : msgs) {
                 String topic = msg.getTopic();
                 String msgBody = new String(msg.getBody(), "utf-8");
                 String tags = msg.getTags();
                 JSONObject json = JSONObject.parseObject(msgBody);
+                log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
                 //是否删除 1删除 2新增、修改
                 String delFlag = json.get("delFlag").toString();
                 switch (topic) {
                     case RocketMqConstrants.Topic.userOrganizationTopic:
                         switch (delFlag) {
                             case "0":
+                                log.info("-------修改新增操作------");
                                 //新增修改操作
                                 JSONArray accountsArray = json.getJSONArray("data");
                                 for (Object o : accountsArray) {
@@ -92,22 +93,24 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 break;
                             case "1":
                                 //删除操作
+                                log.info("-------删除操作------");
                                 Account account = new Account();
                                 JSONObject accountObject = json.getJSONObject("data");
                                 account.setCardNumber(accountObject.get("cardNumber").toString());
                                 account.setSchoolCode(accountObject.getString("schoolCode"));
                                 Account account1 = accountService.queryAccount(account.getSchoolCode(), account.getCardNumber());
-                                accountService.delete(account1);
-                                accountUnqiueService.delAccountUnqiue(account1.getId().toString());
-                                String entityResult = FenceUtils.deleteNewEntity("accountId_" + account1.getId());
-                                JSONObject entityResultJson = JSONObject.parseObject(entityResult);
-                                if (entityResultJson.getInteger("status") != 0) {
-                                    throw new RuntimeException("删除围栏中监控对象失败,状态码" + entityResultJson.getInteger("status") + "，原因:" + entityResultJson.getString("message"));
+                                if (account1 != null) {
+                                    accountService.delete(account1);
+                                    accountUnqiueService.delAccountUnqiue(account1.getId().toString());
+                                    String entityResult = FenceUtils.deleteNewEntity("accountId_" + account1.getId());
+                                    JSONObject entityResultJson = JSONObject.parseObject(entityResult);
+                                    if (entityResultJson.getInteger("status") != 0) {
+                                        throw new RuntimeException("删除围栏中监控对象失败,状态码" + entityResultJson.getInteger("status") + "，原因:" + entityResultJson.getString("message"));
+                                    }
                                 }
                                 break;
                         }
                 }
-                log.info("收到消息:,topic:{}, tags:{},msg:{}", topic, tags, msgBody);
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
