@@ -6,10 +6,8 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="ip" jdbcType="VARCHAR" property="ip"/>
-        <result column="url_type" jdbcType="BIGINT" property="urlType"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
@@ -23,10 +21,8 @@
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
         <result column="ip" jdbcType="VARCHAR" property="ip"/>
-        <result column="url_type" jdbcType="BIGINT" property="urlType"/>
         <result column="status" jdbcType="TINYINT" property="status"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
@@ -38,11 +34,11 @@
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,school_id,school_code,card_number,`name`,ip,url_type,status,create_date,update_date,operator,operator_name,remark
+	  id,school_id,school_code,`name`,ip,status,create_date,update_date,operator,operator_name,remark
 	</sql>
 
     <sql id="BaseColumns1">
-	  url.id,url.school_id,url.school_code,url.card_number,url.name,url.ip,url.url_type,url.status,url.create_date,url.update_date,
+	  url.id,url.school_id,url.school_code,url.name,url.ip,url.status,url.create_date,url.update_date,
 	  url.operator,url.operator_name,url.remark,school.school_name
 	</sql>
 
@@ -76,9 +72,6 @@
             <if test="blackUrl.schoolCode !=null and blackUrl.schoolCode!=''">
                 AND url.`school_code` LIKE CONCAT(CONCAT('%',#{blackUrl.schoolCode,jdbcType=VARCHAR}),'%')
             </if>
-            <if test="blackUrl.urlType !=null">
-                AND url.url_type=#{blackUrl.urlType,  jdbcType = BIGINT}
-            </if>
             <if test="blackUrl.status !=null">
                 AND url.`status`=#{blackUrl.status, jdbcType = TINYINT}
             </if>
@@ -95,21 +88,12 @@
          *
         FROM t_black_url
         WHERE
-        school_code=#{schoolCode} AND url_type=#{urlType}
+        school_code=#{schoolCode}
     </select>
 
     <insert id="addBlackUrl" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO t_black_url(school_id,school_code,card_number,`name`,ip,url_type,status,remark)
-        VALUES (#{schoolId},#{schoolCode},#{cardNumber},#{name},#{ip},#{urlType},#{status},#{remark})
+        INSERT INTO t_black_url(school_id,school_code,`name`,ip,`status`,remark)
+        VALUES (#{schoolId},#{schoolCode},#{name},#{ip},#{status},#{remark})
     </insert>
-
-
-    <select id="findBlackInListByCard" resultMap="BaseResultMap">
-        SELECT
-         *
-        FROM t_black_url
-        WHERE
-        card_number=#{cardNumber} AND url_type=#{urlType}
-    </select>
 
 </mapper>

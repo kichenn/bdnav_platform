@@ -81,4 +81,14 @@
 		WHERE school_code = #{schoolCode} AND card_number = #{cardNumber} AND id = #{id}
 	</delete>
 
+
+
+	<!--查询学生卡号指定孩子的黑名单列表-->
+	<select id="findBlackInList" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM t_family_black_url
+		WHERE school_code = #{schoolCode} AND student_number = #{studentNumber}
+	</select>
+
 </mapper>

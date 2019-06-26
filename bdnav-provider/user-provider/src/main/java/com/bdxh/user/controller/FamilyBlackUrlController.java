@@ -5,8 +5,6 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddFamilyBlackUrlDto;
 import com.bdxh.user.dto.FamilyBlackUrlQueryDto;
 import com.bdxh.user.dto.ModifyFamilyBlackUrlDto;
-import com.bdxh.user.entity.FamilyBlackUrl;
-import com.bdxh.user.service.FamilyBlackUrlService;
 import com.bdxh.user.vo.FamilyBlackUrlVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -14,14 +12,22 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.bdxh.user.entity.FamilyBlackUrl;
+import com.bdxh.user.service.FamilyBlackUrlService;
+import org.stringtemplate.v4.ST;
+
+import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * @Description: 家长端黑名单控制器
- * @Author WanMing
- * @Date 2019-06-25 10:17:12
- */
+* @Description: 家长端黑名单控制器
+* @Author WanMing
+* @Date 2019-06-25 10:17:12
+*/
 @RestController
 @RequestMapping("/familyBlackUrl")
 @Slf4j
@@ -29,11 +35,11 @@ import org.springframework.web.bind.annotation.*;
 @Api(value = "家长黑名单管理", tags = "家长黑名单管理API")
 public class FamilyBlackUrlController {
 
-    @Autowired
-    private FamilyBlackUrlService familyBlackUrlService;
+	@Autowired
+	private FamilyBlackUrlService familyBlackUrlService;
 
-    @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
+	@Autowired
+	private SnowflakeIdWorker snowflakeIdWorker;
 
 
     /**
@@ -64,19 +70,18 @@ public class FamilyBlackUrlController {
     }
 
 
-    /**
-     * 删除家长端的黑名单
-     *
-     * @Author: WanMing
-     * @Date: 2019/6/25 10:44
-     */
-    @ApiOperation(value = "删除家长端的黑名单", response = Boolean.class)
-    @RequestMapping(value = "/delFamilyBlackUrl", method = RequestMethod.GET)
-    public Object delFamilyBlackUrl(@RequestParam(name = "schoolCode") String schoolCode,
-                                    @RequestParam(name = "cardNumber") String cardNumber,
-                                    @RequestParam(name = "id") String id) {
-        return WrapMapper.ok(familyBlackUrlService.delFamilyBlackUrl(schoolCode, cardNumber, id));
-    }
+	/**
+	 * 删除家长端的黑名单
+	 * @Author: WanMing
+	 * @Date: 2019/6/25 10:44
+	 */
+	@ApiOperation(value = "删除家长端的黑名单",response = Boolean.class)
+	@RequestMapping(value = "/delFamilyBlackUrl",method = RequestMethod.GET)
+	public Object delFamilyBlackUrl(@RequestParam(name = "schoolCode")  String schoolCode,
+									@RequestParam(name = "cardNumber") String cardNumber,
+									@RequestParam(name = "id") String id){
+		return WrapMapper.ok(familyBlackUrlService.delFamilyBlackUrl(schoolCode,cardNumber,id));
+	}
 
 
     /**
@@ -106,17 +111,16 @@ public class FamilyBlackUrlController {
     }
 
 
-    /**
-     * 根据条件分页查询家长端的黑名单
-     *
-     * @Author: WanMing
-     * @Date: 2019/6/25 10:44
-     */
-    @ApiOperation(value = "根据条件分页查询家长端的黑名单", response = FamilyBlackUrlVo.class)
-    @RequestMapping(value = "/findFamilyBlackUrlByCondition", method = RequestMethod.POST)
-    public Object findFamilyBlackUrlByCondition(@RequestBody FamilyBlackUrlQueryDto familyBlackUrlQueryDto) {
-        return WrapMapper.ok(familyBlackUrlService.findFamilyBlackUrlByCondition(familyBlackUrlQueryDto));
-    }
+	/**
+	 * 根据条件分页查询家长端的黑名单
+	 * @Author: WanMing
+	 * @Date: 2019/6/25 10:44
+	 */
+	@ApiOperation(value = "根据条件分页查询家长端的黑名单",response = FamilyBlackUrlVo.class)
+	@RequestMapping(value = "/findFamilyBlackUrlByCondition",method = RequestMethod.POST)
+	public Object findFamilyBlackUrlByCondition(@RequestBody FamilyBlackUrlQueryDto familyBlackUrlQueryDto ){
+		return WrapMapper.ok(familyBlackUrlService.findFamilyBlackUrlByCondition(familyBlackUrlQueryDto));
+	}
 
 
     /**
@@ -132,6 +136,19 @@ public class FamilyBlackUrlController {
                                               @RequestParam("studentNumber") String studentNumber) {
         return WrapMapper.ok(familyBlackUrlService.findFamilyBlackUrlByStudent(schoolCode, cardNumber, studentNumber));
     }
+
+
+	@ApiOperation(value = "查询孩子的黑名单",response = FamilyBlackUrlVo.class)
+	@RequestMapping(value = "/findBlackInList",method = RequestMethod.GET)
+	public Object findBlackInList(@RequestParam("schoolCode" )String schoolCode,
+											  @RequestParam("studentNumber")String studentNumber){
+		List<String> urlList=new ArrayList<>();
+		List<FamilyBlackUrlVo> bus= familyBlackUrlService.findBlackInList(schoolCode,studentNumber);
+		for (int i = 0; i < bus.size(); i++) {
+			urlList.add(bus.get(i).getIp());
+		}
+		return WrapMapper.ok(urlList);
+	}
 
 
 }

@@ -34,6 +34,7 @@ import com.bdxh.system.feign.SysBlackUrlControllerClient;
 import com.bdxh.system.vo.SysBlackUrlVo;
 import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateStudentDto;
+import com.bdxh.user.feign.FamilyBlackUrlControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.feign.VisitLogsControllerClient;
@@ -109,6 +110,10 @@ public class ApplyControlsWebController {
     @Autowired
     private VisitLogsControllerClient visitLogsControllerClient;
 
+    @Autowired
+    private FamilyBlackUrlControllerClient familyBlackUrlControllerClient;
+
+
     @ApiOperation(value = "修改学生个人信息", response = Boolean.class)
     @RequestMapping(value = "/applyControlsWeb/modifyInfo", method = RequestMethod.POST)
     public Object modifyInfo(@Validated @RequestBody UpdateStudentDto updateStudentDto) {
@@ -129,14 +134,14 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "学校黑名单", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/blackList", method = RequestMethod.GET)
-    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam(required = false, name = "urlType", defaultValue = "1") Long urlType) {
-        return blackUrlControllerClient.findBlackInList(schoolCode, urlType);
+    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode) {
+        return blackUrlControllerClient.findBlackInList(schoolCode);
     }
 
     @ApiOperation(value = "学生黑名单", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/studentBlackList", method = RequestMethod.GET)
-    public Object studentBlackList(@RequestParam("cardNumber") String cardNumber, @RequestParam(required = false, name = "urlType", defaultValue = "2") Long urlType) {
-        return blackUrlControllerClient.findBlackInListByCard(cardNumber, urlType);
+    public Object studentBlackList(@RequestParam(name = "schoolCode") String schoolCode,@RequestParam("studentNumber")String studentNumber) {
+        return familyBlackUrlControllerClient.findBlackInList(schoolCode,studentNumber);
     }
 
 
