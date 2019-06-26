@@ -69,6 +69,12 @@ public class ProductAddDto implements Serializable {
     private String imgUrl;
 
     /**
+     * 视频地址
+     */
+    @ApiModelProperty("视频地址")
+    private String videoUrl;
+
+    /**
      * 业务类型 1 微校服务
      */
     @NotNull(message = "商品业务类型不能为空")

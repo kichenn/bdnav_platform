@@ -14,6 +14,7 @@
         <result column="product_type" jdbcType="TINYINT" property="productType"/>
         <result column="sell_status" jdbcType="TINYINT" property="sellStatus"/>
         <result column="img_url" jdbcType="VARCHAR" property="imgUrl"/>
+        <result column="video_url" jdbcType="VARCHAR" property="videoUrl"/>
         <result column="business_type" jdbcType="TINYINT" property="businessType"/>
         <result column="product_extra" jdbcType="VARCHAR" property="productExtra"/>
         <result column="operator" jdbcType="BIGINT" property="operator"/>
@@ -33,6 +34,7 @@
         <result column="sellStatus" jdbcType="TINYINT" property="sellStatus"/>
         <result column="businessType" jdbcType="TINYINT" property="businessType"/>
         <result column="productExtra" jdbcType="VARCHAR" property="productChildIds"/>
+        <result column="videoUrl" jdbcType="VARCHAR" property="videoUrl"/>
         <result column="operator" jdbcType="BIGINT" property="operator"/>
         <result column="operatorName" jdbcType="VARCHAR" property="operatorName"/>
         <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
@@ -49,7 +51,7 @@
 
     <sql id="BaseColumns">
     id, product_name, product_show_name, product_price, product_sell_price, product_description, product_type, sell_status,
-    img_url, business_type, product_extra, create_date, update_date, remark ,operator,operator_name
+    img_url, video_url, business_type, product_extra, create_date, update_date, remark ,operator,operator_name
   </sql>
 
     <select id="findProduct" resultMap="BaseResultMap">
@@ -91,6 +93,7 @@
         product.product_extra AS productExtra,
         product.operator AS operator,
         product.operator_name AS operatorName,
+        product.video_url AS videoUrl,
         product.create_date AS createDate,
         product.update_date AS updateDate,
         product.remark AS remark,
@@ -126,6 +129,8 @@
         <if test="sellStatus == null"> sell_status = sell_status,</if>
         <if test="imgUrl != null"> img_url = #{imgUrl},</if>
         <if test="imgUrl == null"> img_url = img_url,</if>
+        <if test="videoUrl != null"> video_url = #{videoUrl},</if>
+        <if test="videoUrl == null"> video_url = video_url,</if>
         <if test="businessType != null"> business_type = #{businessType},</if>
         <if test="businessType == null"> business_type = business_type,</if>
         <if test="productExtra != null"> product_extra = #{productExtra},</if>
@@ -156,6 +161,7 @@
         product_type,
         sell_status,
         img_url,
+        video_url,
         business_type,
         product_extra,
         operator,
@@ -172,6 +178,7 @@
             #{productType},
             #{sellStatus},
             #{imgUrl},
+            #{videoUrl},
             #{businessType},
             #{productExtra},
             #{operator},
