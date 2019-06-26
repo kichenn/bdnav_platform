@@ -42,9 +42,6 @@ public class ProductListVo {
     @ApiModelProperty(value = "创建时间")
     private Date createDate;
 
-    @ApiModelProperty(value = "视频地址")
-    private String videoUrl;
-
     @ApiModelProperty(value = "图片信息")
     private List<String> imgUrl;
 }
