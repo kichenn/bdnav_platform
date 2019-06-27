@@ -194,6 +194,7 @@ public class SchoolStrategyWebController {
                 List<UserDevice> userDeviceList = userDeviceControllerClient.getUserDeviceAll(schoolCode, groupId).getResult();
                 log.info("查询通知人员成功,通知的人员数量:{}",userDeviceList.size());
                 if (CollectionUtils.isNotEmpty(userDeviceList)) {
+                    log.info("开始组装模版信息。。。。。");
                     AppPushRequest appPushRequest = new AppPushRequest();
                     appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
                     appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
