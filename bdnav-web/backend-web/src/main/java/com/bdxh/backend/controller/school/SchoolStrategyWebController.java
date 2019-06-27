@@ -186,15 +186,10 @@ public class SchoolStrategyWebController {
     public Object delSchoolStrategyById(@RequestParam("id") Long id, @RequestParam("schoolCode") String schoolCode, @RequestParam("groupId") Long groupId) {
         try {
             long startTime = System.currentTimeMillis();
-            log.info("进入删除策略方法,当前时间:{}", startTime);
             Wrapper wrapper = schoolStrategyControllerClient.delSchoolStrategyById(id);
-            log.info("删除策略成功，耗时:{}", System.currentTimeMillis() - startTime);
             if (wrapper.getResult() == Boolean.TRUE) {
-                log.info("开始发送个推，通知android....,入参1:{},入参2:{}",schoolCode,groupId);
                 List<UserDevice> userDeviceList = userDeviceControllerClient.getUserDeviceAll(schoolCode, groupId).getResult();
-                log.info("查询通知人员成功,通知的人员数量:{}",userDeviceList.size());
                 if (CollectionUtils.isNotEmpty(userDeviceList)) {
-                    log.info("开始组装模版信息。。。。。");
                     AppPushRequest appPushRequest = new AppPushRequest();
                     appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
                     appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
@@ -205,7 +200,6 @@ public class SchoolStrategyWebController {
                         clientIds.add(attribute.getClientId());
                     }
                     appPushRequest.setClientId(clientIds);
-                    log.info("模版信息添加成功......");
                     //穿透模版
                     AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
                     JSONObject obj = new JSONObject();
@@ -215,7 +209,6 @@ public class SchoolStrategyWebController {
                     appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
                     //群发穿透模版
                     Map<String, Object> resultMap = GeTuiUtil.appCustomBatchPush(appPushRequest);
-                    log.info("穿透模版群发成功，耗时:{}", System.currentTimeMillis() - startTime);
                     System.out.println(resultMap.toString());
                 }
             }
