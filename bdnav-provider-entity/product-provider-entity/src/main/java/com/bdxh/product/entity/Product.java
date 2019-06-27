@@ -90,12 +90,6 @@ public class Product implements Serializable {
     private String operatorName;
 
     /**
-     * 视频地址
-     */
-    @Column(name = "video_url")
-    private String videoUrl;
-
-    /**
      * 创建时间
      */
     @Column(name = "create_date")
@@ -273,24 +267,6 @@ public class Product implements Serializable {
      */
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl == null ? null : imgUrl.trim();
-    }
-
-    /**
-     * 获取视频地址
-     *
-     * @return video_url - 视频地址
-     */
-    public String getVideoUrl() {
-        return videoUrl;
-    }
-
-    /**
-     * 设置视频地址
-     *
-     * @param videoUrl 视频地址
-     */
-    public void setVideoUrl(String videoUrl) {
-        this.videoUrl = videoUrl == null ? null : videoUrl.trim();
     }
 
     /**

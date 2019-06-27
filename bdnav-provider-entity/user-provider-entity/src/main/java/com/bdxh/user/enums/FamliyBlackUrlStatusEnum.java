@@ -14,16 +14,16 @@ import java.util.Map;
 
 public enum FamliyBlackUrlStatusEnum {
 
-    NORMAL(new Byte("1"), "启用"),
-    OFFLINE(new Byte("2"), "禁用");
+    NORMAL(new Byte("1"), "未拦截"),
+    OFFLINE(new Byte("2"), "拦截");
 
     private final Byte key;
     private final String value;
 
     public final static Byte NORMAL_KEY = 1;
     public final static Byte OFFLINE_KEY = 2;
-    public final static String NORMAL_VALUE = "启用";
-    public final static String OFFLINE_VALUE = "禁用";
+    public final static String NORMAL_VALUE = "未拦截";
+    public final static String OFFLINE_VALUE = "拦截";
 
     private FamliyBlackUrlStatusEnum(Byte key, String value) {
         this.key = key;

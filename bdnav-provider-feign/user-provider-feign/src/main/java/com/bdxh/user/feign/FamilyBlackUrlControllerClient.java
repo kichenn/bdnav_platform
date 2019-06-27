@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyBlackUrlDto;
 import com.bdxh.user.dto.FamilyBlackUrlQueryDto;
 import com.bdxh.user.dto.ModifyFamilyBlackUrlDto;
+import com.bdxh.user.entity.FamilyBlackUrl;
 import com.bdxh.user.fallback.FamilyBlackUrlControllerFallback;
 import com.bdxh.user.vo.FamilyBlackUrlVo;
 import com.github.pagehelper.PageInfo;
@@ -84,6 +85,17 @@ public interface FamilyBlackUrlControllerClient {
     @ResponseBody
     Wrapper<List<String>> findBlackInList(@RequestParam("schoolCode" )String schoolCode,
                                           @RequestParam("studentNumber")String studentNumber);
+
+
+
+    /**
+     * @Description: 根据id查询黑名单信息
+     */
+    @RequestMapping(value = "/familyBlackUrl/findBlackUrlById", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<FamilyBlackUrl> findBlackUrlById(@RequestParam("schoolCode" )String schoolCode,
+                                             @RequestParam("cardNumber")String cardNumber,
+                                             @RequestParam("id")Long id);
 
 
 

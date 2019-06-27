@@ -91,4 +91,90 @@
 		WHERE school_code = #{schoolCode} AND student_number = #{studentNumber}
 	</select>
 
+
+	<insert id="addBlackUrlByFamily" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO t_family_black_url
+		( <if test="id != null">
+		id,
+	     </if>
+		<if test="schoolId != null">
+			school_id,
+		</if>
+		<if test="schoolCode != null">
+			school_code,
+		</if>
+		<if test="cardNumber != null">
+			card_number,
+		</if>
+		<if test="familyId != null">
+			family_id,
+		</if>
+		<if test="studentId != null">
+			student_id,
+		</if>
+		<if test="studentName != null">
+			student_name,
+		</if>
+		<if test="studentNumber != null">
+			student_number,
+		</if>
+		<if test="siteName != null">
+			site_name,
+		</if>
+		<if test="ip != null">
+			ip,
+		</if>
+		<if test="status != null">
+			`status`,
+		</if>
+		<if test="remark != null">
+			remark
+		</if>)
+        VALUES(
+		<if test="id != null">
+			#{id},
+		</if>
+		<if test="schoolId != null">
+			#{schoolId},
+		</if>
+		<if test="schoolCode != null">
+			#{schoolCode},
+		</if>
+		<if test="cardNumber != null">
+			#{cardNumber},
+		</if>
+		<if test="familyId != null">
+			#{familyId},
+		</if>
+		<if test="studentId != null">
+			#{studentId},
+		</if>
+		<if test="studentName != null">
+			#{studentName},
+		</if>
+		<if test="studentNumber != null">
+			#{studentNumber},
+		</if>
+		<if test="siteName != null">
+			#{siteName},
+		</if>
+		<if test="ip != null">
+			#{ip},
+		</if>
+		<if test="status != null">
+			#{status},
+		</if>
+		<if test="remark != null">
+			#{remark}
+		</if>
+		)
+    </insert>
+
+	<select id="findBlackUrlById" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM t_family_black_url
+		WHERE school_code = #{schoolCode} AND card_number = #{cardNumber} AND id=#{id}
+	</select>
+
 </mapper>

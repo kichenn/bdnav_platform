@@ -6,6 +6,7 @@ import com.bdxh.account.entity.Account;
 import com.bdxh.app.configration.security.utils.SecurityUtils;
 import com.bdxh.appburied.dto.AddApplyLogDto;
 import com.bdxh.appburied.dto.AddInstallAppsDto;
+import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.feign.AppStatusControllerClient;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.appburied.feign.InstallAppsControllerClient;
@@ -381,5 +382,23 @@ public class ApplyControlsWebController {
     public Object queryAllSysBlackUrl() {
         return sysBlackUrlControllerClient.queryAllSysBlackUrl();
     }
+
+
+    /**
+     * 查询该账户下锁定的应用
+     *
+     * @return
+     */
+    @RequestMapping(value = "/findAppStatusByAccountId", method = RequestMethod.GET)
+    @ApiOperation(value = "查询该账户下锁定的应用", response = informationVo.class)
+    public Object findAppStatusByAccountId(@RequestParam("schoolCode") String schoolCode,
+                                  @RequestParam("cardNumber") String cardNumber,
+                                  @RequestParam("accountId") String accountId,
+                                  @RequestParam(name = "appStatus",defaultValue = "2") Byte appStatus) {
+
+        List<AppStatus> obj=appStatusControllerClient.findAppStatusByAccountId(schoolCode,cardNumber,accountId,appStatus).getResult();
+        return WrapMapper.ok(obj);
+    }
+
 
 }

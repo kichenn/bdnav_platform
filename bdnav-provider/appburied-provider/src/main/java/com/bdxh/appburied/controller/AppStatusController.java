@@ -125,4 +125,23 @@ public class AppStatusController {
         return WrapMapper.ok(result);
     }
 
+
+    /**
+     * 查询该账户下锁定的应用
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    @RequestMapping(value = "/findAppStatusByAccountId", method = RequestMethod.GET)
+    @ApiOperation(value = "查询该账户下锁定的应用", response = AppStatus.class)
+    public Object findAppStatusByAccountId(@RequestParam("schoolCode") String schoolCode,
+                                           @RequestParam("cardNumber") String cardNumber,
+                                           @RequestParam("accountId") String accountId,
+                                           @RequestParam("appStatus") Byte appStatus) {
+
+        List<AppStatus> ap=appStatusService.findAppStatusByAccountId(schoolCode,cardNumber,accountId,appStatus);
+        return WrapMapper.ok(ap);
+    }
+
+
 }

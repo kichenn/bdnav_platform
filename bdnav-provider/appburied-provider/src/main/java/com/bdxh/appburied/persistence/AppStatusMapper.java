@@ -36,4 +36,10 @@ public interface AppStatusMapper extends Mapper<AppStatus> {
 
 	//新增应用状态
 	Integer addAppStatus(AppStatus appStatus);
+
+	//查询当前账户下的应用状态
+	List<AppStatus> findAppStatusByAccountId(@Param("schoolCode") String schoolCode,
+								  @Param("cardNumber") String cardNumber,
+								  @Param("accountId") String accountId,
+											 @Param("appStatus")Byte appStatus);
 }

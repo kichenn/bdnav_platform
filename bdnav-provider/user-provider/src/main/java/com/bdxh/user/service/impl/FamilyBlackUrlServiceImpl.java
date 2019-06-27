@@ -146,4 +146,14 @@ public class FamilyBlackUrlServiceImpl extends BaseService<FamilyBlackUrl> imple
 		}
 		return familyBlackUrlVos;
 	}
+
+	@Override
+	public Boolean addBlackUrlByFamily(FamilyBlackUrl familyBlackUrl) {
+		return familyBlackUrlMapper.addBlackUrlByFamily(familyBlackUrl)>0;
+	}
+
+	@Override
+	public FamilyBlackUrl findBlackUrlById(String schoolCode, String cardNumber, Long id) {
+		return familyBlackUrlMapper.findBlackUrlById(schoolCode,cardNumber,id);
+	}
 }

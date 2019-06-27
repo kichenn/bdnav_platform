@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.user.dto.AddFamilyBlackUrlDto;
 import com.bdxh.user.dto.FamilyBlackUrlQueryDto;
 import com.bdxh.user.dto.ModifyFamilyBlackUrlDto;
+import com.bdxh.user.entity.FamilyBlackUrl;
 import com.bdxh.user.feign.FamilyBlackUrlControllerClient;
 import com.bdxh.user.vo.FamilyBlackUrlVo;
 import com.github.pagehelper.PageInfo;
@@ -48,4 +49,11 @@ public class FamilyBlackUrlControllerFallback implements FamilyBlackUrlControlle
     public Wrapper<List<String>> findBlackInList(String schoolCode, String studentNumber) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<FamilyBlackUrl> findBlackUrlById(String schoolCode, String cardNumber, Long id) {
+        return WrapMapper.error();
+    }
+
+
 }

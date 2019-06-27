@@ -139,4 +139,14 @@
                 NOW()
             );
     </insert>
+
+    <select id="findAppStatusByAccountId" resultMap="BaseResultMap">
+      SELECT
+        <include refid="BaseColumns"/>
+        FROM t_app_status
+        WHERE school_code=#{schoolCode}
+        AND card_number=#{cardNumber}
+        AND account_id=#{accountId}
+        AND app_status=#{appStatus}
+    </select>
 </mapper>

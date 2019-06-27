@@ -123,5 +123,10 @@ public class AppStatusServiceImpl extends BaseService<AppStatus> implements AppS
         }
     }
 
+    @Override
+    public List<AppStatus> findAppStatusByAccountId(String schoolCode, String cardNumber, String accountId, Byte appStatus) {
+        return appStatusMapper.findAppStatusByAccountId(schoolCode,cardNumber,accountId,appStatus);
+    }
+
 
 }

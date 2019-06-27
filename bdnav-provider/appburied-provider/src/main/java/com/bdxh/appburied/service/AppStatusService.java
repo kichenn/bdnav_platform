@@ -42,4 +42,7 @@ public interface AppStatusService extends IService<AppStatus> {
      * @return
      */
     Boolean appStatusLockingAndUnlock(WeiXiaoAppStatusUnlockOrLokingDto weiXiaoAppStatusUnlockOrLokingDto);
+
+    List<AppStatus> findAppStatusByAccountId(String schoolCode, String cardNumber,String accountId,Byte appStatus);
+
 }
