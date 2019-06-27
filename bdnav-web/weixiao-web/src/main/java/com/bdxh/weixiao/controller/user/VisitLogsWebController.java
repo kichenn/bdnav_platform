@@ -86,7 +86,7 @@ public class VisitLogsWebController {
         }
     }
 
-    @RolesAllowed({"TEST", "NET"})
+   /* @RolesAllowed({"TEST", "NET"})
     @RequestMapping(value = "/addBlacklist", method = RequestMethod.POST)
     @ApiOperation(value = "家长添加url黑名单", response = Boolean.class)
     public Object addBlacklist(@Validated @RequestBody AddFamilyBlackUrlDto addFamilyBlackUrlDto) {
@@ -106,13 +106,13 @@ public class VisitLogsWebController {
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             addFamilyBlackUrlDto.setSchoolCode(userInfo.getSchoolCode());
-     /*       addFamilyBlackUrlDto.setSchoolCode("1011347968");
-            addFamilyBlackUrlDto.setCardNumber("20190617005");*/
+     *//*       addFamilyBlackUrlDto.setSchoolCode("1011347968");
+            addFamilyBlackUrlDto.setCardNumber("20190617005");*//*
             Wrapper wrapMapper = familyBlackUrlControllerClient.addFamilyBlackUrl(addFamilyBlackUrlDto);
             String aap = String.valueOf(wrapMapper.getResult());
 
            FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById(userInfo.getSchoolCode(),userInfo.getFamilyCardNumber(),Long.valueOf(aap)).getResult();
-          /*  FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById("1011347968","20190617005",Long.valueOf(aap)).getResult();*/
+          *//*  FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById("1011347968","20190617005",Long.valueOf(aap)).getResult();*//*
             if (bu != null) {
                 UserDevice userDevices = userDeviceControllerClient.findUserDeviceByCodeOrCard(bu.getSchoolCode(), bu.getCardNumber()).getResult();
                 if (userDevices != null) {
@@ -146,7 +146,7 @@ public class VisitLogsWebController {
         }
 
 
-    }
+    }*/
 
 
 }
