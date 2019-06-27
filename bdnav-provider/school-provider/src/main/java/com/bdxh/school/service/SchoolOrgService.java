@@ -1,5 +1,6 @@
 package com.bdxh.school.service;
 
+import com.bdxh.common.helper.tree.bean.TreeBean;
 import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.ClassAdministratorsUpdateDto;
 import com.bdxh.school.dto.SchoolOrgAddDto;
@@ -32,7 +33,7 @@ public interface SchoolOrgService extends IService<SchoolOrg> {
     SchoolOrg findSchoolOrgInfo(Long id);
 
     //根据学校Id查询学生组织架构信息
-    List<SchoolOrg> findClassOrg(Long schoolId);
+    List<TreeBean> findClassOrg(Long schoolId);
 
     //根据ID删除组织架构信息
     Boolean removeSchoolOrgInfo(Long id);

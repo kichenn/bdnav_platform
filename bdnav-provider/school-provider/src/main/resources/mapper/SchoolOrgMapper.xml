@@ -107,7 +107,7 @@
         FROM t_school_org
         <where>
             school_id=#{schoolId}
-            AND org_type IN(1,2,3,4,5)
+            AND org_type IN(1,2,3,4,5,8)
         </where>
     </select>
 

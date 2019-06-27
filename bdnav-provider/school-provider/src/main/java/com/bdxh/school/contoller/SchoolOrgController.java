@@ -100,21 +100,22 @@ public class SchoolOrgController {
     @RequestMapping(value = "/findClassOrg", method = RequestMethod.GET)
     @ApiOperation(value = "根据学校Id查询学生组织架构信息")
     public Object findClassOrg(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
-        List<SchoolOrg> schoolOrgList=schoolOrgService.findClassOrg(schoolId);
-        if(CollectionUtils.isEmpty(schoolOrgList)){
-            return WrapMapper.wrap(200,"当前学校不存在组织架构信息");
-        }
-        List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
-            SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
-            BeanUtils.copyProperties(e, treeVo);
-            treeVo.setTitle(e.getOrgName());
-            treeVo.setCreateDate(e.getCreateDate());
-            return treeVo;
-        }).collect(Collectors.toList());
-        //树状
-        TreeLoopUtils<SchoolOrgTreeVo> treeLoopUtils = new TreeLoopUtils<>();
-        List<SchoolOrgTreeVo> result = treeLoopUtils.getTree(schoolOrgTreeVo);
-        return WrapMapper.ok(result);
+        return WrapMapper.ok(schoolOrgService.findClassOrg(schoolId));
+//        List<SchoolOrg> schoolOrgList=schoolOrgService.findClassOrg(schoolId);
+//        if(CollectionUtils.isEmpty(schoolOrgList)){
+//            return WrapMapper.wrap(200,"当前学校不存在组织架构信息");
+//        }
+//        List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
+//            SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
+//            BeanUtils.copyProperties(e, treeVo);
+//            treeVo.setTitle(e.getOrgName());
+//            treeVo.setCreateDate(e.getCreateDate());
+//            return treeVo;
+//        }).collect(Collectors.toList());
+//        //树状
+//        TreeLoopUtils<SchoolOrgTreeVo> treeLoopUtils = new TreeLoopUtils<>();
+//        List<SchoolOrgTreeVo> result = treeLoopUtils.getTree(schoolOrgTreeVo);
+//        return WrapMapper.ok(result);
     }
 
 
