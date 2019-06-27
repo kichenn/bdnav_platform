@@ -24,6 +24,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -81,10 +82,13 @@ public class SchoolFenceWebController {
             SchoolOrg schoolClass = schoolOrgControllerClient.findSchoolOrgInfo(groupId).getResult();
             //父ids+当前id
             String classIds = schoolClass.getParentIds() + schoolClass.getId();
+
             if (schoolClass.getParentIds().contains(",")) {
-                classIds = schoolClass.getParentIds().substring(schoolClass.getParentIds().indexOf(",")) + schoolClass.getId();
+                classIds = schoolClass.getParentIds().substring(schoolClass.getParentIds().indexOf(",")+1) + ","+schoolClass.getId();
             }
+
             //增加监控对象信息
+            Wrapper<List<Student>> studentInfoByClassOrg = studentControllerClient.findStudentInfoByClassOrg(schoolClass.getSchoolCode(), classIds, schoolClass.getOrgType());
             List<Student> students = Optional.ofNullable(studentControllerClient.findStudentInfoByClassOrg(schoolClass.getSchoolCode(), classIds, schoolClass.getOrgType()).getResult()).orElse(new ArrayList<>());//Optional.of().orElse(new ArrayList<>());
             students.forEach(e -> {
                 FenceEntityDto fenceEntity = new FenceEntityDto();
@@ -110,7 +114,7 @@ public class SchoolFenceWebController {
             //父ids+当前id
             String classIds = schoolDept.getParentIds() + schoolDept.getId();
             if (schoolDept.getParentIds().contains(",")) {
-                classIds = schoolDept.getParentIds().substring(schoolDept.getParentIds().indexOf(",")) + schoolDept.getId();
+                classIds = schoolDept.getParentIds().substring(schoolDept.getParentIds().indexOf(",")+1) + ","+schoolDept.getId();
             }
             //增加监控对象信息
             List<Teacher> teachers = Optional.ofNullable(teacherControllerClient.findTeacherInfoByDeptOrg(schoolDept.getSchoolCode(), classIds).getResult()).orElse(new ArrayList<>());//Optional.of().orElse(new ArrayList<>());
