@@ -7,6 +7,7 @@ import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.service.SchoolOrgService;
+import com.bdxh.school.vo.SchoolOrgTreeVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -60,56 +61,11 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
         return schoolOrgMapper.findSchoolOrgInfo(id);
     }
 
-    /**
-     *
-     * 查学生的组织架构 学生组织架构的类 1,2,3,4,5,8
-     * 先查询出所有的学生的组织架构集合,确实根节点的集合
-     * @Author: WanMing
-     * @Date: 2019/6/27 10:48
-     */
+
     @Override
-    public List<TreeBean> findClassOrg(Long schoolId) {
-        List<SchoolOrg> classOrgs = schoolOrgMapper.findClassOrg(schoolId);
-        //空集合
-        if(CollectionUtils.isEmpty(classOrgs)){
-            return new ArrayList<>();
-        }
-        //有数据,转普通树
-        List<TreeBean> treeBeans = new ArrayList<>();
-        classOrgs.forEach(classOrg->{
-            TreeBean treeBean = new TreeBean();
-            BeanUtils.copyProperties(classOrg, treeBean);
-            treeBean.setTitle(classOrg.getOrgName());
-            treeBean.setCreateDate(classOrg.getCreateDate());
-            treeBeans.add(treeBean);
-        });
-        //查询根节点
-        Map<Long, SchoolOrg> schoolOrgConcurrentMap = Optional.of(classOrgs).map(list -> list.stream()
-                .collect(toConcurrentMap(SchoolOrg::getId, Function.identity()))).orElseGet(ConcurrentHashMap::new);
-        for (SchoolOrg classOrg : classOrgs) {
-            String parentIds = classOrg.getParentIds();
-            if(StringUtils.isEmpty(parentIds)){
-                continue;
-            }
-            boolean flag = Stream.of(parentIds.split(",")).filter(str -> StringUtils.isNotEmpty(str))
-                    .mapToLong(Long::parseLong).anyMatch(id -> schoolOrgConcurrentMap.get(id) != null);
-            if(flag){
-                schoolOrgConcurrentMap.remove(classOrg.getId());
-            }
-        }
-        //根节点集合
-        List<SchoolOrg> rootOrgs = new ArrayList<>(schoolOrgConcurrentMap.values());
-        //转层级树
-        List<TreeBean> treeBeanList = new ArrayList<>();
-        rootOrgs.forEach(rootOrg->{
-            TreeBean treeBean = new TreeBean();
-            BeanUtils.copyProperties(rootOrg, treeBean);
-            treeBean.setTitle(rootOrg.getOrgName());
-            treeBean.setCreateDate(rootOrg.getCreateDate());
-            treeBean.setChildren(new TreeLoopUtils<>().getChild(rootOrg.getId(),treeBeans));
-            treeBeanList.add(treeBean);
-        });
-        return treeBeanList;
+    public List<SchoolOrg> findClassOrg(Long schoolId) {
+        return schoolOrgMapper.findClassOrg(schoolId);
+
     }
 
     @Override
@@ -190,5 +146,57 @@ public class SchoolOrgServiceImpl extends BaseService<SchoolOrg> implements Scho
     @Override
     public List<SchoolOrg> findTeacherDeptInfo(Long schoolId) {
         return schoolOrgMapper.findTeacherDeptInfo(schoolId);
+    }
+
+    /**
+     *
+     * 查学生的组织架构 学生组织架构的类 1,2,3,4,5,8
+     * 先查询出所有的学生的组织架构集合,确实根节点的集合
+     * @Author: WanMing
+     * @Date: 2019/6/27 10:48
+     */
+    @Override
+    public List<SchoolOrgTreeVo> findClassOrgLoopTree(Long schoolId) {
+        List<SchoolOrg> classOrgs = schoolOrgMapper.findClassOrg(schoolId);
+        List<SchoolOrgTreeVo> treeBeans = new ArrayList<>();
+        //空集合
+        if(CollectionUtils.isEmpty(classOrgs)){
+            return treeBeans;
+        }
+        //有数据,转普通树
+        classOrgs.forEach(classOrg->{
+            SchoolOrgTreeVo treeBean = new SchoolOrgTreeVo();
+            BeanUtils.copyProperties(classOrg, treeBean);
+            treeBean.setTitle(classOrg.getOrgName());
+            treeBean.setCreateDate(classOrg.getCreateDate());
+            treeBeans.add(treeBean);
+        });
+        //查询根节点
+        Map<Long, SchoolOrg> schoolOrgConcurrentMap = Optional.of(classOrgs).map(list -> list.stream()
+                .collect(toConcurrentMap(SchoolOrg::getId, Function.identity()))).orElseGet(ConcurrentHashMap::new);
+        for (SchoolOrg classOrg : classOrgs) {
+            String parentIds = classOrg.getParentIds();
+            if(StringUtils.isEmpty(parentIds)){
+                continue;
+            }
+            boolean flag = Stream.of(parentIds.split(",")).filter(str -> StringUtils.isNotEmpty(str))
+                    .mapToLong(Long::parseLong).anyMatch(id -> schoolOrgConcurrentMap.get(id) != null);
+            if(flag){
+                schoolOrgConcurrentMap.remove(classOrg.getId());
+            }
+        }
+        //根节点集合
+        List<SchoolOrg> rootOrgs = new ArrayList<>(schoolOrgConcurrentMap.values());
+        //转层级树
+        List<SchoolOrgTreeVo> treeBeanList = new ArrayList<>();
+        rootOrgs.forEach(rootOrg->{
+            SchoolOrgTreeVo treeBean = new SchoolOrgTreeVo();
+            BeanUtils.copyProperties(rootOrg, treeBean);
+            treeBean.setTitle(rootOrg.getOrgName());
+            treeBean.setCreateDate(rootOrg.getCreateDate());
+            treeBean.setChildren(new TreeLoopUtils<SchoolOrgTreeVo>().getChild(rootOrg.getId(),treeBeans));
+            treeBeanList.add(treeBean);
+        });
+        return treeBeanList;
     }
 }

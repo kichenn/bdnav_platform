@@ -11,6 +11,7 @@ import com.bdxh.school.entity.SchoolClass;
 import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolOrgControllerClient;
+import com.bdxh.school.vo.SchoolOrgTreeVo;
 import com.bdxh.system.entity.User;
 import com.bdxh.user.entity.Student;
 import com.bdxh.user.entity.Teacher;
@@ -209,5 +210,18 @@ public class SchoolOrgWebController {
     public Object findTeacherDeptInfo(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
         return schoolOrgControllerClient.findTeacherDeptInfo(schoolId);
     }
+
+
+    /**
+     * 根据学校Id查询学校学生的组织架构层级树
+     * @Author: WanMing
+     * @Date: 2019/6/27 12:56
+     */
+    @RequestMapping(value = "/findClassOrgLoopTree", method = RequestMethod.GET)
+    @ApiOperation(value = "根据学校Id查询学校学生的组织架构层级树",response = SchoolOrgTreeVo.class)
+    public Object findClassOrgLoopTree(@RequestParam("schoolId") Long schoolId) {
+        return schoolOrgControllerClient.findClassOrgLoopTree(schoolId);
+    }
+
 
 }
