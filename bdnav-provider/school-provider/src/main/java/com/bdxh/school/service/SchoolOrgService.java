@@ -7,6 +7,7 @@ import com.bdxh.school.dto.SchoolOrgAddDto;
 import com.bdxh.school.dto.SchoolOrgQueryDto;
 import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolOrg;
+import com.bdxh.school.vo.SchoolOrgTreeVo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -33,7 +34,7 @@ public interface SchoolOrgService extends IService<SchoolOrg> {
     SchoolOrg findSchoolOrgInfo(Long id);
 
     //根据学校Id查询学生组织架构信息
-    List<TreeBean> findClassOrg(Long schoolId);
+    List<SchoolOrg> findClassOrg(Long schoolId);
 
     //根据ID删除组织架构信息
     Boolean removeSchoolOrgInfo(Long id);
@@ -55,4 +56,7 @@ public interface SchoolOrgService extends IService<SchoolOrg> {
 
     //查询出老师的树形结构数据
     List<SchoolOrg> findTeacherDeptInfo(Long schoolId);
+
+    //根据学校Id查询学校学生的组织架构层级树
+    List<SchoolOrgTreeVo> findClassOrgLoopTree(Long schoolId);
 }

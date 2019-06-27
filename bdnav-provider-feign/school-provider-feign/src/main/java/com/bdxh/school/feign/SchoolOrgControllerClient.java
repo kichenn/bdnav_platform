@@ -1,5 +1,6 @@
 package com.bdxh.school.feign;
 
+import com.bdxh.common.helper.tree.bean.TreeBean;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.ClassAdministratorsUpdateDto;
@@ -9,6 +10,7 @@ import com.bdxh.school.dto.SchoolOrgUpdateDto;
 import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.fallback.SchoolOrgControllerClientFallback;
 import com.bdxh.school.vo.SchoolOrgTreeVo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -143,4 +145,13 @@ public interface SchoolOrgControllerClient {
     @RequestMapping(value = "/schoolOrg/findTeacherDeptInfo", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<SchoolOrgTreeVo>> findTeacherDeptInfo(@RequestParam("schoolId") Long schoolId);
+
+    /**
+     * 根据学校Id查询学校学生的组织架构层级树
+     * @Author: WanMing
+     * @Date: 2019/6/27 12:56
+     */
+    @RequestMapping(value = "/schoolOrg/findClassOrgLoopTree", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolOrgTreeVo>> findClassOrgLoopTree(@RequestParam("schoolId") Long schoolId) ;
 }
