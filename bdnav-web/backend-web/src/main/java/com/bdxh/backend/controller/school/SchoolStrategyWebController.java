@@ -190,9 +190,9 @@ public class SchoolStrategyWebController {
             Wrapper wrapper = schoolStrategyControllerClient.delSchoolStrategyById(id);
             log.info("删除策略成功，耗时:{}", System.currentTimeMillis() - startTime);
             if (wrapper.getResult() == Boolean.TRUE) {
-                log.info("开始发送个推，通知android....");
+                log.info("开始发送个推，通知android....,入参1:{},入参2:{}",schoolCode,groupId);
                 List<UserDevice> userDeviceList = userDeviceControllerClient.getUserDeviceAll(schoolCode, groupId).getResult();
-                log.info("查询通知人员成功.....");
+                log.info("查询通知人员成功,通知的人员数量:{}",userDeviceList.size());
                 if (CollectionUtils.isNotEmpty(userDeviceList)) {
                     AppPushRequest appPushRequest = new AppPushRequest();
                     appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
