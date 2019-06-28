@@ -168,6 +168,7 @@ public class AccountServiceImpl extends BaseService<Account> implements AccountS
             log.info("添加学生账号完成");
         } else {
             log.info("修改学生账号");
+            oldAccount.setUserName(account.getUserName());
             Account newAccount = BeanMapUtils.map(oldAccount, Account.class);
             result = accountMapper.updateAccount(newAccount) > 0;
             log.info("修改学生账号完成");
