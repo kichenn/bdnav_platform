@@ -8,6 +8,7 @@
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
         <result column="sort" jdbcType="TINYINT" property="sort"/>
+        <result column="img_type" jdbcType="TINYINT" property="img_type"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
         <result column="operator" jdbcType="BIGINT" property="operator"/>
@@ -15,7 +16,7 @@
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
     <sql id="BaseColumns">
-	  id,product_id,image_url,image_name,sort,create_date,update_date,operator,operator_name,remark
+	  id,product_id,image_url,img_type,image_name,sort,create_date,update_date,operator,operator_name,remark
 	</sql>
     <delete id="deleteProductImageByProductId">
 	DELETE FROM t_product_image where product_id=#{id}

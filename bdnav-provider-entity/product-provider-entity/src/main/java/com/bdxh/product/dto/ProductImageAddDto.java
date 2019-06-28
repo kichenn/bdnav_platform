@@ -22,7 +22,10 @@ public class ProductImageAddDto implements Serializable {
     @ApiModelProperty("图片名称")
     private String imageName;
 
-
-
+    /**
+     * 图片类型  1 图标图片  2 商品图片详情
+     */
+    @ApiModelProperty("图片类型 1图标图片  2商品图片详情")
+    private String imgType;
 
 }

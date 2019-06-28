@@ -29,4 +29,6 @@ public interface ProductMapper extends Mapper<Product> {
 
     //根据ID查询
     List<Product> findProductByIds(@Param("productIds") String productIds);
+
+
 }

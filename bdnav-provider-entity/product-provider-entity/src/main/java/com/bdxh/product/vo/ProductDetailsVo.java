@@ -121,6 +121,12 @@ public class ProductDetailsVo implements Serializable {
     List<ProductImage> image;
 
     /**
+     * 图标详情
+     */
+    @ApiModelProperty("图标详情")
+    List<ProductImage> iocImages;
+
+    /**
      * 如果商品类型为套餐那么就有子商品集合
      */
     @ApiModelProperty("如果商品类型为套餐那么就有子商品集合")
