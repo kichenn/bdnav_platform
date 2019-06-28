@@ -250,11 +250,36 @@ public class AccountController {
 
     }
 
+
     @RequestMapping(value = "/findAccountInfo", method = RequestMethod.GET)
     @ResponseBody
     public Object findAccountInfo(@RequestParam("id") Long id) {
         return WrapMapper.ok(accountUnqiueService.findAccountUnqiueInfoById(id));
     }
+
+    /**
+     * 验证密码
+     *
+     * @Author: WanMing
+     * @Date: 2019/6/21 11:19
+     */
+    @ApiOperation(value = "验证密码", response = Boolean.class)
+    @RequestMapping(value = "/verifyPassword", method = RequestMethod.GET)
+    public Object verifyPassword(@RequestParam("password") String password, @RequestParam("loginName") String loginName) {
+        Account account = accountService.findAccountByLoginNameOrPhone("", loginName);
+        //密码校验
+        try {
+            if (null == account) {
+                throw new Exception("账户异常");
+            }else if(!new BCryptPasswordEncoder().matches(password,account.getPassword())){
+                throw new Exception("密码错误,请重新输入");
+            }
+            return WrapMapper.ok();
+        } catch (Exception e) {
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 
 //    @ApiOperation(value = "导入账户数据", response = Boolean.class)
