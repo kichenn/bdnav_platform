@@ -266,9 +266,9 @@ public class AccountController {
     @ApiOperation(value = "验证密码", response = Boolean.class)
     @RequestMapping(value = "/verifyPassword", method = RequestMethod.GET)
     public Object verifyPassword(@RequestParam("password") String password, @RequestParam("loginName") String loginName) {
-        Account account = accountService.findAccountByLoginNameOrPhone("", loginName);
-        //密码校验
         try {
+            Account account = accountService.findAccountByLoginNameOrPhone("", loginName);
+            //密码校验
             if (null == account) {
                 throw new Exception("账户异常");
             }else if(!new BCryptPasswordEncoder().matches(password,account.getPassword())){
