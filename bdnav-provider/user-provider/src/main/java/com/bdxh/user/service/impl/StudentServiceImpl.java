@@ -204,6 +204,7 @@ public class StudentServiceImpl extends BaseService<Student> implements StudentS
                     familyStudent.setStudentName(updateStudentDto.getName());
                     familyStudent.setCardNumber(familyStudentVo.getFCardNumber());
                     familyStudent.setSchoolCode(updateStudentDto.getSchoolCode());
+                    familyStudent.setStudentNumber(updateStudentDto.getCardNumber());
                     familyStudentMapper.updateStudentInfo(familyStudent);
                 }
             }

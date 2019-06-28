@@ -99,12 +99,14 @@
         <update id="updateStudentInfo">
              UPDATE t_family_student
              SET
-             `student_name`=#{familyStudentDto.studentName},
-             `update_date`=NOW()
+             student_name=#{familyStudentDto.studentName},
+             update_date=NOW()
               WHERE
-             `school_code`=#{familyStudentDto.schoolCode}
+             school_code=#{familyStudentDto.schoolCode}
              AND
-             `card_number`=#{familyStudentDto.cardNumber};
+             card_number=#{familyStudentDto.cardNumber}
+             AND
+             student_number=#{familyStudentDto.studentNumber}
         </update>
 
     <!--批量删除家长学生关系数据信息-->
