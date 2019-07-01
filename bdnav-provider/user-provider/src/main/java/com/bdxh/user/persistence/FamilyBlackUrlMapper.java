@@ -3,6 +3,7 @@ package com.bdxh.user.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.bdxh.user.vo.FamilyBlackUrlVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -40,7 +41,7 @@ public interface FamilyBlackUrlMapper extends Mapper<FamilyBlackUrl> {
 	 * @Author: WanMing
 	 * @Date: 2019/6/25 12:02
 	 */
-	List<FamilyBlackUrl> findFamilyBlackUrlByCondition(@Param("familyBlackUrl")FamilyBlackUrl familyBlackUrl);
+	//List<FamilyBlackUrl> findFamilyBlackUrlByCondition(@Param("familyBlackUrl")FamilyBlackUrl familyBlackUrl);
 
 	/**
 	 * 查询家长下指定孩子的黑名单列表
@@ -59,4 +60,6 @@ public interface FamilyBlackUrlMapper extends Mapper<FamilyBlackUrl> {
 	//根据id查询黑名单信息
 	FamilyBlackUrl findBlackUrlById(@Param("schoolCode") String schoolCode,@Param("cardNumber")String cardNumber,@Param("id") Long id);
 
+	//根据条件查询信息数据
+	List<FamilyBlackUrlVo> findFamilyBlackUrlByCondition(Map<String,Object> param);
 }
