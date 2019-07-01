@@ -55,6 +55,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.spi.CharsetProvider;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -362,7 +365,7 @@ public class ApplyControlsWebController {
                 return WrapMapper.error("文件为空,请检查文件内容");
             }
             long start = System.currentTimeMillis();
-            String jsonArrayStr = new String(file.getBytes(), "gbk");
+            String jsonArrayStr = new String(file.getBytes(), StandardCharsets.UTF_8);
             List<String> urls = new ArrayList<>();
             List<AddVisitLogsDto> addVisitLogsDtos = JSONObject.parseArray(jsonArrayStr, AddVisitLogsDto.class);
             //获取需要过滤的url
