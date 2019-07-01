@@ -283,10 +283,10 @@ public class ApplyControlsWebController {
 
     /**
      * 添加用户反馈信息
-     *
+     * @author WanMing
      * @param addFeedbackDto
      * @return
-     * @author WanMing
+     *
      */
     @RequestMapping(value = "/addFeedback", method = RequestMethod.POST)
     @ApiOperation(value = "添加用户反馈信息", response = Boolean.class)
@@ -344,13 +344,13 @@ public class ApplyControlsWebController {
 
 
     /**
-     * 导入需要过滤的url文件并写日志
+     * 导入需要过滤的url文件并写网站浏览日志
      *
      * @Author: WanMing
      * @Date: 2019/6/24 12:54
      */
     @RequestMapping(value = "/importSysBlackUrlAndWriteBrowseLog", method = RequestMethod.POST)
-    @ApiOperation(value = "导入需要过滤的url文件并写日志", response = String.class)
+    @ApiOperation(value = "导入需要过滤的url文件并写网站浏览日志", response = String.class)
     public Object importSysBlackUrl(@RequestParam("file") MultipartFile file) {
         try {
             if(file.isEmpty()){
@@ -405,7 +405,6 @@ public class ApplyControlsWebController {
                                            @RequestParam("cardNumber") String cardNumber,
                                            @RequestParam("accountId") String accountId,
                                            @RequestParam(name = "appStatus", defaultValue = "2") Byte appStatus) {
-
         List<AppStatus> obj = appStatusControllerClient.findAppStatusByAccountId(schoolCode, cardNumber, accountId, appStatus).getResult();
         return WrapMapper.ok(obj);
     }

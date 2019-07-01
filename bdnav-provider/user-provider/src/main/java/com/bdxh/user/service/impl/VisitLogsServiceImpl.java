@@ -1,27 +1,20 @@
 package com.bdxh.user.service.impl;
 
+import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
-import com.bdxh.common.utils.DateUtil;
 import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateVisitLogsDto;
 import com.bdxh.user.dto.VisitLogsQueryDto;
 import com.bdxh.user.entity.VisitLogs;
-import com.bdxh.user.enums.FamliyBlackUrlStatusEnum;
 import com.bdxh.user.mongo.VisitLogsMongo;
 import com.bdxh.user.persistence.mongodb.VisitLogsMongoMapper;
 import com.bdxh.user.service.VisitLogsService;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;
-import org.apache.commons.collections4.CollectionUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import com.bdxh.common.support.BaseService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
