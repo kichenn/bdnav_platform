@@ -60,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -348,61 +349,37 @@ public class ApplyControlsWebController {
 
 
     /**
-     * 导入需要检测网址安全性的文件
+     * 导入需要过滤的url文件并写日志
      *
      * @Author: WanMing
      * @Date: 2019/6/24 12:54
      */
-    @RequestMapping(value = "/importSysBlackUrl", method = RequestMethod.POST)
-    @ApiOperation(value = "导入需要检测网址安全性的文件", response = String.class)
+    @RequestMapping(value = "/importSysBlackUrlAndWriteBrowseLog", method = RequestMethod.POST)
+    @ApiOperation(value = "导入需要过滤的url文件并写日志", response = String.class)
     public Object importSysBlackUrl(@RequestParam("file") MultipartFile file) {
         try {
-            if (file.isEmpty()) {
+            if(file.isEmpty()){
                 return WrapMapper.error("文件为空,请检查文件内容");
             }
-
             long start = System.currentTimeMillis();
-            //解析excel文件
-            List<String[]> visitLogs = ExcelImportUtil.readExcelNums(file, 0);
-            if (CollectionUtils.isEmpty(visitLogs)) {
-                return WrapMapper.error("无数据");
-            }
-            List<AddVisitLogsDto> addVisitLogsDtos = new ArrayList<>();
+            String jsonArrayStr = new String(file.getBytes(), "gbk");
             List<String> urls = new ArrayList<>();
-            for (int i = 0; i < visitLogs.size(); i++) {
-                //单个解析成对象
-                String[] visitLog = visitLogs.get(i);
-                AddVisitLogsDto addVisitLogsDto = new AddVisitLogsDto();
-                if(null==visitLog[0]){
-                    break;
+            List<AddVisitLogsDto> addVisitLogsDtos = JSONObject.parseArray(jsonArrayStr, AddVisitLogsDto.class);
+            //获取需要过滤的url
+            addVisitLogsDtos.forEach(logs->{
+                if(VisitLogsStatusEnum.NORMAL_KEY.equals(logs.getStatus())){
+                    urls.add(logs.getUrl());
                 }
-                addVisitLogsDto.setSchoolId(Integer.valueOf(visitLog[0]));
-                addVisitLogsDto.setSchoolName(visitLog[1]);
-                addVisitLogsDto.setSchoolCode(visitLog[2]);
-                addVisitLogsDto.setCardNumber(visitLog[3]);
-                addVisitLogsDto.setStudentId(Long.valueOf(visitLog[4]));
-                addVisitLogsDto.setUserName(visitLog[5]);
-                String url = visitLog[6];
-                addVisitLogsDto.setUrl(url);
-                addVisitLogsDto.setCreateDate(DateUtil.format(visitLog[7], "yyyy-MM-dd HH:mm:ss"));
-                Byte status = Byte.valueOf(visitLog[8]);
-                if(VisitLogsStatusEnum.NORMAL_KEY.equals(status)){
-                    urls.add(url);
-                }
-                addVisitLogsDto.setStatus(Byte.valueOf(visitLog[8]));
-                addVisitLogsDto.setRemark(visitLog[9]);
-                addVisitLogsDtos.add(addVisitLogsDto);
-            }
+            });
             //写日志
             visitLogsControllerClient.batchAddVisitLogsInfo(addVisitLogsDtos);
-
-            //过滤未拦截的url
+            //过滤重复的url
             List<String> url = urls.stream().distinct()
                     .collect(Collectors.toList());
             sysBlackUrlControllerClient.batchCheckSysBlackUrl(url);
             long end = System.currentTimeMillis();
             log.info("总计用时：" + (end - start) + "毫秒");
-            return WrapMapper.ok("日志处理完成");
+            return WrapMapper.ok("处理完成");
         } catch (IOException e) {
             log.error(e.getMessage());
             return WrapMapper.error(e.getMessage());
