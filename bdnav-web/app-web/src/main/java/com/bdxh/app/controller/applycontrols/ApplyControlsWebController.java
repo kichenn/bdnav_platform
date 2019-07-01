@@ -364,7 +364,6 @@ public class ApplyControlsWebController {
     @RequestMapping(value = "/importSysBlackUrlAndWriteBrowseLog", method = RequestMethod.POST)
     @ApiOperation(value = "导入需要过滤的url文件并写日志", response = String.class)
     public Object importSysBlackUrl(@RequestParam("file") MultipartFile file) {
-
         try {
             if(file.isEmpty()){
                 return WrapMapper.error("文件为空,请检查文件内容");

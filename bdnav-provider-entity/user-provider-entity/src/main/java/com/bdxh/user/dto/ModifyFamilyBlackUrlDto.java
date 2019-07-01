@@ -1,10 +1,9 @@
 package com.bdxh.user.dto;
 
-import com.bdxh.user.enums.FamliyBlackUrlStatusEnum;
+import com.bdxh.user.enums.FamilyBlackUrlStatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 /** 修改家长黑名单的dto
@@ -94,7 +93,7 @@ public class ModifyFamilyBlackUrlDto {
      * 状态 1 启用 2 禁用
      */
     @ApiModelProperty("状态 1 启用 2 禁用")
-    private FamliyBlackUrlStatusEnum status;
+    private FamilyBlackUrlStatusEnum status;
 
     /**
      * 备注

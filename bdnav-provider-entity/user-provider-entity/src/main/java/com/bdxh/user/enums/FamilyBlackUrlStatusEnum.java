@@ -12,20 +12,20 @@ import java.util.Map;
  * @date 2019/6/25 10:39
  */
 
-public enum FamliyBlackUrlStatusEnum {
+public enum FamilyBlackUrlStatusEnum {
 
-    NORMAL(new Byte("1"), "未拦截"),
-    OFFLINE(new Byte("2"), "拦截");
+    START(new Byte("1"), "启用"),
+    FORBIDDEN(new Byte("2"), "禁用");
 
     private final Byte key;
     private final String value;
 
-    public final static Byte NORMAL_KEY = 1;
-    public final static Byte OFFLINE_KEY = 2;
-    public final static String NORMAL_VALUE = "未拦截";
-    public final static String OFFLINE_VALUE = "拦截";
+    public final static Byte START_KEY = 1;
+    public final static Byte FORBIDDEN_KEY = 2;
+    public final static String START_VALUE = "启用";
+    public final static String FORBIDDEN_VALUE = "禁用";
 
-    private FamliyBlackUrlStatusEnum(Byte key, String value) {
+    private FamilyBlackUrlStatusEnum(Byte key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -42,7 +42,7 @@ public enum FamliyBlackUrlStatusEnum {
         if (null == value) {
             return null;
         }
-        for (FamliyBlackUrlStatusEnum c : FamliyBlackUrlStatusEnum.values()) {
+        for (FamilyBlackUrlStatusEnum c : FamilyBlackUrlStatusEnum.values()) {
             if (c.getValue().equals(value)) {
                 return c.key;
             }
@@ -54,7 +54,7 @@ public enum FamliyBlackUrlStatusEnum {
         if (null == key) {
             return StringUtils.EMPTY;
         }
-        for (FamliyBlackUrlStatusEnum c : FamliyBlackUrlStatusEnum.values()) {
+        for (FamilyBlackUrlStatusEnum c : FamilyBlackUrlStatusEnum.values()) {
             if (c.getKey().equals(key)) {
                 return c.value;
             }
@@ -64,8 +64,8 @@ public enum FamliyBlackUrlStatusEnum {
 
     public static List<Map<String, Object>> getEnums() {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        FamliyBlackUrlStatusEnum[] bs = FamliyBlackUrlStatusEnum.values();
-        for (FamliyBlackUrlStatusEnum projectType : bs) {
+        FamilyBlackUrlStatusEnum[] bs = FamilyBlackUrlStatusEnum.values();
+        for (FamilyBlackUrlStatusEnum projectType : bs) {
             Map<String, Object> map = Maps.newHashMap();
             map.put("key", projectType.getKey());
             map.put("value", projectType.getValue());

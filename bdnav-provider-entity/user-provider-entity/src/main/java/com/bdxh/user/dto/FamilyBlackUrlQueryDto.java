@@ -1,11 +1,9 @@
 package com.bdxh.user.dto;
 
 import com.bdxh.common.base.page.Query;
-import com.bdxh.user.enums.FamliyBlackUrlStatusEnum;
+import com.bdxh.user.enums.FamilyBlackUrlStatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-
-import javax.persistence.Column;
 
 
 /** 查询家长黑名单的dto
@@ -46,7 +44,7 @@ public class FamilyBlackUrlQueryDto extends Query {
      * 状态 1 启用 2 禁用
      */
     @ApiModelProperty("状态 1 启用 2 禁用")
-    private FamliyBlackUrlStatusEnum status;
+    private FamilyBlackUrlStatusEnum status;
 
 
 

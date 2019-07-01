@@ -1,6 +1,6 @@
 package com.bdxh.user.dto;
 
-import com.bdxh.user.enums.FamliyBlackUrlStatusEnum;
+import com.bdxh.user.enums.FamilyBlackUrlStatusEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -89,7 +89,7 @@ public class AddFamilyBlackUrlDto {
      */
     @ApiModelProperty("状态 1 启用 2 禁用")
     @NotNull(message = "状态不能为空")
-    private FamliyBlackUrlStatusEnum status;
+    private FamilyBlackUrlStatusEnum status;
 
     /**
      * 备注
