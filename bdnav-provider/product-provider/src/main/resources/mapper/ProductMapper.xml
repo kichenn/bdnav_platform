@@ -14,6 +14,7 @@
         <result column="product_type" jdbcType="TINYINT" property="productType"/>
         <result column="sell_status" jdbcType="TINYINT" property="sellStatus"/>
         <result column="img_url" jdbcType="VARCHAR" property="imgUrl"/>
+        <result column="video_url" jdbcType="VARCHAR" property="videoUrl"/>
         <result column="business_type" jdbcType="TINYINT" property="businessType"/>
         <result column="product_extra" jdbcType="VARCHAR" property="productExtra"/>
         <result column="operator" jdbcType="BIGINT" property="operator"/>
@@ -43,6 +44,7 @@
             <id column="productId" jdbcType="BIGINT" property="productId"/>
             <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl"/>
             <result column="imageName" jdbcType="VARCHAR" property="imageName"/>
+            <result column="imgType" jdbcType="TINYINT" property="imgType"/>
             <result column="sort" jdbcType="TINYINT" property="sort"/>
         </collection>
     </resultMap>
@@ -94,6 +96,7 @@
         product.create_date AS createDate,
         product.update_date AS updateDate,
         product.remark AS remark,
+        product.video_url AS videoUrl,
         productImage.id AS imageId,
         productImage.sort AS sort,
         productImage.image_url AS imageUrl,
