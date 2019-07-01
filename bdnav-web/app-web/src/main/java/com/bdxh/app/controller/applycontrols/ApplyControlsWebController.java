@@ -48,12 +48,16 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.xmlbeans.impl.common.IOUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -360,6 +364,7 @@ public class ApplyControlsWebController {
     @RequestMapping(value = "/importSysBlackUrlAndWriteBrowseLog", method = RequestMethod.POST)
     @ApiOperation(value = "导入需要过滤的url文件并写日志", response = String.class)
     public Object importSysBlackUrl(@RequestParam("file") MultipartFile file) {
+
         try {
             if(file.isEmpty()){
                 return WrapMapper.error("文件为空,请检查文件内容");
