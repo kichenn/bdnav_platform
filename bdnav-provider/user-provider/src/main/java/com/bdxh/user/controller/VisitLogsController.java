@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -183,5 +184,17 @@ public class VisitLogsController {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
         }
+    }
+
+    /**
+     * 批量添加浏览网站日志接口
+     * @Author: WanMing
+     * @Date: 2019/6/28 11:55
+     */
+    @ApiOperation(value = "批量添加浏览网站日志接口",response = Boolean.class)
+    @RequestMapping(value = "/batchAddVisitLogsInfo", method = RequestMethod.POST)
+    public Object batchAddVisitLogsInfo(@RequestBody List<AddVisitLogsDto> visitLogsList){
+        visitLogsService.batchAddVisitLogsInfo(visitLogsList);
+        return WrapMapper.ok();
     }
 }

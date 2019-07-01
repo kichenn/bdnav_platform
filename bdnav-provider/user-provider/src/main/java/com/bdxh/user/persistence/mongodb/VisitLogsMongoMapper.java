@@ -163,4 +163,14 @@ public class VisitLogsMongoMapper {
         mongoTemplate.save(visitLogsMongo);
     }
 
+
+    /**
+     * 批量添加学生浏览网页数据
+     * @Author: WanMing
+     * @Date: 2019/6/28 12:17
+     */
+    public void batchInsertVisitLogsInfo(List<VisitLogsMongo> visitLogsMongos){
+        mongoTemplate.insertAll(visitLogsMongos);
+    }
+
 }

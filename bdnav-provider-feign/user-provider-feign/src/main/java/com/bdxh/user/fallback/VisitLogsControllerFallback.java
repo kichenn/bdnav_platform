@@ -55,4 +55,9 @@ public class VisitLogsControllerFallback implements VisitLogsControllerClient {
     public Wrapper<PageInfo<VisitLogsVo>> queryVisitLogByCardNumber(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper batchAddVisitLogsInfo(List<AddVisitLogsDto> visitLogsList) {
+        return WrapMapper.error();
+    }
 }

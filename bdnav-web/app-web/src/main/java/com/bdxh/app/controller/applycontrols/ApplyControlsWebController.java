@@ -19,6 +19,7 @@ import com.bdxh.appmarket.vo.appVersionVo;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.helper.qcloud.files.constant.QcloudConstants;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.QuerySchoolStrategy;
@@ -35,6 +36,8 @@ import com.bdxh.system.feign.SysBlackUrlControllerClient;
 import com.bdxh.system.vo.SysBlackUrlVo;
 import com.bdxh.user.dto.AddVisitLogsDto;
 import com.bdxh.user.dto.UpdateStudentDto;
+import com.bdxh.user.enums.FamliyBlackUrlStatusEnum;
+import com.bdxh.user.enums.VisitLogsStatusEnum;
 import com.bdxh.user.feign.FamilyBlackUrlControllerClient;
 import com.bdxh.user.feign.FamilyStudentControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
@@ -50,8 +53,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -141,8 +147,8 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "学生黑名单", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/studentBlackList", method = RequestMethod.GET)
-    public Object studentBlackList(@RequestParam(name = "schoolCode") String schoolCode,@RequestParam("studentNumber")String studentNumber) {
-        return familyBlackUrlControllerClient.findBlackInList(schoolCode,studentNumber);
+    public Object studentBlackList(@RequestParam(name = "schoolCode") String schoolCode, @RequestParam("studentNumber") String studentNumber) {
+        return familyBlackUrlControllerClient.findBlackInList(schoolCode, studentNumber);
     }
 
 
@@ -281,9 +287,10 @@ public class ApplyControlsWebController {
 
     /**
      * 添加用户反馈信息
-     * @author WanMing
+     *
      * @param addFeedbackDto
      * @return
+     * @author WanMing
      */
     @RequestMapping(value = "/addFeedback", method = RequestMethod.POST)
     @ApiOperation(value = "添加用户反馈信息", response = Boolean.class)
@@ -341,30 +348,61 @@ public class ApplyControlsWebController {
 
 
     /**
-     *  批量导入病毒库数据
+     * 导入需要检测网址安全性的文件
      *
      * @Author: WanMing
      * @Date: 2019/6/24 12:54
      */
     @RequestMapping(value = "/importSysBlackUrl", method = RequestMethod.POST)
-    @ApiOperation(value = "导入url列表检测安全性", response = String.class)
+    @ApiOperation(value = "导入需要检测网址安全性的文件", response = String.class)
     public Object importSysBlackUrl(@RequestParam("file") MultipartFile file) {
         try {
             if (file.isEmpty()) {
                 return WrapMapper.error("文件为空,请检查文件内容");
             }
-            //计时
+
             long start = System.currentTimeMillis();
-            List<String[]> urlStr = ExcelImportUtil.readExcelNums(file, 0);
-            if (CollectionUtils.isNotEmpty(urlStr)) {
-                //获取所有的url集合并且去重
-                List<String> urls = urlStr.stream().map(item -> item[0]).distinct()
-                        .collect(Collectors.toList());
-                sysBlackUrlControllerClient.batchCheckSysBlackUrl(urls);
+            //解析excel文件
+            List<String[]> visitLogs = ExcelImportUtil.readExcelNums(file, 0);
+            if (CollectionUtils.isEmpty(visitLogs)) {
+                return WrapMapper.error("无数据");
             }
+            List<AddVisitLogsDto> addVisitLogsDtos = new ArrayList<>();
+            List<String> urls = new ArrayList<>();
+            for (int i = 0; i < visitLogs.size(); i++) {
+                //单个解析成对象
+                String[] visitLog = visitLogs.get(i);
+                AddVisitLogsDto addVisitLogsDto = new AddVisitLogsDto();
+                if(null==visitLog[0]){
+                    break;
+                }
+                addVisitLogsDto.setSchoolId(Integer.valueOf(visitLog[0]));
+                addVisitLogsDto.setSchoolName(visitLog[1]);
+                addVisitLogsDto.setSchoolCode(visitLog[2]);
+                addVisitLogsDto.setCardNumber(visitLog[3]);
+                addVisitLogsDto.setStudentId(Long.valueOf(visitLog[4]));
+                addVisitLogsDto.setUserName(visitLog[5]);
+                String url = visitLog[6];
+                addVisitLogsDto.setUrl(url);
+                addVisitLogsDto.setCreateDate(DateUtil.format(visitLog[7], "yyyy-MM-dd HH:mm:ss"));
+                Byte status = Byte.valueOf(visitLog[8]);
+                if(VisitLogsStatusEnum.NORMAL_KEY.equals(status)){
+                    urls.add(url);
+                }
+                addVisitLogsDto.setStatus(Byte.valueOf(visitLog[8]));
+                addVisitLogsDto.setRemark(visitLog[9]);
+                addVisitLogsDtos.add(addVisitLogsDto);
+            }
+            //写日志
+            visitLogsControllerClient.batchAddVisitLogsInfo(addVisitLogsDtos);
+
+            //过滤未拦截的url
+            List<String> url = urls.stream().distinct()
+                    .collect(Collectors.toList());
+            sysBlackUrlControllerClient.batchCheckSysBlackUrl(url);
             long end = System.currentTimeMillis();
             log.info("总计用时：" + (end - start) + "毫秒");
-            return WrapMapper.ok("检查完成");
+            return WrapMapper.ok("日志处理完成");
         } catch (IOException e) {
             log.error(e.getMessage());
             return WrapMapper.error(e.getMessage());
@@ -392,13 +430,15 @@ public class ApplyControlsWebController {
     @RequestMapping(value = "/findAppStatusByAccountId", method = RequestMethod.GET)
     @ApiOperation(value = "查询该账户下锁定的应用", response = informationVo.class)
     public Object findAppStatusByAccountId(@RequestParam("schoolCode") String schoolCode,
-                                  @RequestParam("cardNumber") String cardNumber,
-                                  @RequestParam("accountId") String accountId,
-                                  @RequestParam(name = "appStatus",defaultValue = "2") Byte appStatus) {
+                                           @RequestParam("cardNumber") String cardNumber,
+                                           @RequestParam("accountId") String accountId,
+                                           @RequestParam(name = "appStatus", defaultValue = "2") Byte appStatus) {
 
-        List<AppStatus> obj=appStatusControllerClient.findAppStatusByAccountId(schoolCode,cardNumber,accountId,appStatus).getResult();
+        List<AppStatus> obj = appStatusControllerClient.findAppStatusByAccountId(schoolCode, cardNumber, accountId, appStatus).getResult();
         return WrapMapper.ok(obj);
     }
+
+
 
 
 }

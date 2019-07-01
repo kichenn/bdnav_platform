@@ -6,6 +6,7 @@ import com.bdxh.user.entity.VisitLogs;
 import com.bdxh.user.fallback.VisitLogsControllerFallback;
 import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -87,4 +88,13 @@ public interface VisitLogsControllerClient {
     @ResponseBody
     Wrapper<PageInfo<VisitLogsVo>> queryVisitLogByCardNumber(@RequestParam(name="schoolCode") String schoolCode,
                                                        @RequestParam(name="cardNumber") String cardNumber);
+
+    /**
+     * 批量添加浏览网站日志接口
+     * @Author: WanMing
+     * @Date: 2019/6/28 11:55
+     */
+    @RequestMapping(value = "/visitLogs/batchAddVisitLogsInfo", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper batchAddVisitLogsInfo(@RequestBody List<AddVisitLogsDto> visitLogsList);
 }
