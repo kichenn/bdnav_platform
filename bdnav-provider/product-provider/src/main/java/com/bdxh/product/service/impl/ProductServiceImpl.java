@@ -54,6 +54,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         if (productDto.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
             product.setProductExtra(productDto.getProductChildIds());
         }
+        //判断是是否是图标图片或是商品类型
         if (CollectionUtils.isNotEmpty(productDto.getImage())){
             productDto.getImage().forEach(productImageAddDto -> {
                 ProductImage productImage = new ProductImage();
@@ -64,7 +65,6 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                 }
             });
         }
-        productMapper.insertProduct(product);
         Long productId = product.getId();
         //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
         Byte i = 1;
