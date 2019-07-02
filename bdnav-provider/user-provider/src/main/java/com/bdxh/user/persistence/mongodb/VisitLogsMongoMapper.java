@@ -59,12 +59,14 @@ public class VisitLogsMongoMapper {
         }
         query.addCriteria(criteria);
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "create_date")));
+        // 查询总数
+        int count = (int) mongoTemplate.count(query, VisitLogsMongo.class);
         int skip = (visitLogsQueryDto.getPageNum() - 1) * visitLogsQueryDto.getPageSize();
         query.skip(skip).limit(visitLogsQueryDto.getPageSize());
         List<VisitLogsMongo> visitLogsMongoList = mongoTemplate.find(query, VisitLogsMongo.class);
         List<VisitLogsVo> visitLogsVos = BeanMapUtils.mapList(visitLogsMongoList, VisitLogsVo.class);
         PageInfo<VisitLogsVo> pageInfoVisitLogs = new PageInfo<>(visitLogsVos);
-        pageInfoVisitLogs.setTotal(visitLogsVos.size());
+        pageInfoVisitLogs.setTotal(count);
         return pageInfoVisitLogs;
     }
 
