@@ -1,7 +1,6 @@
 package com.bdxh.user.service.impl;
 
 import com.bdxh.common.support.BaseService;
-import com.bdxh.user.dto.FamilyBlackUrlQueryDto;
 import com.bdxh.user.entity.FamilyBlackUrl;
 import com.bdxh.user.persistence.FamilyBlackUrlMapper;
 import com.bdxh.user.service.FamilyBlackUrlService;
@@ -17,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
 * @Description: 家长端黑名单业务层实现
@@ -87,7 +87,7 @@ public class FamilyBlackUrlServiceImpl extends BaseService<FamilyBlackUrl> imple
 	 * @Author: WanMing
 	 * @Date: 2019/6/25 11:58
 	 */
-	@Override
+	/*@Override
 	public PageInfo<FamilyBlackUrlVo> findFamilyBlackUrlByCondition(FamilyBlackUrlQueryDto familyBlackUrlQueryDto) {
 		PageHelper.startPage(familyBlackUrlQueryDto.getPageNum(),familyBlackUrlQueryDto.getPageSize());
 		//数据拷贝
@@ -98,15 +98,20 @@ public class FamilyBlackUrlServiceImpl extends BaseService<FamilyBlackUrl> imple
 		//数据转换
 		List<FamilyBlackUrlVo> familyBlackUrlVos  = new ArrayList<>();
 		if(CollectionUtils.isNotEmpty(familyBlackUrls)){
-			familyBlackUrls.forEach(blackUrl->{
+			for (int i = 0; i <familyBlackUrls.size() ; i++) {
+				FamilyBlackUrlVo familyBlackUrlVo = new FamilyBlackUrlVo();
+				BeanUtils.copyProperties(familyBlackUrl, familyBlackUrlVo);
+				familyBlackUrlVos.add(familyBlackUrlVo);
+			}
+		*//*	familyBlackUrls.forEach(blackUrl->{
 				FamilyBlackUrlVo familyBlackUrlVo = new FamilyBlackUrlVo();
 				BeanUtils.copyProperties(blackUrl, familyBlackUrlVo);
 				familyBlackUrlVos.add(familyBlackUrlVo);
-			});
+			});*//*
 		}
-		return new PageInfo<>(familyBlackUrlVos);
+		return new PageInfo(familyBlackUrlVos);
 	}
-
+*/
 	/**
 	 * 查询家长指定孩子的黑名单列表
 	 * @param schoolCode
@@ -153,5 +158,12 @@ public class FamilyBlackUrlServiceImpl extends BaseService<FamilyBlackUrl> imple
 	@Override
 	public FamilyBlackUrl findBlackUrlById(String schoolCode, String cardNumber, Long id) {
 		return familyBlackUrlMapper.findBlackUrlById(schoolCode,cardNumber,id);
+	}
+
+	@Override
+	public PageInfo<FamilyBlackUrlVo> findFamilyBlackUrlByCondition(Map<String, Object> param, Integer pageNum, Integer pageSize) {
+		PageHelper.startPage(pageNum,pageSize);
+		List<FamilyBlackUrlVo> familyBlackUrls = familyBlackUrlMapper.findFamilyBlackUrlByCondition(param);
+		return new PageInfo(familyBlackUrls);
 	}
 }

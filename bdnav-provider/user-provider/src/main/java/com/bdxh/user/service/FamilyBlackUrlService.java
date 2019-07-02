@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 家长端黑名单业务层接口
@@ -59,7 +60,7 @@ public interface FamilyBlackUrlService extends IService<FamilyBlackUrl> {
      * @Author: WanMing
      * @Date: 2019/6/25 11:58
      */
-    PageInfo<FamilyBlackUrlVo> findFamilyBlackUrlByCondition(FamilyBlackUrlQueryDto familyBlackUrlQueryDto);
+    //PageInfo<FamilyBlackUrlVo> findFamilyBlackUrlByCondition(FamilyBlackUrlQueryDto familyBlackUrlQueryDto);
 
     /**
      * 查询家长指定孩子的黑名单列表
@@ -92,6 +93,9 @@ public interface FamilyBlackUrlService extends IService<FamilyBlackUrl> {
      * @return
      */
     FamilyBlackUrl findBlackUrlById(String schoolCode,String cardNumber,Long id);
+
+    //根据条件查询列表
+    PageInfo<FamilyBlackUrlVo> findFamilyBlackUrlByCondition(Map<String,Object> param, Integer pageNum, Integer pageSize);
 
 
 }
