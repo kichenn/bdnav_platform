@@ -37,4 +37,9 @@ public interface ApplyLogService extends IService<ApplyLog> {
 
     //查询当前用户申请消息
     List<informationVo> checkMymessages(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
+
+
+
+
+
 }

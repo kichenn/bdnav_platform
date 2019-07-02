@@ -69,7 +69,8 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
     public List<ApplyLog> familyFindApplyLogInfo(String schoolCode, String cardNumber) {
         ApplyLog applyLog=new ApplyLog();
         applyLog.setSchoolCode(schoolCode);
-        applyLog.setCardNumber(cardNumber);
+//        applyLog.setCardNumber(cardNumber);
+        applyLog.setOperatorCode(cardNumber);
         return applyLogMapper.findApplyLogInConationPaging(applyLog);
     }
 

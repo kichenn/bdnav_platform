@@ -136,6 +136,8 @@ public class ApplyLogController {
         return WrapMapper.ok(applyLogService.findApplyLogInConationPaging(applyLogQueryDto));
     }
 
+
+
     @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.GET)
     @ApiOperation(value = "家长查询自己孩子的App申请信息")
     public Object familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {

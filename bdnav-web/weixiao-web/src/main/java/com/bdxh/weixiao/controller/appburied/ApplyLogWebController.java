@@ -56,11 +56,11 @@ public class ApplyLogWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
-            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            caseCardNumber = caseCardNumber == null ? new ArrayList<>() : caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
-            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            thisCardNumbers = thisCardNumbers == null ? new ArrayList<>() : thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -78,6 +78,22 @@ public class ApplyLogWebController {
     }
 
     /**
+     * 家长查询自己孩子的App申请记录
+     *
+     * @param
+     * @return
+     */
+    @RolesAllowed({"TEST", "CONTROLE"})
+    @RequestMapping(value = "/findApplyLogInfoByFamily", method = RequestMethod.GET)
+    @ApiOperation(value = "审批畅玩----家长查询该学校所有孩子的申请畅玩记录", response = ApplyLog.class)
+    public Object findApplyLogInfoByFamily() {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        return applyLogControllerClient.familyFindApplyLogInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber());
+
+    }
+
+
+    /**
      * 家长审批自己孩子的App申请信息
      *
      * @param modifyApplyLogDto
@@ -92,11 +108,11 @@ public class ApplyLogWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
-            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            caseCardNumber = caseCardNumber == null ? new ArrayList<>() : caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(modifyApplyLogDto.getCardNumber());
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
-            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            thisCardNumbers = thisCardNumbers == null ? new ArrayList<>() : thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(modifyApplyLogDto.getCardNumber());
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -131,11 +147,11 @@ public class ApplyLogWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
-            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            caseCardNumber = caseCardNumber == null ? new ArrayList<>() : caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(modifyApplyLogDto.getCardNumber());
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
-            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            thisCardNumbers = thisCardNumbers == null ? new ArrayList<>() : thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(modifyApplyLogDto.getCardNumber());
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
