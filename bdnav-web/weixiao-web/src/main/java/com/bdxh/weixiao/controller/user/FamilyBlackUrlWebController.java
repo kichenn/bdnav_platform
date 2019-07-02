@@ -55,11 +55,12 @@ public class FamilyBlackUrlWebController {
     Wrapper wrapMapper = familyBlackUrlControllerClient.addFamilyBlackUrl(addFamilyBlackUrlDto);
         if (wrapMapper.getCode()==500){
             return wrapMapper;
-        }
-    String aap = String.valueOf(wrapMapper.getResult());
-    FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), Long.valueOf(aap)).getResult();
-        if(bu !=null) {
-        UserDevice userDevices = userDeviceControllerClient.findUserDeviceByCodeOrCard(bu.getSchoolCode(), bu.getCardNumber()).getResult();
+        }else{
+      String aap = String.valueOf(wrapMapper.getResult());
+/*    FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), Long.valueOf(aap)).getResult();*/
+           log.info("====================="+userInfo.getSchoolCode());
+            log.info("====================="+addFamilyBlackUrlDto.getStudentNumber());
+            UserDevice userDevices = userDeviceControllerClient.findUserDeviceByCodeOrCard(userInfo.getSchoolCode(),addFamilyBlackUrlDto.getStudentNumber()).getResult();
         if (userDevices != null) {
             AppPushRequest appPushRequest = new AppPushRequest();
             appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
@@ -70,6 +71,9 @@ public class FamilyBlackUrlWebController {
             appPushRequest.setClientId(clientIds);
             //穿透模版
             AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
+            log.info("黑名单参数====================="+userInfo.getSchoolCode());
+            log.info("黑名单参数====================="+userInfo.getFamilyCardNumber());
+            FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), Long.valueOf(aap)).getResult();
             JSONObject obj = new JSONObject();
             obj.put("key", "studentBlackUrlToPush");
             obj.put("data", bu);
@@ -79,7 +83,7 @@ public class FamilyBlackUrlWebController {
             Map<String, Object> resultMap = GeTuiUtil.appCustomPush(appPushRequest);
             System.out.println(resultMap.toString());
         }
-    }
+        }
     return wrapMapper;
   }
 
