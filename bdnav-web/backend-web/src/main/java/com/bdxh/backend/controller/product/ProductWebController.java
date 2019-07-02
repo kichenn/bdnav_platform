@@ -7,6 +7,8 @@ import com.bdxh.product.dto.ProductAddDto;
 import com.bdxh.product.dto.ProductQueryDto;
 import com.bdxh.product.dto.ProductUpdateDto;
 import com.bdxh.product.feign.ProductControllerClient;
+import com.bdxh.product.vo.ProductDetailsVo;
+import com.bdxh.product.vo.ProductListVo;
 import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -39,7 +41,7 @@ public class ProductWebController {
     @Autowired
     private ProductControllerClient productControllerClient;
 
-    @ApiOperation("根据id查询商品")
+    @ApiOperation(value = "根据id查询商品", response = ProductDetailsVo.class)
     @RequestMapping(value = "/queryProduct", method = RequestMethod.GET)
     public Object queryProduct(@RequestParam(name = "id") @NotNull(message = "商品id不能为空") Long id) {
         try {
@@ -52,7 +54,7 @@ public class ProductWebController {
     }
 
 
-    @ApiOperation("增加商品")
+    @ApiOperation(value = "增加商品", response = Boolean.class)
     @RequestMapping(value = "/addProduct", method = RequestMethod.POST)
     public Object addProduct(@Valid @RequestBody ProductAddDto productAddDto, BindingResult bindingResult) {
         //检验参数
@@ -76,7 +78,7 @@ public class ProductWebController {
     }
 
 
-    @ApiOperation("更新商品")
+    @ApiOperation(value = "更新商品", response = Boolean.class)
     @RequestMapping(value = "/updateProduct", method = RequestMethod.POST)
     public Object updateProduct(@Valid @RequestBody ProductUpdateDto productUpdateDto, BindingResult bindingResult) {
         //检验参数
@@ -111,7 +113,7 @@ public class ProductWebController {
     }
 
 
-    @ApiOperation("商品列表查询")
+    @ApiOperation(value = "商品列表查询", response = ProductListVo.class)
     @RequestMapping(value = "/queryListPage", method = RequestMethod.POST)
     public Object queryListPage(@Valid @RequestBody ProductQueryDto productQueryDto) {
         try {
