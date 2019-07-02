@@ -9,6 +9,7 @@ import com.bdxh.system.enums.VirusLibraryTypeEnum;
 import com.bdxh.system.service.SysBlackUrlService;
 import com.bdxh.system.vo.KingSoftResultVo;
 import com.bdxh.system.vo.SysBlackUrlVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -65,7 +66,7 @@ public class SysBlackUrlServiceImpl extends BaseService<SysBlackUrl> implements 
      */
     @Override
     public PageInfo<SysBlackUrlVo> findSysBlackUrlByCondition(SysBlackUrlQueryDto sysBlackUrlQueryDto) {
-        PageHelper.startPage(sysBlackUrlQueryDto.getPageNum(), sysBlackUrlQueryDto.getPageSize());
+        Page page = PageHelper.startPage(sysBlackUrlQueryDto.getPageNum(), sysBlackUrlQueryDto.getPageSize());
         SysBlackUrl sysBlackUrl = new SysBlackUrl();
         BeanUtils.copyProperties(sysBlackUrlQueryDto, sysBlackUrl);
         List<SysBlackUrl> sysBlackUrls = sysBlackUrlMapper.findSysBlackUrlByCondition(sysBlackUrl);
@@ -77,7 +78,9 @@ public class SysBlackUrlServiceImpl extends BaseService<SysBlackUrl> implements 
                 sysBlackUrlVos.add(sysBlackUrlVo);
             });
         }
-        return new PageInfo(sysBlackUrlVos);
+        PageInfo pageInfo = new PageInfo<>(sysBlackUrlVos);
+        pageInfo.setTotal(page.getTotal());
+        return pageInfo;
     }
 
 
