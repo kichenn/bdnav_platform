@@ -30,133 +30,142 @@ public class VisitLogsMongoMapper {
 
     /**
      * 查询所有学生浏览网页数据
+     *
      * @param visitLogsQueryDto
      * @return
      */
     public PageInfo<VisitLogsVo> getVisitLogsInfos(VisitLogsQueryDto visitLogsQueryDto) {
-        Query query=new Query();
-        Criteria criteria=new Criteria();
+        Query query = new Query();
+        Criteria criteria = new Criteria();
         //模糊匹配
-        if(StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolName())){
-            Pattern pattern = Pattern.compile("^.*"+visitLogsQueryDto.getSchoolName()+".*$", Pattern.CASE_INSENSITIVE);
+        if (StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolName())) {
+            Pattern pattern = Pattern.compile("^.*" + visitLogsQueryDto.getSchoolName() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("school_name").regex(pattern);
         }
-        if(null!=visitLogsQueryDto.getStatus()&&visitLogsQueryDto.getStatus()!=0){
+        if (null != visitLogsQueryDto.getStatus() && visitLogsQueryDto.getStatus() != 0) {
             criteria.and("status").is(visitLogsQueryDto.getStatus());
         }
-        if(StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolCode())){
-            Pattern pattern = Pattern.compile("^.*"+visitLogsQueryDto.getSchoolCode()+".*$", Pattern.CASE_INSENSITIVE);
+        if (StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolCode())) {
+            Pattern pattern = Pattern.compile("^.*" + visitLogsQueryDto.getSchoolCode() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("school_code").regex(pattern);
         }
-        if (StringUtils.isNotEmpty(visitLogsQueryDto.getUserName())){
-            Pattern pattern = Pattern.compile("^.*"+visitLogsQueryDto.getUserName()+".*$", Pattern.CASE_INSENSITIVE);
+        if (StringUtils.isNotEmpty(visitLogsQueryDto.getUserName())) {
+            Pattern pattern = Pattern.compile("^.*" + visitLogsQueryDto.getUserName() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("user_name").regex(pattern);
         }
-        if (StringUtils.isNotEmpty(visitLogsQueryDto.getCardNumber())){
-            Pattern pattern = Pattern.compile("^.*"+visitLogsQueryDto.getCardNumber()+".*$", Pattern.CASE_INSENSITIVE);
+        if (StringUtils.isNotEmpty(visitLogsQueryDto.getCardNumber())) {
+            Pattern pattern = Pattern.compile("^.*" + visitLogsQueryDto.getCardNumber() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("card_number").regex(pattern);
         }
         query.addCriteria(criteria);
         query.with(new Sort(new Sort.Order(Sort.Direction.DESC, "create_date")));
         int skip = (visitLogsQueryDto.getPageNum() - 1) * visitLogsQueryDto.getPageSize();
         query.skip(skip).limit(visitLogsQueryDto.getPageSize());
-        List<VisitLogsMongo> visitLogsMongoList=mongoTemplate.find(query,VisitLogsMongo.class);
-        List<VisitLogsVo> visitLogsVos=	BeanMapUtils.mapList(visitLogsMongoList,VisitLogsVo.class);
-        PageInfo<VisitLogsVo> pageInfoVisitLogs= new PageInfo<>(visitLogsVos);
+        List<VisitLogsMongo> visitLogsMongoList = mongoTemplate.find(query, VisitLogsMongo.class);
+        List<VisitLogsVo> visitLogsVos = BeanMapUtils.mapList(visitLogsMongoList, VisitLogsVo.class);
+        PageInfo<VisitLogsVo> pageInfoVisitLogs = new PageInfo<>(visitLogsVos);
+        pageInfoVisitLogs.setTotal(visitLogsVos.size());
         return pageInfoVisitLogs;
     }
 
 
     /**
      * 查询单个学生浏览网页数据
+     *
      * @param schoolCode
      * @param cardNumber
      * @param id
      * @return
      */
     public VisitLogsVo getVisitLogsInfo(String schoolCode, String cardNumber, String id) {
-        Query query=new Query(Criteria.where("school_code").is(schoolCode)
+        Query query = new Query(Criteria.where("school_code").is(schoolCode)
                 .and("card_number").is(cardNumber).and("id").is(id));
-        VisitLogsMongo visitLogsMongo=mongoTemplate.findOne(query,VisitLogsMongo.class);
-        if(null==visitLogsMongo){
+        VisitLogsMongo visitLogsMongo = mongoTemplate.findOne(query, VisitLogsMongo.class);
+        if (null == visitLogsMongo) {
             return null;
         }
-        VisitLogsVo visitLogsVo=BeanMapUtils.map(visitLogsMongo,VisitLogsVo.class);
+        VisitLogsVo visitLogsVo = BeanMapUtils.map(visitLogsMongo, VisitLogsVo.class);
         return visitLogsVo;
     }
 
     /**
      * 修改学生浏览网页数据
+     *
      * @param visitLogsMongo
      */
     public void updateVisitLogsInfo(VisitLogsMongo visitLogsMongo) {
-        Query query =new Query();
+        Query query = new Query();
         query.addCriteria(Criteria.where("id").is(visitLogsMongo.getId())
                 .and("school_code").is(visitLogsMongo.getSchoolCode())
                 .and("card_number").is(visitLogsMongo.getCardNumber()));
-        Update update=new Update();
-        if(StringUtils.isNotEmpty(visitLogsMongo.getUrl())){
-            update.set("url",visitLogsMongo.getUrl());
+        Update update = new Update();
+        if (StringUtils.isNotEmpty(visitLogsMongo.getUrl())) {
+            update.set("url", visitLogsMongo.getUrl());
         }
-        if(null!=visitLogsMongo.getStatus()){
-            update.set("status",visitLogsMongo.getStatus());
+        if (null != visitLogsMongo.getStatus()) {
+            update.set("status", visitLogsMongo.getStatus());
         }
-        if(StringUtils.isNotEmpty(visitLogsMongo.getRemark())){
-            update.set("remark",visitLogsMongo.getRemark());
+        if (StringUtils.isNotEmpty(visitLogsMongo.getRemark())) {
+            update.set("remark", visitLogsMongo.getRemark());
         }
-        update.set("update_date",visitLogsMongo.getUpdateDate());
-        mongoTemplate.upsert(query,update,VisitLogsMongo.class);
+        update.set("update_date", visitLogsMongo.getUpdateDate());
+        mongoTemplate.upsert(query, update, VisitLogsMongo.class);
     }
 
     /**
      * 修改学生浏览网页数据
+     *
      * @param schoolCode
      * @param schoolName
      */
-    public void updateSchoolName(String schoolCode,String schoolName) {
-        Query query =new Query();
+    public void updateSchoolName(String schoolCode, String schoolName) {
+        Query query = new Query();
         query.addCriteria(Criteria.where("school_code").is(schoolCode));
-        Update update=new Update();
-        if(StringUtils.isNotEmpty(schoolName)){
-            update.set("school_name",schoolName);
+        Update update = new Update();
+        if (StringUtils.isNotEmpty(schoolName)) {
+            update.set("school_name", schoolName);
         }
-        mongoTemplate.updateMulti (query,update,VisitLogsMongo.class);
+        mongoTemplate.updateMulti(query, update, VisitLogsMongo.class);
     }
+
     /**
      * 删除学生浏览网页数据
+     *
      * @param schoolCode
      * @param cardNumber
      * @param id
      */
     public void removeVisitLogsInfo(String schoolCode, String cardNumber, String id) {
-        Query query=new Query(Criteria.where("school_code").is(schoolCode)
+        Query query = new Query(Criteria.where("school_code").is(schoolCode)
                 .and("card_number").is(cardNumber)
                 .and("id").is(id));
-        mongoTemplate.remove(query,VisitLogsMongo.class);
+        mongoTemplate.remove(query, VisitLogsMongo.class);
     }
 
     /**
      * 批量删除学生浏览网页数据
+     *
      * @param schoolCodes
      * @param cardNumbers
      * @param ids
      */
     public void batchRemoveVisitLogsInfo(String schoolCodes, String cardNumbers, String ids) {
-        String id[]=ids.split(",");
-        String cardNumber[]=cardNumbers.split(",");
-        String schoolCode[]=schoolCodes.split(",");
-        Query query=new Query();
+        String id[] = ids.split(",");
+        String cardNumber[] = cardNumbers.split(",");
+        String schoolCode[] = schoolCodes.split(",");
+        Query query = new Query();
         for (int i = 0; i < id.length; i++) {
-            Criteria criteria=Criteria.where("school_code").is(schoolCode[i])
+            Criteria criteria = Criteria.where("school_code").is(schoolCode[i])
                     .and("card_number").is(cardNumber[i])
                     .and("id").is(id[i]);
             query.addCriteria(criteria);
-            mongoTemplate.remove(query,VisitLogsMongo.class);
+            mongoTemplate.remove(query, VisitLogsMongo.class);
         }
     }
 
     /**
      * 新增学生浏览网页数据
+     *
      * @param visitLogsMongo
      */
     public void insertVisitLogsInfo(VisitLogsMongo visitLogsMongo) {
