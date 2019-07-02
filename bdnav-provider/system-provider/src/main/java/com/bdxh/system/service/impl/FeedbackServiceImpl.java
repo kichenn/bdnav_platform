@@ -13,6 +13,7 @@ import com.bdxh.system.persistence.FeedbackMapper;
 import com.bdxh.system.service.FeedbackService;
 import com.bdxh.system.vo.FeedbackAttachVo;
 import com.bdxh.system.vo.FeedbackVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -157,7 +158,7 @@ public class FeedbackServiceImpl extends BaseService<Feedback> implements Feedba
 	 */
 	@Override
 	public PageInfo<FeedbackVo> findFeedbackByCondition(FeedbackQueryDto feedbackQueryDto) {
-		PageHelper.startPage(feedbackQueryDto.getPageNum(),feedbackQueryDto.getPageSize());
+		Page page = PageHelper.startPage(feedbackQueryDto.getPageNum(),feedbackQueryDto.getPageSize());
 		//数据拷贝
 		Feedback feedback = new Feedback();
 		BeanUtils.copyProperties(feedbackQueryDto, feedback);
@@ -182,7 +183,7 @@ public class FeedbackServiceImpl extends BaseService<Feedback> implements Feedba
 			});
 		}
 		PageInfo<FeedbackVo> pageInfo = new PageInfo<>(feedbackVos);
-		pageInfo.setTotal(feedbackVos.size());
+		pageInfo.setTotal(page.getTotal());
 		return pageInfo;
 	}
 }

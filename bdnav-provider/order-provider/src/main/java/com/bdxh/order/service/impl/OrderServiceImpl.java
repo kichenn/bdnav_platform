@@ -45,7 +45,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
      */
     @Override
     public PageInfo<OrderVo> getOrderByCondition(OrderQueryDto orderQueryDto) {
-        PageHelper.startPage(orderQueryDto.getPageNum(), orderQueryDto.getPageSize());
+        Page page = PageHelper.startPage(orderQueryDto.getPageNum(), orderQueryDto.getPageSize());
         Order order = new Order();
         BeanUtils.copyProperties(orderQueryDto, order);
         List<Order> orders = orderMapper.getOrderByCondition(order);
@@ -56,6 +56,7 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
             orderVos.add(orderVo);
         });
         PageInfo<OrderVo> pageInfo = new PageInfo<>(orderVos);
+        pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }
 
