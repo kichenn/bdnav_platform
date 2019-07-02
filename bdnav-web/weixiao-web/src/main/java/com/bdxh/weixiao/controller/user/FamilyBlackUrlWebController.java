@@ -92,7 +92,28 @@ public class FamilyBlackUrlWebController {
     @RequestMapping(value = "/delFamilyBlackUrl", method = RequestMethod.POST)
     public Object delFamilyBlackUrl(@RequestParam(name = "schoolCode")  String schoolCode,
                                     @RequestParam(name = "cardNumber") String cardNumber,
+                                    @RequestParam(name = "studentNumber") String studentNumber,
                                     @RequestParam(name = "id") String id) {
+        UserDevice userDevices = userDeviceControllerClient.findUserDeviceByCodeOrCard(schoolCode,studentNumber).getResult();
+        if (userDevices != null) {
+            AppPushRequest appPushRequest = new AppPushRequest();
+            appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
+            appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
+            appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
+            List<String> clientIds = new ArrayList<>();
+            clientIds.add(userDevices.getClientId());
+            appPushRequest.setClientId(clientIds);
+            //穿透模版
+            AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
+            JSONObject obj = new JSONObject();
+            obj.put("key", "studentBlackUrlToPush");
+            obj.put("data", "该名单已删除");
+            appTransmissionTemplate.setTransmissionContent(obj.toJSONString());
+            appPushRequest.setAppTransmissionTemplate(appTransmissionTemplate);
+            //群发穿透模版
+            Map<String, Object> resultMap = GeTuiUtil.appCustomPush(appPushRequest);
+            System.out.println(resultMap.toString());
+        }
         return familyBlackUrlControllerClient.delFamilyBlackUrl(schoolCode,cardNumber,id);
     }
 
