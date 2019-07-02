@@ -295,6 +295,10 @@ public class ApplyControlsWebController {
         Account account = SecurityUtils.getCurrentUser();
         addFeedbackDto.setOperator(account.getId());
         addFeedbackDto.setOperatorName(account.getUserName());
+        addFeedbackDto.setCardNumber(account.getCardNumber());
+        addFeedbackDto.setSchoolCode(account.getSchoolCode());
+        addFeedbackDto.setSchoolId(account.getSchoolId());
+        addFeedbackDto.setSchoolName(account.getSchoolName());
         //后台上传图片
         List<AddFeedbackAttachDto> feedbackAttachVos = null;
         try {
