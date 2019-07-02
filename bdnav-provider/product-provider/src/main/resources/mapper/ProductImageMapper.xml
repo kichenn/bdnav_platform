@@ -8,7 +8,7 @@
         <result column="image_url" jdbcType="VARCHAR" property="imageUrl"/>
         <result column="image_name" jdbcType="VARCHAR" property="imageName"/>
         <result column="sort" jdbcType="TINYINT" property="sort"/>
-        <result column="img_type" jdbcType="TINYINT" property="img_type"/>
+        <result column="img_type" jdbcType="TINYINT" property="imgType"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
         <result column="operator" jdbcType="BIGINT" property="operator"/>

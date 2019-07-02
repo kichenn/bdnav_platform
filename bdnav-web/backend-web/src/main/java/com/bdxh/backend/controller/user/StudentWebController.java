@@ -9,7 +9,7 @@
 package com.bdxh.backend.controller.user;
 
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
-import com.bdxh.common.base.enums.BaseUserNumberStatusEnum;
+import com.bdxh.product.enums.UserNumberStatusEnum;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.excel.ExcelExportUtils;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
@@ -169,7 +169,7 @@ public class StudentWebController {
             }
             Wrapper wrapper = studentControllerClient.addStudent(addStudentDto);
             if (wrapper.getCode() == 200){
-                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()), Integer.parseInt(BaseUserNumberStatusEnum.ADD.getCode().toString()), 1, addStudentDto.getSchoolCode());
+                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()), Integer.parseInt(UserNumberStatusEnum.ADD.getCode().toString()), 1, addStudentDto.getSchoolCode());
             }
             return wrapper;
         } catch (Exception e) {
@@ -206,7 +206,7 @@ public class StudentWebController {
             }
             Wrapper wrapper = studentControllerClient.removeStudent(schoolCode, cardNumber);
             if (wrapper.getCode() == 200){
-                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()), Integer.parseInt(BaseUserNumberStatusEnum.REMOVE.getCode().toString()), 1, schoolCode);
+                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()), Integer.parseInt(UserNumberStatusEnum.REMOVE.getCode().toString()), 1, schoolCode);
             }
             return wrapper;
         } catch (Exception e) {
@@ -373,7 +373,7 @@ public class StudentWebController {
 
                         }
                         Integer addStudentNumber = 0;
-                        schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.STUDENT.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), i, Integer.valueOf(String.valueOf(school.getId())));
+                        schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.STUDENT.getCode()), Integer.valueOf(UserNumberStatusEnum.ADD.getCode()), i, Integer.valueOf(String.valueOf(school.getId())));
                          lastExaclLowNumber =i;
                     }*/
 

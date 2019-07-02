@@ -121,16 +121,16 @@ public class ProductDetailsVo implements Serializable {
     private String productChildIds;
 
     /**
-     * 图片详情
+     * 商品展示图片
      */
-    @ApiModelProperty("图片详情")
+    @ApiModelProperty("商品展示图片")
     List<ProductImage> image;
 
     /**
-     * 图标详情
+     * 商品详情图片
      */
-    @ApiModelProperty("图标详情")
-    List<ProductImage> iocImages;
+    @ApiModelProperty("商品详情图片")
+    List<ProductImage> detailsImages;
 
     /**
      * 如果商品类型为套餐那么就有子商品集合

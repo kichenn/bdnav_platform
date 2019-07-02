@@ -40,21 +40,21 @@
         <result column="createDate" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="updateDate" jdbcType="TIMESTAMP" property="updateDate"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
-        <collection property="image" ofType="com.bdxh.product.entity.ProductImage" column="product_id">
-            <id column="imageId" jdbcType="BIGINT" property="id"/>
-            <id column="productId" jdbcType="BIGINT" property="productId"/>
-            <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl"/>
-            <result column="imageName" jdbcType="VARCHAR" property="imageName"/>
-            <result column="imgType" jdbcType="TINYINT" property="imgType"/>
-            <result column="sort" jdbcType="TINYINT" property="sort"/>
+        <collection property="image" ofType="com.bdxh.product.entity.ProductImage">
+            <id column="id1" jdbcType="BIGINT" property="id"/>
+            <result column="productId1" jdbcType="BIGINT" property="productId"/>
+            <result column="imageUrl1" jdbcType="VARCHAR" property="imageUrl"/>
+            <result column="imageName1" jdbcType="VARCHAR" property="imageName"/>
+            <result column="imgType1" jdbcType="TINYINT" property="imgType"/>
+            <result column="sort1" jdbcType="TINYINT" property="sort"/>
         </collection>
-        <collection property="iocImages" ofType="com.bdxh.product.entity.ProductImage" column="product_id">
-            <id column="imageId" jdbcType="BIGINT" property="id"/>
-            <id column="productId" jdbcType="BIGINT" property="productId"/>
-            <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl"/>
-            <result column="imageName" jdbcType="VARCHAR" property="imageName"/>
-            <result column="imgType" jdbcType="TINYINT" property="imgType"/>
-            <result column="sort" jdbcType="TINYINT" property="sort"/>
+        <collection property="detailsImages" ofType="com.bdxh.product.entity.ProductImage">
+            <id column="id2" jdbcType="BIGINT" property="id"/>
+            <result column="productId2" jdbcType="BIGINT" property="productId"/>
+            <result column="imageUrl2" jdbcType="VARCHAR" property="imageUrl"/>
+            <result column="imageName2" jdbcType="VARCHAR" property="imageName"/>
+            <result column="imgType2" jdbcType="TINYINT" property="imgType"/>
+            <result column="sort2" jdbcType="TINYINT" property="sort"/>
         </collection>
     </resultMap>
 
@@ -106,58 +106,27 @@
         product.update_date AS updateDate,
         product.remark AS remark,
         product.video_url AS videoUrl,
-        productImage.id AS imageId,
-        productImage.sort AS sort,
-        productImage.image_url AS imageUrl,
-        productImage.product_id AS productId,
-        productImage.image_name AS imageName
+        image.id AS id1,
+        image.sort AS sort1,
+        image.image_url AS imageUrl1,
+        image.product_id AS productId1,
+        image.img_type AS imgType1,
+        image.image_name AS imageName1,
+        detailsImages.id AS id2,
+        detailsImages.sort AS sort2,
+        detailsImages.image_url AS imageUrl2,
+        detailsImages.product_id AS productId2,
+        detailsImages.img_type AS imgType2,
+        detailsImages.image_name AS imageName2
     FROM
         t_product AS product
-    LEFT JOIN t_product_image AS productImage ON productImage.product_id = product.id
+    LEFT JOIN t_product_image AS image ON image.product_id = product.id AND image.img_type= '1'
+    LEFT JOIN t_product_image AS detailsImages ON detailsImages.product_id = product.id AND detailsImages.img_type= '2'
     WHERE
         product.id = #{id}
-    ORDER BY sort
+    ORDER BY sort1
   </select>
 
-    <update id="updateProduct">
-        UPDATE t_product
-        <set>
-        <if test="productName != null"> product_name = #{productName},</if>
-        <if test="productName == null"> product_name = product_name,</if>
-        <if test="productShowName != null"> product_show_name = #{productShowName},</if>
-        <if test="productShowName == null"> product_show_name = product_show_name,</if>
-        <if test="productPrice != null"> product_price = #{productPrice},</if>
-        <if test="productPrice == null"> product_price = product_price,</if>
-        <if test="productSellPrice != null"> product_sell_price = #{productSellPrice},</if>
-        <if test="productSellPrice == null"> product_sell_price = product_sell_price,</if>
-        <if test="productDescription != null"> product_description = #{productDescription},</if>
-        <if test="productDescription == null"> product_description = product_description,</if>
-        <if test="productType != null"> product_type = #{productType},</if>
-        <if test="productType == null"> product_type = product_type,</if>
-        <if test="sellStatus != null"> sell_status = #{sellStatus},</if>
-        <if test="sellStatus == null"> sell_status = sell_status,</if>
-        <if test="imgUrl != null"> img_url = #{imgUrl},</if>
-        <if test="imgUrl == null"> img_url = img_url,</if>
-        <if test="videoUrl != null"> video_url = #{videoUrl},</if>
-        <if test="videoUrl == null"> video_url = video_url,</if>
-        <if test="businessType != null"> business_type = #{businessType},</if>
-        <if test="businessType == null"> business_type = business_type,</if>
-        <if test="productExtra != null"> product_extra = #{productExtra},</if>
-        <if test="productExtra == null"> product_extra = product_extra,</if>
-        <if test="operator != null"> operator = #{operator},</if>
-        <if test="operator == null"> operator = operator,</if>
-        <if test="operatorName != null"> operator_name = #{operatorName},</if>
-        <if test="operatorName == null"> operator_name = operator_name,</if>
-        <if test="createDate != null"> create_date = #{createDate},</if>
-        <if test="createDate == null"> create_date = create_date,</if>
-        <if test="updateDate != null"> update_date = #{updateDate},</if>
-        <if test="updateDate == null"> update_date = update_date,</if>
-        <if test="remark != null"> remark = #{remark}</if>
-        <if test="remark == null"> remark = remark</if>
-        </set>
-        WHERE
-	        id=#{id}
-    </update>
 
     <!--添加商品信息-->
     <insert id="insertProduct" useGeneratedKeys="true" keyProperty="id" parameterType="com.bdxh.product.entity.Product">
@@ -201,8 +170,10 @@
     </select>
 
     <select id="findProductByIds" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select <include refid="BaseColumns"/> from t_product where id in
-        <foreach  item="id" index="index" collection="productIds.split(',')" open="(" separator="," close=")">
+        select
+        <include refid="BaseColumns"/>
+        from t_product where id in
+        <foreach item="id" index="index" collection="productIds.split(',')" open="(" separator="," close=")">
             #{id}
         </foreach>
     </select>

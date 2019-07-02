@@ -71,6 +71,8 @@ public class FileOperationUtils {
         String finalKey = QcloudConstants.RESOURCES_PREFIX + key;
         if (extName.equals("apk")) {
             finalKey = QcloudConstants.RESOURCES_PREFIX1 + key;
+        } else if (extName.equals("mp4")) {
+            finalKey = QcloudConstants.RESOURCES_PREFIX2 + fileName;
         }
         PutObjectRequest putObjectRequest = new PutObjectRequest(buckentNameFinal, finalKey, multipartFile.getInputStream(), objectMetadata);
         putObjectRequest.setMetadata(objectMetadata);
@@ -111,12 +113,14 @@ public class FileOperationUtils {
         objectMetadata.setContentLength(multipartFile.getSize());
         objectMetadata.setCacheControl("no-cache");
         objectMetadata.setHeader("Pragma", "no-cache");
-        objectMetadata.setContentType(getcontentType("."+extName));
+        objectMetadata.setContentType(getcontentType("." + extName));
         objectMetadata.setContentDisposition("inline;filename=" + key);
         //图片存储到data里，apk存储到files里
         String finalKey = QcloudConstants.RESOURCES_PREFIX + key;
         if (extName.equals("apk")) {
             finalKey = QcloudConstants.RESOURCES_PREFIX1 + key;
+        } else if (extName.equals("mp4")) {
+            finalKey = QcloudConstants.RESOURCES_PREFIX2 + fileName;
         }
         // 对于使用公网传输且网络带宽质量不高的情况，建议减小该值，避免因网速过慢，造成请求超时。
         ExecutorService threadPool = Executors.newFixedThreadPool(QcloudConstants.N_THREADS);
@@ -155,6 +159,8 @@ public class FileOperationUtils {
         String finalKey = QcloudConstants.RESOURCES_PREFIX + fileName;
         if (extName.equals("apk")) {
             finalKey = QcloudConstants.RESOURCES_PREFIX1 + fileName;
+        } else if (extName.equals("mp4")) {
+            finalKey = QcloudConstants.RESOURCES_PREFIX2 + fileName;
         }
         COSClient cosClient = new COSClient(cred, clientConfig);
         // 获取下载输入流
@@ -181,6 +187,8 @@ public class FileOperationUtils {
         String extName = FilenameUtils.getExtension(fileName);
         if (extName.equals("apk")) {
             key = QcloudConstants.RESOURCES_PREFIX1 + fileName;
+        } else if (extName.equals("mp4")) {
+            key = QcloudConstants.RESOURCES_PREFIX2 + fileName;
         }
         try {
             cosClient.deleteObject(buckentNameFinal, key);
@@ -192,7 +200,6 @@ public class FileOperationUtils {
         // 关闭客户端
         cosClient.shutdown();
     }
-
 
     /**
      * @Description: 获得url链接 fileName文件名 buckentName 存储桶名
@@ -211,6 +218,8 @@ public class FileOperationUtils {
         String finalKey = QcloudConstants.RESOURCES_PREFIX + fileName;
         if (extName.equals("apk")) {
             finalKey = QcloudConstants.RESOURCES_PREFIX1 + fileName;
+        } else if (extName.equals("mp4")) {
+            finalKey = QcloudConstants.RESOURCES_PREFIX2 + fileName;
         }
         GeneratePresignedUrlRequest req = new GeneratePresignedUrlRequest(buckentNameFinal, finalKey, HttpMethodName.GET);
         // 设置签名过期时间(可选), 过期时间不做限制，只需比当前时间大, 若未进行设置, 则默认使用ClientConfig中的签名过期时间(5分钟)

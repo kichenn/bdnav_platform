@@ -1,15 +1,14 @@
-package com.bdxh.common.base.enums;
+package com.bdxh.product.enums;
 
-public enum BaseProductImgTypeEnum {
-
-    IOCIMAGES(new Byte("1"), "图标图片"),
-    IMAGE(new Byte("2"), "商品详情图片");
+public enum UserNumberStatusEnum {
+    ADD(new Byte("1"), "增加"),
+    REMOVE(new Byte("2"), "减少");
 
     private Byte code;
 
     private String desc;
 
-    BaseProductImgTypeEnum(Byte code, String desc) {
+    UserNumberStatusEnum(Byte code, String desc) {
         this.code = code;
         this.desc = desc;
     }
