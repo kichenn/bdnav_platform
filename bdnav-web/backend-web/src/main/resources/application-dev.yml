@@ -9,7 +9,7 @@ spring:
   servlet:
     multipart:
       enabled: true
-      max-file-size: 200Mb
+      max-file-size: 1000Mb
       max-request-size: 1000Mb
   #jackson配置
   jackson:
