@@ -50,6 +50,8 @@ public class FamilyBlackUrlWebController {
     public Object addBlacklist(@Validated @RequestBody AddFamilyBlackUrlDto addFamilyBlackUrlDto) {
     UserInfo userInfo = SecurityUtils.getCurrentUser();
         addFamilyBlackUrlDto.setSchoolCode(userInfo.getSchoolCode());
+        addFamilyBlackUrlDto.setSchoolName(userInfo.getSchoolName());
+        addFamilyBlackUrlDto.setFamilyName(userInfo.getName());
     Wrapper wrapMapper = familyBlackUrlControllerClient.addFamilyBlackUrl(addFamilyBlackUrlDto);
         if (wrapMapper.getCode()==500){
             return wrapMapper;
