@@ -9,6 +9,8 @@ import com.bdxh.user.vo.VisitLogsVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 /**
 * @Description: 业务层接口
@@ -80,4 +82,11 @@ public interface VisitLogsService extends IService<VisitLogs> {
 	 * @return
 	 */
 	PageInfo<VisitLogsVo> queryVisitLogByCardNumber(String schoolCode, String cardNumber);
+
+	/**
+	 * 批量添加浏览网站日志接口
+	 * @Author: WanMing
+	 * @Date: 2019/6/28 11:56
+	 */
+    void batchAddVisitLogsInfo(List<AddVisitLogsDto> visitLogsList);
 }

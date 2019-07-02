@@ -9,23 +9,24 @@ import java.util.Map;
 
 /**
  * @author WanMing
- * @date 2019/6/25 10:39
+ * @date 2019/6/28 15:54
  */
 
-public enum FamliyBlackUrlStatusEnum {
+public enum VisitLogsStatusEnum {
 
-    NORMAL(new Byte("1"), "未拦截"),
-    OFFLINE(new Byte("2"), "拦截");
+
+    NORMAL(new Byte("0"), "未拦截"),
+    OFFLINE(new Byte("1"), "拦截");
 
     private final Byte key;
     private final String value;
 
-    public final static Byte NORMAL_KEY = 1;
-    public final static Byte OFFLINE_KEY = 2;
+    public final static Byte NORMAL_KEY = 0;
+    public final static Byte OFFLINE_KEY = 1;
     public final static String NORMAL_VALUE = "未拦截";
     public final static String OFFLINE_VALUE = "拦截";
 
-    private FamliyBlackUrlStatusEnum(Byte key, String value) {
+    private VisitLogsStatusEnum(Byte key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -42,7 +43,7 @@ public enum FamliyBlackUrlStatusEnum {
         if (null == value) {
             return null;
         }
-        for (FamliyBlackUrlStatusEnum c : FamliyBlackUrlStatusEnum.values()) {
+        for (VisitLogsStatusEnum c : VisitLogsStatusEnum.values()) {
             if (c.getValue().equals(value)) {
                 return c.key;
             }
@@ -54,7 +55,7 @@ public enum FamliyBlackUrlStatusEnum {
         if (null == key) {
             return StringUtils.EMPTY;
         }
-        for (FamliyBlackUrlStatusEnum c : FamliyBlackUrlStatusEnum.values()) {
+        for (VisitLogsStatusEnum c : VisitLogsStatusEnum.values()) {
             if (c.getKey().equals(key)) {
                 return c.value;
             }
@@ -64,8 +65,8 @@ public enum FamliyBlackUrlStatusEnum {
 
     public static List<Map<String, Object>> getEnums() {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        FamliyBlackUrlStatusEnum[] bs = FamliyBlackUrlStatusEnum.values();
-        for (FamliyBlackUrlStatusEnum projectType : bs) {
+        VisitLogsStatusEnum[] bs = VisitLogsStatusEnum.values();
+        for (VisitLogsStatusEnum projectType : bs) {
             Map<String, Object> map = Maps.newHashMap();
             map.put("key", projectType.getKey());
             map.put("value", projectType.getValue());
@@ -73,5 +74,4 @@ public enum FamliyBlackUrlStatusEnum {
         }
         return data;
     }
-
 }

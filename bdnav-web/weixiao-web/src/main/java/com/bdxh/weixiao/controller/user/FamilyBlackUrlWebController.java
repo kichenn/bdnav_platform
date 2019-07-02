@@ -19,10 +19,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +51,9 @@ public class FamilyBlackUrlWebController {
     UserInfo userInfo = SecurityUtils.getCurrentUser();
         addFamilyBlackUrlDto.setSchoolCode(userInfo.getSchoolCode());
     Wrapper wrapMapper = familyBlackUrlControllerClient.addFamilyBlackUrl(addFamilyBlackUrlDto);
+        if (wrapMapper.getCode()==500){
+            return wrapMapper;
+        }
     String aap = String.valueOf(wrapMapper.getResult());
     FamilyBlackUrl bu = familyBlackUrlControllerClient.findBlackUrlById(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber(), Long.valueOf(aap)).getResult();
         if(bu !=null) {
@@ -80,5 +80,16 @@ public class FamilyBlackUrlWebController {
     }
     return wrapMapper;
   }
+
+
+    @ApiOperation(value = "微校平台----删除家长黑名单列表")
+    @RequestMapping(value = "/delFamilyBlackUrl", method = RequestMethod.POST)
+    public Object delFamilyBlackUrl(@RequestParam(name = "schoolCode")  String schoolCode,
+                                    @RequestParam(name = "cardNumber") String cardNumber,
+                                    @RequestParam(name = "id") String id) {
+        return familyBlackUrlControllerClient.delFamilyBlackUrl(schoolCode,cardNumber,id);
+    }
+
+
 
 }

@@ -73,6 +73,12 @@ public class ProductDetailsVo implements Serializable {
     private String imgUrl;
 
     /**
+     * 视频地址
+     */
+    @ApiModelProperty("视频地址")
+    private String videoUrl;
+
+    /**
      * 业务类型 1 微校服务
      */
     @ApiModelProperty("业务类型 1 微校服务'")
@@ -119,6 +125,12 @@ public class ProductDetailsVo implements Serializable {
      */
     @ApiModelProperty("图片详情")
     List<ProductImage> image;
+
+    /**
+     * 图标详情
+     */
+    @ApiModelProperty("图标详情")
+    List<ProductImage> iocImages;
 
     /**
      * 如果商品类型为套餐那么就有子商品集合

@@ -39,6 +39,12 @@ public class ProductImage implements Serializable {
 	private String imageUrl;
 
 	/**
+	 * 图片类型: 1 图标图片  2 商品图片详情
+	 */
+	@Column(name = "img_type")
+	private Byte imgType;
+
+	/**
 	 * 图片名称
 	 */
 	@Column(name = "image_name")

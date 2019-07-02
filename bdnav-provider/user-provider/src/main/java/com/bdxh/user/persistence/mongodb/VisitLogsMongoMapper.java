@@ -42,7 +42,7 @@ public class VisitLogsMongoMapper {
             Pattern pattern = Pattern.compile("^.*" + visitLogsQueryDto.getSchoolName() + ".*$", Pattern.CASE_INSENSITIVE);
             criteria.and("school_name").regex(pattern);
         }
-        if (null != visitLogsQueryDto.getStatus() && visitLogsQueryDto.getStatus() != 0) {
+        if(null!=visitLogsQueryDto.getStatus()){
             criteria.and("status").is(visitLogsQueryDto.getStatus());
         }
         if (StringUtils.isNotEmpty(visitLogsQueryDto.getSchoolCode())) {
@@ -170,6 +170,16 @@ public class VisitLogsMongoMapper {
      */
     public void insertVisitLogsInfo(VisitLogsMongo visitLogsMongo) {
         mongoTemplate.save(visitLogsMongo);
+    }
+
+
+    /**
+     * 批量添加学生浏览网页数据
+     * @Author: WanMing
+     * @Date: 2019/6/28 12:17
+     */
+    public void batchInsertVisitLogsInfo(List<VisitLogsMongo> visitLogsMongos){
+        mongoTemplate.insertAll(visitLogsMongos);
     }
 
 }

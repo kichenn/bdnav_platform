@@ -1,5 +1,6 @@
 package com.bdxh.product.service.impl;
 
+import com.bdxh.common.base.enums.BaseProductImgTypeEnum;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
@@ -22,8 +23,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import sun.reflect.misc.ConstructorUtil;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * @Description: 商品service实现
@@ -50,7 +54,17 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         if (productDto.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
             product.setProductExtra(productDto.getProductChildIds());
         }
-        productMapper.insertProduct(product);
+        //判断是是否是图标图片或是商品类型
+        if (CollectionUtils.isNotEmpty(productDto.getImage())){
+            productDto.getImage().forEach(productImageAddDto -> {
+                ProductImage productImage = new ProductImage();
+                if (BaseProductImgTypeEnum.IMAGE.getCode().equals(productImage.getImgType())){
+                    productMapper.insertProduct(product);
+                }else {
+                    productMapper.insertProduct(product);
+                }
+            });
+        }
         Long productId = product.getId();
         //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
         Byte i = 1;

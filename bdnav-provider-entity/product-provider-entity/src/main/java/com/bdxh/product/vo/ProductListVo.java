@@ -44,4 +44,7 @@ public class ProductListVo {
 
     @ApiModelProperty(value = "图片信息")
     private List<String> imgUrl;
+
+    @ApiModelProperty(value = "图片类型 1图标图片  2 商品详情信息")
+    private Byte imgType;
 }

@@ -1,5 +1,6 @@
 package com.bdxh.user.controller;
 
+import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.user.dto.AddFamilyBlackUrlDto;
@@ -8,17 +9,21 @@ import com.bdxh.user.dto.ModifyFamilyBlackUrlDto;
 import com.bdxh.user.entity.FamilyBlackUrl;
 import com.bdxh.user.service.FamilyBlackUrlService;
 import com.bdxh.user.vo.FamilyBlackUrlVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
 * @Description: 家长端黑名单控制器
@@ -106,16 +111,20 @@ public class FamilyBlackUrlController {
 	}
 
 
-	/**
+/*
+	*/
+/**
 	 * 根据条件分页查询家长端的黑名单
 	 * @Author: WanMing
 	 * @Date: 2019/6/25 10:44
-	 */
+	 *//*
+
 	@ApiOperation(value = "根据条件分页查询家长端的黑名单",response = FamilyBlackUrlVo.class)
 	@RequestMapping(value = "/findFamilyBlackUrlByCondition",method = RequestMethod.POST)
 	public Object findFamilyBlackUrlByCondition(@RequestBody FamilyBlackUrlQueryDto familyBlackUrlQueryDto ){
 		return WrapMapper.ok(familyBlackUrlService.findFamilyBlackUrlByCondition(familyBlackUrlQueryDto));
 	}
+*/
 
 	/**
 	 * 查询家长对应孩子的黑名单
@@ -154,6 +163,29 @@ public class FamilyBlackUrlController {
 								   @RequestParam("cardNumber")String cardNumber,
 											  @RequestParam("id")Long id){
 		return WrapMapper.ok(familyBlackUrlService.findBlackUrlById(schoolCode,cardNumber,id));
+	}
+
+	/**
+	 * @Description: 带条件分页查询列表信息
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/findFamilyBlackUrlByCondition", method = RequestMethod.POST)
+	@ApiOperation(value = "带条件分页查询列表信息")
+	@ResponseBody
+	public Object findFamilyBlackUrlByCondition(@Validated @RequestBody FamilyBlackUrlQueryDto familyBlackUrlQueryDto, BindingResult bindingResult) {
+		//检验参数
+		if(bindingResult.hasErrors()){
+			String errors = bindingResult.getFieldErrors().stream().map(u -> u.getDefaultMessage()).collect(Collectors.joining(","));
+			return WrapMapper.error(errors);
+		}
+		try{
+			Map<String, Object> param = BeanToMapUtil.objectToMap(familyBlackUrlQueryDto);
+			PageInfo<FamilyBlackUrlVo> FamilyBlackUrls = familyBlackUrlService.findFamilyBlackUrlByCondition(param,familyBlackUrlQueryDto.getPageNum(),familyBlackUrlQueryDto.getPageSize());
+			return WrapMapper.ok(FamilyBlackUrls);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return WrapMapper.error(e.getMessage());
+		}
 	}
 
 

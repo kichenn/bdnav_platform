@@ -22,7 +22,4 @@ public class ProductImageAddDto implements Serializable {
     @ApiModelProperty("图片名称")
     private String imageName;
 
-
-
-
 }

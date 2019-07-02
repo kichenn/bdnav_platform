@@ -66,6 +66,9 @@ public class BlackUrlWebController {
         addBlackUrlDto.setOperator(user.getId());
         addBlackUrlDto.setOperatorName(user.getUserName());
         Wrapper wrapMapper = blackUrlControllerClient.addBlack(addBlackUrlDto);
+        if (wrapMapper.getCode()==500){
+            return wrapMapper;
+        }
         String aap=String.valueOf(wrapMapper.getResult());
         BlackUrl bu=blackUrlControllerClient.findBlackUrlById(Long.valueOf(aap)).getResult();
         if (bu!=null) {
@@ -93,6 +96,7 @@ public class BlackUrlWebController {
                 System.out.println(resultMap.toString());
             }
         }
+
         return wrapMapper;
     }
 

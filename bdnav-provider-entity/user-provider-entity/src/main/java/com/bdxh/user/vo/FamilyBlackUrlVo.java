@@ -1,6 +1,5 @@
 package com.bdxh.user.vo;
 
-import com.bdxh.user.enums.FamliyBlackUrlStatusEnum;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
