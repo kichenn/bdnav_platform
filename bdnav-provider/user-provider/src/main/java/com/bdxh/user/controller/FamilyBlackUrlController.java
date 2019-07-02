@@ -59,7 +59,7 @@ public class FamilyBlackUrlController {
 		familyBlackUrl.setStatus(addFamilyBlackUrlDto.getStatus().getKey());
 		//添加
 		try {
-			familyBlackUrlService.addBlackUrlByFamily(familyBlackUrl);
+			familyBlackUrlService.addFamilyBlackUrl(familyBlackUrl);
 		} catch (Exception e) {
 			if (e instanceof DuplicateKeyException) {
 				//数据库设置唯一索引 黑名单ip,家长id,学生id
