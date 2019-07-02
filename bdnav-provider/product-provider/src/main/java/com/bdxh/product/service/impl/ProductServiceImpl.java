@@ -1,12 +1,13 @@
 package com.bdxh.product.service.impl;
 
-import com.bdxh.common.base.enums.BaseProductImgTypeEnum;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.support.BaseService;
 import com.bdxh.common.utils.BeanMapUtils;
+import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.product.dto.*;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.entity.ProductImage;
+import com.bdxh.product.enums.ProductImgTypeEnum;
 import com.bdxh.product.enums.ProductTypeEnum;
 import com.bdxh.product.persistence.ProductImageMapper;
 import com.bdxh.product.persistence.ProductMapper;
@@ -23,9 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import sun.reflect.misc.ConstructorUtil;
 
-import java.awt.*;
 import java.util.*;
 import java.util.List;
 
@@ -43,56 +42,45 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     @Autowired
     private ProductImageMapper productImageMapper;
 
-
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void addProduct(ProductAddDto productDto) {
         Product product = BeanMapUtils.map(productDto, Product.class);
         Integer count = productMapper.findProductByName(product.getProductName());
         Preconditions.checkArgument(count == 0, "已有重复的商品名称");
-        //判断是不是新增的套餐
+        //如果是套餐则设置单品信息
         if (productDto.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
             product.setProductExtra(productDto.getProductChildIds());
         }
-        //判断是是否是图标图片或是商品类型
-        if (CollectionUtils.isNotEmpty(productDto.getImage())){
-            productDto.getImage().forEach(productImageAddDto -> {
-                ProductImage productImage = new ProductImage();
-                if (BaseProductImgTypeEnum.IMAGE.getCode().equals(productImage.getImgType())){
-                    productMapper.insertProduct(product);
-                }else {
-                    productMapper.insertProduct(product);
-                }
-            });
-        }
-        Long productId = product.getId();
-        //循环添加图片详情表图片顺序按照图片上传的先后顺序排列
-        Byte i = 1;
-        if (productDto.getImage().size() > 0) {
-            for (ProductImageAddDto productImageAddDto : productDto.getImage()) {
-                ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
-                if (i == 1) {
-                    productDto.setImgUrl(productImage.getImageUrl());
-                }
-                productImage.setSort(i);
-                productImage.setProductId(productId);
-                productImage.setOperator(productDto.getOperator());
-                productImage.setOperatorName(productDto.getOperatorName());
-                productImage.setRemark(productDto.getRemark());
-                productImageMapper.insert(productImage);
-                i++;
+        for (ProductImageAddDto productImageTemp : productDto.getImage()) {
+            //如果是商品图片展示 并设置为默认图标展示
+            if (productImageTemp.getProductImgTypeEnum().getKey().equals(ProductImgTypeEnum.IMAGE.getKey())) {
+                product.setImgUrl(productImageTemp.getImageUrl());
+                break;
             }
-        } else {
-            productDto.setImgUrl("");
         }
+        productMapper.insertProduct(product);
+
+        for (int i = 0; i < productDto.getImage().size(); i++) {
+            ProductImageAddDto productImageAddDto = productDto.getImage().get(i);
+            ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
+            productImage.setProductId(product.getId());
+            productImage.setSort((byte) i);
+            productImage.setImgType(productImageAddDto.getProductImgTypeEnum().getKey());
+            productImage.setOperator(productDto.getOperator());
+            productImage.setOperatorName(productDto.getOperatorName());
+            productImage.setRemark(productDto.getRemark());
+            productImageMapper.insert(productImage);
+        }
+
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void updateProduct(ProductUpdateDto productUpdateDto) {
         Product product = BeanMapUtils.map(productUpdateDto, Product.class);
-//        Integer count = productMapper.findProductByName(product.getProductName());
-//        Preconditions.checkArgument(count == 0, "已有重复的商品名称");
+        Integer count = productMapper.findProductByName(product.getProductName());
+        Preconditions.checkArgument(count == 0, "已有重复的商品名称");
         //如果是修改普通的单品
         if (product.getProductType().equals(ProductTypeEnum.SINGLE.getCode())) {
             Product findProduct = new Product();
@@ -110,7 +98,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
                                 List<String> idsArrayList = new ArrayList<>(ids);
                                 idsArrayList.remove(i);
                                 fatherProduct.setProductExtra(StringUtils.strip(idsArrayList.toString(), "[]").replace(" ", ""));
-                                productMapper.updateProduct(fatherProduct);
+                                productMapper.updateByPrimaryKeySelective(fatherProduct);
                                 continue;
                             }
                         }
@@ -126,6 +114,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         for (ProductImage productImage : productImageList) {
             productImage.setSort(i);
             productImage.setProductId(product.getId());
+            productImage.setImgType(productImage.getSort());
             productImage.setOperator(product.getOperator());
             productImage.setOperatorName(product.getOperatorName());
             productImage.setRemark(product.getRemark());
@@ -133,7 +122,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
             i++;
         }
         product.setProductExtra(productUpdateDto.getProductChildIds());
-        productMapper.updateProduct(product);
+        productMapper.updateByPrimaryKeySelective(product);
     }
 
     @Override
@@ -205,7 +194,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     public ProductDetailsVo findProductDetails(Long id) {
         ProductDetailsVo productDetailsVo = productMapper.findProductDetails(id);
         //判断商品是不是套餐
-        if (productDetailsVo.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
+        if (productDetailsVo != null && productDetailsVo.getProductType().equals(ProductTypeEnum.GROUP.getCode())) {
             String[] productChildArr = productDetailsVo.getProductChildIds().split(",");
             List<Product> productList = new ArrayList<>();
             for (int i = 0; i < productChildArr.length; i++) {
@@ -231,8 +220,8 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
      * @Date: 2019/6/24 10:59
      */
     @Override
-    public Product findProductByName(String productName){
-        Product product=new Product();
+    public Product findProductByName(String productName) {
+        Product product = new Product();
         product.setProductName(productName);
         return productMapper.selectOne(product);
     }

@@ -1,7 +1,7 @@
 package com.bdxh.backend.controller.user;
 
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
-import com.bdxh.common.base.enums.BaseUserNumberStatusEnum;
+import com.bdxh.product.enums.UserNumberStatusEnum;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
@@ -81,7 +81,7 @@ public class TeacherWebController {
             addTeacherDto.setOperatorName(user.getUserName());
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
             if(wrapper.getCode()==200) {
-                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), 1, addTeacherDto.getSchoolCode());
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(UserNumberStatusEnum.ADD.getCode()), 1, addTeacherDto.getSchoolCode());
             }
             return wrapper;
         }catch (Exception e) {
@@ -116,7 +116,7 @@ public class TeacherWebController {
             }
             Wrapper wrapper=teacherControllerClient.removeTeacher(schoolCode, cardNumber);
             if(wrapper.getCode()==200){
-                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.TEACHER.getCode().toString()), Integer.parseInt(BaseUserNumberStatusEnum.REMOVE.getCode().toString()), 1, schoolCode);
+                schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.TEACHER.getCode().toString()), Integer.parseInt(UserNumberStatusEnum.REMOVE.getCode().toString()), 1, schoolCode);
             }
             return wrapper;
         }catch (Exception e){

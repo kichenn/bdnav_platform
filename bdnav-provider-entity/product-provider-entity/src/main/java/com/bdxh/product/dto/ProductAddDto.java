@@ -69,10 +69,10 @@ public class ProductAddDto implements Serializable {
     private String imgUrl;
 
     /**
-     * 视频地址
+     * 视频地址 默认视频地址
      */
     @ApiModelProperty("视频地址")
-    private String videoUrl;
+    private String videoUrl="http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/video/all.mp4?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1562050235%3B1877410235%26q-key-time%3D1562050235%3B1877410235%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3D1a2f468b8ca5446f9ad5931c6518ec494ddfdb73\n";
 
     /**
      * 业务类型 1 微校服务
@@ -106,10 +106,7 @@ public class ProductAddDto implements Serializable {
     private String productChildIds;
 
 
-    @ApiModelProperty("图片详情")
+    @ApiModelProperty("图片信息")
     List<ProductImageAddDto> image;
 
-
-    @ApiModelProperty("图标详情")
-    List<ProductImageAddDto> iocImages;
 }

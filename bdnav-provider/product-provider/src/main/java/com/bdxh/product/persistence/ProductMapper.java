@@ -18,9 +18,6 @@ public interface ProductMapper extends Mapper<Product> {
     //查询商品详情
     ProductDetailsVo findProductDetails(@Param("id") Long id);
 
-    //修改商品信息
-    int updateProduct(Product product);
-
     //新增商品信息
     int insertProduct(Product product);
 
