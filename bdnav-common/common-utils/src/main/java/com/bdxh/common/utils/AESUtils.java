@@ -20,8 +20,6 @@ public class AESUtils {
         String WEIXIAO_KEY = "bdnav_weixiao***";
         //mysql加密key
         String MYSQL_KEY = "bdnav_mysql*****";
-        //redis加密key
-        String REDIS_KEY = "bdnav_redis*****";
     }
 
 

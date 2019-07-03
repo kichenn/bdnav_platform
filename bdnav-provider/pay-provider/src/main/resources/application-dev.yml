@@ -16,7 +16,7 @@ spring:
     cluster:
       nodes: 119.23.185.109:8001,119.23.185.109:8002,47.107.253.90:8003,47.107.253.90:8004,119.23.185.109:8005,47.107.253.90:8006
     timeout: 5000
-    password: UIzks7RmeqrPT3IVrOCp2w==
+    password: Bdxh_123456
     lettuce:
       pool:
         max-active: 20
