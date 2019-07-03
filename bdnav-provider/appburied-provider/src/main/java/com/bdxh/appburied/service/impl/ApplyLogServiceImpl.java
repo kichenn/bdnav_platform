@@ -24,7 +24,9 @@ import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.persistence.ApplyLogMapper;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Description: 业务层实现
@@ -123,8 +125,9 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
                 applyLogs.addAll(family);
             });
         }
-        //排序
-        PageInfo pageInfo = new PageInfo(applyLogs);
+        //时间排序
+        List<ApplyLog> collect = applyLogs.stream().sorted(Comparator.comparing(ApplyLog::getCreateDate).reversed()).collect(Collectors.toList());
+        PageInfo<ApplyLog> pageInfo = new PageInfo(applyLogs);
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }
