@@ -79,8 +79,6 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
     @Transactional(rollbackFor = Exception.class)
     public void updateProduct(ProductUpdateDto productUpdateDto) {
         Product product = BeanMapUtils.map(productUpdateDto, Product.class);
-        Integer count = productMapper.findProductByName(product.getProductName());
-        Preconditions.checkArgument(count == 0, "已有重复的商品名称");
         //如果是修改普通的单品
         if (product.getProductType().equals(ProductTypeEnum.SINGLE.getCode())) {
             Product findProduct = new Product();
@@ -114,7 +112,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         for (ProductImage productImage : productImageList) {
             productImage.setSort(i);
             productImage.setProductId(product.getId());
-            productImage.setImgType(productImage.getSort());
+            productImage.setImgType(productImage.getImgType());
             productImage.setOperator(product.getOperator());
             productImage.setOperatorName(product.getOperatorName());
             productImage.setRemark(product.getRemark());
