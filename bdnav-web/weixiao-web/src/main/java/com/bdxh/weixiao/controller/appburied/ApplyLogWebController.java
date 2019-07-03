@@ -86,7 +86,7 @@ public class ApplyLogWebController {
      * @return
      */
     @RolesAllowed({"TEST", "CONTROLE"})
-    @RequestMapping(value = "/findApplyLogInfoByFamily", method = RequestMethod.GET)
+    @RequestMapping(value = "/findApplyLogInfoByFamily", method = RequestMethod.POST)
     @ApiOperation(value = "审批畅玩----家长查询该学校所有孩子的申请畅玩记录", response = ApplyLog.class)
     public Object findApplyLogInfoByFamily(@RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto) {
         try {
