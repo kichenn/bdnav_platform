@@ -4,6 +4,7 @@ import com.alibaba.druid.pool.DruidDataSource;
 import com.bdxh.common.utils.AESUtils;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
@@ -12,7 +13,7 @@ import java.util.Properties;
 
 @Data
 @ConfigurationProperties(prefix = "spring.datasource.ds0")
-@Component
+@Configuration
 public class DataSourceM0 {
 
     private String url;
