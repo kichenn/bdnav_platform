@@ -1,11 +1,13 @@
 package com.bdxh.appmarket.configration.mybatis;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+import com.bdxh.appmarket.configration.mybatis.data.DataSourceM0;
 import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -23,11 +25,8 @@ import java.util.Properties;
 @Slf4j
 public class MybatisConfig {
 
-	@Bean(name = "dataSource")
-	@ConfigurationProperties(prefix = "spring.datasource.ds0")
-	public DataSource dataSource(){
-		return DruidDataSourceBuilder.create().build();
-	}
+	@Autowired
+	private DataSourceM0 dataSourceM0;
 
 	@Bean(name="pageHelper")
 	public PageHelper getPageHelper() {
@@ -42,11 +41,11 @@ public class MybatisConfig {
 	}
 	
 	@Bean(name="sqlSessionFactory")
-	public SqlSessionFactory getSqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) {
+	public SqlSessionFactory getSqlSessionFactory() {
 		SqlSessionFactoryBean sqlSessionFactoryBean=new SqlSessionFactoryBean();
 		//指定别名包
 		sqlSessionFactoryBean.setTypeAliasesPackage("com.bdxh.appmarket.entity");
-		sqlSessionFactoryBean.setDataSource(dataSource);
+		sqlSessionFactoryBean.setDataSource(dataSourceM0.createDataSource());
 		try {
 			ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
 			//指定mapper文件的位置

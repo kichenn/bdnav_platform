@@ -16,7 +16,12 @@ public class AESUtils {
 
     public interface AesConstant {
         //长度16位
+        //微校加密key
         String WEIXIAO_KEY = "bdnav_weixiao***";
+        //mysql加密key
+        String MYSQL_KEY = "bdnav_mysql*****";
+        //redis加密key
+        String REDIS_KEY = "bdnav_redis*****";
     }
 
 
@@ -97,9 +102,9 @@ public class AESUtils {
      ****************************************************/
 
     public static void main(String[] args) {
-        String content = "sc160401";
+        String content = "Bdxh_123456";
         log.info("加密content：" + content);
-        String key = AesConstant.WEIXIAO_KEY;
+        String key = AesConstant.MYSQL_KEY;
         log.info("加密key：" + key);
         String enResult = enCode(content, key);
         log.info("加密result：" + enResult);

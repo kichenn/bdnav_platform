@@ -7,6 +7,8 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import javax.sql.DataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
+import com.bdxh.order.configration.mybatis.data.DataSourceM0;
+import com.bdxh.order.configration.mybatis.data.DataSourceM1;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
 import io.shardingsphere.api.config.strategy.StandardShardingStrategyConfiguration;
@@ -15,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -31,21 +34,15 @@ import com.github.pagehelper.PageHelper;
 @EnableTransactionManagement
 public class MybatisConfig {
 
-	@Bean(name = "dataSource0")
-	@ConfigurationProperties(prefix = "spring.datasource.ds0")
-	public DataSource dataSource0(){
-		return DruidDataSourceBuilder.create().build();
-	}
+	@Autowired
+	private DataSourceM0 dataSourceM0;
 
-	@Bean(name = "dataSource1")
-	@ConfigurationProperties(prefix = "spring.datasource.ds1")
-	public DataSource dataSource1(){
-		return DruidDataSourceBuilder.create().build();
-	}
+	@Autowired
+	private DataSourceM1 dataSourceM1;
 
 	@Bean(name = "shardingDataSource")
 	@Primary
-	public DataSource getDataSource(@Qualifier("dataSource0") DataSource dataSource0,@Qualifier("dataSource1") DataSource dataSource1) throws SQLException {
+	public DataSource getDataSource() throws SQLException {
 		//分库分表配置
 		ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
 		//分库分表策略
@@ -54,8 +51,8 @@ public class MybatisConfig {
 		//级联绑定表，用于优化查询
 		shardingRuleConfig.getBindingTableGroups().add("t_order,t_order_item");
 		Map<String, DataSource> dataSourceMap = new HashMap<>();
-		dataSourceMap.put("ds_0", dataSource0);
-		dataSourceMap.put("ds_1", dataSource1);
+		dataSourceMap.put("ds_0", dataSourceM0.createDataSource());
+		dataSourceMap.put("ds_1", dataSourceM1.createDataSource());
 		return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig,new ConcurrentHashMap(), new Properties());
 	}
 	

@@ -1,9 +1,0 @@
-server:
-  port: 9020
-spring:
-  application:
-    name: applecontrol-provider-cluster
-  profiles:
-    active: dev
-logging:
-  config: classpath:logback-spring.xml
