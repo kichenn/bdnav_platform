@@ -18,7 +18,6 @@
         <module>pay-provider-entity</module>
         <module>product-provider-entity</module>
         <module>mapservice-provider-entity</module>
-        <module>applecontrol-provider-entity</module>
         <module>system-provider-entity</module>
         <module>school-provider-entity</module>
         <module>user-provider-entity</module>
