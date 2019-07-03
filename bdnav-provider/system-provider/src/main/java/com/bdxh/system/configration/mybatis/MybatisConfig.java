@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -28,6 +29,12 @@ public class MybatisConfig {
     @Autowired
     private DataSourceM0 dataSourceM0;
 
+    @Bean(name = "dataSource")
+    @Primary
+    public DataSource getDataSource() {
+        return dataSourceM0.createDataSource();
+    }
+
     @Bean(name = "pageHelper")
     public PageHelper getPageHelper() {
         PageHelper pageHelper = new PageHelper();
@@ -41,11 +48,11 @@ public class MybatisConfig {
     }
 
     @Bean(name = "sqlSessionFactory")
-    public SqlSessionFactory getSqlSessionFactory() {
+    public SqlSessionFactory getSqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) {
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         //指定别名包
         sqlSessionFactoryBean.setTypeAliasesPackage("com.bdxh.system.entity");
-        sqlSessionFactoryBean.setDataSource(dataSourceM0.createDataSource());
+        sqlSessionFactoryBean.setDataSource(dataSource);
         try {
             ResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
             //指定mapper文件的位置
