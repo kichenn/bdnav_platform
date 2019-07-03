@@ -54,7 +54,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         }
         for (ProductImageAddDto productImageTemp : productDto.getImage()) {
             //如果是商品图片展示 并设置为默认图标展示
-            if (productImageTemp.getProductImgTypeEnum().getKey().equals(ProductImgTypeEnum.IMAGE.getKey())) {
+            if (productImageTemp.getImgType().equals(ProductImgTypeEnum.IMAGE.getKey())) {
                 product.setImgUrl(productImageTemp.getImageUrl());
                 break;
             }
@@ -66,7 +66,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
             ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
             productImage.setProductId(product.getId());
             productImage.setSort((byte) i);
-            productImage.setImgType(productImageAddDto.getProductImgTypeEnum().getKey());
+            productImage.setImgType(productImageAddDto.getImgType());
             productImage.setOperator(productDto.getOperator());
             productImage.setOperatorName(productDto.getOperatorName());
             productImage.setRemark(productDto.getRemark());
