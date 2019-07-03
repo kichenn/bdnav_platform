@@ -116,7 +116,7 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
      */
     @Override
     public PageInfo<ApplyLog> findApplyLogInfoByFamily(FamilyQueryApplyLogDto familyQueryApplyLogDto) {
-        Page page = PageHelper.startPage(familyQueryApplyLogDto.getPageNum(), familyQueryApplyLogDto.getPageNum());
+        Page page = PageHelper.startPage(familyQueryApplyLogDto.getPageNum(), familyQueryApplyLogDto.getPageSize());
         List<ApplyLog> applyLogs = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(familyQueryApplyLogDto.getStudentCardNumbers())) {
             //查询开通服务的孩子的申请畅玩记录
@@ -127,7 +127,7 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
         }
         //时间排序
         List<ApplyLog> collect = applyLogs.stream().sorted(Comparator.comparing(ApplyLog::getCreateDate).reversed()).collect(Collectors.toList());
-        PageInfo<ApplyLog> pageInfo = new PageInfo(applyLogs);
+        PageInfo<ApplyLog> pageInfo = new PageInfo<ApplyLog>(collect);
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }
