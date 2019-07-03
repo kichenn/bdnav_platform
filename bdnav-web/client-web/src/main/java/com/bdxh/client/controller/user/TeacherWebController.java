@@ -1,12 +1,12 @@
 package com.bdxh.client.controller.user;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
-import com.bdxh.common.base.enums.BaseUserNumberStatusEnum;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.helper.excel.ExcelImportUtil;
 import com.bdxh.common.helper.qcloud.files.FileOperationUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.bdxh.product.enums.UserNumberStatusEnum;
 import com.bdxh.school.dto.SinglePermissionQueryDto;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.entity.SchoolUser;
@@ -88,7 +88,7 @@ public class TeacherWebController {
             addTeacherDto.setSchoolName(school.getSchoolName());
             Wrapper wrapper=teacherControllerClient.addTeacher(addTeacherDto);
             if (wrapper.getCode() == 200){
-                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.ADD.getCode()), 1, addTeacherDto.getSchoolCode());
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(UserNumberStatusEnum.ADD.getCode()), 1, addTeacherDto.getSchoolCode());
             }
             return wrapper;
         }catch (Exception e) {
@@ -124,7 +124,7 @@ public class TeacherWebController {
             }
             Wrapper wrapper=teacherControllerClient.removeTeacher(user.getSchoolCode(), cardNumber);
             if (wrapper.getCode() == 200){
-                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(BaseUserNumberStatusEnum.REMOVE.getCode()), 1,user.getSchoolCode());
+                schoolControllerClient.updateSchoolUserNum(Integer.valueOf(BaseUserTypeEnum.TEACHER.getCode()), Integer.valueOf(UserNumberStatusEnum.REMOVE.getCode()), 1,user.getSchoolCode());
             }
             return wrapper;
         }catch (Exception e){
