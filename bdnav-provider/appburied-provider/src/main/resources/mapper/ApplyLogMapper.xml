@@ -104,4 +104,12 @@
         WHERE
         school_code =#{schoolCode} and card_number = #{cardNumber}
     </select>
+
+    <!--查询家长孩子的申请畅玩的记录-->
+    <select id="findApplyLogInfoByFamily" resultMap="BaseResultMap" >
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_apply_log
+        WHERE school_code =#{schoolCode} and card_number = #{cardNumber}
+    </select>
 </mapper>

@@ -2,6 +2,8 @@ package com.bdxh.weixiao.controller.appburied;
 
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.feign.UserDeviceControllerClient;
+import com.bdxh.appburied.dto.ApplyLogQueryDto;
+import com.bdxh.appburied.dto.FamilyQueryApplyLogDto;
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
@@ -41,7 +43,7 @@ public class ApplyLogWebController {
     @Autowired
     private UserDeviceControllerClient userDeviceControllerClient;
 
-    /**
+    /**(该方法已被@method findApplyLogInfoByFamily替换)
      * 家长查询自己孩子的App申请信息
      *
      * @param cardNumber
@@ -86,9 +88,34 @@ public class ApplyLogWebController {
     @RolesAllowed({"TEST", "CONTROLE"})
     @RequestMapping(value = "/findApplyLogInfoByFamily", method = RequestMethod.GET)
     @ApiOperation(value = "审批畅玩----家长查询该学校所有孩子的申请畅玩记录", response = ApplyLog.class)
-    public Object findApplyLogInfoByFamily() {
-        UserInfo userInfo = SecurityUtils.getCurrentUser();
-        return applyLogControllerClient.familyFindApplyLogInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber());
+    public Object findApplyLogInfoByFamily(@RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto) {
+        try {
+            //查看此孩子是否开通权限
+            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
+            //获取试用孩子列表信息
+            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
+            //获取正式购买孩子列表信息
+            List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
+            if(null==caseCardNumber && null==thisCardNumbers){
+                throw new PermitException();
+            }
+            //卡号合并
+            List<String> allCardNumber = new ArrayList<>();
+            allCardNumber.addAll(caseCardNumber==null?new ArrayList<>():caseCardNumber);
+            allCardNumber.addAll(thisCardNumbers==null?new ArrayList<>():thisCardNumbers);
+            UserInfo userInfo = SecurityUtils.getCurrentUser();
+            familyQueryApplyLogDto.setSchoolCode(userInfo.getSchoolCode());
+            familyQueryApplyLogDto.setOperatorCode(userInfo.getFamilyCardNumber());
+            familyQueryApplyLogDto.setStudentCardNumbers(allCardNumber);
+            return applyLogControllerClient.findApplyLogInfoByFamily(familyQueryApplyLogDto);
+        } catch (PermitException e) {
+            String messge = "";
+            if (e instanceof PermitException) {
+                messge = "抱歉，您没有孩子开通管控权限";
+                return WrapMapper.notNoTrial(messge);
+            }
+            return WrapMapper.error(messge);
+        }
 
     }
 
