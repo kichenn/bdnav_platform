@@ -7,10 +7,10 @@ package com.bdxh.common.helper.baidu.yingyan.constant;
  */
 public class FenceConstant {
 
-    //学校端围栏Ak
+    //围栏Ak
     public static final String AK = "hS2ggfP9IIGxKFDeff87I7rqEdar07bf";
 
-    //学校端围栏service的唯一标识
+    //围栏service的唯一标识
     public static final int SERVICE_ID = 200853;
 
     //百度地图安全码
