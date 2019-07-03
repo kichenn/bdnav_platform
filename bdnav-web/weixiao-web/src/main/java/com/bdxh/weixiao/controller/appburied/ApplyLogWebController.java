@@ -154,6 +154,8 @@ public class ApplyLogWebController {
             }
             clientId.add(userDevice.getClientId());
             modifyApplyLogDto.setClientId(clientId);
+            modifyApplyLogDto.setOperatorCode(userInfo.getFamilyCardNumber());
+            modifyApplyLogDto.setOperatorName(userInfo.getFamilyName());
             return applyLogControllerClient.modifyVerifyApplyLog(modifyApplyLogDto);
         } catch (Exception e) {
             String messge = "";
@@ -186,6 +188,8 @@ public class ApplyLogWebController {
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             modifyApplyLogDto.setSchoolCode(userInfo.getSchoolCode());
             modifyApplyLogDto.setIsRead(Byte.valueOf("1"));
+            modifyApplyLogDto.setOperatorCode(userInfo.getFamilyCardNumber());
+            modifyApplyLogDto.setOperatorName(userInfo.getFamilyName());
             return applyLogControllerClient.modifyApplyLog(modifyApplyLogDto);
         } catch (Exception e) {
             String messge = "";
