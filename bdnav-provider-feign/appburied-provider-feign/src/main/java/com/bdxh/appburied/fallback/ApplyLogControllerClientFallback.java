@@ -1,9 +1,6 @@
 package com.bdxh.appburied.fallback;
 
-import com.bdxh.appburied.dto.AddApplyLogDto;
-import com.bdxh.appburied.dto.ApplyLogQueryDto;
-import com.bdxh.appburied.dto.DelOrFindAppBuriedDto;
-import com.bdxh.appburied.dto.ModifyApplyLogDto;
+import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.feign.ApplyLogControllerClient;
 import com.bdxh.appburied.vo.informationVo;
@@ -59,6 +56,11 @@ public class ApplyLogControllerClientFallback implements ApplyLogControllerClien
 
     @Override
     public Wrapper<List<informationVo>> checkMymessages(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<PageInfo<ApplyLog>> findApplyLogInfoByFamily(FamilyQueryApplyLogDto familyQueryApplyLogDto) {
         return WrapMapper.error();
     }
 }

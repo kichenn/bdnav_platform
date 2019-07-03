@@ -1,6 +1,7 @@
 package com.bdxh.appburied.service;
 
 import com.bdxh.appburied.dto.ApplyLogQueryDto;
+import com.bdxh.appburied.dto.FamilyQueryApplyLogDto;
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
 import com.bdxh.appburied.vo.informationVo;
 import com.bdxh.common.support.IService;
@@ -39,7 +40,8 @@ public interface ApplyLogService extends IService<ApplyLog> {
     List<informationVo> checkMymessages(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber);
 
 
-
-
-
+    /**
+     * 分页查询家长对应孩子的畅玩记录
+     */
+    PageInfo<ApplyLog> findApplyLogInfoByFamily(FamilyQueryApplyLogDto familyQueryApplyLogDto);
 }

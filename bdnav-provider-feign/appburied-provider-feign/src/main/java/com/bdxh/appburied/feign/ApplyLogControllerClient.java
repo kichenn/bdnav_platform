@@ -1,14 +1,12 @@
 package com.bdxh.appburied.feign;
 
-import com.bdxh.appburied.dto.AddApplyLogDto;
-import com.bdxh.appburied.dto.ApplyLogQueryDto;
-import com.bdxh.appburied.dto.DelOrFindAppBuriedDto;
-import com.bdxh.appburied.dto.ModifyApplyLogDto;
+import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.ApplyLog;
 import com.bdxh.appburied.fallback.ApplyLogControllerClientFallback;
 import com.bdxh.appburied.vo.informationVo;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -56,5 +54,10 @@ public interface ApplyLogControllerClient {
     @RequestMapping(value="/applyLog/checkMymessages",method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<informationVo>> checkMymessages(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber);
+
+
+    @RequestMapping(value = "/applyLog/findApplyLogInfoByFamily",method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<PageInfo<ApplyLog>> findApplyLogInfoByFamily(@RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto);
 
 }

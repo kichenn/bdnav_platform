@@ -149,6 +149,8 @@ public class ApplyLogController {
         }
     }
 
+
+
     @RequestMapping(value = "/modifyVerifyApplyLog", method = RequestMethod.POST)
     @ApiOperation(value = "家长审批自己孩子的App申请信息")
     public Object modifyVerifyApplyLog(@RequestBody ModifyApplyLogDto modifyApplyLogDto) {
@@ -171,6 +173,17 @@ public class ApplyLogController {
             e.printStackTrace();
             return WrapMapper.error();
         }
+    }
+
+    /**
+     * 家长查询该学校所有孩子的申请畅玩记录
+     * @Author: WanMing
+     * @Date: 2019/7/2 17:54
+     */
+    @RequestMapping(value = "/findApplyLogInfoByFamily",method = RequestMethod.POST)
+    @ApiOperation(value = "家长查询该学校所有孩子的申请畅玩记录",response = ApplyLog.class)
+    public Object findApplyLogInfoByFamily(@RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto){
+        return WrapMapper.ok(applyLogService.findApplyLogInfoByFamily(familyQueryApplyLogDto));
     }
 
 

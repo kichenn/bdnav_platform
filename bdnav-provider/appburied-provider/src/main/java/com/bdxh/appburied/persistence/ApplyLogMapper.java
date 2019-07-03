@@ -31,4 +31,7 @@ public interface ApplyLogMapper extends Mapper<ApplyLog> {
 
     //查询当前用户的申请消息
     List<informationVo> checkMymessages(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber);
+
+    //查询家长所有孩子
+    List<ApplyLog> findApplyLogInfoByFamily(@Param("schoolCode")String schoolCode ,@Param("cardNumber")String cardNumber);
 }
