@@ -26,7 +26,7 @@ public class ProductImageUpdateDto implements Serializable {
      * 图片类型: 1 图标图片  2 商品图片详情
      */
     @ApiModelProperty("图片类型")
-    private String imgType;
+    private Byte imgType;
 
     /**
      * 图片名称

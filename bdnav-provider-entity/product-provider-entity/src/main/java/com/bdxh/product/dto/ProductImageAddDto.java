@@ -17,7 +17,10 @@ public class ProductImageAddDto implements Serializable {
     @ApiModelProperty("图片名称")
     private String imageName;
 
-    @ApiModelProperty("商品图片类型")
-    private ProductImgTypeEnum productImgTypeEnum;
+    @ApiModelProperty("图片排序值")
+    private Byte sort;
+
+    @ApiModelProperty("商品图片类型 1.普通图标 2.商品详情图标")
+    private Byte imgType;
 
 }
