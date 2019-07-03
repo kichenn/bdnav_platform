@@ -65,7 +65,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
             ProductImageAddDto productImageAddDto = productDto.getImage().get(i);
             ProductImage productImage = BeanMapUtils.map(productImageAddDto, ProductImage.class);
             productImage.setProductId(product.getId());
-            productImage.setSort((byte) i);
+            productImage.setSort(productImageAddDto.getSort());
             productImage.setImgType(productImageAddDto.getImgType());
             productImage.setOperator(productDto.getOperator());
             productImage.setOperatorName(productDto.getOperatorName());
@@ -107,17 +107,15 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         //修改图片
         List<ProductImageUpdateDto> productImages = productUpdateDto.getImage();
         List<ProductImage> productImageList = BeanMapUtils.mapList(productImages, ProductImage.class);
-        Byte i = 1;
         productImageMapper.deleteProductImageByProductId(product.getId());
         for (ProductImage productImage : productImageList) {
-            productImage.setSort(i);
+            productImage.setSort(productImage.getSort());
             productImage.setProductId(product.getId());
             productImage.setImgType(productImage.getImgType());
             productImage.setOperator(product.getOperator());
             productImage.setOperatorName(product.getOperatorName());
             productImage.setRemark(product.getRemark());
             productImageMapper.insert(productImage);
-            i++;
         }
         product.setProductExtra(productUpdateDto.getProductChildIds());
         productMapper.updateByPrimaryKeySelective(product);
