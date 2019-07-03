@@ -112,7 +112,7 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         for (ProductImage productImage : productImageList) {
             productImage.setSort(i);
             productImage.setProductId(product.getId());
-            productImage.setImgType(productImage.getSort());
+            productImage.setImgType(productImage.getImgType());
             productImage.setOperator(product.getOperator());
             productImage.setOperatorName(product.getOperatorName());
             productImage.setRemark(product.getRemark());
