@@ -26,6 +26,7 @@ import com.bdxh.appburied.persistence.ApplyLogMapper;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -116,7 +117,9 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
      */
     @Override
     public PageInfo<ApplyLog> findApplyLogInfoByFamily(FamilyQueryApplyLogDto familyQueryApplyLogDto) {
-        Page page = PageHelper.startPage(familyQueryApplyLogDto.getPageNum(), familyQueryApplyLogDto.getPageSize());
+        Integer pageSize = familyQueryApplyLogDto.getPageSize();
+        Integer pageNum = familyQueryApplyLogDto.getPageNum();
+//        Page page = PageHelper.startPage(familyQueryApplyLogDto.getPageNum(), familyQueryApplyLogDto.getPageSize());
         List<ApplyLog> applyLogs = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(familyQueryApplyLogDto.getStudentCardNumbers())) {
             //查询开通服务的孩子的申请畅玩记录
@@ -125,10 +128,11 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
                 applyLogs.addAll(family);
             });
         }
-        //时间排序
-        List<ApplyLog> collect = applyLogs.stream().sorted(Comparator.comparing(ApplyLog::getCreateDate).reversed()).collect(Collectors.toList());
-        PageInfo<ApplyLog> pageInfo = new PageInfo<ApplyLog>(collect);
-        pageInfo.setTotal(page.getTotal());
+        //时间排序并分页
+        List<ApplyLog> collect = applyLogs.stream().sorted(Comparator.comparing(ApplyLog::getCreateDate).reversed())
+                .skip((pageNum - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
+        PageInfo<ApplyLog> pageInfo = new PageInfo<ApplyLog>(Optional.ofNullable(collect).get());
+        pageInfo.setTotal(applyLogs.size());
         return pageInfo;
     }
 }

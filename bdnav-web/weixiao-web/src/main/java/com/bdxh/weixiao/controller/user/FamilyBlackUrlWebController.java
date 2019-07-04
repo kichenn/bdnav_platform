@@ -51,7 +51,7 @@ public class FamilyBlackUrlWebController {
     UserInfo userInfo = SecurityUtils.getCurrentUser();
         addFamilyBlackUrlDto.setSchoolCode(userInfo.getSchoolCode());
         addFamilyBlackUrlDto.setSchoolName(userInfo.getSchoolName());
-        addFamilyBlackUrlDto.setFamilyName(userInfo.getName());
+        addFamilyBlackUrlDto.setFamilyName(userInfo.getFamilyName());
     Wrapper wrapMapper = familyBlackUrlControllerClient.addFamilyBlackUrl(addFamilyBlackUrlDto);
         if (wrapMapper.getCode()==500){
             return wrapMapper;

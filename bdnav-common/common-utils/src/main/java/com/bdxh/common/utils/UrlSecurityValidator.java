@@ -119,7 +119,7 @@ public class UrlSecurityValidator {
 
 
     public static void main(String[] args) {
-        String s = UrlSecurityValidator.checkUrlSecurity("http://www.baidu.com");
+        String s = UrlSecurityValidator.checkUrlSecurity("14.215.178.36");
         System.out.println(s);
     }
 }
