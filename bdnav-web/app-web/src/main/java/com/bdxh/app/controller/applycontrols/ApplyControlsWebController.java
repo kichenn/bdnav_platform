@@ -235,6 +235,7 @@ public class ApplyControlsWebController {
             addApplyLogDto.setOperatorCode(familyStudent.getFCardNumber());
             addApplyLogDto.setAppKey(school.getSchoolKey());
             addApplyLogDto.setAppSecret(school.getSchoolSecret());
+            addApplyLogDto.setOperatorName(familyStudent.getFName());
             Wrapper wrapper = applyLogControllerClient.addApplyLog(addApplyLogDto);
             return WrapMapper.ok(wrapper.getResult());
         }
