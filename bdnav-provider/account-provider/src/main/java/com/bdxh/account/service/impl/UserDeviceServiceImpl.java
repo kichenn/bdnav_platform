@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.bdxh.common.support.BaseService;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -41,9 +43,24 @@ public class UserDeviceServiceImpl extends BaseService<UserDevice> implements Us
 	}
 
 	@Override
+	public List<String> getUserDeviceAll(String schoolCode, String ids) {
+		String [] rightControls=ids.split(",");
+		List<String> udds=new ArrayList<>();
+		for (int i = 0; i <rightControls.length ; i++) {
+			List<UserDevice> uds=userDeviceMapper.getUserDeviceAll(schoolCode,Long.valueOf(rightControls[i]));
+			if (uds.size()!=0&&uds!=null){
+			for (int j = 0; j < uds.size(); j++) {
+				udds.add(uds.get(j).getClientId());
+			   }
+			}
+		}
+		return udds;
+	}
+
+	/*@Override
 	public List<UserDevice> getUserDeviceAll(String schoolcode, Long groupId) {
 		return userDeviceMapper.getUserDeviceAll(schoolcode,groupId);
-	}
+	}*/
 
 	@Override
 	public UserDevice findUserDeviceByCodeOrCard(String schoolCode, String cardNumber) {

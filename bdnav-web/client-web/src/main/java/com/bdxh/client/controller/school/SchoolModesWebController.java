@@ -83,12 +83,13 @@ public class SchoolModesWebController {
      * @Description: 带条件分页查询列表信息
      * @Date 2019-04-18 09:52:43
      */
+    @RolesAllowed({"ADMIN"})
     @PostMapping("/findModesInConditionPage")
     @ApiOperation(value = "带条件分页查询列表信息", response = PageInfo.class)
     public Object findModesInConditionPage(@RequestBody QuerySchoolMode querySchoolMode) {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
-        querySchoolMode.setSchoolId(user.getSchoolId());
+        querySchoolMode.setSchoolCode(user.getSchoolCode());
         Wrapper<PageInfo<QuerySchoolMode>> wrapper = schoolModeControllerClient.findModesInConditionPage(querySchoolMode);
         return WrapMapper.ok(wrapper.getResult());
     }

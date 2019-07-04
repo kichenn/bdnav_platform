@@ -24,12 +24,12 @@ public interface UserDeviceService extends IService<UserDevice> {
  	Boolean batchDelUserDeviceInIds(List<Long> id);
 
 	/**
-	 * 根据schoolcode和group_id
+	 * 根据条件查询设备号 只返回clientId
 	 * @param schoolCode
-	 * @param groupId
+	 * @param ids
 	 * @return
 	 */
-	List<UserDevice> getUserDeviceAll(String schoolCode,Long groupId);
+	List<String> getUserDeviceAll(String schoolCode,String ids);
 
 	/**
 	 * 根据code或者cardNumber查询用户设备信息
