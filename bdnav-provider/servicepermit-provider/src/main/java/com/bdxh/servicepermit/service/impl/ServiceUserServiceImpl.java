@@ -10,6 +10,8 @@ import com.bdxh.servicepermit.enums.ServiceTypeEnum;
 import com.bdxh.servicepermit.properties.ServiceUserConstant;
 import com.bdxh.servicepermit.service.ServiceRolePermitService;
 import com.bdxh.servicepermit.service.ServiceUserService;
+import com.bdxh.servicepermit.vo.ServiceUserVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.base.Preconditions;
@@ -66,10 +68,12 @@ public class ServiceUserServiceImpl extends BaseService<ServiceUser> implements 
     }
 
     @Override
-    public PageInfo<ServiceUser> getServiceByCondition(Map<String, Object> param, Integer pageNum, Integer pageSize) {
-        PageHelper.startPage(pageNum, pageSize);
+    public PageInfo<ServiceUserVo> getServiceByCondition(Map<String, Object> param, Integer pageNum, Integer pageSize) {
+        Page page = PageHelper.startPage(pageNum, pageSize);
         List<ServiceUser> orders = serviceUserMapper.getServiceByCondition(param);
-        PageInfo<ServiceUser> pageInfo = new PageInfo<>(orders);
+        List<ServiceUserVo> serviceUserVos = BeanMapUtils.mapList(orders, ServiceUserVo.class);
+        PageInfo<ServiceUserVo> pageInfo = new PageInfo<>(serviceUserVos);
+        pageInfo.setTotal(page.getTotal());
         return pageInfo;
     }
 

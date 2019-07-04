@@ -2,9 +2,13 @@ package com.bdxh.servicepermit.entity;
 
 import javax.persistence.Table;
 
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.lang.String;
 import java.lang.Long;
@@ -15,11 +19,12 @@ import java.lang.Long;
  */
 @Data
 @Table(name = "t_service_user")
-public class ServiceUser {
+public class ServiceUser implements Serializable {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
 
 

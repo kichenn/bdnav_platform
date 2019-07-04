@@ -16,7 +16,7 @@ public class UserDeviceControllerClientFallback implements UserDeviceControllerC
 
 
     @Override
-    public Wrapper getUserDeviceAll(String schoolCode, Long groupId) {
+    public Wrapper getUserDeviceAll(String schoolCode, String ids) {
         return WrapMapper.error();
     }
 

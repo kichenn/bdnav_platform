@@ -43,8 +43,8 @@ public class UserDeviceController {
 
 	@ApiOperation(value = "查询手机设备登录信息", response = Account.class)
 	@RequestMapping(value = "/getUserDeviceAll", method = RequestMethod.GET)
-	public Object getUserDeviceAll(@RequestParam("schoolCode")String schoolCode,@RequestParam("groupId") Long groupId) {
-		List<UserDevice> accounts = userDeviceService.getUserDeviceAll(schoolCode,groupId);
+	public Object getUserDeviceAll(@RequestParam("schoolCode")String schoolCode,@RequestParam("ids") String ids) {
+		List<String> accounts = userDeviceService.getUserDeviceAll(schoolCode,ids);
 		return WrapMapper.ok(accounts);
 	}
 

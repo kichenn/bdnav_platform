@@ -3,6 +3,7 @@ package com.bdxh.servicepermit.feign;
 import com.bdxh.servicepermit.dto.*;
 import com.bdxh.servicepermit.enums.ServiceProductEnum;
 import com.bdxh.servicepermit.fallback.ServiceUserControllerClientFallback;
+import com.bdxh.servicepermit.vo.ServiceUserVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -66,12 +67,12 @@ public interface ServiceUserControllerClient {
     @RequestMapping(value = "/serviceUser/deleteService", method = RequestMethod.GET)
     @ResponseBody
     Wrapper deleteService(@RequestParam(name = "schoolCode") String schoolCode,
-                          @RequestParam(name = "cardNumber") Long cardNumber,
+                          @RequestParam(name = "cardNumber") String cardNumber,
                           @RequestParam(name = "id") Long id);
 
 
     @RequestMapping(value = "/serviceUser/queryServiceUser", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<PageInfo<ServiceUser>> queryServiceUser(@RequestBody QueryServiceUserDto queryServiceUsedDto);
+    Wrapper<PageInfo<ServiceUserVo>> queryServiceUser(@RequestBody QueryServiceUserDto queryServiceUsedDto);
 
 }

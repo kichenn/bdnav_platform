@@ -24,7 +24,7 @@ public interface UserDeviceControllerClient {
      */
     @RequestMapping(value = "/userDevice/getUserDeviceAll", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<UserDevice>> getUserDeviceAll(@RequestParam("schoolCode")String schoolCode, @RequestParam("groupId") Long groupId);
+    Wrapper<List<String>> getUserDeviceAll(@RequestParam("schoolCode")String schoolCode, @RequestParam("ids") String ids);
 
     /**
      * 增加用户设备信息

@@ -8,6 +8,7 @@ import com.bdxh.servicepermit.configration.redis.RedisUtil;
 import com.bdxh.servicepermit.dto.*;
 import com.bdxh.servicepermit.enums.ServiceStatusEnum;
 import com.bdxh.servicepermit.enums.ServiceTypeEnum;
+import com.bdxh.servicepermit.vo.ServiceUserVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -176,10 +177,24 @@ public class ServiceUserController {
      * @Author: WanMing
      * @Date: 2019/6/25 9:40
      */
-    @ApiOperation(value = "根据条件查询订单", response = ServiceUser.class)
+    @ApiOperation(value = "根据条件查询订单", response = ServiceUserVo.class)
     @RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
     public Object queryServiceUser(@Validated @RequestBody QueryServiceUserDto queryServiceUserDto){
         Map<String, Object> param = BeanToMapUtil.objectToMap(queryServiceUserDto);
         return WrapMapper.ok(serviceUserService.getServiceByCondition(param,queryServiceUserDto.getPageNum(),queryServiceUserDto.getPageSize()));
+    }
+
+    /**
+     * 删除服务许可信息
+     * @Author: WanMing
+     * @Date: 2019/7/4 14:07
+     */
+    @RequestMapping(value = "/deleteService",method = RequestMethod.GET)
+    @ApiOperation(value = "删除服务许可信息",response = Boolean.class)
+    public Object deleteService(@RequestParam(name = "schoolCode") String schoolCode,
+                                @RequestParam(name = "cardNumber") String cardNumber,
+                                @RequestParam(name = "id") Long id){
+        return WrapMapper.ok(serviceUserService.deleteByServiceId(schoolCode,cardNumber,id));
+
     }
 }
