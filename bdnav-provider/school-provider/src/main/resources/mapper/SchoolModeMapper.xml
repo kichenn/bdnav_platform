@@ -70,8 +70,11 @@
         t_school_mode
         INNER JOIN t_school ON t_school_mode.school_id=t_school.id
         <where>
+            <if test="schoolCode !=null and schoolCode !=''">
+                t_school_mode.school_code LIKE CONCAT(CONCAT('%',#{schoolCode}),'%')
+            </if>
             <if test="modelName !=null and modelName !=''">
-                t_school_mode.model_name LIKE CONCAT(CONCAT('%',#{modelName}),'%')
+              AND t_school_mode.model_name LIKE CONCAT(CONCAT('%',#{modelName}),'%')
             </if>
             <if test="schoolNameList !=null and schoolNameList!=''">
               AND t_school.school_name LIKE CONCAT(CONCAT('%',#{schoolNameList}),'%')

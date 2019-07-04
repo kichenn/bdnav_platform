@@ -183,7 +183,7 @@ public class SchoolStrategyWebController {
     @ApiOperation(value = "带条件分页查询列表信息", response = PageInfo.class)
     public Object findPolicyInConditionPage(@RequestBody QuerySchoolStrategy querySchoolStrategy) {
         SchoolUser user = SecurityUtils.getCurrentUser();
-        querySchoolStrategy.setSchoolId(user.getSchoolId());
+        querySchoolStrategy.setSchoolCode(user.getSchoolCode());
         Wrapper<PageInfo<QuerySchoolStrategy>> wrapper = schoolStrategyControllerClient.findPolicyInConditionPage(querySchoolStrategy);
         return WrapMapper.ok(wrapper.getResult());
     }
