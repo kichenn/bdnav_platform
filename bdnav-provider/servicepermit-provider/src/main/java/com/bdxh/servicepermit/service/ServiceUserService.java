@@ -3,6 +3,7 @@ package com.bdxh.servicepermit.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.servicepermit.dto.*;
 import com.bdxh.servicepermit.entity.ServiceUser;
+import com.bdxh.servicepermit.vo.ServiceUserVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
@@ -33,7 +34,7 @@ public interface ServiceUserService extends IService<ServiceUser> {
      * @param param
      * @return
      */
-    PageInfo<ServiceUser> getServiceByCondition(Map<String, Object> param, Integer pageNum, Integer pageSize);
+    PageInfo<ServiceUserVo> getServiceByCondition(Map<String, Object> param, Integer pageNum, Integer pageSize);
 
     /**
      * 删除用户许可

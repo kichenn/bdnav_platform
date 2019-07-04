@@ -3,9 +3,9 @@ package com.bdxh.servicepermit.entity;
 import javax.persistence.Table;
 
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
-import org.codehaus.jackson.map.annotate.JsonSerialize;
-import org.codehaus.jackson.map.ser.std.ToStringSerializer;
 
 import javax.persistence.*;
 import java.io.Serializable;

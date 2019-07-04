@@ -6,6 +6,7 @@ import com.bdxh.servicepermit.dto.*;
 import com.bdxh.servicepermit.entity.ServiceUser;
 import com.bdxh.servicepermit.enums.ServiceProductEnum;
 import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
+import com.bdxh.servicepermit.vo.ServiceUserVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
@@ -54,7 +55,7 @@ public class ServiceUserControllerClientFallback implements ServiceUserControlle
     }
 
     @Override
-    public Wrapper<PageInfo<ServiceUser>> queryServiceUser(QueryServiceUserDto queryServiceUsedDto) {
+    public Wrapper<PageInfo<ServiceUserVo>> queryServiceUser(QueryServiceUserDto queryServiceUsedDto) {
         return WrapMapper.error();
     }
 }
