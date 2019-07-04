@@ -64,4 +64,11 @@ public interface ProductService extends IService<Product> {
     * @Date: 2019/6/24 10:59
     */
     Product findProductByName(String productName);
+
+    /**
+     * 查询所有上架的单品信息
+     * @Author: WanMing
+     * @Date: 2019/7/4 17:52
+     */
+    List<ProductListVo> querySingleProductList();
 }

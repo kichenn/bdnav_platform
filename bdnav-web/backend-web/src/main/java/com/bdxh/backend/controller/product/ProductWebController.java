@@ -13,6 +13,7 @@ import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tools.ant.taskdefs.Get;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -124,6 +125,17 @@ public class ProductWebController {
             return WrapMapper.error(e.getMessage());
         }
 
+    }
+
+    /**
+     * 查询所有上架的单品信息
+     * @Author: WanMing
+     * @Date: 2019/7/4 17:41
+     */
+    @RequestMapping(value ="/querySingleProductList",method = RequestMethod.GET)
+    @ApiOperation(value = "查询所有上架的单品信息",response = ProductListVo.class)
+    public Object querySingleProductList(){
+        return productControllerClient.querySingleProductList();
     }
 
 }

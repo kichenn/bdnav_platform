@@ -49,6 +49,7 @@ public class ApplyLogWebController {
      * @param cardNumber
      * @return
      */
+    @Deprecated
     @RolesAllowed({"TEST", "CONTROLE"})
     @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.GET)
     @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息", response = ApplyLog.class)
@@ -80,14 +81,14 @@ public class ApplyLogWebController {
     }
 
     /**
-     * 家长查询自己孩子的App申请记录
+     * 家长查询该学校所有有权限的孩子App申请畅玩记录
      *
      * @param
      * @return
      */
     @RolesAllowed({"TEST", "CONTROLE"})
     @RequestMapping(value = "/findApplyLogInfoByFamily", method = RequestMethod.POST)
-    @ApiOperation(value = "审批畅玩----家长查询该学校所有孩子的申请畅玩记录", response = ApplyLog.class)
+    @ApiOperation(value = "审批畅玩----家长查询该学校所有有权限的孩子App申请畅玩记录", response = ApplyLog.class)
     public Object findApplyLogInfoByFamily(@RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto) {
         try {
             //查看此孩子是否开通权限
@@ -101,8 +102,8 @@ public class ApplyLogWebController {
             }
             //卡号合并
             List<String> allCardNumber = new ArrayList<>();
-            allCardNumber.addAll(caseCardNumber==null?new ArrayList<>():caseCardNumber);
-            allCardNumber.addAll(thisCardNumbers==null?new ArrayList<>():thisCardNumbers);
+            allCardNumber.addAll(caseCardNumber);
+            allCardNumber.addAll(thisCardNumbers);
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             familyQueryApplyLogDto.setSchoolCode(userInfo.getSchoolCode());
             familyQueryApplyLogDto.setOperatorCode(userInfo.getFamilyCardNumber());
