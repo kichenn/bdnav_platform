@@ -89,6 +89,7 @@ public class AppStatusWebController {
                     }
                 }
             }
+//            weiXiaoInstallAppsVoList.stream().collect();
             return WrapMapper.ok(weiXiaoInstallAppsVoList);
         } catch (Exception e) {
             String messge = "";
