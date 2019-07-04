@@ -81,7 +81,6 @@ public class SchoolStrategyWebController {
                     appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
                     appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
                     appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
-                    //添加用户设备号
                     appPushRequest.setClientId(userDeviceList);
                     //穿透模版
                     AppTransmissionTemplate appTransmissionTemplate=new AppTransmissionTemplate();
@@ -140,8 +139,6 @@ public class SchoolStrategyWebController {
                 appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
                 appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
                 appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
-                List<String> clientIds = new ArrayList<>();
-                //添加用户设备号
                 appPushRequest.setClientId(userDeviceList);
                 //穿透模版
                 AppTransmissionTemplate appTransmissionTemplate=new AppTransmissionTemplate();
@@ -208,7 +205,6 @@ public class SchoolStrategyWebController {
                     appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
                     appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
                     appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
-                    //添加用户设备号
                     appPushRequest.setClientId(userDeviceList);
                     //穿透模版
                     AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
