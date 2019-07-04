@@ -66,7 +66,7 @@ public interface ServiceUserControllerClient {
     @RequestMapping(value = "/serviceUser/deleteService", method = RequestMethod.GET)
     @ResponseBody
     Wrapper deleteService(@RequestParam(name = "schoolCode") String schoolCode,
-                          @RequestParam(name = "cardNumber") Long cardNumber,
+                          @RequestParam(name = "cardNumber") String cardNumber,
                           @RequestParam(name = "id") Long id);
 
 

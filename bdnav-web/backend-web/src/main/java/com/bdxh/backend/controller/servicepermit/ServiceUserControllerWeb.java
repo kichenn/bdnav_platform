@@ -41,7 +41,7 @@ public class ServiceUserControllerWeb {
     @ApiOperation("删除订单服务")
     @RequestMapping(value = "/deleteService", method = RequestMethod.GET)
     public Object deleteService(@RequestParam("schoolCode") @NotNull(message = "schoolCode不能为空") String schoolCode,
-                                @RequestParam("cardNumber") @NotNull(message = "userId不能为空") Long cardNumber,
+                                @RequestParam("cardNumber") @NotNull(message = "userId不能为空") String cardNumber,
                                 @RequestParam(name = "id") @NotNull(message = "订单id不能为空") Long id) {
         Wrapper wrapper = serviceUserControllerClient.deleteService(schoolCode, cardNumber, id);
         return wrapper;

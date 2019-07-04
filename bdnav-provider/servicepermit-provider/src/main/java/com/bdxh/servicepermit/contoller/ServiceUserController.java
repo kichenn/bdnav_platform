@@ -182,4 +182,18 @@ public class ServiceUserController {
         Map<String, Object> param = BeanToMapUtil.objectToMap(queryServiceUserDto);
         return WrapMapper.ok(serviceUserService.getServiceByCondition(param,queryServiceUserDto.getPageNum(),queryServiceUserDto.getPageSize()));
     }
+
+    /**
+     * 删除服务许可信息
+     * @Author: WanMing
+     * @Date: 2019/7/4 14:07
+     */
+    @RequestMapping(value = "/deleteService",method = RequestMethod.GET)
+    @ApiOperation(value = "删除服务许可信息",response = Boolean.class)
+    public Object deleteService(@RequestParam(name = "schoolCode") String schoolCode,
+                                @RequestParam(name = "cardNumber") String cardNumber,
+                                @RequestParam(name = "id") Long id){
+        return WrapMapper.ok(serviceUserService.deleteByServiceId(schoolCode,cardNumber,id));
+
+    }
 }

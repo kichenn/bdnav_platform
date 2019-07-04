@@ -49,7 +49,7 @@ public class ServiceUserControllerClientFallback implements ServiceUserControlle
 
 
     @Override
-    public Wrapper deleteService(String schoolCode, Long cardNumber, Long id) {
+    public Wrapper deleteService(String schoolCode, String cardNumber, Long id) {
         return WrapMapper.error();
     }
 
