@@ -75,18 +75,14 @@ public class SchoolStrategyWebController {
             String aap=String.valueOf(wrapper.getResult());
             QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(Long.valueOf(aap)).getResult();
             if (ssl!=null){
-                List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+                List<String> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getRecursionPermissionIds()).getResult();
                 if (CollectionUtils.isNotEmpty(userDeviceList)){
                     AppPushRequest appPushRequest= new AppPushRequest();
                     appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
                     appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
                     appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
-                    List<String> clientIds = new ArrayList<>();
                     //添加用户设备号
-                    for(UserDevice attribute : userDeviceList) {
-                        clientIds.add(attribute.getClientId());
-                    }
-                    appPushRequest.setClientId(clientIds);
+                    appPushRequest.setClientId(userDeviceList);
                     //穿透模版
                     AppTransmissionTemplate appTransmissionTemplate=new AppTransmissionTemplate();
                     MobileStrategyVo msv=new MobileStrategyVo();
@@ -138,7 +134,7 @@ public class SchoolStrategyWebController {
             modifyPolicyDto.setSchoolId(user.getSchoolId());
             Wrapper wrapper = schoolStrategyControllerClient.updatePolicyInCondition(modifyPolicyDto);
             QuerySchoolStrategy ssl=schoolStrategyControllerClient.findStrategyById(modifyPolicyDto.getId()).getResult();
-            List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getGroupId()).getResult();
+            List<String> userDeviceList=userDeviceControllerClient.getUserDeviceAll(ssl.getSchoolCode(),ssl.getRecursionPermissionIds()).getResult();
             if (CollectionUtils.isNotEmpty(userDeviceList)){
                 AppPushRequest appPushRequest= new AppPushRequest();
                 appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
@@ -146,10 +142,7 @@ public class SchoolStrategyWebController {
                 appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
                 List<String> clientIds = new ArrayList<>();
                 //添加用户设备号
-                for(UserDevice attribute : userDeviceList) {
-                    clientIds.add(attribute.getClientId());
-                }
-                appPushRequest.setClientId(clientIds);
+                appPushRequest.setClientId(userDeviceList);
                 //穿透模版
                 AppTransmissionTemplate appTransmissionTemplate=new AppTransmissionTemplate();
                 MobileStrategyVo msv=new MobileStrategyVo();
@@ -204,23 +197,19 @@ public class SchoolStrategyWebController {
     @RolesAllowed({"ADMIN"})
     @RequestMapping(value = "/delSchoolStrategyById", method = RequestMethod.GET)
     @ApiOperation(value = "删除策略信息", response = Boolean.class)
-    public Object delSchoolStrategyById(@RequestParam("id")Long id,@RequestParam("groupId")Long groupId) {
+    public Object delSchoolStrategyById(@RequestParam("id")Long id,@RequestParam("ids") String ids) {
         try {
             SchoolUser user = SecurityUtils.getCurrentUser();
             Wrapper wrapper=schoolStrategyControllerClient.delSchoolStrategyById(id);
             if (wrapper.getResult()==Boolean.TRUE) {
-                List<UserDevice> userDeviceList = userDeviceControllerClient.getUserDeviceAll(user.getSchoolCode(), groupId).getResult();
+                List<String> userDeviceList = userDeviceControllerClient.getUserDeviceAll(user.getSchoolCode(), ids).getResult();
                 if (CollectionUtils.isNotEmpty(userDeviceList)) {
                     AppPushRequest appPushRequest = new AppPushRequest();
                     appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
                     appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
                     appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
-                    List<String> clientIds = new ArrayList<>();
                     //添加用户设备号
-                    for (UserDevice attribute : userDeviceList) {
-                        clientIds.add(attribute.getClientId());
-                    }
-                    appPushRequest.setClientId(clientIds);
+                    appPushRequest.setClientId(userDeviceList);
                     //穿透模版
                     AppTransmissionTemplate appTransmissionTemplate = new AppTransmissionTemplate();
                     JSONObject obj = new JSONObject();
