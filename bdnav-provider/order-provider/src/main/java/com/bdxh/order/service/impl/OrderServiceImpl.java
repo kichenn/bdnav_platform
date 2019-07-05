@@ -49,15 +49,21 @@ public class OrderServiceImpl extends BaseService<Order> implements OrderService
         Order order = new Order();
         BeanUtils.copyProperties(orderQueryDto, order);
         List<Order> orders = orderMapper.getOrderByCondition(order);
+        PageInfo<Order> pageInfo = new PageInfo<>(orders);
         List<OrderVo> orderVos = new ArrayList<>();
         orders.stream().forEach(item -> {
             OrderVo orderVo = new OrderVo();
             BeanUtils.copyProperties(item, orderVo);
             orderVos.add(orderVo);
         });
-        PageInfo<OrderVo> pageInfo = new PageInfo<>(orderVos);
-        pageInfo.setTotal(page.getTotal());
-        return pageInfo;
+        PageInfo<OrderVo> pageOrderVo = new PageInfo<>(orderVos);
+        pageOrderVo.setPageNum(pageInfo.getPageNum());
+        pageOrderVo.setPageSize(pageInfo.getPageSize());
+        pageOrderVo.setSize(pageInfo.getSize());
+        pageOrderVo.setPageSize(pageInfo.getPageSize());
+        pageOrderVo.setTotal(pageInfo.getTotal());
+        pageOrderVo.setHasNextPage(pageInfo.isHasNextPage());
+        return pageOrderVo;
     }
 
     @Override
