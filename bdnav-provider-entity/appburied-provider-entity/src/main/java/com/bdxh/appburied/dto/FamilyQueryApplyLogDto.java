@@ -4,6 +4,7 @@ import com.bdxh.common.base.page.Query;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -17,6 +18,7 @@ public class FamilyQueryApplyLogDto extends Query {
     private String operatorCode;
 
     @ApiModelProperty("单个学生编号")
+    @NotBlank(message = "学生编号不能为空")
     private String cardNumber;
 
     @ApiModelProperty("学校编码")

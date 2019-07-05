@@ -138,11 +138,16 @@ public class ApplyLogController {
 
 
 
-    @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.GET)
-    @ApiOperation(value = "家长查询自己孩子的App申请信息")
-    public Object familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+    /**
+     * 添加分页需求
+     * @Author: WanMing
+     * @Date: 2019/7/5 15:23
+     */
+    @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.POST)
+    @ApiOperation(value = "家长查询自己孩子的App申请信息",response = ApplyLog.class)
+    public Object familyFindApplyLogInfo(@Validated @RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto) {
         try {
-            return WrapMapper.ok(applyLogService.familyFindApplyLogInfo(schoolCode, cardNumber));
+            return WrapMapper.ok(applyLogService.familyFindApplyLogInfo(familyQueryApplyLogDto));
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error();

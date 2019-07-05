@@ -45,7 +45,7 @@ public class ApplyLogControllerClientFallback implements ApplyLogControllerClien
     }
 
     @Override
-    public Wrapper<List<ApplyLog>> familyFindApplyLogInfo(String schoolCode, String cardNumber) {
+    public Wrapper<PageInfo<ApplyLog>> familyFindApplyLogInfo(FamilyQueryApplyLogDto familyQueryApplyLogDto) {
         return WrapMapper.error();
     }
 

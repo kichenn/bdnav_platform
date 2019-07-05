@@ -43,9 +43,9 @@ public interface ApplyLogControllerClient {
     @ResponseBody
     Wrapper<PageInfo<ApplyLog>> findApplyLogInContionPaging(@Validated @RequestBody ApplyLogQueryDto applyLogQueryDto);
 
-    @RequestMapping(value="/applyLog/familyFindApplyLogInfo",method = RequestMethod.GET)
+    @RequestMapping(value="/applyLog/familyFindApplyLogInfo",method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<List<ApplyLog>> familyFindApplyLogInfo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber")String cardNumber);
+    Wrapper<PageInfo<ApplyLog>> familyFindApplyLogInfo(@Validated @RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto);
 
     @RequestMapping(value = "/applyLog/modifyVerifyApplyLog", method = RequestMethod.POST)
     @ResponseBody
