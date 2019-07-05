@@ -63,6 +63,12 @@ public class UserDevice {
 	private String cardNumber;
 
 	/**
+	 * 登录名称
+	 */
+	@Column(name = "login_name")
+	private String loginName;
+
+	/**
 	 * 用户姓名
 	 */
 	@Column(name = "user_name")

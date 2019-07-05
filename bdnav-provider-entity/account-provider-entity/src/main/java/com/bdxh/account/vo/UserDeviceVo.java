@@ -63,6 +63,12 @@ public class UserDeviceVo {
     private String cardNumber;
 
     /**
+     * 登录名称
+     */
+    @ApiModelProperty("登录名称")
+    private String loginName;
+
+    /**
      * 用户姓名
      */
     @ApiModelProperty("用户姓名")
