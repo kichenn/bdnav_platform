@@ -2,12 +2,12 @@ package com.bdxh.account.controller;
 
 import com.bdxh.account.dto.AddUserDevice;
 import com.bdxh.account.dto.ModifyUserDevice;
+import com.bdxh.account.dto.QueryUserDeviceDto;
 import com.bdxh.account.entity.Account;
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.service.UserDeviceService;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -152,6 +152,17 @@ public class UserDeviceController {
 			return WrapMapper.error(e.getMessage());
 		}
 
+	}
+
+	/**
+	 * 根据条件查找用户设备信息
+	 * @Author: WanMing
+	 * @Date: 2019/7/5 10:14
+	 */
+	@RequestMapping(value = "/findUserDeviceByCondition",method = RequestMethod.POST)
+	@ApiOperation(value = "根据条件查找用户设备信息",response = UserDevice.class)
+	public Object findUserDeviceByCondition(@RequestBody QueryUserDeviceDto queryUserDeviceDto){
+		return WrapMapper.ok(userDeviceService.findUserDeviceByCondition(queryUserDeviceDto));
 	}
 
 

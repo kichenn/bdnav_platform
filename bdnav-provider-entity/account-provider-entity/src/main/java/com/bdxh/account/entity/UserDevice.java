@@ -1,6 +1,9 @@
 package com.bdxh.account.entity;
 
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
@@ -20,6 +23,7 @@ public class UserDevice {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 
 	/**

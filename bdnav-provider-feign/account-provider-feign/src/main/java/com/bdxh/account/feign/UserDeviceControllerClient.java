@@ -3,9 +3,12 @@ package com.bdxh.account.feign;
 import com.bdxh.account.dto.AddUserDevice;
 import com.bdxh.account.dto.ModifyUserDevice;
 
+import com.bdxh.account.dto.QueryUserDeviceDto;
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.fallback.UserDeviceControllerClientFallback;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +67,14 @@ public interface UserDeviceControllerClient {
     @RequestMapping(value = "/userDevice/findUserDeviceList", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<UserDevice>> findUserDeviceList(@RequestParam("schoolCode")String schoolCode);
+
+    /**
+     * 根据条件查找用户设备信息
+     * @Author: WanMing
+     * @Date: 2019/7/5 10:14
+     */
+    @RequestMapping(value = "/userDevice/findUserDeviceByCondition",method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<PageInfo<UserDevice>> findUserDeviceByCondition(@RequestBody QueryUserDeviceDto queryUserDeviceDto);
 
 }

@@ -2,10 +2,12 @@ package com.bdxh.account.fallback;
 
 import com.bdxh.account.dto.AddUserDevice;
 import com.bdxh.account.dto.ModifyUserDevice;
+import com.bdxh.account.dto.QueryUserDeviceDto;
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -42,6 +44,11 @@ public class UserDeviceControllerClientFallback implements UserDeviceControllerC
 
     @Override
     public Wrapper<List<UserDevice>> findUserDeviceList(String schoolCode) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<PageInfo<UserDevice>> findUserDeviceByCondition(QueryUserDeviceDto queryUserDeviceDto) {
         return WrapMapper.error();
     }
 }
