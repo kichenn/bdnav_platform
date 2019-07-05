@@ -26,7 +26,7 @@ import javax.validation.constraints.NotNull;
 @Slf4j
 @RestController
 @Validated
-@Api(value = "学生信息控制器")
+@Api(value = "学生信息控制器",tags = "学生相关信息")
 @RequestMapping(value = "/studentWeb")
 public class StudentWebController {
 
