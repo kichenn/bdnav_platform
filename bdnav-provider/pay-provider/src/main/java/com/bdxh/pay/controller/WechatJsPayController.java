@@ -7,17 +7,22 @@ import com.bdxh.common.base.constant.WxAuthorizedConstants;
 import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.wechatpay.js.domain.JSNoticeReturn;
+import com.bdxh.common.wechatpay.js.domain.JsOrderPayResponse;
 import com.bdxh.common.wechatpay.js.domain.JsOrderRequest;
 import com.bdxh.common.wechatpay.js.domain.JsOrderResponse;
+import com.bdxh.order.enums.OrderPayStatusEnum;
+import com.bdxh.order.enums.OrderTradeStatusEnum;
 import com.bdxh.pay.configration.exception.CreateOrderException;
 import com.bdxh.pay.configration.exception.ResultOrderException;
 import com.bdxh.pay.configration.exception.SignException;
 import com.bdxh.pay.dto.WxPayJsOrderDto;
+import com.bdxh.pay.vo.WechatOrderQueryVo;
 import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -36,6 +41,8 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.stream.Collectors;
 
@@ -50,6 +57,9 @@ import java.util.stream.Collectors;
 @Validated
 @Slf4j
 public class WechatJsPayController {
+
+    @Autowired
+    private WechatCommonController wechatCommonController;
 
     /**
      * JS统一下单接口
@@ -134,6 +144,61 @@ public class WechatJsPayController {
         } catch (ResultOrderException e) {
             return WrapMapper.error("微信下单接口返回失败");
         }
+    }
+
+    /**
+     * JS继续支付（开始未完成支付）
+     *
+     * @param orderNo 我方订单,prepayId 预订单
+     * @return
+     */
+    @RequestMapping(value = "/continueOrder", method = RequestMethod.POST)
+    @ApiOperation(value = "JS继续支付（开始未完成支付）", response = String.class)
+    public Object continueOrder(@RequestParam("orderNo") String orderNo, @RequestParam("prepayId") String prepayId) {
+        try {
+            WechatOrderQueryVo wechatOrderQueryVo = (WechatOrderQueryVo) wechatCommonController.wechatAppPayOrderQuery(orderNo);
+            Preconditions.checkArgument(wechatOrderQueryVo != null, "查询三方订单失败，请稍后再试");
+            switch (wechatOrderQueryVo.getPayResult()) {
+                case "SUCCESS":
+                    //支付成功
+                    return WrapMapper.error("支付已经成功，请稍后再试");
+                case "NOTPAY":
+                    //未支付
+                    JsOrderPayResponse jsOrderPayResponse = new JsOrderPayResponse();
+                    jsOrderPayResponse.setAppId(wechatOrderQueryVo.getAppId());
+                    jsOrderPayResponse.setTimeStamp(System.currentTimeMillis() / 1000L + "");
+                    jsOrderPayResponse.setNonceStr(wechatOrderQueryVo.getNonceStr());
+                    jsOrderPayResponse.setPackages("prepay_id=" + prepayId);
+                    SortedMap<String, String> paramMap = BeanToMapUtil.objectToTreeMap(jsOrderPayResponse);
+                    if (paramMap.containsKey("packages")) {
+                        paramMap.put("package", paramMap.get("packages"));
+                        paramMap.remove("packages");
+                    }
+                    if (paramMap.containsKey("paySign")) {
+                        paramMap.remove("paySign");
+                    }
+                    String paramStr = BeanToMapUtil.mapToString(paramMap);
+                    String sign = MD5.md5(paramStr + "&key=" + WechatPayConstants.JS.APP_KEY);
+                    jsOrderPayResponse.setPaySign(sign);
+                    return WrapMapper.ok(jsOrderPayResponse);
+                case "CLOSED":
+                    //已关闭
+                    return WrapMapper.error("订单已关闭，请检查");
+                case "USERPAYING":
+                    //支付中
+                    return WrapMapper.error("正在支付中.....");
+                case "PAYERROR":
+                    //支付失败;
+                    return WrapMapper.error("支付失败，请检查");
+                case "REFUND":
+                    //已转入退款
+                    return WrapMapper.error("该订单已转入退款");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            WrapMapper.error(e.getMessage());
+        }
+        return WrapMapper.error();
     }
 
     /**

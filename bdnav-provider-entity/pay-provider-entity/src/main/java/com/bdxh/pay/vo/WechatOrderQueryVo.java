@@ -33,4 +33,20 @@ public class WechatOrderQueryVo implements Serializable {
      * 支付结束时间
      */
     private String timeEnd;
+
+    /**
+     * 签名
+     */
+    private String sign;
+
+    /**
+     * appId
+     */
+    private String appId;
+
+    /**
+     * nonce_str随机字符串
+     */
+    private String nonceStr;
+
 }

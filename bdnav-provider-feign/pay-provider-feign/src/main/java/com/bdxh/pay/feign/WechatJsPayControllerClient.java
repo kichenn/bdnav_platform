@@ -29,6 +29,16 @@ public interface WechatJsPayControllerClient {
     Wrapper wechatJsPayOrder(@RequestBody WxPayJsOrderDto wxPayJsOrderDto);
 
     /**
+     * JS继续支付（开始未完成支付）
+     *
+     * @param orderNo 我方订单,prepayId 预订单
+     * @return
+     */
+    @RequestMapping(value = "/wechatJsPay/continueOrder", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper continueOrder(@RequestParam("orderNo") String orderNo, @RequestParam("prepayId") String prepayId);
+
+    /**
      * 根据微信code返回授权信息
      *
      * @param code

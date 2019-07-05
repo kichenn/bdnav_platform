@@ -82,6 +82,9 @@ public class WechatCommonController {
                 wechatOrderQueryVo.setThirdOrderNo(resultMap.get("transaction_id"));
                 wechatOrderQueryVo.setPayResult(resultMap.get("trade_state"));
                 wechatOrderQueryVo.setTimeEnd(resultMap.get("time_end"));
+                wechatOrderQueryVo.setSign(resultMap.get("sign"));
+                wechatOrderQueryVo.setAppId(resultMap.get("appid"));
+                wechatOrderQueryVo.setNonceStr(resultMap.get("nonce_str"));
                 return WrapMapper.ok(wechatOrderQueryVo);
             } else {
                 return WrapMapper.error("微信订单查询接口返回失败");

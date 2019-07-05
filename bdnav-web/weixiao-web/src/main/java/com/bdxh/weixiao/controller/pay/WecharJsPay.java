@@ -5,6 +5,7 @@ import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
 import com.bdxh.common.utils.BeanToMapUtil;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -39,10 +40,10 @@ import java.util.SortedMap;
 
 
 /**
-* @Description:  微校购买商品 支付
-* @Author: Kang
-* @Date: 2019/6/21 14:32
-*/
+ * @Description: 微校购买商品 支付
+ * @Author: Kang
+ * @Date: 2019/6/21 14:32
+ */
 @RestController
 @RequestMapping("/wechatJsPayWeiXiaoWeb")
 @Api(value = "JSAPI微校支付", tags = "JSAPI微校支付交互API")
@@ -127,8 +128,8 @@ public class WecharJsPay {
         addOrderDto.setTradeType(OrderTradeTypeEnum.WECHAT_JSAPI);
         //支付时间
         addOrderDto.setPayTime(new Date());
-        //支付结束时间，此处默认成支付时间，支付结束后设置时间
-        addOrderDto.setPayEndTime(new Date());
+        //支付结束时间，预订单时间默认有效2小时，支付最晚时间应该是当前时间增加俩小时
+        addOrderDto.setPayEndTime(DateUtil.addDateMinut(addOrderDto.getPayTime(), 2));
         //商品id
         addOrderDto.setProductId(addPayOrderDto.getProductId());
         //操作人
@@ -210,6 +211,11 @@ public class WecharJsPay {
         return WrapMapper.ok(jsOrderPayResponse);
     }
 
+    @RequestMapping(value = "/continueOrder", method = RequestMethod.POST)
+    @ApiOperation(value = "JS继续支付（开始未完成支付）", response = String.class)
+    public Object continueOrder(@RequestParam("orderNo") String orderNo, @RequestParam("prepayId") String prepayId) {
+        return WrapMapper.ok(wechatJsPayControllerClient.continueOrder(orderNo, prepayId).getResult());
+    }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     @ApiOperation(value = "根据微信code返回授权信息", response = String.class)

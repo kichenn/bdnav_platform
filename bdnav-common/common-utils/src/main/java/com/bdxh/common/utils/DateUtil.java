@@ -367,5 +367,57 @@ public class DateUtil {
         return "";
     }
 
+    /**
+     * 当前时间，增加小时
+     *
+     * @param day
+     * @param hour
+     * @return
+     */
+    public static Date addDateMinut(String day, int hour) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(day);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (date == null)
+            return null;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR, hour);// 24小时制
+        date = cal.getTime();
+        cal = null;
+        return date;
+
+    }
+
+    /**
+     * 当前时间，增加小时
+     *
+     * @param day
+     * @param hour
+     * @return
+     */
+    public static Date addDateMinut(Date day, int hour) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = simpleDateFormat.parse(simpleDateFormat.format(day));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        if (date == null)
+            return null;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.HOUR, hour);// 24小时制
+        date = cal.getTime();
+        cal = null;
+        return date;
+
+    }
+
 
 }
