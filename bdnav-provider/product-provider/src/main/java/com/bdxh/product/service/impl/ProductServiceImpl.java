@@ -8,6 +8,7 @@ import com.bdxh.product.dto.*;
 import com.bdxh.product.entity.Product;
 import com.bdxh.product.entity.ProductImage;
 import com.bdxh.product.enums.ProductImgTypeEnum;
+import com.bdxh.product.enums.ProductSellStatusEnum;
 import com.bdxh.product.enums.ProductTypeEnum;
 import com.bdxh.product.persistence.ProductImageMapper;
 import com.bdxh.product.persistence.ProductMapper;
@@ -220,5 +221,20 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         Product product = new Product();
         product.setProductName(productName);
         return productMapper.selectOne(product);
+    }
+
+    /**
+     * 查询所有上架的单品信息
+     *
+     * @Author: WanMing
+     * @Date: 2019/7/4 17:52
+     */
+    @Override
+    public List<ProductListVo> querySingleProductList() {
+        Product product = new Product();
+        product.setSellStatus(ProductSellStatusEnum.PUTAWAY.getKey());
+        product.setProductType(ProductTypeEnum.SINGLE.getCode());
+        List<Product> select = productMapper.select(product);
+        return BeanMapUtils.mapList(select,ProductListVo.class);
     }
 }

@@ -156,4 +156,15 @@ public class ProductController {
 
     }
 
+    /**
+     * 查询所有上架的单品信息
+     * @Author: WanMing
+     * @Date: 2019/7/4 17:47
+     */
+    @RequestMapping(value = "/querySingleProductList", method = RequestMethod.GET)
+    @ApiOperation(value = "查询所有上架的单品信息", response = ProductListVo.class)
+    public Object querySingleProductList(){
+        return WrapMapper.ok(productService.querySingleProductList());
+    }
+
 }

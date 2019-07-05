@@ -106,4 +106,13 @@ public interface ProductControllerClient {
     @RequestMapping(value = "/product/findProductByName", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<Product> findProductByName(@RequestParam("productName") String productName);
+
+    /**
+     * 查询所有上架的单品信息
+     * @Author: WanMing
+     * @Date: 2019/7/4 17:47
+     */
+    @RequestMapping(value = "/product/querySingleProductList", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<ProductListVo>> querySingleProductList();
 }

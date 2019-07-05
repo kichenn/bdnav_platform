@@ -67,4 +67,9 @@ public class ProductControllerClientFallback implements ProductControllerClient 
     public Wrapper<Product> findProductByName(String productName) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<ProductListVo>> querySingleProductList() {
+        return WrapMapper.error();
+    }
 }
