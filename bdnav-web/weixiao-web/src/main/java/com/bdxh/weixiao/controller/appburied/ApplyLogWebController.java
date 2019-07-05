@@ -43,33 +43,34 @@ public class ApplyLogWebController {
     @Autowired
     private UserDeviceControllerClient userDeviceControllerClient;
 
-    /**(该方法已被@method findApplyLogInfoByFamily替换)
+    /**
      * 家长查询自己孩子的App申请信息
      *
-     * @param cardNumber
+     * @param
      * @return
      */
     @Deprecated
     @RolesAllowed({"TEST", "CONTROLE"})
     @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.GET)
-    @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息", response = ApplyLog.class)
-    public Object familyFindApplyLogInfo(@RequestParam("cardNumber") String cardNumber) {
+    @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息分页显示", response = ApplyLog.class)
+    public Object familyFindApplyLogInfo(@Validated @RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto) {
         try {
             //没有在试用，查看是否开通正式权限
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
             caseCardNumber = caseCardNumber == null ? new ArrayList<>() : caseCardNumber;
-            Boolean isOnTrial = caseCardNumber.contains(cardNumber);
+            Boolean isOnTrial = caseCardNumber.contains(familyQueryApplyLogDto.getCardNumber());
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
             thisCardNumbers = thisCardNumbers == null ? new ArrayList<>() : thisCardNumbers;
-            Boolean isBy = thisCardNumbers.contains(cardNumber);
+            Boolean isBy = thisCardNumbers.contains(familyQueryApplyLogDto.getCardNumber());
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
-            return applyLogControllerClient.familyFindApplyLogInfo(userInfo.getSchoolCode(), cardNumber);
+            familyQueryApplyLogDto.setSchoolCode(userInfo.getSchoolCode());
+            return applyLogControllerClient.familyFindApplyLogInfo(familyQueryApplyLogDto);
         } catch (Exception e) {
             String messge = "";
             if (e instanceof PermitException) {
@@ -86,6 +87,7 @@ public class ApplyLogWebController {
      * @param
      * @return
      */
+    @Deprecated
     @RolesAllowed({"TEST", "CONTROLE"})
     @RequestMapping(value = "/findApplyLogInfoByFamily", method = RequestMethod.POST)
     @ApiOperation(value = "审批畅玩----家长查询该学校所有有权限的孩子App申请畅玩记录", response = ApplyLog.class)

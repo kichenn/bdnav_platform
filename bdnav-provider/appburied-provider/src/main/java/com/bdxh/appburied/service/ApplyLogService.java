@@ -31,7 +31,7 @@ public interface ApplyLogService extends IService<ApplyLog> {
     PageInfo<ApplyLog> findApplyLogInConationPaging(ApplyLogQueryDto applyLogQueryDto);
 
 
-    List<ApplyLog> familyFindApplyLogInfo(String schoolCode,String cardNumber);
+    PageInfo<ApplyLog> familyFindApplyLogInfo(FamilyQueryApplyLogDto familyQueryApplyLogDto);
 
     //修改应用审核状态
     void modifyVerifyApplyLog(ModifyApplyLogDto modifyApplyLogDto);
