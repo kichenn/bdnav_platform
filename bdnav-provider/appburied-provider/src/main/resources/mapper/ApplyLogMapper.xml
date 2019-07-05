@@ -111,5 +111,6 @@
         <include refid="BaseColumns"/>
         FROM t_apply_log
         WHERE school_code =#{schoolCode} and card_number = #{cardNumber}
+        ORDER BY create_date DESC
     </select>
 </mapper>

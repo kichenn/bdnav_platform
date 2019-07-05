@@ -51,7 +51,7 @@ public class ApplyLogWebController {
      */
     @Deprecated
     @RolesAllowed({"TEST", "CONTROLE"})
-    @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.GET)
+    @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.POST)
     @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息分页显示", response = ApplyLog.class)
     public Object familyFindApplyLogInfo(@Validated @RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto) {
         try {
