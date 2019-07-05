@@ -49,7 +49,6 @@ public class ApplyLogWebController {
      * @param
      * @return
      */
-    @Deprecated
     @RolesAllowed({"TEST", "CONTROLE"})
     @RequestMapping(value = "/familyFindApplyLogInfo", method = RequestMethod.POST)
     @ApiOperation(value = "审批畅玩----家长查询自己孩子的App申请信息分页显示", response = ApplyLog.class)
@@ -81,46 +80,7 @@ public class ApplyLogWebController {
         }
     }
 
-    /**
-     * 家长查询该学校所有有权限的孩子App申请畅玩记录
-     *
-     * @param
-     * @return
-     */
-    @Deprecated
-    @RolesAllowed({"TEST", "CONTROLE"})
-    @RequestMapping(value = "/findApplyLogInfoByFamily", method = RequestMethod.POST)
-    @ApiOperation(value = "审批畅玩----家长查询该学校所有有权限的孩子App申请畅玩记录", response = ApplyLog.class)
-    public Object findApplyLogInfoByFamily(@RequestBody FamilyQueryApplyLogDto familyQueryApplyLogDto) {
-        try {
-            //查看此孩子是否开通权限
-            Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
-            //获取试用孩子列表信息
-            List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
-            //获取正式购买孩子列表信息
-            List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
-            if(null==caseCardNumber && null==thisCardNumbers){
-                throw new PermitException();
-            }
-            //卡号合并
-            List<String> allCardNumber = new ArrayList<>();
-            allCardNumber.addAll(caseCardNumber);
-            allCardNumber.addAll(thisCardNumbers);
-            UserInfo userInfo = SecurityUtils.getCurrentUser();
-            familyQueryApplyLogDto.setSchoolCode(userInfo.getSchoolCode());
-            familyQueryApplyLogDto.setOperatorCode(userInfo.getFamilyCardNumber());
-            familyQueryApplyLogDto.setStudentCardNumbers(allCardNumber);
-            return applyLogControllerClient.findApplyLogInfoByFamily(familyQueryApplyLogDto);
-        } catch (PermitException e) {
-            String messge = "";
-            if (e instanceof PermitException) {
-                messge = "抱歉，您没有孩子开通管控权限";
-                return WrapMapper.notNoTrial(messge);
-            }
-            return WrapMapper.error(messge);
-        }
 
-    }
 
 
     /**
