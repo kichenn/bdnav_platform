@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/userDevice")
 @Slf4j
 @Validated
-@Api(value = "UserDevice控制器", tags = "UserDevice")
+@Api(value = "登录设备相关信息", tags = "登录设备信息API")
 public class UserDeviceController {
 
 	@Autowired
