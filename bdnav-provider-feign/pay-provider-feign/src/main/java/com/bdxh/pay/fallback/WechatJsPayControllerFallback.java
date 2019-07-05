@@ -21,6 +21,11 @@ public class WechatJsPayControllerFallback implements WechatJsPayControllerClien
     }
 
     @Override
+    public Wrapper continueOrder(String orderNo, String prepayId) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper auth(String code) {
         return WrapMapper.error();
     }

@@ -1,6 +1,7 @@
 package com.bdxh.weixiao.controller.order;
 
 import com.bdxh.appburied.dto.ModifyApplyLogDto;
+import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.order.dto.AddOrderDto;
 import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
@@ -50,6 +51,6 @@ public class OrderWebController {
             Product product = productControllerClient.findProductById(Long.valueOf(orderTemp.getProductId())).getResult();
             orderTemp.setProductName(product != null ? product.getProductShowName() : "");
         }
-        return orderVos;
+        return  WrapMapper.ok(orderVos);
     }
 }

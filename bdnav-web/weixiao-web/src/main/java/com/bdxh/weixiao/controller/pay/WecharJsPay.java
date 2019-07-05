@@ -39,10 +39,10 @@ import java.util.SortedMap;
 
 
 /**
-* @Description:  微校购买商品 支付
-* @Author: Kang
-* @Date: 2019/6/21 14:32
-*/
+ * @Description: 微校购买商品 支付
+ * @Author: Kang
+ * @Date: 2019/6/21 14:32
+ */
 @RestController
 @RequestMapping("/wechatJsPayWeiXiaoWeb")
 @Api(value = "JSAPI微校支付", tags = "JSAPI微校支付交互API")
@@ -210,6 +210,11 @@ public class WecharJsPay {
         return WrapMapper.ok(jsOrderPayResponse);
     }
 
+    @RequestMapping(value = "/continueOrder", method = RequestMethod.POST)
+    @ApiOperation(value = "JS继续支付（开始未完成支付）", response = String.class)
+    public Object continueOrder(@RequestParam("orderNo") String orderNo, @RequestParam("prepayId") String prepayId) {
+        return WrapMapper.ok(wechatJsPayControllerClient.continueOrder(orderNo, prepayId).getResult());
+    }
 
     @RequestMapping(value = "/auth", method = RequestMethod.GET)
     @ApiOperation(value = "根据微信code返回授权信息", response = String.class)
