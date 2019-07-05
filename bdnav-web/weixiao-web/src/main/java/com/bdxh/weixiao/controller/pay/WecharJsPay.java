@@ -5,6 +5,7 @@ import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.enums.BaseUserTypeEnum;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
 import com.bdxh.common.utils.BeanToMapUtil;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
@@ -127,8 +128,8 @@ public class WecharJsPay {
         addOrderDto.setTradeType(OrderTradeTypeEnum.WECHAT_JSAPI);
         //支付时间
         addOrderDto.setPayTime(new Date());
-        //支付结束时间，此处默认成支付时间，支付结束后设置时间
-        addOrderDto.setPayEndTime(new Date());
+        //支付结束时间，预订单时间默认有效2小时，支付最晚时间应该是当前时间增加俩小时
+        addOrderDto.setPayEndTime(DateUtil.addDateMinut(addOrderDto.getPayTime(), 2));
         //商品id
         addOrderDto.setProductId(addPayOrderDto.getProductId());
         //操作人
