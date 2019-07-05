@@ -6,6 +6,7 @@ import com.bdxh.common.base.constant.WechatPayConstants;
 import com.bdxh.common.base.constant.WxAuthorizedConstants;
 import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.common.wechatpay.js.domain.JSNoticeReturn;
 import com.bdxh.common.wechatpay.js.domain.JsOrderPayResponse;
 import com.bdxh.common.wechatpay.js.domain.JsOrderRequest;
@@ -156,7 +157,8 @@ public class WechatJsPayController {
     @ApiOperation(value = "JS继续支付（开始未完成支付）", response = String.class)
     public Object continueOrder(@RequestParam("orderNo") String orderNo, @RequestParam("prepayId") String prepayId) {
         try {
-            WechatOrderQueryVo wechatOrderQueryVo = (WechatOrderQueryVo) wechatCommonController.wechatAppPayOrderQuery(orderNo);
+            Wrapper result = (Wrapper) wechatCommonController.wechatAppPayOrderQuery(orderNo);
+            WechatOrderQueryVo wechatOrderQueryVo = result.getCode() == Wrapper.SUCCESS_CODE ? (WechatOrderQueryVo) result.getResult() : null;
             Preconditions.checkArgument(wechatOrderQueryVo != null, "查询三方订单失败，请稍后再试");
             switch (wechatOrderQueryVo.getPayResult()) {
                 case "SUCCESS":
