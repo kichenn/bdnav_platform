@@ -7,6 +7,7 @@ import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.feign.UserDeviceControllerClient;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -47,7 +48,7 @@ public class UserDeviceControllerClientFallback implements UserDeviceControllerC
     }
 
     @Override
-    public Wrapper<List<UserDevice>> findUserDeviceByCondition(QueryUserDeviceDto queryUserDeviceDto) {
+    public Wrapper<PageInfo<UserDevice>> findUserDeviceByCondition(QueryUserDeviceDto queryUserDeviceDto) {
         return WrapMapper.error();
     }
 }

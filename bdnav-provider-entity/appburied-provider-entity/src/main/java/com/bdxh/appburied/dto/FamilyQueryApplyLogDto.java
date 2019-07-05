@@ -16,9 +16,12 @@ public class FamilyQueryApplyLogDto extends Query {
     @ApiModelProperty("家长的编号")
     private String operatorCode;
 
+    @ApiModelProperty("单个学生编号")
+    private String cardNumber;
+
     @ApiModelProperty("学校编码")
     private String schoolCode;
 
-    @ApiModelProperty("学生的卡号集合")
+    @ApiModelProperty("多个学生的卡号集合")
     private List<String> studentCardNumbers;
 }
