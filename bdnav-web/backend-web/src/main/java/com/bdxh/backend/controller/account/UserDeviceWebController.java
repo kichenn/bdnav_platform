@@ -4,6 +4,7 @@ package com.bdxh.backend.controller.account;
 import com.bdxh.account.dto.QueryUserDeviceDto;
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.feign.UserDeviceControllerClient;
+import com.bdxh.account.vo.UserDeviceVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class UserDeviceWebController {
      * @Date: 2019/7/5 10:14
      */
     @RequestMapping(value = "/findUserDeviceByCondition",method = RequestMethod.POST)
-    @ApiOperation(value = "根据条件查找用户的登录设备信息",response = UserDevice.class)
+    @ApiOperation(value = "根据条件查找用户的登录设备信息",response = UserDeviceVo.class)
     public Object findUserDeviceByCondition(@RequestBody QueryUserDeviceDto queryUserDeviceDto){
         return userDeviceControllerClient.findUserDeviceByCondition(queryUserDeviceDto);
     }
