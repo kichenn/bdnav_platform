@@ -9,8 +9,8 @@ public enum OrderPayStatusEnum {
 
     NO_PAY(new Byte("1"), "未支付"),
     PAYING(new Byte("2"), "支付中"),
-    PAY_FAIL(new Byte("3"), "支付失败"),
-    PAY_SUCCESS(new Byte("4"), "支付成功"),
+    PAY_SUCCESS(new Byte("3"), "支付成功"),
+    PAY_FAIL(new Byte("4"), "支付失败"),
     PAY_CLOSE(new Byte("5"), "支付已关闭"),
     PAY_REFUND(new Byte("6"), "已转入退款");
 

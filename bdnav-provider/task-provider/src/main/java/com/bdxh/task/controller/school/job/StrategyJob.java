@@ -14,6 +14,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -39,9 +40,9 @@ public class StrategyJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         String data = jobExecutionContext.getMergedJobDataMap().getString("data");
-        JSONObject json=(JSONObject)JSONObject.parse(data);
-        String schoolCode=json.getString("schoolCode");
-        Long groupId=json.getLong("groupId");
+        JSONObject json = (JSONObject) JSONObject.parse(data);
+        String schoolCode = json.getString("schoolCode");
+        Long groupId = json.getLong("groupId");
         JSONArray jsonArray = JSON.parseArray(json.getString("strategyList"));
         System.out.println(json.getString("strategyList"));
         //打印当前的执行时间
@@ -49,18 +50,18 @@ public class StrategyJob implements Job {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println("result:" + data + "打印出现在的时间是：" + sf.format(date));
         //具体的业务逻辑
-        List<UserDevice> userDeviceList=userDeviceControllerClient.getUserDeviceAll(schoolCode,groupId).getResult();
-        AppPushRequest appPushRequest= new AppPushRequest();
+//        List<UserDevice> userDeviceList = userDeviceControllerClient.getUserDeviceAll(schoolCode, groupId.toString()).getResult();
+        AppPushRequest appPushRequest = new AppPushRequest();
         appPushRequest.setAppId(GeTuiConstant.GeTuiParams.appId);
         appPushRequest.setAppKey(GeTuiConstant.GeTuiParams.appKey);
         appPushRequest.setMasterSecret(GeTuiConstant.GeTuiParams.MasterSecret);
         List<String> clientIds = new ArrayList<>();
-/*        clientIds.add("59dc219038fde0484eebcbb6d5476f0c");*/
-        //添加用户设备号
-       for(UserDevice attribute : userDeviceList) {
-            clientIds.add(attribute.getClientId());
-            System.out.println("推送数据"+attribute.getClientId());
-        }
+        /*        clientIds.add("59dc219038fde0484eebcbb6d5476f0c");*/
+//        //添加用户设备号
+//        for (UserDevice attribute : userDeviceList) {
+//            clientIds.add(attribute.getClientId());
+//            System.out.println("推送数据" + attribute.getClientId());
+//        }
         appPushRequest.setClientId(clientIds);
         //穿透模版
         AppNotificationTemplate appNotificationTemplate = new AppNotificationTemplate();
@@ -73,7 +74,7 @@ public class StrategyJob implements Job {
         //更改策略为已推送状态
         for (int i = 0; i < jsonArray.size(); i++) {
             JSONObject jsonObject = (JSONObject) jsonArray.get(i);
-          /*  schoolStrategyControllerClient.updatePolicyPushStatus(jsonObject.getLong("id"),new Byte("2"));*/
+            /*  schoolStrategyControllerClient.updatePolicyPushStatus(jsonObject.getLong("id"),new Byte("2"));*/
         }
 
         System.out.println(resultMap.toString());

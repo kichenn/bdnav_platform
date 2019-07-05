@@ -6,8 +6,11 @@ import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.feign.OrdersControllerClient;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.product.entity.Product;
+import com.bdxh.product.feign.ProductControllerClient;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -31,6 +34,9 @@ public class OrderWebController {
     @Autowired
     private OrdersControllerClient ordersControllerClient;
 
+    @Autowired
+    private ProductControllerClient productControllerClient;
+
     @RequestMapping(value = "/findOrder", method = RequestMethod.POST)
     @ApiOperation(value = "家长端-----查看订单", response = OrderVo.class)
     public Object findOrder(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
@@ -39,6 +45,11 @@ public class OrderWebController {
         orderQueryDto.setUserId(userInfo.getFamilyId());
         orderQueryDto.setPageNum(pageNum);
         orderQueryDto.setPageSize(pageSize);
-        return ordersControllerClient.queryUserOrder(orderQueryDto);
+        PageInfo<OrderVo> orderVos = ordersControllerClient.queryUserOrder(orderQueryDto).getResult();
+        for (OrderVo orderTemp : orderVos.getList()) {
+            Product product = productControllerClient.findProductById(Long.valueOf(orderTemp.getProductId())).getResult();
+            orderTemp.setProductName(product != null ? product.getProductName() : "");
+        }
+        return orderVos;
     }
 }
