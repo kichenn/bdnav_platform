@@ -75,14 +75,13 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
     @Override
     public PageInfo<ApplyLog> familyFindApplyLogInfo(FamilyQueryApplyLogDto familyQueryApplyLogDto) {
         Page page = PageHelper.startPage(familyQueryApplyLogDto.getPageNum(), familyQueryApplyLogDto.getPageSize());
-        List<ApplyLog> applyLogs = applyLogMapper.findApplyLogInfoByFamily(familyQueryApplyLogDto.getSchoolCode(), familyQueryApplyLogDto.getCardNumber());
-        PageInfo<ApplyLog> pageInfo = new PageInfo(applyLogs);
+        ApplyLog applyLog = new ApplyLog();
+        applyLog.setSchoolCode(familyQueryApplyLogDto.getSchoolCode());
+        applyLog.setCardNumber(familyQueryApplyLogDto.getCardNumber());
+        List<ApplyLog> applyLogs = applyLogMapper.findApplyLogInConationPaging(applyLog);
+        PageInfo<ApplyLog> pageInfo = new PageInfo<>(applyLogs);
         pageInfo.setTotal(page.getTotal());
         return pageInfo;
-//        ApplyLog applyLog = new ApplyLog();
-//        applyLog.setSchoolCode(schoolCode);
-//        applyLog.setCardNumber(cardNumber);
-//        return applyLogMapper.findApplyLogInConationPaging(applyLog);
     }
 
     @Override
