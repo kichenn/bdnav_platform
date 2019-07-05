@@ -62,4 +62,27 @@
 		WHERE
 		school_code=#{schoolCode}
 	</select>
+
+	<!--条件＋分页-->
+    <select id="findUserDeviceByCondition" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM
+		t_user_device
+		<where>
+			<if test="userDevice.schoolCode!=null and userDevice.schoolCode!=''">
+				AND school_code = #{userDevice.schoolCode}
+			</if>
+			<if test="userDevice.schoolName!=null and userDevice.schoolName!=''">
+				AND school_name = #{userDevice.schoolName}
+			</if>
+			<if test="userDevice.cardNumber!=null and userDevice.cardNumber!=''">
+				AND card_number = #{userDevice.cardNumber}
+			</if>
+			<if test="userDevice.userName!=null and userDevice.userName!=''">
+				AND user_name LIKE CONCAT("%",#{userDevice.userName},"%")
+			</if>
+		</where>
+		ORDER BY create_date DESC
+	</select>
 </mapper>

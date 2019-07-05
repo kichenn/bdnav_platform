@@ -1,7 +1,9 @@
 package com.bdxh.account.service;
 
+import com.bdxh.account.dto.QueryUserDeviceDto;
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.common.support.IService;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
@@ -38,4 +40,11 @@ public interface UserDeviceService extends IService<UserDevice> {
 
 	//根据school查询学校下所有设备
 	List<UserDevice> findUserDeviceList(String schoolCode);
+
+	/**
+	 * 根据条件查找用户设备信息
+	 * @Author: WanMing
+	 * @Date: 2019/7/5 10:16
+	 */
+    PageInfo<UserDevice> findUserDeviceByCondition(QueryUserDeviceDto queryUserDeviceDto);
 }

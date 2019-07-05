@@ -43,4 +43,7 @@ public interface UserDeviceMapper extends Mapper<UserDevice> {
 
 	//根据school查询学校下所有设备
 	List<UserDevice> findUserDeviceList(@Param("schoolCode")String schoolCode);
+
+	//条件+分页查询
+    List<UserDevice> findUserDeviceByCondition(@Param("userDevice")UserDevice userDevice);
 }

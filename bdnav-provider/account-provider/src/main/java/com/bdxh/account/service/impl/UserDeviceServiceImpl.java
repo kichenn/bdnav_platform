@@ -1,8 +1,13 @@
 package com.bdxh.account.service.impl;
 
+import com.bdxh.account.dto.QueryUserDeviceDto;
 import com.bdxh.account.entity.UserDevice;
 import com.bdxh.account.persistence.UserDeviceMapper;
 import com.bdxh.account.service.UserDeviceService;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +75,23 @@ public class UserDeviceServiceImpl extends BaseService<UserDevice> implements Us
 	@Override
 	public List<UserDevice> findUserDeviceList(String schoolCode) {
 		return userDeviceMapper.findUserDeviceList(schoolCode);
+	}
+
+	/**
+	 * 根据条件查找用户设备信息
+	 *
+	 * @param queryUserDeviceDto
+	 * @Author: WanMing
+	 * @Date: 2019/7/5 10:16
+	 */
+	@Override
+	public PageInfo<UserDevice> findUserDeviceByCondition(QueryUserDeviceDto queryUserDeviceDto) {
+		Page page = PageHelper.startPage(queryUserDeviceDto.getPageNum(), queryUserDeviceDto.getPageSize());
+		UserDevice userDevice = new UserDevice();
+		BeanUtils.copyProperties(queryUserDeviceDto,userDevice);
+		List<UserDevice> userDevices = userDeviceMapper.findUserDeviceByCondition(userDevice);
+		PageInfo<UserDevice> pageInfo = new PageInfo<>(userDevices);
+		pageInfo.setTotal(page.getTotal());
+		return pageInfo;
 	}
 }
