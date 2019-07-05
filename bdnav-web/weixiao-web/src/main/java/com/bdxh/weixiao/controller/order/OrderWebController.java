@@ -48,7 +48,7 @@ public class OrderWebController {
         PageInfo<OrderVo> orderVos = ordersControllerClient.queryUserOrder(orderQueryDto).getResult();
         for (OrderVo orderTemp : orderVos.getList()) {
             Product product = productControllerClient.findProductById(Long.valueOf(orderTemp.getProductId())).getResult();
-            orderTemp.setProductName(product != null ? product.getProductName() : "");
+            orderTemp.setProductName(product != null ? product.getProductShowName() : "");
         }
         return orderVos;
     }
