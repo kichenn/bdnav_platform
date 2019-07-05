@@ -6,22 +6,21 @@ import com.bdxh.order.dto.OrderQueryDto;
 import com.bdxh.order.dto.OrderUpdateDto;
 import com.bdxh.order.feign.OrdersControllerClient;
 import com.bdxh.order.vo.OrderVo;
+import com.bdxh.weixiao.configration.security.entity.UserInfo;
+import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
- * @description:
- * @author: binzh
- * @create: 2019-06-03 19:24
- **/
+ * @Description: 订单信息
+ * @Author: Kang
+ * @Date: 2019/7/5 9:59
+ */
 @RequestMapping("/orderWeb")
 @RestController
 @Validated
@@ -32,34 +31,14 @@ public class OrderWebController {
     @Autowired
     private OrdersControllerClient ordersControllerClient;
 
-//    /**
-//     * 确定购买的商品添加订单
-//     *
-//     * @param addOrderDto
-//     * @return
-//     */
-//    @RequestMapping(value = "/saveOrder",method = RequestMethod.POST)
-//    @ApiOperation(value = "家长端-----确定购买的商品添加订单",response = Boolean.class)
-//    public Object saveOrder(@RequestBody AddOrderDto addOrderDto) {
-//        return ordersControllerClient.createOrder(addOrderDto);
-//    }
-
-    /**
-     * 家长端-----查看订单
-     *
-     * @param orderQueryDto
-     * @return
-     */
-    @RequestMapping(value = "/findOrder",method = RequestMethod.POST)
-    @ApiOperation(value = "家长端-----查看订单",response = OrderVo.class)
-    public Object findOrder(@RequestBody OrderQueryDto orderQueryDto) {
-
+    @RequestMapping(value = "/findOrder", method = RequestMethod.POST)
+    @ApiOperation(value = "家长端-----查看订单", response = OrderVo.class)
+    public Object findOrder(@RequestParam("pageNum") Integer pageNum, @RequestParam("pageSize") Integer pageSize) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        OrderQueryDto orderQueryDto = new OrderQueryDto();
+        orderQueryDto.setUserId(userInfo.getFamilyId());
+        orderQueryDto.setPageNum(pageNum);
+        orderQueryDto.setPageSize(pageSize);
         return ordersControllerClient.queryUserOrder(orderQueryDto);
-    }
-
-    @RequestMapping(value = "/updateOrder",method = RequestMethod.POST)
-    @ApiOperation(value = "家长端-----修改订单",response = Boolean.class)
-    public Object updateOrder(@RequestBody OrderUpdateDto orderUpdateDto){
-        return ordersControllerClient.updateOrder(orderUpdateDto);
     }
 }
