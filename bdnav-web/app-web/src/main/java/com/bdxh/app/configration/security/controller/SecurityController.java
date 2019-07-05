@@ -150,6 +150,7 @@ public class SecurityController {
                         aud.setUserName(account.getUserName());
                         aud.setImei(imei);
                         aud.setClientId(clientId);
+                        aud.setLoginName(account.getLoginName());
                         userDeviceControllerClient.addUserDeviceInfo(aud);
                     }
                     break;

@@ -10,6 +10,7 @@
 	  <result column="group_id" jdbcType="BIGINT" property="groupId"/>
 	  <result column="user_id" jdbcType="BIGINT" property="userId"/>
 	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+	  <result column="login_name" jdbcType="VARCHAR" property="loginName"/>
 	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
 	  <result column="imei" jdbcType="VARCHAR" property="imei"/>
 	  <result column="client_id" jdbcType="VARCHAR" property="clientId"/>
@@ -19,7 +20,7 @@
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,school_id,school_code,school_name,group_id,user_id,card_number,user_name,imei,client_id,create_date,update_date,remark
+	  id,school_id,school_code,school_name,group_id,user_id,card_number,login_name,user_name,imei,client_id,create_date,update_date,remark
 	</sql>
 	<select id="getUserDeviceAllCount" resultType="Integer">
 	  SELECT 
@@ -81,6 +82,9 @@
 			</if>
 			<if test="userDevice.userName!=null and userDevice.userName!=''">
 				AND user_name LIKE CONCAT("%",#{userDevice.userName},"%")
+			</if>
+			<if test="userDevice.loginName!=null and userDevice.loginName!=''">
+				AND login_name LIKE CONCAT("%",#{userDevice.loginName},"%")
 			</if>
 		</where>
 		ORDER BY create_date DESC
