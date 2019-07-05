@@ -25,8 +25,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description:
@@ -89,8 +91,10 @@ public class AppStatusWebController {
                     }
                 }
             }
-//            weiXiaoInstallAppsVoList.stream().collect();
-            return WrapMapper.ok(weiXiaoInstallAppsVoList);
+            //排序,将锁定的应用置顶
+            List<WeiXiaoInstallAppsVo> appsVos = weiXiaoInstallAppsVoList.stream().sorted(Comparator.comparing(WeiXiaoInstallAppsVo::getAppStatus).reversed())
+                    .collect(Collectors.toList());
+            return WrapMapper.ok(appsVos);
         } catch (Exception e) {
             String messge = "";
             if (e instanceof PermitException) {
