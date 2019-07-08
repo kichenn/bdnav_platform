@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration  scan="true" scanPeriod="60 seconds">
+<configuration scan="true" scanPeriod="60 seconds">
     <contextName>logback</contextName>
     <property name="log.path" value="/opt/logs/account-provider"/>
     <!-- spring框架日志 -->
-    <logger name="org.springframework" level="WARN" />
+    <logger name="org.springframework" level="WARN"/>
     <!-- apache组件日志 -->
-    <logger name="org.apache" level="WARN" />
+    <logger name="org.apache" level="WARN"/>
     <!-- dozer日志 -->
     <logger name="org.dozer" level="WARN"/>
     <!-- quartz日志 -->
@@ -13,14 +13,17 @@
     <!-- mybatis-spring日志 -->
     <logger name="org.mybatis.spring" level="WARN"/>
     <!-- 项目代码日志 -->
-    <logger name="com.bdxh" level="DEBUG" />
+    <logger name="com.bdxh" level="DEBUG"/>
     <!-- 彩色日志 -->
     <!-- 彩色日志依赖的渲染类 -->
-    <conversionRule conversionWord="cct" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
-    <conversionRule conversionWord="wtc" converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter" />
-    <conversionRule conversionWord="etc" converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter" />
+    <conversionRule conversionWord="cct" converterClass="org.springframework.boot.logging.logback.ColorConverter"/>
+    <conversionRule conversionWord="wtc"
+                    converterClass="org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter"/>
+    <conversionRule conversionWord="etc"
+                    converterClass="org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter"/>
     <!-- 彩色日志格式 -->
-    <property name="CONSOLE_LOG_PATTERN" value="${CONSOLE_LOG_PATTERN:-%cct(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %cct(${LOG_LEVEL_PATTERN:-%5p}) %cct(${PID:- }){magenta} %cct(---){faint} %cct([%15.15t]){faint} %cct(%-40.40logger{39}){cyan} %cct(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%etc}}"/>
+    <property name="CONSOLE_LOG_PATTERN"
+              value="${CONSOLE_LOG_PATTERN:-%cct(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %cct(${LOG_LEVEL_PATTERN:-%5p}) %cct(${PID:- }){magenta} %cct(---){faint} %cct([%15.15t]){faint} %cct(%-40.40logger{39}){cyan} %cct(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%etc}}"/>
     <!--输出到控制台-->
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <!--此日志appender是为开发使用，只配置最底级别，控制台输出的日志级别是大于或等于此级别的日志信息-->
@@ -145,22 +148,61 @@
         </filter>
     </appender>
 
+    <!--ELK(未映入ELK可以删除)-->
+    <appender name="logstash" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <remoteHost>119.23.185.109</remoteHost>
+        <port>9026</port>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <!-- Minimum logging level to be presented in the console logs-->
+            <level>INFO</level> <!--写入logstash的日志级别-->
+        </filter>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+    <!--<appender name="logstash"-->
+              <!--class="net.logstash.logback.appender.LogstashTcpSocketAppender">-->
+        <!--<destination>119.23.185.109:9026</destination>-->
+        <!--&lt;!&ndash; 日志输出编码 &ndash;&gt;-->
+        <!--<encoder-->
+                <!--class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">-->
+            <!--<providers>-->
+                <!--<timestamp>-->
+                    <!--<timeZone>UTC</timeZone>-->
+                <!--</timestamp>-->
+                <!--<pattern>-->
+                    <!--<pattern>-->
+                        <!--{-->
+                        <!--"severity": "%level",-->
+                        <!--"service": "${springAppName:-}",-->
+                        <!--"trace": "%X{X-B3-TraceId:-}",-->
+                        <!--"span": "%X{X-B3-SpanId:-}",-->
+                        <!--"exportable": "%X{X-Span-Export:-}",-->
+                        <!--"pid": "${PID:-}",-->
+                        <!--"thread": "%thread",-->
+                        <!--"class": "%logger{40}",-->
+                        <!--"rest": "%message"-->
+                        <!--}-->
+                    <!--</pattern>-->
+                <!--</pattern>-->
+            <!--</providers>-->
+        <!--</encoder>-->
+    <!--</appender>-->
+
     <springProfile name="dev">
         <root level="info">
-            <appender-ref ref="CONSOLE" />
-            <appender-ref ref="DEBUG_FILE" />
-            <appender-ref ref="INFO_FILE" />
-            <appender-ref ref="WARN_FILE" />
-            <appender-ref ref="ERROR_FILE" />
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DEBUG_FILE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
         </root>
     </springProfile>
 
     <springProfile name="pro">
         <root level="debug">
-            <appender-ref ref="DEBUG_FILE" />
-            <appender-ref ref="INFO_FILE" />
-            <appender-ref ref="WARN_FILE" />
-            <appender-ref ref="ERROR_FILE" />
+            <appender-ref ref="DEBUG_FILE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
         </root>
     </springProfile>
 
