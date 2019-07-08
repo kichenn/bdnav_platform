@@ -1,6 +1,5 @@
 package com.bdxh.servicepermit.contoller;
 
-import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.servicepermit.dto.AddServiceRoleDto;
 import com.bdxh.servicepermit.dto.ModifyServiceRoleDto;
@@ -41,9 +40,16 @@ public class ServiceRoleController {
             BeanUtils.copyProperties(addServiceRole, serviceRole);
             serviceRoleService.save(serviceRole);
         } catch (Exception e) {
+            String message = "";
             if (e instanceof DuplicateKeyException) {
-                //角色名称
-                return WrapMapper.error("该角色名称已存在，无需再添加！");
+                //角色名称 产品id
+                if(e.getMessage().contains("unqiue_name")){
+                    message = "该角色名称已存在，无需再添加！";
+                }else if(e.getMessage().contains("uk_product_id")){
+                    message = "该产品已存在角色权限，无需再添加！";
+                }
+                return WrapMapper.error(message);
+
             }
             e.printStackTrace();
         }
@@ -65,9 +71,15 @@ public class ServiceRoleController {
             serviceRole.setUpdateDate(new Date());
             serviceRoleService.update(serviceRole);
         } catch (Exception e) {
+            String message = "";
             if (e instanceof DuplicateKeyException) {
-                //角色名称
-                return WrapMapper.error("该角色名称已存在，无需再添加！");
+                //角色名称 产品id
+                if(e.getMessage().contains("unqiue_name")){
+                    message = "该角色名称已存在！";
+                }else if(e.getMessage().contains("uk_product_id")){
+                    message = "该产品已存在角色权限！";
+                }
+                return WrapMapper.error(message);
             }
             e.printStackTrace();
         }

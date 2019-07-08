@@ -39,4 +39,7 @@ public class StudentWebController {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         return studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(), cardNumber);
     }
+
+
+
 }

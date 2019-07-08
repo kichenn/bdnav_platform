@@ -29,7 +29,7 @@ public class ServiceRoleControllerWeb {
     @ApiOperation(value = "新增服务许可角色", response = Boolean.class)
     @RequestMapping(value = "/addServiceRole", method = RequestMethod.POST)
     public Object addServiceRole(@Validated @RequestBody AddServiceRoleDto addServiceRole) {
-        return WrapMapper.ok(serviceRoleControllerClient.addServiceRole(addServiceRole).getResult());
+        return serviceRoleControllerClient.addServiceRole(addServiceRole);
     }
 
     @ApiOperation(value = "删除服务许可角色", response = Boolean.class)
@@ -41,7 +41,7 @@ public class ServiceRoleControllerWeb {
     @ApiOperation(value = "修改服务许可角色", response = Boolean.class)
     @RequestMapping(value = "/modifyServiceRoleById", method = RequestMethod.POST)
     public Object modifyServiceRoleById(@Validated @RequestBody ModifyServiceRoleDto modifyServiceRoleDto) {
-        return WrapMapper.ok(serviceRoleControllerClient.modifyServiceRoleById(modifyServiceRoleDto).getResult());
+        return serviceRoleControllerClient.modifyServiceRoleById(modifyServiceRoleDto);
     }
 
     @ApiOperation(value = "查询服务许可角色（分页查询信息）", response = ServiceRole.class)
