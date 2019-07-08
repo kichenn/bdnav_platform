@@ -86,12 +86,11 @@ public class UserDeviceServiceImpl extends BaseService<UserDevice> implements Us
 	 */
 	@Override
 	public PageInfo<UserDevice> findUserDeviceByCondition(QueryUserDeviceDto queryUserDeviceDto) {
-		Page page = PageHelper.startPage(queryUserDeviceDto.getPageNum(), queryUserDeviceDto.getPageSize());
 		UserDevice userDevice = new UserDevice();
 		BeanUtils.copyProperties(queryUserDeviceDto,userDevice);
+		PageHelper.startPage(queryUserDeviceDto.getPageNum(), queryUserDeviceDto.getPageSize());
 		List<UserDevice> userDevices = userDeviceMapper.findUserDeviceByCondition(userDevice);
 		PageInfo<UserDevice> pageInfo = new PageInfo<>(userDevices);
-		pageInfo.setTotal(page.getTotal());
 		return pageInfo;
 	}
 }
