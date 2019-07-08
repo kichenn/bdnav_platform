@@ -234,7 +234,15 @@ public class ProductServiceImpl extends BaseService<Product> implements ProductS
         Product product = new Product();
         product.setSellStatus(ProductSellStatusEnum.PUTAWAY.getKey());
         product.setProductType(ProductTypeEnum.SINGLE.getCode());
-        List<Product> select = productMapper.select(product);
-        return BeanMapUtils.mapList(select,ProductListVo.class);
+        List<Product> products = productMapper.select(product);
+        List<ProductListVo> productListVos = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(products)){
+            products.forEach(productItem->{
+                ProductListVo productListVo = new ProductListVo();
+                BeanUtils.copyProperties(productItem, productListVo);
+                productListVos.add(productListVo);
+            });
+        }
+        return productListVos;
     }
 }

@@ -42,8 +42,8 @@ public class ServiceRoleController {
             serviceRoleService.save(serviceRole);
         } catch (Exception e) {
             if (e instanceof DuplicateKeyException) {
-                //角色名称
-                return WrapMapper.error("该角色名称已存在，无需再添加！");
+                //角色名称 产品id
+                return WrapMapper.error("该角色名称或者该产品权限已存在，无需再添加！");
             }
             e.printStackTrace();
         }
