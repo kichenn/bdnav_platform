@@ -41,9 +41,16 @@ public class ServiceRoleController {
             BeanUtils.copyProperties(addServiceRole, serviceRole);
             serviceRoleService.save(serviceRole);
         } catch (Exception e) {
+            String message = "";
             if (e instanceof DuplicateKeyException) {
                 //角色名称 产品id
-                return WrapMapper.error("该角色名称或者该产品权限已存在，无需再添加！");
+                if(e.getMessage().contains("unqiue_name")){
+                    message = "该角色名称已存在，无需再添加！";
+                }else if(e.getMessage().contains("uk_product_id")){
+                    message = "该产品已存在角色权限，无需再添加！";
+                }
+                return WrapMapper.error(message);
+
             }
             e.printStackTrace();
         }
