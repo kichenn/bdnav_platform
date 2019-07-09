@@ -59,7 +59,7 @@ public class AppStatusWebController {
      * @param cardNumber 学生学号
      * @return
      */
-    /*    @RolesAllowed({"TEST", "CONTROLE"})*/
+    @RolesAllowed({"TEST", "CONTROLE"})
     @ApiOperation(value = "家长应用管控----获取某个孩子的应用列表以及状态", response = WeiXiaoInstallAppsVo.class)
     @RequestMapping(value = "/queryAppStatusInfo222", method = RequestMethod.POST)
     public Object queryAppStatusInfo222(@RequestParam(name = "cardNumber") @NotNull(message = "学生CardNumber不能为空") String cardNumber) {
