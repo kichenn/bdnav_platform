@@ -145,13 +145,41 @@
         </filter>
     </appender>
 
+    <!--ELK(未映入ELK可以删除)-->
+    <springProperty scope="context" name="logstashHost" source="logstash.host" defaultValue="127.0.0.1:4567"/>
+    <springProperty scope="context" name="appname" source="spring.application.name" defaultValue="xxx"/>
+    <appender name="LOGSTASH" class="net.logstash.logback.appender.LogstashTcpSocketAppender">
+        <!-- destination可以配置为多个，应用可以进行策略选择 -->
+        <destination>${logstashHost}</destination>
+        <encoder charset="UTF-8" class="net.logstash.logback.encoder.LogstashEncoder">
+            <!--<customFields>{"appname":"account_logstash"}</customFields>-->
+            <!--Spring Cloud Sleuth 使用-->
+            <!--<includeMdcKeyName>traceId</includeMdcKeyName>-->
+            <!--<includeMdcKeyName>spanId</includeMdcKeyName>-->
+            <!--<includeMdcKeyName>spanExportable</includeMdcKeyName>-->
+        </encoder>
+        <!-- 多destination连接策略，也可以自定义 -->
+        <connectionStrategy>
+            <random>
+                <connectionTTL>5 minutes</connectionTTL>
+            </random>
+        </connectionStrategy>
+        <!-- 断开重连时间 -->
+        <reconnectionDelay>1 second</reconnectionDelay>
+        <!-- socket输出缓存 -->
+        <writeBufferSize>16384</writeBufferSize>
+        <queueSize>1048576</queueSize>
+    </appender>
+
     <springProfile name="dev">
         <root level="info">
-            <appender-ref ref="CONSOLE" />
-            <appender-ref ref="DEBUG_FILE" />
-            <appender-ref ref="INFO_FILE" />
-            <appender-ref ref="WARN_FILE" />
-            <appender-ref ref="ERROR_FILE" />
+            <appender-ref ref="CONSOLE"/>
+            <appender-ref ref="DEBUG_FILE"/>
+            <appender-ref ref="INFO_FILE"/>
+            <appender-ref ref="WARN_FILE"/>
+            <appender-ref ref="ERROR_FILE"/>
+            <!--引用logstash-->
+            <appender-ref ref="LOGSTASH" />
         </root>
     </springProfile>
 
