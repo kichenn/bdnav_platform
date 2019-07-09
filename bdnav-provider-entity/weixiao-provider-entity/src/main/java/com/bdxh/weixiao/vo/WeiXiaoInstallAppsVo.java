@@ -1,6 +1,9 @@
 package com.bdxh.weixiao.vo;
 
 import java.util.Date;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 /**
  * @description:
@@ -23,6 +26,7 @@ public class WeiXiaoInstallAppsVo {
     /**
      * 账户id
      */
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long accountId;
 
     /**
