@@ -110,7 +110,7 @@ public class MybatisConfig {
     public TableRuleConfiguration getUserDeviceTableRuleConfiguration() {
         TableRuleConfiguration result = new TableRuleConfiguration();
         result.setLogicTable("t_user_device");
-        result.setActualDataNodes("ds_${0}.t_user_device");
+        result.setActualDataNodes("ds_${0..1}.t_user_device");
         result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
         return result;
     }

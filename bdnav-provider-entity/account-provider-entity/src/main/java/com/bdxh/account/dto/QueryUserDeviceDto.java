@@ -27,6 +27,12 @@ public class QueryUserDeviceDto extends Query {
     @ApiModelProperty("学校名称")
     private String schoolName;
 
+    /**
+     * 登录名称
+     */
+    @ApiModelProperty("登录名称")
+    private String loginName;
+
 
     /**
      * 学号
