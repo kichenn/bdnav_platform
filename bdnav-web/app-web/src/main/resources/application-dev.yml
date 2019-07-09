@@ -89,3 +89,8 @@ httpPool:
   connectTimeout: 5000
   socketTimeout: 10000
   enable: false
+
+#elk logstash信息
+logstash:
+  #主机地址，多个以逗号隔开
+  host: 119.23.185.109:9027
