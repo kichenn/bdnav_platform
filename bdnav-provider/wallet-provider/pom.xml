@@ -126,7 +126,7 @@
                             <addClasspath>true</addClasspath>
                             <useUniqueVersions>false</useUniqueVersions>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.bdxh.onecard.OnecardProviderApplication</mainClass>
+                            <mainClass>com.bdxh.wallet.WalletApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -158,7 +158,7 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>onecard-provider1</finalName>
+        <finalName>wallet-provider1</finalName>
     </build>
 
 </project>

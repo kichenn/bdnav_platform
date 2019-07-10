@@ -4,8 +4,8 @@ info:
   version: @project.version@
 eureka:
   instance:
-    hostname: onecard-provider1
-    instance-id: onecard-provider:${server.port}
+    hostname: wallet-provider1
+    instance-id: wallet-provider:${server.port}
     prefer-ip-address: false
   client:
     serviceUrl:
