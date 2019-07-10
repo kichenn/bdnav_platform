@@ -26,7 +26,7 @@ public class UrlSecurityValidator {
     /**
      * 用于授权验证测试 secret
      */
-    private static final String SECRECT = "a176201e188a0969cd7b7fa2ef3c8d14";
+    private static final String SECRET = "a176201e188a0969cd7b7fa2ef3c8d14";
 
     /**
      * 验证安全的基础 url
@@ -99,7 +99,7 @@ public class UrlSecurityValidator {
         builder.append("/phish/?").append("appkey="+APP_KEY).append("&q="+q)
                 .append("&timestamp="+timestamp);
         //md5加密
-        return DigestUtils.md5DigestAsHex((builder.toString() + SECRECT).getBytes());
+        return DigestUtils.md5DigestAsHex((builder.toString() + SECRET).getBytes());
     }
 
     /**
