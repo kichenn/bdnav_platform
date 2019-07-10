@@ -2,6 +2,8 @@ package com.bdxh.wallet.configration.mybatis;
 
 import com.bdxh.wallet.configration.mybatis.data.DataSourceM0;
 import com.bdxh.wallet.configration.mybatis.data.DataSourceM1;
+import com.bdxh.wallet.configration.mybatis.data.DataSourceM2;
+import com.bdxh.wallet.configration.mybatis.data.DataSourceM3;
 import com.github.pagehelper.PageHelper;
 import io.shardingsphere.api.config.rule.ShardingRuleConfiguration;
 import io.shardingsphere.api.config.rule.TableRuleConfiguration;
@@ -39,16 +41,27 @@ public class MybatisConfig {
 	@Autowired
 	private DataSourceM1 dataSourceM1;
 
+	@Autowired
+	private DataSourceM2 dataSourceM2;
+
+	@Autowired
+	private DataSourceM3 dataSourceM3;
+
 	@Bean(name = "shardingDataSource")
 	@Primary
 	public DataSource getDataSource() throws SQLException {
 		//分库分表配置
 		ShardingRuleConfiguration shardingRuleConfig = new ShardingRuleConfiguration();
 		//分库分表策略
-		shardingRuleConfig.getTableRuleConfigs().add(getAccountTableRuleConfiguration());
+		shardingRuleConfig.getTableRuleConfigs().add(getPhysicalCardTableRuleConfiguration());
+		shardingRuleConfig.getTableRuleConfigs().add(getWalletAccountTableRuleConfiguration());
+		shardingRuleConfig.getTableRuleConfigs().add(getWalletConsumerTableRuleConfiguration());
+		shardingRuleConfig.getTableRuleConfigs().add(getWalletRechargeTableRuleConfiguration());
 		Map<String, DataSource> dataSourceMap = new HashMap<>();
 		dataSourceMap.put("ds_0", dataSourceM0.createDataSource());
 		dataSourceMap.put("ds_1", dataSourceM1.createDataSource());
+		dataSourceMap.put("ds_2", dataSourceM2.createDataSource());
+		dataSourceMap.put("ds_3", dataSourceM3.createDataSource());
 		return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig,new ConcurrentHashMap(), new Properties());
 	}
 	
@@ -94,11 +107,43 @@ public class MybatisConfig {
 	}
 
 	@Bean
-	public TableRuleConfiguration getAccountTableRuleConfiguration() {
+	public TableRuleConfiguration getPhysicalCardTableRuleConfiguration() {
 		TableRuleConfiguration result = new TableRuleConfiguration();
-		result.setLogicTable("t_account");
-		result.setActualDataNodes("ds_${0..1}.t_account");
+		result.setLogicTable("t_physical_card");
+		result.setActualDataNodes("ds_${0..3}.t_physical_card${0..3}");
 		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
+		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
+		return result;
+	}
+
+	@Bean
+	public TableRuleConfiguration getWalletAccountTableRuleConfiguration() {
+		TableRuleConfiguration result = new TableRuleConfiguration();
+		result.setLogicTable("t_wallet_account");
+		result.setActualDataNodes("ds_${0..3}.t_wallet_account${0..3}");
+		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
+		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
+		return result;
+	}
+
+	@Bean
+	public TableRuleConfiguration getWalletConsumerTableRuleConfiguration() {
+		TableRuleConfiguration result = new TableRuleConfiguration();
+		result.setLogicTable("t_wallet_consumer");
+		result.setActualDataNodes("ds_${0..3}.t_wallet_consumer${0..3}");
+		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
+		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
+		return result;
+	}
+
+
+	@Bean
+	public TableRuleConfiguration getWalletRechargeTableRuleConfiguration() {
+		TableRuleConfiguration result = new TableRuleConfiguration();
+		result.setLogicTable("t_wallet_recharge");
+		result.setActualDataNodes("ds_${0..3}.t_wallet_recharge${0..3}");
+		result.setDatabaseShardingStrategyConfig(new StandardShardingStrategyConfiguration("school_code", new DatabaseShardingAlgorithm()));
+		result.setTableShardingStrategyConfig(new StandardShardingStrategyConfiguration("card_number", new TablePreciseShardingAlgorithm()));
 		return result;
 	}
 
