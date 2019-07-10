@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.wallet.mapper.WalletRechargeMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.wallet.entity.WalletRecharge">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	  <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+	  <result column="user_id" jdbcType="BIGINT" property="userId"/>
+	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+	  <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
+	  <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
+	  <result column="recharge_type" jdbcType="VARCHAR" property="rechargeType"/>
+	  <result column="recharge_status" jdbcType="TINYINT" property="rechargeStatus"/>
+	  <result column="recharge_amount" jdbcType="DECIMAL" property="rechargeAmount"/>
+	  <result column="recharge_time" jdbcType="TIMESTAMP" property="rechargeTime"/>
+	  <result column="device_number" jdbcType="VARCHAR" property="deviceNumber"/>
+	  <result column="family_id" jdbcType="BIGINT" property="familyId"/>
+	  <result column="family_number" jdbcType="VARCHAR" property="familyNumber"/>
+	  <result column="family_name" jdbcType="VARCHAR" property="familyName"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="operator" jdbcType="BIGINT" property="operator"/>
+	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,school_id,school_code,school_name,user_id,user_name,card_number,order_no,out_order_no,recharge_type,recharge_status,recharge_amount,recharge_time,device_number,family_id,family_number,family_name,create_date,update_date,operator,operator_name,remark
+	</sql>
+	<select id="getWalletRechargeAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_wallet_recharge 
+	</select>
+
+	<delete id="delWalletRechargeInIds" parameterType="Integer">
+	  DELETE
+	   FROM t_wallet_recharge
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>

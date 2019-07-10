@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.wallet.mapper.WalletAccountMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.wallet.entity.WalletAccount">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	  <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+	  <result column="user_id" jdbcType="BIGINT" property="userId"/>
+	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+	  <result column="user_type" jdbcType="TINYINT" property="userType"/>
+	  <result column="org_id" jdbcType="BIGINT" property="orgId"/>
+	  <result column="virtual_number" jdbcType="VARCHAR" property="virtualNumber"/>
+	  <result column="amount" jdbcType="DECIMAL" property="amount"/>
+	  <result column="pay_password" jdbcType="VARCHAR" property="payPassword"/>
+	  <result column="quick_pay_money" jdbcType="DECIMAL" property="quickPayMoney"/>
+	  <result column="operator" jdbcType="BIGINT" property="operator"/>
+	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+	  <result column="status" jdbcType="TINYINT" property="status"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,school_id,school_code,school_name,user_id,card_number,user_name,user_type,org_id,virtual_number,amount,pay_password,quick_pay_money,operator,operator_name,status,create_date,update_date,remark
+	</sql>
+	<select id="getWalletAccountAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_wallet_account 
+	</select>
+
+	<delete id="delWalletAccountInIds" parameterType="Integer">
+	  DELETE
+	   FROM t_wallet_account
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>
