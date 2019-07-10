@@ -78,9 +78,6 @@ public class SecurityController {
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
 
-    @Autowired
-    private ServiceUserControllerClient serviceUserControllerClient;
-
 
     @RequestMapping(value = "/authenticationWeixiao/toAuth", method = RequestMethod.GET)
     @ApiOperation(value = "schoolCode进行返回微校授权信息", response = String.class)
@@ -88,7 +85,7 @@ public class SecurityController {
         School school = schoolControllerClient.findSchoolBySchoolCode(schoolCode).getResult();
         Preconditions.checkArgument(school != null, "schoolCode异常");
 
-        String redirectUri = WeixiaoLoginConstant.REDIRECT_URI_URL.replace("@address@", address + "?schoolCode=" + schoolCode);
+        String redirectUri = address + "?schoolCode=" + schoolCode;
 
         String wxCodeUrl = WeixiaoLoginConstant.WXCODE_URL.replace("@schoolCode@", school.getSchoolCode())
                 .replace("@appKey@", WeixiaoLoginConstant.appKey)

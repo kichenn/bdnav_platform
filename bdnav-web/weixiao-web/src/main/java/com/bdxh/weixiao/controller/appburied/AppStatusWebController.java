@@ -77,7 +77,7 @@ public class AppStatusWebController {
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
-            UserInfo userInfo = SecurityUtils.getCurrentUser();
+              UserInfo userInfo = SecurityUtils.getCurrentUser();
             //根据学号查询出学生的应用安装记录
             List<InstallApps> installAppsList = installAppsControllerClient.findInstallAppsInConation(userInfo.getSchoolCode(), cardNumber).getResult();
             List<AppStatus> appStatusList = appStatusControllerClient.findAppStatusInfoBySchoolCodeAndCardNumber(userInfo.getSchoolCode(), cardNumber).getResult();
@@ -85,15 +85,13 @@ public class AppStatusWebController {
             for (WeiXiaoInstallAppsVo weiXiaoInstallAppsVo : weiXiaoInstallAppsVoList) {
                 for (AppStatus appStatus : appStatusList) {
                     //如果安装的包名对应的应用状态包名切状态为锁定时为Vo类添加锁定状态默认为1
-                    if (weiXiaoInstallAppsVo.getAppPackage().equals(appStatus.getAppPackage()) &&
-                            appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
+                    if (weiXiaoInstallAppsVo.getAppPackage().equals(appStatus.getAppPackage()) && appStatus.getAppStatus().equals(Byte.valueOf("2"))) {
                         weiXiaoInstallAppsVo.setAppStatus(Byte.valueOf("2"));
                     }
                 }
             }
             //排序,将锁定的应用置顶
-            List<WeiXiaoInstallAppsVo> appsVos = weiXiaoInstallAppsVoList.stream().sorted(Comparator.comparing(WeiXiaoInstallAppsVo::getAppStatus).reversed())
-                    .collect(Collectors.toList());
+            List<WeiXiaoInstallAppsVo> appsVos = weiXiaoInstallAppsVoList.stream().sorted(Comparator.comparing(WeiXiaoInstallAppsVo::getAppStatus).reversed()).collect(Collectors.toList());
             return WrapMapper.ok(appsVos);
         } catch (Exception e) {
             String messge = "";
@@ -120,11 +118,11 @@ public class AppStatusWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
-            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            caseCardNumber = caseCardNumber == null ? new ArrayList<>() : caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(weiXiaoAppStatusUnlockOrLokingDto.getCardNumber());
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");
-            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            thisCardNumbers = thisCardNumbers == null ? new ArrayList<>() : thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(weiXiaoAppStatusUnlockOrLokingDto.getCardNumber());
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();

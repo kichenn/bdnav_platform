@@ -195,7 +195,6 @@ public class AccountController {
     @RequestMapping(value = "/queryAccountListPage", method = RequestMethod.POST)
     public Object queryCategoryListPage(@Validated @RequestBody AccountQueryDto accountQueryDto) {
         PageInfo<Account> accounts = accountService.queryAccountListPage(accountQueryDto);
-        log.info("查询账户信息列表成功:{}", accounts.getList().size());
         return WrapMapper.ok(accounts);
     }
 
@@ -272,7 +271,7 @@ public class AccountController {
             //密码校验
             if (null == account) {
                 throw new Exception("账户异常");
-            } else if (!new BCryptPasswordEncoder().matches(password, account.getPassword())) {
+            }else if(!new BCryptPasswordEncoder().matches(password,account.getPassword())){
                 throw new Exception("密码错误,请重新输入");
             }
             return WrapMapper.ok();
@@ -280,6 +279,7 @@ public class AccountController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
 
 
 //    @ApiOperation(value = "导入账户数据", response = Boolean.class)
