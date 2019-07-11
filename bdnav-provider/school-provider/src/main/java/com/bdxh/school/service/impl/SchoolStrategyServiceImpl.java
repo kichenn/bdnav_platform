@@ -93,4 +93,9 @@ public class SchoolStrategyServiceImpl extends BaseService<SchoolStrategy> imple
         return schoolStrategyMapper.validateTheschoolModel(schoolCode,modelId);
     }
 
+    @Override
+    public SchoolStrategy findschoolByGroupId(String groupId) {
+        return schoolStrategyMapper.findschoolByGroupId(groupId);
+    }
+
 }

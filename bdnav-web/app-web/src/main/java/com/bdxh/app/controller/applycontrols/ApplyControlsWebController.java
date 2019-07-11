@@ -22,6 +22,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.QuerySchoolStrategy;
 import com.bdxh.school.entity.School;
+import com.bdxh.school.entity.SchoolStrategy;
 import com.bdxh.school.feign.BlackUrlControllerClient;
 import com.bdxh.school.feign.SchoolControllerClient;
 import com.bdxh.school.feign.SchoolStrategyControllerClient;
@@ -258,26 +259,30 @@ public class ApplyControlsWebController {
     @ApiOperation(value = "查询当前学校策略", response = MobileStrategyVo.class)
     public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode, @RequestParam("groupId") String groupId) {
         List<MobileStrategyVo> schoolMsv = new ArrayList<>();
-        List<QuerySchoolStrategy> sList = schoolStrategyControllerClient.findSchoolStrategyList(schoolCode, groupId).getResult();
-        for (int i = 0; i < sList.size(); i++) {
+        SchoolStrategy result=schoolStrategyControllerClient.findSchoolByGroupId(groupId).getResult();
+        String [] controls=result.getRecursionPermissionIds().split(",");
+        for (int i = 0; i < controls.length; i++) {
+        List<QuerySchoolStrategy> sList = schoolStrategyControllerClient.findSchoolStrategyList(schoolCode,controls[i]).getResult();
+            for (int j = 0; j < sList.size(); j++) {
             MobileStrategyVo msv = new MobileStrategyVo();
-            msv.setPolicyName(sList.get(i).getPolicyName());
-            msv.setDayMark(sList.get(i).getDayMark());
-            msv.setEndDate(sList.get(i).getEndDate());
-            msv.setExclusionDays(sList.get(i).getExclusionDays());
-            msv.setPriority(sList.get(i).getPriority());
-            msv.setStartDate(sList.get(i).getStartDate());
-            msv.setTimeMark(sList.get(i).getTimeMark());
-            msv.setUsableDevice(sList.get(i).getUsableDevice());
-            if (StringUtils.isNotEmpty(sList.get(i).getUsableApp()) && StringUtils.isNotBlank(sList.get(i).getUsableApp())) {
-                List<App> apks = appControllerClient.getAppListByids(sList.get(i).getUsableApp()).getResult();
+            msv.setPolicyName(sList.get(j).getPolicyName());
+            msv.setDayMark(sList.get(j).getDayMark());
+            msv.setEndDate(sList.get(j).getEndDate());
+            msv.setExclusionDays(sList.get(j).getExclusionDays());
+            msv.setPriority(sList.get(j).getPriority());
+            msv.setStartDate(sList.get(j).getStartDate());
+            msv.setTimeMark(sList.get(j).getTimeMark());
+            msv.setUsableDevice(sList.get(j).getUsableDevice());
+            if (StringUtils.isNotEmpty(sList.get(j).getUsableApp()) && StringUtils.isNotBlank(sList.get(j).getUsableApp())) {
+                List<App> apks = appControllerClient.getAppListByids(sList.get(j).getUsableApp()).getResult();
                 List<String> apkPackages = new ArrayList<>();
-                for (int j = 0; j < apks.size(); j++) {
-                    apkPackages.add(apks.get(j).getAppPackage());
+                for (int k = 0; k < apks.size(); k++) {
+                    apkPackages.add(apks.get(k).getAppPackage());
                 }
                 msv.setAppPackage(apkPackages);
             }
             schoolMsv.add(msv);
+         }
         }
         return WrapMapper.ok(schoolMsv);
     }

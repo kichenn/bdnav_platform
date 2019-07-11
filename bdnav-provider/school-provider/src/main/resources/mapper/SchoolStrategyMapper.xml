@@ -150,4 +150,14 @@
         WHERE
         school_code=#{schoolCode} and model_id=#{modelId}
     </select>
+
+    <select id="findschoolByGroupId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_school_strategy
+        WHERE
+        group_id=#{groupId}
+        LIMIT 1
+    </select>
 </mapper>

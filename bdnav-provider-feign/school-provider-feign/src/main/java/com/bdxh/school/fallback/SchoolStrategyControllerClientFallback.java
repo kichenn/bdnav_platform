@@ -70,4 +70,9 @@ public class SchoolStrategyControllerClientFallback implements SchoolStrategyCon
         return WrapMapper.error();
     }
 
+    @Override
+    public Wrapper<SchoolStrategy> findSchoolByGroupId(String groupId) {
+        return WrapMapper.error();
+    }
+
 }

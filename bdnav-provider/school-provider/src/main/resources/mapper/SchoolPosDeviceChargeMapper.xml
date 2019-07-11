@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.persistence.SchoolPosDeviceChargeMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolPosDeviceCharge">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	  <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
+	  <result column="charge_dept_id" jdbcType="BIGINT" property="chargeDeptId"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="operator" jdbcType="BIGINT" property="operator"/>
+	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,school_id,school_code,device_id,charge_dept_id,create_date,update_date,operator,operator_name,remark
+	</sql>
+	<select id="getSchoolPosDeviceChargeAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_school_posdevice_charge 
+	</select>
+
+	<delete id="delSchoolPosDeviceChargeInIds" parameterType="Integer">
+	  DELETE
+	   FROM t_school_posdevice_charge
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>
