@@ -264,4 +264,16 @@ public class SchoolStrategyController {
 		return WrapMapper.ok(ss);
 	}
 
+
+	/**
+	 * @Description: 根据部门id查询策略
+	 * @Date 2019-04-18 09:52:43
+	 */
+	@RequestMapping(value = "/findSchoolByGroupId", method = RequestMethod.GET)
+	@ApiOperation(value = "根据部门id查询策略", response = SchoolStrategy.class)
+	public Object findSchoolByGroupId(@RequestParam("groupId") String groupId) {
+		SchoolStrategy ss = schoolStrategyService.findschoolByGroupId(groupId);
+		return WrapMapper.ok(ss);
+	}
+
 }

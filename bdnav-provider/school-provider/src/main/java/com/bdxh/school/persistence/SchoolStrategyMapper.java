@@ -42,4 +42,7 @@ public interface SchoolStrategyMapper extends Mapper<SchoolStrategy> {
 	//查询策略中是否有正在使用的模式
 	SchoolStrategy validateTheschoolModel(@Param("schoolCode") String schoolCode,@Param("modelId") Long modelId);
 
+	//根据部门查询所有策略
+	SchoolStrategy findschoolByGroupId(@Param("groupId") String groupId);
+
 }

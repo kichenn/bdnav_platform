@@ -51,4 +51,6 @@ public interface SchoolStrategyService extends IService<SchoolStrategy> {
 	//查询策略中是否有正在使用的模式
 	SchoolStrategy validateTheschoolModel(String schoolCode,Long modelId);
 
+	//根据部门查询所有策略
+	SchoolStrategy findschoolByGroupId(@Param("groupId") String groupId);
 }

@@ -80,7 +80,7 @@ public class Account implements Serializable {
     /**
      * 密码
      */
-    @Column(name ="password")
+    @Column(name = "password")
     private String password;
 
     /**
@@ -111,6 +111,9 @@ public class Account implements Serializable {
     //组织id：如果登陆者为学生则为：班级id
     private String groupId;
 
+    //组织架构id信息
+    private String classIds;
+
     /**
      * 获取组织id
      *
@@ -127,6 +130,24 @@ public class Account implements Serializable {
      */
     public void setGroupId(String groupId) {
         this.groupId = groupId;
+    }
+
+    /**
+     * 获取组织架构ids
+     *
+     * @return groupId - 主键
+     */
+    public String getClassIds() {
+        return classIds;
+    }
+
+    /**
+     * 设置组织架构ids
+     *
+     * @param classIds 主键
+     */
+    public void setClassIds(String classIds) {
+        this.classIds = classIds;
     }
 
     /**
