@@ -133,4 +133,10 @@ public class SchoolDeviceController {
     public Object findSchoolDeviceInConditionPage(@RequestBody SchoolDeviceQueryDto deviceQueryDto) {
         return WrapMapper.ok(schoolDeviceService.findSchoolDeviceInConditionPage(deviceQueryDto));
     }
+
+    @RequestMapping(value = "/findSchoolDeviceBySchool",method = RequestMethod.GET)
+    @ApiOperation(value = "根据学校查询该学校下的所有消费机列表")
+    public Object findSchoolPosDeviceBySchool(@RequestParam("schoolCode") String schoolCode){
+        return null;
+    }
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.school.persistence.SchoolChargeDeptMapper">
+
+    <resultMap id="BaseResultMap" type="com.bdxh.school.entity.SchoolChargeDept">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="charge_dept_name" jdbcType="VARCHAR" property="chargeDeptName"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <resultMap id="BaseResultMapVo" type="com.bdxh.school.vo.SchoolChargeDeptVo">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+        <result column="charge_dept_name" jdbcType="VARCHAR" property="chargeDeptName"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+
+    <sql id="BaseColumns">
+	  id,school_id,school_code,charge_dept_name,operator,operator_name,create_date,update_date,remark
+	</sql>
+
+    <sql id="BaseColumnsVo">
+	  td.id,td.school_id,td.school_code,tc.school_name,td.charge_dept_name,td.operator,td.operator_name,td.create_date,td.update_date,td.remark
+	</sql>
+    <select id="getSchoolChargeDeptAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_school_charge_dept 
+	</select>
+
+    <!--条件+分页查询收费部门列表-->
+    <select id="findSchoolChargeDeptByCondition" resultMap="BaseResultMapVo">
+	  SELECT
+	<include refid="BaseColumnsVo"/>
+      FROM
+	  t_school_charge_dept td
+	  JOIN t_school tc ON td.school_id = tc.id
+	   <where>
+           <if test="chargeDept.schoolCode!=null and chargeDept.schoolCode!=''">
+               AND school_code = #{chargeDept.schoolCode}
+           </if>
+           <if test="chargeDept.chargeDeptName!=null and chargeDept.chargeDeptName!=''">
+               AND charge_dept_name LIKE CONCAT('%',#{chargeDept.chargeDeptName},'%')
+           </if>
+       </where>
+       ORDER BY create_date DESC
+	</select>
+
+    <!--查询单个学校的收费部门-->
+    <select id="findSchoolChargeDeptBySchool" resultMap="BaseResultMapVo">
+        SELECT
+        <include refid="BaseColumnsVo"/>
+        FROM
+        t_school_charge_dept
+        WHERE school_code = #{schoolCode}
+    </select>
+
+    <delete id="delSchoolChargeDeptInIds" parameterType="Integer">
+        DELETE
+        FROM t_school_charge_dept
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
+
+</mapper>

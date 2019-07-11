@@ -8,9 +8,9 @@ package com.bdxh.order.enums;
 public enum OrderTradeStatusEnum {
 
     TRADING(new Byte("1"), "交易中"),
-    SUCCESS(new Byte("2"), "交易成功"),
-    CANCLE(new Byte("3"), "已取消"),
-    DELETE(new Byte("4"), "已删除");
+    SUCCESS(new Byte("2"), "已取消"),
+    CANCLE(new Byte("3"), "已删除"),
+    DELETE(new Byte("4"), "交易成功");
 
 
     private Byte code;

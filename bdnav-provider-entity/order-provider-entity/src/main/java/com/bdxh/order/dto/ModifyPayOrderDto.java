@@ -30,10 +30,10 @@ public class ModifyPayOrderDto {
     @ApiModelProperty("支付结束时间")
     private String payEndTime;
 
-    @ApiModelProperty("交易状态 1 进行中 2 交易成功 3 已取消 4 已删除")
+    @ApiModelProperty("交易状态 1 进行中 2 已取消 3 已删除 4 交易成功")
     private OrderTradeStatusEnum tradeStatus;
 
-    @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付失败 4 支付成功")
+    @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5.已关闭 6.已转入退款")
     private OrderPayStatusEnum payStatus;
 
     @ApiModelProperty("业务状态 1 未处理 2 已处理")

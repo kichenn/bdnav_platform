@@ -59,7 +59,7 @@ public class OrderVo implements Serializable {
     @ApiModelProperty("交易状态 1 进行中 2 已取消 3 已删除 4 交易成功")
     private Byte tradeStatus;
 
-    @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败")
+    @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 已关闭 6 已转入退款")
     private Byte payStatus;
 
     @ApiModelProperty("支付时间")

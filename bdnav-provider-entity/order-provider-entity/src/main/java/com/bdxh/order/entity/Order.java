@@ -118,7 +118,7 @@ public class Order {
     private Byte tradeStatus;
 
     /**
-     * 支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败
+     * 支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5.已关闭 6.已转入退款
      */
     @Column(name = "pay_status")
     private Byte payStatus;

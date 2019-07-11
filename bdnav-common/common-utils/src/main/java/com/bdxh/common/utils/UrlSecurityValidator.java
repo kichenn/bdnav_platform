@@ -1,13 +1,10 @@
 package com.bdxh.common.utils;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.util.DigestUtils;
 import sun.misc.BASE64Encoder;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  *  金山网络云盾url检测

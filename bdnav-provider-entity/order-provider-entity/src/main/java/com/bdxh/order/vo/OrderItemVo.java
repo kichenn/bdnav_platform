@@ -34,8 +34,6 @@ public class OrderItemVo {
     private Long orderNo;
 
 
-
-
     /**
      * 商品名称
      */
