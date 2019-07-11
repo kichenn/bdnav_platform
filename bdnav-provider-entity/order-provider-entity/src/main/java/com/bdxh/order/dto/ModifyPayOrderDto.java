@@ -36,6 +36,6 @@ public class ModifyPayOrderDto {
     @ApiModelProperty("支付状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5.已关闭 6.已转入退款")
     private OrderPayStatusEnum payStatus;
 
-    @ApiModelProperty("业务状态 1 未处理 2 处理中 3.已处理")
+    @ApiModelProperty("业务状态 1 未处理 2 处理中 3 已处理")
     private BusinessStatusEnum businessStatus;
 }

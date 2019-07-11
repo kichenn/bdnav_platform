@@ -134,9 +134,15 @@ public class SchoolDeviceController {
         return WrapMapper.ok(schoolDeviceService.findSchoolDeviceInConditionPage(deviceQueryDto));
     }
 
+    /**
+     * 根据学校查询该学校下的所有消费机列表
+     * @Author: WanMing
+     * @Date: 2019/7/11 15:18
+     */
     @RequestMapping(value = "/findSchoolDeviceBySchool",method = RequestMethod.GET)
-    @ApiOperation(value = "根据学校查询该学校下的所有消费机列表")
+    @ApiOperation(value = "根据学校查询该学校下的所有消费机列表",response = PageInfo.class)
     public Object findSchoolPosDeviceBySchool(@RequestParam("schoolCode") String schoolCode){
+       // return WrapMapper.ok(schoolDeviceService.findSchoolPosDeviceBySchool(schoolCode));
         return null;
     }
 }
