@@ -4,8 +4,8 @@ info:
   version: @project.version@
 eureka:
   instance:
-    hostname: onecard-provider1
-    instance-id: onecard-provider:${server.port}
+    hostname: wallet-provider1
+    instance-id: wallet-provider:${server.port}
     prefer-ip-address: false
   client:
     serviceUrl:
@@ -23,7 +23,7 @@ spring:
   datasource:
     ds0:
       name : dataSource
-      url : jdbc:mysql://119.23.185.109:3306/bdxh_onecard?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      url : jdbc:mysql://119.23.185.109:3306/bdxh_wallet0?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
       username : admin
       password : NS13n5i7Yyd3yNXlfdoR4g==
       type : com.alibaba.druid.pool.DruidDataSource
@@ -43,25 +43,69 @@ spring:
       maxOpenPreparedStatements : 50
       connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
     ds1:
-      name : dataSource
-      url : jdbc:mysql://119.23.185.109:3306/bdxh_onecard?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
-      username : admin
-      password : NS13n5i7Yyd3yNXlfdoR4g==
-      type : com.alibaba.druid.pool.DruidDataSource
-      driver-class-name : com.mysql.jdbc.Driver
-      filters :  stat
-      maxActive : 20
-      initialSize : 1
-      minIdle : 3
-      maxWait : 60000
-      timeBetweenEvictionRunsMillis : 60000
-      minEvictableIdleTimeMillis : 300000
-      validationQuery : select 'x' from dual
-      testWhileIdle : true
-      testOnBorrow : false
-      testOnReturn : false
-      poolPreparedStatements : true
-      maxOpenPreparedStatements : 50
+      name: dataSource
+      url: jdbc:mysql://119.23.185.109:3306/bdxh_wallet1?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      username: admin
+      password: NS13n5i7Yyd3yNXlfdoR4g==
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      filters:  stat
+      maxActive: 20
+      initialSize: 1
+      minIdle: 3
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x' from dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 50
+      connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
+
+    ds2:
+      name: dataSource
+      url: jdbc:mysql://119.23.185.109:3306/bdxh_wallet2?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      username: admin
+      password: NS13n5i7Yyd3yNXlfdoR4g==
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      filters:  stat
+      maxActive: 20
+      initialSize: 1
+      minIdle: 3
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x' from dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 50
+      connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
+
+    ds3:
+      name: dataSource
+      url: jdbc:mysql://119.23.185.109:3306/bdxh_wallet3?characterEncoding=utf-8&failOverReadOnly=false&autoReconnect=true&roundRobinLoadBalance=true
+      username: admin
+      password: NS13n5i7Yyd3yNXlfdoR4g==
+      type: com.alibaba.druid.pool.DruidDataSource
+      driver-class-name: com.mysql.jdbc.Driver
+      filters:  stat
+      maxActive: 20
+      initialSize: 1
+      minIdle: 3
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x' from dual
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxOpenPreparedStatements: 50
       connectionProperties: {druid.stat.mergeSql: true,druid.stat.slowSqlMillis: 5000}
   #jackson配置
   jackson:

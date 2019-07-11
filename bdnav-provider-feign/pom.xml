@@ -20,7 +20,7 @@
         <module>school-provider-feign</module>
         <module>user-provider-feign</module>
         <module>account-provider-feign</module>
-        <module>onecard-provider-feign</module>
+        <module>wallet-provider-feign</module>
         <module>appburied-provider-feign</module>
         <module>appmarket-provider-feign</module>
         <module>product-provider-feign</module>

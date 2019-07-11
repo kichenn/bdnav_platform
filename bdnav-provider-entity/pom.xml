@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>onecard-provider-entity</module>
+        <module>wallet-provider-entity</module>
         <module>order-provider-entity</module>
         <module>servicepermit-provider-entity</module>
         <module>pay-provider-entity</module>

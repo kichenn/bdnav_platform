@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bdxh.wallet.persistence.WalletConsumerMapper">
+
+	<resultMap id="BaseResultMap" type="com.bdxh.wallet.entity.WalletConsumer">
+	  <id column="id" jdbcType="BIGINT" property="id"/>
+	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+	  <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
+	  <result column="user_id" jdbcType="BIGINT" property="userId"/>
+	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
+	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+	  <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
+	  <result column="virtual_number" jdbcType="VARCHAR" property="virtualNumber"/>
+	  <result column="device_number" jdbcType="VARCHAR" property="deviceNumber"/>
+	  <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
+	  <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
+	  <result column="consumer_amount" jdbcType="DECIMAL" property="consumerAmount"/>
+	  <result column="consumer_time" jdbcType="TIMESTAMP" property="consumerTime"/>
+	  <result column="consumer_type" jdbcType="TINYINT" property="consumerType"/>
+	  <result column="consumer_status" jdbcType="TINYINT" property="consumerStatus"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
+	</resultMap>
+
+	<sql id="BaseColumns">
+	  id,school_id,school_code,school_name,user_id,user_name,card_number,physical_number,virtual_number,device_number,order_no,out_order_no,consumer_amount,consumer_time,consumer_type,consumer_status,create_date,update_date,remark
+	</sql>
+	<select id="getWalletConsumerAllCount" resultType="Integer">
+	  SELECT 
+	   COUNT(1)
+	  FROM t_wallet_consumer 
+	</select>
+
+	<delete id="delWalletConsumerInIds" parameterType="Integer">
+	  DELETE
+	   FROM t_wallet_consumer
+	  WHERE
+	   id IN
+	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
+	          #{id, jdbcType = BIGINT}
+	     </foreach >
+	</delete>
+
+</mapper>
