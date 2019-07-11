@@ -96,6 +96,8 @@ public interface SchoolStrategyControllerClient {
     @ResponseBody
     Wrapper<SchoolStrategy> validateTheschoolModel(@RequestParam("schoolCode") String schoolCode,@RequestParam("modelId") Long modelId);
 
-
-
+    //根据部门id查询策略信息
+    @RequestMapping(value = "/schoolStrategy/findSchoolByGroupId", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<SchoolStrategy> findSchoolByGroupId(@RequestParam("groupId") String groupId);
 }
