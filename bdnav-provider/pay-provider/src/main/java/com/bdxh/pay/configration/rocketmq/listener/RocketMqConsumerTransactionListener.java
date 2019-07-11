@@ -2,6 +2,7 @@ package com.bdxh.pay.configration.rocketmq.listener;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.base.enums.BusinessStatusEnum;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.order.dto.ModifyPayOrderDto;
 import com.bdxh.order.enums.OrderPayStatusEnum;
@@ -104,8 +105,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                         //将微信预订单修改为微信实际订单信息
                         modifyPayOrderDto.setThirdOrderNo(wechatOrderQueryVo.getThirdOrderNo());
                         //支付结束时间
-                        String payEndTime = wechatOrderQueryVo.getTimeEnd();
-                        modifyPayOrderDto.setPayEndTime(payEndTime);
+                        modifyPayOrderDto.setPayEndTime(DateUtil.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
                         //业务状态
                         modifyPayOrderDto.setBusinessStatus(BusinessStatusEnum.YES_PROCESS);
                         switch (wechatOrderQueryVo.getPayResult()) {
@@ -140,6 +140,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                                 modifyPayOrderDto.setTradeStatus(OrderTradeStatusEnum.DELETE);
                                 break;
                         }
+                        modifyPayOrderDto.setBusinessStatus(BusinessStatusEnum.YES_PROCESS);
                         //修改订单状态
                         Boolean result = ordersControllerClient.modifyBindOrder(modifyPayOrderDto).getResult();
                         if (result) {

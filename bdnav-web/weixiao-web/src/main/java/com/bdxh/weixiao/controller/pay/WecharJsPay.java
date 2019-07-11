@@ -206,6 +206,8 @@ public class WecharJsPay {
         ModifyPayOrderDto modifyPayOrderDto = new ModifyPayOrderDto();
         modifyPayOrderDto.setOrderNo(orderNo);
         modifyPayOrderDto.setThirdOrderNo(jsonObject.getString("prepay_id"));
+        modifyPayOrderDto.setPayStatus(OrderPayStatusEnum.PAYING);
+        modifyPayOrderDto.setBusinessStatus(BusinessStatusEnum.HASE_PROCESS);
         ordersControllerClient.modifyBindOrder(modifyPayOrderDto);
 
         return WrapMapper.ok(jsOrderPayResponse);

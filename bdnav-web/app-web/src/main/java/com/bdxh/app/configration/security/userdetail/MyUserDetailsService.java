@@ -55,6 +55,7 @@ public class MyUserDetailsService implements UserDetailsService {
                 }
                 //组织id：此处为班级id
                 account.setGroupId(student.getClassId());
+                account.setClassIds(student.getClassIds());
                 break;
             case 2:
                 //老师

@@ -86,6 +86,9 @@ public class StudentVo implements Serializable {
     @ApiModelProperty("班级ID")
     private  String classId;
 
+    @ApiModelProperty("组织架构ids")
+    private String classIds;
+
     @ApiModelProperty("学校Code")
     private String schoolCode;
 }
