@@ -89,7 +89,7 @@ public class AddOrderDto {
     private OrderPayStatusEnum payStatus;
 
 
-    @ApiModelProperty("业务状态 1 未处理 2 已处理")
+    @ApiModelProperty("业务状态 1 未处理 2 处理中 3 已处理")
     @NotNull(message = "业务状态不能为空")
     private BusinessStatusEnum businessStatus;
 
