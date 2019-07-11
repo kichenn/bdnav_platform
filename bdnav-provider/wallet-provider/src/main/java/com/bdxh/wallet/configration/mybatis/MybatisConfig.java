@@ -62,6 +62,11 @@ public class MybatisConfig {
 		dataSourceMap.put("ds_1", dataSourceM1.createDataSource());
 		dataSourceMap.put("ds_2", dataSourceM2.createDataSource());
 		dataSourceMap.put("ds_3", dataSourceM3.createDataSource());
+		//级联绑定表，用于优化查询
+		shardingRuleConfig.getBindingTableGroups().add("t_physical_card,t_wallet_account");
+		shardingRuleConfig.getBindingTableGroups().add("t_wallet_account,t_wallet_consumer");
+		shardingRuleConfig.getBindingTableGroups().add("t_wallet_account,t_wallet_recharge");
+
 		return ShardingDataSourceFactory.createDataSource(dataSourceMap, shardingRuleConfig,new ConcurrentHashMap(), new Properties());
 	}
 	

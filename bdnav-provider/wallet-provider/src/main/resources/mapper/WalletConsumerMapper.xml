@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdxh.wallet.mapper.WalletConsumerMapper">
+<mapper namespace="com.bdxh.wallet.persistence.WalletConsumerMapper">
 
 	<resultMap id="BaseResultMap" type="com.bdxh.wallet.entity.WalletConsumer">
 	  <id column="id" jdbcType="BIGINT" property="id"/>
@@ -16,11 +16,11 @@
 	  <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
 	  <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
 	  <result column="consumer_amount" jdbcType="DECIMAL" property="consumerAmount"/>
-	  <result column="consumer_time" jdbcType="DATETIME" property="consumerTime"/>
+	  <result column="consumer_time" jdbcType="TIMESTAMP" property="consumerTime"/>
 	  <result column="consumer_type" jdbcType="TINYINT" property="consumerType"/>
 	  <result column="consumer_status" jdbcType="TINYINT" property="consumerStatus"/>
-	  <result column="create_date" jdbcType="DATETIME" property="createDate"/>
-	  <result column="update_date" jdbcType="DATETIME" property="updateDate"/>
+	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
 	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
 	</resultMap>
 

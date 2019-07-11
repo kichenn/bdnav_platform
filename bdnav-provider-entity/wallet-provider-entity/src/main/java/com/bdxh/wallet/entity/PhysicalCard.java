@@ -12,7 +12,7 @@ import java.lang.Byte;
 /**
 * @Description: 实体类
 * @Author Kang
-* @Date 2019-07-10 18:36:58
+* @Date 2019-07-11 09:40:52
 */
 @Data
 @Table(name = "t_physical_card")
@@ -54,12 +54,6 @@ public class PhysicalCard {
 	 */
 	@Column(name = "wallet_account_id")
 	private Long walletAccountId;
-
-	/**
-	 * 卡类型  1 M1卡 2 CPU卡
-	 */
-	@Column(name = "card_type")
-	private Byte cardType;
 
 	/**
 	 * 卡物理号

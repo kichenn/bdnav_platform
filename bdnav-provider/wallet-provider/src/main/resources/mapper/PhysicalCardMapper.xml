@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.bdxh.wallet.mapper.PhysicalCardMapper">
+<mapper namespace="com.bdxh.wallet.persistence.PhysicalCardMapper">
 
 	<resultMap id="BaseResultMap" type="com.bdxh.wallet.entity.PhysicalCard">
 	  <id column="id" jdbcType="BIGINT" property="id"/>
@@ -21,7 +21,7 @@
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,school_id,school_code,user_id,card_number,wallet_account_id,card_type,physical_number,physical_chip_number,deposit,status,operator,operator_name,create_date,update_date,remark
+	  id,school_id,school_code,user_id,card_number,wallet_account_id,physical_number,physical_chip_number,deposit,status,operator,operator_name,create_date,update_date,remark
 	</sql>
 	<select id="getPhysicalCardAllCount" resultType="Integer">
 	  SELECT 

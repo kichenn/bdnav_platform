@@ -12,7 +12,7 @@ import java.lang.Byte;
 /**
 * @Description: 实体类
 * @Author Kang
-* @Date 2019-07-10 18:36:58
+* @Date 2019-07-11 09:40:53
 */
 @Data
 @Table(name = "t_wallet_recharge")
@@ -44,13 +44,13 @@ public class WalletRecharge {
 	private String schoolName;
 
 	/**
-	 * 用户id
+	 * 用户主键
 	 */
 	@Column(name = "user_id")
 	private Long userId;
 
 	/**
-	 * 姓名
+	 * 用户姓名
 	 */
 	@Column(name = "user_name")
 	private String userName;
@@ -80,7 +80,7 @@ public class WalletRecharge {
 	private String rechargeType;
 
 	/**
-	 * 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 5 未充值 6 充值中 7充值成功 8 充值失败
+	 * 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 
 	 */
 	@Column(name = "recharge_status")
 	private Byte rechargeStatus;
@@ -92,19 +92,19 @@ public class WalletRecharge {
 	private BigDecimal rechargeAmount;
 
 	/**
-	 * 实际支付时间
+	 * 支付时间
 	 */
 	@Column(name = "recharge_time")
 	private Date rechargeTime;
 
 	/**
-	 * 线下充值设备编号
+	 * 线下充值时的设备编号
 	 */
 	@Column(name = "device_number")
 	private String deviceNumber;
 
 	/**
-	 * 父母为子女充值。自充时为空
+	 * 父母为子女充值（父母代充时不为空）
 	 */
 	@Column(name = "family_id")
 	private Long familyId;
