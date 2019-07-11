@@ -257,10 +257,10 @@ public class ApplyControlsWebController {
      */
     @RequestMapping(value = "/findSchoolStrategyList", method = RequestMethod.GET)
     @ApiOperation(value = "查询当前学校策略", response = MobileStrategyVo.class)
-    public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode, @RequestParam("groupIds") String groupIds) {
+    public Object findSchoolStrategyList(@RequestParam("schoolCode") String schoolCode, @RequestParam("classIds") String classIds) {
         List<MobileStrategyVo> schoolMsv = new ArrayList<>();
    /*     SchoolStrategy result=schoolStrategyControllerClient.findSchoolByGroupId(groupId).getResult();*/
-        String [] controls=groupIds.split(",");
+        String [] controls=classIds.split(",");
         for (int i = 0; i < controls.length; i++) {
         List<QuerySchoolStrategy> sList = schoolStrategyControllerClient.findSchoolStrategyList(schoolCode,controls[i]).getResult();
             for (int j = 0; j < sList.size(); j++) {
