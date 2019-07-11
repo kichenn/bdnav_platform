@@ -5,6 +5,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * @Description: 二维码解码入参
@@ -33,4 +34,7 @@ public class QRCodeDto {
     @NotEmpty(message = "学校编码不能为空")
     @ApiModelProperty(value = "学校编码")
     private String schoolCode;
+
+    @ApiModelProperty(value = "消费金额：场景为 2.消费 时传递")
+    private BigDecimal money;
 }

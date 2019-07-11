@@ -3,6 +3,8 @@ package com.bdxh.weixiao.controller.wallet;
 import com.alibaba.fastjson.JSONObject;
 import com.bdxh.common.helper.weixiao.qrcode.QRCodeUtils;
 import com.bdxh.common.helper.weixiao.qrcode.request.CampusCodeRequest;
+import com.bdxh.common.helper.weixiao.qrcode.response.CampusCodeResponse;
+import com.bdxh.common.helper.weixiao.qrcode.response.CampusResponseUser;
 import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.MD5;
 import com.bdxh.common.utils.ObjectUtil;
@@ -60,17 +62,33 @@ public class SweepCodeController {
             paramMap.remove("signature");
         }
         String paramStr = BeanToMapUtil.mapToString(paramMap);
-        String sign = MD5.md5(paramStr + "&key=" + campusCodeRequest.getApp_key());
+        String sign = MD5.md5(paramStr + "&key=" + school.getAppSecret());
         campusCodeRequest.setSignature(sign);
         String result = QRCodeUtils.campusCode(campusCodeRequest);
-
         JSONObject jsonObject = JSONObject.parseObject(result);
 
-        if (jsonObject.getString("code").equals("0")) {
+        CampusCodeResponse response = JSONObject.toJavaObject(jsonObject, CampusCodeResponse.class);
+
+        CampusResponseUser user = response.getUser();
+        if (response.getCode().equals("0")) {
             //解析校园码成功
+            switch (campusCodeRequest.getScene()) {
+                case 1:
+                    //门禁
+                    break;
+                case 2:
+                    //消费
+                    break;
+                case 3:
+                    //签到
+                    break;
+                case 4:
+                    //其他
+                    break;
+            }
         } else {
             //解析校园码失败
-            return WrapMapper.error("resultCode:" + jsonObject.getString("code") + ",resultMessage:" + jsonObject.getString("message"));
+            return WrapMapper.error("resultCode:" + response.getCode() + ",resultMessage:" + response.getMessage());
         }
 
         return WrapMapper.ok();
