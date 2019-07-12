@@ -23,7 +23,7 @@ import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 /**
- * @Description: 学校门禁信息
+ * @Description: 学校设备信息
  * @Author: Kang
  * @Date: 2019/3/27 17:37
  */
@@ -31,7 +31,7 @@ import java.util.List;
 @RequestMapping("/clientSchoolDeviceWeb")
 @Validated
 @Slf4j
-@Api(value = "学校管理员--学校门禁信息", tags = "学校管理员--学校门禁信息交互API")
+@Api(value = "学校管理员--学校设备信息", tags = "学校管理员--学校设备信息交互API")
 public class SchoolDeviceWebController {
 
     @Autowired
@@ -39,7 +39,7 @@ public class SchoolDeviceWebController {
 
     @RolesAllowed({"ADMIN"})
     @PostMapping("/addSchoolDevice")
-    @ApiOperation(value = "增加门禁信息（需学校admin权限）", response = Boolean.class)
+    @ApiOperation(value = "增加设备信息（需学校admin权限）", response = Boolean.class)
     public Object addSchoolDevice(@Validated @RequestBody AddSchoolDeviceDto addSchoolDeviceDto) {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
@@ -54,7 +54,7 @@ public class SchoolDeviceWebController {
 
     @RolesAllowed({"ADMIN"})
     @PostMapping("/modifySchoolDevice")
-    @ApiOperation(value = "修改门禁信息（需学校admin权限）", response = Boolean.class)
+    @ApiOperation(value = "修改设备信息（需学校admin权限）", response = Boolean.class)
     public Object modifySchoolDevice(@Validated @RequestBody ModifySchoolDeviceDto modifySchoolDeviceDto) {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
@@ -69,7 +69,7 @@ public class SchoolDeviceWebController {
 
     @RolesAllowed({"ADMIN"})
     @PostMapping("/delSchoolDeviceById")
-    @ApiOperation(value = "删除门禁信息（需学校admin权限）", response = Boolean.class)
+    @ApiOperation(value = "删除设备信息（需学校admin权限）", response = Boolean.class)
     public Object delSchoolDeviceById(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolDeviceControllerClient.delSchoolDeviceById(id);
         return wrapper;
@@ -77,21 +77,21 @@ public class SchoolDeviceWebController {
 
     @RolesAllowed({"ADMIN"})
     @PostMapping("/delBatchSchoolDeviceInIds")
-    @ApiOperation(value = "批量删除门禁信息（需学校admin权限）", response = Boolean.class)
+    @ApiOperation(value = "批量删除设备信息（需学校admin权限）", response = Boolean.class)
     public Object delBatchSchoolDeviceInIds(@RequestParam("ids") List<Long> ids) {
         Wrapper wrapper = schoolDeviceControllerClient.delBatchSchoolDeviceInIds(ids);
         return wrapper;
     }
 
     @GetMapping("/findSchoolDeviceById")
-    @ApiOperation(value = "id查询门禁信息", response = SchoolDevice.class)
+    @ApiOperation(value = "id查询设备信息", response = SchoolDevice.class)
     public Object findSchoolDeviceById(@RequestParam("id") Long id) {
         Wrapper wrapper = schoolDeviceControllerClient.findSchoolDeviceById(id);
         return WrapMapper.ok(wrapper.getResult());
     }
 
     @PostMapping("/findSchoolDeviceInConditionPage")
-    @ApiOperation(value = "门禁信息根据条件分页查询", response = PageInfo.class)
+    @ApiOperation(value = "设备信息根据条件分页查询", response = PageInfo.class)
     public Object findSchoolDeviceInConditionPage(@RequestBody SchoolDeviceQueryDto schoolDeviceQueryDto) {
         //获取当前用户
         SchoolUser user = SecurityUtils.getCurrentUser();
