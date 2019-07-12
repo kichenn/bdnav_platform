@@ -2,41 +2,82 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bdxh.wallet.persistence.PhysicalCardMapper">
 
-	<resultMap id="BaseResultMap" type="com.bdxh.wallet.entity.PhysicalCard">
-	  <id column="id" jdbcType="BIGINT" property="id"/>
-	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
-	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-	  <result column="user_id" jdbcType="BIGINT" property="userId"/>
-	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
-	  <result column="wallet_account_id" jdbcType="BIGINT" property="walletAccountId"/>
-	  <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
-	  <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber"/>
-	  <result column="deposit" jdbcType="DECIMAL" property="deposit"/>
-	  <result column="status" jdbcType="TINYINT" property="status"/>
-	  <result column="operator" jdbcType="BIGINT" property="operator"/>
-	  <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
-	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
-	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
-	  <result column="remark" jdbcType="VARCHAR" property="remark"/>
-	</resultMap>
+    <resultMap id="BaseResultMap" type="com.bdxh.wallet.entity.PhysicalCard">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
+        <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
+        <result column="wallet_account_id" jdbcType="BIGINT" property="walletAccountId"/>
+        <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
+        <result column="physical_chip_number" jdbcType="VARCHAR" property="physicalChipNumber"/>
+        <result column="deposit" jdbcType="DECIMAL" property="deposit"/>
+        <result column="status" jdbcType="TINYINT" property="status"/>
+        <result column="operator" jdbcType="BIGINT" property="operator"/>
+        <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
 
-	<sql id="BaseColumns">
+    <sql id="BaseColumns">
 	  id,school_id,school_code,user_id,card_number,wallet_account_id,physical_number,physical_chip_number,deposit,status,operator,operator_name,create_date,update_date,remark
 	</sql>
-	<select id="getPhysicalCardAllCount" resultType="Integer">
+    <select id="getPhysicalCardAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
 	  FROM t_physical_card 
 	</select>
 
-	<delete id="delPhysicalCardInIds" parameterType="Integer">
-	  DELETE
-	   FROM t_physical_card
-	  WHERE
-	   id IN
-	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
-	          #{id, jdbcType = BIGINT}
-	     </foreach >
+    <delete id="delPhysicalCardInIds" parameterType="Integer">
+        DELETE
+        FROM t_physical_card
+        WHERE
+        id IN
+        <foreach collection="ids" item="id" separator="," open="(" close=")">
+            #{id, jdbcType = BIGINT}
+        </foreach>
+    </delete>
+
+    <select id="findPhysicalCardInCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_physical_card
+        <where>
+            <if test="schoolCode !=null and schoolCode !=''">
+                AND school_code =#{schoolCode}
+            </if>
+            <if test="cardNumber !=null and cardNumber !=''">
+                AND card_number =#{cardNumber}
+            </if>
+            <if test="physicalNumber !=null and physicalNumber!=''">
+                AND physical_number =#{physicalNumber}
+            </if>
+            <if test="status !=null and status!=''">
+                AND status =#{status}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <!--根据id删除数据-->
+    <delete id="delPhysicalCard">
+	DELETE
+    FROM
+	t_physical_card
+    WHERE
+	school_code = #{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
 	</delete>
+
+    <!--根据id查询详情-->
+    <select id="findPhysicalCardById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_physical_card
+        WHERE
+        school_code = #{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
+    </select>
 
 </mapper>

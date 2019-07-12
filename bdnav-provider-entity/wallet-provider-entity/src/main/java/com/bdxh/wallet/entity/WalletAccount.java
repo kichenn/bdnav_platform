@@ -1,6 +1,9 @@
 package com.bdxh.wallet.entity;
 
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
@@ -23,6 +26,7 @@ public class WalletAccount {
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long id;
 
 	/**
@@ -74,10 +78,10 @@ public class WalletAccount {
 	private Long orgId;
 
 	/**
-	 * 虚拟账号
+	 * 实体卡
 	 */
-	@Column(name = "virtual_number")
-	private String virtualNumber;
+	@Column(name = "physical_number")
+	private String physicalNumber;
 
 	/**
 	 * 账户金额
@@ -132,6 +136,8 @@ public class WalletAccount {
 	 */
 	@Column(name = "remark")
 	private String remark;
+
+
 
 
 }
