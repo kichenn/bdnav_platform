@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SchoolPosDeviceCharge;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -23,4 +24,8 @@ public interface SchoolPosDeviceChargeService extends IService<SchoolPosDeviceCh
 	 */
  	Boolean batchDelSchoolPosDeviceChargeInIds(List<Long> id);
 
+	/**
+	 *根据部门id查询绑定记录
+	 */
+    List<SchoolPosDeviceCharge> findSchoolChargeDeptByDeptId(Long id);
 }

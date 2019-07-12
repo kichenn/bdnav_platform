@@ -1,6 +1,7 @@
 package com.bdxh.school.service.impl;
 
 import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
+import com.bdxh.school.persistence.SchoolPosDeviceChargeMapper;
 import com.bdxh.school.service.SchoolChargeDeptService;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import com.github.pagehelper.PageHelper;
@@ -13,7 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import com.bdxh.school.entity.SchoolChargeDept;
 import com.bdxh.school.persistence.SchoolChargeDeptMapper;
+
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
 * @Description: 学校收费部门的业务层实现
@@ -26,6 +31,9 @@ public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> i
 
 	@Autowired
 	private SchoolChargeDeptMapper schoolChargeDeptMapper;
+
+	@Autowired
+	private SchoolPosDeviceChargeMapper schoolPosDeviceChargeMapper;
 
 	/*
 	 *查询总条数
@@ -69,4 +77,18 @@ public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> i
     public List<SchoolChargeDeptVo> findSchoolChargeDeptBySchool(String schoolCode) {
         return schoolChargeDeptMapper.findSchoolChargeDeptBySchool(schoolCode);
     }
+
+	/**
+	 * 分页+查询学校消费部门信息和POS机的数量
+	 *
+	 * @param querySchoolChargeDeptDto
+	 * @Author: WanMing
+	 * @Date: 2019/7/11 19:04
+	 */
+	@Override
+	public PageInfo<SchoolChargeDeptVo> querySchoolChargeDeptAndPosNum(QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
+		PageHelper.startPage(querySchoolChargeDeptDto.getPageNum(),querySchoolChargeDeptDto.getPageSize());
+		List<SchoolChargeDeptVo> schoolChargeDeptVos =  schoolChargeDeptMapper.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto);
+		return new PageInfo<>(schoolChargeDeptVos);
+	}
 }

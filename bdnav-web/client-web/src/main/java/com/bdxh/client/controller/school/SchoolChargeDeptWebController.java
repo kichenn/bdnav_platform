@@ -1,45 +1,34 @@
-package com.bdxh.school.contoller;
+package com.bdxh.client.controller.school;
 
-import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.school.dto.AddSchoolChargeDeptDto;
 import com.bdxh.school.dto.AddSchoolPosDeviceChargeDto;
 import com.bdxh.school.dto.ModifySchoolChargeDeptDto;
 import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
-import com.bdxh.school.entity.SchoolChargeDept;
-import com.bdxh.school.entity.SchoolPosDeviceCharge;
-import com.bdxh.school.service.SchoolPosDeviceChargeService;
+import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DuplicateKeyException;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import com.bdxh.school.service.SchoolChargeDeptService;
-
-import java.util.List;
 
 /**
- * @Description: 学校收费部门控制器
- * @Author WanMing
- * @Date 2019-07-10 18:12:31
+ * @author WanMing
+ * @date 2019/7/12 11:27
  */
 @RestController
-@RequestMapping("/schoolChargeDept")
+@RequestMapping("/schoolChargeDeptWeb")
 @Slf4j
 @Validated
 @Api(value = "学校收费部门管理", tags = "学校收费部门管理API")
-public class SchoolChargeDeptController {
+public class SchoolChargeDeptWebController {
+
 
     @Autowired
-    private SchoolChargeDeptService schoolChargeDeptService;
-
-    @Autowired
-    private SchoolPosDeviceChargeService schoolPosDeviceChargeService;
-
+    private SchoolChargeDeptControllerClient schoolChargeDeptControllerClient;
 
 
     /**
@@ -51,20 +40,13 @@ public class SchoolChargeDeptController {
     @RequestMapping(value = "/addSchoolChargeDept", method = RequestMethod.POST)
     @ApiOperation(value = "添加学校的收费部门", response = Boolean.class)
     public Object addSchoolChargeDept(@Validated @RequestBody AddSchoolChargeDeptDto addSchoolChargeDeptDto) {
-        SchoolChargeDept schoolChargeDept = new SchoolChargeDept();
-        BeanUtils.copyProperties(addSchoolChargeDeptDto, schoolChargeDept);
-        try {
-            return WrapMapper.ok(schoolChargeDeptService.save(schoolChargeDept) > 0);
-        } catch (Exception e) {
-            //schoolId 和 chargeDeptName 做联合唯一索引
-            if (e instanceof DuplicateKeyException) {
-                return WrapMapper.error("该部门名称已存在,请更换名称");
-            }
-            e.printStackTrace();
-        }
-        return WrapMapper.ok();
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        addSchoolChargeDeptDto.setOperator(user.getId());
+        addSchoolChargeDeptDto.setOperatorName(user.getUserName());
+        addSchoolChargeDeptDto.setSchoolId(user.getSchoolId());
+        addSchoolChargeDeptDto.setSchoolCode(user.getSchoolCode());
+        return schoolChargeDeptControllerClient.addSchoolChargeDept(addSchoolChargeDeptDto);
     }
-
 
     /**
      * 根据id删除学校的收费部门
@@ -75,12 +57,7 @@ public class SchoolChargeDeptController {
     @RequestMapping(value = "delSchoolChargeDept", method = RequestMethod.GET)
     @ApiOperation(value = "根据id删除学校的收费部门", response = Boolean.class)
     public Object delSchoolChargeDept(@RequestParam("id") Long id) {
-        //查询该收费部门下是否有pos机
-        List<SchoolPosDeviceCharge> posDeviceCharge = schoolPosDeviceChargeService.findSchoolChargeDeptByDeptId(id);
-        if(CollectionUtils.isNotEmpty(posDeviceCharge)){
-            return WrapMapper.error("该部门下有POS机在使用,请先解绑POS机");
-        }
-        return WrapMapper.ok(schoolChargeDeptService.deleteByKey(id) > 0);
+        return schoolChargeDeptControllerClient.delSchoolChargeDept(id);
     }
 
     /**
@@ -92,18 +69,12 @@ public class SchoolChargeDeptController {
     @RequestMapping(value = "/modifySchoolChargeDept", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校的收费部门", response = Boolean.class)
     public Object modifySchoolChargeDept(@Validated @RequestBody ModifySchoolChargeDeptDto modifySchoolChargeDeptDto) {
-        SchoolChargeDept schoolChargeDept = new SchoolChargeDept();
-        BeanUtils.copyProperties(modifySchoolChargeDeptDto, schoolChargeDept);
-        try {
-            return WrapMapper.ok(schoolChargeDeptService.update(schoolChargeDept) > 0);
-        } catch (Exception e) {
-            //schoolId 和 chargeDeptName 做联合唯一索引
-            if (e instanceof DuplicateKeyException) {
-                return WrapMapper.error("该部门名称已存在,请更换名称");
-            }
-            e.printStackTrace();
-        }
-        return WrapMapper.ok();
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        modifySchoolChargeDeptDto.setOperator(user.getId());
+        modifySchoolChargeDeptDto.setOperatorName(user.getUserName());
+        modifySchoolChargeDeptDto.setSchoolId(user.getSchoolId());
+        modifySchoolChargeDeptDto.setSchoolCode(user.getSchoolCode());
+        return schoolChargeDeptControllerClient.modifySchoolChargeDept(modifySchoolChargeDeptDto);
     }
 
     /**
@@ -115,7 +86,7 @@ public class SchoolChargeDeptController {
     @RequestMapping(value = "/findSchoolChargeDeptByCondition", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件分页查询学校的收费部门列表", response = SchoolChargeDeptVo.class)
     public Object findSchoolChargeDeptByCondition(@RequestBody QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
-        return WrapMapper.ok(schoolChargeDeptService.findSchoolChargeDeptByCondition(querySchoolChargeDeptDto));
+        return schoolChargeDeptControllerClient.findSchoolChargeDeptByCondition(querySchoolChargeDeptDto);
     }
 
     /**
@@ -127,9 +98,8 @@ public class SchoolChargeDeptController {
     @RequestMapping(value = "/findSchoolChargeDeptBySchool", method = RequestMethod.GET)
     @ApiOperation(value = "根据学校查询收费部门列表", response = SchoolChargeDeptVo.class)
     public Object findSchoolChargeDeptBySchool(@RequestParam("schoolCode") String schoolCode) {
-        return WrapMapper.ok(schoolChargeDeptService.findSchoolChargeDeptBySchool(schoolCode));
+        return schoolChargeDeptControllerClient.findSchoolChargeDeptBySchool(schoolCode);
     }
-
 
     /**
      * 绑定消费机到学校的消费部门
@@ -140,18 +110,12 @@ public class SchoolChargeDeptController {
     @RequestMapping(value = "/addSchoolPosDeviceCharge", method = RequestMethod.POST)
     @ApiOperation(value = "绑定消费机到学校的消费部门", response = Boolean.class)
     public Object addSchoolPosDeviceCharge(@Validated @RequestBody AddSchoolPosDeviceChargeDto addSchoolPosDeviceChargeDto) {
-        SchoolPosDeviceCharge schoolPosDeviceCharge = new SchoolPosDeviceCharge();
-        BeanUtils.copyProperties(addSchoolPosDeviceChargeDto, schoolPosDeviceCharge);
-        try {
-            return WrapMapper.ok(schoolPosDeviceChargeService.save(schoolPosDeviceCharge) > 0);
-        } catch (Exception e) {
-            //deviceId 是唯一的 一台设备只能绑定一个部门
-            if (e instanceof DuplicateKeyException) {
-                return WrapMapper.error("此消费机已绑定,请解绑或者绑定其他消费机");
-            }
-            e.printStackTrace();
-        }
-        return WrapMapper.ok();
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        addSchoolPosDeviceChargeDto.setOperator(user.getId());
+        addSchoolPosDeviceChargeDto.setOperatorName(user.getUserName());
+        addSchoolPosDeviceChargeDto.setSchoolId(user.getSchoolId());
+        addSchoolPosDeviceChargeDto.setSchoolCode(user.getSchoolCode());
+        return schoolChargeDeptControllerClient.addSchoolPosDeviceCharge(addSchoolPosDeviceChargeDto);
     }
 
     /**
@@ -163,8 +127,9 @@ public class SchoolChargeDeptController {
     @RequestMapping(value = "/delSchoolPosDeviceCharge", method = RequestMethod.GET)
     @ApiOperation(value = "根据id解绑学校消费部门的消费机", response = Boolean.class)
     public Object delSchoolPosDeviceCharge(@RequestParam("id") Long id) {
-        return WrapMapper.ok(schoolPosDeviceChargeService.deleteByKey(id) > 0);
+        return schoolChargeDeptControllerClient.delSchoolPosDeviceCharge(id);
     }
+
 
     /**
      * 查询学校消费部门信息和POS机的数量
@@ -175,11 +140,6 @@ public class SchoolChargeDeptController {
     @RequestMapping(value = "/querySchoolChargeDeptAndPosNum", method = RequestMethod.POST)
     @ApiOperation(value = "查询学校消费部门信息和POS机的数量", response = SchoolChargeDeptVo.class)
     public Object querySchoolChargeDeptAndPosNum(@RequestBody QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
-        return WrapMapper.ok(schoolChargeDeptService.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto));
+        return schoolChargeDeptControllerClient.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto);
     }
-
-
-
-
-
 }

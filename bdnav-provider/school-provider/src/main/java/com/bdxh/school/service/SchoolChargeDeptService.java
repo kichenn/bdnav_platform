@@ -39,4 +39,11 @@ public interface SchoolChargeDeptService extends IService<SchoolChargeDept> {
      * @Date: 2019/7/11 09:44
      */
     List<SchoolChargeDeptVo> findSchoolChargeDeptBySchool(String schoolCode);
+
+	/**
+	 * 分页+查询学校消费部门信息和POS机的数量
+	 * @Author: WanMing
+	 * @Date: 2019/7/11 19:04
+	 */
+    PageInfo<SchoolChargeDeptVo> querySchoolChargeDeptAndPosNum(QuerySchoolChargeDeptDto querySchoolChargeDeptDto);
 }

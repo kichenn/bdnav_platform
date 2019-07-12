@@ -81,5 +81,42 @@
         school_code = #{walletAccount.schoolCode}
     </update>
 
+    <!--带条件查询-->
+    <select id="findWalletAccountInCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_wallet_account
+        <where>
+            <if test="schoolCode !=null and schoolCode !=''">
+                AND school_code =#{schoolCode}
+            </if>
+            <if test="userName !=null and userName !=''">
+                AND user_name LIKE CONCAT(CONCAT('%',#{userName}),'%')
+            </if>
+            <if test="cardNumber !=null and cardNumber !=''">
+                AND card_number =#{cardNumber}
+            </if>
+            <if test="orgId !=null ">
+                AND org_id =#{orgId}
+            </if>
+            <if test="userType !=null and userType!=''">
+                AND user_type LIKE CONCAT(CONCAT('%',#{userType}),'%')
+            </if>
+            <if test="status !=null and status!=''">
+                AND status =#{status}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <!--根据id删除数据-->
+    <delete id="delWalletAccount">
+	DELETE
+    FROM
+	 t_wallet_account
+    WHERE
+	school_code = #{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
+	</delete>
 
 </mapper>

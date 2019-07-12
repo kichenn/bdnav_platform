@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.AddSchoolDeviceDto;
 import com.bdxh.school.dto.ModifySchoolDeviceDto;
 import com.bdxh.school.dto.SchoolDeviceQueryDto;
+import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @Description: 学校门禁信息交互API
+ * @Description: 学校设备信息交互API
  * @Author: Kang
  * @Date: 2019/3/27 15:17
  */
@@ -27,7 +28,7 @@ import java.util.List;
 @RequestMapping("/schoolDevice")
 @Slf4j
 @Validated
-@Api(value = "学校门禁信息交互API", tags = "学校门禁信息交互API")
+@Api(value = "学校设备信息交互", tags = "学校设备信息交互API")
 public class SchoolDeviceController {
 
     @Autowired
@@ -35,12 +36,12 @@ public class SchoolDeviceController {
 
 
     /**
-     * @Description: 增加门禁信息
+     * @Description: 增加设备信息
      * @Author: Kang
      * @Date: 2019/3/27 14:09
      */
     @PostMapping("/addSchoolDevice")
-    @ApiOperation(value = "增加门禁信息", response = Boolean.class)
+    @ApiOperation(value = "增加设备信息", response = Boolean.class)
     public Object addSchoolDevice(@Validated @RequestBody AddSchoolDeviceDto addSchoolDeviceDto) {
         //复制实体
         SchoolDevice schoolDevice = new SchoolDevice();
@@ -64,12 +65,12 @@ public class SchoolDeviceController {
     }
 
     /**
-     * @Description: 修改门禁信息
+     * @Description: 修改设备信息
      * @Author: Kang
      * @Date: 2019/3/27 14:09
      */
     @PostMapping("/modifySchoolDevice")
-    @ApiOperation(value = "修改门禁信息", response = Boolean.class)
+    @ApiOperation(value = "修改设备信息", response = Boolean.class)
     public Object modifySchoolDevice(@Validated @RequestBody ModifySchoolDeviceDto modifySchoolDeviceDto) {
         //复制实体
         SchoolDevice schoolDevice = new SchoolDevice();
@@ -91,58 +92,69 @@ public class SchoolDeviceController {
     }
 
     /**
-     * @Description: 删除门禁信息
+     * @Description: 删除设备信息
      * @Author: Kang
      * @Date: 2019/3/27 14:09
      */
     @PostMapping("/delSchoolDeviceById")
-    @ApiOperation(value = "删除门禁信息", response = Boolean.class)
+    @ApiOperation(value = "删除设备信息", response = Boolean.class)
     public Object delSchoolDeviceById(@RequestParam("id") Long id) {
         return WrapMapper.ok(schoolDeviceService.deleteByKey(id) > 0);
     }
 
     /**
-     * @Description: 批量删除门禁信息
+     * @Description: 批量删除设备信息
      * @Author: Kang
      * @Date: 2019/3/27 14:09
      */
     @PostMapping("/delBatchSchoolDeviceInIds")
-    @ApiOperation(value = "批量删除门禁信息", response = Boolean.class)
+    @ApiOperation(value = "批量删除设备信息", response = Boolean.class)
     public Object delBatchSchoolDeviceInIds(@RequestParam("ids") List<Long> ids) {
         return WrapMapper.ok(schoolDeviceService.batchDelSchoolDeviceInIds(ids));
     }
 
     /**
-     * @Description: id查询门禁信息
+     * @Description: id查询设备信息
      * @Author: Kang
      * @Date: 2019/3/27 14:09
      */
     @GetMapping("/findSchoolDeviceById")
-    @ApiOperation(value = "id查询门禁信息", response = SchoolDevice.class)
+    @ApiOperation(value = "id查询设备信息", response = SchoolDevice.class)
     public Object findSchoolDeviceById(@RequestParam("id") Long id) {
         return WrapMapper.ok(schoolDeviceService.selectByKey(id));
     }
 
     /**
-     * @Description: 门禁信息根据条件分页查询
+     * @Description: 设备信息根据条件分页查询
      * @Author: Kang
      * @Date: 2019/3/27 14:09
      */
     @PostMapping("/findSchoolDeviceInConditionPage")
-    @ApiOperation(value = "门禁信息根据条件分页查询", response = PageInfo.class)
+    @ApiOperation(value = "设备信息根据条件分页查询", response = PageInfo.class)
     public Object findSchoolDeviceInConditionPage(@RequestBody SchoolDeviceQueryDto deviceQueryDto) {
         return WrapMapper.ok(schoolDeviceService.findSchoolDeviceInConditionPage(deviceQueryDto));
     }
 
     /**
-     * 根据学校查询该学校下的所有消费机列表
+     * 根据条件查询单个学校下的设备列表
      * @Author: WanMing
      * @Date: 2019/7/11 15:18
      */
-    @RequestMapping(value = "/findSchoolDeviceBySchool",method = RequestMethod.GET)
-    @ApiOperation(value = "根据学校查询该学校下的所有消费机列表",response = PageInfo.class)
-    public Object findSchoolPosDeviceBySchool(@RequestParam("schoolCode") String schoolCode){
-       // return WrapMapper.ok(schoolDeviceService.findSchoolPosDeviceBySchool(schoolCode));
-        return null;
+    @RequestMapping(value = "/findSchoolDeviceBySchool",method = RequestMethod.POST)
+    @ApiOperation(value = "根据条件查询单个学校下的设备列表",response = PageInfo.class)
+    public Object findSchoolPosDeviceBySchool(@RequestBody SchoolPosDeviceQueryDto schoolPosDeviceQueryDto){
+        return WrapMapper.ok(schoolDeviceService.findSchoolPosDeviceBySchool(schoolPosDeviceQueryDto));
+    }
+
+    /**
+     * 根据收费部门id查询下面的消费机列表
+     *
+     * @Author: WanMing
+     * @Date: 2019/7/11 18:46
+     */
+    @RequestMapping(value = "/querySchoolPosDeviceByChargeDept", method = RequestMethod.GET)
+    @ApiOperation(value = "根据收费部门id查询下面的消费机列表", response = SchoolDevice.class)
+    public Object querySchoolPosDeviceByChargeDept(@RequestParam Long deptId){
+        return WrapMapper.ok(schoolDeviceService.querySchoolPosDeviceByChargeDept(deptId));
     }
 }

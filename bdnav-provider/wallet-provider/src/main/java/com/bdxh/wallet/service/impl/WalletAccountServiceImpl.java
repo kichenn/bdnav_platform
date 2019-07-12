@@ -1,6 +1,8 @@
 package com.bdxh.wallet.service.impl;
 
 import com.bdxh.wallet.service.WalletAccountService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,12 +14,13 @@ import com.bdxh.wallet.persistence.WalletAccountMapper;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
- * @Description: 业务层实现
- * @Author Kang
- * @Date 2019-07-11 09:40:52
- */
+* @Description: 业务层实现
+* @Author Kang
+* @Date 2019-07-11 09:40:52
+*/
 @Service
 @Slf4j
 public class WalletAccountServiceImpl extends BaseService<WalletAccount> implements WalletAccountService {
@@ -79,4 +82,16 @@ public class WalletAccountServiceImpl extends BaseService<WalletAccount> impleme
     public Boolean noPwdPay(WalletAccount walletAccount) {
         return walletAccountMapper.modifyWalletBySchoolCodeAndCardNumber(walletAccount) > 0;
     }
+
+	@Override
+	public PageInfo<WalletAccount> findWalletAccountInCondition(Map<String, Object> param, Integer pageNum, Integer pageSize) {
+		PageHelper.startPage(pageNum,pageSize);
+		List<WalletAccount> walletAccounts=walletAccountMapper.findWalletAccountInCondition(param);
+		return new PageInfo(walletAccounts);
+	}
+
+	@Override
+	public Boolean delWalletAccount(String schoolCode, String cardNumber, Long id) {
+		return walletAccountMapper.delWalletAccount(schoolCode,cardNumber,id)>0;
+	}
 }

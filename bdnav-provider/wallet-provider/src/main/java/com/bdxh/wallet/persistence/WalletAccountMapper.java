@@ -1,6 +1,7 @@
 package com.bdxh.wallet.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bdxh.wallet.entity.WalletAccount;
 import tk.mybatis.mapper.common.Mapper;
@@ -30,4 +31,19 @@ public interface WalletAccountMapper extends Mapper<WalletAccount> {
      * schoolCode + cardNumber 修改钱包相关信息
      */
     Integer modifyWalletBySchoolCodeAndCardNumber(@Param("walletAccount") WalletAccount walletAccount);
+
+	/**
+	 * 带条件查询账户列表
+	 */
+    List<WalletAccount> findWalletAccountInCondition(Map<String,Object> param);
+
+	/**
+	 * 删除钱包账户
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @param id
+	 * @return
+	 */
+	Integer delWalletAccount(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("id")Long id);
+
 }

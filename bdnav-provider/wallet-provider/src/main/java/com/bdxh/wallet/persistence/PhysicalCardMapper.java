@@ -1,6 +1,7 @@
 package com.bdxh.wallet.persistence;
 
 import java.util.List;
+import java.util.Map;
 
 import com.bdxh.wallet.entity.PhysicalCard;
 import tk.mybatis.mapper.common.Mapper;
@@ -32,4 +33,28 @@ public interface PhysicalCardMapper extends Mapper<PhysicalCard> {
 	 * @return
 	 */
 	Integer modifyInfoByPhysicalCard(@Param("physicalCard") PhysicalCard physicalCard);
+
+	/**
+	 * 带条件查询账户列表
+	 */
+	List<PhysicalCard> findPhysicalCardInCondition(Map<String,Object> param);
+
+	/**
+	 * 删除相关账户
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @param id
+	 * @return
+	 */
+	Integer delPhysicalCard(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("id")Long id);
+
+	/**
+	 * 根据id查询详细信息
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @param id
+	 * @return
+	 */
+	PhysicalCard findPhysicalCardById(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("id")Long id);
+
 }

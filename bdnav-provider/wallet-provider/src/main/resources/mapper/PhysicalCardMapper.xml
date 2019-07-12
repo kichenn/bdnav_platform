@@ -23,7 +23,10 @@
     <sql id="BaseColumns">
 	  id,school_id,school_code,user_id,card_number,wallet_account_id,physical_number,physical_chip_number,deposit,status,operator,operator_name,create_date,update_date,remark
 	</sql>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 06984203b911fd0a1dbeb85e65a39ddf2d73f616
     <select id="getPhysicalCardAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
@@ -59,4 +62,46 @@
             </if>
         </set>
     </update>
+
+    <select id="findPhysicalCardInCondition" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_physical_card
+        <where>
+            <if test="schoolCode !=null and schoolCode !=''">
+                AND school_code =#{schoolCode}
+            </if>
+            <if test="cardNumber !=null and cardNumber !=''">
+                AND card_number =#{cardNumber}
+            </if>
+            <if test="physicalNumber !=null and physicalNumber!=''">
+                AND physical_number =#{physicalNumber}
+            </if>
+            <if test="status !=null and status!=''">
+                AND status =#{status}
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <!--根据id删除数据-->
+    <delete id="delPhysicalCard">
+	DELETE
+    FROM
+	t_physical_card
+    WHERE
+	school_code = #{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
+	</delete>
+
+    <!--根据id查询详情-->
+    <select id="findPhysicalCardById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_physical_card
+        WHERE
+        school_code = #{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
+    </select>
+
 </mapper>

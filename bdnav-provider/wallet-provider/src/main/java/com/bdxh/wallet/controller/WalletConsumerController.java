@@ -7,13 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
 * @Description: 控制器
 * @Author Kang
 * @Date 2019-07-11 09:40:52
 */
-@Controller
+@RestController
 @RequestMapping("/walletConsumer")
 @Slf4j
 @Validated
@@ -22,5 +23,8 @@ public class WalletConsumerController {
 
 	@Autowired
 	private WalletConsumerService walletConsumerService;
+
+
+
 
 }

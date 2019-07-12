@@ -1,5 +1,6 @@
 package com.bdxh.school.service.impl;
 
+import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.persistence.SchoolPosDeviceChargeMapper;
 import com.bdxh.school.service.SchoolPosDeviceChargeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,4 +40,18 @@ public class SchoolPosDeviceChargeServiceImpl extends BaseService<SchoolPosDevic
 	public Boolean batchDelSchoolPosDeviceChargeInIds(List<Long> ids){
 		return schoolPosDeviceChargeMapper.delSchoolPosDeviceChargeInIds(ids) > 0;
 	}
+
+	/**
+	 * 根据部门id查询绑定记录
+	 *
+	 * @param id
+	 */
+	@Override
+	public List<SchoolPosDeviceCharge> findSchoolChargeDeptByDeptId(Long id) {
+		SchoolPosDeviceCharge deviceCharge = new SchoolPosDeviceCharge();
+		deviceCharge.setChargeDeptId(id);
+		return schoolPosDeviceChargeMapper.select(deviceCharge);
+	}
+
+
 }

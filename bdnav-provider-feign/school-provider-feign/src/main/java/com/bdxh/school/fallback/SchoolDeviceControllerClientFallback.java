@@ -49,4 +49,14 @@ public class SchoolDeviceControllerClientFallback implements SchoolDeviceControl
     public Wrapper<PageInfo<SchoolDeviceShowVo>> findSchoolDeviceInConditionPage(SchoolDeviceQueryDto schoolDeviceQueryDto) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<PageInfo<SchoolDevice>> findSchoolPosDeviceBySchool(SchoolPosDeviceQueryDto schoolPosDeviceQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<SchoolDevice>> querySchoolPosDeviceByChargeDept(Long deptId) {
+        return WrapMapper.error();
+    }
 }

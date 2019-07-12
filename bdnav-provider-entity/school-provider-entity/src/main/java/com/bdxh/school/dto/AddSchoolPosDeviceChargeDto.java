@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author WanMing
@@ -30,14 +31,14 @@ public class AddSchoolPosDeviceChargeDto {
      * 设备主键
      */
     @ApiModelProperty("设备主键")
-    @NotBlank(message = "学校编码不能为空")
-    private String deviceId;
+    @NotNull(message = "设备主键不能为空")
+    private Long deviceId;
 
     /**
      * 所属收费部门
      */
     @ApiModelProperty("所属收费部门")
-    @NotBlank(message = "所属收费部门不能为空")
+    @NotNull(message = "所属收费部门不能为空")
     private Long chargeDeptId;
 
     /**
