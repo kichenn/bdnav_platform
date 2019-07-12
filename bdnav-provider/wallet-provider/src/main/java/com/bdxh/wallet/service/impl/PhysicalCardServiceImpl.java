@@ -33,8 +33,8 @@ public class PhysicalCardServiceImpl extends BaseService<PhysicalCard> implement
     @Autowired
     private PhysicalCardMapper physicalCardMapper;
 
-	@Autowired
-	private SnowflakeIdWorker snowflakeIdWorker;
+    @Autowired
+    private SnowflakeIdWorker snowflakeIdWorker;
 
     /*
      *查询总条数
@@ -58,24 +58,24 @@ public class PhysicalCardServiceImpl extends BaseService<PhysicalCard> implement
      */
     @Override
     public Boolean modifyInfoByPhysicalCard(PhysicalCard physicalCard) {
-        return null;
+        return physicalCardMapper.modifyInfoByPhysicalCard(physicalCard) > 0;
     }
 
-	@Override
-	public PageInfo<PhysicalCard> findPhysicalCardInCondition(Map<String, Object> param, Integer pageNum, Integer pageSize) {
-		PageHelper.startPage(pageNum, pageSize);
-		List<PhysicalCard> physicalCardLogs = physicalCardMapper.findPhysicalCardInCondition(param);
-		return new PageInfo(physicalCardLogs);
-	}
+    @Override
+    public PageInfo<PhysicalCard> findPhysicalCardInCondition(Map<String, Object> param, Integer pageNum, Integer pageSize) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<PhysicalCard> physicalCardLogs = physicalCardMapper.findPhysicalCardInCondition(param);
+        return new PageInfo(physicalCardLogs);
+    }
 
 
-	@Override
-	public Boolean delPhysicalCard(String schoolCode,String cardNumber, Long id) {
-		return physicalCardMapper.delPhysicalCard(schoolCode,cardNumber,id)>0;
-	}
+    @Override
+    public Boolean delPhysicalCard(String schoolCode, String cardNumber, Long id) {
+        return physicalCardMapper.delPhysicalCard(schoolCode, cardNumber, id) > 0;
+    }
 
-	@Override
-	public PhysicalCard findPhysicalCardById(String schoolCode, String cardNumber, Long id) {
-		return physicalCardMapper.findPhysicalCardById(schoolCode,cardNumber,id);
-	}
+    @Override
+    public PhysicalCard findPhysicalCardById(String schoolCode, String cardNumber, Long id) {
+        return physicalCardMapper.findPhysicalCardById(schoolCode, cardNumber, id);
+    }
 }

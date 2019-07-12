@@ -31,6 +31,11 @@ public class AliyunSmsConstants {
         String CAPTCHA_PREFIX = "captcha:";
 
         /**
+         * 微校支付密码，忘记密码 发送验证码 key
+         */
+        String CAPTCHA_PHYSICAL_CARD_PREFIX = "captchaPhysicalCardForgetPayPwd:";
+
+        /**
          * 验证码过期时间
          */
         int CAPTCHA_TIME = (int) TimeUnit.MINUTES.toSeconds(3);
