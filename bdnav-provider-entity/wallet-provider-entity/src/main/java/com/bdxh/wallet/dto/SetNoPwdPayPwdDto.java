@@ -13,7 +13,7 @@ import java.math.BigDecimal;
  * @Date: 2019/7/12 11:59
  */
 @Data
-public class NoPwdPayPwdDto {
+public class SetNoPwdPayPwdDto {
 
     @NotEmpty(message = "学校code不能为空")
     @ApiModelProperty(value = "学校code")

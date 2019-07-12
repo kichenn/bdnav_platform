@@ -1,6 +1,5 @@
 package com.bdxh.wallet.controller;
 
-import com.bdxh.common.base.constant.RedisClusterConstrants;
 import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
 import com.bdxh.common.helper.ali.sms.enums.SmsTempletEnum;
 import com.bdxh.common.helper.ali.sms.utils.SmsUtil;
@@ -8,7 +7,7 @@ import com.bdxh.common.utils.*;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.wallet.configration.redis.RedisUtil;
 import com.bdxh.wallet.dto.ModifyPayPwdDto;
-import com.bdxh.wallet.dto.NoPwdPayPwdDto;
+import com.bdxh.wallet.dto.SetNoPwdPayPwdDto;
 import com.bdxh.wallet.dto.SetPayPwdDto;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.service.WalletAccountService;
@@ -100,9 +99,9 @@ public class WalletAccountController {
         return WrapMapper.ok(walletAccountService.setPayPwd(forgetPayPwdDto.getCardNumber(), forgetPayPwdDto.getSchoolCode(), payPwd));
     }
 
-    @GetMapping("/forgetPayPwd")
+    @GetMapping("/forgetPayPwdSendCode")
     @ApiOperation(value = "发送忘记支付密码，验证码信息", response = Boolean.class)
-    public Object forgetPayPwd(@RequestParam("phone") String phone) {
+    public Object forgetPayPwdSendCode(@RequestParam("phone") String phone) {
         if (!ValidatorUtil.isMobile(phone)) {
             return WrapMapper.error("请输入正确的手机号");
         }
@@ -114,25 +113,25 @@ public class WalletAccountController {
     }
 
 
-    @PostMapping("/noPwdPay")
+    @PostMapping("/setNoPwdPay")
     @ApiOperation(value = "设置小额免密支付", response = Boolean.class)
-    public Object noPwdPay(@Validated @RequestBody NoPwdPayPwdDto noPwdPayPwdDto) {
+    public Object setNoPwdPay(@Validated @RequestBody SetNoPwdPayPwdDto setNoPwdPayPwdDto) {
         //查询钱包信息
-        WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(noPwdPayPwdDto.getCardNumber(), noPwdPayPwdDto.getSchoolCode());
+        WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(setNoPwdPayPwdDto.getCardNumber(), setNoPwdPayPwdDto.getSchoolCode());
         Preconditions.checkArgument(walletAccount != null, "该钱包不存在，请检查cardNumber，schoolCode");
 
         //matches(第一个参数为前端传递的值，未加密，后一个为数据库已经加密的串对比)
-        if (!new BCryptPasswordEncoder().matches(AESUtils.deCode(noPwdPayPwdDto.getPayPwd(), AESUtils.AesConstant.WEIXIAO_KEY), walletAccount.getPayPassword())) {
+        if (!new BCryptPasswordEncoder().matches(AESUtils.deCode(setNoPwdPayPwdDto.getPayPwd(), AESUtils.AesConstant.WEIXIAO_KEY), walletAccount.getPayPassword())) {
             return WrapMapper.error("支付密码输入错误请检查");
         }
         WalletAccount walletAccountParam = new WalletAccount();
         walletAccountParam.setUpdateDate(new Date());
-        walletAccountParam.setSchoolCode(noPwdPayPwdDto.getSchoolCode());
-        walletAccountParam.setCardNumber(noPwdPayPwdDto.getCardNumber());
-        walletAccountParam.setQuickPayMoney(noPwdPayPwdDto.getQuickPayMoney());
-        walletAccountParam.setOperator(noPwdPayPwdDto.getOperator());
-        walletAccountParam.setOperatorName(noPwdPayPwdDto.getOperatorName());
-        walletAccountParam.setRemark(noPwdPayPwdDto.getRemark());
+        walletAccountParam.setSchoolCode(setNoPwdPayPwdDto.getSchoolCode());
+        walletAccountParam.setCardNumber(setNoPwdPayPwdDto.getCardNumber());
+        walletAccountParam.setQuickPayMoney(setNoPwdPayPwdDto.getQuickPayMoney());
+        walletAccountParam.setOperator(setNoPwdPayPwdDto.getOperator());
+        walletAccountParam.setOperatorName(setNoPwdPayPwdDto.getOperatorName());
+        walletAccountParam.setRemark(setNoPwdPayPwdDto.getRemark());
 
         return WrapMapper.ok(walletAccountService.noPwdPay(walletAccountParam));
     }
