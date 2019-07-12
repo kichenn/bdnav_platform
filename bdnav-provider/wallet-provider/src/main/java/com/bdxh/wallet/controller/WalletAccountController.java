@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -46,9 +47,9 @@ public class WalletAccountController {
 	public Object AddWalletAccount(@RequestBody AddWalletAccount addWalletAccount) {
 		try {
 			WalletAccount walletAccount=new WalletAccount();
-			BeanMapUtils.copy(addWalletAccount,walletAccount);
 			walletAccount.setId(snowflakeIdWorker.nextId());
 			walletAccount.setPayPassword(new BCryptPasswordEncoder().encode(addWalletAccount.getPayPassword()));
+			BeanUtils.copyProperties(addWalletAccount,walletAccount);
 			Boolean result=walletAccountService.save(walletAccount)>0;
 			return WrapMapper.ok(result);
 		} catch (Exception e) {
@@ -81,7 +82,7 @@ public class WalletAccountController {
 	public Object modifyWalletAccount(@RequestBody ModifyWalletAccount modifyWalletAccount) {
 		try {
 			WalletAccount walletAccount=new WalletAccount();
-			BeanMapUtils.copy(modifyWalletAccount,walletAccount);
+			BeanUtils.copyProperties(modifyWalletAccount,walletAccount);
 			Boolean result=walletAccountService.update(walletAccount)>0;
 			return WrapMapper.ok(result);
 		} catch (Exception e) {
