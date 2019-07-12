@@ -196,7 +196,7 @@ public class SecurityController {
                 UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
                 claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
                 claims.put(SecurityConstant.AUTHORITIES, JSON.toJSONString(authorities));
-            } else {
+            } else if (userInfo.getIdentityType().equals("2")) {
                 //孩子登录
                 List<String> cardNumbers = new ArrayList<>();
                 cardNumbers.add(jsonObject.getString("card_number"));
@@ -212,6 +212,8 @@ public class SecurityController {
                 //学生登录只设置自己的信息
                 UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
                 claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
+            } else if (userInfo.getIdentityType().equals("3")) {
+
             }
 
             String subject = userInfo.getFamilyId().toString();

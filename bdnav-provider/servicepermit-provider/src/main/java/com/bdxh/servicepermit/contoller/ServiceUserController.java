@@ -2,6 +2,7 @@ package com.bdxh.servicepermit.contoller;
 
 import com.bdxh.common.utils.BeanMapUtils;
 import com.bdxh.common.utils.BeanToMapUtil;
+import com.bdxh.common.utils.DateUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.servicepermit.configration.redis.RedisUtil;
@@ -88,9 +89,11 @@ public class ServiceUserController {
     public Object findServicePermitByCondition(@RequestParam("schoolCode") String schoolCode, @RequestParam("studentCardNumber") String studentCardNumber, @RequestParam("familyCardNumber") String familyCardNumber, @RequestParam("productId") Long productId) {
         //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
         List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, Integer.valueOf(ServiceTypeEnum.ON_TRIAL.getKey()), null);
+        //当前时间的后一天（serviceUser.getEndTime()是到当天的凌晨故在此累加24小时。保证最后一天的权限鉴定性）
+        Date thisDate = DateUtil.addDateMinut(new Date(), 24);
         if (CollectionUtils.isNotEmpty(serviceUsers)) {
             ServiceUser serviceUser = serviceUsers.get(0);
-            if (serviceUser.getStatus().equals(1) && serviceUser.getEndTime().after(new Date())) {
+            if (serviceUser.getStatus().equals(1) && serviceUser.getEndTime().after(thisDate)) {
                 //正在试用中
                 return WrapMapper.ok();
             }
@@ -110,7 +113,7 @@ public class ServiceUserController {
                 if (serviceUserTo == null && serviceUserTos.size() > 0) {
                     return WrapMapper.ok();
                 }
-                if (serviceUserTo.getEndTime().after(new Date())) {
+                if (serviceUser.getStatus().equals(1) && serviceUserTo.getEndTime().after(new Date())) {
                     //正式使用，并且还在有效期
                     return WrapMapper.ok();
                 }
@@ -174,27 +177,29 @@ public class ServiceUserController {
 
     /**
      * 根据条件查询订单
+     *
      * @Author: WanMing
      * @Date: 2019/6/25 9:40
      */
     @ApiOperation(value = "根据条件查询订单", response = ServiceUserVo.class)
     @RequestMapping(value = "/queryServiceUser", method = RequestMethod.POST)
-    public Object queryServiceUser(@Validated @RequestBody QueryServiceUserDto queryServiceUserDto){
+    public Object queryServiceUser(@Validated @RequestBody QueryServiceUserDto queryServiceUserDto) {
         Map<String, Object> param = BeanToMapUtil.objectToMap(queryServiceUserDto);
-        return WrapMapper.ok(serviceUserService.getServiceByCondition(param,queryServiceUserDto.getPageNum(),queryServiceUserDto.getPageSize()));
+        return WrapMapper.ok(serviceUserService.getServiceByCondition(param, queryServiceUserDto.getPageNum(), queryServiceUserDto.getPageSize()));
     }
 
     /**
      * 删除服务许可信息
+     *
      * @Author: WanMing
      * @Date: 2019/7/4 14:07
      */
-    @RequestMapping(value = "/deleteService",method = RequestMethod.GET)
-    @ApiOperation(value = "删除服务许可信息",response = Boolean.class)
+    @RequestMapping(value = "/deleteService", method = RequestMethod.GET)
+    @ApiOperation(value = "删除服务许可信息", response = Boolean.class)
     public Object deleteService(@RequestParam(name = "schoolCode") String schoolCode,
                                 @RequestParam(name = "cardNumber") String cardNumber,
-                                @RequestParam(name = "id") Long id){
-        return WrapMapper.ok(serviceUserService.deleteByServiceId(schoolCode,cardNumber,id));
+                                @RequestParam(name = "id") Long id) {
+        return WrapMapper.ok(serviceUserService.deleteByServiceId(schoolCode, cardNumber, id));
 
     }
 }
