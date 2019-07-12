@@ -42,10 +42,6 @@ public interface PhysicalCardService extends IService<PhysicalCard> {
 
 
 
-	/**
-	 * 添加账户
-	 */
-/*	Boolean AddPhysicalCard(AddPhysicalCard addPhysicalCard);*/
 
 
 	/**
