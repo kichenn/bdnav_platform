@@ -25,4 +25,11 @@ public interface PhysicalCardMapper extends Mapper<PhysicalCard> {
 	 *批量删除方法
 	 */
 	 Integer delPhysicalCardInIds(@Param("ids") List<Long> ids);
+
+	/**
+	 * 根据实体卡号修改信息
+	 * @param physicalCard
+	 * @return
+	 */
+	Integer modifyInfoByPhysicalCard(@Param("physicalCard") PhysicalCard physicalCard);
 }

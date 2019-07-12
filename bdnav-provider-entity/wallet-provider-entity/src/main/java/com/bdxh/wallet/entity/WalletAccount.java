@@ -74,10 +74,10 @@ public class WalletAccount {
 	private Long orgId;
 
 	/**
-	 * 虚拟账号
+	 * 实体卡
 	 */
-	@Column(name = "virtual_number")
-	private String virtualNumber;
+	@Column(name = "physical_number")
+	private String physicalNumber;
 
 	/**
 	 * 账户金额

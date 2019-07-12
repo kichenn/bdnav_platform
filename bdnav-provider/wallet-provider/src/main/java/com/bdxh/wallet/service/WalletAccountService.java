@@ -32,4 +32,16 @@ public interface WalletAccountService extends IService<WalletAccount> {
      * @return
      */
     WalletAccount findWalletByCardNumberAndSchoolCode(String cardNumber, String schoolCode);
+
+    /**
+     * 设置支付密码
+     */
+    Boolean setPayPwd(String cardNumber, String schoolCode, String payPwd);
+
+    /**
+     * 设置免密支付
+     *
+     * @return
+     */
+    Boolean noPwdPay(WalletAccount walletAccount);
 }

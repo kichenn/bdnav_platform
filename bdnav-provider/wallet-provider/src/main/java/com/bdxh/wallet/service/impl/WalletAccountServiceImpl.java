@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.persistence.WalletAccountMapper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -54,5 +55,28 @@ public class WalletAccountServiceImpl extends BaseService<WalletAccount> impleme
         walletAccount.setCardNumber(cardNumber);
         walletAccount.setSchoolCode(schoolCode);
         return walletAccountMapper.selectOne(walletAccount);
+    }
+
+    /**
+     * 设置支付密码
+     */
+    @Override
+    public Boolean setPayPwd(String cardNumber, String schoolCode, String payPwd) {
+        WalletAccount walletAccount = new WalletAccount();
+        walletAccount.setCardNumber(cardNumber);
+        walletAccount.setSchoolCode(schoolCode);
+        walletAccount.setPayPassword(payPwd);
+        walletAccount.setUpdateDate(new Date());
+        return walletAccountMapper.modifyWalletBySchoolCodeAndCardNumber(walletAccount) > 0;
+    }
+
+    /**
+     * 设置免密支付
+     *
+     * @return
+     */
+    @Override
+    public Boolean noPwdPay(WalletAccount walletAccount) {
+        return walletAccountMapper.modifyWalletBySchoolCodeAndCardNumber(walletAccount) > 0;
     }
 }

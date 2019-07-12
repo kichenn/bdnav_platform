@@ -34,7 +34,7 @@ public class UserInfo implements Serializable {
     //微校学生id
     private String weixiaoStuId;
 
-    // 身份类型，1为其他，2为学生，3为教职工，4为校友
+    // 身份类型，1为家长，2为学生，3为教职工，4为校友
     private String identityType;
 
     /*
