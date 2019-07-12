@@ -33,9 +33,6 @@ public class PhysicalCardServiceImpl extends BaseService<PhysicalCard> implement
     @Autowired
     private PhysicalCardMapper physicalCardMapper;
 
-    @Autowired
-    private SnowflakeIdWorker snowflakeIdWorker;
-
     /*
      *查询总条数
      */
