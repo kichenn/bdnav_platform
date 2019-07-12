@@ -26,19 +26,37 @@ public class CampusResponseUser {
     private String grade;
 
     /**
-     *
+     * 学院
      */
     private String college;
 
+    /**
+     * 专业
+     */
     private String profession;
 
+    /**
+     * 班级
+     */
     private String class1;
 
+    /**
+     * 职称
+     */
     private String identity_title;
 
+    /**
+     * 身份认证自定义字段
+     */
     private String remark;
 
+    /**
+     * 物理卡卡号
+     */
     private String physical_card_number;
 
+    /**
+     * 物理芯片号
+     */
     private String physical_chip_number;
 }
