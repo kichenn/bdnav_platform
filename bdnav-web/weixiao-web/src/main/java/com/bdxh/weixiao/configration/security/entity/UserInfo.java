@@ -45,13 +45,13 @@ public class UserInfo implements Serializable {
 
     private String schoolName;
 
-    //家长id
+    //家长id （如果是班主任登录此处id则为班主任id）
     private Long familyId;
 
-    //家长号
+    //家长号（如果是班主任登录此处cardnumber则为班主任cardnumber）
     private String familyCardNumber;
 
-    //家长姓名
+    //家长姓名（如果是班主任登录此处name为班主任name）
     private String familyName;
 
     //权限集合(key:roleName ---Value:studentcardNumber 学生卡号)

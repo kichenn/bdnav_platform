@@ -31,6 +31,7 @@ public class WalletAccountController {
     @GetMapping("/myWallet")
     @ApiOperation(value = "我的钱包", response = Boolean.class)
     public Object myWallet(@RequestParam("cardNumber") String cardNumber, @RequestParam("schoolCode") String schoolCode) {
+
         return null;
     }
 }

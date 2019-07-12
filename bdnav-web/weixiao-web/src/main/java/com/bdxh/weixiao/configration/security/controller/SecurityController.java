@@ -19,13 +19,11 @@ import com.bdxh.servicepermit.feign.ServiceRolePermitControllerClient;
 import com.bdxh.servicepermit.feign.ServiceUserControllerClient;
 import com.bdxh.servicepermit.vo.ServiceRolePermitInfoVo;
 import com.bdxh.user.dto.AddFenceAlarmDto;
-import com.bdxh.user.feign.FamilyControllerClient;
-import com.bdxh.user.feign.FamilyStudentControllerClient;
-import com.bdxh.user.feign.FenceAlarmControllerClient;
-import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.feign.*;
 import com.bdxh.user.vo.FamilyStudentVo;
 import com.bdxh.user.vo.FamilyVo;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.TeacherVo;
 import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.properties.SecurityConstant;
@@ -77,6 +75,9 @@ public class SecurityController {
 
     @Autowired
     private FamilyStudentControllerClient familyStudentControllerClient;
+
+    @Autowired
+    private TeacherControllerClient teacherControllerClient;
 
 
     @RequestMapping(value = "/authenticationWeixiao/toAuth", method = RequestMethod.GET)
@@ -213,7 +214,16 @@ public class SecurityController {
                 UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
                 claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
             } else if (userInfo.getIdentityType().equals("3")) {
-
+                //老师登录(设置卡号)
+                userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
+                //老师卡号查询 老师信息
+                TeacherVo teacherVo= teacherControllerClient.queryTeacherInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
+                Preconditions.checkArgument(teacherVo != null, "老师卡号:" + userInfo.getFamilyCardNumber() + "，学校code:" + userInfo.getSchoolCode() + ",异常");
+                userInfo.setFamilyId(Long.valueOf(teacherVo.getId()));
+                userInfo.setFamilyName(teacherVo.getName());
+                //设置角色和权限信息
+                UserInfo userTemp = BeanMapUtils.map(userInfo, UserInfo.class);
+                claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
             }
 
             String subject = userInfo.getFamilyId().toString();

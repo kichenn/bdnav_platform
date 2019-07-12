@@ -90,10 +90,11 @@ public class ServiceUserController {
         //家长购买权限的集合信息（试用对于一个家长和一个孩子的所有商品，购买各对于一个家长和一个孩子的一个商品，俩者满足条件的都只存在一条数据）
         List<ServiceUser> serviceUsers = serviceUserService.findServicePermitByCondition(schoolCode, studentCardNumber, familyCardNumber, null, Integer.valueOf(ServiceTypeEnum.ON_TRIAL.getKey()), null);
         //当前时间的后一天（serviceUser.getEndTime()是到当天的凌晨故在此累加24小时。保证最后一天的权限鉴定性）
-        Date thisDate = DateUtil.addDateMinut(new Date(), 24);
         if (CollectionUtils.isNotEmpty(serviceUsers)) {
             ServiceUser serviceUser = serviceUsers.get(0);
-            if (serviceUser.getStatus().equals(1) && serviceUser.getEndTime().after(thisDate)) {
+            //试用时间后一天（此处为啥要累加24小时呢？因为endTime是到到期时间的凌晨结束，故而累加时间 如果累加的时间在当前时间的 前面 并且状态为已过期，那么则到期）
+            Date enTime = DateUtil.addDateMinut(serviceUser.getEndTime(), 24);
+            if (serviceUser.getStatus().equals(1) && enTime.after(new Date())) {
                 //正在试用中
                 return WrapMapper.ok();
             }
@@ -113,7 +114,9 @@ public class ServiceUserController {
                 if (serviceUserTo == null && serviceUserTos.size() > 0) {
                     return WrapMapper.ok();
                 }
-                if (serviceUser.getStatus().equals(1) && serviceUserTo.getEndTime().after(new Date())) {
+                //试用时间后一天（此处为啥要累加24小时呢？因为endTime是到到期时间的凌晨结束，故而累加时间 如果累加的时间在当前时间的 前面 并且状态为已过期，那么则到期）
+                Date enTime1 = DateUtil.addDateMinut(serviceUserTo.getEndTime(), 24);
+                if (serviceUserTo.getStatus().equals(1) && enTime1.after(new Date())) {
                     //正式使用，并且还在有效期
                     return WrapMapper.ok();
                 }
