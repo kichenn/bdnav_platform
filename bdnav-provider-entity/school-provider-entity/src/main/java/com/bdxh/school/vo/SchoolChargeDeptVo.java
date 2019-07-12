@@ -67,6 +67,12 @@ public class SchoolChargeDeptVo {
     @ApiModelProperty("备注")
     private String remark;
 
+    /**
+     * 设备数量
+     */
+    @ApiModelProperty("设备数量")
+    private Integer deviceNum;
+
 
 
 }

@@ -39,7 +39,7 @@ public class SchoolPosDeviceCharge {
 	 * 设备主键
 	 */
 	@Column(name = "device_id")
-	private String deviceId;
+	private Long deviceId;
 
 	/**
 	 * 所属收费部门

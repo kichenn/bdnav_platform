@@ -24,6 +24,7 @@
         <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="deviceNum" jdbcType="TINYINT" property="deviceNum"/>
     </resultMap>
 
     <sql id="BaseColumns">
@@ -33,6 +34,10 @@
     <sql id="BaseColumnsVo">
 	  td.id,td.school_id,td.school_code,tc.school_name,td.charge_dept_name,td.operator,td.operator_name,td.create_date,td.update_date,td.remark
 	</sql>
+
+    <sql id="BaseColumnsVo2">
+	  td.id,td.school_id,td.school_code,td.charge_dept_name,td.operator,td.operator_name,td.create_date,td.update_date,td.remark
+	</sql>
     <select id="getSchoolChargeDeptAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
@@ -41,29 +46,43 @@
 
     <!--条件+分页查询收费部门列表-->
     <select id="findSchoolChargeDeptByCondition" resultMap="BaseResultMapVo">
-	  SELECT
-	<include refid="BaseColumnsVo"/>
-      FROM
-	  t_school_charge_dept td
-	  JOIN t_school tc ON td.school_id = tc.id
-	   <where>
-           <if test="chargeDept.schoolCode!=null and chargeDept.schoolCode!=''">
-               AND school_code = #{chargeDept.schoolCode}
-           </if>
-           <if test="chargeDept.chargeDeptName!=null and chargeDept.chargeDeptName!=''">
-               AND charge_dept_name LIKE CONCAT('%',#{chargeDept.chargeDeptName},'%')
-           </if>
-       </where>
-       ORDER BY create_date DESC
-	</select>
-
-    <!--查询单个学校的收费部门-->
-    <select id="findSchoolChargeDeptBySchool" resultMap="BaseResultMapVo">
         SELECT
         <include refid="BaseColumnsVo"/>
         FROM
+        t_school_charge_dept td
+        JOIN t_school tc ON td.school_id = tc.id
+        <where>
+            <if test="chargeDept.schoolCode!=null and chargeDept.schoolCode!=''">
+                AND school_code = #{chargeDept.schoolCode}
+            </if>
+            <if test="chargeDept.chargeDeptName!=null and chargeDept.chargeDeptName!=''">
+                AND charge_dept_name LIKE CONCAT('%',#{chargeDept.chargeDeptName},'%')
+            </if>
+        </where>
+        ORDER BY create_date DESC
+    </select>
+
+    <!--查询单个学校的收费部门-->
+    <select id="findSchoolChargeDeptBySchool" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
         t_school_charge_dept
         WHERE school_code = #{schoolCode}
+    </select>
+
+    <!--学校的收费部门和统计收费部门下的消费机数量-->
+    <select id="querySchoolChargeDeptAndPosNum" resultMap="BaseResultMapVo">
+        SELECT
+        <include refid="BaseColumnsVo2"/>,
+        COUNT(tp.id) AS `deviceNum`
+        FROM t_school_charge_dept td LEFT JOIN t_school_posdevice_charge tp ON td.id = tp.charge_dept_id
+        <where>
+            <if test="chargeDept.schoolCode!=null and chargeDept.schoolCode!=''">
+                AND td.school_code = #{chargeDept.schoolCode}
+            </if>
+        </where>
+        GROUP BY td.id
     </select>
 
     <delete id="delSchoolChargeDeptInIds" parameterType="Integer">

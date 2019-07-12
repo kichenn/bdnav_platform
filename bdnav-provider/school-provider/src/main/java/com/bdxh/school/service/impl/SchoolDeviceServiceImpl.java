@@ -1,6 +1,7 @@
 package com.bdxh.school.service.impl;
 
 import com.bdxh.school.dto.SchoolDeviceQueryDto;
+import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.enums.DeviceStatusEnum;
 import com.bdxh.school.service.SchoolDeviceService;
@@ -72,5 +73,30 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
     @Override
     public SchoolDevice findSchoolDeviceByIdOnModel(String deviceId, String deviceModel) {
         return schoolDeviceMapper.findSchoolDeviceByIdOnModel(deviceId, deviceModel);
+    }
+
+    /**
+     * 查询单个学校下的设备的列表
+     *
+     * @param schoolPosDeviceQueryDto
+     */
+    @Override
+    public PageInfo<SchoolDevice> findSchoolPosDeviceBySchool(SchoolPosDeviceQueryDto schoolPosDeviceQueryDto) {
+        SchoolDevice schoolDevice = new SchoolDevice();
+        BeanUtils.copyProperties(schoolPosDeviceQueryDto, schoolDevice);
+        PageHelper.startPage(schoolPosDeviceQueryDto.getPageNum(),schoolPosDeviceQueryDto.getPageSize());
+        List<SchoolDevice> schoolDevices = schoolDeviceMapper.findSchoolPosDeviceBySchool(schoolPosDeviceQueryDto);
+        return new PageInfo<>(schoolDevices);
+    }
+
+    /**
+     * 根据收费部门id查询下面的消费机列表
+     *
+     * @param deptId
+     * @return
+     */
+    @Override
+    public List<SchoolDevice> querySchoolPosDeviceByChargeDept(Long deptId) {
+        return schoolDeviceMapper.querySchoolPosDeviceByChargeDept(deptId);
     }
 }

@@ -2,6 +2,7 @@ package com.bdxh.school.persistence;
 
 import java.util.List;
 
+import com.bdxh.school.entity.SchoolDevice;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -26,4 +27,6 @@ public interface SchoolPosDeviceChargeMapper extends Mapper<SchoolPosDeviceCharg
 	 *批量删除方法
 	 */
 	 Integer delSchoolPosDeviceChargeInIds(@Param("ids") List<Long> ids);
+
+
 }

@@ -6,7 +6,7 @@
 	  <id column="id" jdbcType="BIGINT" property="id"/>
 	  <result column="school_id" jdbcType="BIGINT" property="schoolId"/>
 	  <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
-	  <result column="device_id" jdbcType="VARCHAR" property="deviceId"/>
+	  <result column="device_id" jdbcType="BIGINT" property="deviceId"/>
 	  <result column="charge_dept_id" jdbcType="BIGINT" property="chargeDeptId"/>
 	  <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
 	  <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
@@ -24,7 +24,9 @@
 	  FROM t_school_posdevice_charge 
 	</select>
 
-	<delete id="delSchoolPosDeviceChargeInIds" parameterType="Integer">
+
+
+    <delete id="delSchoolPosDeviceChargeInIds" parameterType="Integer">
 	  DELETE
 	   FROM t_school_posdevice_charge
 	  WHERE

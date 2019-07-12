@@ -28,14 +28,12 @@ public class ModifySchoolChargeDeptDto {
      * 学校编码
      */
     @ApiModelProperty("学校编码")
-    @NotBlank(message = "学校编码不能为空")
     private String schoolCode;
 
     /**
      * 收费部门名称
      */
     @ApiModelProperty("收费部门名称")
-    @NotBlank(message = "收费部门名称不能为空")
     private String chargeDeptName;
 
     /**

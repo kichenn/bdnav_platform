@@ -1,10 +1,7 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.AddSchoolDeviceDto;
-import com.bdxh.school.dto.ModifySchoolDeviceDto;
-import com.bdxh.school.dto.SchoolDeviceQueryDto;
-import com.bdxh.school.dto.SinglePermissionQueryDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SinglePermission;
@@ -12,6 +9,7 @@ import com.bdxh.school.fallback.SchoolDeviceControllerClientFallback;
 import com.bdxh.school.fallback.SinglePermissionControllerClientFallback;
 import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -80,4 +78,23 @@ public interface SchoolDeviceControllerClient {
     @RequestMapping(value = "/schoolDevice/findSchoolDeviceInConditionPage", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<PageInfo<SchoolDeviceShowVo>> findSchoolDeviceInConditionPage(@RequestBody SchoolDeviceQueryDto schoolDeviceQueryDto);
+
+    /**
+     * 根据条件查询单个学校下的设备列表
+     * @Author: WanMing
+     * @Date: 2019/7/11 15:18
+     */
+    @RequestMapping(value = "/schoolDevice/findSchoolDeviceBySchool",method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<PageInfo<SchoolDevice>> findSchoolPosDeviceBySchool(@RequestBody SchoolPosDeviceQueryDto schoolPosDeviceQueryDto);
+
+    /**
+     * 根据收费部门id查询下面的消费机列表
+     *
+     * @Author: WanMing
+     * @Date: 2019/7/11 18:46
+     */
+    @RequestMapping(value = "/schoolDevice/querySchoolPosDeviceByChargeDept", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<SchoolDevice>> querySchoolPosDeviceByChargeDept(@RequestParam Long deptId);
 }

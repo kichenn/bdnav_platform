@@ -6,6 +6,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.AddSchoolDeviceDto;
 import com.bdxh.school.dto.ModifySchoolDeviceDto;
 import com.bdxh.school.dto.SchoolDeviceQueryDto;
+import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
@@ -97,5 +98,28 @@ public class SchoolDeviceWebController {
         schoolDeviceQueryDto.setSchoolId(user.getSchoolId());
         Wrapper<PageInfo<SchoolDeviceShowVo>> wrapper = schoolDeviceControllerClient.findSchoolDeviceInConditionPage(schoolDeviceQueryDto);
         return WrapMapper.ok(wrapper.getResult());
+    }
+
+    /**
+     * 根据条件查询单个学校下的设备列表
+     * @Author: WanMing
+     * @Date: 2019/7/11 15:18
+     */
+    @RequestMapping(value = "/findSchoolDeviceBySchool",method = RequestMethod.POST)
+    @ApiOperation(value = "根据条件查询单个学校下的设备列表",response = PageInfo.class)
+    public Object findSchoolPosDeviceBySchool(@RequestBody SchoolPosDeviceQueryDto schoolPosDeviceQueryDto){
+        return schoolDeviceControllerClient.findSchoolPosDeviceBySchool(schoolPosDeviceQueryDto);
+    }
+
+    /**
+     * 根据收费部门id查询下面的消费机列表
+     *
+     * @Author: WanMing
+     * @Date: 2019/7/11 18:46
+     */
+    @RequestMapping(value = "/querySchoolPosDeviceByChargeDept", method = RequestMethod.GET)
+    @ApiOperation(value = "根据收费部门id查询下面的消费机列表", response = SchoolDevice.class)
+    public Object querySchoolPosDeviceByChargeDept(@RequestParam Long deptId){
+        return schoolDeviceControllerClient.querySchoolPosDeviceByChargeDept(deptId);
     }
 }
