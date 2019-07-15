@@ -3,10 +3,7 @@ package com.bdxh.client.controller.school;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.AddSchoolDeviceDto;
-import com.bdxh.school.dto.ModifySchoolDeviceDto;
-import com.bdxh.school.dto.SchoolDeviceQueryDto;
-import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
@@ -112,14 +109,14 @@ public class SchoolDeviceWebController {
     }
 
     /**
-     * 根据收费部门id查询下面的消费机列表
+     * 根据收费部门id分页查询下面的消费机列表
      *
      * @Author: WanMing
      * @Date: 2019/7/11 18:46
      */
-    @RequestMapping(value = "/querySchoolPosDeviceByChargeDept", method = RequestMethod.GET)
-    @ApiOperation(value = "根据收费部门id查询下面的消费机列表", response = SchoolDevice.class)
-    public Object querySchoolPosDeviceByChargeDept(@RequestParam Long deptId){
-        return schoolDeviceControllerClient.querySchoolPosDeviceByChargeDept(deptId);
+    @RequestMapping(value = "/querySchoolPosDeviceByChargeDept", method = RequestMethod.POST)
+    @ApiOperation(value = "根据收费部门id分页查询下面的消费机列表", response = SchoolDevice.class)
+    public Object querySchoolPosDeviceByChargeDept(@RequestBody SchoolDeviceAndChargeDeptQueryDto deptQueryDto){
+        return schoolDeviceControllerClient.querySchoolPosDeviceByChargeDept(deptQueryDto);
     }
 }

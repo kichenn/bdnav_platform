@@ -29,4 +29,5 @@ public interface SchoolPosDeviceChargeMapper extends Mapper<SchoolPosDeviceCharg
 	 Integer delSchoolPosDeviceChargeInIds(@Param("ids") List<Long> ids);
 
 
+    Integer changeSchoolPosDevice(@Param("deviceCharge")SchoolPosDeviceCharge deviceCharge);
 }

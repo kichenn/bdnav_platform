@@ -1,25 +1,27 @@
-package com.bdxh.wallet.dto;
+package com.bdxh.wallet.vo;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**充值的dto
+/**
  * @author WanMing
- * @date 2019/7/15 9:55
+ * @date 2019/7/15 11:29
  */
 @Data
-public class AddWalletRechargeDto {
-
+public class WalletRechargeVo {
 
     /**
-     * 学校主键
+     * 主键
      */
-    @ApiModelProperty("学校主键")
-    private Long schoolId;
+    @ApiModelProperty("主键")
+    @JsonSerialize(using = ToStringSerializer.class)
+    private Long id;
+
 
     /**
      * 学校编码
@@ -110,7 +112,6 @@ public class AddWalletRechargeDto {
      */
     @ApiModelProperty("父母姓名（父母代充时不为空）")
     private String familyName;
-
 
     /**
      * 操作人

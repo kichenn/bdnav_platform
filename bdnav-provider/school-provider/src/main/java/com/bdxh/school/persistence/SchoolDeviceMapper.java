@@ -2,6 +2,7 @@ package com.bdxh.school.persistence;
 
 import java.util.List;
 
+import com.bdxh.school.dto.SchoolDeviceAndChargeDeptQueryDto;
 import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
 import com.bdxh.school.vo.SchoolDeviceShowVo;
 import tk.mybatis.mapper.common.Mapper;
@@ -48,8 +49,8 @@ public interface SchoolDeviceMapper extends Mapper<SchoolDevice> {
 
     /**
      * 根据收费部门id查询下面的消费机列表
-     * @param deptId
+     * @param deptQueryDto
      * @return
      */
-    List<SchoolDevice> querySchoolPosDeviceByChargeDept(@Param("deptId") Long deptId);
+    List<SchoolDevice> querySchoolPosDeviceByChargeDept(@Param("deptQueryDto") SchoolDeviceAndChargeDeptQueryDto deptQueryDto);
 }

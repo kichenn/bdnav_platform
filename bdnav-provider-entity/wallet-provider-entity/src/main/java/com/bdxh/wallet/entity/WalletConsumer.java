@@ -71,7 +71,11 @@ public class WalletConsumer {
 	@Column(name = "physical_number")
 	private String physicalNumber;
 
-
+	/**
+	 * 收费部门id
+	 */
+	@Column(name = "charge_detp_id")
+	private Long chargeDeptId;
 
 	/**
 	 * 消费时的设备编码

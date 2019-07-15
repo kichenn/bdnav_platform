@@ -53,7 +53,17 @@ public class WalletConsumerVo {
     @ApiModelProperty("物理卡号（刷卡消费是不为空）")
     private String physicalNumber;
 
+    /**
+     * 收费部门id
+     */
+    @ApiModelProperty("收费部门id")
+    private Long chargeDeptId;
 
+    /**
+     * 收费部门名称
+     */
+    @ApiModelProperty("收费部门名称")
+    private Long chargeDeptName;
 
     /**
      * 消费时的设备编码

@@ -3,28 +3,14 @@ package com.bdxh.school.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-/**
+/**修改学校pos的设备信息
  * @author WanMing
- * @date 2019/7/11 11:18
+ * @date 2019/7/15 15:06
  */
 @Data
-public class AddSchoolPosDeviceChargeDto {
-
-
-    /**
-     * 学校id
-     */
-    @ApiModelProperty("学校id")
-    private Long schoolId;
-
-    /**
-     * 学校编码
-     */
-    @ApiModelProperty("学校编码")
-    private String schoolCode;
+public class ModifySchoolPosDeviceDto {
 
     /**
      * 设备主键
@@ -36,8 +22,8 @@ public class AddSchoolPosDeviceChargeDto {
     /**
      * 所属收费部门
      */
-    @ApiModelProperty("所属收费部门")
-    @NotNull(message = "所属收费部门不能为空")
+    @ApiModelProperty("新的收费部门id")
+    @NotNull(message = "新的收费部门id")
     private Long chargeDeptId;
 
     /**
@@ -51,11 +37,5 @@ public class AddSchoolPosDeviceChargeDto {
      */
     @ApiModelProperty("操作人名称")
     private String operatorName;
-
-    /**
-     * 注释
-     */
-    @ApiModelProperty("注释")
-    private String remark;
 
 }

@@ -1,10 +1,7 @@
 package com.bdxh.client.controller.school;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
-import com.bdxh.school.dto.AddSchoolChargeDeptDto;
-import com.bdxh.school.dto.AddSchoolPosDeviceChargeDto;
-import com.bdxh.school.dto.ModifySchoolChargeDeptDto;
-import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
@@ -47,6 +44,8 @@ public class SchoolChargeDeptWebController {
         addSchoolChargeDeptDto.setSchoolCode(user.getSchoolCode());
         return schoolChargeDeptControllerClient.addSchoolChargeDept(addSchoolChargeDeptDto);
     }
+
+
 
     /**
      * 根据id删除学校的收费部门
@@ -116,6 +115,22 @@ public class SchoolChargeDeptWebController {
         addSchoolPosDeviceChargeDto.setSchoolId(user.getSchoolId());
         addSchoolPosDeviceChargeDto.setSchoolCode(user.getSchoolCode());
         return schoolChargeDeptControllerClient.addSchoolPosDeviceCharge(addSchoolPosDeviceChargeDto);
+    }
+
+    /**
+     * 消费机换绑到学校的其他消费部门
+     * @Author: WanMing
+     * @Date: 2019/7/15 15:02
+     */
+    @RequestMapping(value = "/changeSchoolPosDevice", method = RequestMethod.POST)
+    @ApiOperation(value = "消费机换绑到学校的其他消费部门", response = Boolean.class)
+    public Object changeSchoolPosDevice(@RequestBody ModifySchoolPosDeviceDto modifySchoolPosDeviceDto){
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        modifySchoolPosDeviceDto.setOperator(user.getId());
+        modifySchoolPosDeviceDto.setOperatorName( user.getUserName());
+        return schoolChargeDeptControllerClient.changeSchoolPosDevice(modifySchoolPosDeviceDto);
+
+
     }
 
     /**

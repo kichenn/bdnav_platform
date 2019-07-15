@@ -32,8 +32,6 @@ public class QueryWalletConsumerDto extends Query {
     private String physicalNumber;
 
 
-
-
     /**
      * 平台订单号
      */

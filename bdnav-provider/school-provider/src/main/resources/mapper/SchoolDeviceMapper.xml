@@ -133,6 +133,9 @@
             <if test="posDevice.deviceName!=null and posDevice.deviceName!=''">
                 AND device_name LIKE CONCAT('%',#{posDevice.deviceName},'%')
             </if>
+            <if test="posDevice.deviceStatus!=null">
+                AND device_status = #{posDevice.deviceStatus}
+            </if>
             <if test="posDevice.deviceType!=null ">
                 AND device_type = #{posDevice.deviceType}
             </if>
@@ -147,8 +150,11 @@
         FROM
 	    t_school_device td
 	    JOIN t_school_posdevice_charge tp ON td.id = tp.device_id
-        WHERE
-	    tp.charge_dept_id = #{deptId}
+	    <where>
+            <if test="deptQueryDto.deptId!=null">
+                tp.charge_dept_id = #{deptQueryDto.deptId}
+            </if>
+        </where>
     </select>
 
 </mapper>

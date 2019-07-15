@@ -3,17 +3,22 @@ package com.bdxh.wallet.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
 import java.util.Date;
 
 /**充值的dto
  * @author WanMing
- * @date 2019/7/15 9:55
+ * @date 2019/7/15 11:10
  */
 @Data
-public class AddWalletRechargeDto {
+public class ModifyWalletRechargeDto {
 
+
+    /**
+     * 主键
+     */
+    @ApiModelProperty("主键")
+    private Long id;
 
     /**
      * 学校主键
@@ -129,5 +134,4 @@ public class AddWalletRechargeDto {
      */
     @ApiModelProperty("备注")
     private String remark;
-
 }

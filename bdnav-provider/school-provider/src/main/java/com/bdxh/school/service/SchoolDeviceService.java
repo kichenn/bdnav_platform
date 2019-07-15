@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.SchoolDeviceAndChargeDeptQueryDto;
 import com.bdxh.school.dto.SchoolDeviceQueryDto;
 import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
 import com.bdxh.school.entity.SchoolDevice;
@@ -45,10 +46,10 @@ public interface SchoolDeviceService extends IService<SchoolDevice> {
 
     /**
      *  根据收费部门id查询下面的消费机列表
-     * @param deptId
+     * @param deptQueryDto
      * @return
      */
-    List<SchoolDevice> querySchoolPosDeviceByChargeDept(Long deptId);
+    PageInfo<SchoolDevice> querySchoolPosDeviceByChargeDept(SchoolDeviceAndChargeDeptQueryDto deptQueryDto);
 
 
 }

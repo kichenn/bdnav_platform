@@ -5,7 +5,7 @@ import com.bdxh.school.enums.DeviceTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
-/**
+/**学校pos机查询dto
  * @author WanMing
  * @date 2019/7/11 16:14
  */
@@ -24,6 +24,9 @@ public class SchoolPosDeviceQueryDto extends Query {
 
     @ApiModelProperty("设备类型 1.post机，2.门禁机，3.打卡机")
     private Byte deviceType;
+
+    @ApiModelProperty("设备状态 1.正常  2.离线")
+    private Byte deviceStatus;
 
 
 }

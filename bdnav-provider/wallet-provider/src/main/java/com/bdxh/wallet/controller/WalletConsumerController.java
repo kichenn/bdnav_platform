@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.wallet.dto.AddWalletConsumerDto;
 import com.bdxh.wallet.dto.ModifyWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
+import com.bdxh.wallet.dto.WalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.service.WalletConsumerService;
 import com.bdxh.wallet.vo.WalletConsumerVo;
@@ -13,7 +14,6 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -115,7 +115,7 @@ public class WalletConsumerController {
      */
     @RequestMapping(value = "/exportWalletConsumerList", method = RequestMethod.GET)
     @ApiOperation(value = "导出消费记录")
-    public void exportWalletConsumerList(){
+    public void exportWalletConsumerList(@Validated @RequestBody WalletConsumerExcelDto walletConsumerExcelDto ){
 
     }
 

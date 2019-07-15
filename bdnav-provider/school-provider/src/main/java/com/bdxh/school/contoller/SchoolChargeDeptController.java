@@ -1,10 +1,7 @@
 package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.school.dto.AddSchoolChargeDeptDto;
-import com.bdxh.school.dto.AddSchoolPosDeviceChargeDto;
-import com.bdxh.school.dto.ModifySchoolChargeDeptDto;
-import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolChargeDept;
 import com.bdxh.school.entity.SchoolPosDeviceCharge;
 import com.bdxh.school.enums.ChargeDetpTypeEnum;
@@ -145,7 +142,7 @@ public class SchoolChargeDeptController {
         SchoolPosDeviceCharge schoolPosDeviceCharge = new SchoolPosDeviceCharge();
         BeanUtils.copyProperties(addSchoolPosDeviceChargeDto, schoolPosDeviceCharge);
         try {
-            return WrapMapper.ok(schoolPosDeviceChargeService.save(schoolPosDeviceCharge) > 0);
+            return WrapMapper.ok(schoolPosDeviceChargeService.addSchoolPosDeviceCharge(schoolPosDeviceCharge));
         } catch (Exception e) {
             //deviceId 是唯一的 一台设备只能绑定一个部门
             if (e instanceof DuplicateKeyException) {
@@ -154,6 +151,18 @@ public class SchoolChargeDeptController {
             e.printStackTrace();
         }
         return WrapMapper.ok();
+    }
+
+
+    /**
+     * 消费机换绑到学校的其他消费部门
+     * @Author: WanMing
+     * @Date: 2019/7/15 15:02
+     */
+    @RequestMapping(value = "/changeSchoolPosDevice", method = RequestMethod.POST)
+    @ApiOperation(value = "消费机换绑到学校的其他消费部门", response = Boolean.class)
+    public Object changeSchoolPosDevice(@RequestBody ModifySchoolPosDeviceDto modifySchoolPosDeviceDto){
+        return WrapMapper.ok(schoolPosDeviceChargeService.changeSchoolPosDevice(modifySchoolPosDeviceDto));
     }
 
     /**
@@ -179,21 +188,6 @@ public class SchoolChargeDeptController {
     public Object querySchoolChargeDeptAndPosNum(@RequestBody QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
         return WrapMapper.ok(schoolChargeDeptService.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto));
     }
-
-//    /**
-//     * 查询消费部门的类型
-//     *
-//     * @Author: WanMing
-//     * @Date: 2019/7/11 11:46
-//     */
-//    @RequestMapping(value = "/querySchoolChargeDeptType", method = RequestMethod.GET)
-//    @ApiOperation(value = "查询消费部门的类型", response = ChargeDetpTypeEnum.class)
-//    public Object querySchoolChargeDeptType(){
-//        ChargeDetpTypeEnum.getEnums().stream();
-//         return WrapMapper.ok();
-//    }
-
-
 
 
 

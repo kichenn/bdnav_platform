@@ -24,7 +24,6 @@ public class AddSchoolChargeDeptDto {
      * 学校编码
      */
     @ApiModelProperty("学校编码")
-    @NotBlank(message = "学校编码不能为空")
     private String schoolCode;
 
     /**
