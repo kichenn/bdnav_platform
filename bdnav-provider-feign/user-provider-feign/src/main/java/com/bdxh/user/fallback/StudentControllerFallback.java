@@ -57,6 +57,11 @@ public class StudentControllerFallback implements StudentControllerClient {
     }
 
     @Override
+    public Wrapper<Student> queryStudentInfo2(Long userId) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper addStudent(AddStudentDto addStudentDto) {
         return WrapMapper.error();
     }

@@ -14,8 +14,15 @@ public class RedisClusterConstrants {
 
         String wechatpay_wallet_app_notice = "wechatpaywalletappnotice:";
 
+        /**
+         * 家长端，服务购买key
+         */
         String wechatpay_wallet_js_notice = "wechatpaywalletjsnotice:";
 
+        /**
+         * 钱包充值key
+         */
+        String wallet_recharge_js_notice = "walletrechargejsnotice:";
     }
 
 }

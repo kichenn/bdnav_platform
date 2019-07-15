@@ -51,7 +51,7 @@
                 physical_number=#{walletAccount.physicalNumber},
             </if>
             <if test="walletAccount.amount != null">
-                amount=#{walletAccount.amount},
+                amount=amount + #{walletAccount.amount},
             </if>
             <if test="walletAccount.payPassword != null AND walletAccount.payPassword != ''">
                 pay_password=#{walletAccount.payPassword},
