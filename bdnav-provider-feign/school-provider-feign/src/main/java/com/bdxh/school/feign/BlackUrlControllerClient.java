@@ -87,7 +87,7 @@ public interface BlackUrlControllerClient {
      */
     @RequestMapping(value = "/blackUrl/findBlackInList", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<String>> findBlackInList(@RequestParam("schoolCode") String schoolCode);
+    Wrapper<List<String>> findBlackInList(@RequestParam("schoolCode") String schoolCode,@RequestParam(value = "status") Byte status);
 
 
     /**

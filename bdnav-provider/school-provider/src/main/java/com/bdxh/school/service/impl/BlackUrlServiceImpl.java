@@ -67,8 +67,8 @@ public class BlackUrlServiceImpl extends BaseService<BlackUrl> implements BlackU
     }
 
     @Override
-    public List<BlackUrl> findBlackInList(String schoolCode) {
-        return blackUrlMapper.findBlackInList(schoolCode);
+    public List<BlackUrl> findBlackInList(String schoolCode,Byte status) {
+        return blackUrlMapper.findBlackInList(schoolCode,status);
     }
 
     @Override
