@@ -1,8 +1,12 @@
 package com.bdxh.school.service.impl;
 
+import com.bdxh.school.dto.ModifySchoolPosDeviceDto;
 import com.bdxh.school.entity.SchoolDevice;
+import com.bdxh.school.enums.DeviceStatusEnum;
+import com.bdxh.school.persistence.SchoolDeviceMapper;
 import com.bdxh.school.persistence.SchoolPosDeviceChargeMapper;
 import com.bdxh.school.service.SchoolPosDeviceChargeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,9 @@ public class SchoolPosDeviceChargeServiceImpl extends BaseService<SchoolPosDevic
 
 	@Autowired
 	private SchoolPosDeviceChargeMapper schoolPosDeviceChargeMapper;
+
+	@Autowired
+	private SchoolDeviceMapper schoolDeviceMapper;
 
 	/*
 	 *查询总条数
@@ -51,6 +58,37 @@ public class SchoolPosDeviceChargeServiceImpl extends BaseService<SchoolPosDevic
 		SchoolPosDeviceCharge deviceCharge = new SchoolPosDeviceCharge();
 		deviceCharge.setChargeDeptId(id);
 		return schoolPosDeviceChargeMapper.select(deviceCharge);
+	}
+
+	/**
+	 * 换绑pos机到其他部门
+	 * @param modifySchoolPosDeviceDto
+	 * @return
+	 */
+	@Override
+	public Boolean changeSchoolPosDevice(ModifySchoolPosDeviceDto modifySchoolPosDeviceDto) {
+		SchoolPosDeviceCharge deviceCharge = new SchoolPosDeviceCharge();
+		BeanUtils.copyProperties(modifySchoolPosDeviceDto,deviceCharge);
+		return schoolPosDeviceChargeMapper.changeSchoolPosDevice(deviceCharge)>0;
+	}
+
+	/**
+	 * 绑定收费部门和设备
+	 *
+	 * @param schoolPosDeviceCharge
+	 * @return
+	 */
+	@Override
+	public Boolean addSchoolPosDeviceCharge(SchoolPosDeviceCharge schoolPosDeviceCharge) {
+		Boolean result = schoolPosDeviceChargeMapper.insertSelective(schoolPosDeviceCharge) > 0;
+		if(result){
+			//修改设备状态
+			SchoolDevice schoolDevice = new SchoolDevice();
+			schoolDevice.setId(schoolPosDeviceCharge.getDeviceId());
+			schoolDevice.setDeviceStatus(DeviceStatusEnum.NORMAL_KEY);
+			schoolDeviceMapper.updateByPrimaryKeySelective(schoolDevice);
+		}
+		return result;
 	}
 
 

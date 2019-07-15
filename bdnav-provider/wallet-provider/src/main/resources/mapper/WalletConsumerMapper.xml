@@ -11,6 +11,7 @@
 	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
 	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
 	  <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
+	  <result column="charge_detp_id" jdbcType="BIGINT" property="chargeDeptId"/>
 	  <result column="device_number" jdbcType="VARCHAR" property="deviceNumber"/>
 	  <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
 	  <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
@@ -24,7 +25,7 @@
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,school_id,school_code,school_name,user_id,user_name,card_number,physical_number,device_number,order_no,out_order_no,consumer_amount,consumer_time,consumer_type,consumer_status,create_date,update_date,remark
+	  id,school_id,school_code,school_name,user_id,user_name,card_number,physical_number,charge_detp_id,device_number,order_no,out_order_no,consumer_amount,consumer_time,consumer_type,consumer_status,create_date,update_date,remark
 	</sql>
 	<select id="getWalletConsumerAllCount" resultType="Integer">
 	  SELECT

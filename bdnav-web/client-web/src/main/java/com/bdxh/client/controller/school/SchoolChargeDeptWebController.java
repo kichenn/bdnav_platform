@@ -1,10 +1,7 @@
 package com.bdxh.client.controller.school;
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
-import com.bdxh.school.dto.AddSchoolChargeDeptDto;
-import com.bdxh.school.dto.AddSchoolPosDeviceChargeDto;
-import com.bdxh.school.dto.ModifySchoolChargeDeptDto;
-import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
@@ -48,6 +45,8 @@ public class SchoolChargeDeptWebController {
         return schoolChargeDeptControllerClient.addSchoolChargeDept(addSchoolChargeDeptDto);
     }
 
+
+
     /**
      * 根据id删除学校的收费部门
      *
@@ -90,15 +89,16 @@ public class SchoolChargeDeptWebController {
     }
 
     /**
-     * 根据学校查询收费部门列表
+     * 查询该学校的收费部门列表
      *
      * @Author: WanMing
      * @Date: 2019/7/11 9:38
      */
     @RequestMapping(value = "/findSchoolChargeDeptBySchool", method = RequestMethod.GET)
-    @ApiOperation(value = "根据学校查询收费部门列表", response = SchoolChargeDeptVo.class)
-    public Object findSchoolChargeDeptBySchool(@RequestParam("schoolCode") String schoolCode) {
-        return schoolChargeDeptControllerClient.findSchoolChargeDeptBySchool(schoolCode);
+    @ApiOperation(value = "查询该学校的收费部门列表", response = SchoolChargeDeptVo.class)
+    public Object findSchoolChargeDeptBySchool() {
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        return schoolChargeDeptControllerClient.findSchoolChargeDeptBySchool(user.getSchoolCode());
     }
 
     /**
@@ -116,6 +116,22 @@ public class SchoolChargeDeptWebController {
         addSchoolPosDeviceChargeDto.setSchoolId(user.getSchoolId());
         addSchoolPosDeviceChargeDto.setSchoolCode(user.getSchoolCode());
         return schoolChargeDeptControllerClient.addSchoolPosDeviceCharge(addSchoolPosDeviceChargeDto);
+    }
+
+    /**
+     * 消费机换绑到学校的其他消费部门
+     * @Author: WanMing
+     * @Date: 2019/7/15 15:02
+     */
+    @RequestMapping(value = "/changeSchoolPosDevice", method = RequestMethod.POST)
+    @ApiOperation(value = "消费机换绑到学校的其他消费部门", response = Boolean.class)
+    public Object changeSchoolPosDevice(@Validated @RequestBody ModifySchoolPosDeviceDto modifySchoolPosDeviceDto){
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        modifySchoolPosDeviceDto.setOperator(user.getId());
+        modifySchoolPosDeviceDto.setOperatorName( user.getUserName());
+        return schoolChargeDeptControllerClient.changeSchoolPosDevice(modifySchoolPosDeviceDto);
+
+
     }
 
     /**

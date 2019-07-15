@@ -1,5 +1,6 @@
 package com.bdxh.school.service.impl;
 
+import com.bdxh.school.dto.SchoolDeviceAndChargeDeptQueryDto;
 import com.bdxh.school.dto.SchoolDeviceQueryDto;
 import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
 import com.bdxh.school.entity.GroupPermission;
@@ -82,8 +83,6 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
      */
     @Override
     public PageInfo<SchoolDevice> findSchoolPosDeviceBySchool(SchoolPosDeviceQueryDto schoolPosDeviceQueryDto) {
-        SchoolDevice schoolDevice = new SchoolDevice();
-        BeanUtils.copyProperties(schoolPosDeviceQueryDto, schoolDevice);
         PageHelper.startPage(schoolPosDeviceQueryDto.getPageNum(),schoolPosDeviceQueryDto.getPageSize());
         List<SchoolDevice> schoolDevices = schoolDeviceMapper.findSchoolPosDeviceBySchool(schoolPosDeviceQueryDto);
         return new PageInfo<>(schoolDevices);
@@ -92,11 +91,14 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
     /**
      * 根据收费部门id查询下面的消费机列表
      *
-     * @param deptId
+     * @param deptQueryDto
      * @return
      */
     @Override
-    public List<SchoolDevice> querySchoolPosDeviceByChargeDept(Long deptId) {
-        return schoolDeviceMapper.querySchoolPosDeviceByChargeDept(deptId);
+    public PageInfo<SchoolDevice> querySchoolPosDeviceByChargeDept(SchoolDeviceAndChargeDeptQueryDto deptQueryDto) {
+        PageHelper.startPage(deptQueryDto.getPageNum(),deptQueryDto.getPageSize());
+        List<SchoolDevice> schoolDevices = schoolDeviceMapper.querySchoolPosDeviceByChargeDept(deptQueryDto);
+
+        return new PageInfo<SchoolDevice>(schoolDevices);
     }
 }

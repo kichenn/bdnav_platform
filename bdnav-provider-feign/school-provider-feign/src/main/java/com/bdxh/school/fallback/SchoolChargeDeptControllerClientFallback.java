@@ -2,10 +2,7 @@ package com.bdxh.school.fallback;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.AddSchoolChargeDeptDto;
-import com.bdxh.school.dto.AddSchoolPosDeviceChargeDto;
-import com.bdxh.school.dto.ModifySchoolChargeDeptDto;
-import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import com.github.pagehelper.PageInfo;
@@ -47,6 +44,11 @@ public class SchoolChargeDeptControllerClientFallback implements SchoolChargeDep
 
     @Override
     public Wrapper addSchoolPosDeviceCharge(AddSchoolPosDeviceChargeDto addSchoolPosDeviceChargeDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper changeSchoolPosDevice(ModifySchoolPosDeviceDto modifySchoolPosDeviceDto) {
         return WrapMapper.error();
     }
 

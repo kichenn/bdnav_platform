@@ -94,7 +94,7 @@ public interface SchoolDeviceControllerClient {
      * @Author: WanMing
      * @Date: 2019/7/11 18:46
      */
-    @RequestMapping(value = "/schoolDevice/querySchoolPosDeviceByChargeDept", method = RequestMethod.GET)
+    @RequestMapping(value = "/schoolDevice/querySchoolPosDeviceByChargeDept", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper<List<SchoolDevice>> querySchoolPosDeviceByChargeDept(@RequestParam Long deptId);
+    Wrapper<PageInfo<SchoolDevice>> querySchoolPosDeviceByChargeDept(@RequestBody SchoolDeviceAndChargeDeptQueryDto deptQueryDto);
 }

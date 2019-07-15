@@ -3,6 +3,7 @@ package com.bdxh.wallet.dto;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -55,6 +56,12 @@ public class AddWalletConsumerDto {
      */
     @ApiModelProperty("物理卡号（刷卡消费是不为空）")
     private String physicalNumber;
+
+    /**
+     * 收费部门id
+     */
+    @ApiModelProperty("收费部门id")
+    private Long chargeDeptId;
 
 
 

@@ -64,7 +64,11 @@ public class ModifyWalletConsumerDto {
     @ApiModelProperty("物理卡号（刷卡消费是不为空）")
     private String physicalNumber;
 
-
+    /**
+     * 收费部门id
+     */
+    @ApiModelProperty("收费部门id")
+    private Long chargeDeptId;
 
     /**
      * 消费时的设备编码

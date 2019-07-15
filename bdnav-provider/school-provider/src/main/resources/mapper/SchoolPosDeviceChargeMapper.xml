@@ -18,7 +18,18 @@
 	<sql id="BaseColumns">
 	  id,school_id,school_code,device_id,charge_dept_id,create_date,update_date,operator,operator_name,remark
 	</sql>
-	<select id="getSchoolPosDeviceChargeAllCount" resultType="Integer">
+
+
+	<!--换绑-->
+    <update id="changeSchoolPosDevice">
+		UPDATE t_school_posdevice_charge SET charge_dept_id = #{deviceCharge.chargeDeptId},operator = #{deviceCharge.operator}
+		,operator_name = #{deviceCharge.operatorName} WHERE device_id = #{deviceCharge.deviceId}
+	</update>
+
+
+
+
+    <select id="getSchoolPosDeviceChargeAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
 	  FROM t_school_posdevice_charge 

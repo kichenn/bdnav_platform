@@ -1,13 +1,11 @@
 package com.bdxh.school.feign;
 
 import com.bdxh.common.utils.wrapper.Wrapper;
-import com.bdxh.school.dto.AddSchoolChargeDeptDto;
-import com.bdxh.school.dto.AddSchoolPosDeviceChargeDto;
-import com.bdxh.school.dto.ModifySchoolChargeDeptDto;
-import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
+import com.bdxh.school.dto.*;
 import com.bdxh.school.fallback.SchoolChargeDeptControllerClientFallback;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -84,6 +82,16 @@ public interface SchoolChargeDeptControllerClient {
     @RequestMapping(value = "/schoolChargeDept/addSchoolPosDeviceCharge", method = RequestMethod.POST)
     @ResponseBody
     Wrapper addSchoolPosDeviceCharge(@Validated @RequestBody AddSchoolPosDeviceChargeDto addSchoolPosDeviceChargeDto);
+
+
+    /**
+     * 消费机换绑到学校的其他消费部门
+     * @Author: WanMing
+     * @Date: 2019/7/15 15:02
+     */
+    @RequestMapping(value = "/schoolChargeDept/changeSchoolPosDevice", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper changeSchoolPosDevice(@RequestBody ModifySchoolPosDeviceDto modifySchoolPosDeviceDto);
 
     /**
      * 根据id解绑学校部门的消费机

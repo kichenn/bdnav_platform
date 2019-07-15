@@ -2,6 +2,7 @@ package com.bdxh.wallet.persistence;
 
 import java.util.List;
 
+import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -9,17 +10,17 @@ import org.springframework.stereotype.Repository;
 
 
 /**
- * @Description: Mapper
- * @Author Kang
- * @Date 2019-07-11 09:40:52
- */
+* @Description: Mapper
+* @Author Kang
+* @Date 2019-07-11 09:40:52
+*/
 @Repository
 public interface WalletRechargeMapper extends Mapper<WalletRecharge> {
 
-    /**
-     * 查询总条数
-     */
-    Integer getWalletRechargeAllCount();
+	/**
+	 *查询总条数
+	 */
+	 Integer getWalletRechargeAllCount();
 
     /**
      * 批量删除方法
@@ -33,4 +34,11 @@ public interface WalletRechargeMapper extends Mapper<WalletRecharge> {
      * @return
      */
     Integer modifyWalletRechargeByOrderNo(@Param("walletRecharge") WalletRecharge walletRecharge);
+
+	/**
+	 * 根据条件查询
+	 * @param queryWalletRecharge
+	 * @return
+	 */
+    List<WalletRecharge> findWalletRechargeByCondition(@Param("queryWalletRecharge")QueryWalletRechargeDto queryWalletRecharge);
 }
