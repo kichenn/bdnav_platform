@@ -158,6 +158,9 @@ public class WalletAccountController {
             WalletAccount walletAccount = new WalletAccount();
             walletAccount.setId(snowflakeIdWorker.nextId());
             walletAccount.setPayPassword(new BCryptPasswordEncoder().encode(addWalletAccount.getPayPassword()));
+            if (addWalletAccount.getAccountStatusEnum() != null) {
+                walletAccount.setStatus(addWalletAccount.getAccountStatusEnum().getKey());
+            }
             BeanUtils.copyProperties(addWalletAccount, walletAccount);
             Boolean result = walletAccountService.save(walletAccount) > 0;
             return WrapMapper.ok(result);
@@ -191,6 +194,9 @@ public class WalletAccountController {
     public Object modifyWalletAccount(@RequestBody ModifyWalletAccount modifyWalletAccount) {
         try {
             WalletAccount walletAccount = new WalletAccount();
+            if (modifyWalletAccount.getAccountStatusEnum() != null) {
+                walletAccount.setStatus(modifyWalletAccount.getAccountStatusEnum().getKey());
+            }
             BeanUtils.copyProperties(modifyWalletAccount, walletAccount);
             Boolean result = walletAccountService.update(walletAccount) > 0;
             return WrapMapper.ok(result);

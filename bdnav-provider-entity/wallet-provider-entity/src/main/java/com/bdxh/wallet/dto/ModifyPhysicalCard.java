@@ -1,5 +1,6 @@
 package com.bdxh.wallet.dto;
 
+import com.bdxh.wallet.enums.PhysicalCardStateEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -66,7 +67,7 @@ public class ModifyPhysicalCard {
      * 物理卡状态 1 正常 2 挂失 3注销
      */
     @ApiModelProperty("物理卡状态 1 正常 2 挂失 3注销")
-    private Byte status;
+    private PhysicalCardStateEnum physicalCardStateEnum;
 
     /**
      * 操作人

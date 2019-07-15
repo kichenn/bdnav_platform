@@ -76,6 +76,9 @@ public class PhysicalCardController {
         try {
             PhysicalCard physicalCard = new PhysicalCard();
             physicalCard.setId(snowflakeIdWorker.nextId());
+            if (addPhysicalCard.getPhysicalCardStateEnum() != null) {
+                physicalCard.setStatus(addPhysicalCard.getPhysicalCardStateEnum().getKey());
+            }
             BeanUtils.copyProperties(addPhysicalCard, physicalCard);
             Boolean result = physicalCardService.save(physicalCard) > 0;
             return WrapMapper.ok(result);
@@ -109,6 +112,9 @@ public class PhysicalCardController {
     public Object modifyPhysicalCard(@RequestBody ModifyPhysicalCard modifyPhysicalCard) {
         try {
             PhysicalCard physicalCard = new PhysicalCard();
+            if (modifyPhysicalCard.getPhysicalCardStateEnum() != null) {
+                physicalCard.setStatus(modifyPhysicalCard.getPhysicalCardStateEnum().getKey());
+            }
             BeanMapUtils.copy(modifyPhysicalCard, physicalCard);
             Boolean result = physicalCardService.update(physicalCard) > 0;
             return WrapMapper.ok(result);
