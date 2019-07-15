@@ -18,7 +18,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
-* @Description: 控制器
+* @Description: 账户消费记录管理控制器
 * @Author Kang
 * @Date 2019-07-11 09:40:52
 */
@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/walletConsumer")
 @Slf4j
 @Validated
-@Api(value = "WalletConsumer控制器", tags = "WalletConsumer")
+@Api(value = "账户消费记录管理", tags = "账户消费记录管理API")
 public class WalletConsumerController {
 
     @Autowired

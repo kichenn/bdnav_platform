@@ -23,6 +23,7 @@ public interface WalletAccountControllerClient {
      * @return
      */
     @GetMapping("/walletAccount/myWallet")
+    @ResponseBody
     Wrapper<MyWalletVo> myWallet(@RequestParam("cardNumber") String cardNumber, @RequestParam("schoolCode") String schoolCode);
 
     /**
@@ -32,6 +33,7 @@ public interface WalletAccountControllerClient {
      * @return
      */
     @PostMapping("/walletAccount/setPayPwd")
+    @ResponseBody
     Wrapper setPayPwd(@Validated @RequestBody SetPayPwdDto setPayPwdDto);
 
     /**
@@ -41,6 +43,7 @@ public interface WalletAccountControllerClient {
      * @return
      */
     @PostMapping("/walletAccount/modifyPayPwd")
+    @ResponseBody
     Wrapper modifyPayPwd(@Validated @RequestBody ModifyPayPwdDto modifyPayPwdDto);
 
     /**
@@ -50,6 +53,7 @@ public interface WalletAccountControllerClient {
      * @return
      */
     @PostMapping("/walletAccount/forgetPayPwd")
+    @ResponseBody
     Wrapper forgetPayPwd(@Validated @RequestBody ForgetPayPwdDto forgetPayPwdDto);
 
     /**
@@ -59,6 +63,7 @@ public interface WalletAccountControllerClient {
      * @return
      */
     @GetMapping("/walletAccount/forgetPayPwdSendCode")
+    @ResponseBody
     Wrapper forgetPayPwdSendCode(@RequestParam("phone") String phone);
 
     /**
@@ -68,6 +73,7 @@ public interface WalletAccountControllerClient {
      * @return
      */
     @PostMapping("/walletAccount/setNoPwdPay")
+    @ResponseBody
     Wrapper setNoPwdPay(@Validated @RequestBody SetNoPwdPayPwdDto setNoPwdPayPwdDto);
 
     /**
@@ -77,6 +83,7 @@ public interface WalletAccountControllerClient {
      * @return
      */
     @PostMapping("/walletAccount/rechargeWalletAccount")
+    @ResponseBody
     Wrapper rechargeWalletAccount(@RequestBody @Validated ModifyAccountMoeny modifyAccountMoeny);
 
 

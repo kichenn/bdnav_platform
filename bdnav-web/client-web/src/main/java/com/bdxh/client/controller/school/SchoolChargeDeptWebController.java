@@ -156,6 +156,8 @@ public class SchoolChargeDeptWebController {
     @RequestMapping(value = "/querySchoolChargeDeptAndPosNum", method = RequestMethod.POST)
     @ApiOperation(value = "查询学校消费部门信息和POS机的数量", response = SchoolChargeDeptVo.class)
     public Object querySchoolChargeDeptAndPosNum(@RequestBody QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        querySchoolChargeDeptDto.setSchoolCode(user.getSchoolCode());
         return schoolChargeDeptControllerClient.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto);
     }
 }
