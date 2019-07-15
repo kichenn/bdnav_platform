@@ -89,15 +89,16 @@ public class SchoolChargeDeptWebController {
     }
 
     /**
-     * 根据学校查询收费部门列表
+     * 查询该学校的收费部门列表
      *
      * @Author: WanMing
      * @Date: 2019/7/11 9:38
      */
     @RequestMapping(value = "/findSchoolChargeDeptBySchool", method = RequestMethod.GET)
-    @ApiOperation(value = "根据学校查询收费部门列表", response = SchoolChargeDeptVo.class)
-    public Object findSchoolChargeDeptBySchool(@RequestParam("schoolCode") String schoolCode) {
-        return schoolChargeDeptControllerClient.findSchoolChargeDeptBySchool(schoolCode);
+    @ApiOperation(value = "查询该学校的收费部门列表", response = SchoolChargeDeptVo.class)
+    public Object findSchoolChargeDeptBySchool() {
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        return schoolChargeDeptControllerClient.findSchoolChargeDeptBySchool(user.getSchoolCode());
     }
 
     /**
@@ -124,7 +125,7 @@ public class SchoolChargeDeptWebController {
      */
     @RequestMapping(value = "/changeSchoolPosDevice", method = RequestMethod.POST)
     @ApiOperation(value = "消费机换绑到学校的其他消费部门", response = Boolean.class)
-    public Object changeSchoolPosDevice(@RequestBody ModifySchoolPosDeviceDto modifySchoolPosDeviceDto){
+    public Object changeSchoolPosDevice(@Validated @RequestBody ModifySchoolPosDeviceDto modifySchoolPosDeviceDto){
         SchoolUser user = SecurityUtils.getCurrentUser();
         modifySchoolPosDeviceDto.setOperator(user.getId());
         modifySchoolPosDeviceDto.setOperatorName( user.getUserName());
