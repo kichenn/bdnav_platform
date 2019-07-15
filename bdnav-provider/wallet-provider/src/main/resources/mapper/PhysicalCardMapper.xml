@@ -23,6 +23,7 @@
     <sql id="BaseColumns">
 	  id,school_id,school_code,user_id,card_number,wallet_account_id,physical_number,physical_chip_number,deposit,status,operator,operator_name,create_date,update_date,remark
 	</sql>
+
     <select id="getPhysicalCardAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
@@ -38,6 +39,33 @@
             #{id, jdbcType = BIGINT}
         </foreach>
     </delete>
+
+    <update id="modifyInfoByPhysicalCard">
+        UPDATE
+        t_physical_card
+        SET
+        <set>
+            <if test="physicalCard.deposit !=null">
+                deposit=#{physicalCard.deposit}
+            </if>
+            <if test="physicalCard.status !=null">
+                status=#{physicalCard.status}
+            </if>
+            <if test="physicalCard.operator !=null">
+                operator=#{physicalCard.operator}
+            </if>
+            <if test="physicalCard.operatorName !=null AND physicalCard.operatorName!=''">
+                operator_name=#{physicalCard.operatorName}
+            </if>
+            <if test="physicalCard.updateDate !=null ">
+                update_date=#{physicalCard.updateDate}
+            </if>
+            <if test="physicalCard.remark !=null ">
+                remark=#{physicalCard.remark}
+            </if>
+        </set>
+        WHERE physical_number=#{physicalCard.physicalNumber}
+    </update>
 
     <select id="findPhysicalCardInCondition" resultMap="BaseResultMap">
         SELECT

@@ -18,15 +18,15 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * @Description: 账户消费记录管理控制器
- * @Author Kang
- * @Date 2019-07-11 09:40:52
- */
+* @Description: 控制器
+* @Author Kang
+* @Date 2019-07-11 09:40:52
+*/
 @RestController
 @RequestMapping("/walletConsumer")
 @Slf4j
 @Validated
-@Api(value = "账户消费记录管理", tags = "账户消费记录管理API")
+@Api(value = "WalletConsumer控制器", tags = "WalletConsumer")
 public class WalletConsumerController {
 
     @Autowired
@@ -119,6 +119,11 @@ public class WalletConsumerController {
 
     }
 
+    @PostMapping("/cardStatus")
+    @ApiOperation(value = "挂失或者解挂", response = Boolean.class)
+    public Object cardStatus(@RequestParam("physicalNumber") String physicalNumber, @RequestParam("physicalStatus") Byte physicalStatus) {
+        return WrapMapper.ok();
+    }
 
 
 }

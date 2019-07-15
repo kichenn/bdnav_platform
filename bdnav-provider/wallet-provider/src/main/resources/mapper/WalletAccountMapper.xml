@@ -43,6 +43,44 @@
         </foreach>
     </delete>
 
+    <update id="modifyWalletBySchoolCodeAndCardNumber">
+        UPDATE
+        t_wallet_account
+        <set>
+            <if test="walletAccount.physicalNumber != null AND walletAccount.physicalNumber != ''">
+                physical_number=#{walletAccount.physicalNumber},
+            </if>
+            <if test="walletAccount.amount != null">
+                amount=#{walletAccount.amount},
+            </if>
+            <if test="walletAccount.payPassword != null AND walletAccount.payPassword != ''">
+                pay_password=#{walletAccount.payPassword},
+            </if>
+            <if test="walletAccount.quickPayMoney != null">
+                quick_pay_money=#{walletAccount.quickPayMoney},
+            </if>
+            <if test="walletAccount.operator != null">
+                operator=#{walletAccount.operator},
+            </if>
+            <if test="walletAccount.operatorName != null AND walletAccount.operatorName != ''">
+                operator_name=#{walletAccount.operatorName},
+            </if>
+            <if test="walletAccount.status != null ">
+                status=#{walletAccount.status},
+            </if>
+            <if test="walletAccount.updateDate != null ">
+                update_date=#{walletAccount.updateDate},
+            </if>
+            <if test="walletAccount.remark != null AND walletAccount.remark != ''">
+                remark=#{walletAccount.remark},
+            </if>
+        </set>
+        WHERE
+        card_number = #{walletAccount.cardNumber}
+        AND
+        school_code = #{walletAccount.schoolCode}
+    </update>
+
     <!--带条件查询-->
     <select id="findWalletAccountInCondition" resultMap="BaseResultMap">
         SELECT
@@ -80,6 +118,5 @@
     WHERE
 	school_code = #{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
 	</delete>
-
 
 </mapper>

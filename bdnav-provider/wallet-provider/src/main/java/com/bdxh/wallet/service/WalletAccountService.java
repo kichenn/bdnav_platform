@@ -40,4 +40,24 @@ public interface WalletAccountService extends IService<WalletAccount> {
 	 */
 	Boolean delWalletAccount(String schoolCode,String cardNumber, Long id);
 
+    /**
+     * 卡号加学校id查询钱包信息
+     *
+     * @param cardNumber
+     * @param schoolCode
+     * @return
+     */
+    WalletAccount findWalletByCardNumberAndSchoolCode(String cardNumber, String schoolCode);
+
+    /**
+     * 设置支付密码
+     */
+    Boolean setPayPwd(String cardNumber, String schoolCode, String payPwd);
+
+    /**
+     * 设置免密支付
+     *
+     * @return
+     */
+    Boolean noPwdPay(WalletAccount walletAccount);
 }

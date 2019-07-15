@@ -28,6 +28,13 @@ public interface PhysicalCardMapper extends Mapper<PhysicalCard> {
 	 Integer delPhysicalCardInIds(@Param("ids") List<Long> ids);
 
 	/**
+	 * 根据实体卡号修改信息
+	 * @param physicalCard
+	 * @return
+	 */
+	Integer modifyInfoByPhysicalCard(@Param("physicalCard") PhysicalCard physicalCard);
+
+	/**
 	 * 带条件查询账户列表
 	 */
 	List<PhysicalCard> findPhysicalCardInCondition(Map<String,Object> param);
