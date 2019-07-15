@@ -9,6 +9,11 @@ import com.bdxh.wallet.vo.MyWalletVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
+/**
+* @Description:
+* @Author: Kang
+* @Date: 2019/7/15 17:18
+*/
 @Component
 public class WalletAccountControllerFallback implements WalletAccountControllerClient {
     @Override

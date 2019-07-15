@@ -10,6 +10,11 @@ import com.bdxh.wallet.feign.PhysicalCardControllerClient;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
+/**
+ * @Description: 实体卡熔断
+ * @Author: Kang
+ * @Date: 2019/7/15 17:35
+ */
 @Component
 public class PhysicalCardControllerFallback implements PhysicalCardControllerClient {
     @Override
@@ -36,6 +41,4 @@ public class PhysicalCardControllerFallback implements PhysicalCardControllerCli
     public Wrapper<PhysicalCard> findPhysicalCardById(String schoolCode, String cardNumber, Long id) {
         return WrapMapper.error();
     }
-
-
 }

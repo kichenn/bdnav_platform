@@ -4,7 +4,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddWalletRechargeDto;
 import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
-import com.bdxh.wallet.fallback.WalletAccountControllerFallback;
+import com.bdxh.wallet.fallback.WalletRechargeControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @Date: 2019/7/15 11:53
  */
 @Service
-@FeignClient(value = "wallet-provider-cluster", path = "/walletRecharge", fallback = WalletRechargeControllerClient.class)
+@FeignClient(value = "wallet-provider-cluster", path = "/walletRecharge", fallback = WalletRechargeControllerFallback.class)
 public interface WalletRechargeControllerClient {
 
     /**
