@@ -56,7 +56,7 @@ public class SchoolDeviceControllerClientFallback implements SchoolDeviceControl
     }
 
     @Override
-    public Wrapper<List<SchoolDevice>> querySchoolPosDeviceByChargeDept(SchoolDeviceAndChargeDeptQueryDto deptQueryDto) {
+    public Wrapper<PageInfo<SchoolDevice>> querySchoolPosDeviceByChargeDept(SchoolDeviceAndChargeDeptQueryDto deptQueryDto) {
         return WrapMapper.error();
     }
 }
