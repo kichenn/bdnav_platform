@@ -180,6 +180,18 @@ public class StudentController {
     }
 
     /**
+     * 查询单个学生信息2
+     *
+     * @param userId
+     */
+    @ApiOperation(value = "查询单个学生信息2", response = StudentVo.class)
+    @RequestMapping(value = "/queryStudentInfo2", method = RequestMethod.GET)
+    public Object queryStudentInfo2(@RequestParam(name = "userId") Long userId) {
+        Student student = studentService.selectByKey(userId);
+        return WrapMapper.ok(student);
+    }
+
+    /**
      * 根据条件分页查找
      *
      * @param studentQueryDto

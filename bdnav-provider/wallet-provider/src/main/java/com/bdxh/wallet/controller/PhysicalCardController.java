@@ -42,9 +42,14 @@ public class PhysicalCardController {
     private SnowflakeIdWorker snowflakeIdWorker;
 
 
-    @PostMapping("/findRechargeRecord")
+    @PostMapping("/findBillRecord")
     @ApiOperation(value = "查询账单信息", response = Boolean.class)
-    public Object findRechargeRecord(@Validated @RequestBody SetPayPwdDto setPayPwdDto) {
+    public Object findRechargeRecord(@Validated @RequestBody FindBillRecordDto findBillRecordDto) {
+        if (findBillRecordDto.getBillType().equals(0)) {
+            //查询全部账单(包括充值记录)
+        } else {
+            //只查询消费账单，按照类型
+        }
         return WrapMapper.ok();
     }
 
@@ -61,6 +66,8 @@ public class PhysicalCardController {
         physicalCard.setStatus(physicalStatus);
         return WrapMapper.ok(physicalCardService.modifyInfoByPhysicalCard(physicalCard));
     }
+
+
 
 
     @RequestMapping(value = "/AddPhysicalCard", method = RequestMethod.POST)

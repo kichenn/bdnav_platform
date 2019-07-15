@@ -42,6 +42,11 @@ public class WalletAccountControllerFallback implements WalletAccountControllerC
     }
 
     @Override
+    public Wrapper rechargeWalletAccount(ModifyAccountMoeny modifyAccountMoeny) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper<PageInfo<WalletAccount>> findWalletAccountInCondition(QueryWalletAccount queryWalletAccount) {
         return WrapMapper.error();
     }

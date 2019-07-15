@@ -24,6 +24,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.Date;
 import java.util.Map;
@@ -134,6 +135,19 @@ public class WalletAccountController {
         walletAccountParam.setRemark(setNoPwdPayPwdDto.getRemark());
 
         return WrapMapper.ok(walletAccountService.noPwdPay(walletAccountParam));
+    }
+
+    /**
+     * 不在swagger展示，支付回调成功后充值金额信息
+     *
+     * @param modifyAccountMoeny
+     * @return
+     */
+    @ApiIgnore
+    @PostMapping("/rechargeWalletAccount")
+    @ApiOperation(value = "账户钱包充值", response = Boolean.class)
+    public Object rechargeWalletAccount(@RequestBody @Validated ModifyAccountMoeny modifyAccountMoeny) {
+        return WrapMapper.ok(walletAccountService.walletAccountRecharge(modifyAccountMoeny.getCardNumber(), modifyAccountMoeny.getSchoolCode(), modifyAccountMoeny.getAmount()));
     }
 
 

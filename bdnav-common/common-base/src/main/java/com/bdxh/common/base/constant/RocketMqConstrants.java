@@ -70,9 +70,14 @@ public class RocketMqConstrants {
         String wechatPayWalletNotice_app = "appmarket";
 
         /**
-         * 钱包充值微信回调tag js的
+         * 家长端服务购买微信回调tag js的
          */
         String wechatPayWalletNotice_js = "js";
+
+        /**
+         * 钱包充值微信回调tag js的
+         */
+        String wechatPayWalletRecharge_js = "walletRechargeJs";
 
         /**
          * 钱包充值微信回调tag 查询

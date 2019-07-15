@@ -26,6 +26,20 @@ public interface WalletRechargeService extends IService<WalletRecharge> {
 	 */
  	Boolean batchDelWalletRechargeInIds(List<Long> id);
 
+    /**
+     * 根据我方订单号，修改相关信息
+     *
+     * @param walletRecharge
+     * @return
+     */
+    Boolean modifyWalletRechargeByOrderNo(WalletRecharge walletRecharge);
+
+    /**
+     * 我方订单号，查询充值记录信息
+     * @param orderNo
+     * @return
+     */
+    WalletRecharge findWalletRechargeByOrderNo(Long orderNo);
 	/**
 	 * 删除充值记录
 	 * @param schoolCode

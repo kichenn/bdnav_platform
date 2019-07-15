@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.persistence.WalletRechargeMapper;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,14 +40,38 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
 		return walletRechargeMapper.getWalletRechargeAllCount();
 	}
 
-	/*
-	 *批量删除方法
-	 */
-	@Override
-	@Transactional(rollbackFor = Exception.class)
-	public Boolean batchDelWalletRechargeInIds(List<Long> ids){
-		return walletRechargeMapper.delWalletRechargeInIds(ids) > 0;
-	}
+    /*
+     *批量删除方法
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Boolean batchDelWalletRechargeInIds(List<Long> ids) {
+        return walletRechargeMapper.delWalletRechargeInIds(ids) > 0;
+    }
+
+    /**
+     * 根据我方订单号，修改相关信息
+     *
+     * @param walletRecharge
+     * @return
+     */
+    @Override
+    public Boolean modifyWalletRechargeByOrderNo(WalletRecharge walletRecharge) {
+        return walletRechargeMapper.modifyWalletRechargeByOrderNo(walletRecharge) > 0;
+    }
+
+    /**
+     * 我方订单号，查询充值记录信息
+     *
+     * @param orderNo
+     * @return
+     */
+    @Override
+    public WalletRecharge findWalletRechargeByOrderNo(Long orderNo) {
+        WalletRecharge walletRecharge = new WalletRecharge();
+        walletRecharge.setOrderNo(orderNo);
+        return walletRechargeMapper.selectOne(walletRecharge);
+    }
 
 	/**
 	 * 删除充值记录

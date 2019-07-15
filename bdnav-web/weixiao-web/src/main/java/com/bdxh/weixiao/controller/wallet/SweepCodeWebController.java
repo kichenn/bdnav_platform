@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.SortedMap;
 
 /**
- * @Description: 二维码相关操作
+ * @Description: 微校二维码相关操作
  * @Author: Kang
  * @Date: 2019/7/11 11:01
  */
@@ -35,7 +35,7 @@ import java.util.SortedMap;
 @RestController
 @Api(value = "扫描二维码相关", tags = {"扫描二维码相关API"})
 @Validated
-public class SweepCodeController {
+public class SweepCodeWebController {
 
     @Autowired
     private SchoolControllerClient schoolControllerClient;

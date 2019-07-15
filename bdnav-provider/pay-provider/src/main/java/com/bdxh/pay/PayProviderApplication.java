@@ -13,8 +13,8 @@ import org.springframework.context.annotation.ComponentScan;
  **/
 @SpringBootApplication
 @EnableEurekaClient
-@ComponentScan(basePackages = {"com.bdxh.pay","com.bdxh.order","com.bdxh.servicepermit","com.bdxh.user"})
-@EnableFeignClients(basePackages = {"com.bdxh.pay","com.bdxh.order","com.bdxh.servicepermit","com.bdxh.user"})
+@ComponentScan(basePackages = {"com.bdxh.pay","com.bdxh.order","com.bdxh.servicepermit","com.bdxh.user","com.bdxh.wallet"})
+@EnableFeignClients(basePackages = {"com.bdxh.pay","com.bdxh.order","com.bdxh.servicepermit","com.bdxh.user","com.bdxh.wallet"})
 public class PayProviderApplication {
     public static void main(String[] args) {
         SpringApplication.run(PayProviderApplication.class,args);

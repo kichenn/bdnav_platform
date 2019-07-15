@@ -22,10 +22,18 @@ public interface WalletRechargeMapper extends Mapper<WalletRecharge> {
 	 */
 	 Integer getWalletRechargeAllCount();
 
-	/**
-	 *批量删除方法
-	 */
-	 Integer delWalletRechargeInIds(@Param("ids") List<Long> ids);
+    /**
+     * 批量删除方法
+     */
+    Integer delWalletRechargeInIds(@Param("ids") List<Long> ids);
+
+    /**
+     * 根据我方订单号，修改相关信息
+     *
+     * @param walletRecharge
+     * @return
+     */
+    Integer modifyWalletRechargeByOrderNo(@Param("walletRecharge") WalletRecharge walletRecharge);
 
 	/**
 	 * 根据条件查询

@@ -44,4 +44,6 @@ public interface WalletConsumerService extends IService<WalletConsumer> {
 	 * @return
 	 */
 	WalletConsumer findWalletConsumerById(String schoolCode, String cardNumber, String id);
+
+//	List<WalletConsumer> findWalletConsumerBy
 }
