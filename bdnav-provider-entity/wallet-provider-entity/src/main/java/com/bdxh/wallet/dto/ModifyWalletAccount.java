@@ -1,5 +1,7 @@
 package com.bdxh.wallet.dto;
 
+import com.bdxh.wallet.enums.AccountStatusEnum;
+import com.bdxh.wallet.enums.UserTypeEnum;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
@@ -53,7 +55,7 @@ public class ModifyWalletAccount {
      * 用户类型 1学生 2教师 3家长
      */
     @ApiModelProperty("用户类型 1学生 2教师 3家长")
-    private Byte userType;
+    private UserTypeEnum userTypeEnum;
 
     /**
      * 所属组织架构
@@ -100,8 +102,9 @@ public class ModifyWalletAccount {
     /**
      * 账户状态：1 正常  2异常
      */
+
     @ApiModelProperty("账户状态：1 正常  2异常")
-    private Byte status;
+    private AccountStatusEnum accountStatusEnum;
 
 
     /**
