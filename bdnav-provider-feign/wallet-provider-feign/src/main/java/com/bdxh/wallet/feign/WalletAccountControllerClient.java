@@ -11,6 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @Description: 钱包账户
+ * @Author: Kang
+ * @Date: 2019/7/15 17:23
+ */
 @Service
 @FeignClient(value = "wallet-provider-cluster", fallback = WalletAccountControllerFallback.class)
 public interface WalletAccountControllerClient {

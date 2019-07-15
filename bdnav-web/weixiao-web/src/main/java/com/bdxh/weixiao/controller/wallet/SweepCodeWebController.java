@@ -19,10 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jcajce.provider.symmetric.AES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.SortedMap;
 
@@ -40,8 +37,8 @@ public class SweepCodeWebController {
     @Autowired
     private SchoolControllerClient schoolControllerClient;
 
+    @PostMapping("/authenticationWeixiao/codeOperation")
     @ApiOperation(value = "扫码相关", response = Boolean.class)
-    @RequestMapping(value = "/authenticationWeixiao/codeOperation", method = RequestMethod.POST)
     public Object codeOperation(@Validated @RequestBody QRCodeDto qRCodeDto) {
         School school = schoolControllerClient.findSchoolBySchoolCode(qRCodeDto.getSchoolCode()).getResult();
         Preconditions.checkArgument(school != null, "该学校不存在，请检查");

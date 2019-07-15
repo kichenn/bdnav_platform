@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddWalletRechargeDto;
 import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
+import com.bdxh.wallet.fallback.WalletRechargeControllerFallback;
 import com.bdxh.wallet.fallback.WalletAccountControllerFallback;
 import com.bdxh.wallet.fallback.WalletRechargeControllerFallback;
 import org.springframework.cloud.openfeign.FeignClient;
