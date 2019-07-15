@@ -71,11 +71,7 @@ public class WalletConsumer {
 	@Column(name = "physical_number")
 	private String physicalNumber;
 
-	/**
-	 * 虚拟卡号
-	 */
-	@Column(name = "virtual_number")
-	private String virtualNumber;
+
 
 	/**
 	 * 消费时的设备编码

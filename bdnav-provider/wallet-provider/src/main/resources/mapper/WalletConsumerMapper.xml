@@ -11,7 +11,6 @@
 	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
 	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
 	  <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
-	  <result column="virtual_number" jdbcType="VARCHAR" property="virtualNumber"/>
 	  <result column="device_number" jdbcType="VARCHAR" property="deviceNumber"/>
 	  <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
 	  <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
@@ -25,12 +24,48 @@
 	</resultMap>
 
 	<sql id="BaseColumns">
-	  id,school_id,school_code,school_name,user_id,user_name,card_number,physical_number,virtual_number,device_number,order_no,out_order_no,consumer_amount,consumer_time,consumer_type,consumer_status,create_date,update_date,remark
+	  id,school_id,school_code,school_name,user_id,user_name,card_number,physical_number,device_number,order_no,out_order_no,consumer_amount,consumer_time,consumer_type,consumer_status,create_date,update_date,remark
 	</sql>
 	<select id="getWalletConsumerAllCount" resultType="Integer">
-	  SELECT 
+	  SELECT
 	   COUNT(1)
-	  FROM t_wallet_consumer 
+	  FROM t_wallet_consumer
+	</select>
+
+	<!--分页+条件查询-->
+    <select id="findWalletConsumerByCondition" resultMap="BaseResultMap">
+	  SELECT
+	   <include refid="BaseColumns"/>
+	  FROM t_wallet_consumer
+	  <where>
+		  <if test="walletConsumer.schoolCode!=null and walletConsumer.schoolCode!=''">
+			  AND school_code = #{walletConsumer.schoolCode}
+		  </if>
+		  <if test="walletConsumer.cardNumber!=null and walletConsumer.cardNumber!=''">
+			  AND card_number = #{walletConsumer.cardNumber}
+		  </if>
+		  <if test="walletConsumer.physicalNumber!=null and walletConsumer.physicalNumber!=''">
+			  AND physical_number = #{walletConsumer.physicalNumber}
+		  </if>
+		  <if test="walletConsumer.orderNo!=null and walletConsumer.orderNo!=''">
+			  AND order_no = #{walletConsumer.orderNo}
+		  </if>
+		  <if test="walletConsumer.outOrderNo!=null and walletConsumer.outOrderNo!=''">
+			  AND out_order_no = #{walletConsumer.outOrderNo}
+		  </if>
+		  <if test="walletConsumer.consumerStatus!=null and walletConsumer.consumerStatus!=''">
+			  AND consumer_status = #{walletConsumer.consumerStatus}
+		  </if>
+	  </where>
+	  ORDER BY create_date DESC
+	</select>
+
+	<!--根据id查询单条消费记录-->
+	<select id="findWalletConsumerById" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM t_wallet_consumer
+		WHERE school_code = #{schoolCode} AND card_number = #{cardNumber} AND id = #{id}
 	</select>
 
 	<delete id="delWalletConsumerInIds" parameterType="Integer">

@@ -35,11 +35,19 @@ public class SchoolChargeDept {
 	@Column(name = "school_code")
 	private String schoolCode;
 
+
+
 	/**
 	 * 收费部门名称
 	 */
 	@Column(name = "charge_dept_name")
 	private String chargeDeptName;
+
+	/**
+	 * 收费部门类型 1 餐饮美食 2生活日用  3读书学习 4医疗保健 5其他分类
+	 */
+	@Column(name = "charge_dept_type")
+	private Byte chargeDeptType;
 
 	/**
 	 * 操作人主键

@@ -7,6 +7,7 @@ import com.bdxh.school.dto.ModifySchoolChargeDeptDto;
 import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
 import com.bdxh.school.entity.SchoolChargeDept;
 import com.bdxh.school.entity.SchoolPosDeviceCharge;
+import com.bdxh.school.enums.ChargeDetpTypeEnum;
 import com.bdxh.school.service.SchoolPosDeviceChargeService;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import io.swagger.annotations.Api;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import com.bdxh.school.service.SchoolChargeDeptService;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Description: 学校收费部门控制器
@@ -177,6 +179,19 @@ public class SchoolChargeDeptController {
     public Object querySchoolChargeDeptAndPosNum(@RequestBody QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
         return WrapMapper.ok(schoolChargeDeptService.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto));
     }
+
+//    /**
+//     * 查询消费部门的类型
+//     *
+//     * @Author: WanMing
+//     * @Date: 2019/7/11 11:46
+//     */
+//    @RequestMapping(value = "/querySchoolChargeDeptType", method = RequestMethod.GET)
+//    @ApiOperation(value = "查询消费部门的类型", response = ChargeDetpTypeEnum.class)
+//    public Object querySchoolChargeDeptType(){
+//        ChargeDetpTypeEnum.getEnums().stream();
+//         return WrapMapper.ok();
+//    }
 
 
 

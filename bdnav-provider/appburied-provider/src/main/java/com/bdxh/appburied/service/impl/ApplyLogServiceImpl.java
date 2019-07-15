@@ -135,7 +135,7 @@ public class ApplyLogServiceImpl extends BaseService<ApplyLog> implements ApplyL
         //时间排序并分页
         List<ApplyLog> collect = applyLogs.stream().sorted(Comparator.comparing(ApplyLog::getCreateDate).reversed())
                 .skip((pageNum - 1) * pageSize).limit(pageSize).collect(Collectors.toList());
-        PageInfo<ApplyLog> pageInfo = new PageInfo<ApplyLog>(Optional.ofNullable(collect).get());
+        PageInfo<ApplyLog> pageInfo = new PageInfo<ApplyLog>(Optional.ofNullable(collect).orElse(new ArrayList<>()));
         pageInfo.setTotal(applyLogs.size());
         return pageInfo;
     }

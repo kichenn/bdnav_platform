@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 
 /**
-* @Description: Mapper
+* @Description: 消费记录的Mapper
 * @Author Kang
 * @Date 2019-07-11 09:40:52
 */
@@ -25,4 +25,20 @@ public interface WalletConsumerMapper extends Mapper<WalletConsumer> {
 	 *批量删除方法
 	 */
 	 Integer delWalletConsumerInIds(@Param("ids") List<Long> ids);
+
+	/**
+	 * 条件+分页查询消费记录
+	 * @param walletConsumer
+	 * @return
+	 */
+    List<WalletConsumer> findWalletConsumerByCondition(@Param("walletConsumer")WalletConsumer walletConsumer);
+
+	/**
+	 * 根据id查询单条消费记录
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @param id
+	 * @return
+	 */
+	WalletConsumer findWalletConsumerById(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber,@Param("id") String id);
 }
