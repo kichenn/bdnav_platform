@@ -138,8 +138,8 @@ public class ApplyControlsWebController {
 
     @ApiOperation(value = "学校黑名单", response = String.class)
     @RequestMapping(value = "/applyControlsWeb/blackList", method = RequestMethod.GET)
-    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode) {
-        return blackUrlControllerClient.findBlackInList(schoolCode);
+    public Object blackList(@RequestParam(name = "schoolCode") String schoolCode,@RequestParam(value = "status",defaultValue = "1") Byte status) {
+        return blackUrlControllerClient.findBlackInList(schoolCode,status);
     }
 
     @ApiOperation(value = "学生黑名单", response = String.class)

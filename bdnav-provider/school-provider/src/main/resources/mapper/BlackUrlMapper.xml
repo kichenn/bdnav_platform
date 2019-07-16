@@ -88,7 +88,7 @@
          *
         FROM t_black_url
         WHERE
-        school_code=#{schoolCode}
+        school_code=#{schoolCode} AND status=#{status}
     </select>
 
     <insert id="addBlackUrl" parameterType="java.util.Map" useGeneratedKeys="true" keyProperty="id">

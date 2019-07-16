@@ -35,9 +35,9 @@ public interface PhysicalCardControllerClient {
      * @param addPhysicalCard
      * @return
      */
-    @RequestMapping(value = "/physicalCard/AddPhysicalCard", method = RequestMethod.POST)
+    @RequestMapping(value = "/physicalCard/addPhysicalCard", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper AddPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard);
+    Wrapper addPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard);
 
 
     /**
@@ -56,7 +56,7 @@ public interface PhysicalCardControllerClient {
      *
      * @return
      */
-    @RequestMapping(value = "/physicalCard/modifyPhysicalCard", method = RequestMethod.GET)
+    @RequestMapping(value = "/physicalCard/delPhysicalCard", method = RequestMethod.GET)
     @ResponseBody
     Wrapper delPhysicalCard(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("id") Long id);
 

@@ -1,6 +1,8 @@
-package com.bdxh.backend.controller.wallet;
+package com.bdxh.client.controller.wallet;
 
+import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.wallet.dto.AddPhysicalCard;
 import com.bdxh.wallet.dto.ModifyPhysicalCard;
 import com.bdxh.wallet.dto.QueryPhysicalCard;
@@ -41,6 +43,9 @@ public class PhysicalCardWebController {
     @RequestMapping(value = "/addPhysicalCard", method = RequestMethod.POST)
     public Object addPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard) {
         try {
+            SchoolUser user = SecurityUtils.getCurrentUser();
+            addPhysicalCard.setOperator(user.getId());
+            addPhysicalCard.setOperatorName(user.getUserName());
             return physicalCardControllerClient.addPhysicalCard(addPhysicalCard);
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,6 +58,9 @@ public class PhysicalCardWebController {
     @RequestMapping(value = "/modifyPhysicalCard", method = RequestMethod.POST)
     public Object modifyPhysicalCard(@RequestBody ModifyPhysicalCard modifyPhysicalCard) {
         try {
+            SchoolUser user = SecurityUtils.getCurrentUser();
+            modifyPhysicalCard.setOperator(user.getId());
+            modifyPhysicalCard.setOperatorName(user.getUserName());
             return physicalCardControllerClient.modifyPhysicalCard(modifyPhysicalCard);
         } catch (Exception e) {
             e.printStackTrace();
@@ -65,6 +73,8 @@ public class PhysicalCardWebController {
     @RequestMapping(value = "/findPhysicalCardInCondition", method = RequestMethod.POST)
     public Object findPhysicalCardInCondition(@RequestBody QueryPhysicalCard queryPhysicalCard) {
         try {
+            SchoolUser user = SecurityUtils.getCurrentUser();
+            queryPhysicalCard.setSchoolCode(user.getSchoolCode());
             return physicalCardControllerClient.findPhysicalCardInCondition(queryPhysicalCard);
         } catch (Exception e) {
             e.printStackTrace();

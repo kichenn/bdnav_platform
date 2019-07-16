@@ -142,9 +142,9 @@ public class BlackUrlController {
      */
     @RequestMapping(value = "/findBlackInList", method = RequestMethod.GET)
     @ApiOperation(value = " 查询当前学校的黑名单列表", response = BlackUrlShowVo.class)
-    public Object findBlackInList(@RequestParam("schoolCode") String schoolCode) {
+    public Object findBlackInList(@RequestParam("schoolCode") String schoolCode,@RequestParam(value = "status",defaultValue = "1") Byte status) {
         List<String> urlList=new ArrayList<>();
-       List<BlackUrl> bus= blackUrlService.findBlackInList(schoolCode);
+       List<BlackUrl> bus= blackUrlService.findBlackInList(schoolCode,status);
         for (int i = 0; i < bus.size(); i++) {
             urlList.add(bus.get(i).getIp());
         }

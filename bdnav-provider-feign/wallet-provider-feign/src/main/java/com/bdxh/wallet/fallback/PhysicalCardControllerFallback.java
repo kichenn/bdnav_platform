@@ -23,7 +23,7 @@ public class PhysicalCardControllerFallback implements PhysicalCardControllerCli
     }
 
     @Override
-    public Wrapper AddPhysicalCard(AddPhysicalCard addPhysicalCard) {
+    public Wrapper addPhysicalCard(AddPhysicalCard addPhysicalCard) {
         return WrapMapper.error();
     }
 
