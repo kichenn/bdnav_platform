@@ -131,18 +131,16 @@ public class SchoolChargeDeptController {
 
 
     /**
-     * 绑定消费机到学校的消费部门
+     * 批量绑定消费机到学校的消费部门
      *
      * @Author: WanMing
      * @Date: 2019/7/11 11:41
      */
     @RequestMapping(value = "/addSchoolPosDeviceCharge", method = RequestMethod.POST)
-    @ApiOperation(value = "绑定消费机到学校的消费部门", response = Boolean.class)
+    @ApiOperation(value = "批量绑定消费机到学校的消费部门", response = Boolean.class)
     public Object addSchoolPosDeviceCharge(@Validated @RequestBody AddSchoolPosDeviceChargeDto addSchoolPosDeviceChargeDto) {
-        SchoolPosDeviceCharge schoolPosDeviceCharge = new SchoolPosDeviceCharge();
-        BeanUtils.copyProperties(addSchoolPosDeviceChargeDto, schoolPosDeviceCharge);
         try {
-            return WrapMapper.ok(schoolPosDeviceChargeService.addSchoolPosDeviceCharge(schoolPosDeviceCharge));
+            return WrapMapper.ok(schoolPosDeviceChargeService.addSchoolPosDeviceCharge(addSchoolPosDeviceChargeDto));
         } catch (Exception e) {
             //deviceId 是唯一的 一台设备只能绑定一个部门
             if (e instanceof DuplicateKeyException) {

@@ -1,6 +1,7 @@
 package com.bdxh.school.service;
 
 import com.bdxh.common.support.IService;
+import com.bdxh.school.dto.AddSchoolPosDeviceChargeDto;
 import com.bdxh.school.dto.ModifySchoolPosDeviceDto;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SchoolPosDeviceCharge;
@@ -39,10 +40,10 @@ public interface SchoolPosDeviceChargeService extends IService<SchoolPosDeviceCh
 
 	/**
 	 * 绑定收费部门和设备
-	 * @param schoolPosDeviceCharge
+	 * @param addSchoolPosDeviceChargeDto
 	 * @return
 	 */
-    Boolean addSchoolPosDeviceCharge(SchoolPosDeviceCharge schoolPosDeviceCharge);
+    Boolean addSchoolPosDeviceCharge(AddSchoolPosDeviceChargeDto addSchoolPosDeviceChargeDto);
 
     Boolean delSchoolPosDeviceCharge(Long deviceId);
 }

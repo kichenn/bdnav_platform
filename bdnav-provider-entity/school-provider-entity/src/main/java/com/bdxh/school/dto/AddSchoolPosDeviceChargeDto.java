@@ -4,9 +4,11 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
-/**
+/**批量绑定pos机到收费部门
  * @author WanMing
  * @date 2019/7/11 11:18
  */
@@ -27,11 +29,11 @@ public class AddSchoolPosDeviceChargeDto {
     private String schoolCode;
 
     /**
-     * 设备主键
+     * 设备的主键集合
      */
-    @ApiModelProperty("设备主键")
-    @NotNull(message = "设备主键不能为空")
-    private Long deviceId;
+    @ApiModelProperty("设备的主键集合")
+    @NotEmpty(message = "设备的主键集合不能为空")
+    private List<Long> deviceIds;
 
     /**
      * 所属收费部门
@@ -52,10 +54,6 @@ public class AddSchoolPosDeviceChargeDto {
     @ApiModelProperty("操作人名称")
     private String operatorName;
 
-    /**
-     * 注释
-     */
-    @ApiModelProperty("注释")
-    private String remark;
+
 
 }
