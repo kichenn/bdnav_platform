@@ -28,11 +28,11 @@ import java.util.stream.Collectors;
  * @Author Kang
  * @Date 2019-07-11 09:40:52
  */
-@Controller
+@RestController
 @RequestMapping("/physicalCard")
 @Slf4j
 @Validated
-@Api(value = "卡账户相关", tags = "卡账户交互API")
+@Api(value = "物理卡账户相关", tags = "物理卡账户API")
 public class PhysicalCardController {
 
     @Autowired
