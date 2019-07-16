@@ -60,6 +60,10 @@
     <sql id="BaseColumns2">
 	  td.id,td.school_id,td.school_code,td.device_id,td.device_type,td.device_type_name,td.device_brand,td.device_model,td.device_name,td.device_address,td.device_ip,td.device_status,td.create_date,td.update_date,td.operator,td.operator_name,td.remark
 	</sql>
+
+    <sql id="BaseColumns3">
+        td.id,td.device_id AS `deviceId`,td.device_name AS `deviceName`,tc.id AS `deptId`,tc.charge_dept_name AS `chargeDeptName`,tc.charge_dept_type AS `chargeDeptType`
+    </sql>
     <select id="getSchoolDeviceAllCount" resultType="Integer">
 	  SELECT 
 	   COUNT(1)
@@ -74,6 +78,14 @@
         <foreach collection="ids" item="id" separator="," open="(" close=")">
             #{id, jdbcType = BIGINT}
         </foreach>
+    </delete>
+
+    <!--根据消费机id删除绑定记录-->
+    <delete id="delSchoolPosDeviceCharge">
+        DELETE
+        FROM t_school_device
+        WHERE
+        device_id  = #{deviceId}
     </delete>
 
     <select id="findSchoolDeviceInConditionPage" resultMap="BaseResultMap1">
@@ -118,14 +130,15 @@
         limit 1
     </select>
 
-    <!--查询单个学校的消费机-->
+    <!--查询单个学校未绑定的消费机-->
     <select id="findSchoolPosDeviceBySchool" resultMap="BaseResultMap">
         SELECT
         <include refid="BaseColumns"/>
         FROM t_school_device
         <where>
             <if test="posDevice.schoolCode!=null and posDevice.schoolCode!=''">
-                AND school_code = #{posDevice.schoolCode}
+                AND school_code = #{posDevice.schoolCode} AND id
+                NOT IN (SELECT device_id FROM t_school_posdevice_charge WHERE school_code = #{posDevice.schoolCode} )
             </if>
             <if test="posDevice.deviceId!=null and posDevice.deviceId!=''">
                 AND device_id = #{posDevice.deviceId}
@@ -146,13 +159,34 @@
     <!--根据收费部门id查询下面的消费机列表-->
     <select id="querySchoolPosDeviceByChargeDept" resultMap="BaseResultMap">
         SELECT
-	    <include refid="BaseColumns2"/>
+        <include refid="BaseColumns2"/>
         FROM
-	    t_school_device td
-	    JOIN t_school_posdevice_charge tp ON td.id = tp.device_id
-	    <where>
+        t_school_device td
+        INNER JOIN t_school_posdevice_charge tp ON td.id = tp.device_id
+        <where>
             <if test="deptQueryDto.deptId!=null">
                 tp.charge_dept_id = #{deptQueryDto.deptId}
+            </if>
+            <if test="deptQueryDto.deviceId!=null and deptQueryDto.deviceId!=''">
+                td.device_id = #{deptQueryDto.deviceId}
+            </if>
+            <if test="deptQueryDto.deviceName!=null and deptQueryDto.deviceName!=''">
+                td.device_name LIKE CONCAT('%',#{deptQueryDto.deviceName},'%')
+            </if>
+        </where>
+    </select>
+
+    <!--查询收费部门和pos机的关系列表-->
+    <select id="findChargeDeptAndDeviceRelation" resultType="com.bdxh.school.vo.ChargeDeptAndDeviceVo">
+        SELECT
+        <include refid="BaseColumns3"/>
+        FROM
+        t_school_device td
+        INNER JOIN t_school_posdevice_charge tp ON td.id = tp.device_id
+        INNER JOIN t_school_charge_dept tc ON tp.charge_dept_id = tc.id
+        <where>
+            <if test="schoolCode!=null and schoolCode!=''">
+                AND td.school_code = #{schoolCode}
             </if>
         </where>
     </select>

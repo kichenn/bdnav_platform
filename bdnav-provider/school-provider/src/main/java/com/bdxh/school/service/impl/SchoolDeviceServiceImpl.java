@@ -6,6 +6,7 @@ import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
 import com.bdxh.school.entity.GroupPermission;
 import com.bdxh.school.enums.DeviceStatusEnum;
 import com.bdxh.school.service.SchoolDeviceService;
+import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -100,5 +101,16 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
         List<SchoolDevice> schoolDevices = schoolDeviceMapper.querySchoolPosDeviceByChargeDept(deptQueryDto);
 
         return new PageInfo<SchoolDevice>(schoolDevices);
+    }
+
+    /**
+     * 查询收费部门和pos机的关系列表
+     *
+     * @param schoolCode
+     * @return
+     */
+    @Override
+    public List<ChargeDeptAndDeviceVo> findChargeDeptAndDeviceRelation(String schoolCode) {
+        return schoolDeviceMapper.findChargeDeptAndDeviceRelation(schoolCode);
     }
 }

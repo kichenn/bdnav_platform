@@ -6,6 +6,7 @@ import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolDept;
 import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
+import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.school.vo.SchoolDeptTreeVo;
 import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.PageInfo;
@@ -57,6 +58,11 @@ public class SchoolDeviceControllerClientFallback implements SchoolDeviceControl
 
     @Override
     public Wrapper<PageInfo<SchoolDevice>> querySchoolPosDeviceByChargeDept(SchoolDeviceAndChargeDeptQueryDto deptQueryDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<ChargeDeptAndDeviceVo>> findChargeDeptAndDeviceRelation(String schoolCode) {
         return WrapMapper.error();
     }
 }

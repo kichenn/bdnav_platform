@@ -91,5 +91,15 @@ public class SchoolPosDeviceChargeServiceImpl extends BaseService<SchoolPosDevic
 		return result;
 	}
 
+	/**
+	 * 根据消费机id解绑
+	 * @param deviceId
+	 * @return
+	 */
+	@Override
+	public Boolean delSchoolPosDeviceCharge(Long deviceId) {
+		return schoolDeviceMapper.delSchoolPosDeviceCharge(deviceId)>0;
+	}
+
 
 }

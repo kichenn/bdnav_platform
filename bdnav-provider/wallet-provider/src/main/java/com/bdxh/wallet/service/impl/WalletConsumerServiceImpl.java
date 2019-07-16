@@ -73,9 +73,7 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
 	@Override
 	public PageInfo<WalletConsumerVo> findWalletConsumerByCondition(QueryWalletConsumerDto queryWalletConsumerDto) {
 		PageHelper.startPage(queryWalletConsumerDto.getPageNum(),queryWalletConsumerDto.getPageSize());
-		WalletConsumer walletConsumer = new WalletConsumer();
-		BeanUtils.copyProperties(queryWalletConsumerDto, walletConsumer);
-		List<WalletConsumer> walletConsumers = walletConsumerMapper.findWalletConsumerByCondition(walletConsumer);
+		List<WalletConsumer> walletConsumers = walletConsumerMapper.findWalletConsumerByCondition(queryWalletConsumerDto);
 		List<WalletConsumerVo> walletConsumerVos = new ArrayList<>();
 		if(CollectionUtils.isNotEmpty(walletConsumers)){
 			walletConsumers.forEach(consumerDetail->{
@@ -84,8 +82,7 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
 				walletConsumerVos.add(walletConsumerVo);
 			});
 		}
-		PageInfo<WalletConsumerVo> pageInfo = new PageInfo(walletConsumerVos);
-		return pageInfo;
+		return new PageInfo<WalletConsumerVo>(walletConsumerVos);
 	}
 
 	/**

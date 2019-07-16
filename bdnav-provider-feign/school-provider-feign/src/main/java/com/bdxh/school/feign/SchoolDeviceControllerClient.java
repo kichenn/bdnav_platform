@@ -7,6 +7,7 @@ import com.bdxh.school.entity.SchoolDevice;
 import com.bdxh.school.entity.SinglePermission;
 import com.bdxh.school.fallback.SchoolDeviceControllerClientFallback;
 import com.bdxh.school.fallback.SinglePermissionControllerClientFallback;
+import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.school.vo.SchoolDeviceShowVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
@@ -80,7 +81,7 @@ public interface SchoolDeviceControllerClient {
     Wrapper<PageInfo<SchoolDeviceShowVo>> findSchoolDeviceInConditionPage(@RequestBody SchoolDeviceQueryDto schoolDeviceQueryDto);
 
     /**
-     * 根据条件查询单个学校下的设备列表
+     * 根据条件查询单个学校下可用设备列表
      * @Author: WanMing
      * @Date: 2019/7/11 15:18
      */
@@ -97,4 +98,13 @@ public interface SchoolDeviceControllerClient {
     @RequestMapping(value = "/schoolDevice/querySchoolPosDeviceByChargeDept", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<PageInfo<SchoolDevice>> querySchoolPosDeviceByChargeDept(@RequestBody SchoolDeviceAndChargeDeptQueryDto deptQueryDto);
+
+    /**
+     * 查询收费部门和pos机的关系列表
+     * @Author: WanMing
+     * @Date: 2019/7/16 10:12
+     */
+    @RequestMapping(value = "/schoolDevice/findChargeDeptAndDeviceRelation", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<ChargeDeptAndDeviceVo>> findChargeDeptAndDeviceRelation(@RequestParam(value = "schoolCode",required = false) String schoolCode);
 }

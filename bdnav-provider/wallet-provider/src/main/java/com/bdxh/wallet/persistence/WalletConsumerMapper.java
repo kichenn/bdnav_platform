@@ -2,6 +2,7 @@ package com.bdxh.wallet.persistence;
 
 import java.util.List;
 
+import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -31,7 +32,7 @@ public interface WalletConsumerMapper extends Mapper<WalletConsumer> {
 	 * @param walletConsumer
 	 * @return
 	 */
-    List<WalletConsumer> findWalletConsumerByCondition(@Param("walletConsumer")WalletConsumer walletConsumer);
+    List<WalletConsumer> findWalletConsumerByCondition(@Param("walletConsumer") QueryWalletConsumerDto walletConsumer);
 
 	/**
 	 * 根据id查询单条消费记录

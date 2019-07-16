@@ -43,4 +43,6 @@ public interface SchoolPosDeviceChargeService extends IService<SchoolPosDeviceCh
 	 * @return
 	 */
     Boolean addSchoolPosDeviceCharge(SchoolPosDeviceCharge schoolPosDeviceCharge);
+
+    Boolean delSchoolPosDeviceCharge(Long deviceId);
 }

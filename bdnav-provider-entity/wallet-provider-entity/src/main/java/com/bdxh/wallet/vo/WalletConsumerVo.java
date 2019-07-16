@@ -63,13 +63,19 @@ public class WalletConsumerVo {
      * 收费部门名称
      */
     @ApiModelProperty("收费部门名称")
-    private Long chargeDeptName;
+    private String chargeDeptName;
 
     /**
-     * 消费时的设备编码
+     * 消费机的设备编码
      */
-    @ApiModelProperty("消费时的设备编码")
+    @ApiModelProperty("消费机的设备编码")
     private String deviceNumber;
+
+    /**
+     * 消费时的设备名称
+     */
+    @ApiModelProperty("消费时的设备名称")
+    private String deviceName;
 
     /**
      * 平台订单号

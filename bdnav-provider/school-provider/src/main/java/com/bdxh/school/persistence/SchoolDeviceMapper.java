@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bdxh.school.dto.SchoolDeviceAndChargeDeptQueryDto;
 import com.bdxh.school.dto.SchoolPosDeviceQueryDto;
+import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.school.vo.SchoolDeviceShowVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -53,4 +54,13 @@ public interface SchoolDeviceMapper extends Mapper<SchoolDevice> {
      * @return
      */
     List<SchoolDevice> querySchoolPosDeviceByChargeDept(@Param("deptQueryDto") SchoolDeviceAndChargeDeptQueryDto deptQueryDto);
+
+    /**
+     * 查询收费部门和pos机的关系列表
+     * @param schoolCode
+     * @return
+     */
+    List<ChargeDeptAndDeviceVo> findChargeDeptAndDeviceRelation(@Param("schoolCode")String schoolCode);
+
+    Integer delSchoolPosDeviceCharge(@Param("deviceId")Long deviceId);
 }

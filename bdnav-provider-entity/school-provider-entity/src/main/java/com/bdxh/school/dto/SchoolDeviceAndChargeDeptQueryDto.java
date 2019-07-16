@@ -15,4 +15,10 @@ public class SchoolDeviceAndChargeDeptQueryDto extends Query {
      */
     @ApiModelProperty("收费部门的id")
     private Long deptId;
+
+    @ApiModelProperty("设备编码")
+    private String deviceId;
+
+    @ApiModelProperty("设备名称")
+    private String deviceName;
 }

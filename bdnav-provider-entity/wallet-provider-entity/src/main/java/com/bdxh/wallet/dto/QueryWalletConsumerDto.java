@@ -4,6 +4,9 @@ import com.bdxh.common.base.page.Query;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.persistence.Column;
+import java.util.Date;
+
 
 /** 查询消费记录的dto
  * @author WanMing
@@ -31,7 +34,6 @@ public class QueryWalletConsumerDto extends Query {
     @ApiModelProperty("物理卡号（刷卡消费是不为空）")
     private String physicalNumber;
 
-
     /**
      * 平台订单号
      */
@@ -39,10 +41,10 @@ public class QueryWalletConsumerDto extends Query {
     private String orderNo;
 
     /**
-     * 外部设备生成的订单号
+     * 业务类型：1刷卡 2 刷码  3扫码  4人脸识别
      */
-    @ApiModelProperty("外部设备生成的订单号")
-    private String outOrderNo;
+    @ApiModelProperty("业务类型：1刷卡 2 刷码  3扫码  4人脸识别")
+    private Byte consumerType;
 
 
     /**
@@ -50,6 +52,18 @@ public class QueryWalletConsumerDto extends Query {
      */
     @ApiModelProperty("支付状态 1 未扣款  2扣款成功  3 扣款中 4 扣款失败")
     private Byte consumerStatus;
+
+    /**
+     * 开始时间
+     */
+    @ApiModelProperty("开始时间")
+    private Date startTime;
+
+    /**
+     * 结束时间
+     */
+    @ApiModelProperty("结束时间")
+    private Date endTime;
 
 
 

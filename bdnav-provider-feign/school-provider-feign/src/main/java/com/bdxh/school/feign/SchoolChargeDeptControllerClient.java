@@ -101,7 +101,7 @@ public interface SchoolChargeDeptControllerClient {
      */
     @RequestMapping(value = "/schoolChargeDept/delSchoolPosDeviceCharge", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper delSchoolPosDeviceCharge(@RequestParam("id") Long id);
+    Wrapper delSchoolPosDeviceCharge(@RequestParam("deviceId") Long deviceId);
 
     /**
      * 查询学校消费部门信息和POS机的数量

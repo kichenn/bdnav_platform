@@ -2,6 +2,7 @@ package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.*;
+import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -133,12 +134,12 @@ public class SchoolDeviceController {
     }
 
     /**
-     * 根据条件查询单个学校下的设备列表
+     * 根据条件查询单个学校下可用设备列表
      * @Author: WanMing
      * @Date: 2019/7/11 15:18
      */
     @RequestMapping(value = "/findSchoolDeviceBySchool",method = RequestMethod.POST)
-    @ApiOperation(value = "根据条件查询单个学校下的设备列表",response = PageInfo.class)
+    @ApiOperation(value = "根据条件查询单个学校下可用设备列表",response = PageInfo.class)
     public Object findSchoolPosDeviceBySchool(@RequestBody SchoolPosDeviceQueryDto schoolPosDeviceQueryDto){
         return WrapMapper.ok(schoolDeviceService.findSchoolPosDeviceBySchool(schoolPosDeviceQueryDto));
     }
@@ -153,5 +154,16 @@ public class SchoolDeviceController {
     @ApiOperation(value = "根据收费部门id分页查询下面的消费机列表", response = SchoolDevice.class)
     public Object querySchoolPosDeviceByChargeDept(@RequestBody SchoolDeviceAndChargeDeptQueryDto deptQueryDto){
         return WrapMapper.ok(schoolDeviceService.querySchoolPosDeviceByChargeDept(deptQueryDto));
+    }
+
+    /**
+     * 查询收费部门和pos机的关系列表
+     * @Author: WanMing
+     * @Date: 2019/7/16 10:12
+     */
+    @RequestMapping(value = "/findChargeDeptAndDeviceRelation", method = RequestMethod.GET)
+    @ApiOperation(value = "查询收费部门和pos机的关系列表", response = ChargeDeptAndDeviceVo.class)
+    public Object findChargeDeptAndDeviceRelation(@RequestParam(value = "schoolCode",required = false) String schoolCode){
+        return WrapMapper.ok(schoolDeviceService.findChargeDeptAndDeviceRelation(schoolCode));
     }
 }

@@ -51,11 +51,14 @@
 		  <if test="walletConsumer.orderNo!=null and walletConsumer.orderNo!=''">
 			  AND order_no = #{walletConsumer.orderNo}
 		  </if>
-		  <if test="walletConsumer.outOrderNo!=null and walletConsumer.outOrderNo!=''">
-			  AND out_order_no = #{walletConsumer.outOrderNo}
+		  <if test="walletConsumer.consumerType!=null ">
+			  AND consumer_type = #{walletConsumer.consumerType}
 		  </if>
-		  <if test="walletConsumer.consumerStatus!=null and walletConsumer.consumerStatus!=''">
+		  <if test="walletConsumer.consumerStatus!=null ">
 			  AND consumer_status = #{walletConsumer.consumerStatus}
+		  </if>
+		  <if test="walletConsumer.startTime!=null and walletConsumer.endTime!=null">
+			  AND consumer_time = BETWEEN #{walletConsumer.startTime} AND #{walletConsumer.endTime}
 		  </if>
 	  </where>
 	  ORDER BY create_date DESC
