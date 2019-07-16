@@ -41,7 +41,7 @@ public class PhysicalCardWebController {
     @RequestMapping(value = "/addPhysicalCard", method = RequestMethod.POST)
     public Object addPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard) {
         try {
-            return physicalCardControllerClient.AddPhysicalCard(addPhysicalCard);
+            return physicalCardControllerClient.addPhysicalCard(addPhysicalCard);
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());
