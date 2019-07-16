@@ -70,7 +70,7 @@ public class PhysicalCardController {
 
 
 
-    @RequestMapping(value = "/AddPhysicalCard", method = RequestMethod.POST)
+    @RequestMapping(value = "/addPhysicalCard", method = RequestMethod.POST)
     @ApiOperation(value = "添加物理卡号信息", response = Boolean.class)
     public Object addPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard) {
         try {
