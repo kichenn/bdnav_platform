@@ -72,7 +72,7 @@ public class PhysicalCardController {
 
     @RequestMapping(value = "/AddPhysicalCard", method = RequestMethod.POST)
     @ApiOperation(value = "添加物理卡号信息", response = Boolean.class)
-    public Object AddPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard) {
+    public Object addPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard) {
         try {
             PhysicalCard physicalCard = new PhysicalCard();
             physicalCard.setId(snowflakeIdWorker.nextId());
@@ -89,7 +89,7 @@ public class PhysicalCardController {
     }
 
 
-    @RequestMapping(value = "findPhysicalCardInCondition", method = RequestMethod.POST)
+    @RequestMapping(value = "/findPhysicalCardInCondition", method = RequestMethod.POST)
     @ApiOperation(value = "带条件分页查询列表信息", response = PhysicalCard.class)
     public Object findPhysicalCardInCondition(@Validated @RequestBody QueryPhysicalCard queryPhysicalCard, BindingResult bindingResult) {
         //检验参数
@@ -137,9 +137,9 @@ public class PhysicalCardController {
         }
     }
 
-    @RequestMapping(value = "/findPhysicalCardByid", method = RequestMethod.GET)
+    @RequestMapping(value = "/findPhysicalCardById", method = RequestMethod.GET)
     @ApiOperation(value = "根据id查询物理卡号信息", response = PhysicalCard.class)
-    public Object findPhysicalCardByid(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("id") Long id) {
+    public Object findPhysicalCardById(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("id") Long id) {
         try {
             return WrapMapper.ok(physicalCardService.findPhysicalCardById(schoolCode, cardNumber, id));
         } catch (Exception e) {

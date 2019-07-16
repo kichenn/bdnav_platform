@@ -37,7 +37,7 @@ public interface PhysicalCardControllerClient {
      */
     @RequestMapping(value = "/physicalCard/AddPhysicalCard", method = RequestMethod.POST)
     @ResponseBody
-    Wrapper AddPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard);
+    Wrapper addPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard);
 
 
     /**
