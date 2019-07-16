@@ -26,7 +26,13 @@
 		,operator_name = #{deviceCharge.operatorName} WHERE device_id = #{deviceCharge.deviceId}
 	</update>
 
-
+	<!--根据消费机id删除绑定记录-->
+	<delete id="delSchoolPosDeviceCharge">
+        DELETE
+        FROM t_school_posdevice_charge
+        WHERE
+        device_id  = #{deviceId}
+    </delete>
 
 
     <select id="getSchoolPosDeviceChargeAllCount" resultType="Integer">

@@ -98,13 +98,16 @@ public class SchoolDeviceWebController {
     }
 
     /**
-     * 根据条件查询单个学校下的设备列表
+     * 根据条件查询单个学校下可用设备列表
      * @Author: WanMing
      * @Date: 2019/7/11 15:18
      */
     @RequestMapping(value = "/findSchoolDeviceBySchool",method = RequestMethod.POST)
-    @ApiOperation(value = "根据条件查询单个学校下的设备列表",response = PageInfo.class)
+    @ApiOperation(value = "根据条件查询单个学校下可用设备列表",response = PageInfo.class)
     public Object findSchoolPosDeviceBySchool(@RequestBody SchoolPosDeviceQueryDto schoolPosDeviceQueryDto){
+        //获取当前用户
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        schoolPosDeviceQueryDto.setSchoolCode(user.getSchoolCode());
         return schoolDeviceControllerClient.findSchoolPosDeviceBySchool(schoolPosDeviceQueryDto);
     }
 

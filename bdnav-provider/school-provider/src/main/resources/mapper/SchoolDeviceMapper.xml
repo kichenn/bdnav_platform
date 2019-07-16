@@ -80,13 +80,7 @@
         </foreach>
     </delete>
 
-    <!--根据消费机id删除绑定记录-->
-    <delete id="delSchoolPosDeviceCharge">
-        DELETE
-        FROM t_school_device
-        WHERE
-        device_id  = #{deviceId}
-    </delete>
+
 
     <select id="findSchoolDeviceInConditionPage" resultMap="BaseResultMap1">
         SELECT

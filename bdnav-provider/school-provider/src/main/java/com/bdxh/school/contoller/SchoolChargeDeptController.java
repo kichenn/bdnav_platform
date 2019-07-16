@@ -164,13 +164,13 @@ public class SchoolChargeDeptController {
     }
 
     /**
-     * 根据id解绑学校部门的消费机
+     * 根据pos机id解绑学校部门的消费机
      *
      * @Author: WanMing
      * @Date: 2019/7/11 11:46
      */
     @RequestMapping(value = "/delSchoolPosDeviceCharge", method = RequestMethod.GET)
-    @ApiOperation(value = "根据id解绑学校消费部门的消费机", response = Boolean.class)
+    @ApiOperation(value = "根据pos机id解绑学校部门的消费机", response = Boolean.class)
     public Object delSchoolPosDeviceCharge(@RequestParam("deviceId") Long deviceId) {
         return WrapMapper.ok(schoolPosDeviceChargeService.delSchoolPosDeviceCharge(deviceId));
     }

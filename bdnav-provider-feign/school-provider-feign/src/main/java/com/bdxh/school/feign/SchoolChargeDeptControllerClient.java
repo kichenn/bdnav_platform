@@ -74,7 +74,7 @@ public interface SchoolChargeDeptControllerClient {
     Wrapper<List<SchoolChargeDeptVo>> findSchoolChargeDeptBySchool(@RequestParam String schoolCode);
 
     /**
-     * 绑定消费机到学校的消费部门
+     * 批量绑定消费机到学校的消费部门
      *
      * @Author: WanMing
      * @Date: 2019/7/11 11:41
@@ -94,7 +94,7 @@ public interface SchoolChargeDeptControllerClient {
     Wrapper changeSchoolPosDevice(@RequestBody ModifySchoolPosDeviceDto modifySchoolPosDeviceDto);
 
     /**
-     * 根据id解绑学校部门的消费机
+     * 根据pos机id解绑学校部门的消费机
      *
      * @Author: WanMing
      * @Date: 2019/7/11 11:46

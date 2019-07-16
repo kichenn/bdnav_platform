@@ -28,6 +28,17 @@ public interface SchoolPosDeviceChargeMapper extends Mapper<SchoolPosDeviceCharg
 	 */
 	 Integer delSchoolPosDeviceChargeInIds(@Param("ids") List<Long> ids);
 
-
+	/**
+	 * 换绑
+	 * @param deviceCharge
+	 * @return
+	 */
     Integer changeSchoolPosDevice(@Param("deviceCharge")SchoolPosDeviceCharge deviceCharge);
+
+	/**
+	 * 解绑消费机和部门关系
+	 * @param deviceId
+	 * @return
+	 */
+	Integer delSchoolPosDeviceCharge(Long deviceId);
 }

@@ -106,7 +106,7 @@ public class SchoolPosDeviceChargeServiceImpl extends BaseService<SchoolPosDevic
      */
     @Override
     public Boolean delSchoolPosDeviceCharge(Long deviceId) {
-        return schoolDeviceMapper.delSchoolPosDeviceCharge(deviceId) > 0;
+        return schoolPosDeviceChargeMapper.delSchoolPosDeviceCharge(deviceId) > 0;
     }
 
 
