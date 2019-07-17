@@ -46,7 +46,7 @@ public class PhysicalCardWebController {
     @PostMapping("/cardStatus")
     @ApiOperation(value = "挂失或者解挂", response = Boolean.class)
     public Object cardStatus(@RequestParam("physicalNumber") String physicalNumber, @RequestParam("physicalStatus") Byte physicalStatus) {
-        return WrapMapper.ok(physicalCardControllerClient.cardStatus().getResult());
+        return WrapMapper.ok(physicalCardControllerClient.cardStatus(physicalNumber, physicalStatus).getResult());
     }
 
 }
