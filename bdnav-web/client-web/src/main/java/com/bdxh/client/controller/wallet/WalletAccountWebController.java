@@ -101,12 +101,11 @@ public class WalletAccountWebController {
     public Object businessCardToShow(@RequestBody BusinessCardDto businessCardDto) {
         try {
                SchoolUser user = SecurityUtils.getCurrentUser();
-               businessCardDto.setSchoolCode(user.getSchoolCode());
              if (businessCardDto.getUserTypeEnum().getKey()==1){
-                 StudentVo sv=studentControllerClient.queryStudentInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
+                 StudentVo sv=studentControllerClient.queryStudentInfo(user.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
                  return WrapMapper.ok(sv);
              }else{
-                 TeacherVo tv=teacherControllerClient.queryTeacherInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
+                 TeacherVo tv=teacherControllerClient.queryTeacherInfo(user.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
                  return WrapMapper.ok(tv);
              }
         } catch (Exception e) {
