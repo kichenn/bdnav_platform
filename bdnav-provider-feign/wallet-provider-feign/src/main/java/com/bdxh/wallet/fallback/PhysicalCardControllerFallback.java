@@ -3,6 +3,7 @@ package com.bdxh.wallet.fallback;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddPhysicalCard;
+import com.bdxh.wallet.dto.FindBillRecordDto;
 import com.bdxh.wallet.dto.ModifyPhysicalCard;
 import com.bdxh.wallet.dto.QueryPhysicalCard;
 import com.bdxh.wallet.entity.PhysicalCard;
@@ -17,6 +18,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PhysicalCardControllerFallback implements PhysicalCardControllerClient {
+    @Override
+    public Wrapper findRechargeRecord(FindBillRecordDto findBillRecordDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<Boolean> findCardStatus(String physicalNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<Boolean> cardStatus(String physicalNumber, Byte physicalStatus) {
+        return WrapMapper.error();
+    }
+
     @Override
     public Wrapper<PageInfo<PhysicalCard>> findPhysicalCardInCondition(QueryPhysicalCard queryPhysicalCard) {
         return WrapMapper.error();
