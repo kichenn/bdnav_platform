@@ -10,9 +10,9 @@ import java.util.Map;
 public enum UserTypeEnum {
 
 
-    STUDENT(new Byte("1"), "学生"),
-    TEACHER(new Byte("2"), "教师"),
-    PARENTS(new Byte("3"), "家长");
+    STUDENT(new Byte("1"), "家长"),
+    TEACHER(new Byte("2"), "学生"),
+    PARENTS(new Byte("3"), "教师");
 
 
 
@@ -23,9 +23,9 @@ public enum UserTypeEnum {
     public final static Byte TEACHER_KEY = 2;
     public final static Byte PARENTS_KEY = 3;
 
-    public final static String STUDENT_VALUE= "老师";
-    public final static String RTEACHER_VALUE = "教师";
-    public final static String PARENTS_VALUE= "家长";
+    public final static String STUDENT_VALUE= "家长";
+    public final static String RTEACHER_VALUE = "学生";
+    public final static String PARENTS_VALUE= "教师";
 
 
     private UserTypeEnum(Byte key, String value) {

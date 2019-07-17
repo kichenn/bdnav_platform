@@ -100,11 +100,11 @@ public class WalletAccountWebController {
     @RequestMapping(value = "/businessCardToShow", method = RequestMethod.POST)
     public Object businessCardToShow(@RequestBody BusinessCardDto businessCardDto) {
         try {
-             if (businessCardDto.getUserTypeEnum().getKey()==1){
+             if (businessCardDto.getUserTypeEnum().getKey()==2){
                  StudentVo sv=studentControllerClient.queryStudentInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
                  return WrapMapper.ok(sv);
              }else{
-                 TeacherVo tv=teacherControllerClient.queryTeacherInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
+                 TeacherVo tv = teacherControllerClient.queryTeacherInfo(businessCardDto.getSchoolCode(), businessCardDto.getCardNumber()).getResult();
                  return WrapMapper.ok(tv);
              }
         } catch (Exception e) {
