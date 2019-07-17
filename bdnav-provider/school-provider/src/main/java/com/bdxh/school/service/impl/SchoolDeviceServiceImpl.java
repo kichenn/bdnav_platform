@@ -110,7 +110,7 @@ public class SchoolDeviceServiceImpl extends BaseService<SchoolDevice> implement
      * @return
      */
     @Override
-    public List<ChargeDeptAndDeviceVo> findChargeDeptAndDeviceRelation(String schoolCode) {
-        return schoolDeviceMapper.findChargeDeptAndDeviceRelation(schoolCode);
+    public List<ChargeDeptAndDeviceVo> findChargeDeptAndDeviceRelation(String schoolCode,Byte chargeDeptType) {
+        return schoolDeviceMapper.findChargeDeptAndDeviceRelation(schoolCode,chargeDeptType);
     }
 }

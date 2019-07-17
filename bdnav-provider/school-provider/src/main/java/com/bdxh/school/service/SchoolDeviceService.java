@@ -57,5 +57,5 @@ public interface SchoolDeviceService extends IService<SchoolDevice> {
      * @param schoolCode
      * @return
      */
-    List<ChargeDeptAndDeviceVo> findChargeDeptAndDeviceRelation(String schoolCode);
+    List<ChargeDeptAndDeviceVo> findChargeDeptAndDeviceRelation(String schoolCode,Byte chargeDeptType);
 }

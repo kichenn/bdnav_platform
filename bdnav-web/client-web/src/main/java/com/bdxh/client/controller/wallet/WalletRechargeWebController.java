@@ -4,6 +4,7 @@ package com.bdxh.client.controller.wallet;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.school.enums.ChargeDeptTypeEnum;
 import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
 import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
@@ -60,7 +61,7 @@ public class WalletRechargeWebController {
             //无数据
             return WrapMapper.ok(walletRechargeVos);
         }
-        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381").getResult();
+        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
         if (CollectionUtils.isNotEmpty(deptAndDeviceVos)) {
             Map<String, String> deptAndDeviceVoMap = deptAndDeviceVos.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, ChargeDeptAndDeviceVo::getChargeDeptName));
             walletRechargeVos.forEach(walletRechargeVo -> {

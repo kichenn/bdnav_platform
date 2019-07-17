@@ -2,12 +2,12 @@ package com.bdxh.wallet.service;
 
 import com.bdxh.common.support.IService;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
+import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
 
 /**
 * @Description: 业务层接口
@@ -44,6 +44,13 @@ public interface WalletConsumerService extends IService<WalletConsumer> {
 	 * @return
 	 */
 	WalletConsumer findWalletConsumerByOrderNo(String schoolCode, String cardNumber, String orderNo);
+
+	/**
+	 * 根据条件查询消费列表不分页
+	 * @param queryWalletConsumerExcelDto
+	 * @return
+	 */
+    List<WalletConsumerVo> findWalletConsumerList(QueryWalletConsumerExcelDto queryWalletConsumerExcelDto);
 
 //	List<WalletConsumer> findWalletConsumerBy
 }

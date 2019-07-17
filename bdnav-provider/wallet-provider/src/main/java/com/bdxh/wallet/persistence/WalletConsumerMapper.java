@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.entity.WalletConsumer;
+import com.bdxh.wallet.vo.WalletConsumerVo;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -42,4 +43,11 @@ public interface WalletConsumerMapper extends Mapper<WalletConsumer> {
 	 * @return
 	 */
 	WalletConsumer findWalletConsumerById(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber,@Param("orderNo") String orderNo);
+
+	/**
+	 * 根据订单号多条消费记录查询
+	 * @param orderNos
+	 * @return
+	 */
+    List<WalletConsumer> findWalletConsumerByOrderNos(@Param("orderNos")List<Long> orderNos);
 }

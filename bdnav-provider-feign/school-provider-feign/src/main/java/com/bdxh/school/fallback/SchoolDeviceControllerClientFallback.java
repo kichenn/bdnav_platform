@@ -62,7 +62,7 @@ public class SchoolDeviceControllerClientFallback implements SchoolDeviceControl
     }
 
     @Override
-    public Wrapper<List<ChargeDeptAndDeviceVo>> findChargeDeptAndDeviceRelation(String schoolCode) {
+    public Wrapper<List<ChargeDeptAndDeviceVo>> findChargeDeptAndDeviceRelation(String schoolCode,Byte chargeDeptType) {
         return WrapMapper.error();
     }
 }

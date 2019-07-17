@@ -4,14 +4,18 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddWalletConsumerDto;
 import com.bdxh.wallet.dto.ModifyWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
+import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.fallback.WalletConsumerControllerClientFallback;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageInfo;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**消费记录的feign
  * @author WanMing
@@ -64,12 +68,21 @@ public interface WalletConsumerControllerClient {
     Wrapper<PageInfo<WalletConsumerVo>> findWalletConsumerByCondition(@RequestBody QueryWalletConsumerDto queryWalletConsumerDto);
 
     /**
-     * 根据id查询单条消费记录
+     * 根据平台订单号查询单条消费记录
      *
      * @Author: WanMing
      * @Date: 2019/7/12 16:06
      */
-    @RequestMapping(value = "/findWalletConsumerById", method = RequestMethod.GET)
+    @RequestMapping(value = "/findWalletConsumerByOrderNo", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<WalletConsumer> findWalletConsumerById(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("id") String id);
+    Wrapper<WalletConsumer> findWalletConsumerByOrderNo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber
+            , @RequestParam("orderNo") String orderNo);
+    /**
+     * 根据条件查询账户的消费记录不分页
+     * @Author: WanMing
+     * @Date: 2019/7/17 15:00
+     */
+    @RequestMapping(value = "/findWalletConsumerList", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<List<WalletConsumerVo>> findWalletConsumerList(@RequestBody QueryWalletConsumerExcelDto queryWalletConsumerExcelDto);
 }
