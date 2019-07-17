@@ -102,7 +102,7 @@ public class WalletAccountWebController {
         try {
                SchoolUser user = SecurityUtils.getCurrentUser();
                businessCardDto.setSchoolCode(user.getSchoolCode());
-             if (businessCardDto.getUserTypeEnum().getKey().equals("STUDENT")){
+             if (businessCardDto.getUserTypeEnum().getKey()==1){
                  StudentVo sv=studentControllerClient.queryStudentInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
                  return WrapMapper.ok(sv);
              }else{
