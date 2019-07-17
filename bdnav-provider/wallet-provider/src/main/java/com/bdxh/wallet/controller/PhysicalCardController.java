@@ -7,6 +7,7 @@ import com.bdxh.common.utils.BeanToMapUtil;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.wallet.dto.*;
 import com.bdxh.wallet.entity.PhysicalCard;
+import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.service.PhysicalCardService;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -20,6 +21,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -41,12 +43,16 @@ public class PhysicalCardController {
     @Autowired
     private SnowflakeIdWorker snowflakeIdWorker;
 
+    @Autowired
+    private  WalletRechargeController walletRechargeController;
+
 
     @PostMapping("/findBillRecord")
     @ApiOperation(value = "查询账单信息", response = Boolean.class)
     public Object findRechargeRecord(@Validated @RequestBody FindBillRecordDto findBillRecordDto) {
         if (findBillRecordDto.getBillType().equals(0)) {
             //查询全部账单(包括充值记录)
+//            List<WalletRecharge> recharges=
         } else {
             //只查询消费账单，按照类型
         }
