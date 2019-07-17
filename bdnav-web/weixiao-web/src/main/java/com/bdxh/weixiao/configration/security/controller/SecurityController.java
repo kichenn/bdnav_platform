@@ -77,6 +77,9 @@ public class SecurityController {
     private FamilyStudentControllerClient familyStudentControllerClient;
 
     @Autowired
+    private StudentControllerClient studentControllerClient;
+
+    @Autowired
     private TeacherControllerClient teacherControllerClient;
 
 
@@ -202,6 +205,12 @@ public class SecurityController {
                 List<String> cardNumbers = new ArrayList<>();
                 cardNumbers.add(jsonObject.getString("card_number"));
                 userInfo.setCardNumber(cardNumbers);
+                //查询孩子信息
+                StudentVo studentVo1 = studentControllerClient.queryStudentInfo(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult();
+                Preconditions.checkArgument(studentVo1 != null, "孩子信息异常，schoolCode，cardNumber异常");
+                userInfo.setUserId(studentVo1.getSId());
+                userInfo.setOrgId(Long.valueOf(studentVo1.getClassId()));
+                //设置孩子组织架构信息
                 //学生卡号查询 学生相关信息以及家长信息
                 FamilyStudentVo familyStudentVo = familyStudentControllerClient.studentQueryInfo(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult();
                 if (familyStudentVo != null) {

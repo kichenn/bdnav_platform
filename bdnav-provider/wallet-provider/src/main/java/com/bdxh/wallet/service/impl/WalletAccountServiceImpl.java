@@ -107,4 +107,5 @@ public class WalletAccountServiceImpl extends BaseService<WalletAccount> impleme
     public Boolean delWalletAccount(String schoolCode, String cardNumber, Long id) {
         return walletAccountMapper.delWalletAccount(schoolCode, cardNumber, id) > 0;
     }
+
 }

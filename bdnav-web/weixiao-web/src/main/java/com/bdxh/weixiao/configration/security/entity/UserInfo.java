@@ -28,6 +28,12 @@ public class UserInfo implements Serializable {
     //手机号
     private String phone;
 
+    //孩子的组织架构(班级id)信息
+    private Long orgId;
+
+    //学生id
+    private Long userId;
+
     //学生卡号(如果是家长登录则有多个孩子，如果是学生自己登录则list大小为1)
     private List<String> cardNumber;
 

@@ -10,6 +10,7 @@ import com.bdxh.wallet.dto.ModifyPayPwdDto;
 import com.bdxh.wallet.dto.SetNoPwdPayPwdDto;
 import com.bdxh.wallet.dto.SetPayPwdDto;
 import com.bdxh.wallet.entity.WalletAccount;
+import com.bdxh.wallet.enums.AccountStatusEnum;
 import com.bdxh.wallet.service.WalletAccountService;
 import com.bdxh.wallet.vo.MyWalletVo;
 import com.google.common.base.Preconditions;
@@ -26,6 +27,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -52,13 +54,34 @@ public class WalletAccountController {
     private RedisUtil redisUtil;
 
 
-    @GetMapping("/myWallet")
+    /**
+     * @param walletAccountParam
+     * @return
+     */
+    @PostMapping("/myWallet")
     @ApiOperation(value = "我的钱包", response = MyWalletVo.class)
-    public Object myWallet(@RequestParam("cardNumber") String cardNumber, @RequestParam("schoolCode") String schoolCode) {
+    public Object myWallet(@RequestBody WalletAccount walletAccountParam) {
         //查询钱包信息
-        WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(cardNumber, schoolCode);
-        Preconditions.checkArgument(walletAccount != null, "该钱包不存在，请检查cardNumber，schoolCode");
-
+        WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(walletAccountParam.getCardNumber(), walletAccountParam.getSchoolCode());
+        if (walletAccount == null) {
+            //钱包不存在，新增钱包信息
+            walletAccount = new WalletAccount();
+            walletAccount.setId(snowflakeIdWorker.nextId());
+            walletAccount.setSchoolId(walletAccountParam.getSchoolId());
+            walletAccount.setSchoolCode(walletAccountParam.getSchoolCode());
+            walletAccount.setSchoolName(walletAccountParam.getSchoolName());
+            walletAccount.setUserId(walletAccountParam.getUserId());
+            walletAccount.setCardNumber(walletAccountParam.getCardNumber());
+            walletAccount.setUserName(walletAccountParam.getUserName());
+            walletAccount.setUserType(walletAccountParam.getUserType());
+            walletAccount.setOrgId(walletAccountParam.getOrgId());
+            walletAccount.setAmount(new BigDecimal("0"));
+            walletAccount.setStatus(AccountStatusEnum.NORMAL_KEY);
+            walletAccount.setCreateDate(new Date());
+            walletAccount.setUpdateDate(new Date());
+            walletAccount.setRemark("钱包");
+            walletAccountService.save(walletAccount);
+        }
         MyWalletVo myWalletVo = new MyWalletVo();
         myWalletVo.setIdentityType(String.valueOf(walletAccount.getUserType()));
         BeanUtils.copyProperties(walletAccount, myWalletVo);

@@ -7,6 +7,7 @@ import com.bdxh.user.feign.TrajectoryControllerClient;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.exception.PermitException;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
+import com.google.common.base.Preconditions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -60,11 +61,11 @@ public class TrajectoryWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
-            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            caseCardNumber = caseCardNumber == null ? new ArrayList<>() : caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            thisCardNumbers = thisCardNumbers == null ? new ArrayList<>() : thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
@@ -98,17 +99,18 @@ public class TrajectoryWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
-            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            caseCardNumber = caseCardNumber == null ? new ArrayList<>() : caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_FENCE");
-            thisCardNumbers=thisCardNumbers==null ? new ArrayList<>() :thisCardNumbers;
+            thisCardNumbers = thisCardNumbers == null ? new ArrayList<>() : thisCardNumbers;
             Boolean isBy = thisCardNumbers.contains(cardNumber);
             if (!(isBy || isOnTrial)) {
                 throw new PermitException();
             }
             UserInfo userInfo = SecurityUtils.getCurrentUser();
             Account account = accountControllerClient.queryAccount(userInfo.getSchoolCode(), cardNumber).getResult();
+            Preconditions.checkArgument(account != null, "您的孩子暂未登录过博学派");
             return trajectoryControllerClient.findLatestPoint(String.valueOf(account.getId()));
         } catch (Exception e) {
             String messge = "";

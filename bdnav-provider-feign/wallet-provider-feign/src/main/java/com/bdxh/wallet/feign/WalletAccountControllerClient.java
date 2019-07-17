@@ -23,13 +23,11 @@ public interface WalletAccountControllerClient {
     /**
      * 我的钱包
      *
-     * @param cardNumber
-     * @param schoolCode
      * @return
      */
-    @GetMapping("/walletAccount/myWallet")
+    @PostMapping("/walletAccount/myWallet")
     @ResponseBody
-    Wrapper<MyWalletVo> myWallet(@RequestParam("cardNumber") String cardNumber, @RequestParam("schoolCode") String schoolCode);
+    Wrapper<MyWalletVo> myWallet(@RequestBody WalletAccount walletAccountParam);
 
     /**
      * 设置支付密码
