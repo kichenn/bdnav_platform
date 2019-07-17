@@ -1,6 +1,8 @@
 package com.bdxh.backend.controller.wallet;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.system.entity.User;
 import com.bdxh.wallet.dto.AddPhysicalCard;
 import com.bdxh.wallet.dto.ModifyPhysicalCard;
 import com.bdxh.wallet.dto.QueryPhysicalCard;
@@ -41,6 +43,9 @@ public class PhysicalCardWebController {
     @RequestMapping(value = "/addPhysicalCard", method = RequestMethod.POST)
     public Object addPhysicalCard(@RequestBody AddPhysicalCard addPhysicalCard) {
         try {
+            User user = SecurityUtils.getCurrentUser();
+            addPhysicalCard.setOperator(user.getId());
+            addPhysicalCard.setOperatorName(user.getUserName());
             return physicalCardControllerClient.addPhysicalCard(addPhysicalCard);
         } catch (Exception e) {
             e.printStackTrace();
@@ -53,6 +58,9 @@ public class PhysicalCardWebController {
     @RequestMapping(value = "/modifyPhysicalCard", method = RequestMethod.POST)
     public Object modifyPhysicalCard(@RequestBody ModifyPhysicalCard modifyPhysicalCard) {
         try {
+            User user = SecurityUtils.getCurrentUser();
+            modifyPhysicalCard.setOperator(user.getId());
+            modifyPhysicalCard.setOperatorName(user.getUserName());
             return physicalCardControllerClient.modifyPhysicalCard(modifyPhysicalCard);
         } catch (Exception e) {
             e.printStackTrace();

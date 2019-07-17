@@ -217,7 +217,7 @@ public class SecurityController {
                 //老师登录(设置卡号)
                 userInfo.setFamilyCardNumber(jsonObject.getString("card_number"));
                 //老师卡号查询 老师信息
-                TeacherVo teacherVo= teacherControllerClient.queryTeacherInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
+                TeacherVo teacherVo = teacherControllerClient.queryTeacherInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
                 Preconditions.checkArgument(teacherVo != null, "老师卡号:" + userInfo.getFamilyCardNumber() + "，学校code:" + userInfo.getSchoolCode() + ",异常");
                 userInfo.setFamilyId(Long.valueOf(teacherVo.getId()));
                 userInfo.setFamilyName(teacherVo.getName());
@@ -226,7 +226,7 @@ public class SecurityController {
                 claims.put(SecurityConstant.USER_INFO, JSON.toJSONString(userTemp));
             }
 
-            String subject = userInfo.getFamilyId().toString();
+            String subject = userInfo.getFamilyId() == null ? userInfo.getCardNumber().get(0) : userInfo.getFamilyId().toString();
             //生成token
             String token = SecurityConstant.TOKEN_SPLIT + Jwts.builder().setSubject(subject)
                     .addClaims(claims)

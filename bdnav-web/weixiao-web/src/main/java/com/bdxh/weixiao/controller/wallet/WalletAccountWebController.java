@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * @Date: 2019/7/15 15:56
  */
 @Slf4j
-@RestController("Web")
+@RestController("walletAccountWeb")
 @Api(value = "钱包账户相关", tags = {"钱包账户相关API"})
 @Validated
 public class WalletAccountWebController {

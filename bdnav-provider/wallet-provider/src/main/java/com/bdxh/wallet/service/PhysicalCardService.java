@@ -40,11 +40,6 @@ public interface PhysicalCardService extends IService<PhysicalCard> {
 	 */
 	PageInfo<PhysicalCard> findPhysicalCardInCondition(Map<String,Object> param, Integer pageNum, Integer pageSize);
 
-
-
-
-
-
 	/**
 	 * 删除账户
 	 */

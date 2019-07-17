@@ -1,6 +1,8 @@
 package com.bdxh.backend.controller.wallet;
 
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.system.entity.User;
 import com.bdxh.wallet.dto.*;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.feign.WalletAccountControllerClient;
@@ -39,6 +41,9 @@ public class WalletAccountWebController {
     @RequestMapping(value = "/addWalletAccount", method = RequestMethod.POST)
     public Object addWalletAccount(@RequestBody AddWalletAccount addWalletAccount) {
         try {
+            User user = SecurityUtils.getCurrentUser();
+            addWalletAccount.setOperator(user.getId());
+            addWalletAccount.setOperatorName(user.getUserName());
             return walletAccountControllerClient.addWalletAccount(addWalletAccount);
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,6 +56,9 @@ public class WalletAccountWebController {
     @RequestMapping(value = "/modifyPhysicalCard", method = RequestMethod.POST)
     public Object modifyPhysicalCard(@RequestBody ModifyWalletAccount modifyWalletAccount) {
         try {
+            User user = SecurityUtils.getCurrentUser();
+            modifyWalletAccount.setOperator(user.getId());
+            modifyWalletAccount.setOperatorName(user.getUserName());
             return walletAccountControllerClient.modifyWalletAccount(modifyWalletAccount);
         } catch (Exception e) {
             e.printStackTrace();
