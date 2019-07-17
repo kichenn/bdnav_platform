@@ -16,8 +16,9 @@ import org.springframework.stereotype.Component;
 */
 @Component
 public class WalletAccountControllerFallback implements WalletAccountControllerClient {
+
     @Override
-    public Wrapper<MyWalletVo> myWallet(String cardNumber, String schoolCode) {
+    public Wrapper<MyWalletVo> myWallet(WalletAccount walletAccountParam) {
         return WrapMapper.error();
     }
 
