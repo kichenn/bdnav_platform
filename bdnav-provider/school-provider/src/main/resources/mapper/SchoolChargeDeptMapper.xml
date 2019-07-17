@@ -8,6 +8,7 @@
         <result column="school_code" jdbcType="VARCHAR" property="schoolCode"/>
         <result column="charge_dept_name" jdbcType="VARCHAR" property="chargeDeptName"/>
         <result column="charge_dept_type" jdbcType="BIGINT" property="chargeDeptType"/>
+        <result column="consume_type" jdbcType="BIGINT" property="consumeType"/>
         <result column="operator" jdbcType="BIGINT" property="operator"/>
         <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
@@ -30,15 +31,15 @@
     </resultMap>
 
     <sql id="BaseColumns">
-	  id,school_id,school_code,charge_dept_name,charge_dept_type,operator,operator_name,create_date,update_date,remark
+	  id,school_id,school_code,charge_dept_name,charge_dept_type,consume_type,operator,operator_name,create_date,update_date,remark
 	</sql>
 
     <sql id="BaseColumnsVo">
-	  td.id,td.school_id,td.school_code,tc.school_name,td.charge_dept_name,td.charge_dept_type,td.operator,td.operator_name,td.create_date,td.update_date,td.remark
+	  td.id,td.school_id,td.school_code,tc.school_name,td.charge_dept_name,td.consume_type,td.charge_dept_type,td.operator,td.operator_name,td.create_date,td.update_date,td.remark
 	</sql>
 
     <sql id="BaseColumnsVo2">
-	  td.id,td.school_id,td.school_code,td.charge_dept_name,td.charge_dept_type,td.operator,td.operator_name,td.create_date,td.update_date,td.remark
+	  td.id,td.school_id,td.school_code,td.charge_dept_name,td.charge_dept_type,td.consume_type,td.operator,td.operator_name,td.create_date,td.update_date,td.remark
 	</sql>
     <select id="getSchoolChargeDeptAllCount" resultType="Integer">
 	  SELECT 
@@ -55,13 +56,16 @@
         JOIN t_school tc ON td.school_id = tc.id
         <where>
             <if test="chargeDept.schoolCode!=null and chargeDept.schoolCode!=''">
-                AND school_code = #{chargeDept.schoolCode}
+                AND td.school_code = #{chargeDept.schoolCode}
             </if>
             <if test="chargeDept.chargeDeptName!=null and chargeDept.chargeDeptName!=''">
                 AND charge_dept_name LIKE CONCAT('%',#{chargeDept.chargeDeptName},'%')
             </if>
             <if test="chargeDept.chargeDeptType!=null ">
                 AND charge_dept_type = #{chargeDept.chargeDeptType}
+            </if>
+            <if test="chargeDept.consumeType!=null ">
+                AND consume_type = #{chargeDept.consumeType}
             </if>
         </where>
         ORDER BY create_date DESC
@@ -81,7 +85,8 @@
         SELECT
         <include refid="BaseColumnsVo2"/>,
         COUNT(tp.id) AS `deviceNum`
-        FROM t_school_charge_dept td LEFT JOIN t_school_posdevice_charge tp ON td.id = tp.charge_dept_id
+        FROM t_school_charge_dept td
+        LEFT JOIN t_school_posdevice_charge tp ON td.id = tp.charge_dept_id
         <where>
             <if test="chargeDept.schoolCode!=null and chargeDept.schoolCode!=''">
                 AND td.school_code = #{chargeDept.schoolCode}

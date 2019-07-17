@@ -39,26 +39,26 @@
 	   <include refid="BaseColumns"/>
 	  FROM t_wallet_consumer
 	  <where>
-		  <if test="walletConsumer.schoolCode!=null and walletConsumer.schoolCode!=''">
-			  AND school_code = #{walletConsumer.schoolCode}
+		  <if test="walletConsumerDto.schoolCode!=null and walletConsumerDto.schoolCode!=''">
+			  AND school_code = #{walletConsumerDto.schoolCode}
 		  </if>
-		  <if test="walletConsumer.cardNumber!=null and walletConsumer.cardNumber!=''">
-			  AND card_number = #{walletConsumer.cardNumber}
+		  <if test="walletConsumerDto.cardNumber!=null and walletConsumerDto.cardNumber!=''">
+			  AND card_number = #{walletConsumerDto.cardNumber}
 		  </if>
-		  <if test="walletConsumer.physicalNumber!=null and walletConsumer.physicalNumber!=''">
-			  AND physical_number = #{walletConsumer.physicalNumber}
+		  <if test="walletConsumerDto.physicalNumber!=null and walletConsumerDto.physicalNumber!=''">
+			  AND physical_number = #{walletConsumerDto.physicalNumber}
 		  </if>
-		  <if test="walletConsumer.orderNo!=null and walletConsumer.orderNo!=''">
-			  AND order_no = #{walletConsumer.orderNo}
+		  <if test="walletConsumerDto.orderNo!=null and walletConsumerDto.orderNo!=''">
+			  AND order_no = #{walletConsumerDto.orderNo}
 		  </if>
-		  <if test="walletConsumer.consumerType!=null ">
-			  AND consumer_type = #{walletConsumer.consumerType}
+		  <if test="walletConsumerDto.consumerType!=null ">
+			  AND consumer_type = #{walletConsumerDto.consumerType}
 		  </if>
-		  <if test="walletConsumer.consumerStatus!=null ">
-			  AND consumer_status = #{walletConsumer.consumerStatus}
+		  <if test="walletConsumerDto.consumerStatus!=null ">
+			  AND consumer_status = #{walletConsumerDto.consumerStatus}
 		  </if>
-		  <if test="walletConsumer.startTime!=null and walletConsumer.endTime!=null">
-			  AND consumer_time = BETWEEN #{walletConsumer.startTime} AND #{walletConsumer.endTime}
+		  <if test="walletConsumerDto.startTime!=null and walletConsumerDto.endTime!=null">
+			  AND consumer_time = BETWEEN #{walletConsumerDto.startTime} AND #{walletConsumerDto.endTime}
 		  </if>
 	  </where>
 	  ORDER BY create_date DESC

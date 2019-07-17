@@ -90,7 +90,7 @@ public class WalletConsumerController {
      */
     @RequestMapping(value = "/findWalletConsumerByCondition", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件查询账户的消费记录", response = WalletConsumerVo.class)
-    public Object findWalletConsumerByCondition(@RequestBody QueryWalletConsumerDto queryWalletConsumerDto) {
+    public Object findWalletConsumerByCondition(@Validated @RequestBody QueryWalletConsumerDto queryWalletConsumerDto) {
         return WrapMapper.ok(walletConsumerService.findWalletConsumerByCondition(queryWalletConsumerDto));
     }
 
