@@ -73,7 +73,8 @@ public class WalletAccountWebController {
     @RequestMapping(value = "/findWalletAccountInCondition", method = RequestMethod.POST)
     public Object findWalletAccountInCondition(@RequestBody QueryWalletAccount queryWalletAccount) {
         try {
- /*           SchoolUser user = SecurityUtils.getCurrentUser();*/
+            SchoolUser user = SecurityUtils.getCurrentUser();
+            queryWalletAccount.setSchoolCode(user.getSchoolCode());
             return walletAccountControllerClient.findWalletAccountInCondition(queryWalletAccount);
         } catch (Exception e) {
             e.printStackTrace();
