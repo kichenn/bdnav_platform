@@ -56,22 +56,22 @@ public class WalletConsumerWebController {
         SchoolUser user = SecurityUtils.getCurrentUser();
         queryWalletConsumerDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         List<WalletConsumerVo> walletConsumerVos = walletConsumerControllerClient.findWalletConsumerByCondition(queryWalletConsumerDto).getResult().getList();
-        if (CollectionUtils.isNotEmpty(walletConsumerVos)) {
-            //查询pos机及相关信息
-            List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381").getResult();
-            if (CollectionUtils.isNotEmpty(result)) {
-                Map<String, ChargeDeptAndDeviceVo> deviceVoMap = result.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, Function.identity()));
-                walletConsumerVos.forEach(walletConsumerVo -> {
-                    ChargeDeptAndDeviceVo chargeDeptAndDeviceVo = deviceVoMap.get(walletConsumerVo.getDeviceNumber());
-                    if (null != chargeDeptAndDeviceVo) {
-                        walletConsumerVo.setChargeDeptName(chargeDeptAndDeviceVo.getChargeDeptName());
-                        walletConsumerVo.setDeviceName(chargeDeptAndDeviceVo.getDeviceName());
-                    }
-
-                });
+        if (CollectionUtils.isEmpty(walletConsumerVos)) {
+            //无数据
+            return WrapMapper.ok(walletConsumerVos);
+        }
+        //查询pos机及相关信息
+        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381").getResult();
+        Map<String, ChargeDeptAndDeviceVo> deviceVoMap = result.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, Function.identity()));
+        walletConsumerVos.forEach(walletConsumerVo -> {
+            ChargeDeptAndDeviceVo chargeDeptAndDeviceVo = deviceVoMap.get(walletConsumerVo.getDeviceNumber());
+            if (null != chargeDeptAndDeviceVo) {
+                walletConsumerVo.setChargeDeptName(chargeDeptAndDeviceVo.getChargeDeptName());
+                walletConsumerVo.setDeviceName(chargeDeptAndDeviceVo.getDeviceName());
             }
 
-        }
+        });
+
         return WrapMapper.ok(walletConsumerVos);
     }
 }

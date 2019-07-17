@@ -8,7 +8,7 @@ import lombok.Data;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
+/**充值记录的展示vo
  * @author WanMing
  * @date 2019/7/15 11:29
  */
@@ -21,7 +21,6 @@ public class WalletRechargeVo {
     @ApiModelProperty("主键")
     @JsonSerialize(using = ToStringSerializer.class)
     private Long id;
-
 
     /**
      * 学校编码
@@ -72,6 +71,12 @@ public class WalletRechargeVo {
     private String rechargeType;
 
     /**
+     * 窗口充值时,窗口名称
+     */
+    @ApiModelProperty("窗口名称")
+    private String windowName;
+
+    /**
      * 状态 1 未支付 2 支付中 3 支付成功 4 支付失败
      */
     @ApiModelProperty("状态 1 未支付 2 支付中 3 支付成功 4 支付失败")
@@ -113,22 +118,6 @@ public class WalletRechargeVo {
     @ApiModelProperty("父母姓名（父母代充时不为空）")
     private String familyName;
 
-    /**
-     * 操作人
-     */
-    @ApiModelProperty("操作人")
-    private Long operator;
 
-    /**
-     * 操作人姓名
-     */
-    @ApiModelProperty("操作人姓名")
-    private String operatorName;
-
-    /**
-     * 备注
-     */
-    @ApiModelProperty("备注")
-    private String remark;
 
 }

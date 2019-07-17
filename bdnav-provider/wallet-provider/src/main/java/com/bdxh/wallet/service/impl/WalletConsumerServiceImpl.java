@@ -90,11 +90,11 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
 	 *
 	 * @param schoolCode
 	 * @param cardNumber
-	 * @param id
+	 * @param orderNo
 	 * @return
 	 */
 	@Override
-	public WalletConsumer findWalletConsumerById(String schoolCode, String cardNumber, String id) {
-		return walletConsumerMapper.findWalletConsumerById(schoolCode,cardNumber,id);
+	public WalletConsumer findWalletConsumerByOrderNo(String schoolCode, String cardNumber, String orderNo) {
+		return walletConsumerMapper.findWalletConsumerById(schoolCode,cardNumber,orderNo);
 	}
 }
