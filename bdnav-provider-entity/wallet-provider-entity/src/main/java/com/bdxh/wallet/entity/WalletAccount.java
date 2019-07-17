@@ -51,6 +51,7 @@ public class WalletAccount {
 	 * 用户主键
 	 */
 	@Column(name = "user_id")
+	@JsonSerialize(using = ToStringSerializer.class)
 	private Long userId;
 
 	/**
