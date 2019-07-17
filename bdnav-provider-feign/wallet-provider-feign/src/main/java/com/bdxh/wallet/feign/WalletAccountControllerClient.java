@@ -30,6 +30,17 @@ public interface WalletAccountControllerClient {
     Wrapper<MyWalletVo> myWallet(@RequestBody WalletAccount walletAccountParam);
 
     /**
+     * 查询是否设置支付密码
+     *
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    @PostMapping("/walletAccount/findPayPwd")
+    @ResponseBody
+    Wrapper<Boolean> findPayPwd(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber);
+
+    /**
      * 设置支付密码
      *
      * @param setPayPwdDto
