@@ -82,6 +82,13 @@ public class WalletAccountWebController {
         return WrapMapper.ok(walletAccountControllerClient.myWallet(walletAccount).getResult());
     }
 
+    @GetMapping("/findPayPwd")
+    @ApiOperation(value = "查询是否设置支付密码", response = Boolean.class)
+    public Object findPayPwd() {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        return WrapMapper.ok(walletAccountControllerClient.findPayPwd(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult());
+    }
+
     @PostMapping("/setPayPwd")
     @ApiOperation(value = "设置支付密码", response = Boolean.class)
     public Object setPayPwd(@Validated @RequestBody SetPayPwdDto setPayPwdDto) {

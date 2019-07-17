@@ -7,6 +7,7 @@ import com.bdxh.wallet.fallback.PhysicalCardControllerFallback;
 import com.github.pagehelper.PageInfo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,6 +18,32 @@ import org.springframework.web.bind.annotation.*;
 @Service
 @FeignClient(value = "wallet-provider-cluster", fallback = PhysicalCardControllerFallback.class)
 public interface PhysicalCardControllerClient {
+
+    /**
+     * 查询账单信息
+     *
+     * @param findBillRecordDto
+     * @return
+     */
+    @PostMapping("/physicalCard/findBillRecord")
+    Wrapper findRechargeRecord(@Validated @RequestBody FindBillRecordDto findBillRecordDto);
+
+    /**
+     * 查询卡的状态
+     *
+     * @param physicalNumber
+     * @return
+     */
+    @GetMapping("/physicalCard/findCardStatus")
+    Wrapper<Boolean> findCardStatus(@RequestParam("physicalNumber") String physicalNumber);
+
+    /**
+     * @param physicalNumber 实体卡号
+     * @param physicalStatus 挂失或者解挂（1 正常 2 挂失）
+     * @return
+     */
+    @PostMapping("/physicalCard/cardStatus")
+    Wrapper<Boolean> cardStatus(@RequestParam("physicalNumber") String physicalNumber, @RequestParam("physicalStatus") Byte physicalStatus);
 
     /**
      * 分页查询

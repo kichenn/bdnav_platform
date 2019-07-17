@@ -44,7 +44,7 @@ public class PhysicalCardController {
     private SnowflakeIdWorker snowflakeIdWorker;
 
     @Autowired
-    private  WalletRechargeController walletRechargeController;
+    private WalletRechargeController walletRechargeController;
 
 
     @PostMapping("/findBillRecord")
@@ -57,6 +57,15 @@ public class PhysicalCardController {
             //只查询消费账单，按照类型
         }
         return WrapMapper.ok();
+    }
+
+    @GetMapping("/findCardStatus")
+    @ApiOperation(value = "查询卡的状态", response = Boolean.class)
+    public Object findCardStatus(@RequestParam("physicalNumber") String physicalNumber) {
+        PhysicalCard physicalCard = new PhysicalCard();
+        physicalCard.setPhysicalNumber(physicalNumber);
+        PhysicalCard physicalCard1 = physicalCardService.selectOne(physicalCard);
+        return WrapMapper.ok(physicalCard1.getStatus());
     }
 
     /**
@@ -72,8 +81,6 @@ public class PhysicalCardController {
         physicalCard.setStatus(physicalStatus);
         return WrapMapper.ok(physicalCardService.modifyInfoByPhysicalCard(physicalCard));
     }
-
-
 
 
     @RequestMapping(value = "/addPhysicalCard", method = RequestMethod.POST)
