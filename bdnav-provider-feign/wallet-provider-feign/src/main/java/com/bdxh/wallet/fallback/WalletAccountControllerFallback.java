@@ -23,7 +23,7 @@ public class WalletAccountControllerFallback implements WalletAccountControllerC
     }
 
     @Override
-    public Wrapper<Boolean> findPayPwd(String schoolCode, String cardNumber) {
+    public Wrapper findPayPwd(String schoolCode, String cardNumber) {
         return WrapMapper.error();
     }
 

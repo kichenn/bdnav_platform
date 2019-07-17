@@ -36,9 +36,9 @@ public interface WalletAccountControllerClient {
      * @param cardNumber
      * @return
      */
-    @PostMapping("/walletAccount/findPayPwd")
+    @GetMapping("/walletAccount/findPayPwd")
     @ResponseBody
-    Wrapper<Boolean> findPayPwd(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber);
+    Wrapper findPayPwd(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber);
 
     /**
      * 设置支付密码
