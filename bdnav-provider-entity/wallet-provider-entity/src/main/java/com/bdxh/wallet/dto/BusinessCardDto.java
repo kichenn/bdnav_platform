@@ -21,9 +21,9 @@ public class BusinessCardDto {
     private String cardNumber;
 
     /**
-     * 用户类型 1学生 2教师 3家长
+     * 用户类型 1家长 2学生 3老师
      */
-    @ApiModelProperty("用户类型 1学生 2教师 3家长")
+    @ApiModelProperty("用户类型 1家长 2学生 3老师")
     private UserTypeEnum userTypeEnum;
 
 }

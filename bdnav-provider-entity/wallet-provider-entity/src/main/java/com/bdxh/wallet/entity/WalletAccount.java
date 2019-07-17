@@ -4,6 +4,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import javax.persistence.*;
 import java.util.Date;
@@ -67,7 +68,7 @@ public class WalletAccount {
 	private String userName;
 
 	/**
-	 * 用户类型 1学生 2教师 3家长
+	 * 用户类型 1家长 2学生 3老师
 	 */
 	@Column(name = "user_type")
 	private Byte userType;
