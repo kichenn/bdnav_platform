@@ -80,7 +80,7 @@ public class WalletAccountController {
             walletAccount.setCreateDate(new Date());
             walletAccount.setUpdateDate(new Date());
             walletAccount.setRemark("钱包");
-            walletAccountService.save()
+            walletAccountService.save(walletAccount);
         }
         MyWalletVo myWalletVo = new MyWalletVo();
         myWalletVo.setIdentityType(String.valueOf(walletAccount.getUserType()));
