@@ -100,6 +100,8 @@ public class WalletAccountWebController {
     @RequestMapping(value = "/businessCardToShow", method = RequestMethod.POST)
     public Object businessCardToShow(@RequestBody BusinessCardDto businessCardDto) {
         try {
+               SchoolUser user = SecurityUtils.getCurrentUser();
+               businessCardDto.setSchoolCode(user.getSchoolCode());
              if (businessCardDto.getUserTypeEnum().getKey().equals("STUDENT")){
                  StudentVo sv=studentControllerClient.queryStudentInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
                  return WrapMapper.ok(sv);
