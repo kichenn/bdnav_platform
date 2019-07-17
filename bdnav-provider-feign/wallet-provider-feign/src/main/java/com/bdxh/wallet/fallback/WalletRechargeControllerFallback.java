@@ -4,8 +4,11 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddWalletRechargeDto;
 import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
+import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
+import com.bdxh.wallet.vo.WalletRechargeVo;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,6 +30,11 @@ public class WalletRechargeControllerFallback implements WalletRechargeControlle
 
     @Override
     public Wrapper<WalletRecharge> findWalletRechargeByOrderNo(Long orderNo) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<PageInfo<WalletRechargeVo>> findWalletRechargeByCondition(QueryWalletRechargeDto queryWalletRechargeDto) {
         return WrapMapper.error();
     }
 }

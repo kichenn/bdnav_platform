@@ -64,12 +64,12 @@
 	  ORDER BY create_date DESC
 	</select>
 
-	<!--根据id查询单条消费记录-->
+	<!--根据平台订单号查询单条消费记录-->
 	<select id="findWalletConsumerById" resultMap="BaseResultMap">
 		SELECT
 		<include refid="BaseColumns"/>
 		FROM t_wallet_consumer
-		WHERE school_code = #{schoolCode} AND card_number = #{cardNumber} AND id = #{id}
+		WHERE school_code = #{schoolCode} AND card_number = #{cardNumber} AND order_no = #{orderNo}
 	</select>
 
 	<delete id="delWalletConsumerInIds" parameterType="Integer">

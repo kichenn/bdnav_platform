@@ -1,6 +1,5 @@
 package com.bdxh.wallet.feign;
 
-import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddWalletConsumerDto;
 import com.bdxh.wallet.dto.ModifyWalletConsumerDto;
@@ -9,13 +8,12 @@ import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.fallback.WalletConsumerControllerClientFallback;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageInfo;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-/**
+/**消费记录的feign
  * @author WanMing
  * @date 2019/7/16 11:02
  */

@@ -35,11 +35,11 @@ public interface WalletConsumerMapper extends Mapper<WalletConsumer> {
     List<WalletConsumer> findWalletConsumerByCondition(@Param("walletConsumerDto") QueryWalletConsumerDto walletConsumerDto);
 
 	/**
-	 * 根据id查询单条消费记录
+	 * 根据平台订单号查询单条消费记录
 	 * @param schoolCode
 	 * @param cardNumber
-	 * @param id
+	 * @param orderNo
 	 * @return
 	 */
-	WalletConsumer findWalletConsumerById(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber,@Param("id") String id);
+	WalletConsumer findWalletConsumerById(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber,@Param("orderNo") String orderNo);
 }

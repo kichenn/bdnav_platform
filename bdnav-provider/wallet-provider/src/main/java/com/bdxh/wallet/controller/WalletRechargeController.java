@@ -83,7 +83,7 @@ public class WalletRechargeController {
      * @return
      */
     @GetMapping("/findWalletRechargeByOrderNo")
-    @ApiOperation(value = "绑定充值记录并修改相关状态", response = String.class)
+    @ApiOperation(value = "根据我方订单信息，查询充值记录", response = String.class)
     public Object findWalletRechargeByOrderNo(@RequestParam("orderNo") Long orderNo) {
         return WrapMapper.ok(walletRechargeService.findWalletRechargeByOrderNo(orderNo));
     }

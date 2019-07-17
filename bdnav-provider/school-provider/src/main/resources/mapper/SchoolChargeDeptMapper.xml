@@ -23,6 +23,7 @@
         <result column="school_name" jdbcType="VARCHAR" property="schoolName"/>
         <result column="charge_dept_name" jdbcType="VARCHAR" property="chargeDeptName"/>
         <result column="charge_dept_type" jdbcType="BIGINT" property="chargeDeptType"/>
+        <result column="consume_type" jdbcType="BIGINT" property="consumeType"/>
         <result column="operator" jdbcType="BIGINT" property="operator"/>
         <result column="operator_name" jdbcType="VARCHAR" property="operatorName"/>
         <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>

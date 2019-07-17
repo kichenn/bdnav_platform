@@ -48,7 +48,6 @@ public class WalletConsumerController {
         //数据拷贝
         WalletConsumer walletConsumer = new WalletConsumer();
         BeanUtils.copyProperties(addWalletConsumerDto, walletConsumer);
-        walletConsumer.setId(snowflakeIdWorker.nextId());
         walletConsumer.setOrderNo(snowflakeIdWorker.nextId() + "");
         return WrapMapper.ok(walletConsumerService.save(walletConsumer) > 0);
     }
@@ -96,16 +95,16 @@ public class WalletConsumerController {
 
 
     /**
-     * 根据id查询单条消费记录
+     * 根据平台订单号查询单条消费记录
      *
      * @Author: WanMing
      * @Date: 2019/7/12 16:06
      */
-    @RequestMapping(value = "/findWalletConsumerById", method = RequestMethod.GET)
-    @ApiOperation(value = "根据id查询单条消费记录", response = WalletConsumer.class)
-    public Object findWalletConsumerById(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber
-            , @RequestParam("id") String id){
-        return WrapMapper.ok(walletConsumerService.findWalletConsumerById(schoolCode,cardNumber,id));
+    @RequestMapping(value = "/findWalletConsumerByOrderNo", method = RequestMethod.GET)
+    @ApiOperation(value = "根据平台订单号查询单条消费记录", response = WalletConsumer.class)
+    public Object findWalletConsumerByOrderNo(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber
+            , @RequestParam("orderNo") String orderNo){
+        return WrapMapper.ok(walletConsumerService.findWalletConsumerByOrderNo(schoolCode,cardNumber,orderNo));
     }
 
     /**

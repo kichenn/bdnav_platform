@@ -40,10 +40,10 @@ public interface WalletConsumerService extends IService<WalletConsumer> {
 	PageInfo<WalletConsumerVo> findWalletConsumerByCondition(QueryWalletConsumerDto queryWalletConsumerDto);
 
 	/**
-	 * 根据id查询单条消费记录
+	 * 根据平台订单号查询单条消费记录
 	 * @return
 	 */
-	WalletConsumer findWalletConsumerById(String schoolCode, String cardNumber, String id);
+	WalletConsumer findWalletConsumerByOrderNo(String schoolCode, String cardNumber, String orderNo);
 
 //	List<WalletConsumer> findWalletConsumerBy
 }
