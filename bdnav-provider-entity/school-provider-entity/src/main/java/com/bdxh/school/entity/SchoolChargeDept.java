@@ -44,10 +44,17 @@ public class SchoolChargeDept {
 	private String chargeDeptName;
 
 	/**
-	 * 收费部门类型 1 餐饮美食 2生活日用  3读书学习 4医疗保健 5其他分类
+	 * 部门类型 1 充值部门 2 消费部门
 	 */
 	@Column(name = "charge_dept_type")
 	private Byte chargeDeptType;
+
+
+	/**
+	 * 消费类型 1 餐饮美食 2生活日用  3读书学习 4医疗保健 5其他分类
+	 */
+	@Column(name = "consume_type")
+	private Byte consumeType;
 
 	/**
 	 * 操作人主键

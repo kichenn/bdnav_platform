@@ -54,11 +54,11 @@ public class WalletConsumerWebController {
     @ApiOperation(value = "根据条件查询账户的消费记录", response = WalletConsumerVo.class)
     public Object findWalletConsumerByCondition(@RequestBody QueryWalletConsumerDto queryWalletConsumerDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletConsumerDto.setSchoolCode(user.getSchoolCode());
+        queryWalletConsumerDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         List<WalletConsumerVo> walletConsumerVos = walletConsumerControllerClient.findWalletConsumerByCondition(queryWalletConsumerDto).getResult().getList();
         if (CollectionUtils.isNotEmpty(walletConsumerVos)) {
             //查询pos机及相关信息
-            List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(user.getSchoolCode()).getResult();
+            List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381").getResult();
             if (CollectionUtils.isNotEmpty(result)) {
                 Map<String, ChargeDeptAndDeviceVo> deviceVoMap = result.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, Function.identity()));
                 walletConsumerVos.forEach(walletConsumerVo -> {

@@ -24,10 +24,16 @@ public class ChargeDeptAndDeviceVo {
     private String chargeDeptName;
 
     /**
-     * 收费部门类型 1 餐饮美食 2生活日用  3读书学习 4医疗保健 5其他分类
+     * 部门类型 1 充值部门 2 消费部门
+     */
+    @ApiModelProperty("部门类型 1 充值部门 2 消费部门")
+    private Byte chargeDeptType;
+
+    /**
+     * 消费类型 1 餐饮美食 2生活日用  3读书学习 4医疗保健 5其他分类
      */
     @ApiModelProperty("收费部门类型 1 餐饮美食 2生活日用  3读书学习 4医疗保健 5其他分类")
-    private Byte chargeDeptType;
+    private Byte consumeType;
 
 
     /*******************POS机属性*************************/

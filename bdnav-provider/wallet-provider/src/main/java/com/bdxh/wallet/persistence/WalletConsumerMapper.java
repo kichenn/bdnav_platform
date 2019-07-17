@@ -29,10 +29,10 @@ public interface WalletConsumerMapper extends Mapper<WalletConsumer> {
 
 	/**
 	 * 条件+分页查询消费记录
-	 * @param walletConsumer
+	 * @param walletConsumerDto
 	 * @return
 	 */
-    List<WalletConsumer> findWalletConsumerByCondition(@Param("walletConsumer") QueryWalletConsumerDto walletConsumer);
+    List<WalletConsumer> findWalletConsumerByCondition(@Param("walletConsumerDto") QueryWalletConsumerDto walletConsumerDto);
 
 	/**
 	 * 根据id查询单条消费记录

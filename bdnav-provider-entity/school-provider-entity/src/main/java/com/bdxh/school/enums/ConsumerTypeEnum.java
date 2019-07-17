@@ -7,12 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**收费部门的类型
+/**消费类型
  * @author WanMing
  * @date 2019/7/12 19:01
  */
 
-public enum ChargeDetpTypeEnum {
+public enum ConsumerTypeEnum {
 
     RESTAURANT_FOOD(new Byte("1"), "餐饮美食"),
     DAILY_LIFE(new Byte("2"), "生活日用"),
@@ -34,7 +34,7 @@ public enum ChargeDetpTypeEnum {
     public final static String HEALTH_CARE_VALUE = "医疗保健";
     public final static String OTHER_CLASSIFICATION_VALUE = "其他分类";
 
-    private ChargeDetpTypeEnum(Byte key, String value) {
+    private ConsumerTypeEnum(Byte key, String value) {
         this.key = key;
         this.value = value;
     }
@@ -51,7 +51,7 @@ public enum ChargeDetpTypeEnum {
         if (null == value) {
             return null;
         }
-        for (ChargeDetpTypeEnum c : ChargeDetpTypeEnum.values()) {
+        for (ConsumerTypeEnum c : ConsumerTypeEnum.values()) {
             if (c.getValue().equals(value)) {
                 return c.key;
             }
@@ -63,7 +63,7 @@ public enum ChargeDetpTypeEnum {
         if (null == key) {
             return StringUtils.EMPTY;
         }
-        for (ChargeDetpTypeEnum c : ChargeDetpTypeEnum.values()) {
+        for (ConsumerTypeEnum c : ConsumerTypeEnum.values()) {
             if (c.getKey().equals(key)) {
                 return c.value;
             }
@@ -73,8 +73,8 @@ public enum ChargeDetpTypeEnum {
 
     public static List<Map<String, Object>> getEnums() {
         List<Map<String, Object>> data = new ArrayList<Map<String, Object>>();
-        ChargeDetpTypeEnum[] bs = ChargeDetpTypeEnum.values();
-        for (ChargeDetpTypeEnum projectType : bs) {
+        ConsumerTypeEnum[] bs = ConsumerTypeEnum.values();
+        for (ConsumerTypeEnum projectType : bs) {
             Map<String, Object> map = Maps.newHashMap();
             map.put("key", projectType.getKey());
             map.put("value", projectType.getValue());

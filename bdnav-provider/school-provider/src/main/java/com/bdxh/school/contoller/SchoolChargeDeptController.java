@@ -4,7 +4,6 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolChargeDept;
 import com.bdxh.school.entity.SchoolPosDeviceCharge;
-import com.bdxh.school.enums.ChargeDetpTypeEnum;
 import com.bdxh.school.service.SchoolPosDeviceChargeService;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import io.swagger.annotations.Api;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.*;
 import com.bdxh.school.service.SchoolChargeDeptService;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Description: 学校收费部门控制器
