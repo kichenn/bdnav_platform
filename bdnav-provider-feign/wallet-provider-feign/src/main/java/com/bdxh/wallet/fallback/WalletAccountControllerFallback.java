@@ -53,6 +53,11 @@ public class WalletAccountControllerFallback implements WalletAccountControllerC
     }
 
     @Override
+    public Wrapper findNoPwdPay(String schoolCode, String cardNumber) {
+        return WrapMapper.error();
+    }
+
+    @Override
     public Wrapper rechargeWalletAccount(ModifyAccountMoeny modifyAccountMoeny) {
         return WrapMapper.error();
     }

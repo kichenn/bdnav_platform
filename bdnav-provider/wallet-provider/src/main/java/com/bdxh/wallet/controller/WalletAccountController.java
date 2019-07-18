@@ -76,6 +76,7 @@ public class WalletAccountController {
             walletAccount.setUserType(walletAccountParam.getUserType());
             walletAccount.setOrgId(walletAccountParam.getOrgId());
             walletAccount.setAmount(new BigDecimal("0"));
+            walletAccount.setQuickPayMoney(new BigDecimal("0"));
             walletAccount.setStatus(AccountStatusEnum.NORMAL_KEY);
             walletAccount.setCreateDate(new Date());
             walletAccount.setUpdateDate(new Date());
@@ -92,19 +93,28 @@ public class WalletAccountController {
     @ApiOperation(value = "查询是否设置支付密码", response = Boolean.class)
     public Object findPayPwd(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
         WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(cardNumber, schoolCode);
-        return WrapMapper.ok(!walletAccount.getPayPassword().isEmpty());
+        return WrapMapper.ok(!(walletAccount.getPayPassword() == null || walletAccount.getPayPassword().isEmpty()));
     }
 
 
     @PostMapping("/setPayPwd")
     @ApiOperation(value = "设置支付密码", response = Boolean.class)
     public Object setPayPwd(@Validated @RequestBody SetPayPwdDto setPayPwdDto) {
-        String payPwd = new BCryptPasswordEncoder().encode(AESUtils.deCode(setPayPwdDto.getPayPwd(), AESUtils.AesConstant.WEIXIAO_KEY));
-        return WrapMapper.ok(walletAccountService.setPayPwd(setPayPwdDto.getCardNumber(), setPayPwdDto.getSchoolCode(), payPwd));
+        String pwd = AESUtils.deCode(setPayPwdDto.getPayPwd(), AESUtils.AesConstant.WEIXIAO_KEY);
+        Preconditions.checkArgument(pwd.length() == 6, "请输入6位长度的密码");
+        String payPwd = new BCryptPasswordEncoder().encode(pwd);
+        Boolean result = walletAccountService.setPayPwd(setPayPwdDto.getCardNumber(), setPayPwdDto.getSchoolCode(), payPwd);
+        if (result) {
+            //查询是否设置小额免密支付
+            WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(setPayPwdDto.getCardNumber(), setPayPwdDto.getSchoolCode());
+            Preconditions.checkArgument(walletAccount != null, "该钱包不存在，请检查cardNumber，schoolCode");
+            return WrapMapper.ok(!(walletAccount.getQuickPayMoney() == null || walletAccount.getQuickPayMoney().compareTo(new BigDecimal("0")) == 0));
+        }
+        return WrapMapper.error("设置支付密码失败");
     }
 
     @PostMapping("/modifyPayPwd")
-    @ApiOperation(value = "修改支付密码", response = Boolean.class)
+    @ApiOperation(value = "修改时效验支付密码", response = Boolean.class)
     public Object modifyPayPwd(@Validated @RequestBody ModifyPayPwdDto modifyPayPwdDto) {
         //查询钱包信息
         WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(modifyPayPwdDto.getCardNumber(), modifyPayPwdDto.getSchoolCode());
@@ -112,11 +122,9 @@ public class WalletAccountController {
 
         //matches(第一个参数为前端传递的值，未加密，后一个为数据库已经加密的串对比)
         if (!new BCryptPasswordEncoder().matches(AESUtils.deCode(modifyPayPwdDto.getPayPwd(), AESUtils.AesConstant.WEIXIAO_KEY), walletAccount.getPayPassword())) {
-            return WrapMapper.error("支付密码输入错误请检查");
+            return WrapMapper.ok(Boolean.FALSE);
         }
-        //获取新密码加密串
-        String newPayPwd = new BCryptPasswordEncoder().encode(AESUtils.deCode(modifyPayPwdDto.getNewPayPwd(), AESUtils.AesConstant.WEIXIAO_KEY));
-        return WrapMapper.ok(walletAccountService.setPayPwd(modifyPayPwdDto.getCardNumber(), modifyPayPwdDto.getSchoolCode(), newPayPwd));
+        return WrapMapper.ok(Boolean.TRUE);
     }
 
     @PostMapping("/forgetPayPwd")
@@ -152,9 +160,11 @@ public class WalletAccountController {
         WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(setNoPwdPayPwdDto.getCardNumber(), setNoPwdPayPwdDto.getSchoolCode());
         Preconditions.checkArgument(walletAccount != null, "该钱包不存在，请检查cardNumber，schoolCode");
 
+        String pwd = AESUtils.deCode(setNoPwdPayPwdDto.getPayPwd(), AESUtils.AesConstant.WEIXIAO_KEY);
+        Preconditions.checkArgument(pwd.length() == 6, "请输入6位长度的密码");
         //matches(第一个参数为前端传递的值，未加密，后一个为数据库已经加密的串对比)
-        if (!new BCryptPasswordEncoder().matches(AESUtils.deCode(setNoPwdPayPwdDto.getPayPwd(), AESUtils.AesConstant.WEIXIAO_KEY), walletAccount.getPayPassword())) {
-            return WrapMapper.error("支付密码输入错误请检查");
+        if (!new BCryptPasswordEncoder().matches(pwd, walletAccount.getPayPassword())) {
+            return WrapMapper.ok(Boolean.FALSE);
         }
         WalletAccount walletAccountParam = new WalletAccount();
         walletAccountParam.setUpdateDate(new Date());
@@ -166,6 +176,15 @@ public class WalletAccountController {
         walletAccountParam.setRemark(setNoPwdPayPwdDto.getRemark());
 
         return WrapMapper.ok(walletAccountService.noPwdPay(walletAccountParam));
+    }
+
+    @PostMapping("/findNoPwdPay")
+    @ApiOperation(value = "查询小额免密支付金额", response = Boolean.class)
+    public Object findNoPwdPay(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber) {
+        //查询钱包信息
+        WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(cardNumber, schoolCode);
+        Preconditions.checkArgument(walletAccount != null, "该钱包不存在，请检查cardNumber，schoolCode");
+        return WrapMapper.ok(walletAccount.getQuickPayMoney());
     }
 
     /**

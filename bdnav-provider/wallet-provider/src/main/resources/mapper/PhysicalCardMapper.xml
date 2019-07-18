@@ -54,7 +54,7 @@
             <if test="physicalCard.operator !=null">
                 operator=#{physicalCard.operator}
             </if>
-            <if test="physicalCard.operatorName !=null AND physicalCard.operatorName!=''">
+            <if test="physicalCard.operatorName !=null and physicalCard.operatorName!=''">
                 operator_name=#{physicalCard.operatorName}
             </if>
             <if test="physicalCard.updateDate !=null ">
