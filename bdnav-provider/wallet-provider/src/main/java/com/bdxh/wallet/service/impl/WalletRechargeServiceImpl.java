@@ -124,6 +124,7 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
                 BeanUtils.copyProperties(walletRecharge, walletRechargeVo);
                 WalletAccount walletAccount = walletAccountMapper.findWalletAccountBySchool(walletRechargeVo.getSchoolCode(),walletRechargeVo.getCardNumber());
                 walletRechargeVo.setPhysicalNumber(walletAccount.getPhysicalNumber());
+                walletRechargeVo.setUserType(walletAccount.getUserType());
                 walletRechargeVos.add(walletRechargeVo);
             });
         }

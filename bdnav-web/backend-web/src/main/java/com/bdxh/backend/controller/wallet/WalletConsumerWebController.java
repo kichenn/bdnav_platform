@@ -1,11 +1,9 @@
-package com.bdxh.client.controller.wallet;
+package com.bdxh.backend.controller.wallet;
 
-import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.helper.excel.ExcelExportUtils;
 import com.bdxh.common.helper.excel.bean.WalletConsumerExcelReportBean;
 import com.bdxh.common.helper.excel.utils.DateUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.ChargeDeptTypeEnum;
 import com.bdxh.school.enums.ConsumerTypeEnum;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
@@ -69,8 +67,6 @@ public class WalletConsumerWebController {
     @RequestMapping(value = "/findWalletConsumerByCondition", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件查询账户的消费记录", response = WalletConsumerVo.class)
     public Object findWalletConsumerByCondition(@RequestBody QueryWalletConsumerDto queryWalletConsumerDto) {
-        SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletConsumerDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         PageInfo<WalletConsumerVo> pageInfo = walletConsumerControllerClient.findWalletConsumerByCondition(queryWalletConsumerDto).getResult();
         List<WalletConsumerVo> walletConsumerVos = pageInfo.getList();
         if (CollectionUtils.isEmpty(walletConsumerVos)) {
@@ -78,7 +74,7 @@ public class WalletConsumerWebController {
             return WrapMapper.ok(walletConsumerVos);
         }
         //查询pos机及相关信息
-        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
+        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(queryWalletConsumerDto.getSchoolCode(), ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
         Map<String, ChargeDeptAndDeviceVo> deviceVoMap = result.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, Function.identity()));
         walletConsumerVos.forEach(walletConsumerVo -> {
             ChargeDeptAndDeviceVo chargeDeptAndDeviceVo = deviceVoMap.get(walletConsumerVo.getDeviceNumber());
@@ -104,15 +100,13 @@ public class WalletConsumerWebController {
     @ApiOperation(value = "导出消费记录")
     public Object exportWalletConsumerList(@RequestBody QueryWalletConsumerExcelDto queryWalletConsumerExcelDto) {
         Long startTime = System.currentTimeMillis();
-        SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletConsumerExcelDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         List<WalletConsumerVo> walletConsumerVos = walletConsumerControllerClient.findWalletConsumerList(queryWalletConsumerExcelDto).getResult();
         if (CollectionUtils.isEmpty(walletConsumerVos)) {
             //无数据
             return WrapMapper.error("无数据,请重新选择");
         }
         //查询pos机及相关信息
-        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
+        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/queryWalletConsumerExcelDto.getSchoolCode(), ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
         Map<String, ChargeDeptAndDeviceVo> deviceVoMap = result.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, Function.identity()));
         walletConsumerVos.forEach(walletConsumerVo -> {
             ChargeDeptAndDeviceVo chargeDeptAndDeviceVo = deviceVoMap.get(walletConsumerVo.getDeviceNumber());

@@ -3,6 +3,8 @@ package com.bdxh.wallet.service.impl;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
+import com.bdxh.wallet.entity.WalletAccount;
+import com.bdxh.wallet.persistence.WalletAccountMapper;
 import com.bdxh.wallet.service.WalletConsumerService;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageHelper;
@@ -32,6 +34,9 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
 
     @Autowired
     private WalletConsumerMapper walletConsumerMapper;
+
+    @Autowired
+    private WalletAccountMapper walletAccountMapper;
 
     /*
      *查询总条数
@@ -81,6 +86,9 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
             walletConsumers.forEach(consumerDetail -> {
                 WalletConsumerVo walletConsumerVo = new WalletConsumerVo();
                 BeanUtils.copyProperties(consumerDetail, walletConsumerVo);
+                WalletAccount walletAccount = walletAccountMapper.findWalletAccountBySchool(walletConsumerVo.getSchoolCode(), walletConsumerVo.getCardNumber());
+                walletConsumerVo.setPhysicalNumber(walletAccount.getPhysicalNumber());
+                walletConsumerVo.setUserType(walletAccount.getUserType());
                 walletConsumerVos.add(walletConsumerVo);
             });
         }
