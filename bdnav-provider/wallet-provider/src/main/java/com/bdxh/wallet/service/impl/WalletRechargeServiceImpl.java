@@ -1,6 +1,8 @@
 package com.bdxh.wallet.service.impl;
 
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
+import com.bdxh.wallet.entity.WalletAccount;
+import com.bdxh.wallet.persistence.WalletAccountMapper;
 import com.bdxh.wallet.service.WalletRechargeService;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import com.github.pagehelper.PageHelper;
@@ -31,6 +33,10 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
 
     @Autowired
     private WalletRechargeMapper walletRechargeMapper;
+
+
+    @Autowired
+    private WalletAccountMapper walletAccountMapper;
 
     /*
      *查询总条数
@@ -116,6 +122,8 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
             walletRecharges.forEach(walletRecharge -> {
                 WalletRechargeVo walletRechargeVo = new WalletRechargeVo();
                 BeanUtils.copyProperties(walletRecharge, walletRechargeVo);
+                WalletAccount walletAccount = walletAccountMapper.findWalletAccountBySchool(walletRechargeVo.getSchoolCode(),walletRechargeVo.getCardNumber());
+                walletRechargeVo.setPhysicalNumber(walletAccount.getPhysicalNumber());
                 walletRechargeVos.add(walletRechargeVo);
             });
         }

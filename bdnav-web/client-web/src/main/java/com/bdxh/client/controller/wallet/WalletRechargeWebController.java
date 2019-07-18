@@ -9,6 +9,7 @@ import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
 import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
+import com.bdxh.wallet.feign.WalletAccountControllerClient;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import com.github.pagehelper.PageInfo;
@@ -46,6 +47,7 @@ public class WalletRechargeWebController {
     private SchoolDeviceControllerClient schoolDeviceControllerClient;
 
 
+
     /**
      * 根据条件分页查询充值记录
      *
@@ -61,8 +63,9 @@ public class WalletRechargeWebController {
         List<WalletRechargeVo> walletRechargeVos =pageInfo.getList();
         if (CollectionUtils.isEmpty(walletRechargeVos)) {
             //无数据
-            return WrapMapper.ok(walletRechargeVos);
+            return WrapMapper.ok(pageInfo);
         }
+        //设置部门信息
         List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
         if (CollectionUtils.isNotEmpty(deptAndDeviceVos)) {
             Map<String, String> deptAndDeviceVoMap = deptAndDeviceVos.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, ChargeDeptAndDeviceVo::getChargeDeptName));
@@ -70,7 +73,6 @@ public class WalletRechargeWebController {
                 walletRechargeVo.setWindowName(deptAndDeviceVoMap.get(walletRechargeVo.getDeviceNumber()));
             });
         }
-
         return WrapMapper.ok(pageInfo);
     }
 }

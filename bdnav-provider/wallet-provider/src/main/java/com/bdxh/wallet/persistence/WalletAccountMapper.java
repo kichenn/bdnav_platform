@@ -46,4 +46,11 @@ public interface WalletAccountMapper extends Mapper<WalletAccount> {
 	 */
 	Integer delWalletAccount(@Param("schoolCode")String schoolCode,@Param("cardNumber")String cardNumber,@Param("id")Long id);
 
+	/**
+	 * 根据schoolCode和cardNumber查询用户钱包账户
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @return
+	 */
+    WalletAccount findWalletAccountBySchool(@Param("schoolCode") String schoolCode,@Param("cardNumber")  String cardNumber);
 }

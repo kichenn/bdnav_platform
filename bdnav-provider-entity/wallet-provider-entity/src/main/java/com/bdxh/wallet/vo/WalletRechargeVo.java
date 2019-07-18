@@ -53,6 +53,12 @@ public class WalletRechargeVo {
     private String cardNumber;
 
     /**
+     * 实体卡号
+     */
+    @ApiModelProperty("实体卡号")
+    private String physicalNumber;
+
+    /**
      * 平台订单号
      */
     @ApiModelProperty("平台订单号")

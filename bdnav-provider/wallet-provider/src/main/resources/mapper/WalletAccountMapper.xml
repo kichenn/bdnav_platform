@@ -109,6 +109,14 @@
         </where>
         ORDER BY create_date DESC
     </select>
+    <!--根据schoolCode和cardNumber查询用户钱包账户-->
+    <select id="findWalletAccountBySchool" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_wallet_account
+        WHERE school_code = #{schoolCode} AND card_number = #{cardNumber}
+    </select>
 
     <!--根据id删除数据-->
     <delete id="delWalletAccount">
