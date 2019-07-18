@@ -14,6 +14,7 @@ import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.feign.WalletConsumerControllerClient;
 import com.bdxh.wallet.vo.WalletConsumerVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -70,7 +71,8 @@ public class WalletConsumerWebController {
     public Object findWalletConsumerByCondition(@RequestBody QueryWalletConsumerDto queryWalletConsumerDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
         queryWalletConsumerDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
-        List<WalletConsumerVo> walletConsumerVos = walletConsumerControllerClient.findWalletConsumerByCondition(queryWalletConsumerDto).getResult().getList();
+        PageInfo<WalletConsumerVo> pageInfo = walletConsumerControllerClient.findWalletConsumerByCondition(queryWalletConsumerDto).getResult();
+        List<WalletConsumerVo> walletConsumerVos = pageInfo.getList();
         if (CollectionUtils.isEmpty(walletConsumerVos)) {
             //无数据
             return WrapMapper.ok(walletConsumerVos);
@@ -87,7 +89,7 @@ public class WalletConsumerWebController {
 
         });
 
-        return WrapMapper.ok(walletConsumerVos);
+        return WrapMapper.ok(pageInfo);
     }
 
 

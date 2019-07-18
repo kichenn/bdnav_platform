@@ -11,6 +11,7 @@ import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
 import com.bdxh.wallet.vo.WalletRechargeVo;
+import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -52,11 +53,12 @@ public class WalletRechargeWebController {
      * @Date: 2019/7/15 11:13
      */
     @RequestMapping(value = "/findWalletRechargeByCondition", method = RequestMethod.POST)
-    @ApiOperation(value = "根据条件分页查询充值记录", response = Boolean.class)
+    @ApiOperation(value = "根据条件分页查询充值记录", response = WalletRechargeVo.class)
     public Object findWalletRechargeByCondition(@RequestBody QueryWalletRechargeDto queryWalletRechargeDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
         queryWalletRechargeDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
-        List<WalletRechargeVo> walletRechargeVos = walletRechargeControllerClient.findWalletRechargeByCondition(queryWalletRechargeDto).getResult().getList();
+        PageInfo<WalletRechargeVo> pageInfo = walletRechargeControllerClient.findWalletRechargeByCondition(queryWalletRechargeDto).getResult();
+        List<WalletRechargeVo> walletRechargeVos =pageInfo.getList();
         if (CollectionUtils.isEmpty(walletRechargeVos)) {
             //无数据
             return WrapMapper.ok(walletRechargeVos);
@@ -69,6 +71,6 @@ public class WalletRechargeWebController {
             });
         }
 
-        return WrapMapper.ok(walletRechargeVos);
+        return WrapMapper.ok(pageInfo);
     }
 }
