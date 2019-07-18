@@ -5,11 +5,14 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddWalletConsumerDto;
 import com.bdxh.wallet.dto.ModifyWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
+import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.feign.WalletConsumerControllerClient;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**账户消费管理的降级服务
  * @author WanMing
@@ -38,7 +41,14 @@ public class WalletConsumerControllerClientFallback implements WalletConsumerCon
     }
 
     @Override
-    public Wrapper<WalletConsumer> findWalletConsumerById(String schoolCode, String cardNumber, String id) {
+    public Wrapper<WalletConsumer> findWalletConsumerByOrderNo(String schoolCode, String cardNumber, String orderNo) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<List<WalletConsumerVo>> findWalletConsumerList(QueryWalletConsumerExcelDto queryWalletConsumerExcelDto) {
+        return WrapMapper.error();
+    }
+
+
 }

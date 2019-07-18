@@ -36,7 +36,13 @@ public class QueryWalletRechargeDto extends Query {
      * 充值类型  1线上充值   2 线上代充  3 一体机自充  4窗口充值
      */
     @ApiModelProperty("充值类型  1线上充值   2 线上代充  3 一体机自充  4窗口充值")
-    private String rechargeType;
+    private Byte rechargeType;
+
+    /**
+     * 窗口充值时的 窗口编号
+     */
+    @ApiModelProperty("窗口充值时的 窗口编号")
+    private Long windowId;
 
     /**
      * 开始时间

@@ -5,7 +5,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.wallet.dto.AddWalletConsumerDto;
 import com.bdxh.wallet.dto.ModifyWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
-import com.bdxh.wallet.dto.WalletConsumerExcelDto;
+import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.service.WalletConsumerService;
 import com.bdxh.wallet.vo.WalletConsumerVo;
@@ -108,15 +108,17 @@ public class WalletConsumerController {
     }
 
     /**
-     * 导出消费记录到excel文件
+     * 根据条件查询账户的消费记录不分页
      * @Author: WanMing
-     * @Date: 2019/7/12 18:33
+     * @Date: 2019/7/17 15:00
      */
-    @RequestMapping(value = "/exportWalletConsumerList", method = RequestMethod.GET)
-    @ApiOperation(value = "导出消费记录")
-    public void exportWalletConsumerList(@Validated @RequestBody WalletConsumerExcelDto walletConsumerExcelDto ){
-
+    @RequestMapping(value = "/findWalletConsumerList", method = RequestMethod.POST)
+    @ApiOperation(value = "根据条件查询账户的消费记录不分页", response = WalletConsumerVo.class)
+    public Object findWalletConsumerList( @RequestBody QueryWalletConsumerExcelDto queryWalletConsumerExcelDto){
+        return WrapMapper.ok(walletConsumerService.findWalletConsumerList(queryWalletConsumerExcelDto));
     }
+
+
 
     @PostMapping("/cardStatus")
     @ApiOperation(value = "挂失或者解挂", response = Boolean.class)

@@ -182,6 +182,9 @@
             <if test="schoolCode!=null and schoolCode!=''">
                 AND td.school_code = #{schoolCode}
             </if>
+            <if test="chargeDeptType!=null">
+                AND tc.charge_dept_type = #{chargeDeptType}
+            </if>
         </where>
     </select>
 

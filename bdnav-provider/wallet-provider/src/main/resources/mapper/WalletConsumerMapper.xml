@@ -72,7 +72,18 @@
 		WHERE school_code = #{schoolCode} AND card_number = #{cardNumber} AND order_no = #{orderNo}
 	</select>
 
-	<delete id="delWalletConsumerInIds" parameterType="Integer">
+	<!--根据订单号多条消费记录查询-->
+    <select id="findWalletConsumerByOrderNos" resultMap="BaseResultMap">
+		SELECT
+		<include refid="BaseColumns"/>
+		FROM t_wallet_consumer
+		WHRER order_no IN
+		<foreach collection="orderNos" item="orderNo" separator="," open="(" close=")" >
+			#{orderNo}
+		</foreach>
+	</select>
+
+    <delete id="delWalletConsumerInIds" parameterType="Integer">
 	  DELETE
 	   FROM t_wallet_consumer
 	  WHERE

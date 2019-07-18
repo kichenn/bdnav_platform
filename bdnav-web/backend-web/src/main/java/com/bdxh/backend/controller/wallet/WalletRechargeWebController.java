@@ -1,9 +1,7 @@
-package com.bdxh.client.controller.wallet;
+package com.bdxh.backend.controller.wallet;
 
 
-import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.ChargeDeptTypeEnum;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
 import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
@@ -55,8 +53,6 @@ public class WalletRechargeWebController {
     @RequestMapping(value = "/findWalletRechargeByCondition", method = RequestMethod.POST)
     @ApiOperation(value = "根据条件分页查询充值记录", response = WalletRechargeVo.class)
     public Object findWalletRechargeByCondition(@RequestBody QueryWalletRechargeDto queryWalletRechargeDto) {
-        SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletRechargeDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         PageInfo<WalletRechargeVo> pageInfo = walletRechargeControllerClient.findWalletRechargeByCondition(queryWalletRechargeDto).getResult();
         List<WalletRechargeVo> walletRechargeVos =pageInfo.getList();
         if (CollectionUtils.isEmpty(walletRechargeVos)) {
@@ -64,7 +60,7 @@ public class WalletRechargeWebController {
             return WrapMapper.ok(pageInfo);
         }
         //设置部门信息
-        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
+        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(queryWalletRechargeDto.getSchoolCode(), ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
         if (CollectionUtils.isNotEmpty(deptAndDeviceVos)) {
             Map<String, String> deptAndDeviceVoMap = deptAndDeviceVos.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, ChargeDeptAndDeviceVo::getChargeDeptName));
             walletRechargeVos.forEach(walletRechargeVo -> {

@@ -42,6 +42,12 @@ public class WalletConsumerVo {
     private String userName;
 
     /**
+     * 用户类型
+     */
+    @ApiModelProperty("用户类型")
+    private Byte userType;
+
+    /**
      * 学号/工号/卡号
      */
     @ApiModelProperty("学号/工号/卡号")

@@ -11,6 +11,7 @@ import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.service.WalletRechargeService;
+import com.bdxh.wallet.vo.WalletRechargeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -121,7 +122,7 @@ public class WalletRechargeController {
 	 * @Date: 2019/7/15 11:13
 	 */
 	@RequestMapping(value = "/findWalletRechargeByCondition",method = RequestMethod.POST)
-	@ApiOperation(value = "根据条件分页查询充值记录",response = Boolean.class)
+	@ApiOperation(value = "根据条件分页查询充值记录",response = WalletRechargeVo.class)
 	public Object findWalletRechargeByCondition(@RequestBody QueryWalletRechargeDto queryWalletRechargeDto){
 		return WrapMapper.ok(walletRechargeService.findWalletRechargeByCondition(queryWalletRechargeDto));
 	}

@@ -163,7 +163,7 @@ public class SchoolDeviceController {
      */
     @RequestMapping(value = "/findChargeDeptAndDeviceRelation", method = RequestMethod.GET)
     @ApiOperation(value = "查询收费部门和pos机的关系列表", response = ChargeDeptAndDeviceVo.class)
-    public Object findChargeDeptAndDeviceRelation(@RequestParam(value = "schoolCode",required = false) String schoolCode){
-        return WrapMapper.ok(schoolDeviceService.findChargeDeptAndDeviceRelation(schoolCode));
+    public Object findChargeDeptAndDeviceRelation(@RequestParam(value = "schoolCode",required = false) String schoolCode,@RequestParam(value = "chargeDeptType",required = false) Byte chargeDeptType){
+        return WrapMapper.ok(schoolDeviceService.findChargeDeptAndDeviceRelation(schoolCode,chargeDeptType));
     }
 }

@@ -3,7 +3,12 @@ package com.bdxh.client.controller.wallet;
 import com.bdxh.client.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.SchoolUser;
+import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.feign.TeacherControllerClient;
+import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.TeacherVo;
 import com.bdxh.wallet.dto.AddWalletAccount;
+import com.bdxh.wallet.dto.BusinessCardDto;
 import com.bdxh.wallet.dto.ModifyWalletAccount;
 import com.bdxh.wallet.dto.QueryWalletAccount;
 import com.bdxh.wallet.entity.WalletAccount;
@@ -24,6 +29,14 @@ public class WalletAccountWebController {
 
     @Autowired
     private WalletAccountControllerClient walletAccountControllerClient;
+
+    @Autowired
+    private StudentControllerClient studentControllerClient;
+
+    @Autowired
+    private TeacherControllerClient teacherControllerClient;
+
+
 
 
 
@@ -82,5 +95,22 @@ public class WalletAccountWebController {
         }
     }
 
+
+    @ApiOperation(value = "个人名片展示")
+    @RequestMapping(value = "/businessCardToShow", method = RequestMethod.POST)
+    public Object businessCardToShow(@RequestBody BusinessCardDto businessCardDto) {
+        try {
+             if (businessCardDto.getUserTypeEnum().getKey()==2){
+                 StudentVo sv=studentControllerClient.queryStudentInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
+                 return WrapMapper.ok(sv);
+             }else{
+                 TeacherVo tv = teacherControllerClient.queryTeacherInfo(businessCardDto.getSchoolCode(), businessCardDto.getCardNumber()).getResult();
+                 return WrapMapper.ok(tv);
+             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
 
 }

@@ -60,12 +60,7 @@ public interface SchoolDeviceMapper extends Mapper<SchoolDevice> {
      * @param schoolCode
      * @return
      */
-    List<ChargeDeptAndDeviceVo> findChargeDeptAndDeviceRelation(@Param("schoolCode")String schoolCode);
+    List<ChargeDeptAndDeviceVo> findChargeDeptAndDeviceRelation(@Param("schoolCode")String schoolCode,@Param("chargeDeptType") Byte chargeDeptType);
 
-    /**
-     * 解绑消费机
-     * @param deviceId
-     * @return
-     */
-    Integer delSchoolPosDeviceCharge(@Param("deviceId")Long deviceId);
+
 }

@@ -106,5 +106,5 @@ public interface SchoolDeviceControllerClient {
      */
     @RequestMapping(value = "/schoolDevice/findChargeDeptAndDeviceRelation", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<ChargeDeptAndDeviceVo>> findChargeDeptAndDeviceRelation(@RequestParam(value = "schoolCode",required = false) String schoolCode);
+    Wrapper<List<ChargeDeptAndDeviceVo>> findChargeDeptAndDeviceRelation(@RequestParam(value = "schoolCode",required = false) String schoolCode,@RequestParam(value = "chargeDeptType",required = false) Byte chargeDeptType);
 }
