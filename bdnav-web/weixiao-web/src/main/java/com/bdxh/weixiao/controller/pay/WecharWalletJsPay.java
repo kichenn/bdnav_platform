@@ -122,6 +122,8 @@ public class WecharWalletJsPay {
         wxPayJsOrderDto.setBody("校园钱包充值");
         //ip地址
         wxPayJsOrderDto.setIp(addWalletPayDto.getIp());
+        //微信openid
+        wxPayJsOrderDto.setOpenid(addWalletPayDto.getOpenId());
 
         Wrapper jsOrderWrapper = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto);
 
