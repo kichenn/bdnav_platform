@@ -47,13 +47,13 @@
         UPDATE
         t_wallet_account
         <set>
-            <if test="walletAccount.physicalNumber != null AND walletAccount.physicalNumber != ''">
+            <if test="walletAccount.physicalNumber != null and walletAccount.physicalNumber != ''">
                 physical_number=#{walletAccount.physicalNumber},
             </if>
             <if test="walletAccount.amount != null">
                 amount=amount + #{walletAccount.amount},
             </if>
-            <if test="walletAccount.payPassword != null AND walletAccount.payPassword != ''">
+            <if test="walletAccount.payPassword != null and walletAccount.payPassword != ''">
                 pay_password=#{walletAccount.payPassword},
             </if>
             <if test="walletAccount.quickPayMoney != null">
@@ -62,7 +62,7 @@
             <if test="walletAccount.operator != null">
                 operator=#{walletAccount.operator},
             </if>
-            <if test="walletAccount.operatorName != null AND walletAccount.operatorName != ''">
+            <if test="walletAccount.operatorName != null and walletAccount.operatorName != ''">
                 operator_name=#{walletAccount.operatorName},
             </if>
             <if test="walletAccount.status != null ">
@@ -71,7 +71,7 @@
             <if test="walletAccount.updateDate != null ">
                 update_date=#{walletAccount.updateDate},
             </if>
-            <if test="walletAccount.remark != null AND walletAccount.remark != ''">
+            <if test="walletAccount.remark != null and walletAccount.remark != ''">
                 remark=#{walletAccount.remark},
             </if>
         </set>

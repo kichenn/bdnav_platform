@@ -15,15 +15,13 @@ import java.math.BigDecimal;
 @Data
 public class SetNoPwdPayPwdDto {
 
-    @NotEmpty(message = "学校code不能为空")
     @ApiModelProperty(value = "学校code")
     private String schoolCode;
 
-    @NotEmpty(message = "cardNumber不能为空")
     @ApiModelProperty(value = "学号cardNumber")
     private String cardNumber;
 
-    @Pattern(regexp = "^\\d{6}$", message = "请输入长度6位的数字密码")
+//    @Pattern(regexp = "^\\d{6}$", message = "请输入长度6位的数字密码")
     private String payPwd;
 
     @ApiModelProperty(value = "免密支付金额")

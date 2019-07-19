@@ -1,5 +1,6 @@
 package com.bdxh.weixiao.controller.wallet;
 
+import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.School;
 import com.bdxh.school.feign.SchoolControllerClient;
@@ -9,6 +10,7 @@ import com.bdxh.wallet.dto.*;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.feign.WalletAccountControllerClient;
 import com.bdxh.wallet.vo.MyWalletVo;
+import com.bdxh.weixiao.configration.redis.RedisUtil;
 import com.bdxh.weixiao.configration.security.entity.UserInfo;
 import com.bdxh.weixiao.configration.security.utils.SecurityUtils;
 import com.google.common.base.Preconditions;
@@ -39,7 +41,10 @@ public class WalletAccountWebController {
     @Autowired
     private StudentControllerClient studentControllerClient;
 
-    @GetMapping("/myWallet")
+    @Autowired
+    private RedisUtil redisUtil;
+
+    @PostMapping("/myWallet")
     @ApiOperation(value = "我的钱包", response = MyWalletVo.class)
     public Object myWallet() {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
@@ -55,7 +60,7 @@ public class WalletAccountWebController {
         return WrapMapper.ok(walletAccountControllerClient.myWallet(walletAccount).getResult());
     }
 
-    @GetMapping("/childrenWallet")
+    @PostMapping("/childrenWallet")
     @ApiOperation(value = "孩子钱包", response = MyWalletVo.class)
     public Object childrenWallet(@RequestParam("cardNumber") String cardNumber, @RequestParam("schoolCode") String schoolCode) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
@@ -86,36 +91,70 @@ public class WalletAccountWebController {
     @ApiOperation(value = "查询是否设置支付密码", response = Boolean.class)
     public Object findPayPwd() {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
-        return WrapMapper.ok(walletAccountControllerClient.findPayPwd(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult());
+        return walletAccountControllerClient.findPayPwd(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult();
     }
 
     @PostMapping("/setPayPwd")
     @ApiOperation(value = "设置支付密码", response = Boolean.class)
     public Object setPayPwd(@Validated @RequestBody SetPayPwdDto setPayPwdDto) {
-        return WrapMapper.ok(walletAccountControllerClient.setPayPwd(setPayPwdDto).getResult());
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        setPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
+        setPayPwdDto.setCardNumber(userInfo.getCardNumber().get(0));
+        return walletAccountControllerClient.setPayPwd(setPayPwdDto);
     }
 
     @PostMapping("/modifyPayPwd")
-    @ApiOperation(value = "修改支付密码", response = Boolean.class)
+    @ApiOperation(value = "修改时效验支付密码", response = Boolean.class)
     public Object modifyPayPwd(@Validated @RequestBody ModifyPayPwdDto modifyPayPwdDto) {
-        return WrapMapper.ok(walletAccountControllerClient.modifyPayPwd(modifyPayPwdDto).getResult());
+        return walletAccountControllerClient.modifyPayPwd(modifyPayPwdDto);
     }
 
     @PostMapping("/forgetPayPwd")
     @ApiOperation(value = "忘记支付密码", response = Boolean.class)
     public Object forgetPayPwd(@Validated @RequestBody ForgetPayPwdDto forgetPayPwdDto) {
-        return WrapMapper.ok(walletAccountControllerClient.forgetPayPwd(forgetPayPwdDto).getResult());
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        forgetPayPwdDto.setPhone(userInfo.getPhone());
+        forgetPayPwdDto.setCardNumber(userInfo.getCardNumber().get(0));
+        forgetPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
+        return walletAccountControllerClient.forgetPayPwd(forgetPayPwdDto);
+    }
+
+    @GetMapping("/forgetPayPwdPhone")
+    @ApiOperation(value = "忘记支付密码,找回密码所绑定的手机号", response = Boolean.class)
+    public Object forgetPayPwdPhone() {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        return WrapMapper.ok(userInfo.getPhone());
     }
 
     @GetMapping("/forgetPayPwdSendCode")
     @ApiOperation(value = "发送忘记支付密码，验证码信息", response = Boolean.class)
-    public Object forgetPayPwdSendCode(@RequestParam("phone") String phone) {
-        return WrapMapper.ok(walletAccountControllerClient.forgetPayPwdSendCode(phone).getResult());
+    public Object forgetPayPwdSendCode() {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        String phone = userInfo.getPhone();
+        return walletAccountControllerClient.forgetPayPwdSendCode(phone);
+    }
+
+    @GetMapping("/checkCode")
+    @ApiOperation(value = "效验验证码", response = Boolean.class)
+    public Object checkCode(@RequestParam("code") String code) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        String tempCode = redisUtil.get(AliyunSmsConstants.CodeConstants.CAPTCHA_PHYSICAL_CARD_PREFIX + userInfo.getPhone());
+        return WrapMapper.ok(code.equals(tempCode));
     }
 
     @PostMapping("/setNoPwdPay")
     @ApiOperation(value = "设置小额免密支付", response = Boolean.class)
     public Object setNoPwdPay(@Validated @RequestBody SetNoPwdPayPwdDto setNoPwdPayPwdDto) {
-        return WrapMapper.ok(walletAccountControllerClient.setNoPwdPay(setNoPwdPayPwdDto).getResult());
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        setNoPwdPayPwdDto.setCardNumber(userInfo.getCardNumber().get(0));
+        setNoPwdPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
+        return walletAccountControllerClient.setNoPwdPay(setNoPwdPayPwdDto);
+    }
+
+    @PostMapping("/findNoPwdPay")
+    @ApiOperation(value = "查询小额免密金额", response = Boolean.class)
+    public Object findNoPwdPay() {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        return walletAccountControllerClient.findNoPwdPay(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0));
     }
 }

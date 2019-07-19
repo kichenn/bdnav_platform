@@ -17,8 +17,8 @@ public class AESUtils {
     public interface AesConstant {
         //长度16位
         //微校加密key
-        String WEIXIAO_KEY = "bdnav_weixiao***";
         //mysql加密key
+        String WEIXIAO_KEY = "bdnav_weixiao***";
         String MYSQL_KEY = "bdnav_mysql*****";
     }
 

@@ -14,19 +14,14 @@ import javax.validation.constraints.Pattern;
 @Data
 public class ModifyPayPwdDto {
 
-    @NotEmpty(message = "学校code不能为空")
     @ApiModelProperty(value = "学校code")
     private String schoolCode;
 
-    @NotEmpty(message = "cardNumber不能为空")
     @ApiModelProperty(value = "学号cardNumber")
     private String cardNumber;
 
-    @Pattern(regexp = "^\\d{6}$", message = "请输入长度6位的原密码")
+//    @Pattern(regexp = "^\\d{6}$", message = "请输入长度6位的原密码")
     @ApiModelProperty(value = "原密码")
     private String payPwd;
 
-    @Pattern(regexp = "^\\d{6}$", message = "请输入长度6位的新密码")
-    @ApiModelProperty(value = "新密码")
-    private String newPayPwd;
 }

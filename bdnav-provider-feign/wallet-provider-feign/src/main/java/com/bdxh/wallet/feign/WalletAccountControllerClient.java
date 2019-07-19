@@ -90,6 +90,17 @@ public interface WalletAccountControllerClient {
     @ResponseBody
     Wrapper setNoPwdPay(@Validated @RequestBody SetNoPwdPayPwdDto setNoPwdPayPwdDto);
 
+
+    /**
+     * 查询小额免密支付金额值
+     * @param schoolCode
+     * @param cardNumber
+     * @return
+     */
+    @PostMapping("/walletAccount/findNoPwdPay")
+    @ResponseBody
+    Wrapper findNoPwdPay(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber);
+
     /**
      * 账户钱包充值
      *
