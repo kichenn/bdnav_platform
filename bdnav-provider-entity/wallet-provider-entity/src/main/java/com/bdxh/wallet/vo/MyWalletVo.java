@@ -22,6 +22,9 @@ public class MyWalletVo {
     @ApiModelProperty(value = "学校code")
     private String schoolCode;
 
+    @ApiModelProperty(value ="用户id")
+    private String userId;
+
     @ApiModelProperty(value = "卡号")
     private String cardNumber;
 
