@@ -216,8 +216,10 @@ public class WechatNoticeController {
                 jsonObject.put("resultCode", resultCode);
                 jsonObject.put("thirdOrderNo", thirdOrderNo);
                 //发送事务消息
+                log.info("发送钱包充值的事务消息");
                 Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice, RocketMqConstrants.Tags.wechatPayWalletRecharge_js, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 transactionMQProducer.sendMessageInTransaction(message, null);
+                log.info("已发送.......");
             }
             //返回微信结果
             JSNoticeReturn jsNoticeReturn = new JSNoticeReturn();
