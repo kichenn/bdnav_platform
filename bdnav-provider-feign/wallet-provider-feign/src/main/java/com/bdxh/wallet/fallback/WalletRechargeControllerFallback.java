@@ -7,9 +7,12 @@ import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /**
  * @Description: 消费记录熔断
@@ -35,6 +38,11 @@ public class WalletRechargeControllerFallback implements WalletRechargeControlle
 
     @Override
     public Wrapper<PageInfo<WalletRechargeVo>> findWalletRechargeByCondition(QueryWalletRechargeDto queryWalletRechargeDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<BaseEchartsVo>> findWalletRechargeTypeMoneySum(String schoolCode) {
         return WrapMapper.error();
     }
 }

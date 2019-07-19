@@ -78,7 +78,14 @@
         <include refid="BaseColumns"/>
         FROM
         t_school_charge_dept
-        WHERE school_code = #{schoolCode}
+        <where>
+            <if test="schoolCode!=null and schoolCode!=''">
+                AND school_code = #{schoolCode}
+            </if>
+            <if test="chargeDeptType!=null and chargeDeptType!=''">
+                AND charge_dept_type = #{chargeDeptType}
+            </if>
+        </where>
     </select>
 
     <!--学校的收费部门和统计收费部门下的消费机数量-->
@@ -91,6 +98,9 @@
         <where>
             <if test="chargeDept.schoolCode!=null and chargeDept.schoolCode!=''">
                 AND td.school_code = #{chargeDept.schoolCode}
+            </if>
+            <if test="chargeDept.chargeDeptType!=null ">
+                AND td.charge_dept_type = #{chargeDept.chargeDeptType}
             </if>
         </where>
         GROUP BY td.id

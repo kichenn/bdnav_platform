@@ -81,7 +81,7 @@ public class WalletRecharge {
 	 * 充值类型  1线上充值   2 线上代充  3 一体机自充  4窗口充值
 	 */
 	@Column(name = "recharge_type")
-	private String rechargeType;
+	private Byte rechargeType;
 
 	/**
 	 * 状态 1 未支付 2 支付中 3 支付成功 4 支付失败 

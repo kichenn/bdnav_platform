@@ -71,7 +71,7 @@ public interface SchoolChargeDeptControllerClient {
      */
     @RequestMapping(value = "/schoolChargeDept/findSchoolChargeDeptBySchool", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolChargeDeptVo>> findSchoolChargeDeptBySchool(@RequestParam String schoolCode);
+    Wrapper<List<SchoolChargeDeptVo>> findSchoolChargeDeptBySchool(@RequestParam("schoolCode") String schoolCode,@RequestParam("chargeDeptType") Byte chargeDeptType);
 
     /**
      * 批量绑定消费机到学校的消费部门

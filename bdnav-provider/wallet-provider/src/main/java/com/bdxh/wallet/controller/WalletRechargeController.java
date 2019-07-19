@@ -11,6 +11,7 @@ import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.service.WalletRechargeService;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -57,7 +58,7 @@ public class WalletRechargeController {
         walletRecharge.setOrderNo(snowflakeIdWorker.nextId());
         walletRecharge.setCreateDate(new Date());
         walletRecharge.setUpdateDate(new Date());
-        walletRecharge.setRechargeType(addWalletRechargeDto.getRechargeType().toString());
+        walletRecharge.setRechargeType(addWalletRechargeDto.getRechargeType());
         walletRechargeService.save(walletRecharge);
         return WrapMapper.ok(walletRecharge.getOrderNo());
     }
@@ -140,14 +141,17 @@ public class WalletRechargeController {
 
 
 	/**
-	 * 导出充值记录
+	 * 查询不同充值类型下充值成功的总金额
 	 * @Author: WanMing
 	 * @Date: 2019/7/15 11:13
 	 */
-	@RequestMapping(value = "/exportWalletRechargeList",method = RequestMethod.GET)
-	@ApiOperation(value = "导出充值记录",response = Boolean.class)
-	public void exportWalletRechargeList(){
-
+	@RequestMapping(value = "/findWalletRechargeTypeMoneySum",method = RequestMethod.GET)
+	@ApiOperation(value = "查询不同充值类型下充值成功的总金额",response = BaseEchartsVo.class)
+	public Object findWalletRechargeTypeMoneySum(@RequestParam(value = "schoolCode",required = false) String schoolCode){
+		return WrapMapper.ok(walletRechargeService.findWalletRechargeTypeMoneySum(schoolCode));
 	}
+
+
+
 
 }
