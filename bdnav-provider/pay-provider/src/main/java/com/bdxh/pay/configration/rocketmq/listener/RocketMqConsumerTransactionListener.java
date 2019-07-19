@@ -102,9 +102,11 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 String payType = jsonObject.getString("payType");
                 if (payType.equals("1")) {
                     //家长端服务购买
+                    log.info("服务购买。。。。");
                     servicePay(orderNo);
                 } else if (payType.equals("2")) {
                     //钱包充值
+                    log.info("钱包充值。。。。");
                     wlletRechargePay(orderNo);
                 }
 
