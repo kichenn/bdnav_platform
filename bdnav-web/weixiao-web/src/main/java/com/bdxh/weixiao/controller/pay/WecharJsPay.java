@@ -178,6 +178,8 @@ public class WecharJsPay {
         wxPayJsOrderDto.setIp(addPayOrderDto.getIp());
         //openid
         wxPayJsOrderDto.setOpenid(addPayOrderDto.getOpenId());
+        //支付类型
+        wxPayJsOrderDto.setPayType(new Integer("1"));
 
         Wrapper jsOrderWrapper = wechatJsPayControllerClient.wechatJsPayOrder(wxPayJsOrderDto);
 

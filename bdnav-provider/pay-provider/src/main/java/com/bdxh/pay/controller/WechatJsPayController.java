@@ -88,7 +88,11 @@ public class WechatJsPayController {
         //终端ip
         jsOrderRequest.setSpbill_create_ip(wxPayJsOrderDto.getIp());
         //此路径是微信服务器调用支付结果通知路
-        jsOrderRequest.setNotify_url(WechatPayConstants.JS.NOTICE_URL);
+        if (wxPayJsOrderDto.getPayType().equals(1)) {
+            jsOrderRequest.setNotify_url(WechatPayConstants.JS.NOTICE_URL);
+        } else if (wxPayJsOrderDto.getPayType().equals(2)) {
+            jsOrderRequest.setNotify_url(WechatPayConstants.JS.NOTICE_WALLET_URL);
+        }
         //支付场景JSAPI
         jsOrderRequest.setTrade_type(WechatPayConstants.JS.THRADE_TYPE);
         //微信唯一标识
