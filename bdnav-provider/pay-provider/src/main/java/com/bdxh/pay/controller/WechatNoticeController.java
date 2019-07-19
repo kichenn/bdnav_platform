@@ -208,6 +208,7 @@ public class WechatNoticeController {
             Preconditions.checkArgument(StringUtils.equalsIgnoreCase(resultCode, "SUCCESS") || StringUtils.equalsIgnoreCase(resultCode, "FAIL"), "微信返回结果不正确");
             //做幂等性处理,多次通知不再处理
             String notice = redisUtil.get(RedisClusterConstrants.KeyPrefix.wallet_recharge_js_notice + orderNo);
+            log.info("redis获取订单信息:"+notice);
             if (!StringUtils.equals(notice, "1")) {
                 //发送至mq做异步处理
                 JSONObject jsonObject = new JSONObject();
