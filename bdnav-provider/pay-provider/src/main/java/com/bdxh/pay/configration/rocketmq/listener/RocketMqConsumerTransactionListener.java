@@ -98,12 +98,14 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
                 String orderNo = jsonObject.getString("orderNo");
                 //微信方订单号
                 String thirdOrderNo = jsonObject.getString("thirdOrderNo");
-                if (tags.equals(RocketMqConstrants.Tags.wechatPayWalletRecharge_js)) {
-                    //钱包充值
-                    wlletRechargePay(orderNo);
-                } else if (tags.equals(RocketMqConstrants.Tags.wechatPayWalletNotice_js)) {
+                //支付类型
+                String payType = jsonObject.getString("payType");
+                if (payType.equals("1")) {
                     //家长端服务购买
                     servicePay(orderNo);
+                } else if (payType.equals("2")) {
+                    //钱包充值
+                    wlletRechargePay(orderNo);
                 }
 
             }

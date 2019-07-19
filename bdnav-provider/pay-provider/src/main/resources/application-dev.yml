@@ -44,7 +44,7 @@ rocketmq:
   consumer:
     groupName: default-pay-consumer #消费者组名
     topic: wechatPayWalletNotice
-    tag: js,walletRechargeJs #多个 以 tag1,tag2
+    tag: js #多个 以 tag1,tag2
 management:
   endpoints:
     web:
