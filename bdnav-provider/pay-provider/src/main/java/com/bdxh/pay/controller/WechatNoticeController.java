@@ -189,6 +189,7 @@ public class WechatNoticeController {
             byte[] buffer = new byte[len];
             inputStream.read(buffer, 0, len);
             String appNoticeResponseStr = new String(buffer, "utf-8");
+            log.info("回调内容:" + appNoticeResponseStr);
             Preconditions.checkArgument(StringUtils.isNotEmpty(appNoticeResponseStr), "回调内容为空");
             SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(appNoticeResponseStr);
             //验签
