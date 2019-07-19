@@ -3,6 +3,7 @@ package com.bdxh.wallet.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -75,4 +76,11 @@ public interface WalletRechargeService extends IService<WalletRecharge> {
      * @return
      */
     WalletRecharge findWalletRechargeById(String schoolCode, String cardNumber, Long id);
+
+    /**
+     * 查询不同充值类型下充值成功的总金额
+     * @param schoolCode
+     * @return
+     */
+    List<BaseEchartsVo> findWalletRechargeTypeMoneySum(String schoolCode);
 }

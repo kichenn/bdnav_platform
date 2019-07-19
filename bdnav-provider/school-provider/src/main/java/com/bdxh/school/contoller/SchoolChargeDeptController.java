@@ -123,8 +123,8 @@ public class SchoolChargeDeptController {
      */
     @RequestMapping(value = "/findSchoolChargeDeptBySchool", method = RequestMethod.GET)
     @ApiOperation(value = "根据学校查询收费部门列表", response = SchoolChargeDeptVo.class)
-    public Object findSchoolChargeDeptBySchool(@RequestParam("schoolCode") String schoolCode) {
-        return WrapMapper.ok(schoolChargeDeptService.findSchoolChargeDeptBySchool(schoolCode));
+    public Object findSchoolChargeDeptBySchool(@RequestParam("schoolCode") String schoolCode,@RequestParam("chargeDeptType") Byte chargeDeptType) {
+        return WrapMapper.ok(schoolChargeDeptService.findSchoolChargeDeptBySchool(schoolCode,chargeDeptType));
     }
 
 

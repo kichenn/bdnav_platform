@@ -9,6 +9,7 @@ import com.bdxh.school.feign.SchoolDeviceControllerClient;
 import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -17,10 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -73,5 +71,17 @@ public class WalletRechargeWebController {
         }
 
         return WrapMapper.ok(pageInfo);
+    }
+
+    /**
+     * 查询不同充值类型下充值成功的总金额
+     * @Author: WanMing
+     * @Date: 2019/7/15 11:13
+     */
+    @RequestMapping(value = "/findWalletRechargeTypeMoneySum",method = RequestMethod.GET)
+    @ApiOperation(value = "查询不同充值类型下充值成功的总金额",response = BaseEchartsVo.class)
+    public Object findWalletRechargeTypeMoneySum(){
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        return walletRechargeControllerClient.findWalletRechargeTypeMoneySum(/*user.getSchoolCode()*/"1013371381");
     }
 }

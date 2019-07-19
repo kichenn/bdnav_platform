@@ -74,8 +74,8 @@ public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> i
      * @Date: 2019/7/11 09:44
      */
     @Override
-    public List<SchoolChargeDeptVo> findSchoolChargeDeptBySchool(String schoolCode) {
-        return schoolChargeDeptMapper.findSchoolChargeDeptBySchool(schoolCode);
+    public List<SchoolChargeDeptVo> findSchoolChargeDeptBySchool(String schoolCode,Byte chargeDeptType) {
+        return schoolChargeDeptMapper.findSchoolChargeDeptBySchool(schoolCode,chargeDeptType);
     }
 
 	/**

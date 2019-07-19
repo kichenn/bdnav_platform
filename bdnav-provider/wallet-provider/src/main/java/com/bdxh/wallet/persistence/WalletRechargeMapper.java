@@ -41,4 +41,11 @@ public interface WalletRechargeMapper extends Mapper<WalletRecharge> {
 	 * @return
 	 */
     List<WalletRecharge> findWalletRechargeByCondition(@Param("queryWalletRecharge")QueryWalletRechargeDto queryWalletRecharge);
+
+	/**
+	 * 查询不同充值类型下充值成功的总金额
+	 * @param schoolCode
+	 * @return
+	 */
+	List<WalletRecharge> findWalletRechargeTypeMoneySum(@Param("schoolCode") String schoolCode);
 }

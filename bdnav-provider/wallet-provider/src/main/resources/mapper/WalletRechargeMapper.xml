@@ -12,7 +12,7 @@
 	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
 	  <result column="order_no" jdbcType="BIGINT" property="orderNo"/>
 	  <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
-	  <result column="recharge_type" jdbcType="VARCHAR" property="rechargeType"/>
+	  <result column="recharge_type" jdbcType="TINYINT" property="rechargeType"/>
 	  <result column="recharge_status" jdbcType="TINYINT" property="rechargeStatus"/>
 	  <result column="recharge_amount" jdbcType="DECIMAL" property="rechargeAmount"/>
 	  <result column="recharge_time" jdbcType="TIMESTAMP" property="rechargeTime"/>
@@ -60,6 +60,18 @@
       </where>
       ORDER BY create_date DESC
 	</select>
+
+    <!--查询不同学校的充值记录-->
+    <select id="findWalletRechargeTypeMoneySum" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_wallet_recharge
+        <where>
+            <if test="schoolCode!=null and schoolCode!=''">
+                AND school_code = #{schoolCode}
+            </if>
+        </where>
+    </select>
 
     <delete id="delWalletRechargeInIds" parameterType="Integer">
         DELETE

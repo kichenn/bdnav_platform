@@ -38,7 +38,7 @@ public class SchoolChargeDeptControllerClientFallback implements SchoolChargeDep
     }
 
     @Override
-    public Wrapper<List<SchoolChargeDeptVo>> findSchoolChargeDeptBySchool(String schoolCode) {
+    public Wrapper<List<SchoolChargeDeptVo>> findSchoolChargeDeptBySchool(String schoolCode,Byte chargeDeptType) {
         return WrapMapper.error();
     }
 

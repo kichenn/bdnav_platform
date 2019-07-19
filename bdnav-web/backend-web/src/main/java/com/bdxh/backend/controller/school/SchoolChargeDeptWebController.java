@@ -1,10 +1,10 @@
-package com.bdxh.client.controller.school;
+package com.bdxh.backend.controller.school;
 
-import com.bdxh.client.configration.security.utils.SecurityUtils;
+import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.school.dto.*;
-import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
+import com.bdxh.system.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +37,9 @@ public class SchoolChargeDeptWebController {
     @RequestMapping(value = "/addSchoolChargeDept", method = RequestMethod.POST)
     @ApiOperation(value = "添加学校的收费部门", response = Boolean.class)
     public Object addSchoolChargeDept(@Validated @RequestBody AddSchoolChargeDeptDto addSchoolChargeDeptDto) {
-        SchoolUser user = SecurityUtils.getCurrentUser();
+        User user = SecurityUtils.getCurrentUser();
         addSchoolChargeDeptDto.setOperator(user.getId());
         addSchoolChargeDeptDto.setOperatorName(user.getUserName());
-        addSchoolChargeDeptDto.setSchoolId(user.getSchoolId());
-        addSchoolChargeDeptDto.setSchoolCode(user.getSchoolCode());
         return schoolChargeDeptControllerClient.addSchoolChargeDept(addSchoolChargeDeptDto);
     }
 
@@ -68,11 +66,9 @@ public class SchoolChargeDeptWebController {
     @RequestMapping(value = "/modifySchoolChargeDept", method = RequestMethod.POST)
     @ApiOperation(value = "修改学校的收费部门", response = Boolean.class)
     public Object modifySchoolChargeDept(@Validated @RequestBody ModifySchoolChargeDeptDto modifySchoolChargeDeptDto) {
-        SchoolUser user = SecurityUtils.getCurrentUser();
+        User user = SecurityUtils.getCurrentUser();
         modifySchoolChargeDeptDto.setOperator(user.getId());
         modifySchoolChargeDeptDto.setOperatorName(user.getUserName());
-        modifySchoolChargeDeptDto.setSchoolId(user.getSchoolId());
-        modifySchoolChargeDeptDto.setSchoolCode(user.getSchoolCode());
         return schoolChargeDeptControllerClient.modifySchoolChargeDept(modifySchoolChargeDeptDto);
     }
 
@@ -88,18 +84,7 @@ public class SchoolChargeDeptWebController {
         return schoolChargeDeptControllerClient.findSchoolChargeDeptByCondition(querySchoolChargeDeptDto);
     }
 
-    /**
-     * 查询该学校的收费部门列表
-     *
-     * @Author: WanMing
-     * @Date: 2019/7/11 9:38
-     */
-    @RequestMapping(value = "/findSchoolChargeDeptBySchool", method = RequestMethod.GET)
-    @ApiOperation(value = "查询该学校的收费部门列表", response = SchoolChargeDeptVo.class)
-    public Object findSchoolChargeDeptBySchool(@RequestParam("chargeDeptType") Byte chargeDeptType) {
-        SchoolUser user = SecurityUtils.getCurrentUser();
-        return schoolChargeDeptControllerClient.findSchoolChargeDeptBySchool(user.getSchoolCode(),chargeDeptType);
-    }
+
 
     /**
      * 绑定消费机到学校的消费部门
@@ -110,11 +95,9 @@ public class SchoolChargeDeptWebController {
     @RequestMapping(value = "/addSchoolPosDeviceCharge", method = RequestMethod.POST)
     @ApiOperation(value = "绑定消费机到学校的消费部门", response = Boolean.class)
     public Object addSchoolPosDeviceCharge(@Validated @RequestBody AddSchoolPosDeviceChargeDto addSchoolPosDeviceChargeDto) {
-        SchoolUser user = SecurityUtils.getCurrentUser();
+        User user = SecurityUtils.getCurrentUser();
         addSchoolPosDeviceChargeDto.setOperator(user.getId());
         addSchoolPosDeviceChargeDto.setOperatorName(user.getUserName());
-        addSchoolPosDeviceChargeDto.setSchoolId(user.getSchoolId());
-        addSchoolPosDeviceChargeDto.setSchoolCode(user.getSchoolCode());
         return schoolChargeDeptControllerClient.addSchoolPosDeviceCharge(addSchoolPosDeviceChargeDto);
     }
 
@@ -126,7 +109,7 @@ public class SchoolChargeDeptWebController {
     @RequestMapping(value = "/changeSchoolPosDevice", method = RequestMethod.POST)
     @ApiOperation(value = "消费机换绑到学校的其他消费部门", response = Boolean.class)
     public Object changeSchoolPosDevice(@Validated @RequestBody ModifySchoolPosDeviceDto modifySchoolPosDeviceDto){
-        SchoolUser user = SecurityUtils.getCurrentUser();
+        User user = SecurityUtils.getCurrentUser();
         modifySchoolPosDeviceDto.setOperator(user.getId());
         modifySchoolPosDeviceDto.setOperatorName( user.getUserName());
         return schoolChargeDeptControllerClient.changeSchoolPosDevice(modifySchoolPosDeviceDto);
@@ -156,8 +139,6 @@ public class SchoolChargeDeptWebController {
     @RequestMapping(value = "/querySchoolChargeDeptAndPosNum", method = RequestMethod.POST)
     @ApiOperation(value = "查询学校消费部门信息和POS机的数量", response = SchoolChargeDeptVo.class)
     public Object querySchoolChargeDeptAndPosNum(@RequestBody QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
-        SchoolUser user = SecurityUtils.getCurrentUser();
-        querySchoolChargeDeptDto.setSchoolCode(user.getSchoolCode());
         return schoolChargeDeptControllerClient.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto);
     }
 }
