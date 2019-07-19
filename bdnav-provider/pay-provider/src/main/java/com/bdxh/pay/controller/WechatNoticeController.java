@@ -117,6 +117,7 @@ public class WechatNoticeController {
     @RequestMapping("/walletJsRecharge")
     public void wechatJsPayNotice(HttpServletRequest request, HttpServletResponse response) {
         try {
+            log.info("支付回调（服务购买。。。。。。。。。。。。。。。。。。）");
             int len = request.getContentLength();
             ServletInputStream inputStream = request.getInputStream();
             byte[] buffer = new byte[len];
@@ -182,6 +183,7 @@ public class WechatNoticeController {
     @RequestMapping("/walletRechargeJs")
     public void walletRecharge(HttpServletRequest request, HttpServletResponse response) {
         try {
+            log.info("支付回调（钱包充值。。。。。。。。。。。。。。。。。。）");
             int len = request.getContentLength();
             ServletInputStream inputStream = request.getInputStream();
             byte[] buffer = new byte[len];
