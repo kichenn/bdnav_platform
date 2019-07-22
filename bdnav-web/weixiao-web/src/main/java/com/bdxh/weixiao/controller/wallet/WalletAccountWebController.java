@@ -115,6 +115,9 @@ public class WalletAccountWebController {
     @PostMapping("/modifyPayPwd")
     @ApiOperation(value = "修改时效验支付密码", response = Boolean.class)
     public Object modifyPayPwd(@Validated @RequestBody ModifyPayPwdDto modifyPayPwdDto) {
+        UserInfo userInfo = SecurityUtils.getCurrentUser();
+        modifyPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
+        modifyPayPwdDto.setCardNumber(userInfo.getCardNumber().get(0));
         return walletAccountControllerClient.modifyPayPwd(modifyPayPwdDto);
     }
 
