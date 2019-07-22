@@ -3,6 +3,10 @@ package com.bdxh.backend.controller.wallet;
 import com.bdxh.backend.configration.security.utils.SecurityUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.system.entity.User;
+import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.feign.TeacherControllerClient;
+import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.TeacherVo;
 import com.bdxh.wallet.dto.*;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.feign.WalletAccountControllerClient;
@@ -23,7 +27,11 @@ public class WalletAccountWebController {
     @Autowired
     private WalletAccountControllerClient walletAccountControllerClient;
 
+    @Autowired
+    private StudentControllerClient studentControllerClient;
 
+    @Autowired
+    private TeacherControllerClient teacherControllerClient;
 
     @ApiOperation(value = "删除钱包账户",response = Boolean.class)
     @RequestMapping(value = "/delWalletAccount", method = RequestMethod.GET)
@@ -72,6 +80,23 @@ public class WalletAccountWebController {
     public Object findWalletAccountInCondition(@RequestBody QueryWalletAccount queryWalletAccount) {
         try {
             return walletAccountControllerClient.findWalletAccountInCondition(queryWalletAccount);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "个人名片展示")
+    @RequestMapping(value = "/businessCardToShow", method = RequestMethod.POST)
+    public Object businessCardToShow(@RequestBody BusinessCardDto businessCardDto) {
+        try {
+            if (businessCardDto.getUserTypeEnum().getKey()==2){
+                StudentVo sv=studentControllerClient.queryStudentInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
+                return WrapMapper.ok(sv);
+            }else{
+                TeacherVo tv = teacherControllerClient.queryTeacherInfo(businessCardDto.getSchoolCode(), businessCardDto.getCardNumber()).getResult();
+                return WrapMapper.ok(tv);
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return WrapMapper.error(e.getMessage());

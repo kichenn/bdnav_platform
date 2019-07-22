@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/physicalCardWeb")
+@RequestMapping("/clientPhysicalCardWeb")
 @Slf4j
 @Validated
 @Api(value = "物理卡控制器", tags = "物理卡控制器")
