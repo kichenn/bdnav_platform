@@ -32,6 +32,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -134,9 +135,11 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
             walletRecharges.forEach(walletRecharge -> {
                 WalletRechargeVo walletRechargeVo = new WalletRechargeVo();
                 BeanUtils.copyProperties(walletRecharge, walletRechargeVo);
-                WalletAccount walletAccount = walletAccountMapper.findWalletAccountBySchool(walletRechargeVo.getSchoolCode(),walletRechargeVo.getCardNumber());
-                walletRechargeVo.setPhysicalNumber(walletAccount.getPhysicalNumber());
-                walletRechargeVo.setUserType(walletAccount.getUserType());
+                WalletAccount walletAccount = walletAccountMapper.findWalletAccountBySchool(walletRechargeVo.getSchoolCode(), walletRechargeVo.getCardNumber());
+                if (Objects.nonNull(walletAccount)) {
+                    walletRechargeVo.setPhysicalNumber(walletAccount.getPhysicalNumber());
+                    walletRechargeVo.setUserType(walletAccount.getUserType());
+                }
                 walletRechargeVos.add(walletRechargeVo);
             });
         }
@@ -180,10 +183,10 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
         RechargeTypeEnum[] values = RechargeTypeEnum.values();
         for (RechargeTypeEnum value : values) {
             BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
-            if(null==decimalMap.get(value.getKey())){
+            if (null == decimalMap.get(value.getKey())) {
                 baseEchartsVo.setName(value.getValue());
                 baseEchartsVo.setValue(0D);
-            }else {
+            } else {
                 baseEchartsVo.setName(value.getValue());
                 baseEchartsVo.setValue(decimalMap.get(value.getKey()).doubleValue());
             }

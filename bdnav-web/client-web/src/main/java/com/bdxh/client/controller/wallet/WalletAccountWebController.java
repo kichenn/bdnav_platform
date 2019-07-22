@@ -21,7 +21,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/walletAccountWeb")
+@RequestMapping("/clientWalletAccountWeb")
 @Slf4j
 @Validated
 @Api(value = "钱包账户控制器", tags = "钱包账户控制器")

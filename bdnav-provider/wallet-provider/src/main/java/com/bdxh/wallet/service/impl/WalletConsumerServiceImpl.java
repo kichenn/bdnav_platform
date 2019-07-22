@@ -22,6 +22,7 @@ import com.bdxh.wallet.persistence.WalletConsumerMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Description: 业务层实现
@@ -87,8 +88,10 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
                 WalletConsumerVo walletConsumerVo = new WalletConsumerVo();
                 BeanUtils.copyProperties(consumerDetail, walletConsumerVo);
                 WalletAccount walletAccount = walletAccountMapper.findWalletAccountBySchool(walletConsumerVo.getSchoolCode(), walletConsumerVo.getCardNumber());
-                walletConsumerVo.setPhysicalNumber(walletAccount.getPhysicalNumber());
-                walletConsumerVo.setUserType(walletAccount.getUserType());
+                if(Objects.nonNull(walletAccount)){
+                    walletConsumerVo.setPhysicalNumber(walletAccount.getPhysicalNumber());
+                    walletConsumerVo.setUserType(walletAccount.getUserType());
+                }
                 walletConsumerVos.add(walletConsumerVo);
             });
         }
