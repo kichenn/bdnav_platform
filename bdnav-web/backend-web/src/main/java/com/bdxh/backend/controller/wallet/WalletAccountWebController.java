@@ -87,7 +87,7 @@ public class WalletAccountWebController {
         }
     }
 
-    @ApiOperation(value = "个人名片展示")
+    @ApiOperation(value = "个人名片展示",response = ShowInfoVo.class)
     @RequestMapping(value = "/businessCardToShow", method = RequestMethod.POST)
     public Object businessCardToShow(@RequestBody BusinessCardDto businessCardDto) {
         try {
