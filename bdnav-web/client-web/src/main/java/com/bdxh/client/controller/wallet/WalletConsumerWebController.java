@@ -52,7 +52,7 @@ public class WalletConsumerWebController {
     /**
      * the param  is excel name
      */
-    private static final String EXCEL_NAME = "消费记录.xls";
+    private static final String EXCEL_NAME = "消费记录.xlsx";
 
     @Autowired
     private WalletConsumerControllerClient walletConsumerControllerClient;
@@ -109,7 +109,7 @@ public class WalletConsumerWebController {
         List<WalletConsumerVo> walletConsumerVos = walletConsumerControllerClient.findWalletConsumerList(queryWalletConsumerExcelDto).getResult();
         if (CollectionUtils.isEmpty(walletConsumerVos)) {
             //无数据
-            return WrapMapper.error("无数据,请重新选择");
+            return WrapMapper.ok("无数据,请重新选择");
         }
         //查询pos机及相关信息
         List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();

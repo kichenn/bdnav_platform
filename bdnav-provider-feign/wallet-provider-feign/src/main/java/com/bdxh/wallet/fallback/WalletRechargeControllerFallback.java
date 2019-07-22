@@ -5,6 +5,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddWalletRechargeDto;
 import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
+import com.bdxh.wallet.dto.QueryWalletRechargeExcelDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
 import com.bdxh.wallet.vo.BaseEchartsVo;
@@ -44,6 +45,11 @@ public class WalletRechargeControllerFallback implements WalletRechargeControlle
 
     @Override
     public Wrapper<List<BaseEchartsVo>> findWalletRechargeTypeMoneySum(String schoolCode) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<WalletRechargeVo>> findWalletRechargeList(QueryWalletRechargeExcelDto queryWalletRechargeExcelDto) {
         return WrapMapper.error();
     }
 }

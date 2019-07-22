@@ -2,12 +2,20 @@ package com.bdxh.client.controller.wallet;
 
 
 import com.bdxh.client.configration.security.utils.SecurityUtils;
+import com.bdxh.common.helper.excel.ExcelExportUtils;
+import com.bdxh.common.helper.excel.bean.WalletConsumerExcelReportBean;
+import com.bdxh.common.helper.excel.bean.WalletRechargeExcelReportBean;
+import com.bdxh.common.helper.excel.utils.DateUtils;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.ChargeDeptTypeEnum;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
 import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
+import com.bdxh.wallet.dto.QueryWalletRechargeExcelDto;
+import com.bdxh.wallet.enums.RechargeStatusEnum;
+import com.bdxh.wallet.enums.RechargeTypeEnum;
+import com.bdxh.wallet.enums.UserTypeEnum;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
 import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
@@ -16,10 +24,17 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -34,6 +49,9 @@ import java.util.stream.Collectors;
 @Validated
 @Api(value = "账户充值记录管理", tags = "账户充值记录管理API")
 public class WalletRechargeWebController {
+
+
+    private static final String EXCEL_NAME = "充值记录.xlsx";
 
 
     @Autowired
@@ -71,6 +89,63 @@ public class WalletRechargeWebController {
         }
 
         return WrapMapper.ok(pageInfo);
+    }
+
+    /**
+     * 导出充值记录列表
+     * @Author: WanMing
+     * @Date: 2019/7/22 14:25
+     */
+    @RequestMapping(value = "/exportWalletRechargeList",method = RequestMethod.POST)
+    @ApiOperation(value = "导出充值记录列表",response = WalletRechargeVo.class)
+    public Object exportWalletRechargeList(@RequestBody QueryWalletRechargeExcelDto queryWalletRechargeExcelDto){
+        long startTime = System.currentTimeMillis();
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        queryWalletRechargeExcelDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
+        List<WalletRechargeVo> walletRechargeVos = walletRechargeControllerClient.findWalletRechargeList(queryWalletRechargeExcelDto).getResult();
+        if (CollectionUtils.isEmpty(walletRechargeVos)) {
+            //无数据
+            return WrapMapper.ok("无数据");
+        }
+        //设置部门信息
+        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
+        if (CollectionUtils.isNotEmpty(deptAndDeviceVos)) {
+            Map<String, String> deptAndDeviceVoMap = deptAndDeviceVos.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, ChargeDeptAndDeviceVo::getChargeDeptName));
+            walletRechargeVos.forEach(walletRechargeVo -> {
+                walletRechargeVo.setWindowName(deptAndDeviceVoMap.get(walletRechargeVo.getDeviceNumber()));
+            });
+        }
+
+        //转Excel bean 处理时间 和状态信息
+        List<WalletRechargeExcelReportBean> excelReportBeans = walletRechargeVos.stream().map(walletRechargeVo -> {
+            WalletRechargeExcelReportBean excelReportBean = new WalletRechargeExcelReportBean();
+            BeanUtils.copyProperties(walletRechargeVo, excelReportBean);
+            excelReportBean.setCreateDate(DateUtils.date2Str(walletRechargeVo.getCreateDate(), DateUtils.DATE_FORMAT_SEC));
+            excelReportBean.setRechargeTime(DateUtils.date2Str(walletRechargeVo.getRechargeTime(), DateUtils.DATE_FORMAT_SEC));
+            excelReportBean.setFamilyName(walletRechargeVo.getFamilyName() == null ? "无" : walletRechargeVo.getFamilyName());
+            excelReportBean.setFamilyNumber(walletRechargeVo.getFamilyNumber() == null ? "无" : walletRechargeVo.getFamilyNumber());
+            excelReportBean.setRechargeStatus(RechargeStatusEnum.getValue(walletRechargeVo.getRechargeStatus()));
+            excelReportBean.setRechargeType(RechargeTypeEnum.getValue(walletRechargeVo.getRechargeType()));
+            excelReportBean.setUserType(UserTypeEnum.getValue(walletRechargeVo.getUserType()));
+            return excelReportBean;
+
+        }).collect(Collectors.toList());
+
+        //导出
+        HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getResponse();
+        try (OutputStream outputStream = response.getOutputStream()) {
+            String fileName = URLEncoder.encode(EXCEL_NAME, StandardCharsets.UTF_8.toString());
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
+            ExcelExportUtils.getInstance().exportObjects2Excel(excelReportBeans, WalletRechargeExcelReportBean.class, true, "充值记录", true, outputStream);
+            Long endTime = System.currentTimeMillis();
+            log.info("充值记录导出成功,耗时:{}", endTime - startTime);
+            return WrapMapper.ok("充值记录导出成功");
+        } catch (Exception e) {
+            log.error("导出失败"+e.getMessage());
+            e.printStackTrace();
+        }
+        return WrapMapper.ok();
+
     }
 
     /**

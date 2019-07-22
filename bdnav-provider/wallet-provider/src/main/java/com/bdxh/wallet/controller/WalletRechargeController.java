@@ -2,13 +2,11 @@ package com.bdxh.wallet.controller;
 
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
-import com.bdxh.wallet.dto.AddWalletRechargeDto;
-import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
+import com.bdxh.wallet.dto.*;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.wallet.dto.AddWalletRechargeDto;
 import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
-import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.service.WalletRechargeService;
 import com.bdxh.wallet.vo.BaseEchartsVo;
@@ -134,6 +132,19 @@ public class WalletRechargeController {
     public Object findWalletRechargeByCondition(@RequestBody QueryWalletRechargeDto queryWalletRechargeDto) {
         return WrapMapper.ok(walletRechargeService.findWalletRechargeByCondition(queryWalletRechargeDto));
     }
+
+    /**
+     * 根据excel条件查询充值记录不分页
+     *
+     * @Author: WanMing
+     * @Date: 2019/7/15 11:13
+     */
+    @RequestMapping(value = "/findWalletRechargeList", method = RequestMethod.POST)
+    @ApiOperation(value = "根据excel条件查询充值记录不分页", response = WalletRechargeVo.class)
+    public Object findWalletRechargeList(@RequestBody QueryWalletRechargeExcelDto queryWalletRechargeExcelDto){
+        return WrapMapper.ok(walletRechargeService.findWalletRechargeList(queryWalletRechargeExcelDto));
+    }
+
 
     /**
      * 根据id查询单条充值记录

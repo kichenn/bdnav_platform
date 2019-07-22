@@ -77,7 +77,7 @@
 		SELECT
 		<include refid="BaseColumns"/>
 		FROM t_wallet_consumer
-		WHRER order_no IN
+		WHERE order_no IN
 		<foreach collection="orderNos" item="orderNo" separator="," open="(" close=")" >
 			#{orderNo}
 		</foreach>

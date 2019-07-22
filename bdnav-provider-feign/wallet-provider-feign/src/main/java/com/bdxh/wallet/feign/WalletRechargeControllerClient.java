@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.wallet.dto.AddWalletRechargeDto;
 import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
+import com.bdxh.wallet.dto.QueryWalletRechargeExcelDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.fallback.WalletRechargeControllerFallback;
 import com.bdxh.wallet.fallback.WalletAccountControllerFallback;
@@ -75,4 +76,14 @@ public interface WalletRechargeControllerClient {
     @RequestMapping(value = "/findWalletRechargeTypeMoneySum",method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<BaseEchartsVo>> findWalletRechargeTypeMoneySum(@RequestParam(value = "schoolCode",required = false) String schoolCode);
+
+    /**
+     * 根据excel条件查询充值记录不分页
+     *
+     * @Author: WanMing
+     * @Date: 2019/7/15 11:13
+     */
+    @RequestMapping(value = "/findWalletRechargeList", method = RequestMethod.POST)
+    @ResponseBody
+    Wrapper<List<WalletRechargeVo>> findWalletRechargeList(@RequestBody QueryWalletRechargeExcelDto queryWalletRechargeExcelDto);
 }

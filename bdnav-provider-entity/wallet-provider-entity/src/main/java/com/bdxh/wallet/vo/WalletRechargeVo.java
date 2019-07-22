@@ -130,6 +130,12 @@ public class WalletRechargeVo {
     @ApiModelProperty("父母姓名（父母代充时不为空）")
     private String familyName;
 
+    /**
+     * 创建时间
+     */
+    @ApiModelProperty("创建时间")
+    private Date createDate;
+
 
 
 }
