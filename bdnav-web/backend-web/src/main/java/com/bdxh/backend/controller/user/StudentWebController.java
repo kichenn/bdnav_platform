@@ -183,7 +183,7 @@ public class StudentWebController {
                 //查询钱包信息
                 WalletAccount walletAccount = walletAccountControllerClient.findWalletByCardNumberAndSchoolCode(addStudentDto.getCardNumber(), addStudentDto.getSchoolCode()).getResult();
                 if (walletAccount == null) {
-                    StudentVo studentVo = studentControllerClient.queryStudentInfo(addStudentDto.getSchoolCode(), walletAccount.getCardNumber()).getResult();
+                    StudentVo studentVo = studentControllerClient.queryStudentInfo(addStudentDto.getSchoolCode(), addStudentDto.getCardNumber()).getResult();
                     //钱包不存在，新增钱包信息
                     CreateWalletDto createWalletDto = new CreateWalletDto();
                     createWalletDto.setSchoolId(addStudentDto.getSchoolId());
