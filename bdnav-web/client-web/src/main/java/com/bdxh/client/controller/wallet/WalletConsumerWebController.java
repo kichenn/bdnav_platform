@@ -22,10 +22,7 @@ import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -33,12 +30,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-/**账户消费记录管理Web层
+/**
+ * 账户消费记录管理Web层
+ *
  * @author WanMing
  * @date 2019/7/16 10:58
  */
@@ -99,14 +99,25 @@ public class WalletConsumerWebController {
      * @Author: WanMing
      * @Date: 2019/7/12 18:33
      */
-
-    @RequestMapping(value = "/exportWalletConsumerList", method = RequestMethod.POST)
+    @RequestMapping(value = "/exportWalletConsumerList", method = RequestMethod.GET)
     @ApiOperation(value = "导出消费记录")
-    public Object exportWalletConsumerList(@RequestBody QueryWalletConsumerExcelDto queryWalletConsumerExcelDto) {
+    public Object exportWalletConsumerList(@RequestParam("exportWay") Byte exportWay
+            , @RequestParam(value = "orderNos", required = false) List<Long> orderNos
+            , @RequestParam(value = "consumerType", required = false) Byte consumerType
+            , @RequestParam(value = "startDate", required = false) Date startDate
+            , @RequestParam(value = "endDate", required = false) Date endDate) {
         Long startTime = System.currentTimeMillis();
+
+        QueryWalletConsumerExcelDto consumerExcelDto = new QueryWalletConsumerExcelDto();
+        consumerExcelDto.setExportWay(exportWay);
+        consumerExcelDto.setOrderNos(orderNos);
+        consumerExcelDto.setConsumerType(consumerType);
+        consumerExcelDto.setStartTime(startDate);
+        consumerExcelDto.setEndTime(endDate);
+
         SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletConsumerExcelDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
-        List<WalletConsumerVo> walletConsumerVos = walletConsumerControllerClient.findWalletConsumerList(queryWalletConsumerExcelDto).getResult();
+        consumerExcelDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
+        List<WalletConsumerVo> walletConsumerVos = walletConsumerControllerClient.findWalletConsumerList(consumerExcelDto).getResult();
         if (CollectionUtils.isEmpty(walletConsumerVos)) {
             //无数据
             return WrapMapper.ok("无数据,请重新选择");
@@ -142,7 +153,7 @@ public class WalletConsumerWebController {
             log.info("消费记录导出成功,耗时:{}", endTime - startTime);
             return WrapMapper.ok("消费记录导出成功");
         } catch (Exception e) {
-            log.error("导出失败"+e.getMessage());
+            log.error("导出失败" + e.getMessage());
             e.printStackTrace();
         }
         return WrapMapper.ok();

@@ -126,13 +126,13 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
                 //选中导出
                 walletConsumers = walletConsumerMapper.findWalletConsumerByOrderNos(queryWalletConsumerExcelDto.getOrderNos());
                 break;
+//            case 2:
+//                //分页导出
+//                PageHelper.startPage(queryWalletConsumerExcelDto.getPageNum(), queryWalletConsumerExcelDto.getPageSize());
+//                walletConsumers = walletConsumerMapper.findWalletConsumerByCondition(queryWalletConsumerExcelDto);
+//                break;
             case 2:
-                //分页导出
-                PageHelper.startPage(queryWalletConsumerExcelDto.getPageNum(), queryWalletConsumerExcelDto.getPageSize());
-                walletConsumers = walletConsumerMapper.findWalletConsumerByCondition(queryWalletConsumerExcelDto);
-                break;
-            case 3:
-                //时间选择导出
+                //条件导出
                 walletConsumers = walletConsumerMapper.findWalletConsumerByCondition(queryWalletConsumerExcelDto);
                 break;
             default:
