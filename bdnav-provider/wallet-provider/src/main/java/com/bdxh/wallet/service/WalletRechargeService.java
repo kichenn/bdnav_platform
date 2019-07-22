@@ -2,6 +2,7 @@ package com.bdxh.wallet.service;
 
 import com.bdxh.common.support.IService;
 import com.bdxh.wallet.dto.QueryWalletRechargeDto;
+import com.bdxh.wallet.dto.QueryWalletRechargeExcelDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
@@ -83,4 +84,11 @@ public interface WalletRechargeService extends IService<WalletRecharge> {
      * @return
      */
     List<BaseEchartsVo> findWalletRechargeTypeMoneySum(String schoolCode);
+
+    /**
+     * 根据excel条件查询充值记录不分页
+     * @Author: WanMing
+     * @Date: 2019/7/22 14:52
+     */
+    List<WalletRechargeVo> findWalletRechargeList(QueryWalletRechargeExcelDto queryWalletRechargeExcelDto);
 }

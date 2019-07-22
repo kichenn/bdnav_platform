@@ -48,4 +48,11 @@ public interface WalletRechargeMapper extends Mapper<WalletRecharge> {
 	 * @return
 	 */
 	List<WalletRecharge> findWalletRechargeTypeMoneySum(@Param("schoolCode") String schoolCode);
+
+	/**
+	 * 根据多个订单号查询充值记录列表
+	 * @Author: WanMing
+	 * @Date: 2019/7/22 15:00
+	 */
+    List<WalletRecharge> queryWalletRechargeByOrderNos(@Param("orderNos") List<Long> orderNos);
 }

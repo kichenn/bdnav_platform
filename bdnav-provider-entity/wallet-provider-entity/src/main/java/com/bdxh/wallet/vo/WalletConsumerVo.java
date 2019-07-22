@@ -107,6 +107,12 @@ public class WalletConsumerVo {
     @ApiModelProperty("消费支付时间")
     private Date consumerTime;
 
+    /**
+     * 消费方式 1刷卡 2 刷码  3扫码  4人脸识别
+     */
+    @ApiModelProperty("消费方式 1刷卡 2 刷码  3扫码  4人脸识别")
+    private Byte consumerType;
+
 
     /**
      * 支付状态 1 未扣款  2扣款成功  3 扣款中 4 扣款失败

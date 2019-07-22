@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.bdxh.appburied.dto.*;
 import com.bdxh.appburied.entity.AppStatus;
 import com.bdxh.appburied.entity.ApplyLog;
-import com.bdxh.common.helper.weixiao.authentication.AuthenticationUtils;
 import com.bdxh.common.helper.weixiao.authentication.MessageUtils;
 import com.bdxh.common.utils.SnowflakeIdWorker;
 import com.bdxh.common.utils.wrapper.WrapMapper;
@@ -18,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.bdxh.appburied.service.ApplyLogService;
-import sun.applet.Main;
 
 import java.util.*;
 

@@ -73,6 +73,17 @@
         </where>
     </select>
 
+    <!--根据订单号集合查询充值记录列表-->
+    <select id="queryWalletRechargeByOrderNos" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM t_wallet_recharge
+        WHERE order_no IN
+        <foreach collection="orderNos" item="orderNo" open="(" close=")" separator=",">
+            #{orderNo}
+        </foreach>
+    </select>
+
     <delete id="delWalletRechargeInIds" parameterType="Integer">
         DELETE
         FROM t_wallet_recharge
