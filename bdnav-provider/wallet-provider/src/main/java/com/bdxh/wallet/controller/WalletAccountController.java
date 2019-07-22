@@ -55,6 +55,37 @@ public class WalletAccountController {
 
 
     /**
+     * 根据schoolcode cardnumber 查询账户信息
+     *
+     * @param cardNumber
+     * @param schoolCode
+     * @return
+     */
+    @GetMapping("/findWalletByCardNumberAndSchoolCode")
+    @ApiOperation(value = "查询账户信息", response = WalletAccount.class)
+    public Object findWalletByCardNumberAndSchoolCode(@RequestParam("cardNumber") String cardNumber, @RequestParam("schoolCode") String schoolCode) {
+        //查询钱包信息
+        WalletAccount walletAccount = walletAccountService.findWalletByCardNumberAndSchoolCode(cardNumber, schoolCode);
+        return WrapMapper.ok(walletAccount);
+    }
+
+    @PostMapping("/createWallet")
+    @ApiOperation(value = "创建钱包账户信息", response = Boolean.class)
+    public Object createWallet(@Validated @RequestBody CreateWalletDto createWalletDto) {
+        WalletAccount walletAccount = new WalletAccount();
+        BeanUtils.copyProperties(createWalletDto, walletAccount);
+        walletAccount.setId(snowflakeIdWorker.nextId());
+        walletAccount.setAmount(new BigDecimal("0"));
+        walletAccount.setQuickPayMoney(new BigDecimal("0"));
+        walletAccount.setStatus(AccountStatusEnum.NORMAL_KEY);
+        walletAccount.setCreateDate(new Date());
+        walletAccount.setUpdateDate(new Date());
+        walletAccount.setRemark("钱包");
+        walletAccountService.save(walletAccount);
+        return WrapMapper.ok(Boolean.TRUE);
+    }
+
+    /**
      * @param walletAccountParam
      * @return
      */
@@ -268,8 +299,6 @@ public class WalletAccountController {
             return WrapMapper.error(e.getMessage());
         }
     }
-
-
 
 
 }

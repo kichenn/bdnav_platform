@@ -36,6 +36,10 @@ import com.bdxh.user.entity.Student;
 import com.bdxh.user.feign.BaseUserControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.wallet.dto.CreateWalletDto;
+import com.bdxh.wallet.entity.WalletAccount;
+import com.bdxh.wallet.enums.AccountStatusEnum;
+import com.bdxh.wallet.feign.WalletAccountControllerClient;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -55,9 +59,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,6 +89,9 @@ public class StudentWebController {
 
     @Autowired
     private BaseUserControllerClient baseUserControllerClient;
+
+    @Autowired
+    private WalletAccountControllerClient walletAccountControllerClient;
 
     //图片路径
     private static final String IMG_URL = "http://bdnav-1258570075-1258570075.cos.ap-guangzhou.myqcloud.com/data/20190416_be0c86bea84d477f814e797d1fa51378.jpg?sign=q-sign-algorithm%3Dsha1%26q-ak%3DAKIDmhZcOvMyaVdNQZoBXw5xZtqVR6SqdIK6%26q-sign-time%3D1555411088%3B1870771088%26q-key-time%3D1555411088%3B1870771088%26q-header-list%3D%26q-url-param-list%3D%26q-signature%3Dbc7a67e7b405390b739288b55f676ab640094649";
@@ -141,15 +150,15 @@ public class StudentWebController {
             User user = SecurityUtils.getCurrentUser();
             addStudentDto.setOperator(user.getId());
             addStudentDto.setOperatorName(user.getUserName());
-            BaseUser baseUser=baseUserControllerClient.queryBaseUserBySchoolCodeAndCardNumber(addStudentDto.getSchoolCode(),addStudentDto.getCardNumber()).getResult();
-            if(null!=baseUser){
+            BaseUser baseUser = baseUserControllerClient.queryBaseUserBySchoolCodeAndCardNumber(addStudentDto.getSchoolCode(), addStudentDto.getCardNumber()).getResult();
+            if (null != baseUser) {
                 return WrapMapper.error("当前学校已存在相同学生学号");
             }
             SchoolOrgQueryDto schoolOrgQueryDto = new SchoolOrgQueryDto();
             String orgIds[] = addStudentDto.getClassIds().split(",");
             for (int i = 0; i < orgIds.length; i++) {
                 String orgId = orgIds[i];
-                SchoolOrg schoolOrg =schoolOrgControllerClient.findSchoolOrgInfo(Long.parseLong(orgId)).getResult();
+                SchoolOrg schoolOrg = schoolOrgControllerClient.findSchoolOrgInfo(Long.parseLong(orgId)).getResult();
                 if (null != schoolOrg) {
                     if (schoolOrg.getOrgType() == COLLEGE_TYPE) {
                         addStudentDto.setCollegeName(schoolOrg.getOrgName());
@@ -168,8 +177,25 @@ public class StudentWebController {
                 }
             }
             Wrapper wrapper = studentControllerClient.addStudent(addStudentDto);
-            if (wrapper.getCode() == 200){
+            if (wrapper.getCode() == 200) {
                 schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()), Integer.parseInt(UserNumberStatusEnum.ADD.getCode().toString()), 1, addStudentDto.getSchoolCode());
+                //新增学生账户
+                //查询钱包信息
+                WalletAccount walletAccount = walletAccountControllerClient.findWalletByCardNumberAndSchoolCode(addStudentDto.getCardNumber(), addStudentDto.getSchoolCode()).getResult();
+                if (walletAccount == null) {
+                    StudentVo studentVo = studentControllerClient.queryStudentInfo(addStudentDto.getSchoolCode(), walletAccount.getCardNumber()).getResult();
+                    //钱包不存在，新增钱包信息
+                    CreateWalletDto createWalletDto = new CreateWalletDto();
+                    createWalletDto.setSchoolId(addStudentDto.getSchoolId());
+                    createWalletDto.setSchoolCode(addStudentDto.getSchoolCode());
+                    createWalletDto.setSchoolName(addStudentDto.getSchoolName());
+                    createWalletDto.setUserId(studentVo.getSId());
+                    createWalletDto.setCardNumber(addStudentDto.getCardNumber());
+                    createWalletDto.setUserName(studentVo.getSName());
+                    createWalletDto.setUserType(new Byte("2"));
+                    createWalletDto.setOrgId(studentVo.getClassId());
+                    walletAccountControllerClient.createWallet(createWalletDto);
+                }
             }
             return wrapper;
         } catch (Exception e) {
@@ -205,7 +231,7 @@ public class StudentWebController {
                 return WrapMapper.error("请先删除卡号为" + cardNumber + "的学生门禁单信息");
             }
             Wrapper wrapper = studentControllerClient.removeStudent(schoolCode, cardNumber);
-            if (wrapper.getCode() == 200){
+            if (wrapper.getCode() == 200) {
                 schoolControllerClient.updateSchoolUserNum(Integer.parseInt(BaseUserTypeEnum.STUDENT.getCode().toString()), Integer.parseInt(UserNumberStatusEnum.REMOVE.getCode().toString()), 1, schoolCode);
             }
             return wrapper;
@@ -365,7 +391,7 @@ public class StudentWebController {
                     BaseUserUnqiue baseUserUnqiue = new BaseUserUnqiue();
                     baseUserUnqiue.setSchoolCode(columns[0]);
                     phoneList = baseUserControllerClient.queryAllUserPhone(baseUserUnqiue).getResult();
-                    Integer lastExaclLowNumber =0;
+                    Integer lastExaclLowNumber = 0;
                 /*    //如果是第一条不会进入判断
                     if (i != 1) {
                         //判断是否是最后一条,
@@ -379,7 +405,7 @@ public class StudentWebController {
 
                 }
 
-                    if (null != school) {
+                if (null != school) {
                     if (StringUtils.isNotBlank(studentList.get(i)[0])) {
                         //判断当前学校是否有重复学号
                         if (null != cardNumberList) {

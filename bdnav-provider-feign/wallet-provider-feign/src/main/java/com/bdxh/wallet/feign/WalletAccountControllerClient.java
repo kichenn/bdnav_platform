@@ -21,6 +21,20 @@ import org.springframework.web.bind.annotation.*;
 public interface WalletAccountControllerClient {
 
     /**
+     * 查询钱包信息
+     */
+    @GetMapping("/walletAccount/findWalletByCardNumberAndSchoolCode")
+    @ResponseBody
+    Wrapper<WalletAccount> findWalletByCardNumberAndSchoolCode(@RequestParam("cardNumber") String cardNumber, @RequestParam("schoolCode") String schoolCode);
+
+    /**
+     * 创建钱包
+     */
+    @PostMapping("/walletAccount/createWallet")
+    @ResponseBody
+    Wrapper createWallet(@Validated @RequestBody CreateWalletDto createWalletDto);
+
+    /**
      * 我的钱包
      *
      * @return
@@ -93,6 +107,7 @@ public interface WalletAccountControllerClient {
 
     /**
      * 查询小额免密支付金额值
+     *
      * @param schoolCode
      * @param cardNumber
      * @return

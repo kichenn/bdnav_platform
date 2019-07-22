@@ -10,12 +10,22 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
 
 /**
-* @Description:
-* @Author: Kang
-* @Date: 2019/7/15 17:18
-*/
+ * @Description:
+ * @Author: Kang
+ * @Date: 2019/7/15 17:18
+ */
 @Component
 public class WalletAccountControllerFallback implements WalletAccountControllerClient {
+
+    @Override
+    public Wrapper<WalletAccount> findWalletByCardNumberAndSchoolCode(String cardNumber, String schoolCode) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper createWallet(CreateWalletDto createWalletDto) {
+        return WrapMapper.error();
+    }
 
     @Override
     public Wrapper<MyWalletVo> myWallet(WalletAccount walletAccountParam) {
@@ -78,7 +88,7 @@ public class WalletAccountControllerFallback implements WalletAccountControllerC
     }
 
     @Override
-    public Wrapper delWalletAccount(String schoolCode,String cardNumber,Long id) {
+    public Wrapper delWalletAccount(String schoolCode, String cardNumber, Long id) {
         return WrapMapper.error();
     }
 }
