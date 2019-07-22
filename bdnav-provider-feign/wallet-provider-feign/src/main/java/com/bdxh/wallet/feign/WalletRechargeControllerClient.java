@@ -9,6 +9,7 @@ import com.bdxh.wallet.fallback.WalletRechargeControllerFallback;
 import com.bdxh.wallet.fallback.WalletAccountControllerFallback;
 import com.bdxh.wallet.fallback.WalletRechargeControllerFallback;
 import com.bdxh.wallet.vo.BaseEchartsVo;
+import com.bdxh.wallet.vo.WalletRechargePayVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
@@ -55,7 +56,7 @@ public interface WalletRechargeControllerClient {
      */
     @GetMapping("/findWalletRechargeByOrderNo")
     @ResponseBody
-    Wrapper<WalletRecharge> findWalletRechargeByOrderNo(@RequestParam("orderNo") Long orderNo);
+    Wrapper<WalletRechargePayVo> findWalletRechargeByOrderNo(@RequestParam("orderNo") Long orderNo);
 
     /**
      * 根据条件分页查询充值记录

@@ -30,6 +30,7 @@ import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.feign.WalletAccountControllerClient;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
+import com.bdxh.wallet.vo.WalletRechargePayVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyContext;
 import org.apache.rocketmq.client.consumer.listener.ConsumeConcurrentlyStatus;
@@ -128,7 +129,7 @@ public class RocketMqConsumerTransactionListener implements MessageListenerConcu
         log.info("查询微信订单详情信息:{}", JSONObject.toJSONString(wrapper));
         if (wrapper.getCode() == Wrapper.SUCCESS_CODE) {
             //查询我方订单信息
-            WalletRecharge walletRecharge = walletRechargeControllerClient.findWalletRechargeByOrderNo(Long.valueOf(orderNo)).getResult();
+            WalletRechargePayVo walletRecharge = walletRechargeControllerClient.findWalletRechargeByOrderNo(Long.valueOf(orderNo)).getResult();
             log.info("查询我方订单成功:{}", JSONObject.toJSONString(walletRecharge));
             //查询成功
             WechatOrderQueryVo wechatOrderQueryVo = (WechatOrderQueryVo) wrapper.getResult();
