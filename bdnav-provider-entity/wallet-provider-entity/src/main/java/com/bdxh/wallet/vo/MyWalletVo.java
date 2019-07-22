@@ -22,7 +22,7 @@ public class MyWalletVo {
     @ApiModelProperty(value = "学校code")
     private String schoolCode;
 
-    @ApiModelProperty(value ="用户id")
+    @ApiModelProperty(value = "用户id")
     private String userId;
 
     @ApiModelProperty(value = "卡号")
@@ -39,4 +39,7 @@ public class MyWalletVo {
 
     @ApiModelProperty(value = "身份：1为家长，2为学生，3为教职工，4为校友")
     private String identityType;
+
+    @ApiModelProperty(value = "当前登录看钱包的用户身份")
+    private String myType;
 }
