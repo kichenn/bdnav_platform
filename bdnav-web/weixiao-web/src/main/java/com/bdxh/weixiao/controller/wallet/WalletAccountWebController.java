@@ -57,7 +57,11 @@ public class WalletAccountWebController {
         walletAccount.setUserName(userInfo.getName());
         walletAccount.setUserType(Byte.valueOf(userInfo.getIdentityType()));
         walletAccount.setOrgId(userInfo.getOrgId());
-        return WrapMapper.ok(walletAccountControllerClient.myWallet(walletAccount).getResult());
+        MyWalletVo myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
+        StudentVo studentVo = studentControllerClient.queryStudentInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
+        Preconditions.checkArgument(studentVo != null, "学生信息为空");
+        myWalletVo.setUserId(studentVo.getSId().toString());
+        return WrapMapper.ok(myWalletVo);
     }
 
     @PostMapping("/childrenWallet")
@@ -84,7 +88,12 @@ public class WalletAccountWebController {
         walletAccount.setUserName(studentVo1.getSName());
         walletAccount.setUserType(Byte.valueOf(userInfo.getIdentityType()));
         walletAccount.setOrgId(Long.valueOf(studentVo1.getClassId()));
-        return WrapMapper.ok(walletAccountControllerClient.myWallet(walletAccount).getResult());
+
+        MyWalletVo myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
+        StudentVo studentVo = studentControllerClient.queryStudentInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
+        Preconditions.checkArgument(studentVo != null, "学生信息为空");
+        myWalletVo.setUserId(studentVo.getSId().toString());
+        return WrapMapper.ok(myWalletVo);
     }
 
     @GetMapping("/findPayPwd")

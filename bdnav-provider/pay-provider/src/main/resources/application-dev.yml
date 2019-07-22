@@ -10,6 +10,7 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://admin:bdxh123456@eureka-server1:9001/eureka/,http://admin:bdxh123456@eureka-server2:9002/eureka/,http://admin:bdxh123456@eureka-server3:9003/eureka/
+
 spring:
   #redis配置
   redis:
@@ -24,8 +25,11 @@ spring:
         max-idle: 10
         min-idle: 2
     database: 0
-  #rocketmq配置
   cloud:
+    loadbalancer:
+      retry:
+        enabled: true
+    #rocketmq配置
     stream:
       rocketmq:
         binder:

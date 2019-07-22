@@ -87,10 +87,10 @@
         UPDATE
         t_wallet_recharge
         <set>
-            <if test="walletRecharge.outOrderNo !=null AND walletRecharge.outOrderNo!=''">
+            <if test="walletRecharge.outOrderNo !=null and walletRecharge.outOrderNo!=''">
                 out_order_no=#{walletRecharge.outOrderNo},
             </if>
-            <if test="walletRecharge.rechargeType !=null AND walletRecharge.rechargeType!=''">
+            <if test="walletRecharge.rechargeType !=null and walletRecharge.rechargeType!=''">
                 recharge_type=#{walletRecharge.rechargeType},
             </if>
             <if test="walletRecharge.rechargeStatus !=null">

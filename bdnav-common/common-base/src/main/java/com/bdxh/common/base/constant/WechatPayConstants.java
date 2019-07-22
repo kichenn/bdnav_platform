@@ -25,9 +25,14 @@ public class WechatPayConstants {
         String APP_ID = "wxb5d9031684f864e4";
 
         /**
-         * 订单回调地址
+         * 订单回调地址 (家长购买服务回调地址)
          */
         String NOTICE_URL = "http://120.78.120.221:9017/wechatNotice/walletJsRecharge";
+
+        /**
+         * 订单回调地址 (钱包充值服务回调地址)
+         */
+        String NOTICE_WALLET_URL = "http://120.78.120.221:9017/wechatNotice/walletRechargeJs";
 
         /**
          * 支付类型

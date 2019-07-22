@@ -40,11 +40,11 @@ public class AddWalletRechargeDto {
     @ApiModelProperty(value = "学号")
     private String cardNumber;
 
-    @NotNull(message = "订单号我方不能为空")
+//    @NotNull(message = "订单号我方不能为空")
     @ApiModelProperty(value = "订单号我方")
     private Long orderNo;
 
-    @NotEmpty(message = "第三方订单号不能为空")
+//    @NotEmpty(message = "第三方订单号不能为空")
     @ApiModelProperty(value = "第三方订单号")
     private String outOrderNo;
 

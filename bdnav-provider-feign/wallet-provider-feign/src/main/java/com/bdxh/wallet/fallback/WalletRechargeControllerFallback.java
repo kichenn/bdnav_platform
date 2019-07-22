@@ -8,6 +8,7 @@ import com.bdxh.wallet.dto.QueryWalletRechargeDto;
 import com.bdxh.wallet.entity.WalletRecharge;
 import com.bdxh.wallet.feign.WalletRechargeControllerClient;
 import com.bdxh.wallet.vo.BaseEchartsVo;
+import com.bdxh.wallet.vo.WalletRechargePayVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ public class WalletRechargeControllerFallback implements WalletRechargeControlle
     }
 
     @Override
-    public Wrapper<WalletRecharge> findWalletRechargeByOrderNo(Long orderNo) {
+    public Wrapper<WalletRechargePayVo> findWalletRechargeByOrderNo(Long orderNo) {
         return WrapMapper.error();
     }
 

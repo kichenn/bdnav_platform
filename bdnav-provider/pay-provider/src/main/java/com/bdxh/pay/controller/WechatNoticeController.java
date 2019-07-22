@@ -117,6 +117,7 @@ public class WechatNoticeController {
     @RequestMapping("/walletJsRecharge")
     public void wechatJsPayNotice(HttpServletRequest request, HttpServletResponse response) {
         try {
+            log.info("支付回调（服务购买。。。。。。。。。。。。。。。。。。）");
             int len = request.getContentLength();
             ServletInputStream inputStream = request.getInputStream();
             byte[] buffer = new byte[len];
@@ -146,6 +147,8 @@ public class WechatNoticeController {
                 jsonObject.put("orderNo", orderNo);
                 jsonObject.put("resultCode", resultCode);
                 jsonObject.put("thirdOrderNo", thirdOrderNo);
+                //家长购买服务
+                jsonObject.put("payType", "1");
                 //发送事务消息
                 Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice, RocketMqConstrants.Tags.wechatPayWalletNotice_js, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 transactionMQProducer.sendMessageInTransaction(message, null);
@@ -182,11 +185,13 @@ public class WechatNoticeController {
     @RequestMapping("/walletRechargeJs")
     public void walletRecharge(HttpServletRequest request, HttpServletResponse response) {
         try {
+            log.info("支付回调（钱包充值。。。。。。。。。。。。。。。。。。）");
             int len = request.getContentLength();
             ServletInputStream inputStream = request.getInputStream();
             byte[] buffer = new byte[len];
             inputStream.read(buffer, 0, len);
             String appNoticeResponseStr = new String(buffer, "utf-8");
+            log.info("回调内容:" + appNoticeResponseStr);
             Preconditions.checkArgument(StringUtils.isNotEmpty(appNoticeResponseStr), "回调内容为空");
             SortedMap<String, String> resultMap = WXPayUtil.xmlToMap(appNoticeResponseStr);
             //验签
@@ -205,15 +210,20 @@ public class WechatNoticeController {
             Preconditions.checkArgument(StringUtils.equalsIgnoreCase(resultCode, "SUCCESS") || StringUtils.equalsIgnoreCase(resultCode, "FAIL"), "微信返回结果不正确");
             //做幂等性处理,多次通知不再处理
             String notice = redisUtil.get(RedisClusterConstrants.KeyPrefix.wallet_recharge_js_notice + orderNo);
+            log.info("redis获取订单信息:" + notice);
             if (!StringUtils.equals(notice, "1")) {
                 //发送至mq做异步处理
                 JSONObject jsonObject = new JSONObject();
                 jsonObject.put("orderNo", orderNo);
                 jsonObject.put("resultCode", resultCode);
                 jsonObject.put("thirdOrderNo", thirdOrderNo);
+                //钱包充值
+                jsonObject.put("payType", "2");
                 //发送事务消息
-                Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice, RocketMqConstrants.Tags.wechatPayWalletRecharge_js, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
+                log.info("发送钱包充值的事务消息");
+                Message message = new Message(RocketMqConstrants.Topic.wechatPayWalletNotice, RocketMqConstrants.Tags.wechatPayWalletNotice_js, jsonObject.toJSONString().getBytes(Charset.forName("utf-8")));
                 transactionMQProducer.sendMessageInTransaction(message, null);
+                log.info("已发送.......");
             }
             //返回微信结果
             JSNoticeReturn jsNoticeReturn = new JSNoticeReturn();

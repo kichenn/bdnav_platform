@@ -34,6 +34,9 @@ public class AddWalletPayDto {
     @ApiModelProperty(value = "如果为家长代充则存在，否则为空")
     private Long familyId;
 
+    @ApiModelProperty(value = "openId")
+    private String openId;
+
     @ApiModelProperty(value = "操作人id")
     private Long operator;
 

@@ -1,5 +1,6 @@
 package com.bdxh.pay.dto;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -42,4 +43,7 @@ public class WxPayJsOrderDto implements Serializable {
     @ApiModelProperty("微信唯一标识")
     private String openid;
 
+    @NotNull(message = "支付类型不能为空")
+    @ApiModelProperty(value="支付类型：1.家长端服务购买，2.钱包充值")
+    private Integer payType;
 }
