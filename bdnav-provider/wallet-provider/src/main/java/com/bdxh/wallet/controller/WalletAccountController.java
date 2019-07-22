@@ -75,6 +75,7 @@ public class WalletAccountController {
         WalletAccount walletAccount = new WalletAccount();
         BeanUtils.copyProperties(createWalletDto, walletAccount);
         walletAccount.setId(snowflakeIdWorker.nextId());
+        walletAccount.setSchoolId(Long.valueOf(createWalletDto.getSchoolId()));
         walletAccount.setAmount(new BigDecimal("0"));
         walletAccount.setQuickPayMoney(new BigDecimal("0"));
         walletAccount.setStatus(AccountStatusEnum.NORMAL_KEY);
