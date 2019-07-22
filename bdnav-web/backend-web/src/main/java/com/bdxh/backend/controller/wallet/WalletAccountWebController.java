@@ -10,6 +10,7 @@ import com.bdxh.user.vo.TeacherVo;
 import com.bdxh.wallet.dto.*;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.feign.WalletAccountControllerClient;
+import com.bdxh.wallet.vo.ShowInfoVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -90,12 +91,24 @@ public class WalletAccountWebController {
     @RequestMapping(value = "/businessCardToShow", method = RequestMethod.POST)
     public Object businessCardToShow(@RequestBody BusinessCardDto businessCardDto) {
         try {
+            ShowInfoVo siv=new ShowInfoVo();
             if (businessCardDto.getUserTypeEnum().getKey()==2){
                 StudentVo sv=studentControllerClient.queryStudentInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
-                return WrapMapper.ok(sv);
+                siv.setCardNumber(sv.getCardNumber());
+                siv.setClassName(sv.getClassName());
+                siv.setGender(sv.getGender());
+                siv.setGradeName(sv.getGradeName());
+                siv.setImage(sv.getImage());
+                siv.setPhone(sv.getPhone());
+                return WrapMapper.ok(siv);
             }else{
                 TeacherVo tv = teacherControllerClient.queryTeacherInfo(businessCardDto.getSchoolCode(), businessCardDto.getCardNumber()).getResult();
-                return WrapMapper.ok(tv);
+                siv.setCardNumber(tv.getCardNumber());
+                siv.setGender(tv.getGender());
+                siv.setImage(tv.getImage());
+                siv.setPhone(tv.getPhone());
+                siv.setPosition(tv.getPosition());
+                return WrapMapper.ok(siv);
             }
         } catch (Exception e) {
             e.printStackTrace();
