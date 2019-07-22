@@ -24,9 +24,9 @@ public class QueryWalletAccount extends Query {
     private String userName;
 
     /**
-     * 用户类型 1家长 2学生 3老师
+     * 用户类型 3家长 2学生 3教师
      */
-    @ApiModelProperty("用户类型 1家长 2学生 3老师")
+    @ApiModelProperty("用户类型 3家长 2学生 3教师")
     private Byte userType;
 
     /**

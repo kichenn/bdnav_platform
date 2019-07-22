@@ -25,9 +25,6 @@ public class AddWalletPayDto {
     @ApiModelProperty(value = "充值金额")
     private BigDecimal rechargeAmount;
 
-    @ApiModelProperty(value = "ip地址")
-    private String ip;
-
     @ApiModelProperty(value = "线下充值的设备编号，线上充值该值为空")
     private String deviceNumber;
 
