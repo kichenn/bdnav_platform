@@ -27,4 +27,8 @@ public class ShowInfoVo {
     @ApiModelProperty("老师职称")
     private String position;
 
+    @ApiModelProperty("部门名称")
+    private String deptName;
+
+
 }
