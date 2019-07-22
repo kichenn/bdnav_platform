@@ -61,6 +61,7 @@ public class WalletAccountWebController {
         StudentVo studentVo = studentControllerClient.queryStudentInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
         Preconditions.checkArgument(studentVo != null, "学生信息为空");
         myWalletVo.setUserId(studentVo.getSId().toString());
+        myWalletVo.setMyType(userInfo.getIdentityType());
         return WrapMapper.ok(myWalletVo);
     }
 
