@@ -34,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.SortedMap;
 
@@ -64,7 +65,7 @@ public class WecharWalletJsPay {
 
     @RequestMapping(value = "/walletJsPay", method = RequestMethod.POST)
     @ApiOperation(value = "JS统一下单充值钱包", response = String.class)
-    public Object walletJsPay(@Validated @RequestBody AddWalletPayDto addWalletPayDto) {
+    public Object walletJsPay(@Validated @RequestBody AddWalletPayDto addWalletPayDto, HttpServletRequest request) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         //账单充值entity
         AddWalletRechargeDto addWalletRechargeDto = new AddWalletRechargeDto();
@@ -121,7 +122,7 @@ public class WecharWalletJsPay {
         //商品描述
         wxPayJsOrderDto.setBody("校园钱包充值");
         //ip地址
-        wxPayJsOrderDto.setIp(addWalletPayDto.getIp());
+        wxPayJsOrderDto.setIp(request.getRemoteAddr());
         //微信openid
         wxPayJsOrderDto.setOpenid(addWalletPayDto.getOpenId());
         //支付类型
