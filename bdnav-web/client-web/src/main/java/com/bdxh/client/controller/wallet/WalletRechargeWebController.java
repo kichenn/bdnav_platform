@@ -142,7 +142,8 @@ public class WalletRechargeWebController {
             excelReportBean.setFamilyNumber(walletRechargeVo.getFamilyNumber() == null ? "无" : walletRechargeVo.getFamilyNumber());
             excelReportBean.setRechargeStatus(RechargeStatusEnum.getValue(walletRechargeVo.getRechargeStatus()));
             excelReportBean.setRechargeType(RechargeTypeEnum.getValue(walletRechargeVo.getRechargeType()));
-            excelReportBean.setUserType(UserTypeEnum.getValue(walletRechargeVo.getUserType()));
+            excelReportBean.setUserType(UserTypeEnum.getValue(walletRechargeVo.getUserType())==null?"无":UserTypeEnum.getValue(walletRechargeVo.getUserType()));
+            excelReportBean.setWindowName(excelReportBean.getWindowName()==null?"无":excelReportBean.getWindowName());
             return excelReportBean;
 
         }).collect(Collectors.toList());
