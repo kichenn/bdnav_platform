@@ -111,7 +111,7 @@ public class WalletRechargeWebController {
         QueryWalletRechargeExcelDto rechargeExcelDto = new QueryWalletRechargeExcelDto();
         rechargeExcelDto.setExportWay(exportWay);
         rechargeExcelDto.setOrderNos(orderNos);
-        rechargeExcelDto.setRechargeType(rechargeType);
+        rechargeExcelDto.setRechargeType(rechargeType==0?null:rechargeType);
         rechargeExcelDto.setWindowId(windowId);
         rechargeExcelDto.setStartTime(startDate);
         rechargeExcelDto.setEndTime(endDate);
