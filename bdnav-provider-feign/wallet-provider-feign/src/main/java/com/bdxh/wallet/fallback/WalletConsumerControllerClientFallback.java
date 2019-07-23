@@ -8,6 +8,7 @@ import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.feign.WalletConsumerControllerClient;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
@@ -47,6 +48,11 @@ public class WalletConsumerControllerClientFallback implements WalletConsumerCon
 
     @Override
     public Wrapper<List<WalletConsumerVo>> findWalletConsumerList(QueryWalletConsumerExcelDto queryWalletConsumerExcelDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<BaseEchartsVo> queryAllConsumerMoney(String schoolCode) {
         return WrapMapper.error();
     }
 
