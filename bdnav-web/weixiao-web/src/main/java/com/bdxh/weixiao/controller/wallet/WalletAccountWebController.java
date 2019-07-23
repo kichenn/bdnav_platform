@@ -66,7 +66,7 @@ public class WalletAccountWebController {
         walletAccount.setOrgId(userInfo.getOrgId());
         MyWalletVo myWalletVo = null;
         //如果为老师身份，则判断他是否班主任
-        if (walletAccount.getUserType().equals(3)){
+        if (walletAccount.getUserType().equals(new Byte("3"))){
             //老师钱包
             walletAccount.setUserId(userInfo.getFamilyId());
             walletAccount.setCardNumber(userInfo.getFamilyCardNumber());
@@ -78,7 +78,7 @@ public class WalletAccountWebController {
             TeacherVo teacherVo = teacherControllerClient.queryTeacherInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
             Preconditions.checkArgument(teacherVo != null, "老师信息为空");
             myWalletVo.setUserId(teacherVo.getId().toString());
-        } else if (walletAccount.getUserType().equals(2)) {
+        } else if (walletAccount.getUserType().equals(new Byte("2"))) {
             //学生钱包
             walletAccount.setUserId(userInfo.getUserId());
             walletAccount.setCardNumber(userInfo.getCardNumber().get(0));
@@ -128,10 +128,10 @@ public class WalletAccountWebController {
     public Object findPayPwd() {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         String cardNumber = "";
-        if (userInfo.getIdentityType().equals(3)) {
+        if (userInfo.getIdentityType().equals("3")) {
             //老师钱包
             cardNumber = userInfo.getFamilyCardNumber();
-        } else if (userInfo.getIdentityType().equals(2)) {
+        } else if (userInfo.getIdentityType().equals("2")) {
             //学生钱包
             cardNumber = userInfo.getCardNumber().get(0);
         }
@@ -144,10 +144,10 @@ public class WalletAccountWebController {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         setPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
         String cardNumber = "";
-        if (userInfo.getIdentityType().equals(3)) {
+        if (userInfo.getIdentityType().equals("3")) {
             //老师钱包
             cardNumber = userInfo.getFamilyCardNumber();
-        } else if (userInfo.getIdentityType().equals(2)) {
+        } else if (userInfo.getIdentityType().equals("2")) {
             //学生钱包
             cardNumber = userInfo.getCardNumber().get(0);
         }
@@ -161,10 +161,10 @@ public class WalletAccountWebController {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         modifyPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
         String cardNumber = "";
-        if (userInfo.getIdentityType().equals(3)) {
+        if (userInfo.getIdentityType().equals("3")) {
             //老师钱包
             cardNumber = userInfo.getFamilyCardNumber();
-        } else if (userInfo.getIdentityType().equals(2)) {
+        } else if (userInfo.getIdentityType().equals("2")) {
             //学生钱包
             cardNumber = userInfo.getCardNumber().get(0);
         }
@@ -179,10 +179,10 @@ public class WalletAccountWebController {
         forgetPayPwdDto.setPhone(userInfo.getPhone());
         forgetPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
         String cardNumber = "";
-        if (userInfo.getIdentityType().equals(3)) {
+        if (userInfo.getIdentityType().equals("3")) {
             //老师钱包
             cardNumber = userInfo.getFamilyCardNumber();
-        } else if (userInfo.getIdentityType().equals(2)) {
+        } else if (userInfo.getIdentityType().equals("2")) {
             //学生钱包
             cardNumber = userInfo.getCardNumber().get(0);
         }
@@ -219,10 +219,10 @@ public class WalletAccountWebController {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         setNoPwdPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
         String cardNumber = "";
-        if (userInfo.getIdentityType().equals(3)) {
+        if (userInfo.getIdentityType().equals("3")) {
             //老师钱包
             cardNumber = userInfo.getFamilyCardNumber();
-        } else if (userInfo.getIdentityType().equals(2)) {
+        } else if (userInfo.getIdentityType().equals("2")) {
             //学生钱包
             cardNumber = userInfo.getCardNumber().get(0);
         }
@@ -235,10 +235,10 @@ public class WalletAccountWebController {
     public Object findNoPwdPay() {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         String cardNumber = "";
-        if (userInfo.getIdentityType().equals(3)) {
+        if (userInfo.getIdentityType().equals("3")) {
             //老师钱包
             cardNumber = userInfo.getFamilyCardNumber();
-        } else if (userInfo.getIdentityType().equals(2)) {
+        } else if (userInfo.getIdentityType().equals("2")) {
             //学生钱包
             cardNumber = userInfo.getCardNumber().get(0);
         }
