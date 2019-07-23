@@ -106,6 +106,19 @@
         GROUP BY td.id
     </select>
 
+    <!--查询消费部门数量-->
+    <select id="queryChargeDeptNum" resultType="java.lang.Long">
+        SELECT
+	      COUNT(id)
+        FROM
+	    t_school_charge_dept ]
+	    <where>
+            <if test="schoolCode!=null and  schoolCode!=''">
+                school_code = #{schoolCode}
+            </if>
+        </where>
+    </select>
+
     <delete id="delSchoolChargeDeptInIds" parameterType="Integer">
         DELETE
         FROM t_school_charge_dept
@@ -115,5 +128,7 @@
             #{id, jdbcType = BIGINT}
         </foreach>
     </delete>
+
+
 
 </mapper>

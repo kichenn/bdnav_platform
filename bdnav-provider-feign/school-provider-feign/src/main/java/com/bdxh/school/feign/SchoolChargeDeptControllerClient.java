@@ -3,6 +3,7 @@ package com.bdxh.school.feign;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.fallback.SchoolChargeDeptControllerClientFallback;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
@@ -112,4 +113,14 @@ public interface SchoolChargeDeptControllerClient {
     @RequestMapping(value = "/schoolChargeDept/querySchoolChargeDeptAndPosNum", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<PageInfo<SchoolChargeDeptVo>> querySchoolChargeDeptAndPosNum(@RequestBody QuerySchoolChargeDeptDto querySchoolChargeDeptDto);
+
+    /**
+     * 查询学校消费部门数量和POS机的数量
+     *
+     * @Author: WanMing
+     * @Date: 2019/7/11 16:52
+     */
+    @RequestMapping(value = "/schoolChargeDept/queryChargeDeptNumAndPosNum", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<List<BaseEchartsVo>> queryChargeDeptNumAndPosNum(@RequestParam(value = "schoolCode",required = false)String schoolCode);
 }

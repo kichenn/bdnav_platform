@@ -41,6 +41,21 @@
 	  FROM t_school_posdevice_charge 
 	</select>
 
+	<!--查询消费机数量-->
+    <select id="queryPosNum" resultType="java.lang.Long">
+		SELECT
+		count( tp.id )
+		FROM
+		t_school_posdevice_charge tp
+		JOIN t_school_device td ON tp.device_id = td.id
+		<where>
+		td.device_type = 1
+		<if test="schoolCode!=null and schoolCode!=''">
+			AND td.school_code = #{schoolCode}
+		</if>
+		</where>
+	GROUP BY td.device_type
+	</select>
 
 
     <delete id="delSchoolPosDeviceChargeInIds" parameterType="Integer">

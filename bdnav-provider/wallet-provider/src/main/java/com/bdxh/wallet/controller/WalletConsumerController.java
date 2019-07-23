@@ -121,14 +121,14 @@ public class WalletConsumerController {
 
 
     /**
-     * 查询总消费额
+     * 查询单个学校或者所有学校消费总金额
      * @Author: WanMing
      * @Date: 2019/7/23 10:13
      */
-    @RequestMapping(value = "/queryAllConsumerMoney", method = RequestMethod.POST)
-    @ApiOperation(value = "根据条件查询账户的消费记录不分页", response = BaseEchartsVo.class)
+    @RequestMapping(value = "/queryAllConsumerMoney", method = RequestMethod.GET)
+    @ApiOperation(value = "查询单个学校或者所有学校消费总金额", response = BaseEchartsVo.class)
     public Object queryAllConsumerMoney(@RequestParam(value = "schoolCode",required = false) String schoolCode ){
-        return null;
+        return WrapMapper.ok(walletConsumerService.queryAllConsumerMoney(schoolCode));
     }
 
 

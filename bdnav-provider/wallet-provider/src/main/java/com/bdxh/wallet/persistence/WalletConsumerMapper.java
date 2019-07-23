@@ -1,5 +1,6 @@
 package com.bdxh.wallet.persistence;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
@@ -50,4 +51,11 @@ public interface WalletConsumerMapper extends Mapper<WalletConsumer> {
 	 * @return
 	 */
     List<WalletConsumer> findWalletConsumerByOrderNos(@Param("orderNos")List<Long> orderNos);
+
+	/**
+	 * 查询单个学校或者所有学校消费总金额
+	 * @param schoolCode
+	 * @return
+	 */
+	BigDecimal queryAllConsumerMoney(String schoolCode);
 }

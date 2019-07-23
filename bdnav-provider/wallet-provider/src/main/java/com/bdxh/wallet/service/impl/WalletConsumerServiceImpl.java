@@ -6,6 +6,7 @@ import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.persistence.WalletAccountMapper;
 import com.bdxh.wallet.service.WalletConsumerService;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.persistence.WalletConsumerMapper;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -32,6 +34,9 @@ import java.util.Objects;
 @Service
 @Slf4j
 public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> implements WalletConsumerService {
+
+
+    private static final String CONSUMER_TOTAL_MONEY = "消费总金额";
 
     @Autowired
     private WalletConsumerMapper walletConsumerMapper;
@@ -147,5 +152,21 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
         }
 
         return walletConsumerVos;
+    }
+
+    /**
+     * 查询单个学校或者所有学校消费总金额
+     *
+     * @param schoolCode
+     * @Author: WanMing
+     * @Date: 2019/7/23 11:38
+     */
+    @Override
+    public BaseEchartsVo queryAllConsumerMoney(String schoolCode) {
+        BigDecimal totalMoney = walletConsumerMapper.queryAllConsumerMoney(schoolCode);
+        BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
+        baseEchartsVo.setName(CONSUMER_TOTAL_MONEY);
+        baseEchartsVo.setValue(totalMoney==null?0.00D:totalMoney.doubleValue());
+        return baseEchartsVo;
     }
 }

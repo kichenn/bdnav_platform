@@ -3,6 +3,7 @@ package com.bdxh.school.service.impl;
 import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
 import com.bdxh.school.persistence.SchoolPosDeviceChargeMapper;
 import com.bdxh.school.service.SchoolChargeDeptService;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.school.entity.SchoolChargeDept;
 import com.bdxh.school.persistence.SchoolChargeDeptMapper;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -90,5 +92,30 @@ public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> i
 		PageHelper.startPage(querySchoolChargeDeptDto.getPageNum(),querySchoolChargeDeptDto.getPageSize());
 		List<SchoolChargeDeptVo> schoolChargeDeptVos =  schoolChargeDeptMapper.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto);
 		return new PageInfo<>(schoolChargeDeptVos);
+	}
+
+	/**
+	 * 查询学校消费部门数量和POS机的数量
+	 *
+	 * @param schoolCode
+	 * @Author: WanMing
+	 * @Date: 2019/7/23 12:24
+	 */
+	@Override
+	public List<BaseEchartsVo> queryChargeDeptNumAndPosNum(String schoolCode) {
+		List<BaseEchartsVo> baseEchartsVos = new ArrayList<>();
+		//查询消费部门数量
+		Long count  = schoolChargeDeptMapper.queryChargeDeptNum(schoolCode);
+		BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
+		baseEchartsVo.setName("收费部门");
+		baseEchartsVo.setValue(count==null?0L:count);
+		baseEchartsVos.add(baseEchartsVo);
+		//查询消费机数量
+		Long count1 = schoolPosDeviceChargeMapper.queryPosNum(schoolCode);
+		BaseEchartsVo baseEchartsVo1 = new BaseEchartsVo();
+		baseEchartsVo1.setName("消费机");
+		baseEchartsVo1.setValue(count1==null?0L:count1);
+		baseEchartsVos.add(baseEchartsVo);
+		return baseEchartsVos;
 	}
 }

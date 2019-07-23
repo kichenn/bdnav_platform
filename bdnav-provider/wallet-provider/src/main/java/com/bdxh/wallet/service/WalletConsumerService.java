@@ -4,6 +4,7 @@ import com.bdxh.common.support.IService;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -51,6 +52,13 @@ public interface WalletConsumerService extends IService<WalletConsumer> {
 	 * @return
 	 */
     List<WalletConsumerVo> findWalletConsumerList(QueryWalletConsumerExcelDto queryWalletConsumerExcelDto);
+
+    /**
+     * 查询单个学校或者所有学校消费总金额
+     * @Author: WanMing
+     * @Date: 2019/7/23 11:38
+     */
+    BaseEchartsVo queryAllConsumerMoney(String schoolCode);
 
 //	List<WalletConsumer> findWalletConsumerBy
 }

@@ -83,6 +83,18 @@
 		</foreach>
 	</select>
 
+	<!--查询单个学校或者所有学校消费总金额(支付成功)-->
+    <select id="queryAllConsumerMoney" resultType="java.math.BigDecimal">
+		SELECT SUM(consumer_amount)
+		FROM t_wallet_consumer
+		<where>
+			consumer_status = 3
+			<if test="schoolCode!=null and schoolCode!=''">
+				AND school_code = #{schoolCode}
+			</if>
+		</where>
+	</select>
+
     <delete id="delWalletConsumerInIds" parameterType="Integer">
 	  DELETE
 	   FROM t_wallet_consumer

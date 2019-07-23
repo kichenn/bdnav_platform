@@ -37,4 +37,7 @@ public interface SchoolChargeDeptMapper extends Mapper<SchoolChargeDept> {
 
     //学校的收费部门和统计收费部门下的消费机数量
 	List<SchoolChargeDeptVo> querySchoolChargeDeptAndPosNum(@Param("chargeDept") QuerySchoolChargeDeptDto chargeDept);
+
+	//查询消费部门数量
+    Long queryChargeDeptNum(@Param("schoolCode") String schoolCode);
 }
