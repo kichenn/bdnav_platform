@@ -66,7 +66,7 @@ public class WalletAccountWebController {
         walletAccount.setOrgId(userInfo.getOrgId());
         MyWalletVo myWalletVo = null;
         //如果为老师身份，则判断他是否班主任
-        if (walletAccount.getUserType().equals(new Byte("3"))){
+        if (walletAccount.getUserType().equals(new Byte("3"))) {
             //老师钱包
             walletAccount.setUserId(userInfo.getFamilyId());
             walletAccount.setCardNumber(userInfo.getFamilyCardNumber());
@@ -113,7 +113,8 @@ public class WalletAccountWebController {
         walletAccount.setUserId(studentVo1.getSId());
         walletAccount.setCardNumber(cardNumber);
         walletAccount.setUserName(studentVo1.getSName());
-        walletAccount.setUserType(Byte.valueOf(userInfo.getIdentityType()));
+        //此处为孩子类型（家长是没有钱包的）
+        walletAccount.setUserType(new Byte("2"));
         walletAccount.setOrgId(Long.valueOf(studentVo1.getClassId()));
 
         MyWalletVo myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
