@@ -76,6 +76,7 @@ public class WecharWalletJsPay {
         //账单充值entity
         AddWalletRechargeDto addWalletRechargeDto = new AddWalletRechargeDto();
 
+        addWalletPayDto.setRechargeType(Byte.valueOf(userInfo.getIdentityType()));
         if (addWalletPayDto.getRechargeType().equals(new Byte("1"))) {
             //家长充值
             //查询家长信息
