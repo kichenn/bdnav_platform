@@ -86,6 +86,13 @@ public class WecharWalletJsPay {
             addWalletRechargeDto.setFamilyId(family.getId());
             addWalletRechargeDto.setFamilyName(family.getName());
             addWalletRechargeDto.setFamilyNumber(family.getCardNumber());
+            //孩子信息
+            Student student = studentControllerClient.queryStudentInfo2(addWalletPayDto.getUserId()).getResult();
+            Preconditions.checkArgument(student != null, "查询学生信息失败");
+            //学生信息
+            addWalletRechargeDto.setUserId(student.getId());
+            addWalletRechargeDto.setUserName(student.getName());
+            addWalletRechargeDto.setCardNumber(student.getCardNumber());
         } else if (addWalletPayDto.getRechargeType().equals(new Byte("2"))) {
             //学生自己充值
             //查询学生信息
