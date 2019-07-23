@@ -53,17 +53,18 @@ public class SchoolOrgController {
 
     /**
      * 查询单个学校的组织架构树形数据结构信息
+     *
      * @param schoolId
      * @return
      */
-    @RequestMapping(value = "/findSchoolOrgTreeInfoBySchoolId",method = RequestMethod.GET)
+    @RequestMapping(value = "/findSchoolOrgTreeInfoBySchoolId", method = RequestMethod.GET)
     @ApiOperation(value = "查询单个学校的组织架构树形数据结构信息")
-    public Object findSchoolOrgTreeInfo(@NotNull(message = "学校id不能为空")@RequestParam("schoolId")Long schoolId){
-        SchoolOrgQueryDto schoolOrgQueryDto=new SchoolOrgQueryDto();
+    public Object findSchoolOrgTreeInfo(@NotNull(message = "学校id不能为空") @RequestParam("schoolId") Long schoolId) {
+        SchoolOrgQueryDto schoolOrgQueryDto = new SchoolOrgQueryDto();
         schoolOrgQueryDto.setSchoolId(schoolId);
-        List<SchoolOrg> schoolOrgList=schoolOrgService.findAllSchoolOrgInfo(schoolOrgQueryDto);
-        if(CollectionUtils.isEmpty(schoolOrgList)){
-          return WrapMapper.wrap(200,"当前学校不存在组织架构信息");
+        List<SchoolOrg> schoolOrgList = schoolOrgService.findAllSchoolOrgInfo(schoolOrgQueryDto);
+        if (CollectionUtils.isEmpty(schoolOrgList)) {
+            return WrapMapper.wrap(200, "当前学校不存在组织架构信息");
         }
         List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
             SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
@@ -100,9 +101,9 @@ public class SchoolOrgController {
     @RequestMapping(value = "/findClassOrg", method = RequestMethod.GET)
     @ApiOperation(value = "根据学校Id查询学生组织架构信息")
     public Object findClassOrg(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
-        List<SchoolOrg> schoolOrgList=schoolOrgService.findClassOrg(schoolId);
-        if(CollectionUtils.isEmpty(schoolOrgList)){
-            return WrapMapper.wrap(200,"当前学校不存在组织架构信息");
+        List<SchoolOrg> schoolOrgList = schoolOrgService.findClassOrg(schoolId);
+        if (CollectionUtils.isEmpty(schoolOrgList)) {
+            return WrapMapper.wrap(200, "当前学校不存在组织架构信息");
         }
         List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
             SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
@@ -157,16 +158,17 @@ public class SchoolOrgController {
 
     @RequestMapping(value = "/findClassOrgList", method = RequestMethod.GET)
     @ApiOperation(value = "查询院系组织架构信息")
-    public Object findClassOrgList(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId){
+    public Object findClassOrgList(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
         return WrapMapper.ok(schoolOrgService.findClassOrg(schoolId));
     }
 
     /**
      * 通过父ID查询学校组织架构信息
+     *
      * @param parentId
      * @return
      */
-    @RequestMapping(value = "/findBySchoolOrgByParentId",method = RequestMethod.GET)
+    @RequestMapping(value = "/findBySchoolOrgByParentId", method = RequestMethod.GET)
     @ApiOperation(value = "通过父ID查询学校组织架构信息")
     public Object findBySchoolOrgByParentId(@RequestParam("parentId") @NotNull(message = "父级ID不能为空") Long parentId) {
         return WrapMapper.ok(schoolOrgService.findBySchoolOrgByParentId(parentId));
@@ -174,17 +176,19 @@ public class SchoolOrgController {
 
     /**
      * 新增组织架构
+     *
      * @param schoolOrgAddDto
      * @return
      */
-    @RequestMapping(value = "/insertSchoolOrgInfo",method = RequestMethod.POST)
+    @RequestMapping(value = "/insertSchoolOrgInfo", method = RequestMethod.POST)
     @ApiOperation(value = "新增组织架构")
-    public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto){
+    public Object insertSchoolOrgInfo(@RequestBody SchoolOrgAddDto schoolOrgAddDto) {
         return WrapMapper.ok(schoolOrgService.insertSchoolOrgInfo(schoolOrgAddDto));
     }
 
     /**
      * 修改班级管理员信息
+     *
      * @param classAdministratorsUpdateDto
      * @return
      */
@@ -193,17 +197,37 @@ public class SchoolOrgController {
     public Object updateSchoolClassInfo(@RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
         return WrapMapper.ok(schoolOrgService.updateSchoolClassInfo(classAdministratorsUpdateDto));
     }
+
+    @GetMapping("/findOrgByManageId")
+    @ApiOperation(value = "根据班级管理员id查询组织架构信息")
+    public Object findOrgByManageId(@RequestParam("manageId") Long manageId, @RequestParam("schoolCode") String schoolCode) {
+        SchoolOrg schoolOrg = new SchoolOrg();
+        schoolOrg.setManageId(manageId);
+        schoolOrg.setSchoolCode(schoolCode);
+        return WrapMapper.ok(schoolOrgService.selectOne(schoolOrg));
+    }
+
+    @GetMapping("/findOrgByManageCardNumber")
+    @ApiOperation(value = "根据班级管理员cardNumber查询组织架构信息")
+    public Object findOrgByManageCardNumber(@RequestParam("manageCardNumber") String manageCardNumber, @RequestParam("schoolCode") String schoolCode) {
+        SchoolOrg schoolOrg = new SchoolOrg();
+        schoolOrg.setManageCardNumber(manageCardNumber);
+        schoolOrg.setSchoolCode(schoolCode);
+        return WrapMapper.ok(schoolOrgService.selectOne(schoolOrg));
+    }
+
     /**
      * 查询出老师的树形结构数据
+     *
      * @param schoolId
      * @return
      */
     @RequestMapping(value = "/findTeacherDeptInfo", method = RequestMethod.GET)
     @ApiOperation(value = "查询出老师的树形结构数据")
     public Object findTeacherDeptInfo(@NotNull(message = "schoolId不能为空") @RequestParam("schoolId") Long schoolId) {
-        List<SchoolOrg> schoolOrgList=schoolOrgService.findTeacherDeptInfo(schoolId);
-        if(CollectionUtils.isEmpty(schoolOrgList)){
-            return WrapMapper.wrap(200,"当前学校不存在组织架构信息");
+        List<SchoolOrg> schoolOrgList = schoolOrgService.findTeacherDeptInfo(schoolId);
+        if (CollectionUtils.isEmpty(schoolOrgList)) {
+            return WrapMapper.wrap(200, "当前学校不存在组织架构信息");
         }
         List<SchoolOrgTreeVo> schoolOrgTreeVo = schoolOrgList.stream().map(e -> {
             SchoolOrgTreeVo treeVo = new SchoolOrgTreeVo();
@@ -221,6 +245,7 @@ public class SchoolOrgController {
 
     /**
      * 根据学校Id查询学校学生的组织架构层级树
+     *
      * @Author: WanMing
      * @Date: 2019/6/27 12:56
      */

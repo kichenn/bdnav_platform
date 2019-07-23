@@ -61,12 +61,22 @@ public class SchoolOrgControllerClientFallback implements SchoolOrgControllerCli
     }
 
     @Override
-    public Wrapper<Boolean>  insertSchoolOrgInfo(SchoolOrgAddDto schoolOrgAddDto) {
+    public Wrapper<Boolean> insertSchoolOrgInfo(SchoolOrgAddDto schoolOrgAddDto) {
         return WrapMapper.error();
     }
 
     @Override
     public Wrapper<Boolean> updateSchoolClassInfo(ClassAdministratorsUpdateDto classAdministratorsUpdateDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<SchoolOrg> findOrgByManageId(Long manageId, String schoolCode) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<SchoolOrg> findOrgByManageCardNumber(String manageCardNumber, String schoolCode) {
         return WrapMapper.error();
     }
 

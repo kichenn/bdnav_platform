@@ -3,9 +3,13 @@ package com.bdxh.weixiao.controller.wallet;
 import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.School;
+import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.feign.SchoolOrgControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.TeacherVo;
 import com.bdxh.wallet.dto.*;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.feign.WalletAccountControllerClient;
@@ -42,6 +46,12 @@ public class WalletAccountWebController {
     private StudentControllerClient studentControllerClient;
 
     @Autowired
+    private TeacherControllerClient teacherControllerClient;
+
+    @Autowired
+    private SchoolOrgControllerClient schoolOrgControllerClient;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     @PostMapping("/myWallet")
@@ -49,19 +59,35 @@ public class WalletAccountWebController {
     public Object myWallet() {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         WalletAccount walletAccount = new WalletAccount();
+        walletAccount.setUserType(Byte.valueOf(userInfo.getIdentityType()));
         walletAccount.setSchoolId(userInfo.getSchoolId());
         walletAccount.setSchoolCode(userInfo.getSchoolCode());
         walletAccount.setSchoolName(userInfo.getSchoolName());
-        walletAccount.setUserId(userInfo.getUserId());
-        walletAccount.setCardNumber(userInfo.getCardNumber().get(0));
-        walletAccount.setUserName(userInfo.getName());
-        walletAccount.setUserType(Byte.valueOf(userInfo.getIdentityType()));
         walletAccount.setOrgId(userInfo.getOrgId());
-        MyWalletVo myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
-        StudentVo studentVo = studentControllerClient.queryStudentInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
-        Preconditions.checkArgument(studentVo != null, "学生信息为空");
-        myWalletVo.setUserId(studentVo.getSId().toString());
-        myWalletVo.setMyType(userInfo.getIdentityType());
+        MyWalletVo myWalletVo = null;
+        //如果为老师身份，则判断他是否班主任
+        if (walletAccount.getUserType().equals(Byte.valueOf("3"))) {
+            //老师钱包
+            walletAccount.setUserId(userInfo.getFamilyId());
+            walletAccount.setCardNumber(userInfo.getFamilyCardNumber());
+            walletAccount.setUserName(userInfo.getFamilyName());
+
+            myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
+            SchoolOrg schoolOrg = schoolOrgControllerClient.findOrgByManageId(walletAccount.getUserId(), walletAccount.getSchoolCode()).getResult();
+            myWalletVo.setMyType(schoolOrg == null ? false : true);
+            TeacherVo teacherVo = teacherControllerClient.queryTeacherInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
+            Preconditions.checkArgument(teacherVo != null, "老师信息为空");
+            myWalletVo.setUserId(teacherVo.getId().toString());
+        } else if (walletAccount.getUserType().equals(Byte.valueOf("2"))) {
+            //学生钱包
+            walletAccount.setUserId(userInfo.getUserId());
+            walletAccount.setCardNumber(userInfo.getCardNumber().get(0));
+            walletAccount.setUserName(userInfo.getName());
+            myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
+            StudentVo studentVo = studentControllerClient.queryStudentInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
+            Preconditions.checkArgument(studentVo != null, "学生信息为空");
+            myWalletVo.setUserId(studentVo.getSId().toString());
+        }
         return WrapMapper.ok(myWalletVo);
     }
 

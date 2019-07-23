@@ -40,6 +40,6 @@ public class MyWalletVo {
     @ApiModelProperty(value = "身份：1为家长，2为学生，3为教职工，4为校友")
     private String identityType;
 
-    @ApiModelProperty(value = "当前登录看钱包的用户身份")
-    private String myType;
+    @ApiModelProperty(value = "true 是班主任，false 只是老师")
+    private Boolean myType;
 }
