@@ -70,6 +70,7 @@ public class WalletConsumerWebController {
     @ApiOperation(value = "根据条件查询账户的消费记录", response = WalletConsumerVo.class)
     public Object findWalletConsumerByCondition(@RequestBody QueryWalletConsumerDto queryWalletConsumerDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
+        queryWalletConsumerDto.setConsumerType(queryWalletConsumerDto.getConsumerType()==0?null:queryWalletConsumerDto.getConsumerType());
         queryWalletConsumerDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         PageInfo<WalletConsumerVo> pageInfo = walletConsumerControllerClient.findWalletConsumerByCondition(queryWalletConsumerDto).getResult();
         List<WalletConsumerVo> walletConsumerVos = pageInfo.getList();
