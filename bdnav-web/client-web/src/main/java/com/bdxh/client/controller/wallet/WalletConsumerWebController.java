@@ -111,7 +111,7 @@ public class WalletConsumerWebController {
         QueryWalletConsumerExcelDto consumerExcelDto = new QueryWalletConsumerExcelDto();
         consumerExcelDto.setExportWay(exportWay);
         consumerExcelDto.setOrderNos(orderNos);
-        consumerExcelDto.setConsumerType(consumerType);
+        consumerExcelDto.setConsumerType(consumerType==0?null:consumerType);
         consumerExcelDto.setStartTime(startDate);
         consumerExcelDto.setEndTime(endDate);
 
