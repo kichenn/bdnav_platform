@@ -118,7 +118,9 @@ public class WalletAccountWebController {
                  siv.setImage(tv.getImage());
                  siv.setPhone(tv.getPhone());
                  siv.setPosition(tv.getPosition());
-                 siv.setDeptName(tv.getDeptName());
+                 for (int i = 0; i < tv.getTeacherDeptVos().size(); i++) {
+                     siv.setDeptName(tv.getTeacherDeptVos().get(i).getDeptName());
+                 }
                  return WrapMapper.ok(siv);
              }
         } catch (Exception e) {
