@@ -242,7 +242,6 @@ public class WalletAccountWebController {
             //学生钱包
             cardNumber = userInfo.getCardNumber().get(0);
         }
-        setNoPwdPayPwdDto.setCardNumber(cardNumber);
         return walletAccountControllerClient.findNoPwdPay(userInfo.getSchoolCode(), cardNumber);
     }
 }
