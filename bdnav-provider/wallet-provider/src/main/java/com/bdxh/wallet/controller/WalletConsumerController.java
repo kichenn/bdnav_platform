@@ -8,6 +8,7 @@ import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.service.WalletConsumerService;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -116,6 +117,18 @@ public class WalletConsumerController {
     @ApiOperation(value = "根据条件查询账户的消费记录不分页", response = WalletConsumerVo.class)
     public Object findWalletConsumerList( @RequestBody QueryWalletConsumerExcelDto queryWalletConsumerExcelDto){
         return WrapMapper.ok(walletConsumerService.findWalletConsumerList(queryWalletConsumerExcelDto));
+    }
+
+
+    /**
+     * 查询单个学校或者所有学校消费总金额
+     * @Author: WanMing
+     * @Date: 2019/7/23 10:13
+     */
+    @RequestMapping(value = "/queryAllConsumerMoney", method = RequestMethod.GET)
+    @ApiOperation(value = "查询单个学校或者所有学校消费总金额", response = BaseEchartsVo.class)
+    public Object queryAllConsumerMoney(@RequestParam(value = "schoolCode",required = false) String schoolCode ){
+        return WrapMapper.ok(walletConsumerService.queryAllConsumerMoney(schoolCode));
     }
 
 

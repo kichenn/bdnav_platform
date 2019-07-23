@@ -4,6 +4,7 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Component;
@@ -59,6 +60,11 @@ public class SchoolChargeDeptControllerClientFallback implements SchoolChargeDep
 
     @Override
     public Wrapper<PageInfo<SchoolChargeDeptVo>> querySchoolChargeDeptAndPosNum(QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
+        return WrapMapper.error();
+    }
+
+    @Override
+    public Wrapper<List<BaseEchartsVo>> queryChargeDeptNumAndPosNum(String schoolCode) {
         return WrapMapper.error();
     }
 }

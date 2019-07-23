@@ -1,10 +1,12 @@
 package com.bdxh.school.contoller;
 
 import com.bdxh.common.utils.wrapper.WrapMapper;
+import com.bdxh.common.utils.wrapper.Wrapper;
 import com.bdxh.school.dto.*;
 import com.bdxh.school.entity.SchoolChargeDept;
 import com.bdxh.school.entity.SchoolPosDeviceCharge;
 import com.bdxh.school.service.SchoolPosDeviceChargeService;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -183,6 +185,18 @@ public class SchoolChargeDeptController {
     @ApiOperation(value = "查询学校消费部门信息和POS机的数量", response = SchoolChargeDeptVo.class)
     public Object querySchoolChargeDeptAndPosNum(@RequestBody QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
         return WrapMapper.ok(schoolChargeDeptService.querySchoolChargeDeptAndPosNum(querySchoolChargeDeptDto));
+    }
+
+    /**
+     * 查询学校消费部门数量和POS机的数量
+     *
+     * @Author: WanMing
+     * @Date: 2019/7/11 16:52
+     */
+    @RequestMapping(value = "/queryChargeDeptNumAndPosNum", method = RequestMethod.GET)
+    @ApiOperation(value = "查询学校消费部门数量和POS机的数量", response = BaseEchartsVo.class)
+    public Object queryChargeDeptNumAndPosNum(@RequestParam(value = "schoolCode",required = false)String schoolCode){
+        return WrapMapper.ok(schoolChargeDeptService.queryChargeDeptNumAndPosNum(schoolCode));
     }
 
 

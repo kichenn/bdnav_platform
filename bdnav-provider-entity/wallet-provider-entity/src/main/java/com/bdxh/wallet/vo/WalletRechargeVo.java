@@ -68,6 +68,7 @@ public class WalletRechargeVo {
      * 平台订单号
      */
     @ApiModelProperty("平台订单号")
+    @JsonSerialize(using = ToStringSerializer.class)
     private Long orderNo;
 
     /**

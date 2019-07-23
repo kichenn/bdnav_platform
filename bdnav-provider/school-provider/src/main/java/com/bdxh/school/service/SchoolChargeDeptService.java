@@ -3,6 +3,7 @@ package com.bdxh.school.service;
 import com.bdxh.common.support.IService;
 import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
 import com.bdxh.school.entity.SchoolChargeDept;
+import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -46,4 +47,11 @@ public interface SchoolChargeDeptService extends IService<SchoolChargeDept> {
 	 * @Date: 2019/7/11 19:04
 	 */
     PageInfo<SchoolChargeDeptVo> querySchoolChargeDeptAndPosNum(QuerySchoolChargeDeptDto querySchoolChargeDeptDto);
+
+    /**
+     * 查询学校消费部门数量和POS机的数量
+     * @Author: WanMing
+     * @Date: 2019/7/23 12:24
+     */
+    List<BaseEchartsVo> queryChargeDeptNumAndPosNum(String schoolCode);
 }

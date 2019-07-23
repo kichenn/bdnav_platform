@@ -7,6 +7,7 @@ import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.fallback.WalletConsumerControllerClientFallback;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.ApiOperation;
@@ -85,4 +86,13 @@ public interface WalletConsumerControllerClient {
     @RequestMapping(value = "/findWalletConsumerList", method = RequestMethod.POST)
     @ResponseBody
     Wrapper<List<WalletConsumerVo>> findWalletConsumerList(@RequestBody QueryWalletConsumerExcelDto queryWalletConsumerExcelDto);
+
+    /**
+     * 查询单个学校或者所有学校消费总金额
+     * @Author: WanMing
+     * @Date: 2019/7/23 10:13
+     */
+    @RequestMapping(value = "/queryAllConsumerMoney", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<BaseEchartsVo> queryAllConsumerMoney(@RequestParam(value = "schoolCode",required = false) String schoolCode );
 }
