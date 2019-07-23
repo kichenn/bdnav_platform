@@ -208,16 +208,16 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
     public List<WalletRechargeVo> findWalletRechargeList(QueryWalletRechargeExcelDto queryWalletRechargeExcelDto) {
         List<WalletRecharge> walletRecharges = null;
         List<WalletRechargeVo> walletRechargeVos = new ArrayList<>();
-        //1 多选导出(传ids) 2 导出当前页(默认) 3 日期选择导出(传开始时间 结束时间)
+        //1 多选导出(传ids) 2  条件导出
         switch (queryWalletRechargeExcelDto.getExportWay()) {
             case 1:
                 walletRecharges = walletRechargeMapper.queryWalletRechargeByOrderNos(queryWalletRechargeExcelDto.getOrderNos());
                 break;
+//            case 2:
+//                PageHelper.startPage(queryWalletRechargeExcelDto.getPageNum(), queryWalletRechargeExcelDto.getPageSize());
+//                walletRecharges = walletRechargeMapper.findWalletRechargeByCondition(queryWalletRechargeExcelDto);
+//                break;
             case 2:
-                PageHelper.startPage(queryWalletRechargeExcelDto.getPageNum(), queryWalletRechargeExcelDto.getPageSize());
-                walletRecharges = walletRechargeMapper.findWalletRechargeByCondition(queryWalletRechargeExcelDto);
-                break;
-            case 3:
                 walletRecharges = walletRechargeMapper.findWalletRechargeByCondition(queryWalletRechargeExcelDto);
                 break;
             default:

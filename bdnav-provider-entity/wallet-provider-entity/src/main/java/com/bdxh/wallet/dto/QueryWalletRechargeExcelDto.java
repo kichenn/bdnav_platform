@@ -13,9 +13,9 @@ import java.util.List;
 public class QueryWalletRechargeExcelDto extends QueryWalletRechargeDto {
 
     /**
-     * 导出方式 1 多选导出(传ids) 2 导出当前页(默认) 3 日期选择导出(传开始时间 结束时间)
+     * 导出方式 1 多选导出(传orderNos) 2 条件导出
      */
-    @ApiModelProperty("导出方式 1 多选导出(传orderNos) 2 导出当前页 3 日期选择导出(传开始时间 结束时间) ")
+    @ApiModelProperty("导出方式 1 多选导出(传orderNos) 2 条件导出 ")
     private Byte exportWay = 2;
 
     /**

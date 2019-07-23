@@ -20,6 +20,7 @@ import com.bdxh.wallet.feign.WalletRechargeControllerClient;
 import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.regexp.internal.RE;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.OutputStream;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -61,7 +63,6 @@ public class WalletRechargeWebController {
     private SchoolDeviceControllerClient schoolDeviceControllerClient;
 
 
-
     /**
      * 根据条件分页查询充值记录
      *
@@ -74,7 +75,7 @@ public class WalletRechargeWebController {
         SchoolUser user = SecurityUtils.getCurrentUser();
         queryWalletRechargeDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         PageInfo<WalletRechargeVo> pageInfo = walletRechargeControllerClient.findWalletRechargeByCondition(queryWalletRechargeDto).getResult();
-        List<WalletRechargeVo> walletRechargeVos =pageInfo.getList();
+        List<WalletRechargeVo> walletRechargeVos = pageInfo.getList();
         if (CollectionUtils.isEmpty(walletRechargeVos)) {
             //无数据
             return WrapMapper.ok(pageInfo);
@@ -93,16 +94,31 @@ public class WalletRechargeWebController {
 
     /**
      * 导出充值记录列表
+     *
      * @Author: WanMing
      * @Date: 2019/7/22 14:25
      */
-    @RequestMapping(value = "/exportWalletRechargeList",method = RequestMethod.POST)
-    @ApiOperation(value = "导出充值记录列表",response = WalletRechargeVo.class)
-    public Object exportWalletRechargeList(@RequestBody QueryWalletRechargeExcelDto queryWalletRechargeExcelDto){
+    @RequestMapping(value = "/exportWalletRechargeList", method = RequestMethod.GET)
+    @ApiOperation(value = "导出充值记录列表", response = WalletRechargeVo.class)
+    public Object exportWalletRechargeList(@RequestParam("exportWay") Byte exportWay
+            , @RequestParam(value = "orderNos", required = false) List<Long> orderNos
+            , @RequestParam(value = "rechargeType", required = false) Byte rechargeType
+            , @RequestParam(value = "windowId", required = false) Long windowId
+            , @RequestParam(value = "startTime", required = false) Date startDate
+            , @RequestParam(value = "endDate", required = false) Date endDate) {
         long startTime = System.currentTimeMillis();
+
+        QueryWalletRechargeExcelDto rechargeExcelDto = new QueryWalletRechargeExcelDto();
+        rechargeExcelDto.setExportWay(exportWay);
+        rechargeExcelDto.setOrderNos(orderNos);
+        rechargeExcelDto.setRechargeType(rechargeType);
+        rechargeExcelDto.setWindowId(windowId);
+        rechargeExcelDto.setStartTime(startDate);
+        rechargeExcelDto.setEndTime(endDate);
+
         SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletRechargeExcelDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
-        List<WalletRechargeVo> walletRechargeVos = walletRechargeControllerClient.findWalletRechargeList(queryWalletRechargeExcelDto).getResult();
+        rechargeExcelDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
+        List<WalletRechargeVo> walletRechargeVos = walletRechargeControllerClient.findWalletRechargeList(rechargeExcelDto).getResult();
         if (CollectionUtils.isEmpty(walletRechargeVos)) {
             //无数据
             return WrapMapper.ok("无数据");
@@ -137,11 +153,11 @@ public class WalletRechargeWebController {
             String fileName = URLEncoder.encode(EXCEL_NAME, StandardCharsets.UTF_8.toString());
             response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"; filename*=utf-8''" + fileName);
             ExcelExportUtils.getInstance().exportObjects2Excel(excelReportBeans, WalletRechargeExcelReportBean.class, true, "充值记录", true, outputStream);
-            Long endTime = System.currentTimeMillis();
+            long endTime = System.currentTimeMillis();
             log.info("充值记录导出成功,耗时:{}", endTime - startTime);
             return WrapMapper.ok("充值记录导出成功");
         } catch (Exception e) {
-            log.error("导出失败"+e.getMessage());
+            log.error("导出失败" + e.getMessage());
             e.printStackTrace();
         }
         return WrapMapper.ok();
@@ -150,12 +166,13 @@ public class WalletRechargeWebController {
 
     /**
      * 查询不同充值类型下充值成功的总金额
+     *
      * @Author: WanMing
      * @Date: 2019/7/15 11:13
      */
-    @RequestMapping(value = "/findWalletRechargeTypeMoneySum",method = RequestMethod.GET)
-    @ApiOperation(value = "查询不同充值类型下充值成功的总金额",response = BaseEchartsVo.class)
-    public Object findWalletRechargeTypeMoneySum(){
+    @RequestMapping(value = "/findWalletRechargeTypeMoneySum", method = RequestMethod.GET)
+    @ApiOperation(value = "查询不同充值类型下充值成功的总金额", response = BaseEchartsVo.class)
+    public Object findWalletRechargeTypeMoneySum() {
         SchoolUser user = SecurityUtils.getCurrentUser();
         return walletRechargeControllerClient.findWalletRechargeTypeMoneySum(/*user.getSchoolCode()*/"1013371381");
     }
