@@ -71,12 +71,14 @@ public interface SchoolOrgControllerClient {
 
     /**
      * 查询学生院系列表
+     *
      * @param schoolId
      * @return
      */
     @RequestMapping(value = "/schoolOrg/findClassOrgList", method = RequestMethod.GET)
     @ResponseBody
     Wrapper<List<SchoolOrg>> findClassOrgList(@RequestParam("schoolId") Long schoolId);
+
     /**
      * 根据ID删除组织架构信息
      *
@@ -130,6 +132,7 @@ public interface SchoolOrgControllerClient {
 
     /**
      * 修改班级管理员信息
+     *
      * @param classAdministratorsUpdateDto
      * @return
      */
@@ -137,8 +140,17 @@ public interface SchoolOrgControllerClient {
     @ResponseBody
     Wrapper<Boolean> updateSchoolClassInfo(@RequestBody ClassAdministratorsUpdateDto classAdministratorsUpdateDto);
 
+    @GetMapping("/schoolOrg/findOrgByManageId")
+    @ResponseBody
+    Wrapper<SchoolOrg> findOrgByManageId(@RequestParam("manageId") Long manageId, @RequestParam("schoolCode") String schoolCode);
+
+    @GetMapping("/schoolOrg/findOrgByManageCardNumber")
+    @ResponseBody
+    Wrapper<SchoolOrg> findOrgByManageCardNumber(@RequestParam("manageCardNumber") String manageCardNumber, @RequestParam("schoolCode") String schoolCode);
+
     /**
      * 查询出老师的树形结构数据
+     *
      * @param schoolId
      * @return
      */
@@ -148,10 +160,11 @@ public interface SchoolOrgControllerClient {
 
     /**
      * 根据学校Id查询学校学生的组织架构层级树
+     *
      * @Author: WanMing
      * @Date: 2019/6/27 12:56
      */
     @RequestMapping(value = "/schoolOrg/findClassOrgLoopTree", method = RequestMethod.GET)
     @ResponseBody
-    Wrapper<List<SchoolOrgTreeVo>> findClassOrgLoopTree(@RequestParam("schoolId") Long schoolId) ;
+    Wrapper<List<SchoolOrgTreeVo>> findClassOrgLoopTree(@RequestParam("schoolId") Long schoolId);
 }

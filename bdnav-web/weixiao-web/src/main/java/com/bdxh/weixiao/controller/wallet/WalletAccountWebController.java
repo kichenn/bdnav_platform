@@ -3,9 +3,13 @@ package com.bdxh.weixiao.controller.wallet;
 import com.bdxh.common.helper.ali.sms.constant.AliyunSmsConstants;
 import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.School;
+import com.bdxh.school.entity.SchoolOrg;
 import com.bdxh.school.feign.SchoolControllerClient;
+import com.bdxh.school.feign.SchoolOrgControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.TeacherVo;
 import com.bdxh.wallet.dto.*;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.feign.WalletAccountControllerClient;
@@ -42,6 +46,12 @@ public class WalletAccountWebController {
     private StudentControllerClient studentControllerClient;
 
     @Autowired
+    private TeacherControllerClient teacherControllerClient;
+
+    @Autowired
+    private SchoolOrgControllerClient schoolOrgControllerClient;
+
+    @Autowired
     private RedisUtil redisUtil;
 
     @PostMapping("/myWallet")
@@ -49,19 +59,35 @@ public class WalletAccountWebController {
     public Object myWallet() {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         WalletAccount walletAccount = new WalletAccount();
+        walletAccount.setUserType(Byte.valueOf(userInfo.getIdentityType()));
         walletAccount.setSchoolId(userInfo.getSchoolId());
         walletAccount.setSchoolCode(userInfo.getSchoolCode());
         walletAccount.setSchoolName(userInfo.getSchoolName());
-        walletAccount.setUserId(userInfo.getUserId());
-        walletAccount.setCardNumber(userInfo.getCardNumber().get(0));
-        walletAccount.setUserName(userInfo.getName());
-        walletAccount.setUserType(Byte.valueOf(userInfo.getIdentityType()));
         walletAccount.setOrgId(userInfo.getOrgId());
-        MyWalletVo myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
-        StudentVo studentVo = studentControllerClient.queryStudentInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
-        Preconditions.checkArgument(studentVo != null, "学生信息为空");
-        myWalletVo.setUserId(studentVo.getSId().toString());
-        myWalletVo.setMyType(userInfo.getIdentityType());
+        MyWalletVo myWalletVo = null;
+        //如果为老师身份，则判断他是否班主任
+        if (walletAccount.getUserType().equals(new Byte("3"))) {
+            //老师钱包
+            walletAccount.setUserId(userInfo.getFamilyId());
+            walletAccount.setCardNumber(userInfo.getFamilyCardNumber());
+            walletAccount.setUserName(userInfo.getFamilyName());
+
+            myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
+            SchoolOrg schoolOrg = schoolOrgControllerClient.findOrgByManageId(walletAccount.getUserId(), walletAccount.getSchoolCode()).getResult();
+            myWalletVo.setMyType(schoolOrg == null ? false : true);
+            TeacherVo teacherVo = teacherControllerClient.queryTeacherInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
+            Preconditions.checkArgument(teacherVo != null, "老师信息为空");
+            myWalletVo.setUserId(teacherVo.getId().toString());
+        } else if (walletAccount.getUserType().equals(new Byte("2"))) {
+            //学生钱包
+            walletAccount.setUserId(userInfo.getUserId());
+            walletAccount.setCardNumber(userInfo.getCardNumber().get(0));
+            walletAccount.setUserName(userInfo.getName());
+            myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
+            StudentVo studentVo = studentControllerClient.queryStudentInfo(myWalletVo.getSchoolCode(), myWalletVo.getCardNumber()).getResult();
+            Preconditions.checkArgument(studentVo != null, "学生信息为空");
+            myWalletVo.setUserId(studentVo.getSId().toString());
+        }
         return WrapMapper.ok(myWalletVo);
     }
 
@@ -87,7 +113,8 @@ public class WalletAccountWebController {
         walletAccount.setUserId(studentVo1.getSId());
         walletAccount.setCardNumber(cardNumber);
         walletAccount.setUserName(studentVo1.getSName());
-        walletAccount.setUserType(Byte.valueOf(userInfo.getIdentityType()));
+        //此处为孩子类型（家长是没有钱包的）
+        walletAccount.setUserType(new Byte("2"));
         walletAccount.setOrgId(Long.valueOf(studentVo1.getClassId()));
 
         MyWalletVo myWalletVo = walletAccountControllerClient.myWallet(walletAccount).getResult();
@@ -101,7 +128,15 @@ public class WalletAccountWebController {
     @ApiOperation(value = "查询是否设置支付密码", response = Boolean.class)
     public Object findPayPwd() {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
-        return walletAccountControllerClient.findPayPwd(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0)).getResult();
+        String cardNumber = "";
+        if (userInfo.getIdentityType().equals("3")) {
+            //老师钱包
+            cardNumber = userInfo.getFamilyCardNumber();
+        } else if (userInfo.getIdentityType().equals("2")) {
+            //学生钱包
+            cardNumber = userInfo.getCardNumber().get(0);
+        }
+        return walletAccountControllerClient.findPayPwd(userInfo.getSchoolCode(), cardNumber).getResult();
     }
 
     @PostMapping("/setPayPwd")
@@ -109,7 +144,15 @@ public class WalletAccountWebController {
     public Object setPayPwd(@Validated @RequestBody SetPayPwdDto setPayPwdDto) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         setPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
-        setPayPwdDto.setCardNumber(userInfo.getCardNumber().get(0));
+        String cardNumber = "";
+        if (userInfo.getIdentityType().equals("3")) {
+            //老师钱包
+            cardNumber = userInfo.getFamilyCardNumber();
+        } else if (userInfo.getIdentityType().equals("2")) {
+            //学生钱包
+            cardNumber = userInfo.getCardNumber().get(0);
+        }
+        setPayPwdDto.setCardNumber(cardNumber);
         return walletAccountControllerClient.setPayPwd(setPayPwdDto);
     }
 
@@ -118,7 +161,15 @@ public class WalletAccountWebController {
     public Object modifyPayPwd(@Validated @RequestBody ModifyPayPwdDto modifyPayPwdDto) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         modifyPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
-        modifyPayPwdDto.setCardNumber(userInfo.getCardNumber().get(0));
+        String cardNumber = "";
+        if (userInfo.getIdentityType().equals("3")) {
+            //老师钱包
+            cardNumber = userInfo.getFamilyCardNumber();
+        } else if (userInfo.getIdentityType().equals("2")) {
+            //学生钱包
+            cardNumber = userInfo.getCardNumber().get(0);
+        }
+        modifyPayPwdDto.setCardNumber(cardNumber);
         return walletAccountControllerClient.modifyPayPwd(modifyPayPwdDto);
     }
 
@@ -127,8 +178,16 @@ public class WalletAccountWebController {
     public Object forgetPayPwd(@Validated @RequestBody ForgetPayPwdDto forgetPayPwdDto) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
         forgetPayPwdDto.setPhone(userInfo.getPhone());
-        forgetPayPwdDto.setCardNumber(userInfo.getCardNumber().get(0));
         forgetPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
+        String cardNumber = "";
+        if (userInfo.getIdentityType().equals("3")) {
+            //老师钱包
+            cardNumber = userInfo.getFamilyCardNumber();
+        } else if (userInfo.getIdentityType().equals("2")) {
+            //学生钱包
+            cardNumber = userInfo.getCardNumber().get(0);
+        }
+        forgetPayPwdDto.setCardNumber(cardNumber);
         return walletAccountControllerClient.forgetPayPwd(forgetPayPwdDto);
     }
 
@@ -159,8 +218,16 @@ public class WalletAccountWebController {
     @ApiOperation(value = "设置小额免密支付", response = Boolean.class)
     public Object setNoPwdPay(@Validated @RequestBody SetNoPwdPayPwdDto setNoPwdPayPwdDto) {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
-        setNoPwdPayPwdDto.setCardNumber(userInfo.getCardNumber().get(0));
         setNoPwdPayPwdDto.setSchoolCode(userInfo.getSchoolCode());
+        String cardNumber = "";
+        if (userInfo.getIdentityType().equals("3")) {
+            //老师钱包
+            cardNumber = userInfo.getFamilyCardNumber();
+        } else if (userInfo.getIdentityType().equals("2")) {
+            //学生钱包
+            cardNumber = userInfo.getCardNumber().get(0);
+        }
+        setNoPwdPayPwdDto.setCardNumber(cardNumber);
         return walletAccountControllerClient.setNoPwdPay(setNoPwdPayPwdDto);
     }
 
@@ -168,6 +235,14 @@ public class WalletAccountWebController {
     @ApiOperation(value = "查询小额免密金额", response = Boolean.class)
     public Object findNoPwdPay() {
         UserInfo userInfo = SecurityUtils.getCurrentUser();
-        return walletAccountControllerClient.findNoPwdPay(userInfo.getSchoolCode(), userInfo.getCardNumber().get(0));
+        String cardNumber = "";
+        if (userInfo.getIdentityType().equals("3")) {
+            //老师钱包
+            cardNumber = userInfo.getFamilyCardNumber();
+        } else if (userInfo.getIdentityType().equals("2")) {
+            //学生钱包
+            cardNumber = userInfo.getCardNumber().get(0);
+        }
+        return walletAccountControllerClient.findNoPwdPay(userInfo.getSchoolCode(), cardNumber);
     }
 }

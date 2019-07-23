@@ -79,6 +79,7 @@ public class WalletAccountController {
         walletAccount.setAmount(new BigDecimal("0"));
         walletAccount.setQuickPayMoney(new BigDecimal("0"));
         walletAccount.setStatus(AccountStatusEnum.NORMAL_KEY);
+        walletAccount.setUserType(createWalletDto.getUserType());
         walletAccount.setCreateDate(new Date());
         walletAccount.setUpdateDate(new Date());
         walletAccount.setRemark("钱包");

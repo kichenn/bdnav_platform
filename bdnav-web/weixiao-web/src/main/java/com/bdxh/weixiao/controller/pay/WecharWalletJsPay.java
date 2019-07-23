@@ -14,9 +14,12 @@ import com.bdxh.pay.dto.WxPayJsOrderDto;
 import com.bdxh.pay.feign.WechatJsPayControllerClient;
 import com.bdxh.user.entity.Family;
 import com.bdxh.user.entity.Student;
+import com.bdxh.user.entity.Teacher;
 import com.bdxh.user.feign.FamilyControllerClient;
 import com.bdxh.user.feign.StudentControllerClient;
+import com.bdxh.user.feign.TeacherControllerClient;
 import com.bdxh.user.vo.StudentVo;
+import com.bdxh.user.vo.TeacherVo;
 import com.bdxh.wallet.dto.AddWalletPayDto;
 import com.bdxh.wallet.dto.AddWalletRechargeDto;
 import com.bdxh.wallet.dto.ModifyWalletRechargeDto;
@@ -57,6 +60,9 @@ public class WecharWalletJsPay {
     private FamilyControllerClient familyControllerClient;
 
     @Autowired
+    private TeacherControllerClient teacherControllerClient;
+
+    @Autowired
     private WalletRechargeControllerClient walletRechargeControllerClient;
 
     @Autowired
@@ -70,10 +76,8 @@ public class WecharWalletJsPay {
         //账单充值entity
         AddWalletRechargeDto addWalletRechargeDto = new AddWalletRechargeDto();
 
-        //查询学生信息
-        Student student = studentControllerClient.queryStudentInfo2(addWalletPayDto.getUserId()).getResult();
-        Preconditions.checkArgument(student != null, "查询学生信息失败");
-        if (addWalletPayDto.getRechargeType().equals(2)) {
+        addWalletPayDto.setRechargeType(Byte.valueOf(userInfo.getIdentityType()));
+        if (addWalletPayDto.getRechargeType().equals(new Byte("1"))) {
             //家长充值
             //查询家长信息
             Family family = familyControllerClient.queryFamilyInfoById(addWalletPayDto.getFamilyId()).getResult();
@@ -82,15 +86,29 @@ public class WecharWalletJsPay {
             addWalletRechargeDto.setFamilyId(family.getId());
             addWalletRechargeDto.setFamilyName(family.getName());
             addWalletRechargeDto.setFamilyNumber(family.getCardNumber());
+        } else if (addWalletPayDto.getRechargeType().equals(new Byte("2"))) {
+            //学生自己充值
+            //查询学生信息
+            Student student = studentControllerClient.queryStudentInfo2(addWalletPayDto.getUserId()).getResult();
+            Preconditions.checkArgument(student != null, "查询学生信息失败");
+            //学生信息
+            addWalletRechargeDto.setUserId(student.getId());
+            addWalletRechargeDto.setUserName(student.getName());
+            addWalletRechargeDto.setCardNumber(student.getCardNumber());
+        } else if (addWalletPayDto.getRechargeType().equals(new Byte("3"))) {
+            //老师自己充值
+            TeacherVo teacher = teacherControllerClient.queryTeacherInfo(userInfo.getSchoolCode(), userInfo.getFamilyCardNumber()).getResult();
+            Preconditions.checkArgument(teacher != null, "查询老师信息失败");
+            //老师信息
+            addWalletRechargeDto.setUserId(teacher.getId());
+            addWalletRechargeDto.setUserName(teacher.getName());
+            addWalletRechargeDto.setCardNumber(teacher.getCardNumber());
         }
         //学校信息
         addWalletRechargeDto.setSchoolId(userInfo.getSchoolId());
         addWalletRechargeDto.setSchoolCode(userInfo.getSchoolCode());
         addWalletRechargeDto.setSchoolName(userInfo.getSchoolName());
-        //学生信息
-        addWalletRechargeDto.setUserId(student.getId());
-        addWalletRechargeDto.setUserName(student.getName());
-        addWalletRechargeDto.setCardNumber(student.getCardNumber());
+
         //金额
         addWalletRechargeDto.setRechargeAmount(addWalletPayDto.getRechargeAmount());
         //支付时间
