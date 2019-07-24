@@ -130,8 +130,6 @@ public class SchoolChargeDeptWebController {
         modifySchoolPosDeviceDto.setOperator(user.getId());
         modifySchoolPosDeviceDto.setOperatorName( user.getUserName());
         return schoolChargeDeptControllerClient.changeSchoolPosDevice(modifySchoolPosDeviceDto);
-
-
     }
 
     /**
