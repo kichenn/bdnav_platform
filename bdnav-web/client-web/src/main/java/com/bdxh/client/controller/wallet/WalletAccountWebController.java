@@ -110,6 +110,7 @@ public class WalletAccountWebController {
                  siv.setGradeName(sv.getGradeName());
                  siv.setImage(sv.getImage());
                  siv.setPhone(sv.getPhone());
+                 siv.setUserName(sv.getSName());
                  return WrapMapper.ok(siv);
              }else{
                  TeacherVo tv = teacherControllerClient.queryTeacherInfo(businessCardDto.getSchoolCode(), businessCardDto.getCardNumber()).getResult();
@@ -117,6 +118,7 @@ public class WalletAccountWebController {
                  siv.setGender(tv.getGender());
                  siv.setImage(tv.getImage());
                  siv.setPhone(tv.getPhone());
+                 siv.setUserName(tv.getName());
                  siv.setPosition(tv.getPosition());
                  for (int i = 0; i < tv.getTeacherDeptVos().size(); i++) {
                      siv.setDeptName(tv.getTeacherDeptVos().get(i).getDeptName());

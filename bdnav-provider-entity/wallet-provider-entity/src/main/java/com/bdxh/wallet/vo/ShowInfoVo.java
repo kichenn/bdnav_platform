@@ -9,6 +9,9 @@ public class ShowInfoVo {
     @ApiModelProperty("卡号")
     private String cardNumber;
 
+    @ApiModelProperty("用户名称")
+    private String userName;
+
     @ApiModelProperty("性别")
     private Byte gender;
 
