@@ -73,7 +73,7 @@ public class WalletRechargeWebController {
     @ApiOperation(value = "根据条件分页查询充值记录", response = WalletRechargeVo.class)
     public Object findWalletRechargeByCondition(@RequestBody QueryWalletRechargeDto queryWalletRechargeDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletRechargeDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
+        queryWalletRechargeDto.setSchoolCode(user.getSchoolCode());
         PageInfo<WalletRechargeVo> pageInfo = walletRechargeControllerClient.findWalletRechargeByCondition(queryWalletRechargeDto).getResult();
         List<WalletRechargeVo> walletRechargeVos = pageInfo.getList();
         if (CollectionUtils.isEmpty(walletRechargeVos)) {
@@ -116,7 +116,7 @@ public class WalletRechargeWebController {
         rechargeExcelDto.setEndTime(endDate);
 
         SchoolUser user = SecurityUtils.getCurrentUser();
-        rechargeExcelDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
+        rechargeExcelDto.setSchoolCode(user.getSchoolCode());
         List<WalletRechargeVo> walletRechargeVos = walletRechargeControllerClient.findWalletRechargeList(rechargeExcelDto).getResult();
         if (CollectionUtils.isEmpty(walletRechargeVos)) {
             //无数据
@@ -174,6 +174,6 @@ public class WalletRechargeWebController {
     @ApiOperation(value = "查询不同充值类型下充值成功的总金额", response = BaseEchartsVo.class)
     public Object findWalletRechargeTypeMoneySum() {
         SchoolUser user = SecurityUtils.getCurrentUser();
-        return walletRechargeControllerClient.findWalletRechargeTypeMoneySum(/*user.getSchoolCode()*/"1013371381");
+        return walletRechargeControllerClient.findWalletRechargeTypeMoneySum(user.getSchoolCode());
     }
 }

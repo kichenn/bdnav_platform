@@ -75,7 +75,7 @@ public class WalletConsumerWebController {
     @ApiOperation(value = "根据条件查询账户的消费记录", response = WalletConsumerVo.class)
     public Object findWalletConsumerByCondition(@RequestBody QueryWalletConsumerDto queryWalletConsumerDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletConsumerDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
+        queryWalletConsumerDto.setSchoolCode(user.getSchoolCode());
         PageInfo<WalletConsumerVo> pageInfo = walletConsumerControllerClient.findWalletConsumerByCondition(queryWalletConsumerDto).getResult();
         List<WalletConsumerVo> walletConsumerVos = pageInfo.getList();
         if (CollectionUtils.isEmpty(walletConsumerVos)) {
@@ -120,7 +120,7 @@ public class WalletConsumerWebController {
         consumerExcelDto.setEndTime(endDate);
 
         SchoolUser user = SecurityUtils.getCurrentUser();
-        consumerExcelDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
+        consumerExcelDto.setSchoolCode(user.getSchoolCode());
         List<WalletConsumerVo> walletConsumerVos = walletConsumerControllerClient.findWalletConsumerList(consumerExcelDto).getResult();
         if (CollectionUtils.isEmpty(walletConsumerVos)) {
             //无数据
@@ -174,7 +174,7 @@ public class WalletConsumerWebController {
     public Object queryRelationNumAndTotalConsumerMoney(){
         SchoolUser user = SecurityUtils.getCurrentUser();
         List<com.bdxh.school.vo.BaseEchartsVo> result = schoolChargeDeptControllerClient.queryChargeDeptNumAndPosNum(/*user.getSchoolCode()*/"1013371381").getResult();
-        BaseEchartsVo result1 = walletConsumerControllerClient.queryAllConsumerMoney(/*user.getSchoolCode()*/"1013371381").getResult();
+        BaseEchartsVo result1 = walletConsumerControllerClient.queryAllConsumerMoney(user.getSchoolCode()).getResult();
         List<BaseEchartsVo> baseEchartsVos = result.stream().map(baseEcharts -> {
             BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
             baseEchartsVo.setName(baseEcharts.getName());
