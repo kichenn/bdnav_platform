@@ -8,11 +8,13 @@ import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.school.entity.SchoolUser;
 import com.bdxh.school.enums.ChargeDeptTypeEnum;
 import com.bdxh.school.enums.ConsumerTypeEnum;
+import com.bdxh.school.feign.SchoolChargeDeptControllerClient;
 import com.bdxh.school.feign.SchoolDeviceControllerClient;
 import com.bdxh.school.vo.ChargeDeptAndDeviceVo;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.feign.WalletConsumerControllerClient;
+import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletConsumerVo;
 import com.github.pagehelper.PageInfo;
 import io.swagger.annotations.Api;
@@ -60,6 +62,9 @@ public class WalletConsumerWebController {
     @Autowired
     private SchoolDeviceControllerClient schoolDeviceControllerClient;
 
+    @Autowired
+    private SchoolChargeDeptControllerClient schoolChargeDeptControllerClient;
+
     /**
      * 根据条件查询账户的消费记录
      *
@@ -70,7 +75,6 @@ public class WalletConsumerWebController {
     @ApiOperation(value = "根据条件查询账户的消费记录", response = WalletConsumerVo.class)
     public Object findWalletConsumerByCondition(@RequestBody QueryWalletConsumerDto queryWalletConsumerDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletConsumerDto.setConsumerType(queryWalletConsumerDto.getConsumerType()==0?null:queryWalletConsumerDto.getConsumerType());
         queryWalletConsumerDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         PageInfo<WalletConsumerVo> pageInfo = walletConsumerControllerClient.findWalletConsumerByCondition(queryWalletConsumerDto).getResult();
         List<WalletConsumerVo> walletConsumerVos = pageInfo.getList();
@@ -112,7 +116,6 @@ public class WalletConsumerWebController {
         QueryWalletConsumerExcelDto consumerExcelDto = new QueryWalletConsumerExcelDto();
         consumerExcelDto.setExportWay(exportWay);
         consumerExcelDto.setOrderNos(orderNos);
-        consumerExcelDto.setConsumerType(consumerType==0?null:consumerType);
         consumerExcelDto.setStartTime(startDate);
         consumerExcelDto.setEndTime(endDate);
 
@@ -158,5 +161,27 @@ public class WalletConsumerWebController {
             e.printStackTrace();
         }
         return WrapMapper.ok();
+    }
+
+
+    /**
+     * 查询部门数量以及POS数量和消费总金额
+     * @Author: WanMing
+     * @Date: 2019/7/25 10:28
+     */
+    @RequestMapping(value = "/queryRelationNumAndTotalConsumerMoney",method = RequestMethod.GET)
+    @ApiOperation(value ="查询部门数量以及POS数量和消费总金额")
+    public Object queryRelationNumAndTotalConsumerMoney(){
+        SchoolUser user = SecurityUtils.getCurrentUser();
+        List<com.bdxh.school.vo.BaseEchartsVo> result = schoolChargeDeptControllerClient.queryChargeDeptNumAndPosNum(/*user.getSchoolCode()*/"1013371381").getResult();
+        BaseEchartsVo result1 = walletConsumerControllerClient.queryAllConsumerMoney(/*user.getSchoolCode()*/"1013371381").getResult();
+        List<BaseEchartsVo> baseEchartsVos = result.stream().map(baseEcharts -> {
+            BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
+            baseEchartsVo.setName(baseEcharts.getName());
+            baseEchartsVo.setValue(baseEcharts.getValue().toString());
+            return baseEchartsVo;
+        }).collect(Collectors.toList());
+        baseEchartsVos.add(result1);
+        return WrapMapper.ok(baseEchartsVos);
     }
 }

@@ -51,7 +51,7 @@
 		  <if test="walletConsumerDto.orderNo!=null and walletConsumerDto.orderNo!=''">
 			  AND order_no = #{walletConsumerDto.orderNo}
 		  </if>
-		  <if test="walletConsumerDto.consumerType!=null ">
+		  <if test="walletConsumerDto.consumerType!=null and walletConsumerDto.consumerType!=0">
 			  AND consumer_type = #{walletConsumerDto.consumerType}
 		  </if>
 		  <if test="walletConsumerDto.consumerStatus!=null ">

@@ -166,7 +166,7 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
         BigDecimal totalMoney = walletConsumerMapper.queryAllConsumerMoney(schoolCode);
         BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
         baseEchartsVo.setName(CONSUMER_TOTAL_MONEY);
-        baseEchartsVo.setValue(totalMoney==null?0.00D:totalMoney.doubleValue());
+        baseEchartsVo.setValue(totalMoney==null?"0":totalMoney.toString());
         return baseEchartsVo;
     }
 }

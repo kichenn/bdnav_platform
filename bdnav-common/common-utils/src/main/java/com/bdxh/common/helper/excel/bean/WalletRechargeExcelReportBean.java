@@ -105,7 +105,7 @@ public class WalletRechargeExcelReportBean {
     /**
      * 创建时间
      */
-    @ExcelField(title = "学校编码", order = 1)
+    @ExcelField(title = "创建时间", order = 1)
     private String createDate;
 
 

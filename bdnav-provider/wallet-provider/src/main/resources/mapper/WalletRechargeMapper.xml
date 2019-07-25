@@ -51,7 +51,7 @@
           <if test="queryWalletRecharge.orderNo!=null and queryWalletRecharge.orderNo!=''">
               AND order_no = #{queryWalletRecharge.orderNo}
           </if>
-          <if test="queryWalletRecharge.rechargeType!=null and queryWalletRecharge.rechargeType!=''">
+          <if test="queryWalletRecharge.rechargeType!=null and queryWalletRecharge.rechargeType!=0">
               AND recharge_type = #{queryWalletRecharge.rechargeType}
           </if>
           <if test="queryWalletRecharge.startTime!=null and queryWalletRecharge.endTime!=null">
@@ -101,7 +101,7 @@
             <if test="walletRecharge.outOrderNo !=null and walletRecharge.outOrderNo!=''">
                 out_order_no=#{walletRecharge.outOrderNo},
             </if>
-            <if test="walletRecharge.rechargeType !=null and walletRecharge.rechargeType!=''">
+            <if test="walletRecharge.rechargeType !=null and walletRecharge.rechargeType!=0">
                 recharge_type=#{walletRecharge.rechargeType},
             </if>
             <if test="walletRecharge.rechargeStatus !=null">

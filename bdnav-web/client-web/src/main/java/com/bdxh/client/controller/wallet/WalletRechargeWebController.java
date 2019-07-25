@@ -73,7 +73,6 @@ public class WalletRechargeWebController {
     @ApiOperation(value = "根据条件分页查询充值记录", response = WalletRechargeVo.class)
     public Object findWalletRechargeByCondition(@RequestBody QueryWalletRechargeDto queryWalletRechargeDto) {
         SchoolUser user = SecurityUtils.getCurrentUser();
-        queryWalletRechargeDto.setRechargeType(queryWalletRechargeDto.getRechargeType()==0?null:queryWalletRechargeDto.getRechargeType());
         queryWalletRechargeDto.setSchoolCode(/*user.getSchoolCode()*/"1013371381");
         PageInfo<WalletRechargeVo> pageInfo = walletRechargeControllerClient.findWalletRechargeByCondition(queryWalletRechargeDto).getResult();
         List<WalletRechargeVo> walletRechargeVos = pageInfo.getList();
@@ -112,7 +111,6 @@ public class WalletRechargeWebController {
         QueryWalletRechargeExcelDto rechargeExcelDto = new QueryWalletRechargeExcelDto();
         rechargeExcelDto.setExportWay(exportWay);
         rechargeExcelDto.setOrderNos(orderNos);
-        rechargeExcelDto.setRechargeType(rechargeType==0?null:rechargeType);
         rechargeExcelDto.setWindowId(windowId);
         rechargeExcelDto.setStartTime(startDate);
         rechargeExcelDto.setEndTime(endDate);

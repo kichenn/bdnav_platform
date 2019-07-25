@@ -186,10 +186,10 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
             BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
             if (null == decimalMap.get(value.getKey())) {
                 baseEchartsVo.setName(value.getValue());
-                baseEchartsVo.setValue(0D);
+                baseEchartsVo.setValue("0");
             } else {
                 baseEchartsVo.setName(value.getValue());
-                baseEchartsVo.setValue(decimalMap.get(value.getKey()).doubleValue());
+                baseEchartsVo.setValue(decimalMap.get(value.getKey()).toString());
             }
             baseEchartsVos.add(baseEchartsVo);
         }
