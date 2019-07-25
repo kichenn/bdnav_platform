@@ -1,5 +1,6 @@
 package com.bdxh.wallet.service.impl;
 
+import com.bdxh.wallet.entity.PhysicalCard;
 import com.bdxh.wallet.service.WalletAccountService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -94,6 +95,11 @@ public class WalletAccountServiceImpl extends BaseService<WalletAccount> impleme
         walletAccount.setCardNumber(cardNumber);
         walletAccount.setAmount(amount);
         return walletAccountMapper.modifyWalletBySchoolCodeAndCardNumber(walletAccount) > 0;
+    }
+
+    @Override
+    public WalletAccount findWalletAccountById(String schoolCode, String cardNumber, Long id) {
+        return walletAccountMapper.findWalletAccountById(schoolCode,cardNumber,id);
     }
 
     @Override

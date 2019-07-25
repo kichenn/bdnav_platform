@@ -169,5 +169,14 @@ public interface WalletAccountControllerClient {
     @ResponseBody
     Wrapper delWalletAccount(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("id") Long id);
 
+    /**
+     * 根据id查询详情
+     *
+     * @return
+     */
+    @RequestMapping(value = "/walletAccount/findWalletAccountById", method = RequestMethod.GET)
+    @ResponseBody
+    Wrapper<WalletAccount> findWalletAccountById(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("id") Long id);
+
 
 }

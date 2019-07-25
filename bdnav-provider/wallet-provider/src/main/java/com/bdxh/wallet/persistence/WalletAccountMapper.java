@@ -3,6 +3,7 @@ package com.bdxh.wallet.persistence;
 import java.util.List;
 import java.util.Map;
 
+import com.bdxh.wallet.entity.PhysicalCard;
 import com.bdxh.wallet.entity.WalletAccount;
 import tk.mybatis.mapper.common.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -53,4 +54,13 @@ public interface WalletAccountMapper extends Mapper<WalletAccount> {
 	 * @return
 	 */
     WalletAccount findWalletAccountBySchool(@Param("schoolCode") String schoolCode,@Param("cardNumber")  String cardNumber);
+	/**
+	 * 根据id查询详细信息
+	 * @param schoolCode
+	 * @param cardNumber
+	 * @param id
+	 * @return
+	 */
+	WalletAccount findWalletAccountById(@Param("schoolCode")String schoolCode, @Param("cardNumber")String cardNumber, @Param("id")Long id);
+
 }

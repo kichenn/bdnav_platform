@@ -11,6 +11,7 @@ import com.bdxh.wallet.dto.AddWalletAccount;
 import com.bdxh.wallet.dto.BusinessCardDto;
 import com.bdxh.wallet.dto.ModifyWalletAccount;
 import com.bdxh.wallet.dto.QueryWalletAccount;
+import com.bdxh.wallet.entity.PhysicalCard;
 import com.bdxh.wallet.entity.WalletAccount;
 import com.bdxh.wallet.feign.WalletAccountControllerClient;
 import com.bdxh.wallet.vo.ShowInfoVo;
@@ -130,5 +131,17 @@ public class WalletAccountWebController {
             return WrapMapper.error(e.getMessage());
         }
     }
+
+    @ApiOperation(value = "根据id查询钱包账号",response = PhysicalCard.class)
+    @RequestMapping(value = "/findWalletAccountById", method = RequestMethod.GET)
+    public Object findWalletAccountById(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber,@RequestParam("id") Long id) {
+        try {
+            return walletAccountControllerClient.findWalletAccountById(schoolCode,cardNumber,id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 
 }
