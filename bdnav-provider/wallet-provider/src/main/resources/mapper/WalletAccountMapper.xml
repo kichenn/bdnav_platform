@@ -127,4 +127,14 @@
 	school_code = #{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
 	</delete>
 
+    <!--根据id查询详情-->
+    <select id="findWalletAccountById" resultMap="BaseResultMap">
+        SELECT
+        <include refid="BaseColumns"/>
+        FROM
+        t_wallet_account
+        WHERE
+        school_code = #{schoolCode} AND card_number=#{cardNumber} AND id=#{id}
+    </select>
+
 </mapper>

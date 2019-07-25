@@ -303,4 +303,17 @@ public class WalletAccountController {
     }
 
 
+    @RequestMapping(value = "/findWalletAccountById", method = RequestMethod.GET)
+    @ApiOperation(value = "根据id查询钱包账户信息", response = WalletAccount.class)
+    public Object findWalletAccountById(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber, @RequestParam("id") Long id) {
+        try {
+            return WrapMapper.ok(walletAccountService.findWalletAccountById(schoolCode, cardNumber, id));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
+
+
 }

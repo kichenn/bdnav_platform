@@ -120,4 +120,15 @@ public class WalletAccountWebController {
     }
 
 
+    @ApiOperation(value = "根据id查询钱包账号",response = WalletAccount.class)
+    @RequestMapping(value = "/findWalletAccountById", method = RequestMethod.GET)
+    public Object findWalletAccountById(@RequestParam("schoolCode") String schoolCode, @RequestParam("cardNumber") String cardNumber,@RequestParam("id") Long id) {
+        try {
+            return walletAccountControllerClient.findWalletAccountById(schoolCode,cardNumber,id);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return WrapMapper.error(e.getMessage());
+        }
+    }
+
 }

@@ -68,4 +68,14 @@ public interface WalletAccountService extends IService<WalletAccount> {
      * 账户充值
      */
     Boolean walletAccountRecharge(String cardNumber, String schoolCode, BigDecimal amount);
+
+
+    /**
+     * 根据id查询详情
+     * @param schoolCode
+     * @param cardNumber
+     * @param id
+     * @return
+     */
+    WalletAccount findWalletAccountById(String schoolCode,String cardNumber, Long id);
 }

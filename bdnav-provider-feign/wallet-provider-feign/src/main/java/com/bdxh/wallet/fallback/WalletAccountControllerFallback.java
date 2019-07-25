@@ -91,4 +91,9 @@ public class WalletAccountControllerFallback implements WalletAccountControllerC
     public Wrapper delWalletAccount(String schoolCode, String cardNumber, Long id) {
         return WrapMapper.error();
     }
+
+    @Override
+    public Wrapper<WalletAccount> findWalletAccountById(String schoolCode, String cardNumber, Long id) {
+        return WrapMapper.error();
+    }
 }
