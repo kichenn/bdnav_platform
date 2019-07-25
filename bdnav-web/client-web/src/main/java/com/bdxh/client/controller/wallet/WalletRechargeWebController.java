@@ -81,7 +81,7 @@ public class WalletRechargeWebController {
             return WrapMapper.ok(pageInfo);
         }
         //设置部门信息
-        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
+        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(user.getSchoolCode(), ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
         if (CollectionUtils.isNotEmpty(deptAndDeviceVos)) {
             Map<String, String> deptAndDeviceVoMap = deptAndDeviceVos.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, ChargeDeptAndDeviceVo::getChargeDeptName));
             walletRechargeVos.forEach(walletRechargeVo -> {
@@ -123,7 +123,7 @@ public class WalletRechargeWebController {
             return WrapMapper.ok("无数据");
         }
         //设置部门信息
-        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
+        List<ChargeDeptAndDeviceVo> deptAndDeviceVos = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(user.getSchoolCode(), ChargeDeptTypeEnum.RECHARGE_DEPT_KEY).getResult();
         if (CollectionUtils.isNotEmpty(deptAndDeviceVos)) {
             Map<String, String> deptAndDeviceVoMap = deptAndDeviceVos.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, ChargeDeptAndDeviceVo::getChargeDeptName));
             walletRechargeVos.forEach(walletRechargeVo -> {

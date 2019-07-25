@@ -83,7 +83,7 @@ public class WalletConsumerWebController {
             return WrapMapper.ok(walletConsumerVos);
         }
         //查询pos机及相关信息
-        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
+        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(user.getSchoolCode(), ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
         Map<String, ChargeDeptAndDeviceVo> deviceVoMap = result.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, Function.identity()));
         walletConsumerVos.forEach(walletConsumerVo -> {
             ChargeDeptAndDeviceVo chargeDeptAndDeviceVo = deviceVoMap.get(walletConsumerVo.getDeviceNumber());
@@ -127,7 +127,7 @@ public class WalletConsumerWebController {
             return WrapMapper.ok("无数据,请重新选择");
         }
         //查询pos机及相关信息
-        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(/*user.getSchoolCode()*/"1013371381", ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
+        List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(user.getSchoolCode(), ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
         Map<String, ChargeDeptAndDeviceVo> deviceVoMap = result.stream().collect(Collectors.toMap(ChargeDeptAndDeviceVo::getDeviceId, Function.identity()));
         walletConsumerVos.forEach(walletConsumerVo -> {
             ChargeDeptAndDeviceVo chargeDeptAndDeviceVo = deviceVoMap.get(walletConsumerVo.getDeviceNumber());
@@ -173,7 +173,7 @@ public class WalletConsumerWebController {
     @ApiOperation(value ="查询部门数量以及POS数量和消费总金额")
     public Object queryRelationNumAndTotalConsumerMoney(){
         SchoolUser user = SecurityUtils.getCurrentUser();
-        List<com.bdxh.school.vo.BaseEchartsVo> result = schoolChargeDeptControllerClient.queryChargeDeptNumAndPosNum(/*user.getSchoolCode()*/"1013371381").getResult();
+        List<com.bdxh.school.vo.BaseEchartsVo> result = schoolChargeDeptControllerClient.queryChargeDeptNumAndPosNum(user.getSchoolCode()).getResult();
         BaseEchartsVo result1 = walletConsumerControllerClient.queryAllConsumerMoney(user.getSchoolCode()).getResult();
         List<BaseEchartsVo> baseEchartsVos = result.stream().map(baseEcharts -> {
             BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
