@@ -115,7 +115,7 @@ public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> i
 		BaseEchartsVo baseEchartsVo1 = new BaseEchartsVo();
 		baseEchartsVo1.setName("消费机");
 		baseEchartsVo1.setValue(count1==null?0L:count1);
-		baseEchartsVos.add(baseEchartsVo);
+		baseEchartsVos.add(baseEchartsVo1);
 		return baseEchartsVos;
 	}
 }

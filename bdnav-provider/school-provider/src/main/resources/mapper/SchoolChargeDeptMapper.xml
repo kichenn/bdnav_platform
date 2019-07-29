@@ -111,7 +111,7 @@
         SELECT
 	      COUNT(id)
         FROM
-	    t_school_charge_dept ]
+	    t_school_charge_dept
 	    <where>
             <if test="schoolCode!=null and  schoolCode!=''">
                 school_code = #{schoolCode}
