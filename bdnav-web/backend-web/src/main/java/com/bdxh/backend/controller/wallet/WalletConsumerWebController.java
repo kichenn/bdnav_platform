@@ -71,7 +71,7 @@ public class WalletConsumerWebController {
         List<WalletConsumerVo> walletConsumerVos = pageInfo.getList();
         if (CollectionUtils.isEmpty(walletConsumerVos)) {
             //无数据
-            return WrapMapper.ok(walletConsumerVos);
+            return WrapMapper.ok(pageInfo);
         }
         //查询pos机及相关信息
         List<ChargeDeptAndDeviceVo> result = schoolDeviceControllerClient.findChargeDeptAndDeviceRelation(queryWalletConsumerDto.getSchoolCode(), ChargeDeptTypeEnum.CONSUMER_DEPT_KEY).getResult();
@@ -84,7 +84,7 @@ public class WalletConsumerWebController {
             }
 
         });
-
+        pageInfo.setList(walletConsumerVos);
         return WrapMapper.ok(pageInfo);
     }
 
