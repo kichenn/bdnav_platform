@@ -178,8 +178,7 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
         BigDecimal decimal = new BigDecimal(new BigInteger("0"));
         BigDecimal bigDecimal = decimal.setScale(2, RoundingMode.HALF_UP);
         //过滤选取支付成功的   充值类型分组   统计
-        Map<Byte, BigDecimal> decimalMap = walletRecharges.stream().filter(walletRecharge -> new Byte("3").equals(walletRecharge.getRechargeStatus()))
-                .collect(Collectors.groupingBy(WalletRecharge::getRechargeType
+        Map<Byte, BigDecimal> decimalMap = walletRecharges.stream().collect(Collectors.groupingBy(WalletRecharge::getRechargeType
                         , Collectors.reducing(bigDecimal, WalletRecharge::getRechargeAmount, BigDecimal::add)));
         RechargeTypeEnum[] values = RechargeTypeEnum.values();
         for (RechargeTypeEnum value : values) {
