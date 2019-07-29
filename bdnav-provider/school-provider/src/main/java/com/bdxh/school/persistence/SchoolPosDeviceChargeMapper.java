@@ -43,5 +43,5 @@ public interface SchoolPosDeviceChargeMapper extends Mapper<SchoolPosDeviceCharg
 	Integer delSchoolPosDeviceCharge(@Param("deviceId")Long deviceId);
 
 	//查询消费机数量
-    Long queryPosNum(@Param("schoolCode")String schoolCode);
+    List<String> queryPosNum(@Param("schoolCode")String schoolCode);
 }

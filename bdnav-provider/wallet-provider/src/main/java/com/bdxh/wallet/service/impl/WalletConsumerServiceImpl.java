@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.bdxh.wallet.entity.WalletConsumer;
 import com.bdxh.wallet.persistence.WalletConsumerMapper;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -35,7 +34,9 @@ import java.util.Objects;
 @Slf4j
 public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> implements WalletConsumerService {
 
-
+    /**
+     * 消费总金额
+     */
     private static final String CONSUMER_TOTAL_MONEY = "消费总金额";
 
     @Autowired

@@ -42,9 +42,9 @@
 	</select>
 
 	<!--查询消费机数量-->
-    <select id="queryPosNum" resultType="java.lang.Long">
+    <select id="queryPosNum" resultType="java.lang.String">
 		SELECT
-		count( tp.id )
+		 td.device_name
 		FROM
 		t_school_posdevice_charge tp
 		JOIN t_school_device td ON tp.device_id = td.id
@@ -54,7 +54,7 @@
 			AND td.school_code = #{schoolCode}
 		</if>
 		</where>
-	GROUP BY td.device_type
+		GROUP BY td.device_type
 	</select>
 
 

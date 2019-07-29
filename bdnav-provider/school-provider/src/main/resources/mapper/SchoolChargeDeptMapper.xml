@@ -107,14 +107,15 @@
     </select>
 
     <!--查询消费部门数量-->
-    <select id="queryChargeDeptNum" resultType="java.lang.Long">
+    <select id="queryChargeDeptNum" resultType="java.lang.String">
         SELECT
-	      COUNT(id)
+        charge_dept_name
         FROM
 	    t_school_charge_dept
 	    <where>
+            charge_dept_type = 2
             <if test="schoolCode!=null and  schoolCode!=''">
-                school_code = #{schoolCode}
+                AND school_code = #{schoolCode}
             </if>
         </where>
     </select>

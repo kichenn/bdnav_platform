@@ -105,16 +105,18 @@ public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> i
 	public List<BaseEchartsVo> queryChargeDeptNumAndPosNum(String schoolCode) {
 		List<BaseEchartsVo> baseEchartsVos = new ArrayList<>();
 		//查询消费部门数量
-		Long count  = schoolChargeDeptMapper.queryChargeDeptNum(schoolCode);
+		List<String> list = schoolChargeDeptMapper.queryChargeDeptNum(schoolCode);
 		BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
 		baseEchartsVo.setName("收费部门");
-		baseEchartsVo.setValue(count==null?0L:count);
+		baseEchartsVo.setValue(Long.valueOf(list.size()));
+		baseEchartsVo.setNames(list);
 		baseEchartsVos.add(baseEchartsVo);
 		//查询消费机数量
-		Long count1 = schoolPosDeviceChargeMapper.queryPosNum(schoolCode);
+		List<String> list1 = schoolPosDeviceChargeMapper.queryPosNum(schoolCode);
 		BaseEchartsVo baseEchartsVo1 = new BaseEchartsVo();
 		baseEchartsVo1.setName("消费机");
-		baseEchartsVo1.setValue(count1==null?0L:count1);
+		baseEchartsVo1.setValue(Long.valueOf(list1.size()));
+		baseEchartsVo1.setNames(list1);
 		baseEchartsVos.add(baseEchartsVo1);
 		return baseEchartsVos;
 	}
