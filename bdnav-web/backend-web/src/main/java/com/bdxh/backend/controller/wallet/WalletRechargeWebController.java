@@ -67,7 +67,6 @@ public class WalletRechargeWebController {
                 walletRechargeVo.setWindowName(deptAndDeviceVoMap.get(walletRechargeVo.getDeviceNumber()));
             });
         }
-        pageInfo.setList(walletRechargeVos);
         return WrapMapper.ok(pageInfo);
     }
 }

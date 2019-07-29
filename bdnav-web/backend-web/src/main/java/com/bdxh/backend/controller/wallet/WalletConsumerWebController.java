@@ -84,7 +84,6 @@ public class WalletConsumerWebController {
             }
 
         });
-        pageInfo.setList(walletConsumerVos);
         return WrapMapper.ok(pageInfo);
     }
 

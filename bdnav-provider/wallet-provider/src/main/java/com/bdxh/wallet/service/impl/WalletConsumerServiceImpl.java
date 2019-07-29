@@ -7,6 +7,7 @@ import com.bdxh.wallet.persistence.WalletAccountMapper;
 import com.bdxh.wallet.service.WalletConsumerService;
 import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletConsumerVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.commons.collections4.CollectionUtils;
@@ -84,7 +85,7 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
      */
     @Override
     public PageInfo<WalletConsumerVo> findWalletConsumerByCondition(QueryWalletConsumerDto queryWalletConsumerDto) {
-        PageHelper.startPage(queryWalletConsumerDto.getPageNum(), queryWalletConsumerDto.getPageSize());
+        Page page = PageHelper.startPage(queryWalletConsumerDto.getPageNum(), queryWalletConsumerDto.getPageSize());
         List<WalletConsumer> walletConsumers = walletConsumerMapper.findWalletConsumerByCondition(queryWalletConsumerDto);
         List<WalletConsumerVo> walletConsumerVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(walletConsumers)) {
@@ -99,7 +100,9 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
                 walletConsumerVos.add(walletConsumerVo);
             });
         }
-        return new PageInfo<WalletConsumerVo>(walletConsumerVos);
+        PageInfo<WalletConsumerVo> pageInfo = new PageInfo<>(walletConsumerVos);
+        pageInfo.setTotal(page.getTotal());
+        return pageInfo;
     }
 
     /**

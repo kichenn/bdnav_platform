@@ -9,6 +9,7 @@ import com.bdxh.wallet.persistence.WalletAccountMapper;
 import com.bdxh.wallet.service.WalletRechargeService;
 import com.bdxh.wallet.vo.BaseEchartsVo;
 import com.bdxh.wallet.vo.WalletRechargeVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ibm.icu.math.MathContext;
@@ -129,7 +130,7 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
      */
     @Override
     public PageInfo<WalletRechargeVo> findWalletRechargeByCondition(QueryWalletRechargeDto queryWalletRechargeDto) {
-        PageHelper.startPage(queryWalletRechargeDto.getPageNum(), queryWalletRechargeDto.getPageSize());
+        Page page = PageHelper.startPage(queryWalletRechargeDto.getPageNum(), queryWalletRechargeDto.getPageSize());
         List<WalletRecharge> walletRecharges = walletRechargeMapper.findWalletRechargeByCondition(queryWalletRechargeDto);
         List<WalletRechargeVo> walletRechargeVos = new ArrayList<>();
         if (CollectionUtils.isNotEmpty(walletRecharges)) {
@@ -144,7 +145,9 @@ public class WalletRechargeServiceImpl extends BaseService<WalletRecharge> imple
                 walletRechargeVos.add(walletRechargeVo);
             });
         }
-        return new PageInfo<WalletRechargeVo>(walletRechargeVos);
+        PageInfo<WalletRechargeVo> pageInfo = new PageInfo<>(walletRechargeVos);
+        pageInfo.setTotal(page.getTotal());
+        return pageInfo;
     }
 
     /**
