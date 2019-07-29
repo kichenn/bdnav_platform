@@ -74,10 +74,10 @@
         t_physical_card
         <where>
             <if test="schoolCode !=null and schoolCode !=''">
-                AND school_code =#{schoolCode}
+                AND school_code=#{schoolCode}
             </if>
             <if test="cardNumber !=null and cardNumber !=''">
-                AND card_number =#{cardNumber}
+                AND card_number=#{cardNumber}
             </if>
             <if test="physicalNumber !=null and physicalNumber!=''">
                 AND physical_number =#{physicalNumber}

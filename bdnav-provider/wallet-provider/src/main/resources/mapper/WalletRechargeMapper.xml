@@ -43,16 +43,16 @@
         FROM t_wallet_recharge
         <where>
             <if test="queryWalletRecharge.schoolCode!=null and queryWalletRecharge.schoolCode!=''">
-                AND school_code = #{queryWalletRecharge.schoolCode}
+                AND school_code=#{queryWalletRecharge.schoolCode}
             </if>
             <if test="queryWalletRecharge.cardNumber!=null and queryWalletRecharge.cardNumber!=''">
-                AND card_number = #{queryWalletRecharge.cardNumber}
+                AND card_number=#{queryWalletRecharge.cardNumber}
             </if>
             <if test="queryWalletRecharge.orderNo!=null and queryWalletRecharge.orderNo!=''">
-                AND order_no = #{queryWalletRecharge.orderNo}
+                AND order_no=#{queryWalletRecharge.orderNo}
             </if>
             <if test="queryWalletRecharge.rechargeType!=null and queryWalletRecharge.rechargeType!=0">
-                AND recharge_type = #{queryWalletRecharge.rechargeType}
+                AND recharge_type=#{queryWalletRecharge.rechargeType}
             </if>
             <if test="queryWalletRecharge.startTime!=null and queryWalletRecharge.endTime!=null">
                 AND recharge_time BETWEEN #{queryWalletRecharge.startTime} AND #{queryWalletRecharge.endTime}

@@ -57,5 +57,5 @@ public interface WalletConsumerMapper extends Mapper<WalletConsumer> {
 	 * @param schoolCode
 	 * @return
 	 */
-	BigDecimal queryAllConsumerMoney(String schoolCode);
+	String queryAllConsumerMoney(@Param("schoolCode")String schoolCode);
 }

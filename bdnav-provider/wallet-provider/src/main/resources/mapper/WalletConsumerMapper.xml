@@ -11,7 +11,7 @@
 	  <result column="user_name" jdbcType="VARCHAR" property="userName"/>
 	  <result column="card_number" jdbcType="VARCHAR" property="cardNumber"/>
 	  <result column="physical_number" jdbcType="VARCHAR" property="physicalNumber"/>
-	  <result column="charge_detp_id" jdbcType="BIGINT" property="chargeDeptId"/>
+	  <result column="charge_detp_id" jdbcType="BIGINT" property="chargeDetpId"/>
 	  <result column="device_number" jdbcType="VARCHAR" property="deviceNumber"/>
 	  <result column="order_no" jdbcType="VARCHAR" property="orderNo"/>
 	  <result column="out_order_no" jdbcType="VARCHAR" property="outOrderNo"/>
@@ -40,22 +40,22 @@
 	  FROM t_wallet_consumer
 	  <where>
 		  <if test="walletConsumerDto.schoolCode!=null and walletConsumerDto.schoolCode!=''">
-			  AND school_code = #{walletConsumerDto.schoolCode}
+			  AND school_code=#{walletConsumerDto.schoolCode}
 		  </if>
 		  <if test="walletConsumerDto.cardNumber!=null and walletConsumerDto.cardNumber!=''">
-			  AND card_number = #{walletConsumerDto.cardNumber}
+			  AND card_number=#{walletConsumerDto.cardNumber}
 		  </if>
 		  <if test="walletConsumerDto.physicalNumber!=null and walletConsumerDto.physicalNumber!=''">
-			  AND physical_number = #{walletConsumerDto.physicalNumber}
+			  AND physical_number=#{walletConsumerDto.physicalNumber}
 		  </if>
 		  <if test="walletConsumerDto.orderNo!=null and walletConsumerDto.orderNo!=''">
-			  AND order_no = #{walletConsumerDto.orderNo}
+			  AND order_no=#{walletConsumerDto.orderNo}
 		  </if>
 		  <if test="walletConsumerDto.consumerType!=null and walletConsumerDto.consumerType!=0">
-			  AND consumer_type = #{walletConsumerDto.consumerType}
+			  AND consumer_type=#{walletConsumerDto.consumerType}
 		  </if>
 		  <if test="walletConsumerDto.consumerStatus!=null ">
-			  AND consumer_status = #{walletConsumerDto.consumerStatus}
+			  AND consumer_status=#{walletConsumerDto.consumerStatus}
 		  </if>
 		  <if test="walletConsumerDto.startTime!=null and walletConsumerDto.endTime!=null">
 			  AND consumer_time = BETWEEN #{walletConsumerDto.startTime} AND #{walletConsumerDto.endTime}
@@ -84,7 +84,7 @@
 	</select>
 
 	<!--查询单个学校或者所有学校消费总金额(支付成功)-->
-    <select id="queryAllConsumerMoney" resultType="java.math.BigDecimal">
+    <select id="queryAllConsumerMoney" resultType="java.lang.String">
 		SELECT SUM(consumer_amount)
 		FROM t_wallet_consumer
 		<where>

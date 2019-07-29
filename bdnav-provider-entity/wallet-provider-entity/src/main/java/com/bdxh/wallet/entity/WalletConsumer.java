@@ -75,7 +75,7 @@ public class WalletConsumer {
 	 * 收费部门id
 	 */
 	@Column(name = "charge_detp_id")
-	private Long chargeDeptId;
+	private Long chargeDetpId;
 
 	/**
 	 * 消费时的设备编码

@@ -40,7 +40,7 @@ public interface WalletRechargeMapper extends Mapper<WalletRecharge> {
 	 * @param queryWalletRecharge
 	 * @return
 	 */
-    List<WalletRecharge> findWalletRechargeByCondition(@Param("queryWalletRecharge")QueryWalletRechargeDto queryWalletRecharge);
+    List<WalletRecharge>  findWalletRechargeByCondition(@Param("queryWalletRecharge")QueryWalletRechargeDto queryWalletRecharge);
 
 	/**
 	 * 查询不同充值类型下充值成功的总金额

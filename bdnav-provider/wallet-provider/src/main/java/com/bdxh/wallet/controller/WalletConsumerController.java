@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
+
 /**
 * @Description: 账户消费记录管理控制器
 * @Author Kang
@@ -50,6 +52,8 @@ public class WalletConsumerController {
         WalletConsumer walletConsumer = new WalletConsumer();
         BeanUtils.copyProperties(addWalletConsumerDto, walletConsumer);
         walletConsumer.setOrderNo(snowflakeIdWorker.nextId() + "");
+        walletConsumer.setCreateDate(new Date());
+        walletConsumer.setUpdateDate(new Date());
         return WrapMapper.ok(walletConsumerService.save(walletConsumer) > 0);
     }
 

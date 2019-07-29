@@ -1,6 +1,5 @@
 package com.bdxh.wallet.service.impl;
 
-import com.bdxh.common.utils.wrapper.WrapMapper;
 import com.bdxh.wallet.dto.QueryWalletConsumerDto;
 import com.bdxh.wallet.dto.QueryWalletConsumerExcelDto;
 import com.bdxh.wallet.entity.WalletAccount;
@@ -92,7 +91,7 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
             walletConsumers.forEach(consumerDetail -> {
                 WalletConsumerVo walletConsumerVo = new WalletConsumerVo();
                 BeanUtils.copyProperties(consumerDetail, walletConsumerVo);
-                WalletAccount walletAccount = walletAccountMapper.findWalletAccountBySchool(walletConsumerVo.getSchoolCode(), walletConsumerVo.getCardNumber());
+                WalletAccount walletAccount = walletAccountMapper.findWalletAccountBySchool(consumerDetail.getSchoolCode(), consumerDetail.getCardNumber());
                 if(Objects.nonNull(walletAccount)){
                     walletConsumerVo.setPhysicalNumber(walletAccount.getPhysicalNumber());
                     walletConsumerVo.setUserType(walletAccount.getUserType());
@@ -163,10 +162,10 @@ public class WalletConsumerServiceImpl extends BaseService<WalletConsumer> imple
      */
     @Override
     public BaseEchartsVo queryAllConsumerMoney(String schoolCode) {
-        BigDecimal totalMoney = walletConsumerMapper.queryAllConsumerMoney(schoolCode);
+        String totalMoney = walletConsumerMapper.queryAllConsumerMoney(schoolCode);
         BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
         baseEchartsVo.setName(CONSUMER_TOTAL_MONEY);
-        baseEchartsVo.setValue(totalMoney==null?"0":totalMoney.toString());
+        baseEchartsVo.setValue(totalMoney==null?"0":totalMoney);
         return baseEchartsVo;
     }
 }
