@@ -105,7 +105,7 @@ public class WalletAccountWebController {
             ShowInfoVo siv=new ShowInfoVo();
              if (businessCardDto.getUserTypeEnum().getKey()==2){
                  StudentVo sv=studentControllerClient.queryStudentInfo(businessCardDto.getSchoolCode(),businessCardDto.getCardNumber()).getResult();
-                 siv.setCardNumber(sv.getCardNumber());
+                 siv.setCardNumber(sv.getSCardNumber());
                  siv.setClassName(sv.getClassName());
                  siv.setGender(sv.getGender());
                  siv.setGradeName(sv.getGradeName());
