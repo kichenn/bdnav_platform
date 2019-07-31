@@ -58,7 +58,7 @@
 			  AND consumer_status=#{walletConsumerDto.consumerStatus}
 		  </if>
 		  <if test="walletConsumerDto.startTime!=null and walletConsumerDto.endTime!=null">
-			  AND consumer_time = BETWEEN #{walletConsumerDto.startTime} AND #{walletConsumerDto.endTime}
+			  AND consumer_time  BETWEEN #{walletConsumerDto.startTime} AND #{walletConsumerDto.endTime}
 		  </if>
 	  </where>
 	  ORDER BY create_date DESC
