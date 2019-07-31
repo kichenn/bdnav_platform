@@ -179,6 +179,7 @@ public class WalletConsumerWebController {
             BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
             baseEchartsVo.setName(baseEcharts.getName());
             baseEchartsVo.setValue(baseEcharts.getValue().toString());
+            baseEchartsVo.setNames(baseEcharts.getNames());
             return baseEchartsVo;
         }).collect(Collectors.toList());
         baseEchartsVos.add(result1);

@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 百度ECharts基础数据对象
@@ -18,4 +19,7 @@ public class BaseEchartsVo implements Serializable {
 
     @ApiModelProperty("数据值")
     private String value;
+
+    @ApiModelProperty("多个条目名称")
+    private List<String> names;
 }
