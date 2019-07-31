@@ -1,10 +1,13 @@
 package com.bdxh.school.service.impl;
 
 import com.bdxh.school.dto.QuerySchoolChargeDeptDto;
+import com.bdxh.school.enums.ChargeDeptTypeEnum;
+import com.bdxh.school.enums.DeviceTypeEnum;
 import com.bdxh.school.persistence.SchoolPosDeviceChargeMapper;
 import com.bdxh.school.service.SchoolChargeDeptService;
 import com.bdxh.school.vo.BaseEchartsVo;
 import com.bdxh.school.vo.SchoolChargeDeptVo;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,7 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> implements SchoolChargeDeptService {
+
 
 	@Autowired
 	private SchoolChargeDeptMapper schoolChargeDeptMapper;
@@ -63,9 +67,11 @@ public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> i
 	 */
 	@Override
 	public PageInfo<SchoolChargeDeptVo> findSchoolChargeDeptByCondition(QuerySchoolChargeDeptDto querySchoolChargeDeptDto) {
-		PageHelper.startPage(querySchoolChargeDeptDto.getPageNum(),querySchoolChargeDeptDto.getPageSize());
+		Page page = PageHelper.startPage(querySchoolChargeDeptDto.getPageNum(),querySchoolChargeDeptDto.getPageSize());
 		List<SchoolChargeDeptVo> schoolChargeDeptVos =  schoolChargeDeptMapper.findSchoolChargeDeptByCondition(querySchoolChargeDeptDto);
-		return new PageInfo<>(schoolChargeDeptVos);
+		PageInfo<SchoolChargeDeptVo> pageInfo = new PageInfo<>(schoolChargeDeptVos);
+		pageInfo.setTotal(page.getTotal());
+		return pageInfo;
 	}
 
     /**
@@ -104,17 +110,17 @@ public class SchoolChargeDeptServiceImpl extends BaseService<SchoolChargeDept> i
 	@Override
 	public List<BaseEchartsVo> queryChargeDeptNumAndPosNum(String schoolCode) {
 		List<BaseEchartsVo> baseEchartsVos = new ArrayList<>();
-		//查询消费部门数量
+		//查询消费部门名称的集合
 		List<String> list = schoolChargeDeptMapper.queryChargeDeptNum(schoolCode);
 		BaseEchartsVo baseEchartsVo = new BaseEchartsVo();
-		baseEchartsVo.setName("收费部门");
+		baseEchartsVo.setName(ChargeDeptTypeEnum.CONSUMER_DEPT_VALUE);
 		baseEchartsVo.setValue(Long.valueOf(list.size()));
 		baseEchartsVo.setNames(list);
 		baseEchartsVos.add(baseEchartsVo);
-		//查询消费机数量
+		//查询消费机名称的集合
 		List<String> list1 = schoolPosDeviceChargeMapper.queryPosNum(schoolCode);
 		BaseEchartsVo baseEchartsVo1 = new BaseEchartsVo();
-		baseEchartsVo1.setName("消费机");
+		baseEchartsVo1.setName(DeviceTypeEnum.POS_DEVICE_VALUE);
 		baseEchartsVo1.setValue(Long.valueOf(list1.size()));
 		baseEchartsVo1.setNames(list1);
 		baseEchartsVos.add(baseEchartsVo1);

@@ -44,7 +44,7 @@
 	<!--查询消费机数量-->
     <select id="queryPosNum" resultType="java.lang.String">
 		SELECT
-		 td.device_name
+		td.device_name
 		FROM
 		t_school_posdevice_charge tp
 		JOIN t_school_device td ON tp.device_id = td.id
@@ -59,9 +59,9 @@
 
 
     <delete id="delSchoolPosDeviceChargeInIds" parameterType="Integer">
-	  DELETE
+	   DELETE
 	   FROM t_school_posdevice_charge
-	  WHERE
+	   WHERE
 	   id IN
 	     <foreach collection = "ids" item = "id" separator = "," open = "(" close = ")" >
 	          #{id, jdbcType = BIGINT}

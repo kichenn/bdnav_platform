@@ -170,7 +170,7 @@ public class WalletConsumerWebController {
      * @Date: 2019/7/25 10:28
      */
     @RequestMapping(value = "/queryRelationNumAndTotalConsumerMoney",method = RequestMethod.GET)
-    @ApiOperation(value ="查询部门数量以及POS数量和消费总金额")
+    @ApiOperation(value ="查询部门数量和名称以及POS数量和消费总金额")
     public Object queryRelationNumAndTotalConsumerMoney(){
         SchoolUser user = SecurityUtils.getCurrentUser();
         List<com.bdxh.school.vo.BaseEchartsVo> result = schoolChargeDeptControllerClient.queryChargeDeptNumAndPosNum(user.getSchoolCode()).getResult();
