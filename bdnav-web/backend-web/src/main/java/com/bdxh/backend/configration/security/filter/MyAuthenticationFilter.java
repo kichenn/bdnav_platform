@@ -113,7 +113,8 @@ public class MyAuthenticationFilter extends OncePerRequestFilter {
                 httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
                 httpServletResponse.setStatus(200);
                 httpServletResponse.setHeader("Content-type", "application/json; charset=UTF-8");
-                httpServletResponse.setCharacterEncoding("utf-8");
+                httpServletResponse.
+            ("utf-8");
                 httpServletResponse.setContentType("application/json;charset=utf-8");
                 httpServletResponse.getOutputStream().write(str.getBytes("utf-8"));
                 return;

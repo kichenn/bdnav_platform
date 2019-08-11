@@ -68,7 +68,7 @@ public class AppStatusWebController {
             Map<String, List<String>> mapAuthorities = SecurityUtils.getCurrentAuthorized();
             //获取试用孩子列表信息
             List<String> caseCardNumber = mapAuthorities.get("ROLE_TEST");
-            caseCardNumber=caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
+            caseCardNumber = caseCardNumber==null ? new ArrayList<>() :caseCardNumber;
             Boolean isOnTrial = caseCardNumber.contains(cardNumber);
             //获取正式购买孩子列表信息
             List<String> thisCardNumbers = mapAuthorities.get("ROLE_CONTROLE");

@@ -61,4 +61,22 @@ public class Tests {
             e.printStackTrace();
         }
     }
+
+    @Test
+    public static void haha(String[] args) throws Exception {
+        Path localSwaggerFile = Paths.get("src/main/resources/swagger.yaml");
+        Path outputFile = Paths.get("build/swagger");
+
+        Swagger2MarkupConfig config = new Swagger2MarkupConfigBuilder()
+                .withMarkupLanguage(MarkupLanguage.ASCIIDOC)
+                .withOutputLanguage(Language.ZH)
+                .withPathsGroupedBy(GroupBy.TAGS)
+                .withGeneratedExamples()
+                .withoutInlineSchema()
+                .build();
+        Swagger2MarkupConverter converter = Swagger2MarkupConverter.from(localSwaggerFile)
+                .withConfig(config)
+                .build();
+        converter.toFile(outputFile);
+    }
 }

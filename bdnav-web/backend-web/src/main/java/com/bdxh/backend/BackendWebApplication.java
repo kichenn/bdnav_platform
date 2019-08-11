@@ -14,11 +14,11 @@ import org.springframework.context.annotation.ComponentScan;
  * @create: 2019-02-27 15:38
  **/
 @SpringBootApplication
-@ServletComponentScan
+@ServletComponentScan    //使webservlet  webfilter weblister生效
 @EnableEurekaClient
-@ComponentScan(basePackages = {"com.bdxh"})
+@ComponentScan(basePackages = {"com.bdxh"})   //默认扫描主启动类的包或以下
 @EnableFeignClients(basePackages = {"com.bdxh"})
-@EnableCircuitBreaker
+@EnableCircuitBreaker //启动断路器
 public class BackendWebApplication {
     public static void main(String[] args) {
         SpringApplication.run(BackendWebApplication.class,args);
