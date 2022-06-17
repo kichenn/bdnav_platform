@@ -37,7 +37,7 @@
         <jackson-smile.version>1.9.13</jackson-smile.version>
         <hutool-all.version>3.3.2</hutool-all.version>
         <aliyun-sms.version>1.0.0</aliyun-sms.version>
-        <fastson.version>1.2.54</fastson.version>
+        <fastson.version>1.2.83</fastson.version>
         <dozer.version>5.5.1</dozer.version>
         <zk.version>2.10.0</zk.version>
         <swagger2.version>2.9.2</swagger2.version>
